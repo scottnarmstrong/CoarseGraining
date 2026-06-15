@@ -1,0 +1,13 @@
+import Homogenization.Internal.Ch02.Adapters
+import Homogenization.Internal.Ch02.Existence
+import Homogenization.Internal.Ch02.FirstVariation
+import Homogenization.Internal.Ch02.GradientUniqueness
+import Homogenization.Internal.Ch02.GradientLinearity
+import Homogenization.Internal.Ch02.Quadraticity
+import Homogenization.Internal.Ch02.MatrixExtraction
+import Homogenization.Internal.Ch02.MatrixPositivity
+import Homogenization.Internal.Ch02.BasicVariationalIdentities
+import Homogenization.Internal.Ch02.SymmetricDirichletNeumann
+import Homogenization.Internal.Ch02.DoubledMu
+import Homogenization.Internal.Ch02.DoubledResponse
+import Homogenization.Internal.Ch02.BlockCoarseMatrix

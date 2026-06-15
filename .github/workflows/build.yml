@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Cancel superseded runs on the same ref.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Installs the toolchain from `lean-toolchain`, runs `lake exe cache get`
+      # to fetch prebuilt mathlib oleans, then `lake build` for the project.
+      - name: Build (lean-action)
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: true
+
+      # Build the axiom audit and surface its `#print axioms` output in the log,
+      # confirming the public theorems use only the standard mathlib axioms.
+      - name: Axiom audit
+        run: lake build Homogenization.Meta.AxiomsAudit

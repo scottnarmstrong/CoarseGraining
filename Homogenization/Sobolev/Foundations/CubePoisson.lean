@@ -1,0 +1,3 @@
+import Homogenization.Sobolev.Foundations.CubePoisson.FullVectorPoincare
+import Homogenization.Sobolev.Foundations.CubePoisson.FullVectorPoincareL2
+import Homogenization.Sobolev.Foundations.CubePoisson.ProjectedVectorPoincare

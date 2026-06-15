@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: "If you use this formalization, please cite it as below."
+title: "CoarseGraining: a Lean 4 formalization of Coarse-Graining Theory for Elliptic Equations"
+abstract: >-
+  A machine-checked Lean 4 / mathlib formalization of the coarse-graining theory
+  of divergence-form elliptic equations and quantitative stochastic
+  homogenization, up to the quenched minimal-scale theorem. The development
+  contains no sorry and no custom axiom.
+type: software
+authors:
+  - family-names: Armstrong
+    given-names: Scott
+  - family-names: Kuusi
+    given-names: Tuomo
+keywords:
+  - Lean
+  - mathlib
+  - formal verification
+  - elliptic homogenization
+  - coarse-graining
+  - partial differential equations
+license: Apache-2.0
+# TODO(Phase D/E): set repository-code to the public URL and add the Zenodo DOI.
+repository-code: "https://github.com/scottnarmstrong/CoarseGraining"
+references:
+  - type: article
+    title: "Renormalization Group and Elliptic Homogenization in High Contrast"
+    authors:
+      - family-names: Armstrong
+        given-names: Scott
+      - family-names: Kuusi
+        given-names: Tuomo
+    journal: "Inventiones Mathematicae"
+    volume: 242
+    issue: 3
+    start: 895
+    end: 1086
+    year: 2025
+    doi: "10.1007/s00222-025-01370-9"
+    notes: "The published paper whose central theorems this project formalizes."

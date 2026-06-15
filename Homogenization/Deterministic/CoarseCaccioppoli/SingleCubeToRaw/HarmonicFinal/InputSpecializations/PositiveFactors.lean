@@ -1,0 +1,13 @@
+import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.CoefficientBounds
+import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.DescendantSummation
+import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Ellipticity.QOneRoot
+
+namespace Homogenization
+
+noncomputable section
+
+open scoped ENNReal
+
+end
+
+end Homogenization

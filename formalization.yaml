@@ -1,0 +1,150 @@
+version: "v0.3"
+
+project:
+  name: "CoarseGraining"
+  authors:
+    - "Scott Armstrong"
+    - "Tuomo Kuusi"
+  license: "Apache-2.0"
+
+sources:
+  - title: "Coarse-Graining Theory for Elliptic Equations"
+    authors:
+      - "Scott Armstrong"
+      - "Tuomo Kuusi"
+    id: ""                      # TODO: arXiv ID / DOI when the manuscript is public
+    type: "manuscript"
+    license: "all rights reserved"
+    author_contacted: "n/a"     # the formalizers are the authors of the source
+    prior_work: ""
+  - title: "Renormalization Group and Elliptic Homogenization in High Contrast"
+    authors:
+      - "Scott Armstrong"
+      - "Tuomo Kuusi"
+    id: "doi:10.1007/s00222-025-01370-9"
+    type: "journal article"
+    license: ""
+    author_contacted: "n/a"
+    prior_work: ""
+
+status:
+  scope: >-
+    A Lean 4 / Mathlib formalization of the coarse-graining approach to
+    quantitative stochastic homogenization of divergence-form elliptic equations:
+    function-space, deterministic, probabilistic, and homogenization-scale theory
+    up to the quenched minimal-scale theorem (Chapter 5). Every theorem stated in
+    the manuscript is formalized; narrower or extra-hypothesis cases are flagged
+    in manuscript footnotes. The two main results are exposed publicly in
+    Homogenization/Book/MainResults.lean, and the fixed-exponent quenched
+    comparison corollary is additionally checked by the Lean comparator (Audit/).
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms:
+    - "propext"
+    - "Classical.choice"
+    - "Quot.sound"
+  main_results:
+    - declaration: "Homogenization.Book.MainResults.annealedConvergence_uniformEllipticity"
+      file: "Homogenization/Book/MainResults.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: ""
+      literature_dependencies: []
+    - declaration: "Homogenization.Book.MainResults.homogenizationComparison_uniformEllipticity"
+      file: "Homogenization/Book/MainResults.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/comparator.json"
+      literature_dependencies: []
+    - declaration: "Homogenization.StatementAudit.homogenizationComparison_uniformEllipticity"
+      file: "Audit/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/comparator.json"
+      literature_dependencies: []
+
+automation:
+  methods:
+    - method: "agent"
+      models:
+        - "claude-opus-4-6"
+        - "claude-opus-4-7"
+        - "claude-opus-4-8"
+        - "gpt-5.5"
+      framework: "Claude Code (Anthropic) and Codex (OpenAI) agentic coding harnesses"
+      tool_setup: >-
+        Lake builds under leanprover/lean4:v4.26.0 with Mathlib v4.26.0. The Lean
+        comparator was run locally (comparator commit
+        5fb6e55e87cc2308e29e0916a3cb39522dbfebfd, lean4export commit
+        3e1cdfe206ec3f54bae4a548d814ce9b2c1bb43d, landrun 0.1.15). Multiple
+        read-only subagents were used for internal audit of theorem dependency
+        order, definition faithfulness, challenge/solution alignment, and release
+        documentation.
+      cost:
+        wall_time: "not separately tracked"
+        spend_usd: "≈ $1000 (ChatGPT Pro and Claude Max subscriptions)"
+        hardware: "the authors' laptops plus an 8-CPU / 32 GB RAM Ubuntu machine"
+      prompting_notes: >-
+        Human-directed agent work, closely supervised by the authors.
+  spend_usd: "≈ $1000 (ChatGPT Pro and Claude Max subscriptions)"
+  notes: >-
+    All Lean code in this repository was written by the listed models under the
+    close supervision of the authors. Every proof is checked by the Lean kernel
+    and Mathlib; the verified library contains no sorry and no custom axiom. The
+    Mathlib-only comparator challenge file Audit/Challenge.lean contains exactly
+    one intentional statement-level sorry (the theorem body), which is filled by
+    Audit/Solution.lean and confirmed by leanprover/comparator ("Lean default
+    kernel accepts the solution" / "Your solution is okay!").
+
+fidelity:
+  divergences: >-
+    Where a formalized statement is less general than the manuscript or carries an
+    additional hypothesis, this is flagged in a manuscript footnote. Substantive
+    cases: a W^{2,q} estimate formalized only for q=2; the cube-wise Besov pairing
+    only for p=2; a Caccioppoli iteration on the normalized interval [1/3,1];
+    deterministic domains taken bounded-open-convex rather than Lipschitz; integer
+    moment exponent xi>2d; one Chapter-5 statement with extra hypothesis alpha<t
+    and conclusion at exponent alpha/8. The public MainResults file
+    additionally specializes to uniform ellipticity and states the comparison in
+    Sobolev (H^s = B^s_{2,2}) form; the comparator corollary fixes the public
+    exponents t=1/8, s=3/4 and exposes the homogenized coefficient as an
+    existential positive scalar. Relative to the published paper (the journal
+    article among the sources above), the formalization additionally assumes the
+    coefficient law is isotropic, which that paper does not require.
+
+review:
+  status: "author-verified"
+  reviewers:
+    - "Scott Armstrong"
+    - "Tuomo Kuusi"
+  notes: >-
+    Correctness of every proof is guaranteed by the Lean kernel and Mathlib (no
+    sorry, no custom axiom). The authors reviewed that the public statements are
+    the intended theorems; the fixed-exponent comparator corollary was
+    independently checked by leanprover/comparator and by multiple read-only audit
+    subagents. This is not external peer review.
+
+alignment:
+  namespace: "Homogenization"
+  statements:
+    - source: "Theorem t.annealed.convergence (uniformly elliptic specialization)"
+      lean: "Homogenization.Book.MainResults.annealedConvergence_uniformEllipticity"
+      module: "Homogenization.Book.MainResults"
+      status: "proved"
+      note: "Uniform ellipticity supplies the manuscript coarse-grained ellipticity hypotheses."
+    - source: "Theorem t.quenched.homogenization.comparison (uniformly elliptic, fixed-exponent corollary)"
+      lean: "Homogenization.Book.MainResults.homogenizationComparison_uniformEllipticity"
+      module: "Homogenization.Book.MainResults"
+      status: "proved"
+      note: "Comparator-audited via Audit/Challenge.lean and Audit/Solution.lean."
+    - source: "Mathlib-only challenge for the fixed-exponent quenched corollary"
+      lean: "Homogenization.StatementAudit.homogenizationComparison_uniformEllipticity"
+      module: "Audit.Challenge / Audit.Solution"
+      status: "comparator-checked"
+      note: "Challenge imports only Mathlib and contains one intentional theorem-body sorry."
+
+acknowledgements: >-
+  Scott Armstrong and Tuomo Kuusi were supported by the European Research Council
+  (ERC) under the European Union's Horizon Europe research and innovation
+  programme (grant agreement No. 101200828). Built on Lean 4, Mathlib, Lake,
+  leanprover/comparator, lean4export, and landrun.

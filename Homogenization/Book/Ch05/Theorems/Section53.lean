@@ -1,0 +1,25 @@
+import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms
+import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer
+import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations
+
+namespace Homogenization
+namespace Book
+namespace Ch05
+namespace Section53
+
+/-!
+# Section 5.3: analytic reduction to coarse-grained fluctuations
+
+Compatibility module re-exporting the split Section 5.3 theorem files.
+
+The manuscript-facing structure is:
+
+* upper bound for `J` by weak norms;
+* deterministic weak-norm bounds for the maximizer;
+* upper bound for centered response by coarse fluctuations.
+-/
+
+end Section53
+end Ch05
+end Book
+end Homogenization

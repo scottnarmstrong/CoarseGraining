@@ -1,0 +1,4 @@
+import Homogenization.Besov.Duality.ProjectedPairing.Projections
+import Homogenization.Besov.Duality.ProjectedPairing.Integrability
+import Homogenization.Besov.Duality.ProjectedPairing.Averages
+import Homogenization.Besov.Duality.ProjectedPairing.MainBounds

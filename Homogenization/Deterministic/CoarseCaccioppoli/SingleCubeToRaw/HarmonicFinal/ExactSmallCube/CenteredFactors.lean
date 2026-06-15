@@ -1,0 +1,1 @@
+import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.ExactSmallCube.CenteredFactors.BufferedAlpha

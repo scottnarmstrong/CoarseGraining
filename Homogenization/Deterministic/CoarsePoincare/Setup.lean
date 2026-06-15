@@ -1,0 +1,4 @@
+import Homogenization.Deterministic.CoarsePoincare.Setup.Conversions
+import Homogenization.Deterministic.CoarsePoincare.Setup.UniformBounds
+import Homogenization.Deterministic.CoarsePoincare.Setup.EnergyControls
+import Homogenization.Deterministic.CoarsePoincare.Setup.HarmonicAndData

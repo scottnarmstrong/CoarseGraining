@@ -1,0 +1,3 @@
+import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.NoteStepAndConstants
+import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ExpandedAndElliptic
+import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ZeroDirichletEnergy

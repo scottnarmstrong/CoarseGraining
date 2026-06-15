@@ -1,0 +1,3 @@
+import Homogenization.Sobolev.Foundations.CubeReflection.Folding.Geometry
+import Homogenization.Sobolev.Foundations.CubeReflection.Folding.BlockDecomposition
+import Homogenization.Sobolev.Foundations.CubeReflection.Folding.BlockIntegrals
