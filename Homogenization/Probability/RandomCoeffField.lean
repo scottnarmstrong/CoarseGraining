@@ -60,9 +60,11 @@ def translateByInt (A : RandomCoeffField Ω d) (z : Fin d → ℤ) : RandomCoeff
     (A.map (Homogenization.translateByInt z) (measurable_translateByInt z)).measurable_toFun
 
 /-- Rotate a random coefficient field by a signed permutation matrix. -/
-def rotate (A : RandomCoeffField Ω d) (R : Mat d) : RandomCoeffField Ω d where
-  toFun := (A.map (rotateCoeffField R) (measurable_rotateCoeffField R)).toFun
-  measurable_toFun := (A.map (rotateCoeffField R) (measurable_rotateCoeffField R)).measurable_toFun
+def rotate (A : RandomCoeffField Ω d) (R : Mat d)
+    (hR : IsSignedPermutationMatrix R) : RandomCoeffField Ω d where
+  toFun := (A.map (rotateCoeffField R) (measurable_rotateCoeffField R hR)).toFun
+  measurable_toFun :=
+    (A.map (rotateCoeffField R) (measurable_rotateCoeffField R hR)).measurable_toFun
 
 /-- Take the adjoint random coefficient field. -/
 def adjoint (A : RandomCoeffField Ω d) : RandomCoeffField Ω d where
@@ -100,10 +102,11 @@ theorem law_translateByInt (A : RandomCoeffField Ω d) (μ : MeasureTheory.Measu
   simpa [RandomCoeffField.translateByInt] using
     (A.map_law_eq μ (Homogenization.translateByInt z) (measurable_translateByInt z)).symm
 
-theorem law_rotate (A : RandomCoeffField Ω d) (μ : MeasureTheory.Measure Ω) (R : Mat d) :
-    (A.rotate R).law μ = MeasureTheory.Measure.map (rotateCoeffField R) (A.law μ) := by
+theorem law_rotate (A : RandomCoeffField Ω d) (μ : MeasureTheory.Measure Ω) (R : Mat d)
+    (hR : IsSignedPermutationMatrix R) :
+    (A.rotate R hR).law μ = MeasureTheory.Measure.map (rotateCoeffField R) (A.law μ) := by
   simpa [RandomCoeffField.rotate] using
-    (A.map_law_eq μ (rotateCoeffField R) (measurable_rotateCoeffField R)).symm
+    (A.map_law_eq μ (rotateCoeffField R) (measurable_rotateCoeffField R hR)).symm
 
 theorem law_adjoint (A : RandomCoeffField Ω d) (μ : MeasureTheory.Measure Ω) :
     (A.adjoint).law μ = MeasureTheory.Measure.map adjointCoeffField (A.law μ) := by

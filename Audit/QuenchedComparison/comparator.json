@@ -1,6 +1,6 @@
 {
-  "challenge_module": "Audit.Challenge",
-  "solution_module": "Audit.Solution",
+  "challenge_module": "Audit.QuenchedComparison.Challenge",
+  "solution_module": "Audit.QuenchedComparison.Solution",
   "theorem_names": [
     "Homogenization.StatementAudit.homogenizationComparison_uniformEllipticity"
   ],

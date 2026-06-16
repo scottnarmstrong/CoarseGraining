@@ -1,5 +1,6 @@
 import Homogenization.Book.Ch04.Measurability
 import Homogenization.Book.Ch04.Internal.AEESliceAssembly.MuFamily
+import Homogenization.Probability.LocalObservable
 
 namespace Homogenization
 namespace Book
@@ -105,7 +106,7 @@ theorem aemeasurable_Mu_cubeSet_of_measurable_aeeQuantitativeSlice
               simpa [hpre, sliceSubtype] using ha_sub)
       simpa [hseteq] using ht_piece
     exact hP.local_observable_measurable.nullMeasurable_localSigma
-      (cubeSet Q) (slice k ∩ X ⁻¹' s) hlocal_piece
+      (cubeSet Q) (isBounded_cubeSet Q) (slice k ∩ X ⁻¹' s) hlocal_piece
   have hcovered_ae :
       ∀ᵐ a ∂P, a ∈ covered := by
     filter_upwards [hP.ae_exists_aeeQuantitativeEllipticSlice_cubeSet Q] with a ha
@@ -194,40 +195,53 @@ theorem exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
       · exact Set.mem_iUnion.mpr ⟨none, by simpa [cover] using ha⟩
   let Y : CoeffField d → ℝ := Set.liftCover cover f hagree hcover
   refine ⟨Y, ?_, ?_⟩
-  · change @Measurable (CoeffField d) ℝ (localSigma (cubeSet Q)) _ Y
-    letI : MeasurableSpace (CoeffField d) := localSigma (cubeSet Q)
-    have hcover_meas : ∀ i : Option ℕ, MeasurableSet (cover i) := by
-      intro i
-      cases i with
-      | none =>
-          exact (MeasurableSet.iUnion fun k =>
-            hP.measurableSet_aeeQuantitativeEllipticSlice_cubeSet Q k).compl
-      | some k =>
-          exact hP.measurableSet_aeeQuantitativeEllipticSlice_cubeSet Q k
-    have hfm : ∀ i : Option ℕ, Measurable (f i) := by
-      intro i
-      cases i with
-      | none =>
-          exact measurable_const
-      | some k =>
-          have hA :
-              IsLocalSigmaMeasurableOn
-                (fun a : cover (some k) => (a : CoeffField d)) (cubeSet Q) := by
-            change @Measurable (cover (some k)) (CoeffField d) _
-              (localSigma (cubeSet Q)) (fun a : cover (some k) => (a : CoeffField d))
-            exact measurable_subtype_coe
-          have hSlice :
-              ∀ a : cover (some k),
-                AEEQuantitativeEllipticSlice (cubeSet Q) k
-                  ((fun a : cover (some k) => (a : CoeffField d)) a) := by
-            intro a
-            change (a : CoeffField d) ∈ slice k
-            simp [cover] at a
-            exact a.2
-          simpa [f, cover] using
-            Homogenization.measurable_Mu_comp_aeeQuantitativeSlice_canonical_cubeSet
-              Q (fun a : cover (some k) => (a : CoeffField d)) hA hSlice P0
-    simpa [Y] using measurable_liftCover cover hcover_meas f hfm hagree hcover
+  · have hY_localSigma :
+        @Measurable (CoeffField d) ℝ (localSigma (cubeSet Q)) _ Y := by
+      letI : MeasurableSpace (CoeffField d) := localSigma (cubeSet Q)
+      have hcover_meas : ∀ i : Option ℕ, MeasurableSet (cover i) := by
+        intro i
+        cases i with
+        | none =>
+            exact (MeasurableSet.iUnion fun k =>
+              hP.measurableSet_aeeQuantitativeEllipticSlice_cubeSet Q k).compl
+        | some k =>
+            exact hP.measurableSet_aeeQuantitativeEllipticSlice_cubeSet Q k
+      have hfm : ∀ i : Option ℕ, Measurable (f i) := by
+        intro i
+        cases i with
+        | none =>
+            exact measurable_const
+        | some k =>
+            have hA :
+                IsLocalSigmaMeasurableOn
+                  (fun a : cover (some k) => (a : CoeffField d)) (cubeSet Q) := by
+              change @Measurable (cover (some k)) (CoeffField d) _
+                (localSigma (cubeSet Q)) (fun a : cover (some k) => (a : CoeffField d))
+              exact measurable_subtype_coe
+            have hSlice :
+                ∀ a : cover (some k),
+                  AEEQuantitativeEllipticSlice (cubeSet Q) k
+                    ((fun a : cover (some k) => (a : CoeffField d)) a) := by
+              intro a
+              change (a : CoeffField d) ∈ slice k
+              simp [cover] at a
+              exact a.2
+            simpa [f, cover] using
+              Homogenization.measurable_Mu_comp_aeeQuantitativeSlice_canonical_cubeSet
+                Q (fun a : cover (some k) => (a : CoeffField d)) hA hSlice P0
+      simpa [Y] using measurable_liftCover cover hcover_meas f hfm hagree hcover
+    have hY_meas : Measurable Y :=
+      Measurable.mono hY_localSigma
+        (localSigma_le_coeffField_of_isBounded (isBounded_cubeSet Q)) le_rfl
+    have hY_local : IsLocalObservable (cubeSet Q) Y := by
+      intro a b hab
+      have hs :
+          @MeasurableSet (CoeffField d) (localSigma (cubeSet Q)) (Y ⁻¹' {Y a}) :=
+        hY_localSigma (measurableSet_singleton (Y a))
+      have hb : b ∈ Y ⁻¹' {Y a} :=
+        (mem_iff_of_measurableSet_localSigma_of_localAgreementOn hs hab).1 (by simp)
+      simpa using hb.symm
+    exact measurable_of_isLocalObservable_restrictionSigma hY_meas hY_local
   · have hcovered_ae : ∀ᵐ a ∂P, a ∈ covered := by
       filter_upwards [hP.ae_exists_aeeQuantitativeEllipticSlice_cubeSet Q] with a ha
       exact Set.mem_iUnion.mpr ha

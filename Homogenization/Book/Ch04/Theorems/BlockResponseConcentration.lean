@@ -43,12 +43,12 @@ private theorem isLocalRandomVariable_fullBlockMat_of_entries
       ∀ α β : BlockCoord d,
         IsLocalRandomVariable U (fun a => X a α β)) :
     IsLocalRandomVariable U X := by
-  change @Measurable (CoeffField d) (FullBlockMat d) (localSigma U) _ X
+  change @Measurable (CoeffField d) (FullBlockMat d) (restrictionSigma U) _ X
   rw [@measurable_pi_iff (CoeffField d) (BlockCoord d)
-    (fun _ => BlockCoord d → ℝ) (localSigma U) (fun _ => inferInstance) X]
+    (fun _ => BlockCoord d → ℝ) (restrictionSigma U) (fun _ => inferInstance) X]
   intro α
   rw [@measurable_pi_iff (CoeffField d) (BlockCoord d)
-    (fun _ => ℝ) (localSigma U) (fun _ => inferInstance) (fun a => X a α)]
+    (fun _ => ℝ) (restrictionSigma U) (fun _ => inferInstance) (fun a => X a α)]
   intro β
   exact hX α β
 

@@ -386,7 +386,8 @@ theorem aestronglyMeasurable_canonicalMuHilbertMinimizer_cubeSet
     simpa [f, U] using measurable_canonicalMuHilbertMinimizerCubeSet_localSigma hP Q P0
   have hNull : NullMeasurable f P := by
     intro s hs
-    exact hP.local_observable_measurable.nullMeasurable_localSigma U (f ⁻¹' s) (hLocalMeas hs)
+    exact hP.local_observable_measurable.nullMeasurable_localSigma U
+      (by simpa [U] using isBounded_cubeSet Q) (f ⁻¹' s) (hLocalMeas hs)
   let sliceRange : ℕ → Set (HilbertBlockL2 U) := fun k =>
     Set.range fun a : {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} =>
       ((canonicalAEEMuOperatorSystemData Q k a).toMuHilbertRealization).minimizerMap P0
@@ -628,6 +629,7 @@ theorem aemeasurable_canonicalMuHilbertEnergyBilinFixed_cubeSet
     measurable_canonicalMuHilbertEnergyBilinFixedCubeSet_localSigma hP Q P0 Y hY
   exact hP.local_observable_measurable.nullMeasurable_localSigma
     (cubeSet Q)
+    (isBounded_cubeSet Q)
     ((canonicalMuHilbertEnergyBilinFixedCubeSet Q P0 Y hY) ⁻¹' s)
     (hLocal hs)
 

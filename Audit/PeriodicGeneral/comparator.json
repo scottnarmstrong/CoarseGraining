@@ -1,0 +1,9 @@
+{
+  "challenge_module": "Audit.PeriodicGeneral.Challenge",
+  "solution_module": "Audit.PeriodicGeneral.Solution",
+  "theorem_names": [
+    "Homogenization.StatementAudit.PeriodicGeneral.periodicGeneral_comparison"
+  ],
+  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"],
+  "enable_nanoda": false
+}

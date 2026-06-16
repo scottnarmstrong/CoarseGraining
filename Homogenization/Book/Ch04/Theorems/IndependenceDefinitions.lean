@@ -17,15 +17,17 @@ noncomputable section
 
 open MeasureTheory
 
-/-- Monotonicity of the public local-test sigma algebra. -/
+/-- Monotonicity of the public local coefficient-field sigma algebra. -/
 theorem localSigma_mono {d : ℕ} {U V : Set (Vec d)} (hUV : U ⊆ V) :
     localSigma U ≤ localSigma V := by
   change Homogenization.LocalSigma U ≤ Homogenization.LocalSigma V
   dsimp [Homogenization.LocalSigma]
   refine MeasurableSpace.generateFrom_le ?_
-  rintro s ⟨e, e', φ, t, hφ_cont, hφ_compact, hφ_support, ht, rfl⟩
+  intro s hs
   exact MeasurableSpace.measurableSet_generateFrom
-    ⟨e, e', φ, t, hφ_cont, hφ_compact, Set.Subset.trans hφ_support hUV, ht, rfl⟩
+    (by
+      intro a b hab
+      exact hs (LocalAgreementOn.mono hUV hab))
 
 /-- Separation from each member of a finite family implies separation from the
 union of that family. -/
@@ -38,9 +40,9 @@ theorem areUnitSeparated_biUnion_right {d : ℕ} {ι : Type*} {U : Set (Vec d)}
   rcases hy with ⟨i, hi, hyi⟩
   exact h i hi hx hyi
 
-/-- Events measurable with respect to finitely many public local-test sigma
-algebras are measurable with respect to the local-test sigma algebra on the
-union of the observation sets. -/
+/-- Events measurable with respect to finitely many public local coefficient-field
+sigma algebras are measurable with respect to the local coefficient-field sigma
+algebra on the union of the observation sets. -/
 theorem measurableSet_biInter_localSigma_biUnion {d : ℕ} {ι : Type*}
     {U : ι → Set (Vec d)} {f : ι → Set (CoeffField d)}
     {s : Finset ι}
@@ -68,12 +70,12 @@ theorem measurableSet_biInter_localSigma_biUnion {d : ℕ} {ι : Type*}
       simpa [Finset.set_biInter_insert, hi] using hi_meas.inter hs_meas
 
 /-- Unit-range dependence gives independence of any pairwise separated finite
-family of public local-test sigma algebras. -/
-theorem iIndep_localSigma_of_unitRangeDependentLaw {d : ℕ} {ι : Type*}
+family of restriction-local coefficient-field sigma algebras. -/
+theorem iIndep_restrictionSigma_of_unitRangeDependentLaw {d : ℕ} {ι : Type*}
     {P : CoeffLaw d} [IsProbabilityMeasure P] {U : ι → Set (Vec d)}
     (hP : UnitRangeDependentLaw P)
     (hsep : Pairwise fun i j => AreUnitSeparated (U i) (U j)) :
-    ProbabilityTheory.iIndep (fun i => localSigma (U i)) P := by
+    ProbabilityTheory.iIndep (fun i => restrictionSigma (U i)) P := by
   classical
   rw [ProbabilityTheory.iIndep_iff]
   intro s f hf
@@ -88,13 +90,14 @@ theorem iIndep_localSigma_of_unitRangeDependentLaw {d : ℕ} {ι : Type*}
           intro hij
           exact hi (hij ▸ hj))
       have hs_meas :
-          @MeasurableSet (CoeffField d) (localSigma (⋃ j ∈ s, U j)) (⋂ j ∈ s, f j) :=
-        measurableSet_biInter_localSigma_biUnion (U := U)
+          @MeasurableSet (CoeffField d) (restrictionSigma (⋃ j ∈ s, U j))
+            (⋂ j ∈ s, f j) :=
+        measurableSet_biInter_restrictionSigma_biUnion (U := U)
           (f := f) (s := s) fun j hj => hf j (by simp [hj])
       have h_inter :
           P (f i ∩ ⋂ j ∈ s, f j) = P (f i) * P (⋂ j ∈ s, f j) := by
         exact (ProbabilityTheory.Indep_iff
-          (localSigma (U i)) (localSigma (⋃ j ∈ s, U j)) P).1
+          (restrictionSigma (U i)) (restrictionSigma (⋃ j ∈ s, U j)) P).1
             (hP (U i) (⋃ j ∈ s, U j) hsep_union)
             (f i) (⋂ j ∈ s, f j) (hf i (by simp)) hs_meas
       calc
@@ -118,8 +121,8 @@ theorem iIndepFun_of_unitRangeDependentLaw_of_pairwise_separated {d : ℕ}
   rw [ProbabilityTheory.iIndepFun_iff_iIndep]
   rw [ProbabilityTheory.iIndep_iff]
   intro s f hf
-  exact (ProbabilityTheory.iIndep_iff (fun i => localSigma (U i)) P).1
-    (iIndep_localSigma_of_unitRangeDependentLaw (P := P) hP hsep) s
+  exact (ProbabilityTheory.iIndep_iff (fun i => restrictionSigma (U i)) P).1
+    (iIndep_restrictionSigma_of_unitRangeDependentLaw (P := P) hP hsep) s
     (fun i hi => (Measurable.comap_le (hX i)) (f i) (hf i hi))
 
 /-- A single scale-color class of descendant cube observables is an independent

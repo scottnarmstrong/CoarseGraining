@@ -20,18 +20,21 @@ Later chapters should not introduce section-local copies of this bridge.
 
 namespace IsLocalRandomVariable
 
-/-- A local random variable is null-measurable under a law that sees local-test
-events as null-measurable. -/
+/-- A restriction-local random variable is null-measurable under any coefficient
+law. -/
 theorem nullMeasurable {β : Type*} [MeasurableSpace β] {d : ℕ}
-    {P : CoeffLaw d} (hP : LocalObservableLawCarrier P)
+    {P : CoeffLaw d} (_hP : LocalObservableLawCarrier P)
     {U : Set (Vec d)} {X : CoeffField d → β}
     (hX : IsLocalRandomVariable U X) :
     NullMeasurable X P := by
   intro s hs
-  exact hP.nullMeasurable_localSigma U (X ⁻¹' s) (hX hs)
+  have hXm : Measurable X :=
+    Measurable.mono hX (restrictionSigma_le_coeffField U) le_rfl
+  exact (hXm hs).nullMeasurableSet
 
 /-- A local random variable with countably generated target sigma algebra is
-a.e. measurable under a law that sees local-test events as null-measurable. -/
+a.e. measurable under a law that sees local coefficient-field events as
+null-measurable. -/
 theorem aemeasurable {β : Type*} [MeasurableSpace β]
     [MeasurableSpace.CountablyGenerated β] {d : ℕ}
     {P : CoeffLaw d} (hP : LocalObservableLawCarrier P)

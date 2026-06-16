@@ -24,9 +24,9 @@ def QuantitativeEllipticSlice {d : ℕ} (U : Set (Vec d)) (k : ℕ)
 
 This is the probability-facing version of `IsEllipticFieldOn`: the restricted
 coefficient field is measurable, but ellipticity is required only
-`volumeMeasureOn U`-almost everywhere.  This is the right predicate for the
-smooth local-test sigma lane, which cannot distinguish coefficient fields that
-agree a.e. -/
+`volumeMeasureOn U`-almost everywhere.  This is the legacy essential variant
+used by constructions that identify coefficient fields up to spatial a.e.
+agreement. -/
 def IsEssentiallyEllipticFieldOn {d : ℕ} (lam Lam : ℝ) (U : Set (Vec d))
     (a : CoeffField d) : Prop :=
   by
@@ -475,6 +475,39 @@ theorem cubeSet_originCube_of_isEllipticFieldOn_openCubeSet_originCube {d : ℕ}
     IsAEEllipticFieldOn lam Lam (cubeSet (originCube d n)) a :=
   cubeSet_of_isEllipticFieldOn_openCubeSet h
 
+theorem of_localAgreementOn {d : ℕ} {lam Lam : ℝ} {U : Set (Vec d)}
+    {a b : CoeffField d} (hab : LocalAgreementOn U a b)
+    (h : IsAEEllipticFieldOn lam Lam U a) :
+    IsAEEllipticFieldOn lam Lam U b := by
+  refine ⟨h.1, ?_, ?_⟩
+  · intro i j
+    have hfun :
+        (fun x : Vec d => restrictCoeffField U b x i j) =
+          fun x : Vec d => restrictCoeffField U a x i j := by
+      funext x
+      by_cases hx : x ∈ U
+      · simp [restrictCoeffField, hx, (hab x hx).symm]
+      · simp [restrictCoeffField, hx]
+    simpa [hfun] using h.2.1 i j
+  · filter_upwards [h.2.2, MeasureTheory.ae_restrict_mem h.1] with x hxEll hxU
+    simpa [hab x hxU] using hxEll
+
+theorem iff_of_localAgreementOn {d : ℕ} {lam Lam : ℝ} {U : Set (Vec d)}
+    {a b : CoeffField d} (hab : LocalAgreementOn U a b) :
+    IsAEEllipticFieldOn lam Lam U a ↔ IsAEEllipticFieldOn lam Lam U b := by
+  constructor
+  · exact of_localAgreementOn hab
+  · intro h
+    exact of_localAgreementOn (fun x hx => (hab x hx).symm) h
+
+theorem measurableSet_localSigma {d : ℕ} (lam Lam : ℝ) (U : Set (Vec d)) :
+    @MeasurableSet (CoeffField d) (LocalSigma U)
+      {a : CoeffField d | IsAEEllipticFieldOn lam Lam U a} :=
+  MeasurableSpace.measurableSet_generateFrom
+    (by
+      intro a b hab
+      exact iff_of_localAgreementOn (lam := lam) (Lam := Lam) hab)
+
 end IsAEEllipticFieldOn
 
 namespace QuantitativeEllipticSlice
@@ -485,24 +518,23 @@ theorem mono {d : ℕ} {U V : Set (Vec d)} {k : ℕ} {a : CoeffField d}
   exact IsEllipticFieldOn.mono h hV hVU
 
 /-- A raw pointwise quantitative slice set can be `LocalSigma U`-measurable only if
-membership in that slice is invariant under a.e. changes of the coefficient
-field.  This records the exact compatibility condition imposed by the smooth
-local-test sigma-algebra. -/
-theorem ae_saturated_of_measurableSet_localSigma {d : ℕ} {U : Set (Vec d)}
+membership in that slice is invariant under pointwise changes outside `U`.
+This records the exact compatibility condition imposed by the local
+coefficient-field sigma algebra. -/
+theorem eqOn_saturated_of_measurableSet_localSigma {d : ℕ} {U : Set (Vec d)}
     {k : ℕ} {a b : CoeffField d}
     (hmeas : @MeasurableSet (CoeffField d) (LocalSigma U)
       {c : CoeffField d | QuantitativeEllipticSlice U k c})
-    (h : a =ᵐ[MeasureTheory.volume] b) :
+    (h : ∀ x, x ∈ U → a x = b x) :
     QuantitativeEllipticSlice U k a ↔ QuantitativeEllipticSlice U k b := by
   simpa using
-    (mem_iff_of_measurableSet_localSigma_of_ae_eq
+    (mem_iff_of_measurableSet_localSigma_of_eqOn
       (U := U) (s := {c : CoeffField d | QuantitativeEllipticSlice U k c})
       hmeas h)
 
-/-- The subtype sigma algebra inherited from the note-facing smooth local-test
-sigma algebra on coefficient fields. We keep this as an explicit definition,
-rather than an instance, so theorem statements choose the local lane
-deliberately. -/
+/-- The subtype sigma algebra inherited from the local coefficient-field sigma
+algebra. We keep this as an explicit definition, rather than an instance, so
+theorem statements choose the local lane deliberately. -/
 def localMeasurableSpace {d : ℕ} (U : Set (Vec d)) (k : ℕ) :
     MeasurableSpace {a : CoeffField d // QuantitativeEllipticSlice U k a} :=
   MeasurableSpace.comap Subtype.val (LocalSigma U)
@@ -828,8 +860,8 @@ theorem of_quantitative {d : ℕ} {U : Set (Vec d)} {k : ℕ} {a : CoeffField d}
     EssentialQuantitativeEllipticSlice U k a :=
   IsEssentiallyEllipticFieldOn.of_isEllipticFieldOn h
 
-/-- The subtype sigma algebra inherited from the smooth local-test sigma
-algebra on coefficient fields, now for essential/a.e. quantitative slices. -/
+/-- The subtype sigma algebra inherited from the local coefficient-field sigma
+algebra, now for essential/a.e. quantitative slices. -/
 def localMeasurableSpace {d : ℕ} (U : Set (Vec d)) (k : ℕ) :
     MeasurableSpace {a : CoeffField d // EssentialQuantitativeEllipticSlice U k a} :=
   MeasurableSpace.comap Subtype.val (LocalSigma U)
@@ -920,9 +952,8 @@ end EssentialQuantitativeEllipticSlice
 
 namespace AEEQuantitativeEllipticSlice
 
-/-- The subtype sigma algebra inherited from the smooth local-test sigma
-algebra on coefficient fields, for the boundary-stable AEE quantitative
-slices. -/
+/-- The subtype sigma algebra inherited from the local coefficient-field sigma
+algebra, for the boundary-stable AEE quantitative slices. -/
 def localMeasurableSpace {d : ℕ} (U : Set (Vec d)) (k : ℕ) :
     MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
   MeasurableSpace.comap Subtype.val (LocalSigma U)
@@ -949,6 +980,39 @@ theorem ae_isEllipticMatrix {d : ℕ} {U : Set (Vec d)} {k : ℕ}
     ∀ᵐ x ∂ volumeMeasureOn U,
       IsEllipticMatrix ((k + 1 : ℝ)⁻¹) (k + 1 : ℝ) (a x) :=
   h.2.2
+
+theorem of_localAgreementOn {d : ℕ} {U : Set (Vec d)} {k : ℕ}
+    {a b : CoeffField d} (hab : LocalAgreementOn U a b)
+    (h : AEEQuantitativeEllipticSlice U k a) :
+    AEEQuantitativeEllipticSlice U k b := by
+  refine ⟨h.1, ?_, ?_⟩
+  · intro i j
+    have hfun :
+        (fun x : Vec d => restrictCoeffField U b x i j) =
+          fun x : Vec d => restrictCoeffField U a x i j := by
+      funext x
+      by_cases hx : x ∈ U
+      · simp [restrictCoeffField, hx, (hab x hx).symm]
+      · simp [restrictCoeffField, hx]
+    simpa [hfun] using h.2.1 i j
+  · filter_upwards [h.2.2, MeasureTheory.ae_restrict_mem h.1] with x hxEll hxU
+    simpa [hab x hxU] using hxEll
+
+theorem iff_of_localAgreementOn {d : ℕ} {U : Set (Vec d)} {k : ℕ}
+    {a b : CoeffField d} (hab : LocalAgreementOn U a b) :
+    AEEQuantitativeEllipticSlice U k a ↔ AEEQuantitativeEllipticSlice U k b := by
+  constructor
+  · exact of_localAgreementOn hab
+  · intro h
+    exact of_localAgreementOn (fun x hx => (hab x hx).symm) h
+
+theorem measurableSet_localSigma {d : ℕ} (U : Set (Vec d)) (k : ℕ) :
+    @MeasurableSet (CoeffField d) (LocalSigma U)
+      {a : CoeffField d | AEEQuantitativeEllipticSlice U k a} :=
+  MeasurableSpace.measurableSet_generateFrom
+    (by
+      intro a b hab
+      exact iff_of_localAgreementOn (k := k) hab)
 
 /-- AEE quantitative slices still give an `L²` coefficient realization: the
 coordinate functions are only a.e.-strongly measurable, but the quantitative

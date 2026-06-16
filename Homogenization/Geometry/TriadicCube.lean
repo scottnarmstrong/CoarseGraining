@@ -1,4 +1,5 @@
 import Homogenization.Geometry.Domain
+import Mathlib.Topology.MetricSpace.Bounded
 
 namespace Homogenization
 
@@ -6,6 +7,17 @@ structure TriadicCube (d : ℕ) where
   scale : ℤ
   index : Fin d → ℤ
 deriving DecidableEq, Repr
+
+instance instCountableTriadicCube (d : ℕ) : Countable (TriadicCube d) := by
+  classical
+  have h :
+      Function.Injective (fun Q : TriadicCube d => (Q.scale, Q.index)) := by
+    intro Q R hQR
+    cases Q
+    cases R
+    simp at hQR ⊢
+    exact hQR
+  exact h.countable
 
 noncomputable def cubeScaleFactor {d : ℕ} (Q : TriadicCube d) : ℝ :=
   (3 : ℝ) ^ Q.scale
@@ -21,6 +33,52 @@ def openCubeSet {d : ℕ} (Q : TriadicCube d) : Set (Vec d) :=
   { x | ∀ i,
       (((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q < x i) ∧
       (x i < (((Q.index i : ℝ) + (1 / 2 : ℝ)) * cubeScaleFactor Q)) }
+
+/-- A triadic cube is bounded as a subset of the ambient finite-dimensional space. -/
+theorem isBounded_cubeSet {d : ℕ} (Q : TriadicCube d) :
+    Bornology.IsBounded (cubeSet Q) := by
+  let box : Set (Vec d) :=
+    Set.pi Set.univ fun i : Fin d =>
+      Set.Ico
+        ((((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q))
+        ((((Q.index i : ℝ) + (1 / 2 : ℝ)) * cubeScaleFactor Q))
+  have hbox : Bornology.IsBounded box := by
+    exact Bornology.IsBounded.pi (S := fun i : Fin d =>
+      Set.Ico
+        ((((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q))
+        ((((Q.index i : ℝ) + (1 / 2 : ℝ)) * cubeScaleFactor Q))) fun i =>
+      Metric.isBounded_Ico _ _
+  exact hbox.subset (by
+    intro x hx
+    change x ∈ Set.pi Set.univ (fun i : Fin d =>
+      Set.Ico
+        ((((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q))
+        ((((Q.index i : ℝ) + (1 / 2 : ℝ)) * cubeScaleFactor Q)))
+    intro i _hi
+    exact hx i)
+
+/-- An open triadic cube is bounded as a subset of the ambient finite-dimensional space. -/
+theorem isBounded_openCubeSet {d : ℕ} (Q : TriadicCube d) :
+    Bornology.IsBounded (openCubeSet Q) := by
+  let box : Set (Vec d) :=
+    Set.pi Set.univ fun i : Fin d =>
+      Set.Ioo
+        ((((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q))
+        ((((Q.index i : ℝ) + (1 / 2 : ℝ)) * cubeScaleFactor Q))
+  have hbox : Bornology.IsBounded box := by
+    exact Bornology.IsBounded.pi (S := fun i : Fin d =>
+      Set.Ioo
+        ((((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q))
+        ((((Q.index i : ℝ) + (1 / 2 : ℝ)) * cubeScaleFactor Q))) fun i =>
+      Metric.isBounded_Ioo _ _
+  exact hbox.subset (by
+    intro x hx
+    change x ∈ Set.pi Set.univ (fun i : Fin d =>
+      Set.Ioo
+        ((((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q))
+        ((((Q.index i : ℝ) + (1 / 2 : ℝ)) * cubeScaleFactor Q)))
+    intro i _hi
+    exact hx i)
 
 /-- The standard centered triadic cube `\square_m = [-3^m / 2, 3^m / 2)^d`. -/
 def originCube (d : ℕ) (m : ℤ) : TriadicCube d :=

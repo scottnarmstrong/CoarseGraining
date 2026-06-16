@@ -6,7 +6,7 @@ import Homogenization.Book.Ch03.Theorems.SobolevPublic
 /-!
 # Main results: elliptic homogenization in the uniformly elliptic case
 
-This file states the two headline theorems of the manuscript, specialized to a
+This file states the two main theorems of the manuscript, specialized to a
 random coefficient field that is **uniformly elliptic**.
 
 The ambient object is a `Setup`: a probability law `P` on `d × d`
@@ -26,8 +26,8 @@ The two results are:
   negative Sobolev norm, at algebraic rate `(3ᵐ / 𝒳)^(-α)`, with fixed public
   exponents and constants chosen before the law.
 
-Both are proved (no `axiom`, no `sorry`) from the general theorems
-`Ch05.Section51.annealedConvergence_homogenizationScale` and
+Both are proved in full, with no remaining proof obligations, from the general
+theorems `Ch05.Section51.annealedConvergence_homogenizationScale` and
 `Ch05.homogenization_quenched_homogenization_comparison`.
 
 ## Where the definitions live

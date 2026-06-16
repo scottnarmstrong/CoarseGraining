@@ -510,6 +510,36 @@ noncomputable def faceCutoff {d : ℕ} (Q : TriadicCube d) (n : ℕ) :
     (faceCutoffInnerRadius n) (faceCutoffOuterRadius n)
     (faceCutoffInnerRadius_pos n) (faceCutoffInnerRadius_lt_outer n)
 
+/-- The open triadic cube is contained in the closed concentric cube with
+relative radius `1`. -/
+theorem openCubeSet_subset_scaledClosedCubeSet_one {d : ℕ} (Q : TriadicCube d) :
+    openCubeSet Q ⊆ scaledClosedCubeSet Q 1 := by
+  intro x hx i
+  have hxball : x ∈ Metric.ball (cubeCenter Q) (cubeRadius Q) := by
+    simpa [ball_cubeCenter_eq_openCubeSet Q] using hx
+  have hcoord :
+      ‖(x - cubeCenter Q) i‖ ≤ ‖x - cubeCenter Q‖ :=
+    norm_le_pi_norm (x - cubeCenter Q) i
+  calc
+    |x i - cubeCenter Q i| = ‖(x - cubeCenter Q) i‖ := by
+      simp [Real.norm_eq_abs]
+    _ ≤ ‖x - cubeCenter Q‖ := hcoord
+    _ = dist x (cubeCenter Q) := by simp [dist_eq_norm]
+    _ ≤ 1 * cubeRadius Q := by
+      simpa using le_of_lt (Metric.mem_ball.mp hxball)
+
+/-- A fixed compactly supported cutoff that is identically `1` on the open
+triadic cube. -/
+noncomputable def faceCompactifyingCutoff {d : ℕ} (Q : TriadicCube d) :
+    QuantitativeCubeCutoff Q 1 2 :=
+  QuantitativeCubeCutoff.canonical Q 1 2 (by norm_num) (by norm_num)
+
+theorem faceCompactifyingCutoff_eq_one_on_openCubeSet {d : ℕ}
+    (Q : TriadicCube d) {x : Vec d} (hx : x ∈ openCubeSet Q) :
+    faceCompactifyingCutoff Q x = 1 :=
+  (faceCompactifyingCutoff Q).eq_one_on_inner x
+    (openCubeSet_subset_scaledClosedCubeSet_one Q hx)
+
 private theorem tendsto_faceBoundaryLayer_volume_zero {d : ℕ}
     (Q : TriadicCube d) :
     Filter.Tendsto
@@ -805,6 +835,49 @@ noncomputable def ofContDiffFaceZeroOnOpenCubeSet
       fun x i => (fderiv ℝ ψ x) (basisVec i) :=
   by
     simp [ofContDiffFaceZeroOnOpenCubeSet, H1Function.ofContDiff]
+
+/-- A smooth function on a cube whose trace vanishes on every coordinate face
+belongs to the zero-trace `H¹₀` closure.  The proof first multiplies by a fixed
+smooth cutoff that is identically `1` on the cube, so no compact-support
+hypothesis is needed on the original function. -/
+noncomputable def ofContDiffFaceZeroOnOpenCubeSetNoCompact
+    {d : ℕ} (Q : TriadicCube d) {ψ : Vec d → ℝ}
+    (hψ : ContDiff ℝ (⊤ : ℕ∞) ψ)
+    (hlower_zero : ∀ i : Fin d, ∀ x : Vec d,
+      ψ (cubeLowerFaceProjection Q i x) = 0)
+    (hupper_zero : ∀ i : Fin d, ∀ x : Vec d,
+      ψ (cubeUpperFaceProjection Q i x) = 0) :
+    H10Function (openCubeSet Q) := by
+  let χ : Vec d → ℝ := faceCompactifyingCutoff Q
+  let ψc : Vec d → ℝ := fun x => χ x * ψ x
+  have hψc : ContDiff ℝ (⊤ : ℕ∞) ψc := by
+    simpa [ψc, χ] using (faceCompactifyingCutoff Q).smooth.mul hψ
+  have hψc_compact : HasCompactSupport ψc := by
+    simpa [ψc, χ] using
+      ((faceCompactifyingCutoff Q).hasCompactSupport.mul_right :
+        HasCompactSupport (fun x : Vec d => faceCompactifyingCutoff Q x * ψ x))
+  have hlower_zero_c : ∀ i : Fin d, ∀ x : Vec d,
+      ψc (cubeLowerFaceProjection Q i x) = 0 := by
+    intro i x
+    simp [ψc, hlower_zero i x]
+  have hupper_zero_c : ∀ i : Fin d, ∀ x : Vec d,
+      ψc (cubeUpperFaceProjection Q i x) = 0 := by
+    intro i x
+    simp [ψc, hupper_zero i x]
+  exact ofContDiffFaceZeroOnOpenCubeSet Q hψc hψc_compact
+    hlower_zero_c hupper_zero_c
+
+theorem ofContDiffFaceZeroOnOpenCubeSetNoCompact_toFun_ae
+    {d : ℕ} (Q : TriadicCube d) {ψ : Vec d → ℝ}
+    (hψ : ContDiff ℝ (⊤ : ℕ∞) ψ)
+    (hlower_zero : ∀ i : Fin d, ∀ x : Vec d,
+      ψ (cubeLowerFaceProjection Q i x) = 0)
+    (hupper_zero : ∀ i : Fin d, ∀ x : Vec d,
+      ψ (cubeUpperFaceProjection Q i x) = 0) :
+    (ofContDiffFaceZeroOnOpenCubeSetNoCompact Q hψ hlower_zero hupper_zero).toH1Function.toFun
+        =ᵐ[volumeMeasureOn (openCubeSet Q)] ψ := by
+  filter_upwards [MeasureTheory.ae_restrict_mem (measurableSet_openCubeSet Q)] with x hx
+  simp [ofContDiffFaceZeroOnOpenCubeSetNoCompact, faceCompactifyingCutoff_eq_one_on_openCubeSet Q hx]
 
 end H10Function
 

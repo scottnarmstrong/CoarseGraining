@@ -964,10 +964,10 @@ theorem aemeasurable_Mu_comp_aeeQuantitativeSlice_sets_of_isOpen_volume_ne_top
 /-- Build the ambient `HasMeasurableMuFamily U` hypothesis from a measurable
 AEE quantitative-slice cover.
 
-The explicit `hLocal` hypothesis is the bridge from the ambient coefficient
-sigma-algebra to the local-test sigma-algebra on `U`.  It is deliberately not
-hidden: for the broad function-space `CoeffField d`, smooth local integral
-tests are not consequences of pointwise coordinate measurability alone. -/
+The explicit `hLocal` hypothesis records that the sampled coefficient field is
+measurable into the local coefficient-field sigma algebra on `U`.  For the
+identity map on ambient coefficient fields this is now supplied by the public
+coefficient-field measurable-space API. -/
 theorem hasMeasurableMuFamily_of_measurable_aeeQuantitativeSlice_sets
     {d : ℕ} {U : Set (Vec d)}
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]

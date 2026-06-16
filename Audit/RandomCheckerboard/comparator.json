@@ -1,0 +1,9 @@
+{
+  "challenge_module": "Audit.RandomCheckerboard.Challenge",
+  "solution_module": "Audit.RandomCheckerboard.Solution",
+  "theorem_names": [
+    "Homogenization.StatementAudit.RandomCheckerboard.randomCheckerboard_quenchedComparison"
+  ],
+  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"],
+  "enable_nanoda": false
+}

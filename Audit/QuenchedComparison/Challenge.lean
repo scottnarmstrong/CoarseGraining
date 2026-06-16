@@ -13,8 +13,8 @@ positive scalar homogenized coefficient `sigmaBar`, and states the comparison
 estimate directly for weak solutions of the heterogeneous equation and the
 constant-coefficient equation with matrix `sigmaBar • I`.
 
-The definitions below are deliberately statement-level copies of the objects
-needed to state this corollary.  The main source correspondences are:
+The definitions below are statement-level copies of the objects needed to state
+this corollary.  The main source correspondences are:
 
 * ambient fields and ellipticity: `Homogenization/Ambient/CoefficientField.lean`;
 * coefficient laws and uniform ellipticity: `Homogenization/Book/Ch04/Law.lean`
@@ -41,10 +41,6 @@ abbrev Vec (d : ℕ) := Fin d → ℝ
 
 abbrev Mat (d : ℕ) := Matrix (Fin d) (Fin d) ℝ
 
-instance instMeasurableSpaceVec (d : ℕ) : MeasurableSpace (Vec d) := by
-  exact @MeasurableSpace.pi (Fin d) (fun _ => ℝ)
-    (fun _ => (RCLike.measurableSpace : MeasurableSpace ℝ))
-
 instance instMeasurableSpaceMat (d : ℕ) : MeasurableSpace (Mat d) := by
   exact @MeasurableSpace.pi (Fin d) (fun _ => Fin d → ℝ)
     (fun _ => @MeasurableSpace.pi (Fin d) (fun _ => ℝ)
@@ -52,9 +48,25 @@ instance instMeasurableSpaceMat (d : ℕ) : MeasurableSpace (Mat d) := by
 
 abbrev CoeffField (d : ℕ) := Vec d → Mat d
 
-instance instMeasurableSpaceCoeffField (d : ℕ) : MeasurableSpace (CoeffField d) := by
+def LocalAgreementOn {d : ℕ} (U : Set (Vec d)) (a b : CoeffField d) : Prop :=
+  ∀ x, x ∈ U → a x = b x
+
+def IsLocalEvent {d : ℕ} (U : Set (Vec d)) (s : Set (CoeffField d)) : Prop :=
+  ∀ ⦃a b : CoeffField d⦄, LocalAgreementOn U a b → (a ∈ s ↔ b ∈ s)
+
+def LocalSigma {d : ℕ} (U : Set (Vec d)) : MeasurableSpace (CoeffField d) :=
+  MeasurableSpace.generateFrom {s | IsLocalEvent U s}
+
+def pointwiseCoeffFieldMeasurableSpace (d : ℕ) : MeasurableSpace (CoeffField d) := by
   exact @MeasurableSpace.pi (Vec d) (fun _ => Mat d)
     (fun _ => instMeasurableSpaceMat d)
+
+def boundedLocalCoeffFieldMeasurableSpace (d : ℕ) :
+    MeasurableSpace (CoeffField d) :=
+  ⨆ U : {U : Set (Vec d) // Bornology.IsBounded U}, LocalSigma U.1
+
+instance instMeasurableSpaceCoeffField (d : ℕ) : MeasurableSpace (CoeffField d) :=
+  pointwiseCoeffFieldMeasurableSpace d ⊔ boundedLocalCoeffFieldMeasurableSpace d
 
 abbrev CoeffLaw (d : ℕ) := Measure (CoeffField d)
 
@@ -86,6 +98,9 @@ noncomputable def restrictCoeffField {d : ℕ} (U : Set (Vec d))
     (a : CoeffField d) : CoeffField d := by
   classical
   exact fun x => if x ∈ U then a x else 0
+
+def RestrictionSigma {d : ℕ} (U : Set (Vec d)) : MeasurableSpace (CoeffField d) :=
+  MeasurableSpace.comap (restrictCoeffField U) inferInstance
 
 def translateCoeffField {d : ℕ} (z : Vec d) (a : CoeffField d) : CoeffField d :=
   fun x => a (fun i => x i + z i)
@@ -173,20 +188,6 @@ noncomputable def cubeFluctuation {d : ℕ} (Q : TriadicCube d)
 
 /-! ## Law assumptions -/
 
-noncomputable def localTestObservable {d : ℕ} (e e' : Vec d) (phi : Vec d → ℝ)
-    (a : CoeffField d) : ℝ :=
-  ∫ x, (vecDot e' (matVecMul (a x) e) * phi x) ∂MeasureTheory.volume
-
-def LocalSigma {d : ℕ} (U : Set (Vec d)) : MeasurableSpace (CoeffField d) :=
-  MeasurableSpace.generateFrom
-    { s |
-        ∃ e e' : Vec d, ∃ phi : Vec d → ℝ, ∃ t : Set ℝ,
-          ContDiff ℝ (⊤ : ℕ∞) phi ∧
-            HasCompactSupport phi ∧
-            tsupport phi ⊆ U ∧
-            MeasurableSet t ∧
-            s = localTestObservable e e' phi ⁻¹' t }
-
 def IsStationary {d : ℕ} (P : CoeffLaw d) : Prop :=
   ∀ z : Fin d → ℤ, Measure.map (translateByInt z) P = P
 
@@ -195,7 +196,7 @@ def AreUnitSeparated {d : ℕ} (U V : Set (Vec d)) : Prop :=
 
 def IsUnitRangeDependent {d : ℕ} (P : CoeffLaw d) : Prop :=
   ∀ U V : Set (Vec d), AreUnitSeparated U V →
-    ProbabilityTheory.Indep (LocalSigma U) (LocalSigma V) P
+    ProbabilityTheory.Indep (RestrictionSigma U) (RestrictionSigma V) P
 
 def IsSignedPermutationMatrix {d : ℕ} (R : Mat d) : Prop :=
   ∃ sigma : Equiv.Perm (Fin d), ∃ signs : Fin d → ℝ,
@@ -232,7 +233,7 @@ def AELocallyUniformlyEllipticLaw {d : ℕ} (P : CoeffLaw d) : Prop :=
 
 structure LocalObservableLawCarrier {d : ℕ} (P : CoeffLaw d) : Prop where
   nullMeasurable_localSigma :
-    ∀ (U : Set (Vec d)) (s : Set (CoeffField d)),
+    ∀ (U : Set (Vec d)), Bornology.IsBounded U → ∀ (s : Set (CoeffField d)),
       @MeasurableSet (CoeffField d) (LocalSigma U) s →
         NullMeasurableSet s P
 
@@ -582,10 +583,19 @@ The repository proves the comparison for its internally constructed scalar
 homogenized coefficient; this challenge statement exposes only the resulting
 existence of a positive scalar `sigmaBar`.
 
-The public exponents are fixed to `t = 1/8` and `s = 3/4`.  The constants
-`C`, `alpha`, and `Cscale` are therefore chosen before the probability law
-`S : Setup d`; in particular they do not depend on the law, on the ellipticity
-bounds, or on exponent variables. -/
+The estimate bounds the comparison defect `comparisonDefect` — a scale-normalized
+negative-Sobolev (`H^{-s}`) distance between the heterogeneous flux/gradient pair
+and the homogenized constant-coefficient pair — by the energy data
+`comparisonData` times the algebraic rate `(3 ^ m / X a) ^ (-alpha)`, where
+`3 ^ m` is the cube sidelength and `X a` is the random minimal scale above which
+homogenization applies.
+
+The Sobolev exponent is fixed to `s = 3/4` (`fixedComparisonS`); the decay
+exponent `alpha` and the constants `C`, `Cscale` are produced existentially and
+chosen before the probability law `S : Setup d`, so they depend on neither the
+law nor its ellipticity bounds.  (The manuscript also uses an auxiliary exponent
+`t = 1/8` with `4 t < s < 1`; it is discharged inside the proof and does not
+appear in this statement.) -/
 theorem homogenizationComparison_uniformEllipticity
     {d : ℕ} [NeZero d] :
     ∃ C alpha Cscale : ℝ,

@@ -84,118 +84,169 @@ theorem integrable_scaleNormalizedLaw_iff {d : ℕ} {E : Type*}
       (μ := P) (f := Ch02.dilateCoeffField (d := d) (-(k : ℤ))) (g := X)
       hX (measurable_dilateCoeffField_neg_nat (d := d) k).aemeasurable)
 
-private theorem localTestObservable_rescaleCoeffField_eq_const_mul
-    {d : ℕ} (k : ℕ) (e e' : Vec d) (φ : Vec d → ℝ) (a : CoeffField d) :
-    localTestObservable e e' φ (rescaleCoeffField k a) =
-      (((3 : ℝ) ^ k) ^ d)⁻¹ *
-        localTestObservable e e'
-          (fun y : Vec d => φ (((3 : ℝ) ^ k)⁻¹ • y)) a := by
-  let r : ℝ := (3 : ℝ) ^ k
-  have hr : 0 < r := by positivity
-  let f : Vec d → ℝ := fun y => vecDot e' (matVecMul (a y) e) * φ (r⁻¹ • y)
-  have hcv := Ch01.setIntegral_comp_smul_of_pos
-    (d := d) (E := ℝ) (r := r) hr Set.univ f
-  have huniv : r • (Set.univ : Set (Vec d)) = Set.univ := by
-    ext y
-    constructor
-    · intro _; trivial
-    · intro _
-      refine ⟨r⁻¹ • y, trivial, ?_⟩
-      ext i
-      simp [Pi.smul_apply, smul_eq_mul, hr.ne']
-  have htriadic : ∀ x : Vec d, triadicDilateVec k x = r • x := by
-    intro x
-    ext i
-    simp [triadicDilateVec, r, Pi.smul_apply, smul_eq_mul]
-  unfold localTestObservable
-  calc
-    ∫ x, (vecDot e' (matVecMul (rescaleCoeffField k a x) e) * φ x) ∂volume
-        = ∫ x, f (r • x) ∂volume := by
-          apply integral_congr_ae
-          filter_upwards with x
-          have hrx : r⁻¹ • (r • x) = x := by
-            ext i
-            simp [Pi.smul_apply, smul_eq_mul, hr.ne']
-          simp [f, rescaleCoeffField, htriadic x, hrx]
-    _ = ∫ x in (Set.univ : Set (Vec d)), f (r • x) ∂volume := by simp
-    _ = (r ^ d)⁻¹ • ∫ y in r • (Set.univ : Set (Vec d)), f y ∂volume := hcv
-    _ = (r ^ d)⁻¹ *
-          ∫ y, (vecDot e' (matVecMul (a y) e) *
-            φ (((3 : ℝ) ^ k)⁻¹ • y)) ∂volume := by
-          simp [f, r, huniv]
-
-/-- Pullback by triadic coefficient-field rescaling sends the smooth local-test
-sigma algebra on `U` to the local-test sigma algebra on the dilated set. -/
+/-- Pullback by triadic coefficient-field rescaling sends local information on
+`U` to local information on the dilated set. -/
 theorem measurable_rescaleCoeffField_localSigma {d : ℕ}
     (k : ℕ) (U : Set (Vec d)) :
     @Measurable (CoeffField d) (CoeffField d)
       (localSigma (triadicDilateSet k U)) (localSigma U)
       (rescaleCoeffField k) := by
   show @Measurable (CoeffField d) (CoeffField d)
-    (Homogenization.LocalSigma (triadicDilateSet k U))
-    (MeasurableSpace.generateFrom
-      {s |
-        ∃ e e' : Vec d, ∃ φ : Vec d → ℝ, ∃ t : Set ℝ,
-          ContDiff ℝ (⊤ : ℕ∞) φ ∧
-            HasCompactSupport φ ∧
-            tsupport φ ⊆ U ∧
-            MeasurableSet t ∧
-            s = localTestObservable e e' φ ⁻¹' t})
+    (Homogenization.LocalSigma (triadicDilateSet k U)) (Homogenization.LocalSigma U)
     (rescaleCoeffField k)
   refine @measurable_generateFrom (CoeffField d) (CoeffField d)
     (Homogenization.LocalSigma (triadicDilateSet k U))
-    {s |
-      ∃ e e' : Vec d, ∃ φ : Vec d → ℝ, ∃ t : Set ℝ,
-        ContDiff ℝ (⊤ : ℕ∞) φ ∧
-          HasCompactSupport φ ∧
-          tsupport φ ⊆ U ∧
-          MeasurableSet t ∧
-          s = localTestObservable e e' φ ⁻¹' t}
-    (rescaleCoeffField k) ?_
+    {s | IsLocalEvent U s} (rescaleCoeffField k) ?_
   intro s hs
-  rcases hs with
-    ⟨e, e', φ, t, hφ_cont, hφ_compact, hφ_support, ht, rfl⟩
-  let r : ℝ := (3 : ℝ) ^ k
-  have hr : 0 < r := by positivity
-  let ψ : Vec d → ℝ := fun y => φ (r⁻¹ • y)
-  have hψ_cont : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-    exact hφ_cont.comp (contDiff_const_smul (𝕜 := ℝ) (n := (⊤ : ℕ∞)) r⁻¹)
-  have hψ_compact : HasCompactSupport ψ := by
-    simpa [ψ] using hφ_compact.comp_smul (inv_ne_zero hr.ne')
-  have hψ_support : tsupport ψ ⊆ triadicDilateSet k U := by
-    intro x hx
-    have hpre :
-        tsupport ψ = (fun y : Vec d => r⁻¹ • y) ⁻¹' tsupport φ := by
-      simpa [ψ, Function.comp_def] using
-        (tsupport_comp_eq_preimage φ
-          (Homeomorph.smulOfNeZero (α := Vec d) r⁻¹ (inv_ne_zero hr.ne')))
-    have hxφ : r⁻¹ • x ∈ tsupport φ := by
-      simpa [hpre] using hx
-    refine ⟨r⁻¹ • x, hφ_support hxφ, ?_⟩
+  have hpre : @MeasurableSet (CoeffField d)
+      (Homogenization.LocalSigma (triadicDilateSet k U))
+      ((rescaleCoeffField k) ⁻¹' s) :=
+    MeasurableSpace.measurableSet_generateFrom
+      (by
+        intro a b hab
+        exact hs (by
+        intro x hx
+        exact hab (triadicDilateVec k x) (triadicDilateVec_mem_triadicDilateSet k hx)))
+  exact hpre
+
+private theorem isLocalObservable_restrictCoeffField {d : ℕ}
+    (U : Set (Vec d)) :
+    IsLocalObservable U (restrictCoeffField (d := d) U) := by
+  intro a b hab
+  exact restrictCoeffField_eq_of_forall_mem_eq hab
+
+/-- Pullback by triadic coefficient-field rescaling sends restriction-local
+information on `U` to restriction-local information on the dilated set. -/
+theorem measurable_rescaleCoeffField_restrictionSigma {d : ℕ}
+    (k : ℕ) (U : Set (Vec d)) :
+    @Measurable (CoeffField d) (CoeffField d)
+      (RestrictionSigma (triadicDilateSet k U)) (RestrictionSigma U)
+      (rescaleCoeffField k) := by
+  rw [measurable_iff_comap_le, RestrictionSigma, MeasurableSpace.comap_comp]
+  change MeasurableSpace.comap
+      (fun a : CoeffField d => restrictCoeffField U (rescaleCoeffField k a))
+      (instMeasurableSpaceCoeffField d) ≤ RestrictionSigma (triadicDilateSet k U)
+  have hmeas :
+      @Measurable (CoeffField d) (CoeffField d)
+        (RestrictionSigma (triadicDilateSet k U)) (instMeasurableSpaceCoeffField d)
+        (fun a => restrictCoeffField U (rescaleCoeffField k a)) := by
+    exact measurable_of_isLocalObservable_restrictionSigma
+      ((measurable_restrictCoeffField (d := d) U).comp
+        (measurable_rescaleCoeffField (d := d) k))
+      (isLocalObservable_comp_rescaleCoeffField (d := d) (U := U) k
+        (isLocalObservable_restrictCoeffField (d := d) U))
+  exact hmeas.comap_le
+
+private theorem localTestObservable_dilateCoeffField_int_eq_const_mul
+    {d : ℕ} (n : ℤ) (e e' : Vec d) (φ : Vec d → ℝ) (a : CoeffField d) :
+    localTestObservable e e' φ (Ch02.dilateCoeffField n a) =
+      (((Ch02.triadicDilationFactor n)⁻¹) ^ d)⁻¹ *
+        localTestObservable e e'
+          (fun y : Vec d => φ (((Ch02.triadicDilationFactor n)⁻¹)⁻¹ • y)) a := by
+  let q : ℝ := (Ch02.triadicDilationFactor n)⁻¹
+  have hq : 0 < q := inv_pos.mpr (Ch02.triadicDilationFactor_pos n)
+  let f : Vec d → ℝ := fun y => vecDot e' (matVecMul (a y) e) * φ (q⁻¹ • y)
+  have hcv := Ch01.setIntegral_comp_smul_of_pos
+    (d := d) (E := ℝ) (r := q) hq Set.univ f
+  have huniv : q • (Set.univ : Set (Vec d)) = Set.univ := by
+    ext y
+    constructor
+    · intro _; trivial
+    · intro _
+      refine ⟨q⁻¹ • y, trivial, ?_⟩
+      ext i
+      simp [Pi.smul_apply, smul_eq_mul, hq.ne']
+  have hundilate : ∀ x : Vec d, Ch02.undilateVec n x = q • x := by
+    intro x
     ext i
-    simp [triadicDilateVec, r, Pi.smul_apply, smul_eq_mul, hr.ne']
-  let c : ℝ := (r ^ d)⁻¹
-  let t' : Set ℝ := {z | c * z ∈ t}
-  have ht' : MeasurableSet t' := by
-    exact ht.preimage (measurable_const.mul measurable_id)
-  have hpreimage :
-      (rescaleCoeffField k) ⁻¹' (localTestObservable e e' φ ⁻¹' t) =
-        localTestObservable e e' ψ ⁻¹' t' := by
-    ext a
-    simp [t', ψ, c, r, localTestObservable_rescaleCoeffField_eq_const_mul]
-  rw [hpreimage]
-  exact preimage_localTestObservable_mem_localSigma
-    (U := triadicDilateSet k U) e e' hψ_cont hψ_compact hψ_support ht'
+    simp [Ch02.undilateVec, q, Pi.smul_apply, smul_eq_mul]
+  unfold localTestObservable
+  calc
+    ∫ x, (vecDot e' (matVecMul (Ch02.dilateCoeffField n a x) e) * φ x) ∂volume
+        = ∫ x, f (q • x) ∂volume := by
+          apply integral_congr_ae
+          filter_upwards with x
+          have hqx : q⁻¹ • (q • x) = x := by
+            ext i
+            simp [Pi.smul_apply, smul_eq_mul, hq.ne']
+          simp [f, Ch02.dilateCoeffField, hundilate x, hqx]
+    _ = ∫ x in (Set.univ : Set (Vec d)), f (q • x) ∂volume := by simp
+    _ = (q ^ d)⁻¹ • ∫ y in q • (Set.univ : Set (Vec d)), f y ∂volume := hcv
+    _ = (q ^ d)⁻¹ *
+          ∫ y, (vecDot e' (matVecMul (a y) e) *
+            φ (((Ch02.triadicDilationFactor n)⁻¹)⁻¹ • y)) ∂volume := by
+          simp [f, q, huniv]
+
+private theorem localFiniteTestObservable_dilateCoeffField_int_eq {d : ℕ} {ι : Type}
+    (n : ℤ) (I : Finset ι) (e e' : ι → Vec d) (φ : ι → Vec d → ℝ)
+    (a : CoeffField d) :
+    localFiniteTestObservable I e e' φ (Ch02.dilateCoeffField n a) =
+      localFiniteTestObservable I e e'
+        (fun k y => (((Ch02.triadicDilationFactor n)⁻¹) ^ d)⁻¹ *
+          φ k (((Ch02.triadicDilationFactor n)⁻¹)⁻¹ • y)) a := by
+  let q : ℝ := (Ch02.triadicDilationFactor n)⁻¹
+  have hq : 0 < q := inv_pos.mpr (Ch02.triadicDilationFactor_pos n)
+  let c : ℝ := (q ^ d)⁻¹
+  let f : Vec d → ℝ := fun y =>
+    ∑ k ∈ I, vecDot (e' k) (matVecMul (a y) (e k)) * φ k (q⁻¹ • y)
+  have hcv := Ch01.setIntegral_comp_smul_of_pos
+    (d := d) (E := ℝ) (r := q) hq Set.univ f
+  have huniv : q • (Set.univ : Set (Vec d)) = Set.univ := by
+    ext y
+    constructor
+    · intro _; trivial
+    · intro _
+      refine ⟨q⁻¹ • y, trivial, ?_⟩
+      ext i
+      simp [Pi.smul_apply, smul_eq_mul, hq.ne']
+  have hundilate : ∀ x : Vec d, Ch02.undilateVec n x = q • x := by
+    intro x
+    ext i
+    simp [Ch02.undilateVec, q, Pi.smul_apply, smul_eq_mul]
+  unfold localFiniteTestObservable
+  calc
+    ∫ x, (∑ k ∈ I,
+        vecDot (e' k) (matVecMul (Ch02.dilateCoeffField n a x) (e k)) * φ k x) ∂volume
+        = ∫ x, f (q • x) ∂volume := by
+          apply integral_congr_ae
+          filter_upwards with x
+          have hqx : q⁻¹ • (q • x) = x := by
+            ext i
+            simp [Pi.smul_apply, smul_eq_mul, hq.ne']
+          simp [f, Ch02.dilateCoeffField, hundilate x, hqx]
+    _ = ∫ x in (Set.univ : Set (Vec d)), f (q • x) ∂volume := by simp
+    _ = (q ^ d)⁻¹ • ∫ y in q • (Set.univ : Set (Vec d)), f y ∂volume := hcv
+    _ = c * ∫ y, f y ∂volume := by simp [c, huniv]
+    _ = ∫ y, c * f y ∂volume := by
+          exact (integral_const_mul c f).symm
+    _ = ∫ y, (∑ k ∈ I, vecDot (e' k) (matVecMul (a y) (e k)) *
+        ((((Ch02.triadicDilationFactor n)⁻¹) ^ d)⁻¹ *
+          φ k (((Ch02.triadicDilationFactor n)⁻¹)⁻¹ • y))) ∂volume := by
+          apply integral_congr_ae
+          filter_upwards with y
+          simp [f, c, q, Finset.mul_sum]
+          ring_nf
 
 private theorem measurable_dilateCoeffField_int {d : ℕ} (n : ℤ) :
     Measurable (Ch02.dilateCoeffField (d := d) n) := by
-  rw [measurable_pi_iff]
-  intro x
-  rw [measurable_pi_iff]
-  intro i
-  rw [measurable_pi_iff]
-  intro j
-  exact measurable_coeffField_entry (d := d) (Ch02.undilateVec n x) i j
+  refine measurable_coeffField_to_ambient ?_ (fun V hV => ?_)
+  · refine measurable_pi_iff.2 fun x => measurable_pi_iff.2 fun i =>
+      measurable_pi_iff.2 fun j => ?_
+    exact measurable_coeffField_entry (d := d) (Ch02.undilateVec n x) i j
+  · refine measurable_localSigma_of_local (T := Ch02.dilateCoeffField n) ?_ V hV
+    intro W hW
+    refine ⟨{y : Vec d | ∃ x ∈ W, y = Ch02.undilateVec n x}, ?_, ?_⟩
+    · have hcont : Continuous (Ch02.undilateVec (d := d) n) := by
+        change Continuous fun x : Fin d → ℝ =>
+          fun i => (Ch02.triadicDilationFactor n)⁻¹ * x i
+        exact continuous_pi fun i => continuous_const.mul (continuous_apply i)
+      simpa [Set.image, eq_comm] using
+        isBounded_image_of_continuous_vec hcont hW
+    intro a b hab x hxW
+    have hx_pre : Ch02.undilateVec n x ∈
+        {y : Vec d | ∃ x ∈ W, y = Ch02.undilateVec n x} :=
+      ⟨x, hxW, rfl⟩
+    simp [Ch02.dilateCoeffField, hab (Ch02.undilateVec n x) hx_pre]
 
 private noncomputable def rescaleCoeffFieldMeasurableEquiv {d : ℕ} (k : ℕ) :
     CoeffField d ≃ᵐ CoeffField d where
@@ -246,14 +297,15 @@ theorem scaleNormalized {d : ℕ} {P : CoeffLaw d}
     (hP : LocalObservableLawCarrier P) (k : ℕ) :
     LocalObservableLawCarrier (scaleNormalizedLaw k P) := by
   constructor
-  intro U s hs
+  intro U hU s hs
   let e := rescaleCoeffFieldMeasurableEquiv (d := d) k
   have hpre_meas :
       @MeasurableSet (CoeffField d) (localSigma (triadicDilateSet k U))
         ((rescaleCoeffField k) ⁻¹' s) := by
     exact hs.preimage (measurable_rescaleCoeffField_localSigma k U)
   have hpre_null : NullMeasurableSet ((rescaleCoeffField k) ⁻¹' s) P :=
-    hP.nullMeasurable_localSigma (triadicDilateSet k U) _ hpre_meas
+    hP.nullMeasurable_localSigma (triadicDilateSet k U)
+      (isBounded_triadicDilateSet k hU) _ hpre_meas
   have hmap : NullMeasurableSet s (Measure.map (rescaleCoeffField k) P) := by
     simpa [e] using
       nullMeasurableSet_map_of_preimage_measurableEquiv (μ := P) e (s := s) hpre_null
@@ -349,33 +401,27 @@ theorem scaleNormalized {d : ℕ} {P : CoeffLaw d}
   intro U V hUV
   let e := rescaleCoeffFieldMeasurableEquiv (d := d) k
   have hIndepDilated : ProbabilityTheory.Indep
-      (localSigma (triadicDilateSet k U))
-      (localSigma (triadicDilateSet k V)) P :=
+      (RestrictionSigma (triadicDilateSet k U))
+      (RestrictionSigma (triadicDilateSet k V)) P :=
     hP (triadicDilateSet k U) (triadicDilateSet k V)
       (AreUnitSeparated.triadicDilateSet hUV k)
   have hU_le : MeasurableSpace.comap
-      (fun a : CoeffField d => rescaleCoeffField k a) (localSigma U) ≤
-        localSigma (triadicDilateSet k U) := by
-    intro s hs
-    rcases hs with ⟨t, ht, hts⟩
-    rw [← hts]
-    exact (measurable_rescaleCoeffField_localSigma k U) ht
+      (fun a : CoeffField d => rescaleCoeffField k a) (RestrictionSigma U) ≤
+        RestrictionSigma (triadicDilateSet k U) := by
+    exact (measurable_rescaleCoeffField_restrictionSigma (d := d) k U).comap_le
   have hV_le : MeasurableSpace.comap
-      (fun a : CoeffField d => rescaleCoeffField k a) (localSigma V) ≤
-        localSigma (triadicDilateSet k V) := by
-    intro s hs
-    rcases hs with ⟨t, ht, hts⟩
-    rw [← hts]
-    exact (measurable_rescaleCoeffField_localSigma k V) ht
+      (fun a : CoeffField d => rescaleCoeffField k a) (RestrictionSigma V) ≤
+        RestrictionSigma (triadicDilateSet k V) := by
+    exact (measurable_rescaleCoeffField_restrictionSigma (d := d) k V).comap_le
   have hComap : ProbabilityTheory.Indep
       (MeasurableSpace.comap
-        (fun a : CoeffField d => rescaleCoeffField k a) (localSigma U))
+        (fun a : CoeffField d => rescaleCoeffField k a) (RestrictionSigma U))
       (MeasurableSpace.comap
-        (fun a : CoeffField d => rescaleCoeffField k a) (localSigma V)) P :=
+        (fun a : CoeffField d => rescaleCoeffField k a) (RestrictionSigma V)) P :=
     ProbabilityTheory.indep_of_indep_of_le_right
       (ProbabilityTheory.indep_of_indep_of_le_left hIndepDilated hU_le) hV_le
   have hmap := indep_map_measurableEquiv (μ := P) e
-    (m1 := localSigma U) (m2 := localSigma V) hComap
+    (m1 := RestrictionSigma U) (m2 := RestrictionSigma V) hComap
   simpa [scaleNormalizedLaw_eq_rescaledLaw, rescaledLaw, e] using hmap
 
 end UnitRangeDependentLaw
@@ -837,7 +883,7 @@ theorem scaleNormalized {d : ℕ} {P : CoeffLaw d}
     Measure.map (rotateCoeffField R) (rescaledLaw P k)
         = Measure.map
             (fun a : CoeffField d => rotateCoeffField R (rescaleCoeffField k a)) P := by
-          exact map_rescaledLaw_eq P k (rotateCoeffField R) (measurable_rotateCoeffField R)
+          exact map_rescaledLaw_eq P k (rotateCoeffField R) (measurable_rotateCoeffField R hR)
     _ = Measure.map
             (fun a : CoeffField d => rescaleCoeffField k (rotateCoeffField R a)) P := by
           apply congrArg (fun f => Measure.map f P)
@@ -848,7 +894,7 @@ theorem scaleNormalized {d : ℕ} {P : CoeffLaw d}
           simpa [Function.comp] using
             (Measure.map_map
               (measurable_rescaleCoeffField (d := d) k)
-              (measurable_rotateCoeffField (d := d) R) (μ := P))
+              (measurable_rotateCoeffField (d := d) R hR) (μ := P))
     _ = rescaledLaw P k := by
           rw [hP R hR]
           rfl

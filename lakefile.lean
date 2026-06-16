@@ -19,6 +19,7 @@ lean_lib «Homogenization» where
   ]
 
 lean_lib «Audit» where
+  globs := #[.submodules `Audit]
   leanOptions := #[
     ⟨`autoImplicit, false⟩,
     ⟨`relaxedAutoImplicit, false⟩,

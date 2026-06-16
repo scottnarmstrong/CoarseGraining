@@ -1,0 +1,9 @@
+{
+  "challenge_module": "Audit.PeriodicSmooth.Challenge",
+  "solution_module": "Audit.PeriodicSmooth.Solution",
+  "theorem_names": [
+    "Homogenization.StatementAudit.PeriodicSmooth.periodicSmooth_comparison"
+  ],
+  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"],
+  "enable_nanoda": false
+}
