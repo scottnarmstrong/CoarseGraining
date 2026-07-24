@@ -1,0 +1,3 @@
+import Homogenization.HighContrast.EntryScale.BadMaximal.P1
+import Homogenization.HighContrast.EntryScale.BadMaximal.P2
+import Homogenization.HighContrast.EntryScale.BadMaximal.P3

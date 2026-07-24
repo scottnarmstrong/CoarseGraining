@@ -1,0 +1,3 @@
+import Homogenization.HighContrast.EntryScale.RawHighContrastEnergy.P1
+import Homogenization.HighContrast.EntryScale.RawHighContrastEnergy.P2
+import Homogenization.HighContrast.EntryScale.RawHighContrastEnergy.P3

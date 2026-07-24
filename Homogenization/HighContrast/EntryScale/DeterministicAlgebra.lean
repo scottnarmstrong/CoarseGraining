@@ -1,0 +1,4 @@
+import Homogenization.HighContrast.EntryScale.DeterministicAlgebra.P1
+import Homogenization.HighContrast.EntryScale.DeterministicAlgebra.P2
+import Homogenization.HighContrast.EntryScale.DeterministicAlgebra.P3
+import Homogenization.HighContrast.EntryScale.DeterministicAlgebra.P4

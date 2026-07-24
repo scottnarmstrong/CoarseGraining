@@ -1,0 +1,3 @@
+import Homogenization.HighContrast.EntryScale.MomentConsequences.P1
+import Homogenization.HighContrast.EntryScale.MomentConsequences.P2
+import Homogenization.HighContrast.EntryScale.MomentConsequences.P3

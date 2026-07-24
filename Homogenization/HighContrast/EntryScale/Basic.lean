@@ -1,0 +1,24 @@
+/-!
+# Basic metadata for the entry-scale assembly
+
+This file contains only source-control metadata for the development.
+Mathematical theorem statements should be introduced only after their source
+labels and dependency role are recorded.
+-/
+
+namespace Homogenization.HighContrast.EntryScale
+
+/-- A stable label referencing a statement in the source document. -/
+structure SourceLabel where
+  file : String
+  label : String
+  line : Nat
+deriving DecidableEq, Repr
+
+namespace SourceLabel
+
+/-- A label from the high-moment paper (Armstrong–Kuusi–Loher, in preparation). -/
+def highMomentPaper (label : String) (line : Nat) : SourceLabel :=
+  { file := "high-moment-paper", label, line }
+end SourceLabel
+end Homogenization.HighContrast.EntryScale
