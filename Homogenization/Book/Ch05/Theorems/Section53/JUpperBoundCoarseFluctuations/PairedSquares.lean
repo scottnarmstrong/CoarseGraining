@@ -37,7 +37,7 @@ theorem paired_mismatchTermSquares_special_le_baseline_add_positiveExcess
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
-    (k m : ℕ) (e : Vec d) (a : CoeffField d) :
+    (k m : ℕ) (e : Vec d) (a : RegCoeffField d) :
     let β := section53CoarseFluctuationBeta hP4
     let s := hP4.sLower + 2 * β
     let s' := hP4.sLower + β
@@ -192,7 +192,7 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
         let q_e := specialQAtScale hP hStruct (m : ℤ) e
         let σ := sigmaHatAtScale hP hStruct (m : ℤ)
         Integrable
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               σ *
                   (WeakNormsMaximizer.gradientMismatchTermAtScale
                     (m : ℤ) (k : ℤ) s s' p_e q_e a) ^ 2 +
@@ -238,28 +238,28 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
   let w : ℤ → ℝ :=
     fun n => Real.rpow (3 : ℝ)
       (-β * (Int.toNat ((m : ℤ) - n) : ℝ))
-  let defectSum : CoeffField d → ℝ :=
+  let defectSum : RegCoeffField d → ℝ :=
     fun a =>
       ∑ n ∈ S, w n *
         Real.sqrt
           (WeakNormsMaximizer.responseDefectAverageAtScale
             (m : ℤ) n p_e q_e a)
-  let childAvg : CoeffField d → ℝ :=
+  let childAvg : RegCoeffField d → ℝ :=
     fun a => descendantsAverage Q j
       (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
-  let lowerExcess : CoeffField d → ℝ :=
+  let lowerExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
         ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
           (hP.barSigmaStarAtScale hStruct 0)⁻¹)
         0
-  let upperExcess : CoeffField d → ℝ :=
+  let upperExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
         (Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
           hP.barSigmaAtScale hStruct 0)
         0
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a =>
       σ *
           (WeakNormsMaximizer.gradientMismatchTermAtScale
@@ -268,7 +268,7 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
           (WeakNormsMaximizer.fluxMismatchTermAtScale
             (m : ℤ) (k : ℤ) t t' p_e q_e a) ^ 2
   let coeff : ℝ := (5 * β⁻¹) ^ 2
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     fun a =>
       coarseFluctuationScalarWeightAtScale hP hStruct m * (defectSum a) ^ 2 +
         coeff * ((σ * lowerExcess a + σ⁻¹ * upperExcess a) * childAvg a)
@@ -338,7 +338,7 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
     intro n _hn
     exact Real.rpow_nonneg (by norm_num : 0 ≤ (3 : ℝ)) _
   have hDsqInt :
-      Integrable (fun a : CoeffField d => (defectSum a) ^ 2) P := by
+      Integrable (fun a : RegCoeffField d => (defectSum a) ^ 2) P := by
     simpa [defectSum, S, w, p_e, q_e] using
       integrable_sq_weighted_sqrt_responseDefectAverageAtScale
         hP hk_nonneg w p_e q_e
@@ -378,12 +378,12 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
     dsimp [t', β]
     nlinarith [hP4.sLower_pos, hβ_pos]
   have hLowerPowInt :
-      Integrable (fun a : CoeffField d => lowerExcess a ^ hP4.xi) P := by
+      Integrable (fun a : RegCoeffField d => lowerExcess a ^ hP4.xi) P := by
     simpa [lowerExcess, Q, s', β] using
       Section52.lowerPositiveExcessPowIntegrableAtScale_from_P4_twoExponent
         hP hStruct hP4 hs'_gt hs'_lt_one m
   have hUpperPowInt :
-      Integrable (fun a : CoeffField d => upperExcess a ^ hP4.xi) P := by
+      Integrable (fun a : RegCoeffField d => upperExcess a ^ hP4.xi) P := by
     simpa [upperExcess, Q, t', β] using
       Section52.upperPositiveExcessPowIntegrableAtScale_from_P4_twoExponent
         hP hStruct hP4 ht'_gt ht'_lt_one m
@@ -404,18 +404,18 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
       (ENNReal.ofReal (hP4.xi : ℝ)) 1 := by
     simpa using Real.HolderTriple.ennrealOfReal hHolderReal
   have hLowerChildInt :
-      Integrable (fun a : CoeffField d => lowerExcess a * childAvg a) P := by
+      Integrable (fun a : RegCoeffField d => lowerExcess a * childAvg a) P := by
     simpa [mul_comm] using hChildMem.integrable_mul hLowerMem
   have hUpperChildInt :
-      Integrable (fun a : CoeffField d => upperExcess a * childAvg a) P := by
+      Integrable (fun a : RegCoeffField d => upperExcess a * childAvg a) P := by
     simpa [mul_comm] using hChildMem.integrable_mul hUpperMem
   have hPosInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (σ * lowerExcess a + σ⁻¹ * upperExcess a) * childAvg a) P := by
     have hsum :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             σ * (lowerExcess a * childAvg a) +
               σ⁻¹ * (upperExcess a * childAvg a)) P :=
       (hLowerChildInt.const_mul σ).add (hUpperChildInt.const_mul σ⁻¹)
@@ -431,7 +431,7 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
     intro n _hn
     have hDefAE :
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             WeakNormsMaximizer.responseDefectAverageAtScale
               (m : ℤ) n p_e q_e a) P := by
       simpa [WeakNormsMaximizer.responseDefectAverageAtScale, Q] using
@@ -441,13 +441,13 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
     exact aemeasurable_const.mul hDefAE.sqrt
   have hGradMismatchAE :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           WeakNormsMaximizer.gradientMismatchTermAtScale
             (m : ℤ) (k : ℤ) s s' p_e q_e a) P := by
     dsimp [WeakNormsMaximizer.gradientMismatchTermAtScale]
     refine (hP.aemeasurable_lambdaSqCoeffField_finite_one_inv Q hs'_pos).sqrt.mul ?_
     change AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ∑ n ∈ S,
           Real.rpow (3 : ℝ) (-(s - s') * (Int.toNat ((m : ℤ) - n) : ℝ)) *
             Real.sqrt
@@ -457,7 +457,7 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
     intro n _hn
     have hDefAE :
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             WeakNormsMaximizer.responseDefectAverageAtScale
               (m : ℤ) n p_e q_e a) P := by
       simpa [WeakNormsMaximizer.responseDefectAverageAtScale, Q] using
@@ -467,13 +467,13 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
     exact aemeasurable_const.mul hDefAE.sqrt
   have hFluxMismatchAE :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           WeakNormsMaximizer.fluxMismatchTermAtScale
             (m : ℤ) (k : ℤ) t t' p_e q_e a) P := by
     dsimp [WeakNormsMaximizer.fluxMismatchTermAtScale]
     refine (hP.aemeasurable_LambdaSqCoeffField_finite_one Q ht'_pos).sqrt.mul ?_
     change AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ∑ n ∈ S,
           Real.rpow (3 : ℝ) (-(t - t') * (Int.toNat ((m : ℤ) - n) : ℝ)) *
             Real.sqrt
@@ -483,7 +483,7 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
     intro n _hn
     have hDefAE :
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             WeakNormsMaximizer.responseDefectAverageAtScale
               (m : ℤ) n p_e q_e a) P := by
       simpa [WeakNormsMaximizer.responseDefectAverageAtScale, Q] using

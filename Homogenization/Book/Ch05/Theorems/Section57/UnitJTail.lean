@@ -472,7 +472,7 @@ variable {hP : Ch04.LawCarrier P} {hStruct : Ch04.StructuralLaw P}
 
 private theorem limitWeightedUnitEllipticityObservable_nonneg
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     0 ≤ limitWeightedUnitEllipticityObservable hP hStruct
       hΓ.params.sUpper hΓ.params.sLower a := by
   have hL_pos : 0 < barSigmaLimit hP hStruct := hΓ.barSigmaLimit_pos
@@ -497,7 +497,7 @@ controlled by the limiting weighted unit ellipticity observable. -/
 private theorem abs_limitInvSqrt_quadratic_le_card_sq_mul_weighted_ae
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (e : FullBlockVec d) (he : ∀ α : BlockCoord d, |e α| ≤ 1) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       |Ch04.fullBlockQuadraticCh04
         (toFullBlockMat (coarseBlockMatrix (cubeSet (originCube d 0)) a))
         (toFullBlockVec (scalarLimitInvSqrtBlockVec hP hStruct e))|) ≤ᵐ[P]
@@ -508,13 +508,13 @@ private theorem abs_limitInvSqrt_quadratic_le_card_sq_mul_weighted_ae
   let L : ℝ := barSigmaLimit hP hStruct
   let r : BlockCoord d → ℝ := Ch04.scalarFullBlockInvSqrtDiag (d := d) L L
   let D : FullBlockMat d := Matrix.diagonal r
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     limitWeightedUnitEllipticityObservable hP hStruct
       hΓ.params.sUpper hΓ.params.sLower
   have hL_pos : 0 < L := by simpa [L] using hΓ.barSigmaLimit_pos
   have hUL_ae :
       ∀ᵐ a ∂P, ∀ i j : Fin d,
-        |(coarseBlockMatrix (cubeSet (originCube d 0)) a).upperLeft i j| ≤
+        |(coarseBlockMatrix (cubeSet (originCube d 0)) a.toFun).upperLeft i j| ≤
           Ch04.LambdaSqCoeffField (originCube d 0)
             hΓ.params.sUpper (.finite 1) a := by
     filter_upwards
@@ -526,7 +526,7 @@ private theorem abs_limitInvSqrt_quadratic_le_card_sq_mul_weighted_ae
     exact h i (by simp) j (by simp)
   have hLR_ae :
       ∀ᵐ a ∂P, ∀ i j : Fin d,
-        |(coarseBlockMatrix (cubeSet (originCube d 0)) a).lowerRight i j| ≤
+        |(coarseBlockMatrix (cubeSet (originCube d 0)) a.toFun).lowerRight i j| ≤
           (Ch04.lambdaSqCoeffField (originCube d 0)
             hΓ.params.sLower (.finite 1) a)⁻¹ := by
     filter_upwards
@@ -612,7 +612,7 @@ is controlled by the same limiting weighted unit ellipticity observable. -/
 private theorem abs_limitSqrt_reflect_quadratic_le_card_sq_mul_weighted_ae
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (e : FullBlockVec d) (he : ∀ α : BlockCoord d, |e α| ≤ 1) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       |Ch04.fullBlockQuadraticCh04
         (Ch04.fullBlockReflect
           (toFullBlockMat (coarseBlockMatrix (cubeSet (originCube d 0)) a)))
@@ -624,13 +624,13 @@ private theorem abs_limitSqrt_reflect_quadratic_le_card_sq_mul_weighted_ae
   let L : ℝ := barSigmaLimit hP hStruct
   let r : BlockCoord d → ℝ := Section56.scalarFullBlockSqrtDiag (d := d) L L
   let T : FullBlockMat d := Matrix.diagonal r
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     limitWeightedUnitEllipticityObservable hP hStruct
       hΓ.params.sUpper hΓ.params.sLower
   have hL_pos : 0 < L := by simpa [L] using hΓ.barSigmaLimit_pos
   have hUL_ae :
       ∀ᵐ a ∂P, ∀ i j : Fin d,
-        |(coarseBlockMatrix (cubeSet (originCube d 0)) a).upperLeft i j| ≤
+        |(coarseBlockMatrix (cubeSet (originCube d 0)) a.toFun).upperLeft i j| ≤
           Ch04.LambdaSqCoeffField (originCube d 0)
             hΓ.params.sUpper (.finite 1) a := by
     filter_upwards
@@ -642,7 +642,7 @@ private theorem abs_limitSqrt_reflect_quadratic_le_card_sq_mul_weighted_ae
     exact h i (by simp) j (by simp)
   have hLR_ae :
       ∀ᵐ a ∂P, ∀ i j : Fin d,
-        |(coarseBlockMatrix (cubeSet (originCube d 0)) a).lowerRight i j| ≤
+        |(coarseBlockMatrix (cubeSet (originCube d 0)) a.toFun).lowerRight i j| ≤
           (Ch04.lambdaSqCoeffField (originCube d 0)
             hΓ.params.sLower (.finite 1) a)⁻¹ := by
     filter_upwards
@@ -736,7 +736,7 @@ theorem limitNormalizedBlockJObservable_le_card_sq_mul_weighted_ae
           limitWeightedUnitEllipticityObservable hP hStruct
             hΓ.params.sUpper hΓ.params.sLower a := by
   let C : ℝ := (Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ)
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     limitWeightedUnitEllipticityObservable hP hStruct
       hΓ.params.sUpper hΓ.params.sLower
   have hInv :=
@@ -745,7 +745,7 @@ theorem limitNormalizedBlockJObservable_le_card_sq_mul_weighted_ae
     hΓ.abs_limitSqrt_reflect_quadratic_le_card_sq_mul_weighted_ae e he
   have hJae :
       limitNormalizedBlockJObservable hP hStruct (originCube d 0) e =ᵐ[P]
-        fun a : CoeffField d =>
+        fun a : RegCoeffField d =>
           Ch04.blockJQuadraticFullBlockMat
             (toFullBlockMat
               (coarseBlockMatrix (cubeSet (originCube d 0)) a))
@@ -795,7 +795,7 @@ theorem limitNormalizedBlockJObservable_unit_isBigO
         (thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat)) := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let C : ℝ := (Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ)
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     limitWeightedUnitEllipticityObservable hP hStruct
       hΓ.params.sUpper hΓ.params.sLower
   have hC_nonneg : 0 ≤ C := by
@@ -816,13 +816,13 @@ theorem limitNormalizedBlockJObservable_unit_isBigO
   have hle_ae :=
     hΓ.limitNormalizedBlockJObservable_le_card_sq_mul_weighted_ae e he
   change IsBigOWith P (gammaSigma hΓ.sigma)
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       |limitNormalizedBlockJObservable hP hStruct (originCube d 0) e a|)
     (C * (thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat))
   refine Ch04.isBigOWith_of_ae_le
     (μ := P) (Ψ := gammaSigma hΓ.sigma)
-    (X := fun a : CoeffField d => |C * Y a|)
-    (Y := fun a : CoeffField d =>
+    (X := fun a : RegCoeffField d => |C * Y a|)
+    (Y := fun a : RegCoeffField d =>
       |limitNormalizedBlockJObservable hP hStruct (originCube d 0) e a|)
     htailCY ?_
   filter_upwards [hle_ae] with a hle

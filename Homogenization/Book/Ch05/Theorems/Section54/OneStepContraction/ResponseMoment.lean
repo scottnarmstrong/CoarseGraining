@@ -118,7 +118,7 @@ private theorem responseJ_special_pointwise_le_weighted_factors
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Vec d) (he : Ch02.vecNorm e = 1) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
         Ch04.responseJObservableCubeSet (originCube d 0)
           (specialPAtScale hP hStruct (m : ℤ) e)
           (specialQAtScale hP hStruct (m : ℤ) e) a)
@@ -179,7 +179,7 @@ private theorem responseJ_special_pointwise_le_weighted_factors
       hP (originCube d 0) p_e q_e,
      hP.ae_locallyUniformlyEllipticField] with a hJ ha
   let Q : TriadicCube d := originCube d 0
-  let A : BlockMat d := coarseBlockMatrix (cubeSet Q) a
+  let A : BlockMat d := coarseBlockMatrix (cubeSet Q) a.toFun
   let F : Ch02.TriadicCoeffFamily d :=
     Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hEq :
@@ -279,7 +279,7 @@ private theorem responseJ_special_pointwise_le_weighted_factors
 
 private theorem realRpowMomentRoot_le_natAnnealedMomentRoot_of_ae_le
     {d : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
-    {ζ : ℝ} {ξ : ℕ} {X Y : CoeffField d → ℝ}
+    {ζ : ℝ} {ξ : ℕ} {X Y : RegCoeffField d → ℝ}
     (hζ_pos : 0 < ζ) (hζ_le_ξ : ζ ≤ (ξ : ℝ)) (hξ_one : 1 ≤ ξ)
     (hX_meas : AEMeasurable X P)
     (hX_nonneg : ∀ a, 0 ≤ X a) (hY_nonneg : ∀ a, 0 ≤ Y a)
@@ -372,15 +372,15 @@ theorem coarseFluctuationResponseMomentAtScale_zero_le_unitMomentWeightAtScale
   let ζ := section53CoarseFluctuationZeta hP4
   let ξ := hP4.xi
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
-  let L : CoeffField d → ℝ :=
+  let L : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d 0) hP4.sUpper (.finite 1) a
-  let I : CoeffField d → ℝ :=
+  let I : RegCoeffField d → ℝ :=
     fun a =>
       (Ch04.lambdaSqCoeffField (originCube d 0) hP4.sLower (.finite 1) a)⁻¹
-  let YUpper : CoeffField d → ℝ := fun a => σ⁻¹ * L a
-  let YLower : CoeffField d → ℝ := fun a => σ * I a
-  let Y : CoeffField d → ℝ := fun a => YUpper a + YLower a
-  let X : CoeffField d → ℝ :=
+  let YUpper : RegCoeffField d → ℝ := fun a => σ⁻¹ * L a
+  let YLower : RegCoeffField d → ℝ := fun a => σ * I a
+  let Y : RegCoeffField d → ℝ := fun a => YUpper a + YLower a
+  let X : RegCoeffField d → ℝ :=
     fun a =>
       Ch04.responseJObservableCubeSet (originCube d 0)
         (specialPAtScale hP hStruct (m : ℤ) e)

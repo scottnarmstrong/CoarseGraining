@@ -168,8 +168,8 @@ The norm is the Euclidean operator norm, not the Frobenius norm. -/
 noncomputable def fullBlockNormalizedFluctuationOperatorNormSqAtScale
     {d : ℕ} [NeZero d] {P : CoeffLaw d}
     (hP : LawCarrier P) (hStruct : StructuralLaw P)
-    (m : ℤ) (R : TriadicCube d) (a : CoeffField d) : ℝ :=
-  fullBlockNormalizedFluctuationOperatorNormSq hP hStruct m (cubeSet R) a
+    (m : ℤ) (R : TriadicCube d) (a : RegCoeffField d) : ℝ :=
+  fullBlockNormalizedFluctuationOperatorNormSq hP hStruct m (cubeSet R) a.toFun
 
 /-- The normalized full-block fluctuation observable is translation-covariant
 in its deterministic set argument. -/
@@ -182,6 +182,132 @@ theorem fullBlockNormalizedFluctuationOperatorNormSq_translation_covariant
   intro U z a
   simp [fullBlockNormalizedFluctuationOperatorNormSq, translateByInt,
     coarseBlockMatrix_translateSet_eq_translateCoeffField]
+
+/-- Carrier bridge for integer translation: precomposition on the carrier
+projects to the raw integer translation (rfl). -/
+theorem translateReg_toFun {d : ℕ} (z : Fin d → ℤ) (a : RegCoeffField d) :
+    (translateReg (intVecToRealVec z) a).toFun = translateByInt z a.toFun := rfl
+
+/-- Carrier translation transfer: a translation-covariant raw observable
+composed with `toFun` integrates equally on translated sets under a stationary
+carrier law.  Uses `IsStationaryR.integral_comp_translateReg` and the
+`translateReg`/`translateByInt` bridge. -/
+theorem integral_comp_toFun_translation_transfer
+    {d : ℕ} {P : CoeffLaw d} {X : Set (Vec d) → CoeffField d → ℝ}
+    (hstat : StationaryLaw P) {U : Set (Vec d)}
+    (hmeas : AEStronglyMeasurable (fun a : RegCoeffField d => X U a.toFun) P)
+    (hcov : IsTranslationCovariant X) (z : Fin d → ℤ) :
+    ∫ a, X (translateSet (intVecToRealVec z) U) a.toFun ∂P =
+      ∫ a, X U a.toFun ∂P := by
+  have hbridge :
+      (fun a : RegCoeffField d => X (translateSet (intVecToRealVec z) U) a.toFun) =
+        fun a : RegCoeffField d =>
+          (fun a : RegCoeffField d => X U a.toFun) (translateReg (intVecToRealVec z) a) := by
+    funext a
+    show X (translateSet (intVecToRealVec z) U) a.toFun =
+      X U (translateReg (intVecToRealVec z) a).toFun
+    rw [hcov U z a.toFun, translateReg_toFun]
+  calc
+    ∫ a, X (translateSet (intVecToRealVec z) U) a.toFun ∂P
+        = ∫ a, (fun a : RegCoeffField d => X U a.toFun)
+            (translateReg (intVecToRealVec z) a) ∂P := by rw [hbridge]
+    _ = ∫ a, X U a.toFun ∂P :=
+          hstat.integral_comp_translateReg z (fun a => X U a.toFun) hmeas
+
+/-- Carrier translation covariance: a set-indexed carrier observable commutes with
+spatial integer translation via the carrier translation `translateReg`. -/
+def IsTranslationCovariantR {β : Type*} {d : ℕ}
+    (X : Set (Vec d) → RegCoeffField d → β) : Prop :=
+  ∀ (U : Set (Vec d)) (z : Fin d → ℤ) (a : RegCoeffField d),
+    X (translateSet (intVecToRealVec z) U) a =
+      X U (translateReg (intVecToRealVec z) a)
+
+/-- A raw translation-covariant observable, precomposed with `toFun`, is carrier
+translation covariant. -/
+theorem isTranslationCovariantR_comp_toFun {β : Type*} {d : ℕ}
+    {X : Set (Vec d) → CoeffField d → β} (hX : IsTranslationCovariant X) :
+    IsTranslationCovariantR (fun U a => X U a.toFun) := by
+  intro U z a
+  show X (translateSet (intVecToRealVec z) U) a.toFun =
+    X U (translateReg (intVecToRealVec z) a).toFun
+  rw [hX U z a.toFun, translateReg_toFun]
+
+/-- Carrier analogue of `comp_translateByInt_eq_of_isTranslationCovariant`. -/
+theorem comp_translateReg_eq_of_isTranslationCovariantR {β : Type*} {d : ℕ}
+    {X : Set (Vec d) → RegCoeffField d → β} (hX : IsTranslationCovariantR X)
+    (U : Set (Vec d)) (z : Fin d → ℤ) :
+    X (translateSet (intVecToRealVec z) U) =
+      X U ∘ translateReg (intVecToRealVec z) := by
+  funext a
+  exact hX U z a
+
+/-- Carrier analogue of `map_eq_map_translateByInt_of_isTranslationCovariant`. -/
+theorem map_eq_map_translateReg_of_isTranslationCovariantR {β : Type*}
+    [MeasurableSpace β] {d : ℕ} {P : CoeffLaw d}
+    {X : Set (Vec d) → RegCoeffField d → β}
+    (hP : StationaryLaw P) {U : Set (Vec d)} (hX_meas : Measurable (X U))
+    (hX_cov : IsTranslationCovariantR X) (z : Fin d → ℤ) :
+    Measure.map (X (translateSet (intVecToRealVec z) U)) P =
+      Measure.map (X U) P := by
+  calc
+    Measure.map (X (translateSet (intVecToRealVec z) U)) P =
+        Measure.map (X U ∘ translateReg (intVecToRealVec z)) P := by
+          rw [comp_translateReg_eq_of_isTranslationCovariantR hX_cov U z]
+    _ = Measure.map (X U) (Measure.map (translateReg (intVecToRealVec z)) P) := by
+          symm
+          simpa [Function.comp] using
+            (Measure.map_map hX_meas (measurable_translateReg (intVecToRealVec z))
+              (μ := P))
+    _ = Measure.map (X U) P := by rw [hP z]
+
+/-- A.e.-measurable carrier analogue of
+`map_eq_map_translateByInt_of_isTranslationCovariant_aemeasurable`. -/
+theorem map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable {β : Type*}
+    [MeasurableSpace β] {d : ℕ} {P : CoeffLaw d}
+    {X : Set (Vec d) → RegCoeffField d → β}
+    (hP : StationaryLaw P) {U : Set (Vec d)} (hX_aemeas : AEMeasurable (X U) P)
+    (hX_cov : IsTranslationCovariantR X) (z : Fin d → ℤ) :
+    Measure.map (X (translateSet (intVecToRealVec z) U)) P =
+      Measure.map (X U) P := by
+  calc
+    Measure.map (X (translateSet (intVecToRealVec z) U)) P =
+        Measure.map (X U ∘ translateReg (intVecToRealVec z)) P := by
+          rw [comp_translateReg_eq_of_isTranslationCovariantR hX_cov U z]
+    _ = Measure.map (X U) (Measure.map (translateReg (intVecToRealVec z)) P) := by
+          symm
+          exact AEMeasurable.map_map_of_aemeasurable
+            (by simpa [hP z] using hX_aemeas)
+            (measurable_translateReg (intVecToRealVec z)).aemeasurable
+    _ = Measure.map (X U) P := by rw [hP z]
+
+/-- Carrier analogue of
+`integral_eq_of_isTranslationCovariant_of_isStationary`. -/
+theorem integral_eq_of_isTranslationCovariantR_of_stationary {E : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E] [SecondCountableTopology E]
+    {d : ℕ} {P : CoeffLaw d} {X : Set (Vec d) → RegCoeffField d → E}
+    (hP : StationaryLaw P) {U : Set (Vec d)}
+    (hX_meas : Measurable (X U))
+    (hX_cov : IsTranslationCovariantR X) (z : Fin d → ℤ) :
+    ∫ a, X (translateSet (intVecToRealVec z) U) a ∂P = ∫ a, X U a ∂P := by
+  rw [comp_translateReg_eq_of_isTranslationCovariantR hX_cov U z]
+  exact integral_comp_eq_of_map_eq
+    (measurable_translateReg (intVecToRealVec z)) (hP z) (X U)
+    hX_meas.aestronglyMeasurable
+
+/-- A.e.-strongly-measurable carrier analogue of
+`integral_eq_of_isTranslationCovariant_of_isStationary_aestronglyMeasurable`. -/
+theorem integral_eq_of_isTranslationCovariantR_of_stationary_aestronglyMeasurable
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E] [SecondCountableTopology E]
+    {d : ℕ} {P : CoeffLaw d} {X : Set (Vec d) → RegCoeffField d → E}
+    (hP : StationaryLaw P) {U : Set (Vec d)}
+    (hX_aemeas : AEStronglyMeasurable (X U) P)
+    (hX_cov : IsTranslationCovariantR X) (z : Fin d → ℤ) :
+    ∫ a, X (translateSet (intVecToRealVec z) U) a ∂P = ∫ a, X U a ∂P := by
+  rw [comp_translateReg_eq_of_isTranslationCovariantR hX_cov U z]
+  exact integral_comp_eq_of_map_eq
+    (measurable_translateReg (intVecToRealVec z)) (hP z) (X U) hX_aemeas
 
 namespace LawCarrier
 
@@ -197,27 +323,24 @@ theorem expectedResponseJCubeSet_eq_originCube_of_stationary
     cubeSet_eq_translateSet_originCube_of_nonneg_scale (R := R) hR_nonneg
   calc
     expectedResponseJCubeSet P R p q
-        = ∫ a, ResponseJ (cubeSet R) p q a ∂P := by
-          rfl
+        = ∫ a, ResponseJ (cubeSet R) p q a.toFun ∂P := rfl
     _ =
         ∫ a,
           ResponseJ
             (translateSet (intVecToRealVec (scaleTranslationShift R.scale R))
-              (cubeSet (originCube d R.scale))) p q a ∂P := by
+              (cubeSet (originCube d R.scale))) p q a.toFun ∂P := by
           rw [hshift]
-    _ = ∫ a, ResponseJ (cubeSet (originCube d R.scale)) p q a ∂P := by
-          exact
-            integral_eq_of_isTranslationCovariant_of_isStationary_aestronglyMeasurable
-              (P := P) hstat
-              (U := cubeSet (originCube d R.scale))
-              (by
-                simpa [responseJObservableCubeSet] using
-                  hP.aestronglyMeasurable_responseJObservableCubeSet
-                    (originCube d R.scale) p q)
-              (responseJCubeSet_translation_covariant p q)
-              (scaleTranslationShift R.scale R)
-    _ = expectedResponseJCubeSet P (originCube d R.scale) p q := by
-          rfl
+    _ = ∫ a, ResponseJ (cubeSet (originCube d R.scale)) p q a.toFun ∂P :=
+          integral_comp_toFun_translation_transfer (P := P) hstat
+            (X := fun U a => ResponseJ U p q a)
+            (U := cubeSet (originCube d R.scale))
+            (by
+              simpa [responseJObservableCubeSet] using
+                hP.aestronglyMeasurable_responseJObservableCubeSet
+                  (originCube d R.scale) p q)
+            (responseJCubeSet_translation_covariant p q)
+            (scaleTranslationShift R.scale R)
+    _ = expectedResponseJCubeSet P (originCube d R.scale) p q := rfl
 
 /-- Under stationarity, every coarse block matrix entry on a nonnegative-scale
 cube has the same expectation as the corresponding origin-cube entry. -/
@@ -225,15 +348,15 @@ theorem integral_coarseBlockMatrix_entry_cubeSet_eq_originCube_of_stationary
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (hstat : StationaryLaw P) (R : TriadicCube d) (hR_nonneg : 0 ≤ R.scale)
     (α β : BlockCoord d) :
-    ∫ a, blockMatEntry (coarseBlockMatrix (cubeSet R) a) α β ∂P =
+    ∫ a, blockMatEntry (coarseBlockMatrix (cubeSet R) a.toFun) α β ∂P =
       ∫ a,
-        blockMatEntry (coarseBlockMatrix (cubeSet (originCube d R.scale)) a) α β ∂P := by
+        blockMatEntry (coarseBlockMatrix (cubeSet (originCube d R.scale)) a.toFun) α β ∂P := by
   have hshift :=
     cubeSet_eq_translateSet_originCube_of_nonneg_scale (R := R) hR_nonneg
   have hmeas :
       AEStronglyMeasurable
-        (fun a : CoeffField d =>
-          blockMatEntry (coarseBlockMatrix (cubeSet (originCube d R.scale)) a) α β) P := by
+        (fun a : RegCoeffField d =>
+          blockMatEntry (coarseBlockMatrix (cubeSet (originCube d R.scale)) a.toFun) α β) P := by
     cases α with
     | inl i =>
         cases β with
@@ -256,23 +379,22 @@ theorem integral_coarseBlockMatrix_entry_cubeSet_eq_originCube_of_stationary
               (hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet
                 (originCube d R.scale) i j).aestronglyMeasurable
   calc
-    ∫ a, blockMatEntry (coarseBlockMatrix (cubeSet R) a) α β ∂P
+    ∫ a, blockMatEntry (coarseBlockMatrix (cubeSet R) a.toFun) α β ∂P
         =
       ∫ a,
         blockMatEntry
           (coarseBlockMatrix
             (translateSet (intVecToRealVec (scaleTranslationShift R.scale R))
-              (cubeSet (originCube d R.scale))) a) α β ∂P := by
+              (cubeSet (originCube d R.scale))) a.toFun) α β ∂P := by
           rw [hshift]
     _ =
       ∫ a,
-        blockMatEntry (coarseBlockMatrix (cubeSet (originCube d R.scale)) a) α β ∂P := by
-          exact
-            integral_eq_of_isTranslationCovariant_of_isStationary_aestronglyMeasurable
-              (P := P) hstat
-              (U := cubeSet (originCube d R.scale)) hmeas
-              (coarseBlockMatrix_entry_translation_covariant α β)
-              (scaleTranslationShift R.scale R)
+        blockMatEntry (coarseBlockMatrix (cubeSet (originCube d R.scale)) a.toFun) α β ∂P :=
+          integral_comp_toFun_translation_transfer (P := P) hstat
+            (X := fun U a => blockMatEntry (coarseBlockMatrix U a) α β)
+            (U := cubeSet (originCube d R.scale)) hmeas
+            (coarseBlockMatrix_entry_translation_covariant α β)
+            (scaleTranslationShift R.scale R)
 
 /-- Under stationarity, a child cube of an origin cube has the same annealed
 response as the origin cube at the child scale. -/
@@ -302,21 +424,21 @@ theorem integral_coarseBlockMatrix_entry_cubeSet_eq_originCube_of_mem_descendant
     (hstat : StationaryLaw P) {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
     {R : TriadicCube d} (hR : R ∈ descendantsAtScale (originCube d m) n)
     (α β : BlockCoord d) :
-    ∫ a, blockMatEntry (coarseBlockMatrix (cubeSet R) a) α β ∂P =
-      ∫ a, blockMatEntry (coarseBlockMatrix (cubeSet (originCube d n)) a) α β ∂P := by
+    ∫ a, blockMatEntry (coarseBlockMatrix (cubeSet R) a.toFun) α β ∂P =
+      ∫ a, blockMatEntry (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun) α β ∂P := by
   have hscale : R.scale = n :=
     scale_eq_of_mem_descendantsAtScale_originCube hnm hR
   have hR_nonneg : 0 ≤ R.scale := by
     simpa [hscale] using hn
   calc
-    ∫ a, blockMatEntry (coarseBlockMatrix (cubeSet R) a) α β ∂P
+    ∫ a, blockMatEntry (coarseBlockMatrix (cubeSet R) a.toFun) α β ∂P
         =
       ∫ a,
-        blockMatEntry (coarseBlockMatrix (cubeSet (originCube d R.scale)) a) α β ∂P :=
+        blockMatEntry (coarseBlockMatrix (cubeSet (originCube d R.scale)) a.toFun) α β ∂P :=
         hP.integral_coarseBlockMatrix_entry_cubeSet_eq_originCube_of_stationary
           hstat R hR_nonneg α β
     _ =
-      ∫ a, blockMatEntry (coarseBlockMatrix (cubeSet (originCube d n)) a) α β ∂P := by
+      ∫ a, blockMatEntry (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun) α β ∂P := by
         rw [hscale]
 
 /-- Under stationarity, the normalized full-block fluctuation on a
@@ -343,27 +465,26 @@ theorem integral_fullBlockNormalizedFluctuationOperatorNormSqAtScale_eq_originCu
       ∫ a,
         fullBlockNormalizedFluctuationOperatorNormSq hP hStruct center
           (translateSet (intVecToRealVec (scaleTranslationShift R.scale R))
-            (cubeSet (originCube d R.scale))) a ∂P := by
-          simp [fullBlockNormalizedFluctuationOperatorNormSqAtScale, hshift]
+            (cubeSet (originCube d R.scale))) a.toFun ∂P := by
+          simp only [fullBlockNormalizedFluctuationOperatorNormSqAtScale, hshift]
     _ =
       ∫ a,
         fullBlockNormalizedFluctuationOperatorNormSq hP hStruct center
-          (cubeSet (originCube d R.scale)) a ∂P := by
-          exact
-            integral_eq_of_isTranslationCovariant_of_isStationary_aestronglyMeasurable
-              (P := P) hstat
-              (U := cubeSet (originCube d R.scale))
-              (by
-                simpa [fullBlockNormalizedFluctuationOperatorNormSqAtScale] using
-                  hOrigin.aestronglyMeasurable)
-              (fullBlockNormalizedFluctuationOperatorNormSq_translation_covariant
-                hP hStruct center)
-              (scaleTranslationShift R.scale R)
+          (cubeSet (originCube d R.scale)) a.toFun ∂P :=
+          integral_comp_toFun_translation_transfer (P := P) hstat
+            (X := fun U a =>
+              fullBlockNormalizedFluctuationOperatorNormSq hP hStruct center U a)
+            (U := cubeSet (originCube d R.scale))
+            (by
+              simpa [fullBlockNormalizedFluctuationOperatorNormSqAtScale] using
+                hOrigin.aestronglyMeasurable)
+            (fullBlockNormalizedFluctuationOperatorNormSq_translation_covariant
+              hP hStruct center)
+            (scaleTranslationShift R.scale R)
     _ =
       ∫ a,
         fullBlockNormalizedFluctuationOperatorNormSqAtScale
-          hP hStruct center (originCube d R.scale) a ∂P := by
-          rfl
+          hP hStruct center (originCube d R.scale) a ∂P := rfl
 
 /-- Under stationarity, integrability of the origin-cube normalized full-block
 fluctuation transfers to every same-scale cube. -/
@@ -383,32 +504,23 @@ theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_of_statio
         translateSet (intVecToRealVec z) (cubeSet (originCube d R.scale)) := by
     simpa [z] using
       cubeSet_eq_translateSet_originCube_of_nonneg_scale (R := R) hR_nonneg
-  have hcomp :
+  have hmap :
       Integrable
-        (fun a : CoeffField d =>
-          fullBlockNormalizedFluctuationOperatorNormSq hP hStruct center
-            (cubeSet (originCube d R.scale)) (translateByInt z a)) P := by
-    have hOrigin_map :
-        Integrable
-          (fun a : CoeffField d =>
-            fullBlockNormalizedFluctuationOperatorNormSq hP hStruct center
-              (cubeSet (originCube d R.scale)) a)
-          (Measure.map (translateByInt z) P) := by
-      simpa [hstat z, fullBlockNormalizedFluctuationOperatorNormSqAtScale] using hOrigin
-    simpa [Function.comp_def] using
-      hOrigin_map.comp_measurable (measurable_translateByInt z)
-  have hae :
-      (fun a : CoeffField d =>
-        fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct center R a) =ᵐ[P]
-        fun a : CoeffField d =>
-          fullBlockNormalizedFluctuationOperatorNormSq hP hStruct center
-            (cubeSet (originCube d R.scale)) (translateByInt z a) := by
-    filter_upwards with a
-    rw [fullBlockNormalizedFluctuationOperatorNormSqAtScale, hset]
-    exact
-      fullBlockNormalizedFluctuationOperatorNormSq_translation_covariant
-        hP hStruct center (cubeSet (originCube d R.scale)) z a
-  exact hcomp.congr hae.symm
+        (fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct center
+          (originCube d R.scale))
+        (Measure.map (translateReg (intVecToRealVec z)) P) := by
+    rw [hstat z]; exact hOrigin
+  have hcomp := hmap.comp_measurable (measurable_translateReg (intVecToRealVec z))
+  refine hcomp.congr ?_
+  filter_upwards with a
+  show fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct center
+        (originCube d R.scale) (translateReg (intVecToRealVec z) a) =
+      fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct center R a
+  simp only [fullBlockNormalizedFluctuationOperatorNormSqAtScale, translateReg_toFun]
+  rw [hset]
+  exact
+    (fullBlockNormalizedFluctuationOperatorNormSq_translation_covariant
+      hP hStruct center (cubeSet (originCube d R.scale)) z a.toFun).symm
 
 /-- Under stationarity, integrability of the origin-cube normalized full-block
 fluctuation at the child scale transfers to descendants of a larger origin
@@ -538,51 +650,18 @@ theorem integrable_coarseFullBlockMatrixAtCube_of_mem_descendantsAtScale_originC
     simpa [z] using
       cubeSet_eq_translateSet_originCube_of_mem_descendantsAtScale_originCube
         hn hnm hR
-  refine MeasureTheory.Integrable.of_eval ?_
-  intro α
-  refine MeasureTheory.Integrable.of_eval ?_
-  intro β
-  have hOriginEntry :
-      Integrable
-        (fun a : CoeffField d =>
-          blockMatEntry (coarseBlockMatrix (cubeSet (originCube d n)) a) α β) P := by
-    have hα :
-        Integrable (fun a : CoeffField d => coarseFullBlockMatrixAtCube (originCube d n) a α) P :=
-      MeasureTheory.Integrable.eval hOrigin α
-    have hαβ :
-        Integrable
-          (fun a : CoeffField d => coarseFullBlockMatrixAtCube (originCube d n) a α β) P :=
-      MeasureTheory.Integrable.eval hα β
-    simpa [coarseFullBlockMatrixAtCube, coarseFullBlockMatrixObservable, toFullBlockMat,
-      blockMatEntry] using hαβ
-  have hcomp :
-      Integrable
-        (fun a : CoeffField d =>
-          blockMatEntry (coarseBlockMatrix (cubeSet (originCube d n)) (translateByInt z a))
-            α β) P := by
-    have hOriginEntry_map :
-        Integrable
-          (fun a : CoeffField d =>
-            blockMatEntry (coarseBlockMatrix (cubeSet (originCube d n)) a) α β)
-          (Measure.map (translateByInt z) P) := by
-      simpa [hstat z] using hOriginEntry
-    simpa [Function.comp_def] using
-      hOriginEntry_map.comp_measurable (measurable_translateByInt z)
-  have hae :
-      (fun a : CoeffField d => blockMatEntry (coarseBlockMatrix (cubeSet R) a) α β) =ᵐ[P]
-        fun a : CoeffField d =>
-          blockMatEntry (coarseBlockMatrix (cubeSet (originCube d n)) (translateByInt z a))
-            α β := by
-    filter_upwards with a
-    have hmat :
-        coarseBlockMatrix (cubeSet R) a =
-          coarseBlockMatrix (cubeSet (originCube d n)) (translateByInt z a) := by
-      rw [hset, coarseBlockMatrix_translateSet_eq_translateCoeffField]
-      rfl
-    exact congrArg (fun A => blockMatEntry A α β) hmat
-  have hentry := hcomp.congr hae.symm
-  simpa [coarseFullBlockMatrixAtCube, coarseFullBlockMatrixObservable, toFullBlockMat,
-    blockMatEntry] using hentry
+  have hmap :
+      Integrable (coarseFullBlockMatrixAtCube (originCube d n))
+        (Measure.map (translateReg (intVecToRealVec z)) P) := by
+    rw [hstat z]; exact hOrigin
+  have hcomp := hmap.comp_measurable (measurable_translateReg (intVecToRealVec z))
+  refine hcomp.congr ?_
+  filter_upwards with a
+  show coarseFullBlockMatrixAtCube (originCube d n) (translateReg (intVecToRealVec z) a) =
+      coarseFullBlockMatrixAtCube R a
+  simp only [coarseFullBlockMatrixAtCube, coarseFullBlockMatrixObservable, translateReg_toFun]
+  rw [hset, coarseBlockMatrix_translateSet_eq_translateCoeffField]
+  rfl
 
 /-- Under stationarity, the finite descendant average of child annealed
 responses equals the annealed response on the origin cube at the child scale. -/
@@ -677,7 +756,7 @@ theorem integral_weightedDescendantsAverage_responseJObservableCubeSet_eq_weight
   let D : Finset (TriadicCube d) := descendantsAtDepth Q j
   have hJ_depth :
       ∀ R, R ∈ descendantsAtDepth Q j →
-        Integrable (fun a : CoeffField d =>
+        Integrable (fun a : RegCoeffField d =>
           weight R * responseJObservableCubeSet R p q a) P := by
     intro R hR
     have hRscale : R ∈ descendantsAtScale (originCube d m) n := by

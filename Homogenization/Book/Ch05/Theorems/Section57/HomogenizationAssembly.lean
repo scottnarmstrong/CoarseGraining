@@ -179,7 +179,7 @@ theorem exists_coarseGrainingHomogenizationErrorAtDepth_interpolated_expLogSq
             (hStruct : Ch04.StructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hΓ.thetaHat)) ^ (2 : ℕ))) ∧
@@ -279,7 +279,7 @@ theorem exists_coarseGrainingHomogenizationErrorAtDepth_interpolated_expLogSq
 
 /-- The random coefficient family attached to an a.e. uniformly elliptic
 coefficient field. -/
-abbrev assemblyCoeffFamily {d : ℕ} (aω : CoeffField d)
+abbrev assemblyCoeffFamily {d : ℕ} (aω : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField aω) :
     Ch02.TriadicCoeffFamily d :=
   Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField aω ha
@@ -298,7 +298,7 @@ def assemblyConstantCoeffMatrixOfScalar {d : ℕ} [NeZero d]
 
 abbrev assemblyComparisonDatumOfScalar {d : ℕ} [NeZero d]
     (σ0 : ℝ) (hσ0 : 0 < σ0)
-    (aω : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
+    (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (m : ℕ) (g : Vec d → Vec d) : Type _ :=
   Ch03.CoarseGrainingComparisonDatum
     (assemblyOriginCube d m) (assemblyCoeffFamily aω ha)
@@ -317,7 +317,7 @@ abbrev assemblyComparisonDatum {d : ℕ} [NeZero d]
     {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
     (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    (aω : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
+    (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (m : ℕ) (g : Vec d → Vec d) : Type _ :=
   assemblyComparisonDatumOfScalar
     (barSigmaLimit hP hStruct) hΓ.barSigmaLimit_pos aω ha m g
@@ -336,7 +336,7 @@ noncomputable def assemblyAmplitude (d : ℕ) (τ : ℝ) : ℝ :=
     Real.rpow (3 : ℝ) (τ / 2)
 
 noncomputable def assemblyMinimalScaleDecay {d : ℕ}
-    (α : ℝ) (X : CoeffField d → ℝ) (aω : CoeffField d) (m : ℕ) : ℝ :=
+    (α : ℝ) (X : RegCoeffField d → ℝ) (aω : RegCoeffField d) (m : ℕ) : ℝ :=
   Real.sqrt (((3 : ℝ) ^ m / X aω) ^ (-α))
 
 noncomputable def assemblyErrorDiscount (τ r : ℝ) : ℝ :=
@@ -352,19 +352,19 @@ noncomputable def assemblyEllipticityDiscount (τ r : ℝ) : ℝ :=
     (1 / 2 : ℝ)
 
 noncomputable def assemblyErrorEnvelope {d : ℕ}
-    (α τ r : ℝ) (X : CoeffField d → ℝ) (aω : CoeffField d)
+    (α τ r : ℝ) (X : RegCoeffField d → ℝ) (aω : RegCoeffField d)
     (m : ℕ) : ℝ :=
   assemblyErrorDiscount τ r * assemblyAmplitude d τ *
     assemblyMinimalScaleDecay α X aω m
 
 noncomputable def assemblyEllipticityErrorEnvelope {d : ℕ}
-    (α τ r : ℝ) (X : CoeffField d → ℝ) (aω : CoeffField d)
+    (α τ r : ℝ) (X : RegCoeffField d → ℝ) (aω : RegCoeffField d)
     (m : ℕ) : ℝ :=
   assemblyEllipticityDiscount τ r * assemblyAmplitude d τ *
     assemblyMinimalScaleDecay α X aω m
 
 noncomputable def assemblyEllipticityEnvelope {d : ℕ}
-    (α τ r : ℝ) (X : CoeffField d → ℝ) (aω : CoeffField d)
+    (α τ r : ℝ) (X : RegCoeffField d → ℝ) (aω : RegCoeffField d)
     (m : ℕ) : ℝ :=
   2 * (Fintype.card (Fin d) : ℝ) *
     ((assemblyEllipticityErrorEnvelope (d := d) α τ r X aω m) ^ (2 : ℕ) + 1)
@@ -373,8 +373,8 @@ noncomputable def assemblyEllipticityEnvelope {d : ℕ}
 with the scalar background passed explicitly. -/
 def assemblyControlledFactorsConclusionOfScalar {d : ℕ} [NeZero d]
     (σ0 : ℝ) (hσ0 : 0 < σ0)
-    (Ccg α τ s r : ℝ) (X : CoeffField d → ℝ)
-    (aω : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
+    (Ccg α τ s r : ℝ) (X : RegCoeffField d → ℝ)
+    (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (m j : ℕ) (g : Vec d → Vec d)
     (w : assemblyComparisonDatumOfScalar σ0 hσ0 aω ha m g) : Prop :=
   let Q : TriadicCube d := assemblyOriginCube d m
@@ -398,8 +398,8 @@ def assemblyControlledFactorsConclusion {d : ℕ} [NeZero d]
     {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
     (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    (Ccg α τ s r : ℝ) (X : CoeffField d → ℝ)
-    (aω : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
+    (Ccg α τ s r : ℝ) (X : RegCoeffField d → ℝ)
+    (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (m j : ℕ) (g : Vec d → Vec d)
     (w : assemblyComparisonDatum hP hStruct hΓ aω ha m g) : Prop :=
   assemblyControlledFactorsConclusionOfScalar
@@ -411,8 +411,8 @@ coarse-graining estimate.  The response quantities are still localized at
 exponent `r`, while the forcing is measured at the stronger exponent `r₂`. -/
 def assemblyControlledFactorsTwoExponentConclusionOfScalar {d : ℕ} [NeZero d]
     (σ0 : ℝ) (hσ0 : 0 < σ0)
-    (Ccg α τ s r r₂ : ℝ) (X : CoeffField d → ℝ)
-    (aω : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
+    (Ccg α τ s r r₂ : ℝ) (X : RegCoeffField d → ℝ)
+    (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (m j : ℕ) (g : Vec d → Vec d)
     (w : assemblyComparisonDatumOfScalar σ0 hσ0 aω ha m g) : Prop :=
   let Q : TriadicCube d := assemblyOriginCube d m
@@ -437,8 +437,8 @@ def assemblyControlledFactorsTwoExponentConclusion {d : ℕ} [NeZero d]
     {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
     (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    (Ccg α τ s r r₂ : ℝ) (X : CoeffField d → ℝ)
-    (aω : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
+    (Ccg α τ s r r₂ : ℝ) (X : RegCoeffField d → ℝ)
+    (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (m j : ℕ) (g : Vec d → Vec d)
     (w : assemblyComparisonDatum hP hStruct hΓ aω ha m g) : Prop :=
   assemblyControlledFactorsTwoExponentConclusionOfScalar
@@ -474,7 +474,7 @@ theorem exists_homogenizationComparison_controlledFactors_interpolated_expLogSq
             (hStruct : Ch04.StructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hΓ.thetaHat)) ^ (2 : ℕ))) ∧
@@ -546,7 +546,7 @@ theorem exists_homogenizationComparison_controlledFactors_interpolated_expLogSq
     hLaw₁ hP hStruct hΓ hσ_eq hparams
   obtain ⟨X₂, hX₂O, hX₂_one, hX₂ae⟩ :=
     hLaw₂ hP hStruct hΓ hσ_eq hparams
-  let X : CoeffField d → ℝ := fun aω => max (X₁ aω) (X₂ aω)
+  let X : RegCoeffField d → ℝ := fun aω => max (X₁ aω) (X₂ aω)
   have hXO :
       IsBigO P
         (gammaSigma
@@ -789,7 +789,7 @@ theorem exists_homogenizationComparison_controlledFactors_twoExponent_interpolat
             (hStruct : Ch04.StructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hΓ.thetaHat)) ^ (2 : ℕ))) ∧

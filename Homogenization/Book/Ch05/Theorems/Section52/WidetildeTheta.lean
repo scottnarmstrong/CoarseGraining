@@ -32,26 +32,26 @@ theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_positiveExcess_products_o
     (hUpperPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (Ch04.LambdaSqCoeffField (originCube d (l : ℤ)) hP4.sUpper (.finite 1) a) ^
               hP4.xi) P)
     (hLowerPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((Ch04.lambdaSqCoeffField (originCube d (l : ℤ)) hP4.sLower (.finite 1) a)⁻¹) ^
               hP4.xi) P)
     (m : ℕ)
     (hUpperExcessPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) hP4.sUpper (.finite 1) a -
               hP.barSigmaAtScale hStruct 0)
             0) ^ hP4.xi) P)
     (hLowerExcessPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) hP4.sLower (.finite 1) a)⁻¹ -
               (hP.barSigmaStarAtScale hStruct 0)⁻¹)
@@ -145,26 +145,26 @@ theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_error_of_integrable_posit
     (hUpperPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (Ch04.LambdaSqCoeffField (originCube d (l : ℤ)) hP4.sUpper (.finite 1) a) ^
               hP4.xi) P)
     (hLowerPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((Ch04.lambdaSqCoeffField (originCube d (l : ℤ)) hP4.sLower (.finite 1) a)⁻¹) ^
               hP4.xi) P)
     (m : ℕ)
     (hUpperExcessPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) hP4.sUpper (.finite 1) a -
               hP.barSigmaAtScale hStruct 0)
             0) ^ hP4.xi) P)
     (hLowerExcessPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) hP4.sLower (.finite 1) a)⁻¹ -
               (hP.barSigmaStarAtScale hStruct 0)⁻¹)
@@ -219,26 +219,26 @@ theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_section52_error_of_integr
     (hUpperPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (Ch04.LambdaSqCoeffField (originCube d (l : ℤ)) hP4.sUpper (.finite 1) a) ^
               hP4.xi) P)
     (hLowerPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((Ch04.lambdaSqCoeffField (originCube d (l : ℤ)) hP4.sLower (.finite 1) a)⁻¹) ^
               hP4.xi) P)
     (m : ℕ)
     (hUpperExcessPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) hP4.sUpper (.finite 1) a -
               hP.barSigmaAtScale hStruct 0)
             0) ^ hP4.xi) P)
     (hLowerExcessPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) hP4.sLower (.finite 1) a)⁻¹ -
               (hP.barSigmaStarAtScale hStruct 0)⁻¹)

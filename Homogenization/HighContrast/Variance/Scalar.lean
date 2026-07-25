@@ -36,10 +36,10 @@ scale `m`, contrast `Θ`, law `L`, and block vector `P`. -/
 theorem scalar_block_variance [NeZero d] (hd : 3 ≤ d) :
     ∃ Cd : ℝ, 0 ≤ Cd ∧
       ∀ {m : ℤ} (_hm : 0 ≤ m) {Θ : ℝ} (_hΘ : 1 ≤ Θ) {L : CoeffLaw d}
-        [IsProbabilityMeasure L] (_hP : LawCarrier L) (_hURD : IsUnitRangeDependent L)
+        [IsProbabilityMeasure L] (_hP : LawCarrier L) (_hURD : IsUnitRangeDependentR L)
         (_hLaw : ThetaEllipticLaw Θ L) (P : BlockVec d),
       Var[fun a => blockVecDot P
-            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P); L]
+            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P); L]
         ≤ Cd * (Θ * vecNormSq P.1 + vecNormSq P.2) ^ 2
             * min 1 (Θ ^ 2 * ((3 : ℝ) ^ m) ^ (-((d : ℝ) - 2) / ((d : ℝ) - 1))) := by
   obtain ⟨Cfp, hCfp0, hfp⟩ := fixed_phase_variance_uniform (d := d) hd
@@ -55,26 +55,26 @@ theorem scalar_block_variance [NeZero d] (hd : 3 ≤ d) :
   -- the coarse observable `F`, its a.s. bounds, `AESM`, and membership in `L²`
   have hFaesm : AEStronglyMeasurable
       (fun a => blockVecDot P
-        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P)) L :=
+        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P)) L :=
     aestronglyMeasurable_coarseBlockQuadratic_cubeSet hP m P
   have hFbd : ∀ᵐ a ∂L,
-      0 ≤ blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P) ∧
-        blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P) ≤
+      0 ≤ blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P) ∧
+        blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P) ≤
           2 * Msq :=
     ae_coarseBlockQuadratic_bounds_of_thetaEllipticLaw hΘ hLaw m P
   have hFmem : MemLp
       (fun a => blockVecDot P
-        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P)) 2 L := by
+        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P)) 2 L := by
     refine MemLp.of_bound hFaesm (2 * Msq) ?_
     filter_upwards [hFbd] with a ha
     rw [Real.norm_eq_abs, abs_of_nonneg ha.1]; exact ha.2
   -- (deterministic) `Var[F] ≤ 4·Msq²`
   have hdet : Var[fun a => blockVecDot P
-        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P); L]
+        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P); L]
       ≤ 4 * Msq ^ 2 := by
     refine le_trans (variance_le_expectation_sq hFaesm) ?_
     have hbnd : ∀ᵐ a ∂L,
-        (blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P)) ^ 2
+        (blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P)) ^ 2
           ≤ 4 * Msq ^ 2 := by
       filter_upwards [hFbd] with a ha; nlinarith [ha.1, ha.2, hMsq0]
     refine le_trans (integral_mono_ae hFmem.integrable_sq (integrable_const _) hbnd) ?_
@@ -82,7 +82,7 @@ theorem scalar_block_variance [NeZero d] (hd : 3 ≤ d) :
   -- (two-error) `Var[F] ≤ 2(Cfp+Cav)·(Θ³(ℓ/3^m)^{d-2} + Θ/ℓ)·Msq²`
   have htwo : ∀ ℓ : ℝ, 4 ≤ ℓ → ℓ ≤ (3 : ℝ) ^ m →
       Var[fun a => blockVecDot P
-          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P); L]
+          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P); L]
         ≤ 2 * (Cfp + Cav)
             * (Θ ^ 3 * (ℓ / (3 : ℝ) ^ m) ^ (d - 2) + Θ * ℓ⁻¹) * Msq ^ 2 := by
     intro ℓ hℓ4 hℓL
@@ -92,13 +92,13 @@ theorem scalar_block_variance [NeZero d] (hd : 3 ≤ d) :
     obtain ⟨σ, -, havb⟩ := hav (m := m) hΘ hP hLaw hℓ4 hNle P
     set φ : Vec d := gridPhase ℓ N σ with hφdef
     -- the fixed-phase observable `G = F_σ`
-    have hGaesm : AEStronglyMeasurable (fun a => phaseObservable ℓ φ m P a) L :=
+    have hGaesm : AEStronglyMeasurable (fun a => phaseObservable ℓ φ m P a.toFun) L :=
       aestronglyMeasurable_phaseObservable hP m ℓ φ P
     have hGbd : ∀ᵐ a ∂L,
-        0 ≤ phaseObservable ℓ φ m P a ∧ phaseObservable ℓ φ m P a ≤ 2 * Msq := by
+        0 ≤ phaseObservable ℓ φ m P a.toFun ∧ phaseObservable ℓ φ m P a.toFun ≤ 2 * Msq := by
       filter_upwards [hLaw] with a ha
-      exact phaseObservable_mem_Icc hΘ P ha.1 ha.2
-    have hGmem : MemLp (fun a => phaseObservable ℓ φ m P a) 2 L := by
+      exact phaseObservable_mem_Icc hΘ P (fun i j => a.entry_measurable i j) ha
+    have hGmem : MemLp (fun a => phaseObservable ℓ φ m P a.toFun) 2 L := by
       refine MemLp.of_bound hGaesm (2 * Msq) ?_
       filter_upwards [hGbd] with a ha
       rw [Real.norm_eq_abs, abs_of_nonneg ha.1]; exact ha.2
@@ -106,33 +106,33 @@ theorem scalar_block_variance [NeZero d] (hd : 3 ≤ d) :
     have hsplit := var_le_two_integral_add_two_var (μ := L) hFmem hGmem
     -- averaging error, rewritten to `∫(F − G)²`
     have hIeq : (∫ a, (blockVecDot P
-          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P)
-            - phaseObservable ℓ φ m P a) ^ 2 ∂L)
+          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P)
+            - phaseObservable ℓ φ m P a.toFun) ^ 2 ∂L)
         = ∫ a, |blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m))
-              (corridorField ℓ φ a)) P) -
-            blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P)|
+              (corridorField ℓ φ a.toFun)) P) -
+            blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P)|
               ^ 2 ∂L := by
       refine integral_congr_ae ?_
       filter_upwards with a
-      show (blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P)
-          - phaseObservable ℓ φ m P a) ^ 2 = _
+      show (blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P)
+          - phaseObservable ℓ φ m P a.toFun) ^ 2 = _
       rw [phaseObservable, sq_abs]; ring
     have h1 : (∫ a, (blockVecDot P
-          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P)
-            - phaseObservable ℓ φ m P a) ^ 2 ∂L)
+          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P)
+            - phaseObservable ℓ φ m P a.toFun) ^ 2 ∂L)
         ≤ Cav * Θ * ℓ⁻¹ * Msq ^ 2 := by rw [hIeq]; exact havb
-    have h2 : Var[fun a => phaseObservable ℓ φ m P a; L]
+    have h2 : Var[fun a => phaseObservable ℓ φ m P a.toFun; L]
         ≤ Cfp * Θ ^ 3 * (ℓ / (3 : ℝ) ^ m) ^ (d - 2) * Msq ^ 2 :=
       hfp (m := m) (ℓ := ℓ) (Θ := Θ) (σ := φ) hℓ4 hℓL hΘ P hURD hLaw
     -- combine
     have hA0 : (0 : ℝ) ≤ Θ ^ 3 * (ℓ / (3 : ℝ) ^ m) ^ (d - 2) := by positivity
     have hB0 : (0 : ℝ) ≤ Θ * ℓ⁻¹ := by positivity
     calc Var[fun a => blockVecDot P
-            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P); L]
+            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P); L]
         ≤ 2 * (∫ a, (blockVecDot P
-              (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P)
-                - phaseObservable ℓ φ m P a) ^ 2 ∂L)
-            + 2 * Var[fun a => phaseObservable ℓ φ m P a; L] := hsplit
+              (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P)
+                - phaseObservable ℓ φ m P a.toFun) ^ 2 ∂L)
+            + 2 * Var[fun a => phaseObservable ℓ φ m P a.toFun; L] := hsplit
       _ ≤ 2 * (Cav * Θ * ℓ⁻¹ * Msq ^ 2)
             + 2 * (Cfp * Θ ^ 3 * (ℓ / (3 : ℝ) ^ m) ^ (d - 2) * Msq ^ 2) := by
           gcongr

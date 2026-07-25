@@ -53,7 +53,7 @@ variable {d : ℕ}
 centre scale `j` on the cube `Q`. -/
 private noncomputable def obs [NeZero d] {P : CoeffLaw d}
     (hP : LawCarrier P) (hStruct : StructuralLaw P) (j : ℕ) (Q : TriadicCube d) :
-    CoeffField d → ℝ :=
+    RegCoeffField d → ℝ :=
   fun a => Homogenization.Book.Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
     hP hStruct (j : ℤ) Q a
 
@@ -61,8 +61,8 @@ private noncomputable def obs [NeZero d] {P : CoeffLaw d}
 `ENNReal.ofReal` of the square root of the manuscript observable. -/
 theorem intermediateCoarseBlockDeviation_id_eq_ofReal_sqrt [NeZero d]
     {P : CoeffLaw d} (hP : LawCarrier P) (hStruct : StructuralLaw P)
-    (j : ℕ) (Q : TriadicCube d) (a : CoeffField d) :
-    intermediateCoarseBlockDeviation hP hStruct (fun x : CoeffField d => x) j Q a =
+    (j : ℕ) (Q : TriadicCube d) (a : RegCoeffField d) :
+    intermediateCoarseBlockDeviation hP hStruct (fun x : RegCoeffField d => x) j Q a =
       ENNReal.ofReal (Real.sqrt (obs hP hStruct j Q a)) := by
   have hid :=
     fullBlockNormalizedFluctuationOperatorNormSqAtScale_eq_terminal_norm_sq
@@ -76,8 +76,8 @@ theorem intermediateCoarseBlockDeviation_id_eq_ofReal_sqrt [NeZero d]
 /-- The `ℝ`-square of the deviation is `ENNReal.ofReal` of the observable. -/
 theorem intermediateCoarseBlockDeviation_id_rpow_two [NeZero d]
     {P : CoeffLaw d} (hP : LawCarrier P) (hStruct : StructuralLaw P)
-    (j : ℕ) (Q : TriadicCube d) (a : CoeffField d) :
-    intermediateCoarseBlockDeviation hP hStruct (fun x : CoeffField d => x) j Q a
+    (j : ℕ) (Q : TriadicCube d) (a : RegCoeffField d) :
+    intermediateCoarseBlockDeviation hP hStruct (fun x : RegCoeffField d => x) j Q a
         ^ (2 : ℝ) =
       ENNReal.ofReal (obs hP hStruct j Q a) := by
   rw [intermediateCoarseBlockDeviation_id_eq_ofReal_sqrt hP hStruct j Q a]
@@ -148,7 +148,7 @@ theorem varianceBlockEstimate_of_thetaEllipticLaw [NeZero d] (hd : 3 ≤ d)
     VarianceBlockEstimate (vpParams d hd Θ) P
       (Homogenization.Book.Ch05.widetildeThetaAtScale P (0 : ℤ) hP4) N2
       (intermediateCoarseBlockDeviation hP hStruct
-        (fun x : CoeffField d => x)) where
+        (fun x : RegCoeffField d => x)) where
   aemeasurable := by
     intro j hj Q hQscale
     have hQ_nonneg : 0 ≤ Q.scale := by rw [hQscale]; exact_mod_cast Nat.zero_le j
@@ -177,13 +177,13 @@ theorem varianceBlockEstimate_of_thetaEllipticLaw [NeZero d] (hd : 3 ≤ d)
     have hobs_int : Integrable (obs hP hStruct j Q) P :=
       integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_from_P4_of_nonneg_scale
         hP hStruct hP4 (j : ℤ) Q hQ_nonneg
-    have hobs_nonneg_ae : (0 : CoeffField d → ℝ) ≤ᵐ[P] obs hP hStruct j Q :=
+    have hobs_nonneg_ae : (0 : RegCoeffField d → ℝ) ≤ᵐ[P] obs hP hStruct j Q :=
       Filter.Eventually.of_forall fun a =>
         fullBlockNormalizedFluctuationOperatorNormSqAtScale_nonneg hP hStruct (j : ℤ) Q a
     -- rewrite the squared integrand
     have hint_eq :
         ∫⁻ a, intermediateCoarseBlockDeviation hP hStruct
-            (fun x : CoeffField d => x) j Q a ^ (2 : ℝ) ∂P =
+            (fun x : RegCoeffField d => x) j Q a ^ (2 : ℝ) ∂P =
           ENNReal.ofReal (∫ a, obs hP hStruct j Q a ∂P) := by
       rw [ofReal_integral_eq_lintegral_ofReal hobs_int hobs_nonneg_ae]
       exact lintegral_congr fun a =>

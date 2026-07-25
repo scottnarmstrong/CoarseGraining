@@ -444,7 +444,7 @@ theorem descendantsAverage_cubeAverage_topHalfEnergyOnCube_eq_responseJOnCube
 /-- The descendant-averaged sum-energy factor is controlled by twice the parent
 response plus twice the child-response average. -/
 theorem descendantsAverage_additivitySumHalfEnergyOnDependentFamily_le_two_responseJ_add_two_childResponse
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
@@ -510,7 +510,7 @@ theorem descendantsAverage_additivitySumHalfEnergyOnDependentFamily_le_two_respo
 /-- The descendant-averaged sum-energy factor is bounded by four times the
 child-response average. -/
 theorem descendantsAverage_additivitySumHalfEnergyOnDependentFamily_le_four_childResponse
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
@@ -643,7 +643,7 @@ theorem abs_concreteAdditivityCrossTermOnFamilyAtDepth_le_const_mul_sqrt_descAvg
 /-- Deterministic additivity-cross bound for the Chapter 4 dependent family,
 with the second energy factor reduced to child responses. -/
 theorem abs_concreteAdditivityCrossTermOnDependentFamilyAtDepth_le_two_const_mul_sqrt_descAvg_diffEnergy_mul_sqrt_childResponseJAverage
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (φ : Vec d → ℝ) (p q : Vec d)
     {C : ℝ}
@@ -695,7 +695,7 @@ theorem abs_concreteAdditivityCrossTermOnDependentFamilyAtDepth_le_two_const_mul
 /-- Deterministic additivity-cross bound in the manuscript form, with the
 difference-energy factor identified as the response partition defect. -/
 theorem abs_concreteAdditivityCrossTermOnDependentFamilyAtDepth_le_two_const_mul_sqrt_responseJPartitionDefect_mul_sqrt_childResponseJAverage
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (φ : Vec d → ℝ) (p q : Vec d)
     {C : ℝ}

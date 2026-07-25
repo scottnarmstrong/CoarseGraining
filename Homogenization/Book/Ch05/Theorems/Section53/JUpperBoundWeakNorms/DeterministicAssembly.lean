@@ -23,7 +23,7 @@ replaced by the scalar-response weak-norm cutoff-product bridge.  The
 cutoff-oscillation and linear-pair terms are still displayed separately here;
 those are the next deterministic terms to insert before taking expectations. -/
 theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentFamily_le_additivityDefect_add_cutoffOscillation_add_linearPair_add_cutoffProductBridgeRHS
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a) (Q : TriadicCube d)
     (j : ℕ) (s : ℝ) (φ : Vec d → ℝ) (p q p0 q0 : Vec d)
     (dualField cutoffGradient : Vec d → Vec d)
@@ -134,16 +134,16 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
         |cutoffOscillationTermOnCubeAtDepth Q (F.coeffOn Q) j φ p q| +
           |cutoffLinearPairTermOnCube Q (F.coeffOn Q) φ p q p0 q0| +
             cutoffProductBridgeRHS Q s cutoffGradient
-              (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a)
-              (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a)
-              ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖
+              (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
+              (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun)
+              ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖
               cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant := by
   intro F
   let P : ℝ :=
     cutoffProductBridgeRHS Q s cutoffGradient
-      (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a)
-      (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a)
-      ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖
+      (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
+      (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun)
+      ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖
       cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant
   have hsplit :
       |centeredResponseJOnCube Q (F.coeffOn Q) p q p0 q0 -
@@ -182,7 +182,7 @@ oscillation term and the product term replaced by their manuscript bounds.
 The linear pair is the only displayed deterministic split term still not
 inserted here. -/
 theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentFamily_le_additivityDefect_add_cutoffOscillationBound_add_linearPair_add_cutoffProductBridgeRHS
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a) (Q : TriadicCube d)
     (j : ℕ) (s : ℝ) (φ : Vec d → ℝ) (p q p0 q0 : Vec d)
     (dualField cutoffGradient : Vec d → Vec d)
@@ -290,16 +290,16 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
         Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a +
           |cutoffLinearPairTermOnCube Q (F.coeffOn Q) φ p q p0 q0| +
             cutoffProductBridgeRHS Q s cutoffGradient
-              (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a)
-              (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a)
-              ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖
+              (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
+              (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun)
+              ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖
               cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant := by
   intro F
   let P : ℝ :=
     cutoffProductBridgeRHS Q s cutoffGradient
-      (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a)
-      (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a)
-      ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖
+      (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
+      (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun)
+      ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖
       cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant
   have hOsc_int :
       ∀ R ∈ descendantsAtDepth Q j,
@@ -349,7 +349,7 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
 split terms replaced by their current deterministic manuscript bounds.  This
 is the pointwise estimate to feed into the expectation step. -/
 theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentFamily_le_additivityDefect_add_cutoffOscillationBound_add_linearWeakNorms_add_cutoffProductBridgeRHS
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a) (Q : TriadicCube d)
     (j : ℕ) (s t : ℝ) (φ : Vec d → ℝ) (p q p0 q0 : Vec d)
     (dualField cutoffGradient : Vec d → Vec d)
@@ -471,8 +471,8 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
               (1 - (3 : ℝ) ^ (-s))⁻¹) * cutoffCircS))) ≤
         centeredCutoffConstant) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
-    let gradWeak := Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a
-    let fluxWeak := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a
+    let gradWeak := Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
+    let fluxWeak := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun
     let gradCoeff :=
       (3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS
     let fluxCoeff :=
@@ -488,16 +488,16 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
             (1 / 2 : ℝ) * ‖p0‖ *
               (((Fintype.card (Fin d) : ℝ) * fluxCoeff) * fluxWeak)) +
             cutoffProductBridgeRHS Q s cutoffGradient
-              (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a)
-              (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a)
-              ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖
+              (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
+              (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun)
+              ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖
               cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant := by
   intro F gradWeak fluxWeak gradCoeff fluxCoeff
   let P : ℝ :=
     cutoffProductBridgeRHS Q s cutoffGradient
-      (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a)
-      (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a)
-      ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖
+      (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
+      (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun)
+      ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖
       cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant
   let L : ℝ :=
     (1 / 2 : ℝ) * ‖q0‖ *
@@ -550,7 +550,7 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
 /-- Deterministic pointwise estimate with the product term in the final
 scaled-gradient/scaled-flux weak-norm form. -/
 theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentFamily_le_additivityDefect_add_cutoffOscillationBound_add_linearWeakNorms_add_scaledProduct
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a) (Q : TriadicCube d)
     (j : ℕ) (s t : ℝ) (φ : Vec d → ℝ) (p q p0 q0 : Vec d)
     {C B Cosc scaleSep BφS BφT cutoffDerivative : ℝ}
@@ -629,8 +629,8 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
       ∀ i : Fin d, ∀ z ∈ cubeSet Q,
         ‖fderiv ℝ (fun x => scalarCutoffGradientField φ x i) z‖ ≤ cutoffDerivative) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
-    let gradWeak := Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a
-    let fluxWeak := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a
+    let gradWeak := Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
+    let fluxWeak := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun
     let gradCoeff :=
       (3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS
     let fluxCoeff :=

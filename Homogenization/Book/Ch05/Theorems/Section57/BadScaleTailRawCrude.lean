@@ -33,7 +33,7 @@ theorem measureReal_shiftedCrudeBottomBadScaleEvent_quenchedProbeEnvelope_le_wei
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {N0 q m n : ℕ},
         let K : ℝ := quenchedProbeEnvelopeConst d
-        let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+        let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
           fun M N aω =>
             quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
         let x : ℝ :=
@@ -60,7 +60,7 @@ theorem measureReal_shiftedCrudeBottomBadScaleEvent_quenchedProbeEnvelope_le_wei
         let N0 : ℕ :=
           annealedAlgebraicEntryScale P
             hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-        let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+        let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
           fun M N aω =>
             quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
         let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -88,7 +88,7 @@ theorem measureReal_shiftedCrudeBottomBadScaleEvent_quenchedProbeEnvelope_le_wei
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-  let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+  let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>
       quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
   let S : Finset (NormalizedProbeIndex d) := Finset.univ

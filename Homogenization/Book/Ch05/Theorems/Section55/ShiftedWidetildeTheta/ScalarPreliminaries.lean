@@ -41,7 +41,7 @@ private theorem sLower_add_beta_lt_one' {d : ℕ} [NeZero d]
 
 theorem integrable_pow_of_nonneg_le_const_add_nonneg
     {d ξ : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
-    {X E : CoeffField d → ℝ} {A : ℝ}
+    {X E : RegCoeffField d → ℝ} {A : ℝ}
     (hξ : 1 ≤ ξ) (hA_nonneg : 0 ≤ A)
     (hX_nonneg : ∀ a, 0 ≤ X a)
     (hE_nonneg : ∀ a, 0 ≤ E a)
@@ -84,15 +84,15 @@ theorem upperShiftedFactorPowerIntegrableAtScale_from_P4
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         (Ch04.LambdaSqCoeffField (originCube d (m : ℤ))
           (hP4.sUpper + section53CoarseFluctuationBeta hP4) (.finite 1) a) ^
           hP4.xi) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let rUpper := hP4.sUpper + section53CoarseFluctuationBeta hP4
-  let X : CoeffField d → ℝ := fun a =>
+  let X : RegCoeffField d → ℝ := fun a =>
     Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) rUpper (.finite 1) a
-  let E : CoeffField d → ℝ := fun a =>
+  let E : RegCoeffField d → ℝ := fun a =>
     max (X a - hP.barSigmaAtScale hStruct 0) 0
   have hBarSigma_nonneg : 0 ≤ hP.barSigmaAtScale hStruct 0 := by
     rw [hP.barSigmaAtScale_eq_barBAtScale hStruct (0 : ℤ)]
@@ -131,15 +131,15 @@ theorem lowerShiftedFactorPowerIntegrableAtScale_from_P4
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ))
           (hP4.sLower + section53CoarseFluctuationBeta hP4) (.finite 1) a)⁻¹) ^
           hP4.xi) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let rLower := hP4.sLower + section53CoarseFluctuationBeta hP4
-  let X : CoeffField d → ℝ := fun a =>
+  let X : RegCoeffField d → ℝ := fun a =>
     (Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹
-  let E : CoeffField d → ℝ := fun a =>
+  let E : RegCoeffField d → ℝ := fun a =>
     max (X a - (hP.barSigmaStarAtScale hStruct 0)⁻¹) 0
   have hStarInv_nonneg : 0 ≤ (hP.barSigmaStarAtScale hStruct 0)⁻¹ := by
     have hstar := hP.barSigmaStarAtScale_eq_inv_barSigmaStarInvAtScale hStruct (0 : ℤ)
@@ -223,7 +223,7 @@ theorem thetaAtScale_le_betaShiftedWidetildeThetaAtScale
   have hUpperPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (Ch04.LambdaSqCoeffField (originCube d (l : ℤ))
               (hP4.sUpper + section53CoarseFluctuationBeta hP4) (.finite 1) a) ^
               hP4.xi) P :=
@@ -231,7 +231,7 @@ theorem thetaAtScale_le_betaShiftedWidetildeThetaAtScale
   have hLowerPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((Ch04.lambdaSqCoeffField (originCube d (l : ℤ))
               (hP4.sLower + section53CoarseFluctuationBeta hP4) (.finite 1) a)⁻¹) ^
               hP4.xi) P :=

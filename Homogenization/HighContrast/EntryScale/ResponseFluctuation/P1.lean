@@ -90,7 +90,7 @@ theorem localLowerPositiveExcess_le_zeroBaseline_add_gap_of_P4
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
-    (k m : ℕ) (rLower : ℝ) (a : Homogenization.CoeffField d) :
+    (k m : ℕ) (rLower : ℝ) (a : Homogenization.RegCoeffField d) :
     max
         ((Homogenization.Book.Ch04.lambdaSqCoeffField
             (Homogenization.originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹ -
@@ -118,7 +118,7 @@ theorem localUpperPositiveExcess_le_zeroBaseline_add_gap_of_P4
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
-    (k m : ℕ) (rUpper : ℝ) (a : Homogenization.CoeffField d) :
+    (k m : ℕ) (rUpper : ℝ) (a : Homogenization.RegCoeffField d) :
     max
         (Homogenization.Book.Ch04.LambdaSqCoeffField
             (Homogenization.originCube d (m : ℤ)) rUpper (.finite 1) a -
@@ -146,7 +146,7 @@ theorem localLowerPositiveExcess_le_terminalBaseline_of_P4
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (rLower : ℝ)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     max
         ((Homogenization.Book.Ch04.lambdaSqCoeffField
             (Homogenization.originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹ -
@@ -172,7 +172,7 @@ theorem localUpperPositiveExcess_le_terminalBaseline_of_P4
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (rUpper : ℝ)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     max
         (Homogenization.Book.Ch04.LambdaSqCoeffField
             (Homogenization.originCube d (m : ℤ)) rUpper (.finite 1) a -
@@ -251,7 +251,7 @@ theorem localPositiveExcessWeight_le_zeroBaseline_add_gap_of_P4
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
-    (k m : ℕ) (rLower rUpper : ℝ) (a : Homogenization.CoeffField d) :
+    (k m : ℕ) (rLower rUpper : ℝ) (a : Homogenization.RegCoeffField d) :
     let Q : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let lowerLocal : ℝ :=
@@ -340,7 +340,7 @@ theorem localPositiveExcessWeight_le_terminalBaseline_of_P4
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (rLower rUpper : ℝ)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     let Q : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let lowerLocal : ℝ :=
@@ -464,7 +464,7 @@ theorem paired_mismatchTermSquares_special_le_localBaseline_add_positiveExcess
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
-    (k m : ℕ) (e : Homogenization.Vec d) (a : Homogenization.CoeffField d) :
+    (k m : ℕ) (e : Homogenization.Vec d) (a : Homogenization.RegCoeffField d) :
     let β := section53CoarseFluctuationBeta hP4
     let s := hP4.sLower + 2 * β
     let s' := hP4.sLower + β
@@ -623,7 +623,7 @@ theorem paired_mismatchTermSquares_special_le_rawHighContrastWeakNormContributio
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
-    (k m : ℕ) (e : Homogenization.Vec d) (a : Homogenization.CoeffField d) :
+    (k m : ℕ) (e : Homogenization.Vec d) (a : Homogenization.RegCoeffField d) :
     let β := section53CoarseFluctuationBeta hP4
     let s := hP4.sLower + 2 * β
     let s' := hP4.sLower + β

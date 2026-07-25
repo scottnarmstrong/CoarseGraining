@@ -33,7 +33,7 @@ theorem normalizedBlockJTraceAverage_eq_trace_fluctuation_add_theta_gap
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {child parent : ℕ}
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a) :
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a) :
     let Q : TriadicCube d := originCube d (parent : ℤ)
     let j : ℕ := parent - child
     let M : FullBlockMat d :=
@@ -50,7 +50,7 @@ theorem normalizedBlockJTraceAverage_eq_trace_fluctuation_add_theta_gap
   let D : FullBlockMat d := Matrix.diagonal (Ch04.scalarFullBlockInvSqrtDiag b c)
   let T : FullBlockMat d := Matrix.diagonal (scalarFullBlockSqrtDiag b c)
   let Aavg : BlockMat d :=
-    descendantsAverageBlockMat Q j (fun R => coarseBlockMatrix (cubeSet R) a)
+    descendantsAverageBlockMat Q j (fun R => coarseBlockMatrix (cubeSet R) a.toFun)
   let Abar : FullBlockMat d :=
     toFullBlockMat (Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct (child : ℤ))
   have hb : 0 < b := by
@@ -121,7 +121,7 @@ theorem normalizedBlockJTraceAverageSq_le_matrix_average_add_thetaSq
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     {child parent : ℕ}
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a) :
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a) :
     normalizedBlockJTraceAverageSq hP hStruct (child : ℤ)
         (originCube d (parent : ℤ)) (parent - child) a ≤
       8 * (Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ) *
@@ -235,7 +235,7 @@ theorem normalizedBlockJTraceAverageSq_integral_le_geometric_add_thetaSq_of_smal
   letI : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (parent : ℤ)
   let j : ℕ := parent - child
-  let opSq : CoeffField d → ℝ :=
+  let opSq : RegCoeffField d → ℝ :=
     descendantsAverageNormalizedFluctuationOperatorNormSq
       hP hStruct (child : ℤ) Q j
   let gapSq : ℝ := (thetaAtScale hP hStruct (child : ℤ) - 1) ^ (2 : ℕ)
@@ -252,13 +252,13 @@ theorem normalizedBlockJTraceAverageSq_integral_le_geometric_add_thetaSq_of_smal
       integrable_descendantsAverageNormalizedFluctuationOperatorNormSq_from_P4_of_stationary
         hP hStruct hP4 child parent child hchild_parent
   have hright_int :
-      Integrable (fun a : CoeffField d => traceConst * opSq a + thetaConst * gapSq) P :=
+      Integrable (fun a : RegCoeffField d => traceConst * opSq a + thetaConst * gapSq) P :=
     (hop_int.const_mul traceConst).add (integrable_const (thetaConst * gapSq))
   have hpoint :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         normalizedBlockJTraceAverageSq hP hStruct (child : ℤ) Q j a)
         ≤ᵐ[P]
-      fun a : CoeffField d => traceConst * opSq a + thetaConst * gapSq := by
+      fun a : RegCoeffField d => traceConst * opSq a + thetaConst * gapSq := by
     filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
     simpa [traceConst, thetaConst, gapSq, opSq, Q, j] using
       normalizedBlockJTraceAverageSq_le_matrix_average_add_thetaSq

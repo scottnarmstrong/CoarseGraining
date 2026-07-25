@@ -22,16 +22,16 @@ theorem thetaAtScale_mono_of_integrable_diagonalBlockNorms
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     {n m : ℤ} (hn_nonneg : 0 ≤ n) (hnm : n ≤ m)
     (hParentBInt :
-      Integrable (fun a : CoeffField d => coarseBBlockNorm (originCube d m) a) P)
+      Integrable (fun a : RegCoeffField d => coarseBBlockNorm (originCube d m) a) P)
     (hParentStarInt :
       Integrable
-        (fun a : CoeffField d => coarseSigmaStarInvBlockNorm (originCube d m) a) P)
+        (fun a : RegCoeffField d => coarseSigmaStarInvBlockNorm (originCube d m) a) P)
     (hDescBInt :
       ∀ R, R ∈ descendantsAtScale (originCube d m) n →
-        Integrable (fun a : CoeffField d => coarseBBlockNorm R a) P)
+        Integrable (fun a : RegCoeffField d => coarseBBlockNorm R a) P)
     (hDescStarInt :
       ∀ R, R ∈ descendantsAtScale (originCube d m) n →
-        Integrable (fun a : CoeffField d => coarseSigmaStarInvBlockNorm R a) P)
+        Integrable (fun a : RegCoeffField d => coarseSigmaStarInvBlockNorm R a) P)
     (hChildBlockInt :
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d n)) P) :
     thetaAtScale hP hStruct m ≤
@@ -268,14 +268,14 @@ theorem scalarPreliminaries_homogenizationScale
   have hUpperPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (Ch04.LambdaSqCoeffField (originCube d (l : ℤ)) hP4.sUpper (.finite 1) a) ^
               hP4.xi) P :=
     fun l => upperFactorPowerIntegrableAtScale_from_P4 hP hStruct hP4 l
   have hLowerPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((Ch04.lambdaSqCoeffField (originCube d (l : ℤ)) hP4.sLower (.finite 1) a)⁻¹) ^
               hP4.xi) P :=
     fun l => lowerFactorPowerIntegrableAtScale_from_P4 hP hStruct hP4 l

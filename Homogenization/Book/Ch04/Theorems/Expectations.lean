@@ -27,7 +27,7 @@ open scoped Matrix.Norms.Elementwise
 /-- Finite-dimensional matrix quadratic forms commute with entrywise
 expectation under entrywise integrability. -/
 theorem integral_vecDot_matVecMul_eq_entrywise_integral
-    {d : ℕ} {P : CoeffLaw d} {M : CoeffField d → Mat d}
+    {d : ℕ} {P : CoeffLaw d} {M : RegCoeffField d → Mat d}
     (hM : ∀ i j, Integrable (fun a => M a i j) P) (x y : Vec d) :
     ∫ a, vecDot x (matVecMul (M a) y) ∂P =
       vecDot x (matVecMul (fun i j => ∫ a, M a i j ∂P) y) := by
@@ -51,110 +51,110 @@ private theorem integrable_blockMatEntry_of_integrable_coarseFullBlockMatrixAtCu
     (hInt : Integrable (coarseFullBlockMatrixAtCube Q) P) :
     ∀ α β,
       Integrable
-        (fun a : CoeffField d => blockMatEntry (coarseBlockMatrix (cubeSet Q) a) α β) P := by
+        (fun a : RegCoeffField d => blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β) P := by
   intro α β
-  have hα : Integrable (fun a : CoeffField d => coarseFullBlockMatrixAtCube Q a α) P :=
+  have hα : Integrable (fun a : RegCoeffField d => coarseFullBlockMatrixAtCube Q a α) P :=
     MeasureTheory.Integrable.eval hInt α
-  have hαβ : Integrable (fun a : CoeffField d => coarseFullBlockMatrixAtCube Q a α β) P :=
+  have hαβ : Integrable (fun a : RegCoeffField d => coarseFullBlockMatrixAtCube Q a α β) P :=
     MeasureTheory.Integrable.eval hα β
   simpa [coarseFullBlockMatrixAtCube, coarseFullBlockMatrixObservable, toFullBlockMat,
     blockMatEntry] using hαβ
 
 /-- Scalar response observable on a deterministic triadic cube. -/
 noncomputable def responseJObservableCubeSet {d : ℕ}
-    (Q : TriadicCube d) (p q : Vec d) : CoeffField d → ℝ :=
-  fun a => ResponseJ (cubeSet Q) p q a
+    (Q : TriadicCube d) (p q : Vec d) : RegCoeffField d → ℝ :=
+  fun a => ResponseJ (cubeSet Q) p q a.toFun
 
 @[simp]
 theorem responseJObservableCubeSet_apply {d : ℕ}
-    (Q : TriadicCube d) (p q : Vec d) (a : CoeffField d) :
-    responseJObservableCubeSet Q p q a = ResponseJ (cubeSet Q) p q a :=
+    (Q : TriadicCube d) (p q : Vec d) (a : RegCoeffField d) :
+    responseJObservableCubeSet Q p q a = ResponseJ (cubeSet Q) p q a.toFun :=
   rfl
 
 /-- The scalar response observable is pointwise nonnegative. -/
 theorem responseJObservableCubeSet_nonneg {d : ℕ}
-    (Q : TriadicCube d) (p q : Vec d) (a : CoeffField d) :
+    (Q : TriadicCube d) (p q : Vec d) (a : RegCoeffField d) :
     0 ≤ responseJObservableCubeSet Q p q a := by
-  simpa [responseJObservableCubeSet] using responseJ_nonneg (cubeSet Q) p q a
+  simpa [responseJObservableCubeSet] using responseJ_nonneg (cubeSet Q) p q a.toFun
 
 theorem responseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarrier
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
-    (fun a : CoeffField d => responseJObservableCubeSet Q p q a) =ᵐ[P]
-      (fun a : CoeffField d =>
-        (1 / 2 : ℝ) * vecDot q (matVecMul (coarseBlockMatrix (cubeSet Q) a).lowerRight q) -
+    (fun a : RegCoeffField d => responseJObservableCubeSet Q p q a) =ᵐ[P]
+      (fun a : RegCoeffField d =>
+        (1 / 2 : ℝ) * vecDot q (matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight q) -
           vecDot p q -
-          vecDot q (matVecMul (coarseBlockMatrix (cubeSet Q) a).lowerLeft p) +
-          (1 / 2 : ℝ) * vecDot p (matVecMul (coarseBlockMatrix (cubeSet Q) a).upperLeft p)) := by
+          vecDot q (matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft p) +
+          (1 / 2 : ℝ) * vecDot p (matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft p)) := by
   filter_upwards
     [hP.ResponseJ_cubeSet_eq_Mu_neg_left_sub_vecDot_ae Q p q,
       hP.ae_exists_coarseBlockMatrix_openCubeSet Q] with a hResponse hex
   have hCoarse :
-      IsCoarseBlockMatrix (openCubeSet Q) a (coarseBlockMatrix (openCubeSet Q) a) :=
+      IsCoarseBlockMatrix (openCubeSet Q) a.toFun (coarseBlockMatrix (openCubeSet Q) a.toFun) :=
     isCoarseBlockMatrix_coarseBlockMatrix hex
   calc
-    responseJObservableCubeSet Q p q a = ResponseJ (cubeSet Q) p q a := rfl
-    _ = Mu (cubeSet Q) (-p, q) a - vecDot p q := hResponse
-    _ = Mu (openCubeSet Q) (-p, q) a - vecDot p q := by
-      rw [Mu_cubeSet_eq_openCubeSet_of_triadicCube (Q := Q) (P := (-p, q)) (a := a)]
+    responseJObservableCubeSet Q p q a = ResponseJ (cubeSet Q) p q a.toFun := rfl
+    _ = Mu (cubeSet Q) (-p, q) a.toFun - vecDot p q := hResponse
+    _ = Mu (openCubeSet Q) (-p, q) a.toFun - vecDot p q := by
+      rw [Mu_cubeSet_eq_openCubeSet_of_triadicCube (Q := Q) (P := (-p, q)) (a := a.toFun)]
     _ =
         (1 / 2 : ℝ) *
             blockVecDot (-p, q)
-              (blockMatVecMul (coarseBlockMatrix (openCubeSet Q) a) (-p, q)) -
+              (blockMatVecMul (coarseBlockMatrix (openCubeSet Q) a.toFun) (-p, q)) -
           vecDot p q := by
         rw [Mu_eq_half_blockVecDot_coarseBlockMatrix hex (-p, q)]
     _ =
         (1 / 2 : ℝ) *
-            vecDot q (matVecMul (coarseBlockMatrix (openCubeSet Q) a).lowerRight q) -
+            vecDot q (matVecMul (coarseBlockMatrix (openCubeSet Q) a.toFun).lowerRight q) -
           vecDot p q -
-          vecDot q (matVecMul (coarseBlockMatrix (openCubeSet Q) a).lowerLeft p) +
+          vecDot q (matVecMul (coarseBlockMatrix (openCubeSet Q) a.toFun).lowerLeft p) +
           (1 / 2 : ℝ) *
-            vecDot p (matVecMul (coarseBlockMatrix (openCubeSet Q) a).upperLeft p) := by
+            vecDot p (matVecMul (coarseBlockMatrix (openCubeSet Q) a.toFun).upperLeft p) := by
         rw [magic_half_blockVecDot_neg_left_of_isSymmetricBlockMat hCoarse.1 p q]
         ring
     _ =
         (1 / 2 : ℝ) *
-            vecDot q (matVecMul (coarseBlockMatrix (cubeSet Q) a).lowerRight q) -
+            vecDot q (matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight q) -
           vecDot p q -
-          vecDot q (matVecMul (coarseBlockMatrix (cubeSet Q) a).lowerLeft p) +
+          vecDot q (matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft p) +
           (1 / 2 : ℝ) *
-            vecDot p (matVecMul (coarseBlockMatrix (cubeSet Q) a).upperLeft p) := by
-        rw [coarseBlockMatrix_cubeSet_eq_openCubeSet_of_triadicCube Q a]
+            vecDot p (matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft p) := by
+        rw [coarseBlockMatrix_cubeSet_eq_openCubeSet_of_triadicCube Q a.toFun]
 
 private theorem integrable_responseJQuadratic_coarseBlockMatrix_of_integrable_coarseFullBlockMatrixAtCube
     {d : ℕ} {P : CoeffLaw d} [IsFiniteMeasure P] {Q : TriadicCube d} (p q : Vec d)
     (hBlock : Integrable (coarseFullBlockMatrixAtCube Q) P) :
     Integrable
-      (fun a : CoeffField d =>
-        (1 / 2 : ℝ) * vecDot q (matVecMul (coarseBlockMatrix (cubeSet Q) a).lowerRight q) -
+      (fun a : RegCoeffField d =>
+        (1 / 2 : ℝ) * vecDot q (matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight q) -
           vecDot p q -
-          vecDot q (matVecMul (coarseBlockMatrix (cubeSet Q) a).lowerLeft p) +
-          (1 / 2 : ℝ) * vecDot p (matVecMul (coarseBlockMatrix (cubeSet Q) a).upperLeft p)) P := by
-  let M : CoeffField d → BlockMat d := fun a => coarseBlockMatrix (cubeSet Q) a
+          vecDot q (matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft p) +
+          (1 / 2 : ℝ) * vecDot p (matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft p)) P := by
+  let M : RegCoeffField d → BlockMat d := fun a => coarseBlockMatrix (cubeSet Q) a.toFun
   have hEntry := integrable_blockMatEntry_of_integrable_coarseFullBlockMatrixAtCube hBlock
-  have hLR : ∀ i j, Integrable (fun a : CoeffField d => (M a).lowerRight i j) P := by
+  have hLR : ∀ i j, Integrable (fun a : RegCoeffField d => (M a).lowerRight i j) P := by
     intro i j
     simpa [M, blockMatEntry] using hEntry (Sum.inr i) (Sum.inr j)
-  have hLL : ∀ i j, Integrable (fun a : CoeffField d => (M a).lowerLeft i j) P := by
+  have hLL : ∀ i j, Integrable (fun a : RegCoeffField d => (M a).lowerLeft i j) P := by
     intro i j
     simpa [M, blockMatEntry] using hEntry (Sum.inr i) (Sum.inl j)
-  have hUL : ∀ i j, Integrable (fun a : CoeffField d => (M a).upperLeft i j) P := by
+  have hUL : ∀ i j, Integrable (fun a : RegCoeffField d => (M a).upperLeft i j) P := by
     intro i j
     simpa [M, blockMatEntry] using hEntry (Sum.inl i) (Sum.inl j)
   have hTermLR :
-      Integrable (fun a : CoeffField d => vecDot q (matVecMul (M a).lowerRight q)) P := by
+      Integrable (fun a : RegCoeffField d => vecDot q (matVecMul (M a).lowerRight q)) P := by
     simp [vecDot, matVecMul]
     exact MeasureTheory.integrable_finset_sum Finset.univ fun i _ =>
       (MeasureTheory.integrable_finset_sum Finset.univ fun j _ =>
         (hLR i j).mul_const (q j)).const_mul (q i)
   have hTermLL :
-      Integrable (fun a : CoeffField d => vecDot q (matVecMul (M a).lowerLeft p)) P := by
+      Integrable (fun a : RegCoeffField d => vecDot q (matVecMul (M a).lowerLeft p)) P := by
     simp [vecDot, matVecMul]
     exact MeasureTheory.integrable_finset_sum Finset.univ fun i _ =>
       (MeasureTheory.integrable_finset_sum Finset.univ fun j _ =>
         (hLL i j).mul_const (p j)).const_mul (q i)
   have hTermUL :
-      Integrable (fun a : CoeffField d => vecDot p (matVecMul (M a).upperLeft p)) P := by
+      Integrable (fun a : RegCoeffField d => vecDot p (matVecMul (M a).upperLeft p)) P := by
     simp [vecDot, matVecMul]
     exact MeasureTheory.integrable_finset_sum Finset.univ fun i _ =>
       (MeasureTheory.integrable_finset_sum Finset.univ fun j _ =>
@@ -197,15 +197,15 @@ theorem integral_responseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
         vecDot q (matVecMul (annealedBlockMatrix P (cubeSet Q)).lowerLeft p) +
         (1 / 2 : ℝ) * vecDot p (matVecMul (annealedBlockMatrix P (cubeSet Q)).upperLeft p) := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let M : CoeffField d → BlockMat d := fun a => coarseBlockMatrix (cubeSet Q) a
+  let M : RegCoeffField d → BlockMat d := fun a => coarseBlockMatrix (cubeSet Q) a.toFun
   have hEntry := integrable_blockMatEntry_of_integrable_coarseFullBlockMatrixAtCube hBlock
-  have hLR : ∀ i j, Integrable (fun a : CoeffField d => (M a).lowerRight i j) P := by
+  have hLR : ∀ i j, Integrable (fun a : RegCoeffField d => (M a).lowerRight i j) P := by
     intro i j
     simpa [M, blockMatEntry] using hEntry (Sum.inr i) (Sum.inr j)
-  have hLL : ∀ i j, Integrable (fun a : CoeffField d => (M a).lowerLeft i j) P := by
+  have hLL : ∀ i j, Integrable (fun a : RegCoeffField d => (M a).lowerLeft i j) P := by
     intro i j
     simpa [M, blockMatEntry] using hEntry (Sum.inr i) (Sum.inl j)
-  have hUL : ∀ i j, Integrable (fun a : CoeffField d => (M a).upperLeft i j) P := by
+  have hUL : ∀ i j, Integrable (fun a : RegCoeffField d => (M a).upperLeft i j) P := by
     intro i j
     simpa [M, blockMatEntry] using hEntry (Sum.inl i) (Sum.inl j)
   have hFormula :=
@@ -227,9 +227,9 @@ theorem integral_responseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
         vecDot p q -
         ∫ a, vecDot q (matVecMul (M a).lowerLeft p) ∂P +
         (1 / 2 : ℝ) * ∫ a, vecDot p (matVecMul (M a).upperLeft p) ∂P := by
-        let f : CoeffField d → ℝ := fun a => vecDot q (matVecMul (M a).lowerRight q)
-        let g : CoeffField d → ℝ := fun a => vecDot q (matVecMul (M a).lowerLeft p)
-        let h : CoeffField d → ℝ := fun a => vecDot p (matVecMul (M a).upperLeft p)
+        let f : RegCoeffField d → ℝ := fun a => vecDot q (matVecMul (M a).lowerRight q)
+        let g : RegCoeffField d → ℝ := fun a => vecDot q (matVecMul (M a).lowerLeft p)
+        let h : RegCoeffField d → ℝ := fun a => vecDot p (matVecMul (M a).upperLeft p)
         have hf : Integrable f P := by
           simp [f, vecDot, matVecMul]
           exact MeasureTheory.integrable_finset_sum Finset.univ fun i _ =>
@@ -270,12 +270,12 @@ end LawCarrier
 
 /-- Centered scalar response observable on a deterministic triadic cube. -/
 noncomputable def centeredResponseJObservableCubeSet {d : ℕ}
-    (Q : TriadicCube d) (p q p0 q0 : Vec d) : CoeffField d → ℝ :=
+    (Q : TriadicCube d) (p q p0 q0 : Vec d) : RegCoeffField d → ℝ :=
   fun a => responseJObservableCubeSet Q p q a - (1 / 2 : ℝ) * vecDot p0 q0
 
 @[simp]
 theorem centeredResponseJObservableCubeSet_apply {d : ℕ}
-    (Q : TriadicCube d) (p q p0 q0 : Vec d) (a : CoeffField d) :
+    (Q : TriadicCube d) (p q p0 q0 : Vec d) (a : RegCoeffField d) :
     centeredResponseJObservableCubeSet Q p q p0 q0 a =
       responseJObservableCubeSet Q p q a - (1 / 2 : ℝ) * vecDot p0 q0 :=
   rfl
@@ -294,68 +294,68 @@ identity. -/
 theorem integral_responseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
     {d : ℕ} [NeZero d] {P : CoeffLaw d} [IsProbabilityMeasure P]
     (Q : TriadicCube d) (p q : Vec d)
-    (hData : ∀ᵐ a ∂P, OpenCubeDeterministicCoarseData Q a)
+    (hData : ∀ᵐ a ∂P, OpenCubeDeterministicCoarseData Q a.toFun)
     (hBlock : Integrable (coarseFullBlockMatrixAtCube Q) P) :
     ∫ a, responseJObservableCubeSet Q p q a ∂P =
       (1 / 2 : ℝ) * vecDot q (matVecMul (annealedBlockMatrix P (cubeSet Q)).lowerRight q) -
         vecDot p q -
         vecDot q (matVecMul (annealedBlockMatrix P (cubeSet Q)).lowerLeft p) +
         (1 / 2 : ℝ) * vecDot p (matVecMul (annealedBlockMatrix P (cubeSet Q)).upperLeft p) := by
-  let M : CoeffField d → BlockMat d := fun a => coarseBlockMatrix (cubeSet Q) a
+  let M : RegCoeffField d → BlockMat d := fun a => coarseBlockMatrix (cubeSet Q) a.toFun
   have hEntry := integrable_blockMatEntry_of_integrable_coarseFullBlockMatrixAtCube hBlock
-  have hLR : ∀ i j, Integrable (fun a : CoeffField d => (M a).lowerRight i j) P := by
+  have hLR : ∀ i j, Integrable (fun a : RegCoeffField d => (M a).lowerRight i j) P := by
     intro i j
     simpa [M, blockMatEntry] using hEntry (Sum.inr i) (Sum.inr j)
-  have hLL : ∀ i j, Integrable (fun a : CoeffField d => (M a).lowerLeft i j) P := by
+  have hLL : ∀ i j, Integrable (fun a : RegCoeffField d => (M a).lowerLeft i j) P := by
     intro i j
     simpa [M, blockMatEntry] using hEntry (Sum.inr i) (Sum.inl j)
-  have hUL : ∀ i j, Integrable (fun a : CoeffField d => (M a).upperLeft i j) P := by
+  have hUL : ∀ i j, Integrable (fun a : RegCoeffField d => (M a).upperLeft i j) P := by
     intro i j
     simpa [M, blockMatEntry] using hEntry (Sum.inl i) (Sum.inl j)
   have hTermLR :
-      Integrable (fun a : CoeffField d => vecDot q (matVecMul (M a).lowerRight q)) P := by
+      Integrable (fun a : RegCoeffField d => vecDot q (matVecMul (M a).lowerRight q)) P := by
     simp [vecDot, matVecMul]
     exact MeasureTheory.integrable_finset_sum Finset.univ fun i _ =>
       (MeasureTheory.integrable_finset_sum Finset.univ fun j _ =>
         (hLR i j).mul_const (q j)).const_mul (q i)
   have hTermLL :
-      Integrable (fun a : CoeffField d => vecDot q (matVecMul (M a).lowerLeft p)) P := by
+      Integrable (fun a : RegCoeffField d => vecDot q (matVecMul (M a).lowerLeft p)) P := by
     simp [vecDot, matVecMul]
     exact MeasureTheory.integrable_finset_sum Finset.univ fun i _ =>
       (MeasureTheory.integrable_finset_sum Finset.univ fun j _ =>
         (hLL i j).mul_const (p j)).const_mul (q i)
   have hTermUL :
-      Integrable (fun a : CoeffField d => vecDot p (matVecMul (M a).upperLeft p)) P := by
+      Integrable (fun a : RegCoeffField d => vecDot p (matVecMul (M a).upperLeft p)) P := by
     simp [vecDot, matVecMul]
     exact MeasureTheory.integrable_finset_sum Finset.univ fun i _ =>
       (MeasureTheory.integrable_finset_sum Finset.univ fun j _ =>
         (hUL i j).mul_const (p j)).const_mul (p i)
   have hFormula :
-      (fun a : CoeffField d => responseJObservableCubeSet Q p q a) =ᵐ[P]
-        (fun a : CoeffField d =>
+      (fun a : RegCoeffField d => responseJObservableCubeSet Q p q a) =ᵐ[P]
+        (fun a : RegCoeffField d =>
           (1 / 2 : ℝ) * vecDot q (matVecMul (M a).lowerRight q) -
             vecDot p q -
             vecDot q (matVecMul (M a).lowerLeft p) +
             (1 / 2 : ℝ) * vecDot p (matVecMul (M a).upperLeft p)) := by
     filter_upwards [hData] with a ha
     calc
-      responseJObservableCubeSet Q p q a = ResponseJ (cubeSet Q) p q a := rfl
-      _ = ResponseJ (openCubeSet Q) p q a :=
-        responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q p q a
+      responseJObservableCubeSet Q p q a = ResponseJ (cubeSet Q) p q a.toFun := rfl
+      _ = ResponseJ (openCubeSet Q) p q a.toFun :=
+        responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q p q a.toFun
       _ =
         (1 / 2 : ℝ) *
-            vecDot q (matVecMul (coarseBlockMatrix (openCubeSet Q) a).lowerRight q) -
+            vecDot q (matVecMul (coarseBlockMatrix (openCubeSet Q) a.toFun).lowerRight q) -
           vecDot p q -
-          vecDot q (matVecMul (coarseBlockMatrix (openCubeSet Q) a).lowerLeft p) +
+          vecDot q (matVecMul (coarseBlockMatrix (openCubeSet Q) a.toFun).lowerLeft p) +
           (1 / 2 : ℝ) *
-            vecDot p (matVecMul (coarseBlockMatrix (openCubeSet Q) a).upperLeft p) :=
+            vecDot p (matVecMul (coarseBlockMatrix (openCubeSet Q) a.toFun).upperLeft p) :=
         responseJ_formula_coarseBlockMatrix_openCubeSet_of_deterministicCoarseData ha p q
       _ =
         (1 / 2 : ℝ) * vecDot q (matVecMul (M a).lowerRight q) -
           vecDot p q -
           vecDot q (matVecMul (M a).lowerLeft p) +
           (1 / 2 : ℝ) * vecDot p (matVecMul (M a).upperLeft p) := by
-        rw [← coarseBlockMatrix_cubeSet_eq_openCubeSet_of_triadicCube Q a]
+        rw [← coarseBlockMatrix_cubeSet_eq_openCubeSet_of_triadicCube Q a.toFun]
   have hLRint := integral_vecDot_matVecMul_eq_entrywise_integral (P := P) hLR q q
   have hLLint := integral_vecDot_matVecMul_eq_entrywise_integral (P := P) hLL q p
   have hULint := integral_vecDot_matVecMul_eq_entrywise_integral (P := P) hUL p p
@@ -407,14 +407,14 @@ noncomputable def tauResponseJCubeSet {d : ℕ}
 /-- Finite descendant averages preserve integrability. -/
 theorem integrable_descendantsAverage
     {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {j : ℕ}
-    {F : TriadicCube d → CoeffField d → ℝ}
+    {F : TriadicCube d → RegCoeffField d → ℝ}
     (hF : ∀ R, R ∈ descendantsAtDepth Q j → Integrable (F R) P) :
     Integrable
-      (fun a : CoeffField d => descendantsAverage Q j (fun R => F R a)) P := by
+      (fun a : RegCoeffField d => descendantsAverage Q j (fun R => F R a)) P := by
   classical
   let D : Finset (TriadicCube d) := descendantsAtDepth Q j
   have hsum :
-      Integrable (fun a : CoeffField d => ∑ R ∈ D, F R a) P := by
+      Integrable (fun a : RegCoeffField d => ∑ R ∈ D, F R a) P := by
     exact MeasureTheory.integrable_finset_sum D
       (fun R hR => hF R (by simpa [D] using hR))
   simpa [descendantsAverage, D] using hsum.const_mul ((D.card : ℝ)⁻¹)
@@ -423,7 +423,7 @@ theorem integrable_descendantsAverage
 integrability. -/
 theorem integral_descendantsAverage_eq_descendantsAverage_integral
     {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {j : ℕ}
-    {F : TriadicCube d → CoeffField d → ℝ}
+    {F : TriadicCube d → RegCoeffField d → ℝ}
     (hF : ∀ R, R ∈ descendantsAtDepth Q j → Integrable (F R) P) :
     ∫ a, descendantsAverage Q j (fun R => F R a) ∂P =
       descendantsAverage Q j (fun R => ∫ a, F R a ∂P) := by
@@ -450,14 +450,14 @@ theorem integral_descendantsAverage_eq_descendantsAverage_integral
 /-- Finite descendant averages preserve `MemLp`. -/
 theorem memLp_descendantsAverage
     {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {j : ℕ} {r : ℝ≥0∞}
-    {F : TriadicCube d → CoeffField d → ℝ}
+    {F : TriadicCube d → RegCoeffField d → ℝ}
     (hF : ∀ R, R ∈ descendantsAtDepth Q j → MemLp (F R) r P) :
     MemLp
-      (fun a : CoeffField d => descendantsAverage Q j (fun R => F R a)) r P := by
+      (fun a : RegCoeffField d => descendantsAverage Q j (fun R => F R a)) r P := by
   classical
   let D : Finset (TriadicCube d) := descendantsAtDepth Q j
   have hsum :
-      MemLp (fun a : CoeffField d => ∑ R ∈ D, F R a) r P := by
+      MemLp (fun a : RegCoeffField d => ∑ R ∈ D, F R a) r P := by
     exact MeasureTheory.memLp_finset_sum D
       (fun R hR => hF R (by simpa [D] using hR))
   simpa [descendantsAverage, D] using hsum.const_mul ((D.card : ℝ)⁻¹)
@@ -469,7 +469,7 @@ theorem integrable_descendantsAverage_responseJObservableCubeSet
     (hJ : ∀ R, R ∈ descendantsAtDepth Q j →
       Integrable (responseJObservableCubeSet R p q) P) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a)) P :=
   integrable_descendantsAverage
     (P := P) (Q := Q) (j := j)
@@ -483,7 +483,7 @@ theorem memLp_descendantsAverage_responseJObservableCubeSet
     (hJ : ∀ R, R ∈ descendantsAtDepth Q j →
       MemLp (responseJObservableCubeSet R p q) r P) :
     MemLp
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a)) r P :=
   memLp_descendantsAverage
     (P := P) (Q := Q) (j := j) (r := r)
@@ -518,7 +518,7 @@ theorem integral_centeredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_
     ∫ a, centeredResponseJObservableCubeSet Q p q p0 q0 a ∂P =
       expectedResponseJCubeSet P Q p q - (1 / 2 : ℝ) * vecDot p0 q0 := by
   have hConst :
-      Integrable (fun _ : CoeffField d => (1 / 2 : ℝ) * vecDot p0 q0) P :=
+      Integrable (fun _ : RegCoeffField d => (1 / 2 : ℝ) * vecDot p0 q0) P :=
     integrable_const _
   calc
     ∫ a, centeredResponseJObservableCubeSet Q p q p0 q0 a ∂P
@@ -527,7 +527,7 @@ theorem integral_centeredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_
               (1 / 2 : ℝ) * vecDot p0 q0 ∂P := by
           rfl
     _ = ∫ a, responseJObservableCubeSet Q p q a ∂P -
-          ∫ _a : CoeffField d, (1 / 2 : ℝ) * vecDot p0 q0 ∂P := by
+          ∫ _a : RegCoeffField d, (1 / 2 : ℝ) * vecDot p0 q0 ∂P := by
           rw [integral_sub hJ hConst]
     _ = expectedResponseJCubeSet P Q p q - (1 / 2 : ℝ) * vecDot p0 q0 := by
           rw [integral_const]
@@ -605,7 +605,7 @@ theorem aemeasurable_descendantsAverage_responseJObservableCubeSet
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a)) P := by
   simpa [responseJObservableCubeSet] using
     hP.aemeasurable_descendantsAverage_ResponseJ_cubeSet Q j p q
@@ -616,7 +616,7 @@ theorem aestronglyMeasurable_descendantsAverage_responseJObservableCubeSet
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEStronglyMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a)) P :=
   (hP.aemeasurable_descendantsAverage_responseJObservableCubeSet Q j p q).aestronglyMeasurable
 

@@ -168,11 +168,11 @@ theorem integral_finsetSup_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_o
     (hn : 0 ≤ n)
     (hparent_scale : ∀ Q ∈ parents, n ≤ Q.scale)
     (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_local :
       ∀ Q ∈ parents, ∀ R ∈ descendantsAtScale Q n,
-        IsLocalRandomVariable (cubeSet R) (X (cubeSet R)))
-    (hX_cov : IsTranslationCovariant X)
+        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X (cubeSet R)))
+    (hX_cov : IsTranslationCovariantR X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ Q ∈ parents, ∀ R ∈ descendantsAtScale Q n,
@@ -249,12 +249,12 @@ theorem integral_finsetSup_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_o
     (hn : 0 ≤ n)
     (hparent_scale : ∀ Q ∈ parents, n ≤ Q.scale)
     (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_localRep :
       ∀ Q ∈ parents, ∀ R ∈ descendantsAtScale Q n,
-        ∃ Y : CoeffField d → ℝ,
-          IsLocalRandomVariable (cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y)
-    (hX_cov : IsTranslationCovariant X)
+        ∃ Y : RegCoeffField d → ℝ,
+          IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y)
+    (hX_cov : IsTranslationCovariantR X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ Q ∈ parents, ∀ R ∈ descendantsAtScale Q n,
@@ -321,11 +321,11 @@ theorem integral_abs_centeredDescendantAverage_le_of_unitRangeDependentLaw
     {ξ : ℕ} {K : ℝ}
     (hn : 0 ≤ n) (hnm : n ≤ m)
     (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        IsLocalRandomVariable (cubeSet R) (X (cubeSet R)))
-    (hX_cov : IsTranslationCovariant X)
+        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X (cubeSet R)))
+    (hX_cov : IsTranslationCovariantR X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ R ∈ descendantsAtScale (originCube d m) n, AEMeasurable (X (cubeSet R)) P)
@@ -341,7 +341,7 @@ theorem integral_abs_centeredDescendantAverage_le_of_unitRangeDependentLaw
             Real.sqrt ((descendantsAtScale (originCube d m) n).card : ℝ) * K +
           rosenthalDescendantsAtScaleSqrtConst d n 2 *
             Real.sqrt ((descendantsAtScale (originCube d m) n).card : ℝ) * K) := by
-  let X0 : CoeffField d → ℝ := centeredOriginObservable P n X
+  let X0 : RegCoeffField d → ℝ := centeredOriginObservable P n X
   have hX0c_aemeas : AEMeasurable X0 P := by
     simpa [X0, centeredOriginObservable] using hX0_aemeas.sub measurable_const.aemeasurable
   have hX0_two_int :

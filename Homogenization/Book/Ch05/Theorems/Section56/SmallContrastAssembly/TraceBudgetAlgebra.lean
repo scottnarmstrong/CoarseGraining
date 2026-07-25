@@ -19,7 +19,7 @@ open Section54.VarianceBoundGoodScale
 theorem normalizedBlockJTraceAverage_eq_blockJTraceAverageWithNormalizers
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) :
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     let b := hP.barSigmaAtScale hStruct center
     let c := hP.barSigmaStarAtScale hStruct center
     let S : FullBlockMat d :=
@@ -38,13 +38,13 @@ theorem normalizedBlockJTraceAverage_eq_blockJTraceAverageWithNormalizers
       normalizedSqrtBlockProbe, S, T, b, c]
 
 theorem blockJTraceAverageWithNormalizers_eq_traceBudget_descendantsAverageBlockMat
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (S T : FullBlockMat d) (Q : TriadicCube d) (j : ℕ) :
     blockJTraceAverageWithNormalizers S T Q j a =
       fullBlockJTraceBudgetWithNormalizers S T
         (descendantsAverageBlockMat Q j
-          (fun R => coarseBlockMatrix (cubeSet R) a)) := by
+          (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) := by
   classical
   let F : Ch02.TriadicCoeffFamily d :=
     Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
@@ -53,7 +53,7 @@ theorem blockJTraceAverageWithNormalizers_eq_traceBudget_descendantsAverageBlock
   have hTerm :
       (fun R : TriadicCube d =>
           Ch02.coarseBlockMatrix (Ch02.cubeDomain R) (F.coeffOn R)) =
-        fun R : TriadicCube d => coarseBlockMatrix (cubeSet R) a := by
+        fun R : TriadicCube d => coarseBlockMatrix (cubeSet R) a.toFun := by
     funext R
     simpa [F] using
       (Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -62,7 +62,7 @@ theorem blockJTraceAverageWithNormalizers_eq_traceBudget_descendantsAverageBlock
       Pcell.weightedBlockAverage
           (fun i : Pcell.Cell =>
             Ch02.coarseBlockMatrix (Pcell.cell i) (F.coeffOn i.1)) =
-        descendantsAverageBlockMat Q j (fun R => coarseBlockMatrix (cubeSet R) a) := by
+        descendantsAverageBlockMat Q j (fun R => coarseBlockMatrix (cubeSet R) a.toFun) := by
     calc
       Pcell.weightedBlockAverage
           (fun i : Pcell.Cell =>
@@ -76,7 +76,7 @@ theorem blockJTraceAverageWithNormalizers_eq_traceBudget_descendantsAverageBlock
                 (fun R : TriadicCube d =>
                   Ch02.coarseBlockMatrix (Ch02.cubeDomain R) (F.coeffOn R))
       _ = descendantsAverageBlockMat Q j
-            (fun R => coarseBlockMatrix (cubeSet R) a) := by
+            (fun R => coarseBlockMatrix (cubeSet R) a.toFun) := by
             rw [hTerm]
   have hJ :
       Pcell.weightedAverage
@@ -144,7 +144,7 @@ theorem blockJTraceAverageWithNormalizers_eq_traceBudget_descendantsAverageBlock
     _ =
         fullBlockJTraceBudgetWithNormalizers S T
           (descendantsAverageBlockMat Q j
-            (fun R => coarseBlockMatrix (cubeSet R) a)) := by
+            (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) := by
           rw [hAvg]
 
 private theorem vecDot_indicator_self {d : ℕ} (i : Fin d) (r s : ℝ) :
@@ -361,7 +361,7 @@ theorem fullBlockJTraceBudgetWithNormalizers_normalized_eq_trace
 theorem descendantsAverageNormalizedFluctuationMatrix_eq_diagonal_average_sub_annealed
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) :
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     let b := hP.barSigmaAtScale hStruct center
     let c := hP.barSigmaStarAtScale hStruct center
     let D : FullBlockMat d :=
@@ -370,14 +370,14 @@ theorem descendantsAverageNormalizedFluctuationMatrix_eq_diagonal_average_sub_an
       D *
         (toFullBlockMat
             (descendantsAverageBlockMat Q j
-              (fun R => coarseBlockMatrix (cubeSet R) a)) -
+              (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) -
           toFullBlockMat (Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct center)) *
         D := by
   intro b c D
   let Abar : FullBlockMat d :=
     toFullBlockMat (Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct center)
   let F : TriadicCube d → FullBlockMat d :=
-    fun R => toFullBlockMat (coarseBlockMatrix (cubeSet R) a)
+    fun R => toFullBlockMat (coarseBlockMatrix (cubeSet R) a.toFun)
   have hAvg :
       descendantsAverageNormalizedFluctuationMatrix hP hStruct center Q j a =
         D * (descendantsAverageFullBlockMat Q j F - Abar) * D := by
@@ -392,7 +392,7 @@ theorem descendantsAverageNormalizedFluctuationMatrix_eq_diagonal_average_sub_an
         D *
           (toFullBlockMat
               (descendantsAverageBlockMat Q j
-                (fun R => coarseBlockMatrix (cubeSet R) a)) -
+                (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) -
             toFullBlockMat (Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct center)) *
           D := by
           rw [toFullBlockMat_descendantsAverageBlockMat]

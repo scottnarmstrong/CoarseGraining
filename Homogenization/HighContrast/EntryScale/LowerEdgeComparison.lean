@@ -28,7 +28,7 @@ noncomputable section
 /-- Small-tail observable in the current-baseline upper Section 5.2 split. -/
 noncomputable def lowerEdgeCurrentUpperSection52SmallTail
     (d : Nat) [NeZero d] (k : Nat) (s : Real) :
-    Homogenization.CoeffField d -> Real := fun a =>
+    Homogenization.RegCoeffField d -> Real := fun a =>
   Homogenization.Book.Ch05.Section52.upperSmallSqrtTailCoeffField
       (d := d) k s a ^ 2 /
     Homogenization.Book.Ch05.Section52.section52SmallTailWeight s k
@@ -41,7 +41,7 @@ noncomputable def lowerEdgeCurrentUpperSection52LargeScalePositiveExcess
     (k : Nat) (s : Real)
     (n : {n : Int //
       n ∈ Homogenization.Book.Ch05.Section52.section52LargeScaleSet k}) :
-    Homogenization.CoeffField d -> Real := fun a =>
+    Homogenization.RegCoeffField d -> Real := fun a =>
   Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s k n.1 *
     (let parents := Homogenization.descendantsAtScale
         (Homogenization.originCube d (k : Int)) n.1
@@ -63,7 +63,7 @@ noncomputable def lowerEdgeCurrentUpperSection52LargeScalePositiveExcess
 /-- Small-tail observable in the current-baseline lower/star Section 5.2 split. -/
 noncomputable def lowerEdgeCurrentLowerSection52SmallTail
     (d : Nat) [NeZero d] (k : Nat) (s : Real) :
-    Homogenization.CoeffField d -> Real := fun a =>
+    Homogenization.RegCoeffField d -> Real := fun a =>
   Homogenization.Book.Ch05.Section52.lowerSmallSqrtTailCoeffField
       (d := d) k s a ^ 2 /
     Homogenization.Book.Ch05.Section52.section52SmallTailWeight s k
@@ -76,7 +76,7 @@ noncomputable def lowerEdgeCurrentLowerSection52LargeScalePositiveExcess
     (k : Nat) (s : Real)
     (n : {n : Int //
       n ∈ Homogenization.Book.Ch05.Section52.section52LargeScaleSet k}) :
-    Homogenization.CoeffField d -> Real := fun a =>
+    Homogenization.RegCoeffField d -> Real := fun a =>
   Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s k n.1 *
     (let parents := Homogenization.descendantsAtScale
         (Homogenization.originCube d (k : Int)) n.1

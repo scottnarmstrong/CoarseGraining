@@ -101,7 +101,7 @@ theorem sq_add_le_weighted_sum_add_tail_sq_div
       _ ≤ A + T ^ 2 / V := by exact le_add_of_nonneg_left hA
 
 noncomputable def upperSmallSqrtTailCoeffField {d : ℕ} [NeZero d]
-    (m : ℕ) (s : ℝ) (a : CoeffField d) : ℝ :=
+    (m : ℕ) (s : ℝ) (a : RegCoeffField d) : ℝ :=
   ∑' j : ℕ,
     geometricWeight s 1 (j + m) *
       Real.rpow
@@ -110,7 +110,7 @@ noncomputable def upperSmallSqrtTailCoeffField {d : ℕ} [NeZero d]
         (1 / 2 : ℝ)
 
 theorem maxDescendantBMatrixNormCoeffFieldAtScale_nonneg_of_le
-    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : CoeffField d)
+    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : RegCoeffField d)
     {k : ℤ} (hk : k ≤ Q.scale) :
     0 ≤ Ch04.maxDescendantBMatrixNormCoeffFieldAtScale Q k a := by
   classical
@@ -121,7 +121,7 @@ theorem maxDescendantBMatrixNormCoeffFieldAtScale_nonneg_of_le
   · simp [Ch04.maxDescendantBMatrixNormCoeffFieldAtScale, ha]
 
 theorem upperSmallSqrtTailCoeffField_nonneg
-    {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 ≤ s) (a : CoeffField d) :
+    {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 ≤ s) (a : RegCoeffField d) :
     0 ≤ upperSmallSqrtTailCoeffField (d := d) m s a := by
   unfold upperSmallSqrtTailCoeffField
   refine tsum_nonneg fun j => ?_
@@ -132,7 +132,7 @@ theorem upperSmallSqrtTailCoeffField_nonneg
 
 theorem LambdaSqCoeffField_originCube_finite_one_le_two_upperSmallSqrtTail_sq_add_two_largeScale_sum
     {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 < s)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) s (.finite 1) a ≤
       2 * upperSmallSqrtTailCoeffField (d := d) m s a ^ 2 +
         2 *
@@ -235,7 +235,7 @@ theorem LambdaSqCoeffField_originCube_finite_one_le_two_upperSmallSqrtTail_sq_ad
 
 theorem LambdaSqCoeffField_originCube_finite_one_le_upperSmallSqrtTail_sq_div_add_largeScale_sum
     {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 < s)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) s (.finite 1) a ≤
       upperSmallSqrtTailCoeffField (d := d) m s a ^ 2 /
           section52SmallTailWeight s m +
@@ -367,7 +367,7 @@ theorem LambdaSqCoeffField_originCube_finite_one_le_upperSmallSqrtTail_sq_div_ad
         simp [A, V, Q, htail_eq, add_comm]
 
 noncomputable def lowerSmallSqrtTailCoeffField {d : ℕ} [NeZero d]
-    (m : ℕ) (s : ℝ) (a : CoeffField d) : ℝ :=
+    (m : ℕ) (s : ℝ) (a : RegCoeffField d) : ℝ :=
   ∑' j : ℕ,
     geometricWeight s 1 (j + m) *
       Real.rpow
@@ -376,7 +376,7 @@ noncomputable def lowerSmallSqrtTailCoeffField {d : ℕ} [NeZero d]
         (1 / 2 : ℝ)
 
 theorem maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_nonneg_of_le
-    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : CoeffField d)
+    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : RegCoeffField d)
     {k : ℤ} (hk : k ≤ Q.scale) :
     0 ≤ Ch04.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale Q k a := by
   classical
@@ -387,7 +387,7 @@ theorem maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_nonneg_of_le
   · simp [Ch04.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale, ha]
 
 theorem lowerSmallSqrtTailCoeffField_nonneg
-    {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 ≤ s) (a : CoeffField d) :
+    {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 ≤ s) (a : RegCoeffField d) :
     0 ≤ lowerSmallSqrtTailCoeffField (d := d) m s a := by
   unfold lowerSmallSqrtTailCoeffField
   refine tsum_nonneg fun j => ?_
@@ -398,7 +398,7 @@ theorem lowerSmallSqrtTailCoeffField_nonneg
 
 theorem lambdaSqCoeffField_originCube_finite_one_inv_le_two_lowerSmallSqrtTail_sq_add_two_largeScale_sum
     {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 < s)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     (Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) s (.finite 1) a)⁻¹ ≤
       2 * lowerSmallSqrtTailCoeffField (d := d) m s a ^ 2 +
         2 *
@@ -505,7 +505,7 @@ theorem lambdaSqCoeffField_originCube_finite_one_inv_le_two_lowerSmallSqrtTail_s
 
 theorem lambdaSqCoeffField_originCube_finite_one_inv_le_lowerSmallSqrtTail_sq_div_add_largeScale_sum
     {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 < s)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     (Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) s (.finite 1) a)⁻¹ ≤
       lowerSmallSqrtTailCoeffField (d := d) m s a ^ 2 /
           section52SmallTailWeight s m +

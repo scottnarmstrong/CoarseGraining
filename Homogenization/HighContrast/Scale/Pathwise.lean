@@ -189,7 +189,7 @@ value by `16Θ`, for any probe vector `q` with `⟪q,q⟫ ≤ 4`. -/
 theorem probe_abs_le_ae [NeZero d] {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffLaw d}
     [IsProbabilityMeasure P] (hP : LawCarrier P) (hStruct : StructuralLaw P)
     (hLaw : ThetaEllipticLaw Θ P) (m : ℤ) (q : FullBlockVec d) (hq : dotProduct q q ≤ 4) :
-    ∀ᵐ a ∂P, |fullBlockQuadratic
+    ∀ᵐ (a : RegCoeffField d) ∂P, |fullBlockQuadratic
         (fullBlockNormalizedFluctuationMatrix hP hStruct m (cubeSet (originCube d m)) a) q|
       ≤ 16 * Θ := by
   have hΘ0 : (0 : ℝ) ≤ Θ := le_trans (by norm_num) hΘ
@@ -199,7 +199,7 @@ theorem probe_abs_le_ae [NeZero d] {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffLaw d}
     (Matrix.diagonal (scalarFullBlockInvSqrtDiag b c)) q) with hwdef
   set c0 : ℝ := blockVecDot w (blockMatVecMul (annealedBlockMatrixAtScale P m) w) with hc0def
   -- probe = centered coarse block quadratic minus its annealed mean
-  have hpt : ∀ a,
+  have hpt : ∀ a : RegCoeffField d,
       fullBlockQuadratic
           (fullBlockNormalizedFluctuationMatrix hP hStruct m (cubeSet (originCube d m)) a) q
         = blockVecDot w
@@ -253,7 +253,7 @@ theorem origin_pathwise_bound [NeZero d] {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffL
   classical
   have hK0 : (0 : ℝ) ≤ 16 * Θ := by linarith [hΘ]
   -- all three probe families are simultaneously bounded a.e.
-  have hall : ∀ᵐ a ∂P, ∀ α β : BlockCoord d,
+  have hall : ∀ᵐ (a : RegCoeffField d) ∂P, ∀ α β : BlockCoord d,
       |fullBlockQuadratic
           (fullBlockNormalizedFluctuationMatrix hP hStruct m (cubeSet (originCube d m)) a)
           (fullBlockCoordinateProbe α)| ≤ 16 * Θ ∧
@@ -331,8 +331,8 @@ theorem pathwise_transfer [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     ∀ᵐ a ∂P, Real.sqrt
         (fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct center Q a) ≤ C := by
   set z : Fin d → ℤ := scaleTranslationShift Q.scale Q with hz
-  have hmp : MeasurePreserving (translateByInt z) P P :=
-    ⟨measurable_translateByInt z, hStruct.stationary z⟩
+  have hmp : MeasurePreserving (translateReg (intVecToRealVec z)) P P :=
+    ⟨measurable_translateReg (intVecToRealVec z), hStruct.stationary z⟩
   have htrans :=
     hmp.quasiMeasurePreserving.ae
       (p := fun b => Real.sqrt
@@ -345,7 +345,7 @@ theorem pathwise_transfer [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
   have hid :
       fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct center Q a
         = fullBlockNormalizedFluctuationOperatorNormSq hP hStruct center
-            (cubeSet (originCube d Q.scale)) (translateByInt z a) := by
+            (cubeSet (originCube d Q.scale)) (translateReg (intVecToRealVec z) a) := by
     rw [fullBlockNormalizedFluctuationOperatorNormSqAtScale, hset]
     exact fullBlockNormalizedFluctuationOperatorNormSq_translation_covariant
       hP hStruct center (cubeSet (originCube d Q.scale)) z a
@@ -389,7 +389,7 @@ theorem varianceBlockEstimate_of_thetaEllipticLaw' [NeZero d] (hd : 3 ≤ d)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (N2 : ℕ) :
     VarianceBlockEstimate (vpParams d hd Θ) P
       (Homogenization.Book.Ch05.widetildeThetaAtScale P (0 : ℤ) hP4) N2
-      (intermediateCoarseBlockDeviation hP hStruct (fun x : CoeffField d => x)) :=
+      (intermediateCoarseBlockDeviation hP hStruct (fun x : RegCoeffField d => x)) :=
   varianceBlockEstimate_of_thetaEllipticLaw hd hΘ hP hStruct hLaw hP4 N2
     (fun {_j} _ {_Q} hQ => pathwise_fluctuation_bound hΘ hP hStruct hLaw hQ)
 

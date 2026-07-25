@@ -24,12 +24,12 @@ theorem isBigO_gammaSigma_centeredDescendantAverageOnCube_of_unitRangeDependentL
     (hP : LawCarrier P)
     (hn : 0 ≤ n) (hnQ : n ≤ Q.scale)
     (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_localRep :
       ∀ R ∈ descendantsAtScale Q n,
-        ∃ Y : CoeffField d → ℝ,
-          IsLocalRandomVariable (cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y)
-    (hX_cov : IsTranslationCovariant X)
+        ∃ Y : RegCoeffField d → ℝ,
+          IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y)
+    (hX_cov : IsTranslationCovariantR X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ R ∈ descendantsAtScale Q n, AEMeasurable (X (cubeSet R)) P)
@@ -42,20 +42,20 @@ theorem isBigO_gammaSigma_centeredDescendantAverageOnCube_of_unitRangeDependentL
   classical
   let D : Finset (TriadicCube d) := descendantsAtScale Q n
   let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
-  let Y : Set (Vec d) → CoeffField d → ℝ := fun U a => X U a - μ0
-  let Yrep : TriadicCube d → CoeffField d → ℝ :=
+  let Y : Set (Vec d) → RegCoeffField d → ℝ := fun U a => X U a - μ0
+  let Yrep : TriadicCube d → RegCoeffField d → ℝ :=
     fun R =>
       if hR : R ∈ D then Classical.choose (hX_localRep R (by simpa [D] using hR))
       else fun _a => 0
-  let Zraw : TriadicCube d → CoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
-  let Z : TriadicCube d → CoeffField d → ℝ := fun R a => Yrep R a - μ0
-  have hY_cov : IsTranslationCovariant Y := by
+  let Zraw : TriadicCube d → RegCoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
+  let Z : TriadicCube d → RegCoeffField d → ℝ := fun R a => Yrep R a - μ0
+  have hY_cov : IsTranslationCovariantR Y := by
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_aemeas : AEMeasurable (Y (cubeSet (originCube d n))) P := by
     simpa [Y] using hX0_aemeas.sub measurable_const.aemeasurable
   have hYrep_local :
-      ∀ R ∈ D, IsLocalRandomVariable (cubeSet R) (Yrep R) := by
+      ∀ R ∈ D, IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Yrep R) := by
     intro R hR
     dsimp [Yrep]
     rw [dif_pos hR]
@@ -72,7 +72,7 @@ theorem isBigO_gammaSigma_centeredDescendantAverageOnCube_of_unitRangeDependentL
     filter_upwards [hX_eq_Yrep R hR] with a ha
     simp [Zraw, Z, ha]
   have hZ_local :
-      ∀ R ∈ D, IsLocalRandomVariable (cubeSet R) (Z R) := by
+      ∀ R ∈ D, IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Z R) := by
     intro R hR
     simpa [Z] using (hYrep_local R hR).sub measurable_const
   have hZ_aemeas :
@@ -118,7 +118,7 @@ theorem isBigO_gammaSigma_centeredDescendantAverageOnCube_of_unitRangeDependentL
                   (cubeSet (originCube d n)))) P := by
               rw [hshift]
         _ = Measure.map (Y (cubeSet (originCube d n))) P := by
-              exact map_eq_map_translateByInt_of_isTranslationCovariant_aemeasurable
+              exact map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
                 (P := P) hPstat (U := cubeSet (originCube d n)) hY0_aemeas hY_cov
                 (scaleTranslationShift n R)
     have hraw :
@@ -200,7 +200,7 @@ theorem isBigO_gammaSigma_centeredDescendantAverageOnCube_of_unitRangeDependentL
                   (cubeSet (originCube d n))) a ∂P := by
               rw [hshift]
         _ = ∫ a, Y (cubeSet (originCube d n)) a ∂P := by
-              exact integral_eq_of_isTranslationCovariant_of_isStationary_aestronglyMeasurable
+              exact integral_eq_of_isTranslationCovariantR_of_stationary_aestronglyMeasurable
                 (P := P) hPstat (U := cubeSet (originCube d n))
                 hY0_aemeas.aestronglyMeasurable hY_cov (scaleTranslationShift n R)
     simpa [Zraw, Y] using hint.trans hY0_mean

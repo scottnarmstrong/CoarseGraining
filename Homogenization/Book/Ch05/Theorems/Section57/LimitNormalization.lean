@@ -61,7 +61,7 @@ annealed normalization. -/
 noncomputable def limitNormalizedBlockJObservable
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (Q : TriadicCube d) (e : FullBlockVec d) : CoeffField d → ℝ :=
+    (Q : TriadicCube d) (e : FullBlockVec d) : RegCoeffField d → ℝ :=
   Ch04.blockJObservableCubeSetBlockVec Q
     (scalarLimitInvSqrtBlockVec hP hStruct e)
     (scalarLimitSqrtBlockVec hP hStruct e)
@@ -72,7 +72,7 @@ This is the pointwise factor produced after replacing
 noncomputable def limitWeightedUnitEllipticityObservable
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (sUpper sLower : ℝ) : CoeffField d → ℝ :=
+    (sUpper sLower : ℝ) : RegCoeffField d → ℝ :=
   fun a =>
     (barSigmaLimit hP hStruct)⁻¹ *
         Ch04.LambdaSqCoeffField (originCube d 0) sUpper (.finite 1) a +
@@ -86,7 +86,7 @@ unit cubes inside a larger cube. -/
 noncomputable def limitWeightedUnitEllipticityObservableOnCube
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (Q : TriadicCube d) (sUpper sLower : ℝ) : CoeffField d → ℝ :=
+    (Q : TriadicCube d) (sUpper sLower : ℝ) : RegCoeffField d → ℝ :=
   fun a =>
     (barSigmaLimit hP hStruct)⁻¹ *
         Ch04.LambdaSqCoeffField Q sUpper (.finite 1) a +
@@ -143,7 +143,7 @@ theorem scalarLimit_normalizers_pairing_eq_dotProduct
 costs at most the initial scalar contrast. -/
 theorem limitWeightedUnitEllipticityObservable_le_thetaAtScale_zero_mul_unit
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     limitWeightedUnitEllipticityObservable hP hStruct
         hΓ.params.sUpper hΓ.params.sLower a ≤
       thetaAtScale hP hStruct (0 : ℤ) *
@@ -206,7 +206,7 @@ theorem limitWeightedUnitEllipticityObservable_le_thetaAtScale_zero_mul_unit
 ellipticity observable. -/
 theorem limitWeightedUnitEllipticityObservableOnCube_nonneg
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    (Q : TriadicCube d) (a : CoeffField d) :
+    (Q : TriadicCube d) (a : RegCoeffField d) :
     0 ≤ limitWeightedUnitEllipticityObservableOnCube hP hStruct Q
       hΓ.params.sUpper hΓ.params.sLower a := by
   have hL_pos : 0 < barSigmaLimit hP hStruct := hΓ.barSigmaLimit_pos
@@ -235,10 +235,10 @@ theorem limitWeightedUnitEllipticityObservable_isBigO
   letI : IsProbabilityMeasure P := hP.isProbability
   let hP4 := hΓ.toQuantitativeCoarseGrainedEllipticity
   let θ := thetaAtScale hP hStruct (0 : ℤ)
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     gammaSigmaUnitEllipticityObservable hP hStruct
       hΓ.params.sUpper hΓ.params.sLower
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     limitWeightedUnitEllipticityObservable hP hStruct
       hΓ.params.sUpper hΓ.params.sLower
   have hθ_nonneg : 0 ≤ θ := by

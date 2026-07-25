@@ -67,17 +67,17 @@ abbrev IsThetaElliptic (Θ : ℝ) (A : Mat d) : Prop := IsEllipticMatrix 1 Θ A
 /-! ## A2 — the law-level ellipticity predicate -/
 
 open MeasureTheory in
-/-- **A2.**  A coefficient law is `Θ`-elliptic when almost every realization is
-an (entrywise) measurable map lying, almost everywhere in space, in the
-`(1, Θ)` ellipticity class.  The measurability conjunct is part of the paper's
-class `Ω_Θ` (its elements are measurable maps modulo a.e. equality) and is
-what lets the a.e.-modification bridge (`CoarseBounds/AeBridge.lean`) upgrade
-realizations to pointwise-elliptic representatives.  Without the measurability
-conjunct the class is not the paper's `Ω_Θ` and the coarse-graining machinery
-cannot be applied realization-wise. -/
+/-- **A2.**  A carrier coefficient law is `Θ`-elliptic when almost every
+realization lies, almost everywhere in space, in the `(1, Θ)` ellipticity class.
+Following the carrier redesign (Packet P3, decision E-2), the entrywise
+measurability conjunct of the paper's class `Ω_Θ` is now **free by type**: every
+element of the honest-fields carrier `RegCoeffField d` carries a proof that each
+of its scalar entries is Borel measurable (`RegCoeffField.entry_measurable`), so
+the a.e.-modification bridge (`CoarseBounds/AeBridge.lean`) recovers the
+pointwise-elliptic representative from `a.entry_measurable` rather than a bundled
+conjunct.  The statement is therefore the paper's clean `Ω_Θ` membership. -/
 def ThetaEllipticLaw (Θ : ℝ) (P : CoeffLaw d) : Prop :=
-  ∀ᵐ a ∂P, (∀ i j : Fin d, Measurable fun x : Vec d => a x i j) ∧
-    ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (a x)
+  ∀ᵐ a ∂P, ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (a x)
 
 /-! ## The key nonsymmetric flux inequality `(★)`
 

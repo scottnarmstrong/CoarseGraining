@@ -20,11 +20,11 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
     {p : ℕ} {K : ℝ}
     (hn : 0 ≤ n) (hnQ : n ≤ Q.scale)
     (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScale Q n,
-        IsLocalRandomVariable (cubeSet R) (X (cubeSet R)))
-    (hX_cov : IsTranslationCovariant X)
+        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X (cubeSet R)))
+    (hX_cov : IsTranslationCovariantR X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ R ∈ descendantsAtScale Q n, AEMeasurable (X (cubeSet R)) P)
@@ -45,7 +45,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
   let N : ℝ := ((descendantsAtScale Q n).card : ℝ)
   let c : ℝ := N⁻¹
   let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
-  let Y : Set (Vec d) → CoeffField d → ℝ := fun U a => X U a - μ0
+  let Y : Set (Vec d) → RegCoeffField d → ℝ := fun U a => X U a - μ0
   have hdesc_nonempty : (descendantsAtScale Q n).Nonempty := by
     exact descendantsAtScale_nonempty Q hnQ
   have hN_pos : 0 < N := by
@@ -54,7 +54,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
   have hc_nonneg : 0 ≤ c := by
     dsimp [c]
     positivity
-  have hY_cov : IsTranslationCovariant Y := by
+  have hY_cov : IsTranslationCovariantR Y := by
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_aemeas : AEMeasurable (Y (cubeSet (originCube d n))) P := by
@@ -90,10 +90,10 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
             simp [μ0]
       _ = 0 := by
             ring
-  let Z : TriadicCube d → CoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
+  let Z : TriadicCube d → RegCoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
   have hZ_local :
       ∀ R ∈ descendantsAtScale Q n,
-        IsLocalRandomVariable (cubeSet R) (Z R) := by
+        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Z R) := by
     intro R hR
     simpa [Z] using (hX_local R hR).sub measurable_const
   have hZ_aemeas :
@@ -139,7 +139,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
                   (cubeSet (originCube d n)))) P := by
               rw [hshift]
         _ = Measure.map (Y (cubeSet (originCube d n))) P := by
-              exact map_eq_map_translateByInt_of_isTranslationCovariant_aemeasurable
+              exact map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
                 (P := P) hPstat (U := cubeSet (originCube d n)) hY0_aemeas hY_cov
                 (scaleTranslationShift n R)
     have hYR_int :
@@ -182,7 +182,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
                   (cubeSet (originCube d n))) a ∂P := by
               rw [hshift]
         _ = ∫ a, Y (cubeSet (originCube d n)) a ∂P := by
-              exact integral_eq_of_isTranslationCovariant_of_isStationary_aestronglyMeasurable
+              exact integral_eq_of_isTranslationCovariantR_of_stationary_aestronglyMeasurable
                 (P := P) hPstat (U := cubeSet (originCube d n))
                 hY0_aemeas.aestronglyMeasurable hY_cov (scaleTranslationShift n R)
     simpa [Z, Y] using hint.trans hY0_mean
@@ -225,7 +225,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
                   (cubeSet (originCube d n)))) P := by
               rw [hshift]
         _ = Measure.map (Y (cubeSet (originCube d n))) P := by
-              exact map_eq_map_translateByInt_of_isTranslationCovariant_aemeasurable
+              exact map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
                 (P := P) hPstat (U := cubeSet (originCube d n)) hY0_aemeas hY_cov
                 (scaleTranslationShift n R)
     have hYR :
@@ -240,7 +240,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
     integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtScale_of_unitRangeDependentLaw
       (Q := Q) (k := n) (P := P)
       hPdep hp hK_nonneg Z hZ_local hZ_aemeas hZ_int hZ_mean hZ_bound
-  let S : CoeffField d → ℝ :=
+  let S : RegCoeffField d → ℝ :=
     fun a => ∑ R ∈ descendantsAtScale Q n, Z R a
   have hS_aemeas : AEMeasurable S P := by
     have hsum : AEMeasurable (∑ R ∈ descendantsAtScale Q n, Z R) P :=
@@ -258,7 +258,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
     simpa [Real.norm_eq_abs] using hZ_int R hR
   have hS_int : Integrable (fun a => |S a| ^ p) P := by
     simpa [S, Real.norm_eq_abs] using hS_memLp.integrable_norm_pow hp_nat_ne_zero
-  let Aavg : CoeffField d → ℝ := c • S
+  let Aavg : RegCoeffField d → ℝ := c • S
   have hAavg_aemeas : AEMeasurable Aavg P := hS_aemeas.const_smul c
   have hAavg_memLp : MemLp Aavg (p : ENNReal) P := hS_memLp.const_smul c
   have hAavg_int : Integrable (fun a => |Aavg a| ^ p) P := by
@@ -319,12 +319,12 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
     (hP : LawCarrier P)
     (hn : 0 ≤ n) (hnQ : n ≤ Q.scale)
     (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_localRep :
       ∀ R ∈ descendantsAtScale Q n,
-        ∃ Y : CoeffField d → ℝ,
-          IsLocalRandomVariable (cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y)
-    (hX_cov : IsTranslationCovariant X)
+        ∃ Y : RegCoeffField d → ℝ,
+          IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y)
+    (hX_cov : IsTranslationCovariantR X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ R ∈ descendantsAtScale Q n, AEMeasurable (X (cubeSet R)) P)
@@ -347,13 +347,13 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
   let N : ℝ := (D.card : ℝ)
   let c : ℝ := N⁻¹
   let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
-  let Y : Set (Vec d) → CoeffField d → ℝ := fun U a => X U a - μ0
-  let Yrep : TriadicCube d → CoeffField d → ℝ :=
+  let Y : Set (Vec d) → RegCoeffField d → ℝ := fun U a => X U a - μ0
+  let Yrep : TriadicCube d → RegCoeffField d → ℝ :=
     fun R =>
       if hR : R ∈ D then Classical.choose (hX_localRep R (by simpa [D] using hR))
       else fun _a => 0
-  let Zraw : TriadicCube d → CoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
-  let Z : TriadicCube d → CoeffField d → ℝ := fun R a => Yrep R a - μ0
+  let Zraw : TriadicCube d → RegCoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
+  let Z : TriadicCube d → RegCoeffField d → ℝ := fun R a => Yrep R a - μ0
   have hdesc_nonempty : D.Nonempty := by
     simpa [D] using descendantsAtScale_nonempty Q hnQ
   have hN_pos : 0 < N := by
@@ -362,7 +362,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
   have hc_nonneg : 0 ≤ c := by
     dsimp [c]
     positivity
-  have hY_cov : IsTranslationCovariant Y := by
+  have hY_cov : IsTranslationCovariantR Y := by
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_aemeas : AEMeasurable (Y (cubeSet (originCube d n))) P := by
@@ -397,7 +397,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
       _ = μ0 - μ0 := by simp [μ0]
       _ = 0 := by ring
   have hYrep_local :
-      ∀ R ∈ D, IsLocalRandomVariable (cubeSet R) (Yrep R) := by
+      ∀ R ∈ D, IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Yrep R) := by
     intro R hR
     dsimp [Yrep]
     rw [dif_pos hR]
@@ -414,7 +414,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
     filter_upwards [hX_eq_Yrep R hR] with a ha
     simp [Zraw, Z, ha]
   have hZ_local :
-      ∀ R ∈ D, IsLocalRandomVariable (cubeSet R) (Z R) := by
+      ∀ R ∈ D, IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Z R) := by
     intro R hR
     simpa [Z] using (hYrep_local R hR).sub measurable_const
   have hZ_aemeas :
@@ -460,7 +460,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
                   (cubeSet (originCube d n)))) P := by
               rw [hshift]
         _ = Measure.map (Y (cubeSet (originCube d n))) P := by
-              exact map_eq_map_translateByInt_of_isTranslationCovariant_aemeasurable
+              exact map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
                 (P := P) hPstat (U := cubeSet (originCube d n)) hY0_aemeas hY_cov
                 (scaleTranslationShift n R)
     have hYR_int :
@@ -503,7 +503,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
                   (cubeSet (originCube d n))) a ∂P := by
               rw [hshift]
         _ = ∫ a, Y (cubeSet (originCube d n)) a ∂P := by
-              exact integral_eq_of_isTranslationCovariant_of_isStationary_aestronglyMeasurable
+              exact integral_eq_of_isTranslationCovariantR_of_stationary_aestronglyMeasurable
                 (P := P) hPstat (U := cubeSet (originCube d n))
                 hY0_aemeas.aestronglyMeasurable hY_cov (scaleTranslationShift n R)
     simpa [Zraw, Y] using hint.trans hY0_mean
@@ -547,7 +547,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
                   (cubeSet (originCube d n)))) P := by
               rw [hshift]
         _ = Measure.map (Y (cubeSet (originCube d n))) P := by
-              exact map_eq_map_translateByInt_of_isTranslationCovariant_aemeasurable
+              exact map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
                 (P := P) hPstat (U := cubeSet (originCube d n)) hY0_aemeas hY_cov
                 (scaleTranslationShift n R)
     have hYR :
@@ -590,8 +590,8 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
       (by intro R hR; exact hZ_int R (by simpa [D] using hR))
       (by intro R hR; exact hZ_mean R (by simpa [D] using hR))
       (by intro R hR; exact hZ_bound R (by simpa [D] using hR))
-  let S : CoeffField d → ℝ := fun a => ∑ R ∈ D, Z R a
-  let Sraw : CoeffField d → ℝ := fun a => ∑ R ∈ D, Zraw R a
+  let S : RegCoeffField d → ℝ := fun a => ∑ R ∈ D, Z R a
+  let Sraw : RegCoeffField d → ℝ := fun a => ∑ R ∈ D, Zraw R a
   have hSraw_eq_S : Sraw =ᵐ[P] S := by
     have hAll : ∀ᵐ a ∂P, ∀ R ∈ D, Zraw R a = Z R a := by
       rw [Filter.eventually_all_finset]
@@ -616,7 +616,7 @@ theorem integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRang
     simpa [Real.norm_eq_abs] using hZ_int R hR
   have hS_int : Integrable (fun a => |S a| ^ p) P := by
     simpa [S, Real.norm_eq_abs] using hS_memLp.integrable_norm_pow hp_nat_ne_zero
-  let Aavg : CoeffField d → ℝ := c • S
+  let Aavg : RegCoeffField d → ℝ := c • S
   have hAavg_aemeas : AEMeasurable Aavg P := hS_aemeas.const_smul c
   have hAavg_memLp : MemLp Aavg (p : ENNReal) P := hS_memLp.const_smul c
   have hAavg_int : Integrable (fun a => |Aavg a| ^ p) P := by

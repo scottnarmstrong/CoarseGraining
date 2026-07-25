@@ -22,7 +22,7 @@ noncomputable section
 
 /-- The annealed `L^ξ` moment root of a nonnegative scalar observable. -/
 noncomputable def annealedMomentRoot {d : ℕ}
-    (P : CoeffLaw d) (ξ : ℕ) (X : CoeffField d → ℝ) : ℝ :=
+    (P : CoeffLaw d) (ξ : ℕ) (X : RegCoeffField d → ℝ) : ℝ :=
   (∫ a, X a ^ ξ ∂P) ^ (1 / (ξ : ℝ))
 
 /-- The upper multiscale ellipticity observable on ambient coefficient fields.
@@ -30,7 +30,7 @@ On the a.e.-elliptic support it uses the canonical dependent Ch2 coefficient
 family; off support it is totalized by `0`. -/
 noncomputable def LambdaSqCoeffField {d : ℕ} [NeZero d]
     (Q : TriadicCube d) (s : ℝ) (q : Ch02.MultiscaleExponent)
-    (a : CoeffField d) : ℝ := by
+    (a : RegCoeffField d) : ℝ := by
   classical
   exact
     if h : AELocallyUniformlyEllipticField a then
@@ -43,7 +43,7 @@ On the a.e.-elliptic support it uses the canonical dependent Ch2 coefficient
 family; off support it is totalized by `0`. -/
 noncomputable def lambdaSqCoeffField {d : ℕ} [NeZero d]
     (Q : TriadicCube d) (s : ℝ) (q : Ch02.MultiscaleExponent)
-    (a : CoeffField d) : ℝ := by
+    (a : RegCoeffField d) : ℝ := by
   classical
   exact
     if h : AELocallyUniformlyEllipticField a then
@@ -76,9 +76,9 @@ private theorem scale_eq_neg_natCast_of_mem_descendantsAtScale_originCube_zero
   simpa [originCube] using hscale
 
 private theorem coarseBlockMatrix_translateCube_descendant_eq_translateByInt
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (z : Fin d → ℤ)
-    (htranslate : AELocallyUniformlyEllipticField (translateByInt z a))
+    (htranslate : AELocallyUniformlyEllipticField (translateReg (intVecToRealVec z) a))
     (n : ℕ) {R : TriadicCube d}
     (hR : R ∈ descendantsAtScale (originCube d 0) ((originCube d 0).scale - (n : ℤ))) :
     Ch02.coarseBlockMatrix (Ch02.cubeDomain (translateCube (descendantTranslationShift n z) R))
@@ -86,12 +86,12 @@ private theorem coarseBlockMatrix_translateCube_descendant_eq_translateByInt
           (translateCube (descendantTranslationShift n z) R)) =
       Ch02.coarseBlockMatrix (Ch02.cubeDomain R)
         ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField
-          (translateByInt z a) htranslate).coeffOn R) := by
+          (translateReg (intVecToRealVec z) a) htranslate).coeffOn R) := by
   let T : TriadicCube d := translateCube (descendantTranslationShift n z) R
   have hleft :
       Ch02.coarseBlockMatrix (Ch02.cubeDomain T)
           ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn T) =
-        coarseBlockMatrix (cubeSet T) a := by
+        coarseBlockMatrix (cubeSet T) a.toFun := by
     simpa [T] using
       (LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha T).symm
@@ -100,37 +100,38 @@ private theorem coarseBlockMatrix_translateCube_descendant_eq_translateByInt
     simpa [T] using
       cubeSet_translateCube_descendantTranslationShift_eq_translateSet_int z n hRscale
   have hright :
-      coarseBlockMatrix (cubeSet R) (translateByInt z a) =
+      coarseBlockMatrix (cubeSet R) (translateReg (intVecToRealVec z) a).toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain R)
           ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField
-            (translateByInt z a) htranslate).coeffOn R) := by
+            (translateReg (intVecToRealVec z) a) htranslate).coeffOn R) := by
     simpa using
       LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         htranslate R
   calc
     Ch02.coarseBlockMatrix (Ch02.cubeDomain T)
         ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn T)
-        = coarseBlockMatrix (cubeSet T) a := hleft
-    _ = coarseBlockMatrix (translateSet (intVecToRealVec z) (cubeSet R)) a := by rw [hset]
-    _ = coarseBlockMatrix (cubeSet R) (translateByInt z a) := by
+        = coarseBlockMatrix (cubeSet T) a.toFun := hleft
+    _ = coarseBlockMatrix (translateSet (intVecToRealVec z) (cubeSet R)) a.toFun := by
+          rw [hset]
+    _ = coarseBlockMatrix (cubeSet R) (translateReg (intVecToRealVec z) a).toFun := by
           simpa [translateByInt] using
             coarseBlockMatrix_translateSet_eq_translateCoeffField
-              (intVecToRealVec z) (cubeSet R) a
+              (intVecToRealVec z) (cubeSet R) a.toFun
     _ = Ch02.coarseBlockMatrix (Ch02.cubeDomain R)
         ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField
-          (translateByInt z a) htranslate).coeffOn R) := hright
+          (translateReg (intVecToRealVec z) a) htranslate).coeffOn R) := hright
 
 private theorem LambdaSqCoeffField_originCube_zero_translateByInt_pointwise
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (z : Fin d → ℤ)
-    (htranslate : AELocallyUniformlyEllipticField (translateByInt z a))
+    (htranslate : AELocallyUniformlyEllipticField (translateReg (intVecToRealVec z) a))
     (s : ℝ) (q : Ch02.MultiscaleExponent) :
     LambdaSqCoeffField (translateCube z (originCube d 0)) s q a =
-      LambdaSqCoeffField (originCube d 0) s q (translateByInt z a) := by
+      LambdaSqCoeffField (originCube d 0) s q (translateReg (intVecToRealVec z) a) := by
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   let G : Ch02.TriadicCoeffFamily d :=
-    triadicCoeffFamilyOfAELocallyUniformlyEllipticField (translateByInt z a) htranslate
+    triadicCoeffFamilyOfAELocallyUniformlyEllipticField (translateReg (intVecToRealVec z) a) htranslate
   have hB : ∀ (n : ℕ) (R : TriadicCube d),
       R ∈ descendantsAtScale (originCube d 0) ((originCube d 0).scale - (n : ℤ)) →
         Ch02.coarseBMatrixNorm (translateCube (descendantTranslationShift n z) R) F =
@@ -151,16 +152,16 @@ private theorem LambdaSqCoeffField_originCube_zero_translateByInt_pointwise
   simpa [LambdaSqCoeffField, ha, htranslate, F, G] using h
 
 private theorem lambdaSqCoeffField_originCube_zero_translateByInt_pointwise
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (z : Fin d → ℤ)
-    (htranslate : AELocallyUniformlyEllipticField (translateByInt z a))
+    (htranslate : AELocallyUniformlyEllipticField (translateReg (intVecToRealVec z) a))
     (s : ℝ) (q : Ch02.MultiscaleExponent) :
     lambdaSqCoeffField (translateCube z (originCube d 0)) s q a =
-      lambdaSqCoeffField (originCube d 0) s q (translateByInt z a) := by
+      lambdaSqCoeffField (originCube d 0) s q (translateReg (intVecToRealVec z) a) := by
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   let G : Ch02.TriadicCoeffFamily d :=
-    triadicCoeffFamilyOfAELocallyUniformlyEllipticField (translateByInt z a) htranslate
+    triadicCoeffFamilyOfAELocallyUniformlyEllipticField (translateReg (intVecToRealVec z) a) htranslate
   have hSigma : ∀ (n : ℕ) (R : TriadicCube d),
       R ∈ descendantsAtScale (originCube d 0) ((originCube d 0).scale - (n : ℤ)) →
         Ch02.coarseSigmaStarInvMatrixNorm
@@ -184,11 +185,11 @@ private theorem lambdaSqCoeffField_originCube_zero_translateByInt_pointwise
 private theorem ae_locallyUniformlyEllipticField_translateByInt
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (hstat : StationaryLaw P) (z : Fin d → ℤ) :
-    ∀ᵐ a ∂P, AELocallyUniformlyEllipticField (translateByInt z a) := by
+    ∀ᵐ a ∂P, AELocallyUniformlyEllipticField (translateReg (intVecToRealVec z) a) := by
   have hmapSupport :
-      ∀ᵐ b ∂Measure.map (translateByInt z) P, AELocallyUniformlyEllipticField b := by
+      ∀ᵐ b ∂Measure.map (translateReg (intVecToRealVec z)) P, AELocallyUniformlyEllipticField b := by
     simpa [hstat z] using hP.ae_locallyUniformlyEllipticField
-  exact MeasureTheory.ae_of_ae_map (measurable_translateByInt z).aemeasurable hmapSupport
+  exact MeasureTheory.ae_of_ae_map (measurable_translateReg (intVecToRealVec z)).aemeasurable hmapSupport
 
 /-- Upper multiscale ellipticity on the scale-zero origin cube is covariant
 under integer translations, almost surely under a stationary law carrier. -/
@@ -196,7 +197,7 @@ theorem LambdaSqCoeffField_originCube_zero_translateByInt_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (hstat : StationaryLaw P) (z : Fin d → ℤ) (s : ℝ) (q : Ch02.MultiscaleExponent) :
     (fun a => LambdaSqCoeffField (translateCube z (originCube d 0)) s q a) =ᵐ[P]
-      fun a => LambdaSqCoeffField (originCube d 0) s q (translateByInt z a) := by
+      fun a => LambdaSqCoeffField (originCube d 0) s q (translateReg (intVecToRealVec z) a) := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField,
     ae_locallyUniformlyEllipticField_translateByInt hP hstat z] with a ha htranslate
   exact LambdaSqCoeffField_originCube_zero_translateByInt_pointwise ha z htranslate s q
@@ -207,13 +208,13 @@ theorem lambdaSqCoeffField_originCube_zero_translateByInt_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (hstat : StationaryLaw P) (z : Fin d → ℤ) (s : ℝ) (q : Ch02.MultiscaleExponent) :
     (fun a => lambdaSqCoeffField (translateCube z (originCube d 0)) s q a) =ᵐ[P]
-      fun a => lambdaSqCoeffField (originCube d 0) s q (translateByInt z a) := by
+      fun a => lambdaSqCoeffField (originCube d 0) s q (translateReg (intVecToRealVec z) a) := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField,
     ae_locallyUniformlyEllipticField_translateByInt hP hstat z] with a ha htranslate
   exact lambdaSqCoeffField_originCube_zero_translateByInt_pointwise ha z htranslate s q
 
 theorem LambdaSqCoeffField_finite_nonneg {d : ℕ} [NeZero d]
-    (Q : TriadicCube d) {s q : ℝ} (a : CoeffField d)
+    (Q : TriadicCube d) {s q : ℝ} (a : RegCoeffField d)
     (hs : 0 < s) (hq : 1 ≤ q) :
     0 ≤ LambdaSqCoeffField Q s (.finite q) a := by
   classical
@@ -227,7 +228,7 @@ theorem LambdaSqCoeffField_finite_nonneg {d : ℕ} [NeZero d]
   · simp [LambdaSqCoeffField, h]
 
 theorem lambdaSqCoeffField_finite_nonneg {d : ℕ} [NeZero d]
-    (Q : TriadicCube d) {s q : ℝ} (a : CoeffField d)
+    (Q : TriadicCube d) {s q : ℝ} (a : RegCoeffField d)
     (hs : 0 < s) (hq : 1 ≤ q) :
     0 ≤ lambdaSqCoeffField Q s (.finite q) a := by
   classical
@@ -244,7 +245,7 @@ theorem lambdaSqCoeffField_finite_nonneg {d : ℕ} [NeZero d]
 norm maximum.  It uses the canonical dependent Ch2 coefficient family on the
 a.e.-locally elliptic support and is zero off that support. -/
 noncomputable def maxDescendantBMatrixNormCoeffFieldAtScale {d : ℕ} [NeZero d]
-    (Q : TriadicCube d) (k : ℤ) (a : CoeffField d) : ℝ := by
+    (Q : TriadicCube d) (k : ℤ) (a : RegCoeffField d) : ℝ := by
   classical
   exact
     if h : AELocallyUniformlyEllipticField a then
@@ -257,7 +258,7 @@ noncomputable def maxDescendantBMatrixNormCoeffFieldAtScale {d : ℕ} [NeZero d]
 operator-norm maximum. -/
 noncomputable def maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
     {d : ℕ} [NeZero d] (Q : TriadicCube d) (k : ℤ)
-    (a : CoeffField d) : ℝ := by
+    (a : RegCoeffField d) : ℝ := by
   classical
   exact
     if h : AELocallyUniformlyEllipticField a then
@@ -294,17 +295,17 @@ theorem aemeasurable_finset_sup'
     (fun i hi => hf i hi)
 
 theorem maxDescendantBMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (Q : TriadicCube d) (k : ℤ) :
     maxDescendantBMatrixNormCoeffFieldAtScale Q k a =
       Ch02.finsetSupReal (descendantsAtScale Q k)
-        (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft) := by
+        (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft) := by
   classical
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hnorm : ∀ R ∈ descendantsAtScale Q k,
       Ch02.coarseBMatrixNorm R F =
-        Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft := by
+        Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft := by
     intro R _hR
     have hmat :=
       coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -317,17 +318,17 @@ theorem maxDescendantBMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae
     Ch02.finsetSupReal_congr (descendantsAtScale Q k) hnorm
 
 theorem maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (Q : TriadicCube d) (k : ℤ) :
     maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale Q k a =
       Ch02.finsetSupReal (descendantsAtScale Q k)
-        (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight) := by
+        (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight) := by
   classical
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hnorm : ∀ R ∈ descendantsAtScale Q k,
       Ch02.coarseSigmaStarInvMatrixNorm R F =
-        Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight := by
+        Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight := by
     intro R _hR
     have hmat :=
       coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -343,7 +344,7 @@ private theorem aemeasurable_maxDescendantBMatrixNormCoeffFieldAtScale
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (n : ℕ) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         maxDescendantBMatrixNormCoeffFieldAtScale Q (Q.scale - (n : ℤ)) a) P := by
   classical
   have hn : (0 : ℤ) ≤ (n : ℤ) := by exact_mod_cast Nat.zero_le n
@@ -353,22 +354,22 @@ private theorem aemeasurable_maxDescendantBMatrixNormCoeffFieldAtScale
   have hsup :
       AEMeasurable
         (sDesc.sup' hsDesc
-          (fun R (a : CoeffField d) =>
-            Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft)) P := by
+          (fun R (a : RegCoeffField d) =>
+            Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft)) P := by
     refine aemeasurable_finset_sup' hsDesc ?_
     intro R _hR
     simpa [Ch02.matrixNorm, Matrix.l2_opNorm_toEuclideanCLM] using
       (hP.aemeasurable_coarseB_cubeSet R).norm
   have hfin :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Ch02.finsetSupReal sDesc
-            (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft)) P := by
+            (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft)) P := by
     convert hsup using 1
     ext a
     rw [Finset.sup'_apply]
     exact finsetSupReal_eq_sup' sDesc hsDesc
-      (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft)
+      (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft)
   refine hfin.congr ?_
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   simpa [sDesc] using
@@ -379,7 +380,7 @@ private theorem aemeasurable_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScal
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (n : ℕ) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
           Q (Q.scale - (n : ℤ)) a) P := by
   classical
@@ -390,22 +391,22 @@ private theorem aemeasurable_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScal
   have hsup :
       AEMeasurable
         (sDesc.sup' hsDesc
-          (fun R (a : CoeffField d) =>
-            Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight)) P := by
+          (fun R (a : RegCoeffField d) =>
+            Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight)) P := by
     refine aemeasurable_finset_sup' hsDesc ?_
     intro R _hR
     simpa [Ch02.matrixNorm, Matrix.l2_opNorm_toEuclideanCLM] using
       (hP.aemeasurable_coarseSigmaStarInv_cubeSet R).norm
   have hfin :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Ch02.finsetSupReal sDesc
-            (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight)) P := by
+            (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight)) P := by
     convert hsup using 1
     ext a
     rw [Finset.sup'_apply]
     exact finsetSupReal_eq_sup' sDesc hsDesc
-      (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight)
+      (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight)
   refine hfin.congr ?_
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   simpa [sDesc] using
@@ -413,7 +414,7 @@ private theorem aemeasurable_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScal
       (a := a) ha Q (Q.scale - (n : ℤ))).symm
 
 theorem summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale
-    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : CoeffField d)
+    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : RegCoeffField d)
     {s : ℝ} (hs : 0 < s) :
     Summable (fun n : ℕ =>
       Ch02.geometricWeight s 1 n *
@@ -430,7 +431,7 @@ theorem summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale
       (summable_zero : Summable (fun _n : ℕ => (0 : ℝ)))
 
 theorem summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
-    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : CoeffField d)
+    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : RegCoeffField d)
     {s : ℝ} (hs : 0 < s) :
     Summable (fun n : ℕ =>
       Ch02.geometricWeight s 1 n *
@@ -451,7 +452,7 @@ private theorem aemeasurable_tsum_weighted_maxDescendantBMatrixNormCoeffFieldAtS
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ∑' n : ℕ,
           Ch02.geometricWeight s 1 n *
             Real.rpow
@@ -473,7 +474,7 @@ private theorem aemeasurable_tsum_weighted_maxDescendantBMatrixNormCoeffFieldAtS
               (1 / 2 : ℝ)) ?_ ?_
   · intro N
     refine Finset.aemeasurable_fun_sum (μ := P)
-      (f := fun n (a : CoeffField d) =>
+      (f := fun n (a : RegCoeffField d) =>
         Ch02.geometricWeight s 1 n *
           Real.rpow
             (maxDescendantBMatrixNormCoeffFieldAtScale Q (Q.scale - (n : ℤ)) a)
@@ -481,7 +482,7 @@ private theorem aemeasurable_tsum_weighted_maxDescendantBMatrixNormCoeffFieldAtS
     intro n _hn
     have hpow :
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             Real.rpow
               (maxDescendantBMatrixNormCoeffFieldAtScale Q (Q.scale - (n : ℤ)) a)
               (1 / 2 : ℝ)) P :=
@@ -499,7 +500,7 @@ private theorem aemeasurable_tsum_weighted_maxDescendantSigmaStarInvMatrixNormCo
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ∑' n : ℕ,
           Ch02.geometricWeight s 1 n *
             Real.rpow
@@ -524,7 +525,7 @@ private theorem aemeasurable_tsum_weighted_maxDescendantSigmaStarInvMatrixNormCo
               (1 / 2 : ℝ)) ?_ ?_
   · intro N
     refine Finset.aemeasurable_fun_sum (μ := P)
-      (f := fun n (a : CoeffField d) =>
+      (f := fun n (a : RegCoeffField d) =>
         Ch02.geometricWeight s 1 n *
           Real.rpow
             (maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
@@ -533,7 +534,7 @@ private theorem aemeasurable_tsum_weighted_maxDescendantSigmaStarInvMatrixNormCo
     intro n _hn
     have hpow :
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             Real.rpow
               (maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
                 Q (Q.scale - (n : ℤ)) a)
@@ -549,7 +550,7 @@ private theorem aemeasurable_tsum_weighted_maxDescendantSigmaStarInvMatrixNormCo
         ((summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale Q a hs).hasSum)
 
 theorem LambdaSqCoeffField_finite_one_eq_tsum_sq
-    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : CoeffField d) (s : ℝ) :
+    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : RegCoeffField d) (s : ℝ) :
     LambdaSqCoeffField Q s (.finite 1) a =
       (∑' n : ℕ,
         Ch02.geometricWeight s 1 n *
@@ -563,7 +564,7 @@ theorem LambdaSqCoeffField_finite_one_eq_tsum_sq
   · simp [LambdaSqCoeffField, maxDescendantBMatrixNormCoeffFieldAtScale, ha]
 
 theorem lambdaSqCoeffField_finite_one_eq_tsum_sq_inv
-    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : CoeffField d)
+    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : RegCoeffField d)
     {s : ℝ} (hs : 0 < s) :
     lambdaSqCoeffField Q s (.finite 1) a =
       ((∑' n : ℕ,
@@ -598,7 +599,7 @@ theorem aemeasurable_LambdaSqCoeffField_finite_one
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
-      (fun a : CoeffField d => LambdaSqCoeffField Q s (.finite 1) a) P := by
+      (fun a : RegCoeffField d => LambdaSqCoeffField Q s (.finite 1) a) P := by
   have hS :=
     aemeasurable_tsum_weighted_maxDescendantBMatrixNormCoeffFieldAtScale hP Q hs
   refine (hS.mul hS).congr ?_
@@ -611,7 +612,7 @@ theorem aemeasurable_lambdaSqCoeffField_finite_one
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
-      (fun a : CoeffField d => lambdaSqCoeffField Q s (.finite 1) a) P := by
+      (fun a : RegCoeffField d => lambdaSqCoeffField Q s (.finite 1) a) P := by
   have hS :=
     aemeasurable_tsum_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale hP Q hs
   refine (hS.mul hS).inv.congr ?_
@@ -624,7 +625,7 @@ theorem aemeasurable_lambdaSqCoeffField_finite_one_inv
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
-      (fun a : CoeffField d => (lambdaSqCoeffField Q s (.finite 1) a)⁻¹) P :=
+      (fun a : RegCoeffField d => (lambdaSqCoeffField Q s (.finite 1) a)⁻¹) P :=
   (hP.aemeasurable_lambdaSqCoeffField_finite_one Q hs).inv
 
 end LawCarrier
@@ -633,7 +634,7 @@ end LawCarrier
 ellipticity observable.  This is the Ch4-facing form of the Ch2 theorem, with
 no probability or measurability assumptions. -/
 theorem LambdaSqCoeffField_finite_one_le_tsum_weighted_maxDescendantBMatrixNormAtScale
-    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : CoeffField d)
+    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : RegCoeffField d)
     {s : ℝ} (hs : 0 < s) :
     LambdaSqCoeffField Q s (.finite 1) a ≤
       ∑' n : ℕ,
@@ -656,7 +657,7 @@ theorem LambdaSqCoeffField_finite_one_le_tsum_weighted_maxDescendantBMatrixNormA
 /-- The q=1 deterministic Jensen split for the ambient lower inverse
 multiscale ellipticity observable. -/
 theorem lambdaSqCoeffField_finite_one_inv_le_tsum_weighted_maxDescendantSigmaStarInvMatrixNormAtScale
-    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : CoeffField d)
+    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : RegCoeffField d)
     {s : ℝ} (hs : 0 < s) :
     (lambdaSqCoeffField Q s (.finite 1) a)⁻¹ ≤
       ∑' n : ℕ,
@@ -697,7 +698,7 @@ noncomputable def widetildeThetaAtScale {d : ℕ} [NeZero d]
   LambdaMomentAtScale P n sUpper ξ * lambdaInvMomentAtScale P n sLower ξ
 
 theorem annealedMomentRoot_nonneg_of_nonneg {d : ℕ}
-    (P : CoeffLaw d) (ξ : ℕ) {X : CoeffField d → ℝ}
+    (P : CoeffLaw d) (ξ : ℕ) {X : RegCoeffField d → ℝ}
     (hX : ∀ a, 0 ≤ X a) :
     0 ≤ annealedMomentRoot P ξ X := by
   rw [annealedMomentRoot]
@@ -707,7 +708,7 @@ theorem annealedMomentRoot_nonneg_of_nonneg {d : ℕ}
 /-- Monotonicity of the annealed moment root under a.e. domination of
 nonnegative observables. -/
 theorem annealedMomentRoot_le_of_ae_nonneg_le {d : ℕ} {P : CoeffLaw d}
-    {ξ : ℕ} {X Y : CoeffField d → ℝ}
+    {ξ : ℕ} {X Y : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
     (hX_nonneg : ∀ a, 0 ≤ X a)
     (hX_int : Integrable (fun a => X a ^ ξ) P)
@@ -772,7 +773,7 @@ This is the Ch4-owned scalar Minkowski step used in the Section 5.2 moment
 lemma. -/
 theorem annealedMomentRoot_le_const_add_of_nonneg_le
     {d : ℕ} {P : CoeffLaw d} [IsProbabilityMeasure P]
-    {ξ : ℕ} {X E : CoeffField d → ℝ} {A : ℝ}
+    {ξ : ℕ} {X E : RegCoeffField d → ℝ} {A : ℝ}
     (hξ : 1 ≤ ξ) (hA_nonneg : 0 ≤ A)
     (hX_nonneg : ∀ a, 0 ≤ X a)
     (hE_nonneg : ∀ a, 0 ≤ E a)
@@ -788,16 +789,16 @@ theorem annealedMomentRoot_le_const_add_of_nonneg_le
     rw [← MeasureTheory.integrable_norm_rpow_iff hE_meas.aestronglyMeasurable
       (by exact_mod_cast hξ_ne) (by simp)]
     simpa [Real.norm_eq_abs] using hE_int
-  have hP_ne_zero : (P : Measure (CoeffField d)) ≠ 0 := by
+  have hP_ne_zero : (P : Measure (RegCoeffField d)) ≠ 0 := by
     exact IsProbabilityMeasure.ne_zero P
   have hConst_toReal :
-      ENNReal.toReal (eLpNorm (fun _ : CoeffField d => A) (ξ : ENNReal) P) = A := by
+      ENNReal.toReal (eLpNorm (fun _ : RegCoeffField d => A) (ξ : ENNReal) P) = A := by
     have hξ_enn_ne_zero : (ξ : ENNReal) ≠ 0 := by exact_mod_cast hξ_ne
     rw [MeasureTheory.eLpNorm_const (μ := P) (c := A) (p := (ξ : ENNReal))
       hξ_enn_ne_zero hP_ne_zero]
     simp [IsProbabilityMeasure.measure_univ, Real.norm_eq_abs, abs_of_nonneg hA_nonneg]
   have hConst_ne_top :
-      eLpNorm (fun _ : CoeffField d => A) (ξ : ENNReal) P ≠ ⊤ := by
+      eLpNorm (fun _ : RegCoeffField d => A) (ξ : ENNReal) P ≠ ⊤ := by
     have hξ_enn_ne_zero : (ξ : ENNReal) ≠ 0 := by exact_mod_cast hξ_ne
     rw [MeasureTheory.eLpNorm_const (μ := P) (c := A) (p := (ξ : ENNReal))
       hξ_enn_ne_zero hP_ne_zero]
@@ -832,29 +833,29 @@ theorem annealedMomentRoot_le_const_add_of_nonneg_le
       _ = annealedMomentRoot P ξ E := rfl
   have hmono :
       eLpNorm X (ξ : ENNReal) P ≤
-        eLpNorm (fun a : CoeffField d => A + E a) (ξ : ENNReal) P :=
+        eLpNorm (fun a : RegCoeffField d => A + E a) (ξ : ENNReal) P :=
     MeasureTheory.eLpNorm_mono fun a => by
       have hX_abs : |X a| = X a := abs_of_nonneg (hX_nonneg a)
       have hAE_nonneg : 0 ≤ A + E a := add_nonneg hA_nonneg (hE_nonneg a)
       have hAE_abs : |A + E a| = A + E a := abs_of_nonneg hAE_nonneg
       simpa [Real.norm_eq_abs, hX_abs, hAE_abs] using hX_le a
   have hadd :
-      eLpNorm (fun a : CoeffField d => A + E a) (ξ : ENNReal) P ≤
-        eLpNorm (fun _ : CoeffField d => A) (ξ : ENNReal) P +
+      eLpNorm (fun a : RegCoeffField d => A + E a) (ξ : ENNReal) P ≤
+        eLpNorm (fun _ : RegCoeffField d => A) (ξ : ENNReal) P +
           eLpNorm E (ξ : ENNReal) P := by
     simpa [Pi.add_apply] using
       (MeasureTheory.eLpNorm_add_le
         (aestronglyMeasurable_const (μ := P) (b := A))
         hE_meas.aestronglyMeasurable hξ_enn)
   have hsum_ne_top :
-      eLpNorm (fun _ : CoeffField d => A) (ξ : ENNReal) P +
+      eLpNorm (fun _ : RegCoeffField d => A) (ξ : ENNReal) P +
           eLpNorm E (ξ : ENNReal) P ≠ ⊤ :=
     ENNReal.add_ne_top.mpr ⟨hConst_ne_top, hE_memLp.2.ne⟩
   calc
     annealedMomentRoot P ξ X =
         ENNReal.toReal (eLpNorm X (ξ : ENNReal) P) := hX_toReal.symm
     _ ≤ ENNReal.toReal
-        (eLpNorm (fun _ : CoeffField d => A) (ξ : ENNReal) P +
+        (eLpNorm (fun _ : RegCoeffField d => A) (ξ : ENNReal) P +
           eLpNorm E (ξ : ENNReal) P) :=
         ENNReal.toReal_mono hsum_ne_top (le_trans hmono hadd)
     _ = A + annealedMomentRoot P ξ E := by

@@ -15,8 +15,10 @@ Each comparator lives in its own subdirectory:
 
 Each `Challenge.lean` imports only `Mathlib` and ends with one `sorry`, the
 theorem proof being checked.  Each `Solution.lean` imports the repository theorem
-surface and proves the same statement.  The comparator configurations permit
-only:
+surface and proves the same statement (where the statement vocabulary is large,
+it is split into a `SolutionBasic.lean` imported by `Solution.lean`, keeping
+every file within the repository line budget).  The comparator configurations
+permit only:
 
 ```json
 ["propext", "Quot.sound", "Classical.choice"]
@@ -34,11 +36,23 @@ the shape
 ∃ C alpha Cscale : ℝ, 0 < C ∧ 0 < alpha ∧ 0 < Cscale ∧
   ∀ <law parameters>,
     ∃ sigmaBar : ℝ, 0 < sigmaBar ∧
-      ∃ X : CoeffField d → ℝ, <X is a minimal scale> ∧
+      ∃ X : RegCoeffField d → ℝ, <X is a minimal scale> ∧
         ∀ᵐ a ∂<law>, ∀ <solution data> <forcing g>,
           X a ≤ 3 ^ m → ForceSobolevRegularity (originCube d m) (3/4) g →
             comparisonDefect ≤ C * (3 ^ m / X a) ^ (-alpha) * comparisonData
 ```
+
+Following the carrier redesign, every law is a measure on the local mirror of
+the *regular-fields carrier* `RegCoeffField d` (entrywise Borel-measurable,
+locally integrable coefficient fields, carrying the join of the pointwise and
+entry-test σ-algebras), the minimal scale `X` is a function on the carrier, and
+the structural hypotheses use the carrier endomorphisms
+(`translateReg`/`rotateReg`/`adjointReg`) and the restriction σ-algebras
+`RestrictionSigmaR U hU` of measurable sets.  The audit `LawCarrier` consists
+of the probability instance and the a.s. local-uniform-ellipticity support
+alone: the former local-observable and slice measurability fields are
+law-independent free theorems on the carrier and are gone from the statement
+surface.
 
 and asserts: there are universal constants `C, alpha, Cscale > 0` (chosen before
 the law) such that the law has a homogenized scalar `sigmaBar > 0` and a random
@@ -102,13 +116,15 @@ definitions needed to state the theorem surfaces.
 | Challenge declaration | Repository source |
 | --- | --- |
 | `Vec`, `Mat`, `CoeffField`, matrix/vector operations | `Homogenization/Ambient/*` |
+| `RegCoeffField`, probes, `entryTestR`, the carrier σ-algebra | `Homogenization/Probability/RegCoeffField.lean` and `Homogenization/Probability/RegCoeffField/Sigma.lean` |
+| carrier endomorphisms and `RestrictionSigmaR` | `Homogenization/Probability/RegCoeffField/{Endomorphisms,Restriction}.lean` |
 | `TriadicCube`, `cubeSet`, `openCubeSet`, descendants, cube measures | `Homogenization/Geometry/*` and `Homogenization/Book/Ch02` |
 | coefficient laws and law hypotheses | `Homogenization/Book/Ch04/*` |
 | weak solution pairs and comparison quantities | `Homogenization/Book/MainResults.lean` and `Homogenization/Book/Ch05/Theorems/Section57/*` |
 | positive Sobolev force regularity | `Homogenization/Book/Ch03/Theorems/SobolevPublic.lean` |
 | negative Sobolev/dual norm representative | `Homogenization/Besov/Negative.lean` and `Homogenization/Book/Ch03/Theorems/SobolevPublic.lean` |
 | periodic Dirac bridge and examples | `Homogenization/Examples/Periodic/*` |
-| random Bernoulli checkerboard law and setup | `Homogenization/Examples/RandomCheckerboard/Basic.lean` |
+| random Bernoulli checkerboard law and setup | `Homogenization/Examples/RandomCheckerboard/Basic.lean` and `Homogenization/Examples/RandomCheckerboard/CarrierLaw.lean` |
 
 The annealed convergence theorem is proved in
 `Homogenization/Book/MainResults.lean`, but it is not currently represented by a

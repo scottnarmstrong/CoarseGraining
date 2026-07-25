@@ -120,7 +120,7 @@ In the manuscript notation this is
 noncomputable def gammaSigmaUnitEllipticityObservable
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (sUpper sLower : ℝ) : CoeffField d → ℝ :=
+    (sUpper sLower : ℝ) : RegCoeffField d → ℝ :=
   if 0 < hP.barSigmaAtScale hStruct (0 : ℤ) then
     fun a =>
       (hP.barSigmaAtScale hStruct (0 : ℤ))⁻¹ *
@@ -225,7 +225,7 @@ theorem aemeasurable_unitEllipticityObservable
         hΓ.params.sUpper hΓ.params.sLower) P := by
   have hUpper :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Ch04.LambdaSqCoeffField (originCube d 0)
             hΓ.params.sUpper (.finite 1) a) P := by
     simpa using
@@ -233,7 +233,7 @@ theorem aemeasurable_unitEllipticityObservable
         (originCube d 0) hΓ.sUpper_pos
   have hLower :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.lambdaSqCoeffField (originCube d 0)
             hΓ.params.sLower (.finite 1) a)⁻¹) P := by
     simpa using
@@ -257,7 +257,7 @@ ellipticity observable itself.  Splitting this into separate `Λ` and
 theorem integrable_abs_unitEllipticityObservable_rpow_xi
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         |gammaSigmaUnitEllipticityObservable hP hStruct
           hΓ.params.sUpper hΓ.params.sLower a| ^ (hΓ.params.xi : ℝ)) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
@@ -267,7 +267,7 @@ theorem integrable_abs_unitEllipticityObservable_rpow_xi
   exact
     integrable_rpow_of_isBigOWith_gammaSigma
       (μ := P)
-      (Y := fun a : CoeffField d =>
+      (Y := fun a : RegCoeffField d =>
         |gammaSigmaUnitEllipticityObservable hP hStruct
           hΓ.params.sUpper hΓ.params.sLower a|)
       (K := hΓ.thetaHat) (σ := hΓ.sigma) (p := (hΓ.params.xi : ℝ))
@@ -292,26 +292,26 @@ theorem barSigmaAtScale_zero_pos
   · exact hbar
   · letI : IsProbabilityMeasure P := hP.isProbability
     let ξ : ℕ := hΓ.params.xi
-    let L : CoeffField d → ℝ :=
+    let L : RegCoeffField d → ℝ :=
       fun a => Ch04.LambdaSqCoeffField (originCube d 0)
         hΓ.params.sUpper (.finite 1) a
-    let I : CoeffField d → ℝ :=
+    let I : RegCoeffField d → ℝ :=
       fun a => (Ch04.lambdaSqCoeffField (originCube d 0)
         hΓ.params.sLower (.finite 1) a)⁻¹
-    let X : CoeffField d → ℝ :=
+    let X : RegCoeffField d → ℝ :=
       gammaSigmaUnitEllipticityObservable hP hStruct
         hΓ.params.sUpper hΓ.params.sLower
     have hX_abs_rpow_int :
-        Integrable (fun a : CoeffField d => |X a| ^ (ξ : ℝ)) P := by
+        Integrable (fun a : RegCoeffField d => |X a| ^ (ξ : ℝ)) P := by
       simpa [X, ξ] using
         hΓ.integrable_abs_unitEllipticityObservable_rpow_xi
     have hX_abs_pow_int :
-        Integrable (fun a : CoeffField d => |X a| ^ ξ) P := by
+        Integrable (fun a : RegCoeffField d => |X a| ^ ξ) P := by
       refine hX_abs_rpow_int.congr ?_
       filter_upwards with a
       rw [Real.rpow_natCast]
     have hsum_abs_pow_int :
-        Integrable (fun a : CoeffField d => |L a + I a| ^ ξ) P := by
+        Integrable (fun a : RegCoeffField d => |L a + I a| ^ ξ) P := by
       simpa [X, L, I, gammaSigmaUnitEllipticityObservable, hbar] using
         hX_abs_pow_int
     have hL_meas : AEMeasurable L P := by
@@ -333,36 +333,36 @@ theorem barSigmaAtScale_zero_pos
           hΓ.sLower_pos (by norm_num : (1 : ℝ) ≤ 1))
     have hsum_nonneg : ∀ a, 0 ≤ |L a + I a| := fun a => abs_nonneg _
     have hUpperDom :
-        (fun a : CoeffField d => |L a|) ≤ᵐ[P]
+        (fun a : RegCoeffField d => |L a|) ≤ᵐ[P]
           fun a => |L a + I a| := by
       filter_upwards with a
       rw [abs_of_nonneg (hL_nonneg a),
         abs_of_nonneg (add_nonneg (hL_nonneg a) (hI_nonneg a))]
       exact le_add_of_nonneg_right (hI_nonneg a)
     have hLowerDom :
-        (fun a : CoeffField d => |I a|) ≤ᵐ[P]
+        (fun a : RegCoeffField d => |I a|) ≤ᵐ[P]
           fun a => |L a + I a| := by
       filter_upwards with a
       rw [abs_of_nonneg (hI_nonneg a),
         abs_of_nonneg (add_nonneg (hL_nonneg a) (hI_nonneg a))]
       exact le_add_of_nonneg_left (hL_nonneg a)
     have hUpperAbsPowInt :
-        Integrable (fun a : CoeffField d => |L a| ^ ξ) P :=
+        Integrable (fun a : RegCoeffField d => |L a| ^ ξ) P :=
       Ch04.LawCarrier.integrable_abs_pow_of_ae_abs_le_nonneg hL_meas
         (Filter.Eventually.of_forall hsum_nonneg)
         hUpperDom hsum_abs_pow_int
     have hLowerAbsPowInt :
-        Integrable (fun a : CoeffField d => |I a| ^ ξ) P :=
+        Integrable (fun a : RegCoeffField d => |I a| ^ ξ) P :=
       Ch04.LawCarrier.integrable_abs_pow_of_ae_abs_le_nonneg hI_meas
         (Filter.Eventually.of_forall hsum_nonneg)
         hLowerDom hsum_abs_pow_int
     have hUpperPowInt :
-        Integrable (fun a : CoeffField d => L a ^ ξ) P := by
+        Integrable (fun a : RegCoeffField d => L a ^ ξ) P := by
       refine hUpperAbsPowInt.congr ?_
       filter_upwards with a
       simp [abs_of_nonneg (hL_nonneg a)]
     have hLowerPowInt :
-        Integrable (fun a : CoeffField d => I a ^ ξ) P := by
+        Integrable (fun a : RegCoeffField d => I a ^ ξ) P := by
       refine hLowerAbsPowInt.congr ?_
       filter_upwards with a
       simp [abs_of_nonneg (hI_nonneg a)]
@@ -397,13 +397,13 @@ def toQuantitativeCoarseGrainedEllipticity_of_barSigmaAtScale_zero_pos
   letI : IsProbabilityMeasure P := hP.isProbability
   let b : ℝ := hP.barSigmaAtScale hStruct (0 : ℤ)
   let ξ : ℕ := hΓ.params.xi
-  let L : CoeffField d → ℝ :=
+  let L : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d 0)
       hΓ.params.sUpper (.finite 1) a
-  let I : CoeffField d → ℝ :=
+  let I : RegCoeffField d → ℝ :=
     fun a => (Ch04.lambdaSqCoeffField (originCube d 0)
       hΓ.params.sLower (.finite 1) a)⁻¹
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     gammaSigmaUnitEllipticityObservable hP hStruct
       hΓ.params.sUpper hΓ.params.sLower
   have hb : 0 < b := by simpa [b] using hbar
@@ -419,11 +419,11 @@ def toQuantitativeCoarseGrainedEllipticity_of_barSigmaAtScale_zero_pos
       (Ch04.lambdaSqCoeffField_finite_nonneg (originCube d 0) a
         hΓ.sLower_pos (by norm_num : (1 : ℝ) ≤ 1))
   have hX_abs_rpow_int :
-      Integrable (fun a : CoeffField d => |X a| ^ (ξ : ℝ)) P := by
+      Integrable (fun a : RegCoeffField d => |X a| ^ (ξ : ℝ)) P := by
     simpa [X, ξ] using
       hΓ.integrable_abs_unitEllipticityObservable_rpow_xi
   have hX_abs_pow_int :
-      Integrable (fun a : CoeffField d => |X a| ^ ξ) P := by
+      Integrable (fun a : RegCoeffField d => |X a| ^ ξ) P := by
     refine hX_abs_rpow_int.congr ?_
     filter_upwards with a
     rw [Real.rpow_natCast]
@@ -436,7 +436,7 @@ def toQuantitativeCoarseGrainedEllipticity_of_barSigmaAtScale_zero_pos
       hP.aemeasurable_lambdaSqCoeffField_finite_one_inv
         (originCube d 0) hΓ.sLower_pos
   have hUpperDom :
-      (fun a : CoeffField d => |L a|) ≤ᵐ[P]
+      (fun a : RegCoeffField d => |L a|) ≤ᵐ[P]
         fun a => b * |X a| := by
     filter_upwards with a
     have hterm : b⁻¹ * L a ≤ X a := by
@@ -454,7 +454,7 @@ def toQuantitativeCoarseGrainedEllipticity_of_barSigmaAtScale_zero_pos
         _ ≤ b * |X a| := mul_le_mul_of_nonneg_left (le_abs_self (X a)) hb_nonneg
     simpa [abs_of_nonneg (hL_nonneg a)] using hLX
   have hLowerDom :
-      (fun a : CoeffField d => |I a|) ≤ᵐ[P]
+      (fun a : RegCoeffField d => |I a|) ≤ᵐ[P]
         fun a => b⁻¹ * |X a| := by
     filter_upwards with a
     have hterm : b * I a ≤ X a := by
@@ -472,34 +472,34 @@ def toQuantitativeCoarseGrainedEllipticity_of_barSigmaAtScale_zero_pos
         _ ≤ b⁻¹ * |X a| := mul_le_mul_of_nonneg_left (le_abs_self (X a)) hb_inv_nonneg
     simpa [abs_of_nonneg (hI_nonneg a)] using hIX
   have hUpperY_pow_int :
-      Integrable (fun a : CoeffField d => (b * |X a|) ^ ξ) P := by
+      Integrable (fun a : RegCoeffField d => (b * |X a|) ^ ξ) P := by
     refine (hX_abs_pow_int.const_mul (b ^ ξ)).congr ?_
     filter_upwards with a
     rw [mul_pow]
   have hLowerY_pow_int :
-      Integrable (fun a : CoeffField d => (b⁻¹ * |X a|) ^ ξ) P := by
+      Integrable (fun a : RegCoeffField d => (b⁻¹ * |X a|) ^ ξ) P := by
     refine (hX_abs_pow_int.const_mul (b⁻¹ ^ ξ)).congr ?_
     filter_upwards with a
     rw [mul_pow]
   have hUpperAbsPowInt :
-      Integrable (fun a : CoeffField d => |L a| ^ ξ) P :=
+      Integrable (fun a : RegCoeffField d => |L a| ^ ξ) P :=
     Ch04.LawCarrier.integrable_abs_pow_of_ae_abs_le_nonneg hL_meas
       (Filter.Eventually.of_forall fun a =>
         mul_nonneg hb_nonneg (abs_nonneg (X a)))
       hUpperDom hUpperY_pow_int
   have hLowerAbsPowInt :
-      Integrable (fun a : CoeffField d => |I a| ^ ξ) P :=
+      Integrable (fun a : RegCoeffField d => |I a| ^ ξ) P :=
     Ch04.LawCarrier.integrable_abs_pow_of_ae_abs_le_nonneg hI_meas
       (Filter.Eventually.of_forall fun a =>
         mul_nonneg hb_inv_nonneg (abs_nonneg (X a)))
       hLowerDom hLowerY_pow_int
   have hUpperPowInt :
-      Integrable (fun a : CoeffField d => L a ^ ξ) P := by
+      Integrable (fun a : RegCoeffField d => L a ^ ξ) P := by
     refine hUpperAbsPowInt.congr ?_
     filter_upwards with a
     simp [abs_of_nonneg (hL_nonneg a)]
   have hLowerPowInt :
-      Integrable (fun a : CoeffField d => I a ^ ξ) P := by
+      Integrable (fun a : RegCoeffField d => I a ^ ξ) P := by
     refine hLowerAbsPowInt.congr ?_
     filter_upwards with a
     simp [abs_of_nonneg (hI_nonneg a)]
@@ -529,7 +529,7 @@ def toQuantitativeCoarseGrainedEllipticity
 
 theorem unitEllipticityObservable_nonneg
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     0 ≤ gammaSigmaUnitEllipticityObservable hP hStruct
       hΓ.params.sUpper hΓ.params.sLower a := by
   have hbar := hΓ.barSigmaAtScale_zero_pos
@@ -562,7 +562,7 @@ theorem unitEllipticityMomentRoot_le_gammaMomentScale
         (hΓ.params.xi : ℝ) ^ hΓ.sigma⁻¹ * hΓ.thetaHat := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let ξ : ℕ := hΓ.params.xi
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     gammaSigmaUnitEllipticityObservable hP hStruct
       hΓ.params.sUpper hΓ.params.sLower
   let M : ℝ := Ch04.gammaMomentConst hΓ.sigma *
@@ -621,10 +621,10 @@ theorem LambdaMomentAtScale_zero_le_barSigma_mul_unitEllipticityMomentRoot
       hP.barSigmaAtScale hStruct (0 : ℤ) * hΓ.unitEllipticityMomentRoot := by
   let ξ : ℕ := hΓ.params.xi
   let b : ℝ := hP.barSigmaAtScale hStruct (0 : ℤ)
-  let L : CoeffField d → ℝ :=
+  let L : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d 0)
       hΓ.params.sUpper (.finite 1) a
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     gammaSigmaUnitEllipticityObservable hP hStruct
       hΓ.params.sUpper hΓ.params.sLower
   have hξ_one : 1 ≤ ξ := by
@@ -647,7 +647,7 @@ theorem LambdaMomentAtScale_zero_le_barSigma_mul_unitEllipticityMomentRoot
     simpa [L] using
       hP.aemeasurable_LambdaSqCoeffField_finite_one
         (originCube d 0) hΓ.sUpper_pos
-  have hX_abs_int : Integrable (fun a : CoeffField d => |X a| ^ ξ) P := by
+  have hX_abs_int : Integrable (fun a : RegCoeffField d => |X a| ^ ξ) P := by
     have h := hΓ.integrable_abs_unitEllipticityObservable_rpow_xi
     refine h.congr ?_
     filter_upwards with a
@@ -685,10 +685,10 @@ theorem lambdaInvMomentAtScale_zero_le_inv_barSigma_mul_unitEllipticityMomentRoo
       (hP.barSigmaAtScale hStruct (0 : ℤ))⁻¹ * hΓ.unitEllipticityMomentRoot := by
   let ξ : ℕ := hΓ.params.xi
   let b : ℝ := hP.barSigmaAtScale hStruct (0 : ℤ)
-  let I : CoeffField d → ℝ :=
+  let I : RegCoeffField d → ℝ :=
     fun a => (Ch04.lambdaSqCoeffField (originCube d 0)
       hΓ.params.sLower (.finite 1) a)⁻¹
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     gammaSigmaUnitEllipticityObservable hP hStruct
       hΓ.params.sUpper hΓ.params.sLower
   have hξ_one : 1 ≤ ξ := by
@@ -712,7 +712,7 @@ theorem lambdaInvMomentAtScale_zero_le_inv_barSigma_mul_unitEllipticityMomentRoo
     simpa [I] using
       hP.aemeasurable_lambdaSqCoeffField_finite_one_inv
         (originCube d 0) hΓ.sLower_pos
-  have hX_abs_int : Integrable (fun a : CoeffField d => |X a| ^ ξ) P := by
+  have hX_abs_int : Integrable (fun a : RegCoeffField d => |X a| ^ ξ) P := by
     have h := hΓ.integrable_abs_unitEllipticityObservable_rpow_xi
     refine h.congr ?_
     filter_upwards with a

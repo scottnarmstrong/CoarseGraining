@@ -28,16 +28,16 @@ def section52SmallTailChildResponseIntegralAtScales
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-  let childAvg : Homogenization.CoeffField d → ℝ := fun a =>
+  let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
       (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-  let response : Homogenization.CoeffField d → ℝ := fun a =>
+  let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
-  let lowerSmall : Homogenization.CoeffField d → ℝ := fun a =>
+  let lowerSmall : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.Book.Ch05.Section52.lowerSmallSqrtTailCoeffField
         (d := d) m s' a ^ 2 /
       Homogenization.Book.Ch05.Section52.section52SmallTailWeight s' m
-  let upperSmall : Homogenization.CoeffField d → ℝ := fun a =>
+  let upperSmall : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.Book.Ch05.Section52.upperSmallSqrtTailCoeffField
         (d := d) m t' a ^ 2 /
       Homogenization.Book.Ch05.Section52.section52SmallTailWeight t' m
@@ -785,12 +785,12 @@ theorem paired_weakNormSquares_special_le_componentIntegrals_with_local_mismatch
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let K :=
       Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.section53WeakNormMaximizerConst d
-    let gradWeak :=
+    let gradWeak := fun a : Homogenization.RegCoeffField d =>
       Homogenization.Book.Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-        Q s p_e q_e p0_e
-    let fluxWeak :=
+        Q s p_e q_e p0_e a.toFun
+    let fluxWeak := fun a : Homogenization.RegCoeffField d =>
       Homogenization.Book.Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-        Q t p_e q_e q0_e
+        Q t p_e q_e q0_e a.toFun
     let highScaleAverage : ℝ :=
       ∫ a,
         (σ *
@@ -814,17 +814,17 @@ theorem paired_weakNormSquares_special_le_componentIntegrals_with_local_mismatch
         σ⁻¹ *
           (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.fluxConstantTailAtScale
             (m : ℤ) (k : ℤ) t q0_e) ^ 2
-    let lowerExcess := fun a : Homogenization.CoeffField d =>
+    let lowerExcess := fun a : Homogenization.RegCoeffField d =>
       max
         ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
           (hP.barSigmaStarAtScale hStruct (k : ℤ))⁻¹)
         0
-    let upperExcess := fun a : Homogenization.CoeffField d =>
+    let upperExcess := fun a : Homogenization.RegCoeffField d =>
       max
         (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
           hP.barSigmaAtScale hStruct (k : ℤ))
         0
-    let defectSum := fun a : Homogenization.CoeffField d =>
+    let defectSum := fun a : Homogenization.RegCoeffField d =>
       ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
         Real.rpow (3 : ℝ)
             (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
@@ -861,12 +861,12 @@ theorem paired_weakNormSquares_special_le_componentIntegrals_with_local_mismatch
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   let K :=
     Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.section53WeakNormMaximizerConst d
-  let gradWeak :=
+  let gradWeak := fun a : Homogenization.RegCoeffField d =>
     Homogenization.Book.Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-      Q s p_e q_e p0_e
-  let fluxWeak :=
+      Q s p_e q_e p0_e a.toFun
+  let fluxWeak := fun a : Homogenization.RegCoeffField d =>
     Homogenization.Book.Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-      Q t p_e q_e q0_e
+      Q t p_e q_e q0_e a.toFun
   let highScaleAverage : ℝ :=
     ∫ a,
       (σ *
@@ -890,17 +890,17 @@ theorem paired_weakNormSquares_special_le_componentIntegrals_with_local_mismatch
       σ⁻¹ *
         (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.fluxConstantTailAtScale
           (m : ℤ) (k : ℤ) t q0_e) ^ 2
-  let lowerExcess := fun a : Homogenization.CoeffField d =>
+  let lowerExcess := fun a : Homogenization.RegCoeffField d =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
         (hP.barSigmaStarAtScale hStruct (k : ℤ))⁻¹)
       0
-  let upperExcess := fun a : Homogenization.CoeffField d =>
+  let upperExcess := fun a : Homogenization.RegCoeffField d =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
         hP.barSigmaAtScale hStruct (k : ℤ))
       0
-  let defectSum := fun a : Homogenization.CoeffField d =>
+  let defectSum := fun a : Homogenization.RegCoeffField d =>
     ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
       Real.rpow (3 : ℝ)
           (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
@@ -934,7 +934,7 @@ theorem paired_weakNormSquares_special_le_componentIntegrals_with_local_mismatch
     simpa [fluxWeak, Q, t, p_e, q_e, q0_e, β] using hbase
   have hLowerEdge_int :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           (σ * lowerExcess a + σ⁻¹ * upperExcess a) * defectSum a ^ 2) P := by
     simpa [β, s', t', Q, p_e, q_e, σ, lowerExcess, upperExcess,
       defectSum] using

@@ -31,7 +31,7 @@ theorem terminalCoarseBlockStochasticEnvelope_ne_top_of_weak_le_terminal
     {hc : HighContrastExponents d} (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
-    (a : Ω → Homogenization.CoeffField d)
+    (a : Ω → Homogenization.RegCoeffField d)
     (hweak : ∀ j ∈ Finset.Icc N m,
       ∀ R ∈ Homogenization.descendantsAtDepth Q (m - j),
         weak j R ≤
@@ -68,7 +68,7 @@ theorem enorm_terminalCoarseBlockStochasticMaxOfWeak_eq_envelope_of_weak_le_term
     {hc : HighContrastExponents d} (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
-    (a : Ω → Homogenization.CoeffField d)
+    (a : Ω → Homogenization.RegCoeffField d)
     (hweak : ∀ j ∈ Finset.Icc N m,
       ∀ R ∈ Homogenization.descendantsAtDepth Q (m - j),
         weak j R ≤
@@ -95,7 +95,7 @@ theorem terminalCoarseBlockStochasticEnvelope_rpow_eq_QEnvelope
     (hm : HighCenteredMomentParameters d hc) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω) :
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω) :
     (terminalCoarseBlockStochasticEnvelope hP hStruct N m Q weak a ω) ^ hm.Q =
       terminalCoarseBlockStochasticQEnvelope hP hStruct hm N m Q weak a ω := by
   unfold terminalCoarseBlockStochasticEnvelope
@@ -128,7 +128,7 @@ theorem terminalCoarseBlockStochasticMaxOfWeak_rpow_le_QEnvelope
     (hm : HighCenteredMomentParameters d hc) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω) :
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω) :
     ‖terminalCoarseBlockStochasticMaxOfWeak hP hStruct N m Q weak a ω‖ₑ ^ hm.Q ≤
       terminalCoarseBlockStochasticQEnvelope hP hStruct hm N m Q weak a ω := by
   have hq_nonneg : 0 ≤ hm.Q := le_of_lt (highCenteredMoment_Q_pos hm)
@@ -159,7 +159,7 @@ theorem terminalCoarseBlockStochasticMax_rpow_le_QEnvelope
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω) :
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω) :
     ‖terminalCoarseBlockStochasticMax hP hStruct hc N m Q a ω‖ₑ ^ hm.Q ≤
       terminalCoarseBlockStochasticQEnvelope hP hStruct hm N m Q
         (terminalStochasticWeakWeight hc m) a ω := by
@@ -182,7 +182,7 @@ theorem lintegral_terminalCoarseBlockStochasticQEnvelope_le_polynomial_convoluti
     (μ : MeasureTheory.Measure Ω) (Q : Homogenization.TriadicCube d) {N m : ℕ}
     (hNm : N ≤ m) (hQ : Q.scale = (m : ℤ))
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
-    (a : Ω → Homogenization.CoeffField d)
+    (a : Ω → Homogenization.RegCoeffField d)
     (hHM :
       HighCenteredMomentEstimate hm μ N
         (intermediateCoarseBlockDeviation hP hStruct a))
@@ -217,7 +217,7 @@ theorem memLp_terminalCoarseBlockStochasticMax_of_QEnvelope_highMoment
     (μ : MeasureTheory.Measure Ω) (Q : Homogenization.TriadicCube d) {N m : ℕ}
     (hNm : N ≤ m) (hQ : Q.scale = (m : ℤ))
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
-    (a : Ω → Homogenization.CoeffField d)
+    (a : Ω → Homogenization.RegCoeffField d)
     (hHM :
       HighCenteredMomentEstimate hm μ N
         (intermediateCoarseBlockDeviation hP hStruct a))
@@ -267,7 +267,7 @@ theorem memLp_terminalCoarseBlockStochasticMax_highMoment
     (hm : HighCenteredMomentParameters d hc)
     (μ : MeasureTheory.Measure Ω) (Q : Homogenization.TriadicCube d) {N m : ℕ}
     (hNm : N ≤ m) (hQ : Q.scale = (m : ℤ))
-    (a : Ω → Homogenization.CoeffField d)
+    (a : Ω → Homogenization.RegCoeffField d)
     (hHM :
       HighCenteredMomentEstimate hm μ N
         (intermediateCoarseBlockDeviation hP hStruct a))
@@ -310,11 +310,11 @@ theorem memLp_terminalCoarseBlockStochasticMax_origin_highMoment
     (hHM :
       HighCenteredMomentEstimate hm P N
         (intermediateCoarseBlockDeviation hP hStruct
-          (fun x : Homogenization.CoeffField d => x))) :
+          (fun x : Homogenization.RegCoeffField d => x))) :
     MeasureTheory.MemLp
       (terminalCoarseBlockStochasticMax hP hStruct hc N m
         (Homogenization.originCube d (m : ℤ))
-        (fun x : Homogenization.CoeffField d => x))
+        (fun x : Homogenization.RegCoeffField d => x))
       (ENNReal.ofReal hm.Q) P := by
   have hQscale : (Homogenization.originCube d (m : ℤ)).scale = (m : ℤ) := by
     simp [Homogenization.originCube]
@@ -322,13 +322,13 @@ theorem memLp_terminalCoarseBlockStochasticMax_origin_highMoment
       MeasureTheory.AEStronglyMeasurable
         (terminalCoarseBlockStochasticMax hP hStruct hc N m
           (Homogenization.originCube d (m : ℤ))
-          (fun x : Homogenization.CoeffField d => x)) P :=
+          (fun x : Homogenization.RegCoeffField d => x)) P :=
     aestronglyMeasurable_terminalCoarseBlockStochasticMax_origin
       hP hStruct hP4 hc N m
   exact
     memLp_terminalCoarseBlockStochasticMax_highMoment
       hP hStruct hP4 hm P (Homogenization.originCube d (m : ℤ))
-      hNm hQscale (fun x : Homogenization.CoeffField d => x) hHM hM
+      hNm hQscale (fun x : Homogenization.RegCoeffField d => x) hHM hM
 
 /--
 Source labels `M_m^st`, `a.HM`, and `l.union.bound`: once a real stochastic
@@ -347,7 +347,7 @@ theorem lintegral_enorm_rpow_two_le_terminalCoarseBlockStochasticQEnvelope_polyn
     (Q : Homogenization.TriadicCube d) {N m : ℕ}
     (hNm : N ≤ m) (hQ : Q.scale = (m : ℤ))
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
-    (a : Ω → Homogenization.CoeffField d)
+    (a : Ω → Homogenization.RegCoeffField d)
     (hHM :
       HighCenteredMomentEstimate hm μ N
         (intermediateCoarseBlockDeviation hP hStruct a))
@@ -391,7 +391,7 @@ theorem lintegral_terminalCoarseBlockStochasticEnvelope_sq_le_polynomial_convolu
     (Q : Homogenization.TriadicCube d) {N m : ℕ}
     (hNm : N ≤ m) (hQ : Q.scale = (m : ℤ))
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
-    (a : Ω → Homogenization.CoeffField d)
+    (a : Ω → Homogenization.RegCoeffField d)
     (hHM :
       HighCenteredMomentEstimate hm μ N
         (intermediateCoarseBlockDeviation hP hStruct a))
@@ -462,7 +462,7 @@ theorem lintegral_terminalCoarseBlockStochasticEnvelope_sq_terminalWeak_le_polyn
     (μ : MeasureTheory.Measure Ω) [MeasureTheory.IsProbabilityMeasure μ]
     (Q : Homogenization.TriadicCube d) {N m : ℕ}
     (hNm : N ≤ m) (hQ : Q.scale = (m : ℤ))
-    (a : Ω → Homogenization.CoeffField d)
+    (a : Ω → Homogenization.RegCoeffField d)
     (hHM :
       HighCenteredMomentEstimate hm μ N
         (intermediateCoarseBlockDeviation hP hStruct a))
@@ -502,7 +502,7 @@ theorem lintegral_enorm_rpow_two_terminalCoarseBlockStochasticMax_le_polynomial_
     (μ : MeasureTheory.Measure Ω) [MeasureTheory.IsProbabilityMeasure μ]
     (Q : Homogenization.TriadicCube d) {N m : ℕ}
     (hNm : N ≤ m) (hQ : Q.scale = (m : ℤ))
-    (a : Ω → Homogenization.CoeffField d)
+    (a : Ω → Homogenization.RegCoeffField d)
     (hM :
       MeasureTheory.AEStronglyMeasurable
         (terminalCoarseBlockStochasticMax hP hStruct hc N m Q a) μ)
@@ -557,7 +557,7 @@ theorem exists_bufferExponent_lintegral_enorm_rpow_two_terminalCoarseBlockStocha
           B * Real.logb 3
               (2 + Homogenization.Book.Ch05.widetildeThetaAtScale P (0 : ℤ) hP4) ≤
             ((m - N : ℕ) : ℝ) →
-          ∀ (a : Ω → Homogenization.CoeffField d),
+          ∀ (a : Ω → Homogenization.RegCoeffField d),
             MeasureTheory.AEStronglyMeasurable
               (terminalCoarseBlockStochasticMax hP hStruct hc N m Q a) μ →
             HighCenteredMomentEstimate hm μ N
@@ -617,7 +617,7 @@ theorem exists_bufferExponent_lintegral_enorm_rpow_two_terminalCoarseBlockStocha
               (B * Real.logb 3
                 (2 + Homogenization.Book.Ch05.widetildeThetaAtScale P (0 : ℤ) hP4)) ≤
             m →
-          ∀ (a : Ω → Homogenization.CoeffField d),
+          ∀ (a : Ω → Homogenization.RegCoeffField d),
             MeasureTheory.AEStronglyMeasurable
               (terminalCoarseBlockStochasticMax hP hStruct hc N m Q a) μ →
             HighCenteredMomentEstimate hm μ N
@@ -669,7 +669,7 @@ theorem exists_bufferExponent_lintegral_enorm_rpow_two_terminalCoarseBlockStocha
               (B * Real.logb 3
                 (2 + Homogenization.Book.Ch05.widetildeThetaAtScale P (0 : ℤ) hP4)) ≤
             m →
-          ∀ (a : Ω → Homogenization.CoeffField d)
+          ∀ (a : Ω → Homogenization.RegCoeffField d)
             (M_sub : ℕ → Ω → ℝ),
             MeasureTheory.AEStronglyMeasurable
               (terminalCoarseBlockStochasticMax hP hStruct hc N m Q a) μ →

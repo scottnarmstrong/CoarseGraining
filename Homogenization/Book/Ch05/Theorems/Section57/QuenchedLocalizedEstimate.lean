@@ -29,15 +29,15 @@ theorem quenchedLocalizedEstimate_shifted_above_quenchedMinimalScale
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {t α : ℝ} {Nentry Nmin : ℕ}
     (hgoodAE :
-      let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+      let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
         fun M N aω =>
           quenchedProbeEnvelope hP hStruct (Nentry + M) (Nentry + N) aω
       ∀ᵐ aω ∂P, hasGoodTailFrom Nmin (badScaleEvent Hshift t α) aω) :
-    let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+    let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
       fun M N aω =>
         quenchedProbeEnvelope hP hStruct (Nentry + M) (Nentry + N) aω
-    let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t α
-    let X : CoeffField d → ℝ := quenchedMinimalScale Nmin Bad
+    let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t α
+    let X : RegCoeffField d → ℝ := quenchedMinimalScale Nmin Bad
     (∀ aω, 1 ≤ X aω) ∧
       ∀ (e : FullBlockVec d), dotProduct e e ≤ 1 →
         ∀ᵐ aω ∂P,
@@ -101,26 +101,26 @@ theorem quenchedLocalizedEstimate_shifted_from_badTailBounds
     {t α η B : ℝ} {Nentry Nmin : ℕ}
     (hη_pos : 0 < η) (hB : 1 ≤ B)
     (hsmall :
-      let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+      let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
         fun M N aω =>
           quenchedProbeEnvelope hP hStruct (Nentry + M) (Nentry + N) aω
-      let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t α
+      let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t α
       ∀ ε : ℝ, 0 < ε →
         ∃ N : ℕ, Nmin ≤ N ∧ P.real (badTailEvent Bad N) ≤ ε)
     (htail :
-      let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+      let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
         fun M N aω =>
           quenchedProbeEnvelope hP hStruct (Nentry + M) (Nentry + N) aω
-      let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t α
+      let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t α
       ∀ N : ℕ, Nmin ≤ N →
         P.real (badTailEvent Bad N) ≤
           Real.exp
             (-(((Real.rpow (3 : ℝ) ((N - Nmin : ℕ) : ℝ)) / B) ^ η))) :
-    let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+    let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
       fun M N aω =>
         quenchedProbeEnvelope hP hStruct (Nentry + M) (Nentry + N) aω
-    let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t α
-    let X : CoeffField d → ℝ := quenchedMinimalScale Nmin Bad
+    let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t α
+    let X : RegCoeffField d → ℝ := quenchedMinimalScale Nmin Bad
     IsBigO P (gammaSigma η) X
       (3 * ((3 : ℝ) ^ Nmin) * B) ∧
       (∀ aω, 1 ≤ X aω) ∧
@@ -163,26 +163,26 @@ theorem quenchedLocalizedEstimate_shifted_from_badScaleBounds
     {t α η B : ℝ} {Nentry Nmin : ℕ}
     (hα_nonneg : 0 ≤ α) (hη_pos : 0 < η) (hB : 1 ≤ B)
     (hsmall :
-      let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+      let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
         fun M N aω =>
           quenchedProbeEnvelope hP hStruct (Nentry + M) (Nentry + N) aω
-      let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t α
+      let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t α
       ∀ ε : ℝ, 0 < ε →
         ∃ N : ℕ, Nmin ≤ N ∧ P.real (Bad N) ≤ ε)
     (htail :
-      let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+      let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
         fun M N aω =>
           quenchedProbeEnvelope hP hStruct (Nentry + M) (Nentry + N) aω
-      let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t α
+      let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t α
       ∀ N : ℕ, Nmin ≤ N →
         P.real (Bad N) ≤
           Real.exp
             (-(((Real.rpow (3 : ℝ) ((N - Nmin : ℕ) : ℝ)) / B) ^ η))) :
-    let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+    let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
       fun M N aω =>
         quenchedProbeEnvelope hP hStruct (Nentry + M) (Nentry + N) aω
-    let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t α
-    let X : CoeffField d → ℝ := quenchedMinimalScale Nmin Bad
+    let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t α
+    let X : RegCoeffField d → ℝ := quenchedMinimalScale Nmin Bad
     IsBigO P (gammaSigma η) X
       (3 * ((3 : ℝ) ^ Nmin) * B) ∧
       (∀ aω, 1 ≤ X aω) ∧
@@ -273,19 +273,19 @@ theorem quenchedLocalizedEstimate_shifted_from_badTailBound
     {t α η B : ℝ} {Nentry Nmin : ℕ}
     (hη_pos : 0 < η) (hB : 1 ≤ B)
     (htail :
-      let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+      let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
         fun M N aω =>
           quenchedProbeEnvelope hP hStruct (Nentry + M) (Nentry + N) aω
-      let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t α
+      let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t α
       ∀ N : ℕ, Nmin ≤ N →
         P.real (badTailEvent Bad N) ≤
           Real.exp
             (-(((Real.rpow (3 : ℝ) ((N - Nmin : ℕ) : ℝ)) / B) ^ η))) :
-    let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+    let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
       fun M N aω =>
         quenchedProbeEnvelope hP hStruct (Nentry + M) (Nentry + N) aω
-    let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t α
-    let X : CoeffField d → ℝ := quenchedMinimalScale Nmin Bad
+    let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t α
+    let X : RegCoeffField d → ℝ := quenchedMinimalScale Nmin Bad
     IsBigO P (gammaSigma η) X
       (3 * ((3 : ℝ) ^ Nmin) * B) ∧
       (∀ aω, 1 ≤ X aω) ∧

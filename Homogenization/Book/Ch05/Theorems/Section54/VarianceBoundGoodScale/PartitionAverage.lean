@@ -22,18 +22,18 @@ without adding proof objects to the public Section 5.4 theorem.
 -/
 
 private theorem isLocalRandomVariable_fullBlockMat_of_entries
-    {d : ℕ} {U : Set (Vec d)}
-    {X : CoeffField d → FullBlockMat d}
+    {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U)
+    {X : RegCoeffField d → FullBlockMat d}
     (hX :
       ∀ α β : BlockCoord d,
-        Ch04.IsLocalRandomVariable U (fun a => X a α β)) :
-    Ch04.IsLocalRandomVariable U X := by
-  change @Measurable (CoeffField d) (FullBlockMat d) (Ch04.restrictionSigma U) _ X
-  rw [@measurable_pi_iff (CoeffField d) (BlockCoord d)
-    (fun _ => BlockCoord d → ℝ) (Ch04.restrictionSigma U) (fun _ => inferInstance) X]
+        Ch04.IsLocalRandomVariable U hU (fun a => X a α β)) :
+    Ch04.IsLocalRandomVariable U hU X := by
+  change @Measurable (RegCoeffField d) (FullBlockMat d) (Ch04.restrictionSigma U hU) _ X
+  rw [@measurable_pi_iff (RegCoeffField d) (BlockCoord d)
+    (fun _ => BlockCoord d → ℝ) (Ch04.restrictionSigma U hU) (fun _ => inferInstance) X]
   intro α
-  rw [@measurable_pi_iff (CoeffField d) (BlockCoord d)
-    (fun _ => ℝ) (Ch04.restrictionSigma U) (fun _ => inferInstance) (fun a => X a α)]
+  rw [@measurable_pi_iff (RegCoeffField d) (BlockCoord d)
+    (fun _ => ℝ) (Ch04.restrictionSigma U hU) (fun _ => inferInstance) (fun a => X a α)]
   intro β
   exact hX α β
 
@@ -100,7 +100,7 @@ private theorem measurable_normalizedFullBlockQuadraticMap {d : ℕ}
 
 theorem section54_annealedMomentRoot_abs_le_of_ae_abs_le_nonneg
     {d : ℕ} {P : Ch04.CoeffLaw d} {ξ : ℕ}
-    {X Y : CoeffField d → ℝ}
+    {X Y : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
     (_hY_nonneg : ∀ a, 0 ≤ Y a)
     (hXY : (fun a => |X a|) ≤ᵐ[P] Y)
@@ -123,7 +123,7 @@ theorem section54_annealedMomentRoot_abs_le_of_ae_abs_le_nonneg
 
 theorem section54_integrable_abs_pow_of_ae_abs_le_nonneg
     {d : ℕ} {P : Ch04.CoeffLaw d} {ξ : ℕ}
-    {X Y : CoeffField d → ℝ}
+    {X Y : RegCoeffField d → ℝ}
     (hX_meas : AEMeasurable X P)
     (hY_nonneg : ∀ᵐ a ∂P, 0 ≤ Y a)
     (hXY : (fun a => |X a|) ≤ᵐ[P] Y)
@@ -148,7 +148,7 @@ theorem section54_integrable_abs_pow_of_ae_abs_le_nonneg
 
 theorem section54_annealedMomentRoot_abs_sub_integral_le_two_mul
     {d : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
-    {ξ : ℕ} {X : CoeffField d → ℝ}
+    {ξ : ℕ} {X : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ) (hX_meas : AEMeasurable X P)
     (hX_abs_pow_int : Integrable (fun a => |X a| ^ ξ) P) :
     Ch04.annealedMomentRoot P ξ
@@ -164,7 +164,7 @@ theorem section54_annealedMomentRoot_abs_sub_integral_le_two_mul
   have hX_int : Integrable X P := by
     rwa [MeasureTheory.memLp_one_iff_integrable] at hmem_one
   let c : ℝ := ∫ b, X b ∂P
-  have hconst_mem : MemLp (fun _ : CoeffField d => c) (ξ : ENNReal) P :=
+  have hconst_mem : MemLp (fun _ : RegCoeffField d => c) (ξ : ENNReal) P :=
     memLp_const c
   have hcenter_mem : MemLp (fun a => X a - c) (ξ : ENNReal) P :=
     hmem_p.sub hconst_mem
@@ -211,24 +211,24 @@ theorem section54_annealedMomentRoot_abs_sub_integral_le_two_mul
         (by simpa using hX_abs_pow_int)
     exact (abs_integral_le_integral_abs (f := X) (μ := P)).trans hInt_le_root
   have hconst_toReal :
-      ENNReal.toReal (eLpNorm (fun _ : CoeffField d => c) (ξ : ENNReal) P) = |c| := by
-    have hμ_ne_zero : (P : Measure (CoeffField d)) ≠ 0 :=
+      ENNReal.toReal (eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P) = |c| := by
+    have hμ_ne_zero : (P : Measure (RegCoeffField d)) ≠ 0 :=
       IsProbabilityMeasure.ne_zero P
     have hξ_enn_ne_zero : (ξ : ENNReal) ≠ 0 := by exact_mod_cast hξ_ne
     rw [MeasureTheory.eLpNorm_const (μ := P) (c := c) (p := (ξ : ENNReal))
       hξ_enn_ne_zero hμ_ne_zero]
     simp [IsProbabilityMeasure.measure_univ, Real.norm_eq_abs]
   have hconst_ne_top :
-      eLpNorm (fun _ : CoeffField d => c) (ξ : ENNReal) P ≠ ⊤ :=
+      eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P ≠ ⊤ :=
     hconst_mem.2.ne
   have hsum_ne_top :
       eLpNorm X (ξ : ENNReal) P +
-          eLpNorm (fun _ : CoeffField d => c) (ξ : ENNReal) P ≠ ⊤ :=
+          eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P ≠ ⊤ :=
     ENNReal.add_ne_top.mpr ⟨hmem_p.2.ne, hconst_ne_top⟩
   have hsub_le :
       eLpNorm (fun a => X a - c) (ξ : ENNReal) P ≤
         eLpNorm X (ξ : ENNReal) P +
-          eLpNorm (fun _ : CoeffField d => c) (ξ : ENNReal) P := by
+          eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P := by
     simpa [c, Pi.sub_apply] using
       eLpNorm_sub_le hX_meas.aestronglyMeasurable
         (aestronglyMeasurable_const (μ := P) (b := c))
@@ -239,7 +239,7 @@ theorem section54_annealedMomentRoot_abs_sub_integral_le_two_mul
           simp [hcenter_toReal, c]
     _ ≤ ENNReal.toReal
           (eLpNorm X (ξ : ENNReal) P +
-            eLpNorm (fun _ : CoeffField d => c) (ξ : ENNReal) P) :=
+            eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P) :=
           ENNReal.toReal_mono hsum_ne_top hsub_le
     _ = Ch04.annealedMomentRoot P ξ (fun a => |X a|) + |c| := by
           rw [ENNReal.toReal_add hmem_p.2.ne hconst_ne_top,
@@ -251,7 +251,7 @@ theorem section54_annealedMomentRoot_abs_sub_integral_le_two_mul
 
 theorem section54_annealedMomentRoot_add_le
     {d : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
-    {ξ : ℕ} {X Y : CoeffField d → ℝ}
+    {ξ : ℕ} {X Y : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
     (hX_nonneg : ∀ a, 0 ≤ X a) (hY_nonneg : ∀ a, 0 ≤ Y a)
     (hX_meas : AEMeasurable X P) (hY_meas : AEMeasurable Y P)
@@ -341,7 +341,7 @@ theorem section54_centeredOrigin_momentRoot_le_factor_sum_of_abs_le
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
-    {C : ℝ} (hC_nonneg : 0 ≤ C) {X : CoeffField d → ℝ}
+    {C : ℝ} (hC_nonneg : 0 ≤ C) {X : RegCoeffField d → ℝ}
     (hX_meas : AEMeasurable X P)
     (hX_abs_le :
       (fun a => |X a|) ≤ᵐ[P]
@@ -357,12 +357,12 @@ theorem section54_centeredOrigin_momentRoot_le_factor_sum_of_abs_le
           (Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
             Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi) := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let L : CoeffField d → ℝ :=
+  let L : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d 0) hP4.sUpper (.finite 1) a
-  let I : CoeffField d → ℝ :=
+  let I : RegCoeffField d → ℝ :=
     fun a =>
       (Ch04.lambdaSqCoeffField (originCube d 0) hP4.sLower (.finite 1) a)⁻¹
-  let Y : CoeffField d → ℝ := fun a => C * (L a + I a)
+  let Y : RegCoeffField d → ℝ := fun a => C * (L a + I a)
   have hξ_one : 1 ≤ hP4.xi :=
     le_trans (by norm_num : 1 ≤ 2) hP4.two_le_xi
   have hL_nonneg : ∀ a, 0 ≤ L a := fun a =>
@@ -490,9 +490,9 @@ theorem section54_centeredOrigin_momentRoot_le_factor_sum_of_abs_le
 private theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_upperRight_apply_cubeSet
     {d : ℕ} {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
-    ∃ Y : CoeffField d → ℝ,
-      Ch04.IsLocalRandomVariable (cubeSet Q) Y ∧
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).upperRight i j)
+    ∃ Y : RegCoeffField d → ℝ,
+      Ch04.IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight i j)
           =ᵐ[P] Y := by
   rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
       Q ((Pi.single i 1, 0) + (0, Pi.single j 1)) with
@@ -505,7 +505,7 @@ private theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_upperRight_
     (hYsum_local.sub hYi_local).sub hYj_local, ?_⟩
   filter_upwards [hYsum_eq, hYi_eq, hYj_eq] with a hsum hi hj
   calc
-    (coarseBlockMatrix (cubeSet Q) a).upperRight i j =
+    (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight i j =
         Mu (cubeSet Q) ((Pi.single i 1, 0) + (0, Pi.single j 1)) a -
           Mu (cubeSet Q) (Pi.single i 1, 0) a -
           Mu (cubeSet Q) (0, Pi.single j 1) a := by
@@ -515,9 +515,9 @@ private theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_upperRight_
 private theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerLeft_apply_cubeSet
     {d : ℕ} {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
-    ∃ Y : CoeffField d → ℝ,
-      Ch04.IsLocalRandomVariable (cubeSet Q) Y ∧
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).lowerLeft i j)
+    ∃ Y : RegCoeffField d → ℝ,
+      Ch04.IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft i j)
           =ᵐ[P] Y := by
   rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
       Q ((0, Pi.single i 1) + (Pi.single j 1, 0)) with
@@ -530,7 +530,7 @@ private theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerLeft_a
     (hYsum_local.sub hYi_local).sub hYj_local, ?_⟩
   filter_upwards [hYsum_eq, hYi_eq, hYj_eq] with a hsum hi hj
   calc
-    (coarseBlockMatrix (cubeSet Q) a).lowerLeft i j =
+    (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft i j =
         Mu (cubeSet Q) ((0, Pi.single i 1) + (Pi.single j 1, 0)) a -
           Mu (cubeSet Q) (0, Pi.single i 1) a -
           Mu (cubeSet Q) (Pi.single j 1, 0) a := by
@@ -540,16 +540,16 @@ private theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerLeft_a
 private theorem exists_isLocalRandomVariable_ae_eq_coarseFullBlockMatrix_cubeSet
     {d : ℕ} {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
     (Q : TriadicCube d) :
-    ∃ Y : CoeffField d → FullBlockMat d,
-      Ch04.IsLocalRandomVariable (cubeSet Q) Y ∧
-        (fun a : CoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a))
+    ∃ Y : RegCoeffField d → FullBlockMat d,
+      Ch04.IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+        (fun a : RegCoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun))
           =ᵐ[P] Y := by
   classical
   let entry_exists : ∀ α β : BlockCoord d,
-      ∃ Y : CoeffField d → ℝ,
-        Ch04.IsLocalRandomVariable (cubeSet Q) Y ∧
-          (fun a : CoeffField d =>
-            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) α β) =ᵐ[P] Y := by
+      ∃ Y : RegCoeffField d → ℝ,
+        Ch04.IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+          (fun a : RegCoeffField d =>
+            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) α β) =ᵐ[P] Y := by
     intro α β
     cases α with
     | inl i =>
@@ -570,24 +570,24 @@ private theorem exists_isLocalRandomVariable_ae_eq_coarseFullBlockMatrix_cubeSet
         | inr j =>
             simpa [toFullBlockMat] using
               hP.exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerRight_apply_cubeSet Q i j
-  let Yentry : BlockCoord d → BlockCoord d → CoeffField d → ℝ :=
+  let Yentry : BlockCoord d → BlockCoord d → RegCoeffField d → ℝ :=
     fun α β => Classical.choose (entry_exists α β)
-  let Y : CoeffField d → FullBlockMat d := fun a α β => Yentry α β a
+  let Y : RegCoeffField d → FullBlockMat d := fun a α β => Yentry α β a
   refine ⟨Y, ?_, ?_⟩
-  · refine isLocalRandomVariable_fullBlockMat_of_entries ?_
+  · refine isLocalRandomVariable_fullBlockMat_of_entries (measurableSet_cubeSet Q) ?_
     intro α β
     exact (Classical.choose_spec (entry_exists α β)).1
   · have hentry :
         ∀ α β : BlockCoord d,
-          (fun a : CoeffField d =>
-            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) α β) =ᵐ[P]
+          (fun a : RegCoeffField d =>
+            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) α β) =ᵐ[P]
               fun a => Y a α β := by
       intro α β
       exact (Classical.choose_spec (entry_exists α β)).2
     have hall :
         ∀ᵐ a ∂P,
           ∀ α β : BlockCoord d,
-            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) α β = Y a α β := by
+            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) α β = Y a α β := by
       rw [Filter.eventually_all]
       intro α
       rw [Filter.eventually_all]
@@ -602,9 +602,9 @@ private theorem aemeasurable_fullBlockNormalizedFluctuationOperatorNormSq_cubeSe
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         Ch04.fullBlockNormalizedFluctuationOperatorNormSq
-          hP hStruct center (cubeSet Q) a) P := by
+          hP hStruct center (cubeSet Q) a.toFun) P := by
   let b := hP.barSigmaAtScale hStruct center
   let c := hP.barSigmaStarAtScale hStruct center
   let D : FullBlockMat d := Matrix.diagonal (Ch04.scalarFullBlockInvSqrtDiag b c)
@@ -615,7 +615,7 @@ private theorem aemeasurable_fullBlockNormalizedFluctuationOperatorNormSq_cubeSe
     measurable_normalizedFullBlockFluctuationMap D (toFullBlockMat Abar)
   have hM :
       AEMeasurable
-        (fun a : CoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)) P :=
+        (fun a : RegCoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P :=
     hP.aemeasurable_coarseFullBlockMatrix_cubeSet Q
   simpa [Ch04.fullBlockNormalizedFluctuationOperatorNormSq, b, c, D, Abar, g,
     normalizedFullBlockCLMLinearMap_apply] using
@@ -625,11 +625,11 @@ theorem exists_isLocalRandomVariable_ae_eq_fullBlockNormalizedFluctuationOperato
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) :
-    ∃ Y : CoeffField d → ℝ,
-      Ch04.IsLocalRandomVariable (cubeSet Q) Y ∧
-        (fun a : CoeffField d =>
+    ∃ Y : RegCoeffField d → ℝ,
+      Ch04.IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+        (fun a : RegCoeffField d =>
           Ch04.fullBlockNormalizedFluctuationOperatorNormSq
-            hP hStruct center (cubeSet Q) a) =ᵐ[P] Y := by
+            hP hStruct center (cubeSet Q) a.toFun) =ᵐ[P] Y := by
   let b := hP.barSigmaAtScale hStruct center
   let c := hP.barSigmaStarAtScale hStruct center
   let D : FullBlockMat d := Matrix.diagonal (Ch04.scalarFullBlockInvSqrtDiag b c)
@@ -650,9 +650,9 @@ private theorem aemeasurable_fullBlockNormalizedQuadraticObservable_cubeSet
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) (Q : TriadicCube d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         fullBlockNormalizedQuadraticObservable
-          hP hStruct center q (cubeSet Q) a) P := by
+          hP hStruct center q (cubeSet Q) a.toFun) P := by
   let b := hP.barSigmaAtScale hStruct center
   let c := hP.barSigmaStarAtScale hStruct center
   let D : FullBlockMat d := Matrix.diagonal (Ch04.scalarFullBlockInvSqrtDiag b c)
@@ -662,7 +662,7 @@ private theorem aemeasurable_fullBlockNormalizedQuadraticObservable_cubeSet
     measurable_normalizedFullBlockQuadraticMap D q
   have hM :
       AEMeasurable
-        (fun a : CoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)) P :=
+        (fun a : RegCoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P :=
     hP.aemeasurable_coarseFullBlockMatrix_cubeSet Q
   simpa [fullBlockNormalizedQuadraticObservable, b, c, D, g] using
     hg.comp_aemeasurable hM
@@ -671,11 +671,11 @@ theorem exists_isLocalRandomVariable_ae_eq_fullBlockNormalizedQuadraticObservabl
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) (Q : TriadicCube d) :
-    ∃ Y : CoeffField d → ℝ,
-      Ch04.IsLocalRandomVariable (cubeSet Q) Y ∧
-        (fun a : CoeffField d =>
+    ∃ Y : RegCoeffField d → ℝ,
+      Ch04.IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+        (fun a : RegCoeffField d =>
           fullBlockNormalizedQuadraticObservable
-            hP hStruct center q (cubeSet Q) a) =ᵐ[P] Y := by
+            hP hStruct center q (cubeSet Q) a.toFun) =ᵐ[P] Y := by
   let b := hP.barSigmaAtScale hStruct center
   let c := hP.barSigmaStarAtScale hStruct center
   let D : FullBlockMat d := Matrix.diagonal (Ch04.scalarFullBlockInvSqrtDiag b c)
@@ -697,11 +697,11 @@ theorem fullBlockNormalizedFluctuationOperatorNormSq_descendants_localRep
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (n : ℤ) :
     ∀ R ∈ descendantsAtScale Q n,
-      ∃ Y : CoeffField d → ℝ,
-        Ch04.IsLocalRandomVariable (cubeSet R) Y ∧
-          (fun a : CoeffField d =>
+      ∃ Y : RegCoeffField d → ℝ,
+        Ch04.IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧
+          (fun a : RegCoeffField d =>
             Ch04.fullBlockNormalizedFluctuationOperatorNormSq
-              hP hStruct center (cubeSet R) a) =ᵐ[P] Y := by
+              hP hStruct center (cubeSet R) a.toFun) =ᵐ[P] Y := by
   intro R _hR
   exact
     exists_isLocalRandomVariable_ae_eq_fullBlockNormalizedFluctuationOperatorNormSq_cubeSet
@@ -715,9 +715,9 @@ private theorem aemeasurable_fullBlockNormalizedFluctuationOperatorNormSq_descen
     (center : ℤ) (Q : TriadicCube d) (n : ℤ) :
     ∀ R ∈ descendantsAtScale Q n,
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Ch04.fullBlockNormalizedFluctuationOperatorNormSq
-            hP hStruct center (cubeSet R) a) P := by
+            hP hStruct center (cubeSet R) a.toFun) P := by
   intro R _hR
   exact
     aemeasurable_fullBlockNormalizedFluctuationOperatorNormSq_cubeSet
@@ -729,11 +729,11 @@ theorem fullBlockNormalizedQuadraticObservable_descendants_localRep
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) (Q : TriadicCube d) (n : ℤ) :
     ∀ R ∈ descendantsAtScale Q n,
-      ∃ Y : CoeffField d → ℝ,
-        Ch04.IsLocalRandomVariable (cubeSet R) Y ∧
-          (fun a : CoeffField d =>
+      ∃ Y : RegCoeffField d → ℝ,
+        Ch04.IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧
+          (fun a : RegCoeffField d =>
             fullBlockNormalizedQuadraticObservable
-              hP hStruct center q (cubeSet R) a) =ᵐ[P] Y := by
+              hP hStruct center q (cubeSet R) a.toFun) =ᵐ[P] Y := by
   intro R _hR
   exact
     exists_isLocalRandomVariable_ae_eq_fullBlockNormalizedQuadraticObservable_cubeSet
@@ -746,9 +746,9 @@ private theorem aemeasurable_fullBlockNormalizedQuadraticObservable_descendants
     (center : ℤ) (q : FullBlockVec d) (Q : TriadicCube d) (n : ℤ) :
     ∀ R ∈ descendantsAtScale Q n,
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           fullBlockNormalizedQuadraticObservable
-            hP hStruct center q (cubeSet R) a) P := by
+            hP hStruct center q (cubeSet R) a.toFun) P := by
   intro R _hR
   exact
     aemeasurable_fullBlockNormalizedQuadraticObservable_cubeSet
@@ -763,12 +763,12 @@ theorem integral_abs_centeredDescendantAverage_pow_rpow_inv_le_of_unitRangeDepen
     (hP : Ch04.LawCarrier P)
     (hn : 0 ≤ n) (hnm : n ≤ m)
     (hPstat : Ch04.StationaryLaw P) (hPdep : Ch04.UnitRangeDependentLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_localRep :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        ∃ Y : CoeffField d → ℝ,
-          Ch04.IsLocalRandomVariable (cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y)
-    (hX_cov : IsTranslationCovariant X)
+        ∃ Y : RegCoeffField d → ℝ,
+          Ch04.IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y)
+    (hX_cov : Ch04.IsTranslationCovariantR X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ R ∈ descendantsAtScale (originCube d m) n, AEMeasurable (X (cubeSet R)) P)
@@ -809,19 +809,19 @@ theorem fullBlockNormalizedFluctuationOperatorNormSq_centeredDescendantAverage_p
           |Ch04.centeredOriginObservable P n
             (fun U a =>
               Ch04.fullBlockNormalizedFluctuationOperatorNormSq
-                hP hStruct center U a) a| ^ hP4.xi) P)
+                hP hStruct center U a.toFun) a| ^ hP4.xi) P)
     (hOriginMoment :
       (∫ a,
           |Ch04.centeredOriginObservable P n
             (fun U a =>
               Ch04.fullBlockNormalizedFluctuationOperatorNormSq
-                hP hStruct center U a) a| ^ hP4.xi ∂P) ^
+                hP hStruct center U a.toFun) a| ^ hP4.xi ∂P) ^
           (1 / (hP4.xi : ℝ)) ≤ K) :
     (∫ a,
         |Ch04.centeredDescendantAverage P n m
           (fun U a =>
             Ch04.fullBlockNormalizedFluctuationOperatorNormSq
-              hP hStruct center U a) a| ^ hP4.xi ∂P) ^
+              hP hStruct center U a.toFun) a| ^ hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤
       ((descendantsAtScale (originCube d m) n).card : ℝ)⁻¹ *
         (Ch04.rosenthalDescendantsAtScaleLpConst d n hP4.xi *
@@ -830,13 +830,13 @@ theorem fullBlockNormalizedFluctuationOperatorNormSq_centeredDescendantAverage_p
           Ch04.rosenthalDescendantsAtScaleSqrtConst d n hP4.xi *
             Real.sqrt ((descendantsAtScale (originCube d m) n).card : ℝ) * K) := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let X : Set (Vec d) → CoeffField d → ℝ :=
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fun U a =>
-      Ch04.fullBlockNormalizedFluctuationOperatorNormSq hP hStruct center U a
+      Ch04.fullBlockNormalizedFluctuationOperatorNormSq hP hStruct center U a.toFun
   have hlocal :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        ∃ Y : CoeffField d → ℝ,
-          Ch04.IsLocalRandomVariable (cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y := by
+        ∃ Y : RegCoeffField d → ℝ,
+          Ch04.IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y := by
     simpa [X] using
       fullBlockNormalizedFluctuationOperatorNormSq_descendants_localRep
         hP hStruct center (originCube d m) n
@@ -854,8 +854,9 @@ theorem fullBlockNormalizedFluctuationOperatorNormSq_centeredDescendantAverage_p
     integral_abs_centeredDescendantAverage_pow_rpow_inv_le_of_unitRangeDependentLaw_of_ae_eq_local
       (d := d) (n := n) (m := m) (P := P) (p := hP4.xi) (K := K)
       hP hn hnm hStruct.stationary hStruct.unit_range X hlocal
-      (Ch04.fullBlockNormalizedFluctuationOperatorNormSq_translation_covariant
-        hP hStruct center)
+      (Ch04.isTranslationCovariantR_comp_toFun
+        (Ch04.fullBlockNormalizedFluctuationOperatorNormSq_translation_covariant
+          hP hStruct center))
       h0_aemeas hdesc_aemeas hP4.two_le_xi hK_nonneg
       (by simpa [X] using hOriginMoment_int)
       (by simpa [X] using hOriginMoment)
@@ -873,17 +874,17 @@ theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_pow_rpo
       Integrable
         (fun a =>
           |Ch04.centeredOriginObservable P n
-            (fullBlockNormalizedQuadraticObservable hP hStruct center q) a| ^
+            (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^
               hP4.xi) P)
     (hOriginMoment :
       (∫ a,
           |Ch04.centeredOriginObservable P n
-            (fullBlockNormalizedQuadraticObservable hP hStruct center q) a| ^
+            (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^
               hP4.xi ∂P) ^
           (1 / (hP4.xi : ℝ)) ≤ K) :
     (∫ a,
         |Ch04.centeredDescendantAverage P n m
-          (fullBlockNormalizedQuadraticObservable hP hStruct center q) a| ^
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^
           hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤
       ((descendantsAtScale (originCube d m) n).card : ℝ)⁻¹ *
@@ -893,12 +894,12 @@ theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_pow_rpo
           Ch04.rosenthalDescendantsAtScaleSqrtConst d n hP4.xi *
             Real.sqrt ((descendantsAtScale (originCube d m) n).card : ℝ) * K) := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    fullBlockNormalizedQuadraticObservable hP hStruct center q
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fullBlockNormalizedQuadraticObservableR hP hStruct center q
   have hlocal :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        ∃ Y : CoeffField d → ℝ,
-          Ch04.IsLocalRandomVariable (cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y := by
+        ∃ Y : RegCoeffField d → ℝ,
+          Ch04.IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y := by
     simpa [X] using
       fullBlockNormalizedQuadraticObservable_descendants_localRep
         hP hStruct center q (originCube d m) n
@@ -916,8 +917,9 @@ theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_pow_rpo
     integral_abs_centeredDescendantAverage_pow_rpow_inv_le_of_unitRangeDependentLaw_of_ae_eq_local
       (d := d) (n := n) (m := m) (P := P) (p := hP4.xi) (K := K)
       hP hn hnm hStruct.stationary hStruct.unit_range X hlocal
-      (fullBlockNormalizedQuadraticObservable_translation_covariant
-        hP hStruct center q)
+      (Ch04.isTranslationCovariantR_comp_toFun
+        (fullBlockNormalizedQuadraticObservable_translation_covariant
+          hP hStruct center q))
       h0_aemeas hdesc_aemeas hP4.two_le_xi hK_nonneg
       (by simpa [X] using hOriginMoment_int)
       (by simpa [X] using hOriginMoment)

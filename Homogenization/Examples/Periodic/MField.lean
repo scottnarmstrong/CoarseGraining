@@ -61,6 +61,41 @@ theorem mField_le_two_mul_dim_add_two {d : ℕ} (x : Vec d) :
   dsimp [mField]
   nlinarith
 
+theorem abs_mField_le {d : ℕ} (x : Vec d) :
+    |mField x| ≤ 2 * (d : ℝ) + 2 := by
+  have hlo := two_le_mField (d := d) x
+  have hhi := mField_le_two_mul_dim_add_two (d := d) x
+  have hd0 : (0 : ℝ) ≤ (d : ℝ) := by positivity
+  rw [abs_le]
+  constructor <;> nlinarith
+
+/-- The explicit periodic field `a(x) = m(x) I` as a carrier element: each entry
+is measurable (a cosine sum) and bounded, hence locally integrable. -/
+noncomputable def mFieldReg {d : ℕ} : RegCoeffField d where
+  toFun := mFieldCoeff
+  entry_measurable := fun i j => by
+    by_cases hij : i = j
+    · subst j
+      simpa [mFieldCoeff, scalarMatrix] using measurable_mField (d := d)
+    · simp [mFieldCoeff, scalarMatrix, hij]
+  entry_locInt := fun i j => by
+    by_cases hij : i = j
+    · subst j
+      have hmeas : Measurable (fun x : Vec d => mFieldCoeff (d := d) x i i) := by
+        simpa [mFieldCoeff, scalarMatrix] using measurable_mField (d := d)
+      refine RegCoeffField.locallyIntegrable_of_bounded_measurable hmeas
+        (C := 2 * (d : ℝ) + 2) fun x => ?_
+      simpa [mFieldCoeff, scalarMatrix] using abs_mField_le (d := d) x
+    · have hzero : (fun x : Vec d => mFieldCoeff (d := d) x i j)
+          = fun _ : Vec d => (0 : ℝ) := by
+        funext x
+        simp [mFieldCoeff, scalarMatrix, hij]
+      rw [hzero]
+      exact MeasureTheory.locallyIntegrable_const (0 : ℝ)
+
+@[simp] theorem mFieldReg_toFun {d : ℕ} :
+    (mFieldReg (d := d)).toFun = mFieldCoeff := rfl
+
 theorem isEllipticMatrix_scalarMatrix_of_bounds {d : ℕ} {lam Lam sigma : ℝ}
     (hlam : 0 < lam) (hlo : lam ≤ sigma) (hhi : sigma ≤ Lam) :
     IsEllipticMatrix lam Lam (scalarMatrix (d := d) sigma) := by
@@ -102,9 +137,9 @@ theorem mFieldCoeff_isEllipticFieldOn {d : ℕ} {U : Set (Vec d)}
       (two_le_mField (d := d) x)
       (mField_le_two_mul_dim_add_two (d := d) x)
 
-theorem mFieldCoeff_aeeEllipticOn {d : ℕ} {U : Set (Vec d)}
+theorem mFieldReg_aeeEllipticOn {d : ℕ} {U : Set (Vec d)}
     (hU : MeasurableSet U) :
-    Book.Ch04.AEEllipticOn (2 : ℝ) (2 * (d : ℝ) + 2) U (mFieldCoeff (d := d)) := by
+    Book.Ch04.AEEllipticOn (2 : ℝ) (2 * (d : ℝ) + 2) U (mFieldReg (d := d)) := by
   exact IsAEEllipticFieldOn.of_isEllipticFieldOn (mFieldCoeff_isEllipticFieldOn hU)
 
 theorem mField_translate_int {d : ℕ} (z : Fin d → ℤ) (x : Vec d) :

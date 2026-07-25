@@ -106,7 +106,7 @@ satisfy the divergence-form equations `∇·(a∇u) = ∇·g` and `∇·(ā∇v)
 pointwise; the weak `H¹` datum is obtained by integration by parts. -/
 noncomputable def classicalFluxComparisonPair {d : ℕ} [NeZero d]
     (S : Book.MainResults.Setup d)
-    (aω : CoeffField d) (ha : Book.Ch04.AELocallyUniformlyEllipticField aω)
+    (aω : RegCoeffField d) (ha : Book.Ch04.AELocallyUniformlyEllipticField aω)
     (m : ℕ) (u v : Vec d → ℝ) (g : Vec d → Vec d)
     (hu : ContDiff ℝ (⊤ : ℕ∞) u) (hv : ContDiff ℝ (⊤ : ℕ∞) v)
     (hg : ContDiff ℝ 1 g)
@@ -243,15 +243,15 @@ theorem periodicSmooth_comparison {d : ℕ} [NeZero d] :
       ∀ (two_le_dim : 2 ≤ d),
         let Lam : ℝ := 2 * (d : ℝ) + 2
         let S : Book.MainResults.Setup d :=
-          periodicSetup two_le_dim (mFieldCoeff (d := d)) 2 Lam
+          periodicSetup two_le_dim (mFieldReg (d := d)) 2 Lam
             mFieldCoeff_periodic mFieldCoeff_isotropic mFieldCoeff_adjointInvariant
             (by norm_num)
             (by
               nlinarith [show 0 ≤ (d : ℝ) by exact_mod_cast Nat.zero_le d])
-            (fun Q => mFieldCoeff_aeeEllipticOn (measurableSet_openCubeSet Q))
+            (fun Q => mFieldReg_aeeEllipticOn (measurableSet_openCubeSet Q))
         ∃ sigmaBar : ℝ,
           0 < sigmaBar ∧
-          ∃ X : CoeffField d → ℝ,
+          ∃ X : RegCoeffField d → ℝ,
             S.IsMinimalScale X Cscale ∧
             ∀ᵐ aω ∂S.P,
               ∀ (_ha : Book.Ch04.AELocallyUniformlyEllipticField aω)
@@ -279,22 +279,22 @@ theorem periodicSmooth_comparison {d : ℕ} [NeZero d] :
                 Book.Ch03.ForceSobolevRegularity
                   (Book.MainResults.originCube d m) Book.MainResults.fixedComparisonS g →
                 classicalComparisonDefect (scalarMatrix (d := d) sigmaBar)
-                    Book.MainResults.fixedComparisonS aω m u v ≤
+                    Book.MainResults.fixedComparisonS aω.toFun m u v ≤
                   C * ((3 : ℝ) ^ m / X aω) ^ (-alpha) *
                     classicalComparisonData sigmaBar
-                      Book.MainResults.fixedComparisonS aω m g u := by
+                      Book.MainResults.fixedComparisonS aω.toFun m g u := by
   obtain ⟨C, alpha, Cscale, hC, halpha, hCscale, hmain⟩ :=
     periodicConcrete_comparison (d := d)
   refine ⟨C, alpha, Cscale, hC, halpha, hCscale, ?_⟩
   intro two_le_dim
   let Lam : ℝ := 2 * (d : ℝ) + 2
   let S : Book.MainResults.Setup d :=
-    periodicSetup two_le_dim (mFieldCoeff (d := d)) 2 Lam
+    periodicSetup two_le_dim (mFieldReg (d := d)) 2 Lam
       mFieldCoeff_periodic mFieldCoeff_isotropic mFieldCoeff_adjointInvariant
       (by norm_num)
       (by
         nlinarith [show 0 ≤ (d : ℝ) by exact_mod_cast Nat.zero_le d])
-      (fun Q => mFieldCoeff_aeeEllipticOn (measurableSet_openCubeSet Q))
+      (fun Q => mFieldReg_aeeEllipticOn (measurableSet_openCubeSet Q))
   let sigmaBar : ℝ := Book.Ch05.Section57.barSigmaLimit S.hP S.hStruct
   have hsigma : 0 < sigmaBar := by
     dsimp [sigmaBar]

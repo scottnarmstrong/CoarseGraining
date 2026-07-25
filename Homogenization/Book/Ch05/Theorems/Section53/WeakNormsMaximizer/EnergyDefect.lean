@@ -26,7 +26,7 @@ noncomputable section
 response observables minus the parent response is the raw deterministic
 partition defect. -/
 theorem descendantsAverage_responseJObservableCubeSet_sub_eq_responseJPartitionDefectOnDependentFamily
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     descendantsAverage Q j (fun R => Ch04.responseJObservableCubeSet R p q a) -
@@ -50,7 +50,7 @@ theorem descendantsAverage_responseJObservableCubeSet_sub_eq_responseJPartitionD
 /-- The scale-indexed defect in the weak-norm maximizer RHS is the deterministic
 response partition defect for the dependent coefficient family. -/
 theorem responseDefectAverageAtScale_eq_responseJPartitionDefectOnDependentFamily
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m n : ℤ) (p q : Vec d) :
     responseDefectAverageAtScale m n p q a =
@@ -74,7 +74,7 @@ theorem responseJPartitionDefectOnFamilyAtDepth_nonneg
 /-- Deterministic nonnegativity of the weak-norm maximizer response-defect
 term on the a.e.-elliptic support. -/
 theorem responseDefectAverageAtScale_nonneg_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m n : ℤ) (p q : Vec d) :
     0 ≤ responseDefectAverageAtScale m n p q a := by
@@ -86,7 +86,7 @@ theorem responseDefectAverageAtScale_nonneg_of_aelocallyUniformlyEllipticField
 /-- The Ch4 gradient average mismatch is the cube average of the raw
 parent-minus-child canonical maximizer gradients. -/
 theorem cubeAverageVec_parentChildCanonicalGradientMismatchOnDependentFamily_eq_ch04
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     {Q R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -95,8 +95,8 @@ theorem cubeAverageVec_parentChildCanonicalGradientMismatchOnDependentFamily_eq_
         (fun x =>
           JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube Q (F.coeffOn Q) p q x -
             JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube R (F.coeffOn R) p q x) =
-      Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-        Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a := by
+      Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+        Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun := by
   intro F
   let parentGrad :=
     JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube Q (F.coeffOn Q) p q
@@ -115,14 +115,14 @@ theorem cubeAverageVec_parentChildCanonicalGradientMismatchOnDependentFamily_eq_
       JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube_memLp_descendant
         R R (F.coeffOn R) hRR p q
   have hparent_avg :
-      Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a =
+      Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun =
         cubeAverageVec R parentGrad := by
     simpa [F, parentGrad, JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube,
       JUpperBoundWeakNorms.canonicalMaximizerSolutionOnCube] using
       Ch04.canonicalScalarResponseGradientAverageCubeSet_eq_cubeAverageVec_canonicalMaximizer
         a ha hR p q
   have hchild_avg :
-      Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a =
+      Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun =
         cubeAverageVec R childGrad := by
     have hRR : R ∈ descendantsAtDepth R 0 := by
       simp [descendantsAtDepth_zero]
@@ -134,14 +134,14 @@ theorem cubeAverageVec_parentChildCanonicalGradientMismatchOnDependentFamily_eq_
     cubeAverageVec R (fun x => parentGrad x - childGrad x)
         = cubeAverageVec R parentGrad - cubeAverageVec R childGrad := by
             exact cubeAverageVec_sub_memLp R parentGrad childGrad hparent_mem hchild_mem
-    _ = Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-          Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a := by
+    _ = Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+          Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun := by
           rw [← hparent_avg, ← hchild_avg]
 
 /-- The Ch4 flux average mismatch is the cube average of the raw
 parent-minus-child canonical maximizer fluxes. -/
 theorem cubeAverageVec_parentChildCanonicalFluxMismatchOnDependentFamily_eq_ch04
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     {Q R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -150,8 +150,8 @@ theorem cubeAverageVec_parentChildCanonicalFluxMismatchOnDependentFamily_eq_ch04
         (fun x =>
           JUpperBoundWeakNorms.canonicalMaximizerFluxOnCube Q (F.coeffOn Q) p q x -
             JUpperBoundWeakNorms.canonicalMaximizerFluxOnCube R (F.coeffOn R) p q x) =
-      Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-        Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a := by
+      Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+        Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun := by
   intro F
   let parentFlux :=
     JUpperBoundWeakNorms.canonicalMaximizerFluxOnCube Q (F.coeffOn Q) p q
@@ -170,7 +170,7 @@ theorem cubeAverageVec_parentChildCanonicalFluxMismatchOnDependentFamily_eq_ch04
       JUpperBoundWeakNorms.canonicalMaximizerFluxOnCube_memLp_descendant
         R R (F.coeffOn R) hRR p q
   have hparent_avg :
-      Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a =
+      Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun =
         cubeAverageVec R parentFlux := by
     simpa [F, parentFlux, JUpperBoundWeakNorms.canonicalMaximizerFluxOnCube,
       JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube,
@@ -178,7 +178,7 @@ theorem cubeAverageVec_parentChildCanonicalFluxMismatchOnDependentFamily_eq_ch04
       Ch04.canonicalScalarResponseFluxAverageCubeSet_eq_cubeAverageVec_canonicalMaximizerFlux
         a ha hR p q
   have hchild_avg :
-      Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a =
+      Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun =
         cubeAverageVec R childFlux := by
     have hRR : R ∈ descendantsAtDepth R 0 := by
       simp [descendantsAtDepth_zero]
@@ -191,15 +191,15 @@ theorem cubeAverageVec_parentChildCanonicalFluxMismatchOnDependentFamily_eq_ch04
     cubeAverageVec R (fun x => parentFlux x - childFlux x)
         = cubeAverageVec R parentFlux - cubeAverageVec R childFlux := by
             exact cubeAverageVec_sub_memLp R parentFlux childFlux hparent_mem hchild_mem
-    _ = Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-          Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a := by
+    _ = Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+          Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun := by
           rw [← hparent_avg, ← hchild_avg]
 
 /-- The parent-child canonical difference as an honest Chapter 2 solution on
 the child cube.  This is the deterministic object whose variation energy is
 the additivity defect. -/
 noncomputable def parentChildCanonicalDifferenceSolutionOnDependentFamily
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -242,7 +242,7 @@ noncomputable def parentChildCanonicalDifferenceSolutionOnDependentFamily
 /-- The gradient of the parent-child difference solution is the raw
 parent-minus-child canonical maximizer gradient. -/
 theorem parentChildCanonicalDifferenceSolutionOnDependentFamily_grad
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -262,7 +262,7 @@ theorem parentChildCanonicalDifferenceSolutionOnDependentFamily_grad
 /-- The averaged gradient of the parent-child difference solution is the raw
 parent-minus-child gradient cube average. -/
 theorem averageGradient_parentChildCanonicalDifferenceSolutionOnDependentFamily_eq_cubeAverageVec
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -283,7 +283,7 @@ theorem averageGradient_parentChildCanonicalDifferenceSolutionOnDependentFamily_
 /-- The averaged flux of the parent-child difference solution is the raw
 parent-minus-child flux cube average. -/
 theorem averageFlux_parentChildCanonicalDifferenceSolutionOnDependentFamily_eq_cubeAverageVec
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -307,7 +307,7 @@ theorem averageFlux_parentChildCanonicalDifferenceSolutionOnDependentFamily_eq_c
 /-- The variation energy of the parent-child difference solution is twice the
 local additivity half-energy. -/
 theorem variationEnergyValue_parentChildCanonicalDifferenceSolutionOnDependentFamily_eq
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -334,7 +334,7 @@ theorem variationEnergyValue_parentChildCanonicalDifferenceSolutionOnDependentFa
 /-- One-child averaged parent-child gradient mismatch is controlled by the
 local `σ_*^{-1}` norm and the additivity defect energy. -/
 theorem vecNormSq_cubeAverageVec_parentChildCanonicalGradientMismatchOnDependentFamily_le
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -375,7 +375,7 @@ theorem vecNormSq_cubeAverageVec_parentChildCanonicalGradientMismatchOnDependent
 /-- One-child averaged parent-child flux mismatch is controlled by the local
 `b` norm and the additivity defect energy. -/
 theorem vecNormSq_cubeAverageVec_parentChildCanonicalFluxMismatchOnDependentFamily_le
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -422,7 +422,7 @@ private theorem cubeAverage_nonneg_of_ae_nonneg {d : ℕ}
   exact MeasureTheory.integral_nonneg_of_ae hf
 
 private theorem cubeAverage_additivityDiffHalfEnergyDensityOnDependentFamily_nonneg
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (_hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -447,15 +447,15 @@ private theorem cubeAverage_additivityDiffHalfEnergyDensityOnDependentFamily_non
 /-- At one depth, the Ch4 gradient parent-child mismatch average is controlled
 by the max descendant `σ_*^{-1}` norm and the response partition defect. -/
 theorem descendantsAverage_ch04GradientMismatch_le_maxSigmaStarInv_mul_responseDefect
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
     descendantsAverage Q j
         (fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a)) ≤
+            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun)) ≤
       2 * Ch02.maxDescendantSigmaStarInvMatrixNormAtScale Q (Q.scale - (j : ℤ)) F *
         JUpperBoundWeakNorms.responseJPartitionDefectOnFamilyAtDepth F Q j p q := by
   intro F
@@ -466,13 +466,13 @@ theorem descendantsAverage_ch04GradientMismatch_le_maxSigmaStarInv_mul_responseD
   have hpoint :
       ∀ R ∈ descendantsAtDepth Q j,
         vecNormSq
-            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a) ≤
+            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun) ≤
           2 * M * E R := by
     intro R hR
     have hEq :
-        Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-            Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a =
+        Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+            Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun =
           cubeAverageVec R
             (fun x =>
               JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube Q (F.coeffOn Q) p q x -
@@ -485,8 +485,8 @@ theorem descendantsAverage_ch04GradientMismatch_le_maxSigmaStarInv_mul_responseD
         a ha Q hR p q
     have hlocal :
         vecNormSq
-            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a) ≤
+            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun) ≤
           2 * Ch02.coarseSigmaStarInvMatrixNorm R F * E R := by
       simpa [F, E, hEq] using hraw
     have hRscale : R ∈ descendantsAtScale Q (Q.scale - (j : ℤ)) :=
@@ -512,8 +512,8 @@ theorem descendantsAverage_ch04GradientMismatch_le_maxSigmaStarInv_mul_responseD
     descendantsAverage Q j
         (fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a))
+            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun))
         ≤ descendantsAverage Q j (fun R => 2 * M * E R) := hdesc
     _ = 2 * M * descendantsAverage Q j E := by
           rw [descendantsAverage_mul_left]
@@ -526,15 +526,15 @@ theorem descendantsAverage_ch04GradientMismatch_le_maxSigmaStarInv_mul_responseD
 /-- At one depth, the Ch4 flux parent-child mismatch average is controlled by
 the max descendant `b` norm and the response partition defect. -/
 theorem descendantsAverage_ch04FluxMismatch_le_maxB_mul_responseDefect
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
     descendantsAverage Q j
         (fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a)) ≤
+            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun)) ≤
       2 * Ch02.maxDescendantBMatrixNormAtScale Q (Q.scale - (j : ℤ)) F *
         JUpperBoundWeakNorms.responseJPartitionDefectOnFamilyAtDepth F Q j p q := by
   intro F
@@ -545,13 +545,13 @@ theorem descendantsAverage_ch04FluxMismatch_le_maxB_mul_responseDefect
   have hpoint :
       ∀ R ∈ descendantsAtDepth Q j,
         vecNormSq
-            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a) ≤
+            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun) ≤
           2 * M * E R := by
     intro R hR
     have hEq :
-        Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-            Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a =
+        Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+            Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun =
           cubeAverageVec R
             (fun x =>
               JUpperBoundWeakNorms.canonicalMaximizerFluxOnCube Q (F.coeffOn Q) p q x -
@@ -564,8 +564,8 @@ theorem descendantsAverage_ch04FluxMismatch_le_maxB_mul_responseDefect
         a ha Q hR p q
     have hlocal :
         vecNormSq
-            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a) ≤
+            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun) ≤
           2 * Ch02.coarseBMatrixNorm R F * E R := by
       simpa [F, E, hEq] using hraw
     have hRscale : R ∈ descendantsAtScale Q (Q.scale - (j : ℤ)) :=
@@ -590,8 +590,8 @@ theorem descendantsAverage_ch04FluxMismatch_le_maxB_mul_responseDefect
     descendantsAverage Q j
         (fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a))
+            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun))
         ≤ descendantsAverage Q j (fun R => 2 * M * E R) := hdesc
     _ = 2 * M * descendantsAverage Q j E := by
           rw [descendantsAverage_mul_left]
@@ -603,7 +603,7 @@ theorem descendantsAverage_ch04FluxMismatch_le_maxB_mul_responseDefect
 
 /-- Square-root form of the depth-`j` gradient mismatch estimate. -/
 theorem sqrt_descendantsAverage_ch04GradientMismatch_le_two_mul_sqrt_maxSigmaStarInv_mul_sqrt_responseDefect
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
@@ -611,8 +611,8 @@ theorem sqrt_descendantsAverage_ch04GradientMismatch_le_two_mul_sqrt_maxSigmaSta
         (descendantsAverage Q j
           (fun R =>
             vecNormSq
-              (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-                Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a))) ≤
+              (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+                Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun))) ≤
       2 *
         Real.sqrt (Ch02.maxDescendantSigmaStarInvMatrixNormAtScale Q (Q.scale - (j : ℤ)) F) *
           Real.sqrt
@@ -624,8 +624,8 @@ theorem sqrt_descendantsAverage_ch04GradientMismatch_le_two_mul_sqrt_maxSigmaSta
     descendantsAverage Q j
       (fun R =>
         vecNormSq
-          (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-            Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a))
+          (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+            Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun))
   have hmain : A ≤ 2 * M * D := by
     simpa [A, M, D, F] using
       descendantsAverage_ch04GradientMismatch_le_maxSigmaStarInv_mul_responseDefect
@@ -650,7 +650,7 @@ theorem sqrt_descendantsAverage_ch04GradientMismatch_le_two_mul_sqrt_maxSigmaSta
 
 /-- Square-root form of the depth-`j` flux mismatch estimate. -/
 theorem sqrt_descendantsAverage_ch04FluxMismatch_le_two_mul_sqrt_maxB_mul_sqrt_responseDefect
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
@@ -658,8 +658,8 @@ theorem sqrt_descendantsAverage_ch04FluxMismatch_le_two_mul_sqrt_maxB_mul_sqrt_r
         (descendantsAverage Q j
           (fun R =>
             vecNormSq
-              (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-                Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a))) ≤
+              (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+                Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun))) ≤
       2 *
         Real.sqrt (Ch02.maxDescendantBMatrixNormAtScale Q (Q.scale - (j : ℤ)) F) *
           Real.sqrt
@@ -671,8 +671,8 @@ theorem sqrt_descendantsAverage_ch04FluxMismatch_le_two_mul_sqrt_maxB_mul_sqrt_r
     descendantsAverage Q j
       (fun R =>
         vecNormSq
-          (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-            Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a))
+          (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+            Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun))
   have hmain : A ≤ 2 * M * D := by
     simpa [A, M, D, F] using
       descendantsAverage_ch04FluxMismatch_le_maxB_mul_responseDefect
@@ -708,15 +708,15 @@ private theorem multiscaleDescendantWeight_sub_nat {d : ℕ}
 /-- Depth-`j` gradient mismatch localized by the q=1 lower ellipticity
 observable on the parent cube. -/
 theorem descendantsAverage_ch04GradientMismatch_le_lambdaSqCoeffField_responseDefect
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) {s' : ℝ} (hs' : 0 < s') (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
     descendantsAverage Q j
         (fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a)) ≤
+            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun)) ≤
       ((2 * Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹)) *
           Real.rpow (3 : ℝ) (s' * (j : ℝ))) ^ 2 *
         JUpperBoundWeakNorms.responseJPartitionDefectOnFamilyAtDepth F Q j p q := by
@@ -724,8 +724,8 @@ theorem descendantsAverage_ch04GradientMismatch_le_lambdaSqCoeffField_responseDe
   let A := descendantsAverage Q j
         (fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a))
+            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun))
   let M := Ch02.maxDescendantSigmaStarInvMatrixNormAtScale Q (Q.scale - (j : ℤ)) F
   let D := JUpperBoundWeakNorms.responseJPartitionDefectOnFamilyAtDepth F Q j p q
   let lamInv := (Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹
@@ -796,15 +796,15 @@ theorem descendantsAverage_ch04GradientMismatch_le_lambdaSqCoeffField_responseDe
 /-- Depth-`j` flux mismatch localized by the q=1 upper ellipticity observable
 on the parent cube. -/
 theorem descendantsAverage_ch04FluxMismatch_le_LambdaSqCoeffField_responseDefect
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) {t' : ℝ} (ht' : 0 < t') (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
     descendantsAverage Q j
         (fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a)) ≤
+            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun)) ≤
       ((2 * Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a)) *
           Real.rpow (3 : ℝ) (t' * (j : ℝ))) ^ 2 *
         JUpperBoundWeakNorms.responseJPartitionDefectOnFamilyAtDepth F Q j p q := by
@@ -812,8 +812,8 @@ theorem descendantsAverage_ch04FluxMismatch_le_LambdaSqCoeffField_responseDefect
   let A := descendantsAverage Q j
         (fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a))
+            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun))
   let M := Ch02.maxDescendantBMatrixNormAtScale Q (Q.scale - (j : ℤ)) F
   let D := JUpperBoundWeakNorms.responseJPartitionDefectOnFamilyAtDepth F Q j p q
   let Lam := Ch04.LambdaSqCoeffField Q t' (.finite 1) a
@@ -883,7 +883,7 @@ theorem descendantsAverage_ch04FluxMismatch_le_LambdaSqCoeffField_responseDefect
 /-- Finite high-depth gradient mismatch sum localized by the q=1 lower
 ellipticity observable and the response partition defect. -/
 theorem gradientHighMismatchSum_le_lambdaSqCoeffField_responseDefectSum
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (N : ℕ) (high : ℕ → Prop) [DecidablePred high]
     {s s' : ℝ} (hs' : 0 < s') (p q : Vec d) :
@@ -892,8 +892,8 @@ theorem gradientHighMismatchSum_le_lambdaSqCoeffField_responseDefectSum
           Real.sqrt
             (descendantsAverage Q j fun R =>
               vecNormSq
-                (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-                  Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a))) ≤
+                (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+                  Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun))) ≤
       (2 * Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹)) *
         ∑ j ∈ (Finset.range (N + 1)).filter high,
           Real.rpow (3 : ℝ) (-(s - s') * (j : ℝ)) *
@@ -906,8 +906,8 @@ theorem gradientHighMismatchSum_le_lambdaSqCoeffField_responseDefectSum
       Q s s' (2 * Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹))
       N high
       (fun _j R =>
-        Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-          Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a)
+        Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+          Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun)
       (fun j =>
         JUpperBoundWeakNorms.responseJPartitionDefectOnFamilyAtDepth
           (Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha) Q j p q)
@@ -921,7 +921,7 @@ theorem gradientHighMismatchSum_le_lambdaSqCoeffField_responseDefectSum
 /-- Finite high-depth flux mismatch sum localized by the q=1 upper ellipticity
 observable and the response partition defect. -/
 theorem fluxHighMismatchSum_le_LambdaSqCoeffField_responseDefectSum
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (N : ℕ) (high : ℕ → Prop) [DecidablePred high]
     {t t' : ℝ} (ht' : 0 < t') (p q : Vec d) :
@@ -930,8 +930,8 @@ theorem fluxHighMismatchSum_le_LambdaSqCoeffField_responseDefectSum
           Real.sqrt
             (descendantsAverage Q j fun R =>
               vecNormSq
-                (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-                  Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a))) ≤
+                (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+                  Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun))) ≤
       (2 * Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a)) *
         ∑ j ∈ (Finset.range (N + 1)).filter high,
           Real.rpow (3 : ℝ) (-(t - t') * (j : ℝ)) *
@@ -944,8 +944,8 @@ theorem fluxHighMismatchSum_le_LambdaSqCoeffField_responseDefectSum
       Q t t' (2 * Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a))
       N high
       (fun _j R =>
-        Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-          Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a)
+        Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+          Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun)
       (fun j =>
         JUpperBoundWeakNorms.responseJPartitionDefectOnFamilyAtDepth
           (Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha) Q j p q)

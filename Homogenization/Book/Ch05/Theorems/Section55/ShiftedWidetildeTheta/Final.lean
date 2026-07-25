@@ -23,14 +23,14 @@ private theorem thetaAtScale_zero_le_widetildeThetaAtScale_zero
   have hUpperPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (Ch04.LambdaSqCoeffField (originCube d (l : ℤ)) hP4.sUpper (.finite 1) a) ^
               hP4.xi) P :=
     fun l => Section52.upperFactorPowerIntegrableAtScale_from_P4 hP hStruct hP4 l
   have hLowerPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((Ch04.lambdaSqCoeffField (originCube d (l : ℤ)) hP4.sLower (.finite 1) a)⁻¹) ^
               hP4.xi) P :=
     fun l => Section52.lowerFactorPowerIntegrableAtScale_from_P4 hP hStruct hP4 l

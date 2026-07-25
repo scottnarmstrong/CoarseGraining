@@ -47,9 +47,9 @@ theorem map_limitWeightedUnitEllipticityObservableOnCube_eq_origin_of_scale_zero
         (limitWeightedUnitEllipticityObservable hP hStruct sUpper sLower) P := by
   classical
   let L : ℝ := barSigmaLimit hP hStruct
-  let X0 : CoeffField d → ℝ :=
+  let X0 : RegCoeffField d → ℝ :=
     limitWeightedUnitEllipticityObservable hP hStruct sUpper sLower
-  let XU : CoeffField d → ℝ :=
+  let XU : RegCoeffField d → ℝ :=
     limitWeightedUnitEllipticityObservableOnCube hP hStruct U sUpper sLower
   have hX0_aemeas : AEMeasurable X0 P := by
     simpa [X0] using
@@ -60,38 +60,38 @@ theorem map_limitWeightedUnitEllipticityObservableOnCube_eq_origin_of_scale_zero
     simpa [z] using
       (Section52.translateCube_originCube_zero_eq_of_scale_zero U hUscale).symm
   have hΛae :
-      (fun a : CoeffField d => Ch04.LambdaSqCoeffField U sUpper (.finite 1) a)
+      (fun a : RegCoeffField d => Ch04.LambdaSqCoeffField U sUpper (.finite 1) a)
         =ᵐ[P]
       fun a => Ch04.LambdaSqCoeffField (originCube d 0) sUpper (.finite 1)
-        (translateByInt z a) := by
+        (translateReg (intVecToRealVec z) a) := by
     have hcov :=
       Ch04.LambdaSqCoeffField_originCube_zero_translateByInt_ae
         hP hStruct.stationary z sUpper (.finite 1)
     simpa [hUeq] using hcov
   have hlambdaAe :
-      (fun a : CoeffField d => Ch04.lambdaSqCoeffField U sLower (.finite 1) a)
+      (fun a : RegCoeffField d => Ch04.lambdaSqCoeffField U sLower (.finite 1) a)
         =ᵐ[P]
       fun a => Ch04.lambdaSqCoeffField (originCube d 0) sLower (.finite 1)
-        (translateByInt z a) := by
+        (translateReg (intVecToRealVec z) a) := by
     have hcov :=
       Ch04.lambdaSqCoeffField_originCube_zero_translateByInt_ae
         hP hStruct.stationary z sLower (.finite 1)
     simpa [hUeq] using hcov
   have hae :
-      XU =ᵐ[P] fun a : CoeffField d => X0 (translateByInt z a) := by
+      XU =ᵐ[P] fun a : RegCoeffField d => X0 (translateReg (intVecToRealVec z) a) := by
     filter_upwards [hΛae, hlambdaAe] with a hΛ hlambda
     dsimp [XU, X0, limitWeightedUnitEllipticityObservableOnCube,
       limitWeightedUnitEllipticityObservable, L]
     rw [hΛ, hlambda]
   calc
     Measure.map XU P =
-        Measure.map (fun a : CoeffField d => X0 (translateByInt z a)) P :=
+        Measure.map (fun a : RegCoeffField d => X0 (translateReg (intVecToRealVec z) a)) P :=
           Measure.map_congr hae
-    _ = Measure.map X0 (Measure.map (translateByInt z) P) := by
+    _ = Measure.map X0 (Measure.map (translateReg (intVecToRealVec z)) P) := by
           symm
           exact AEMeasurable.map_map_of_aemeasurable
             (by simpa [hStruct.stationary z] using hX0_aemeas)
-            (measurable_translateByInt z).aemeasurable
+            (measurable_translateReg (intVecToRealVec z)).aemeasurable
     _ = Measure.map X0 P := by
           rw [hStruct.stationary z]
     _ = Measure.map
@@ -139,7 +139,7 @@ noncomputable def localizedLimitWeightedUnitEllipticitySup
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (params : QuantitativeCoarseGrainedEllipticityParams d) (m : ℕ) :
-    CoeffField d → ℝ :=
+    RegCoeffField d → ℝ :=
   fun a =>
     let Q : TriadicCube d := originCube d ((m : ℕ) : ℤ)
     let D : Finset (TriadicCube d) := descendantsAtScale Q 0
@@ -155,7 +155,7 @@ theorem scaleZero_ellipticity_sup_bounds_of_localizedLimitWeightedUnitEllipticit
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m : ℕ} {t M : ℝ}
     (hUpper_t : hΓ.params.sUpper < t)
     (hLower_t : hΓ.params.sLower < t)
@@ -282,7 +282,7 @@ theorem measureReal_localizedLimitWeightedUnitEllipticitySup_tail_le_card_mul_ex
     let Q : TriadicCube d := originCube d ((m : ℕ) : ℤ);
     let D : Finset (TriadicCube d) := descendantsAtScale Q 0;
     P.real
-        {a : CoeffField d |
+        {a : RegCoeffField d |
           (thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat) * lam <
             localizedLimitWeightedUnitEllipticitySup hP hStruct hΓ.params m a} ≤
       (D.card : ℝ) * Real.exp (-(lam ^ hΓ.sigma)) := by
@@ -290,7 +290,7 @@ theorem measureReal_localizedLimitWeightedUnitEllipticitySup_tail_le_card_mul_ex
   intro Q D
   letI : IsProbabilityMeasure P := hP.isProbability
   let A : ℝ := thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat
-  let X : TriadicCube d → CoeffField d → ℝ :=
+  let X : TriadicCube d → RegCoeffField d → ℝ :=
     fun U =>
       limitWeightedUnitEllipticityObservableOnCube hP hStruct U
         hΓ.params.sUpper hΓ.params.sLower

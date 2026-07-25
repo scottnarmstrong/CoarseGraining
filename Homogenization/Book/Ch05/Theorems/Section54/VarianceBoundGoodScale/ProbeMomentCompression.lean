@@ -27,7 +27,7 @@ theorem section54_centeredOrigin_momentRoot_le_weighted_factor_sum_of_abs_le
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {CUpper CLower : ℝ} (hCUpper_nonneg : 0 ≤ CUpper)
-    (hCLower_nonneg : 0 ≤ CLower) {X : CoeffField d → ℝ}
+    (hCLower_nonneg : 0 ≤ CLower) {X : RegCoeffField d → ℝ}
     (hX_meas : AEMeasurable X P)
     (hX_abs_le :
       (fun a => |X a|) ≤ᵐ[P]
@@ -44,14 +44,14 @@ theorem section54_centeredOrigin_momentRoot_le_weighted_factor_sum_of_abs_le
           (CUpper * Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
             CLower * Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi) := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let L : CoeffField d → ℝ :=
+  let L : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d 0) hP4.sUpper (.finite 1) a
-  let I : CoeffField d → ℝ :=
+  let I : RegCoeffField d → ℝ :=
     fun a =>
       (Ch04.lambdaSqCoeffField (originCube d 0) hP4.sLower (.finite 1) a)⁻¹
-  let YUpper : CoeffField d → ℝ := fun a => CUpper * L a
-  let YLower : CoeffField d → ℝ := fun a => CLower * I a
-  let Y : CoeffField d → ℝ := fun a => YUpper a + YLower a
+  let YUpper : RegCoeffField d → ℝ := fun a => CUpper * L a
+  let YLower : RegCoeffField d → ℝ := fun a => CLower * I a
+  let Y : RegCoeffField d → ℝ := fun a => YUpper a + YLower a
   have hξ_one : 1 ≤ hP4.xi :=
     le_trans (by norm_num : 1 ≤ 2) hP4.two_le_xi
   have hL_nonneg : ∀ a, 0 ≤ L a := fun a =>

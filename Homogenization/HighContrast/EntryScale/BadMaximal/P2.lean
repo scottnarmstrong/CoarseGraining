@@ -25,7 +25,7 @@ theorem coarseBlockMatrix_upperLeft_matLoewnerLE_barSigma_mul_one_add_terminalSp
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d)
+    (a : Homogenization.RegCoeffField d)
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a) :
     Homogenization.MatLoewnerLE
       (Homogenization.coarseBlockMatrix (Homogenization.cubeSet Q) a).upperLeft
@@ -97,7 +97,7 @@ theorem coarseBlockMatrix_lowerRight_matLoewnerLE_barSigmaStar_inv_mul_one_add_t
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d)
+    (a : Homogenization.RegCoeffField d)
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a) :
     Homogenization.MatLoewnerLE
       (Homogenization.coarseBlockMatrix (Homogenization.cubeSet Q) a).lowerRight
@@ -169,7 +169,7 @@ theorem coarseBlockMatrix_upperLeft_matrixNorm_le_barSigma_mul_one_add_terminalS
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d)
+    (a : Homogenization.RegCoeffField d)
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a) :
     Homogenization.Book.Ch02.matrixNorm
         (Homogenization.coarseBlockMatrix (Homogenization.cubeSet Q) a).upperLeft ≤
@@ -215,7 +215,7 @@ theorem coarseBlockMatrix_lowerRight_matrixNorm_le_barSigmaStar_inv_mul_one_add_
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d)
+    (a : Homogenization.RegCoeffField d)
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a) :
     Homogenization.Book.Ch02.matrixNorm
         (Homogenization.coarseBlockMatrix (Homogenization.cubeSet Q) a).lowerRight ≤
@@ -275,7 +275,7 @@ theorem upperLeft_terminalPositiveExcess_le_barSigma_mul_terminalSpectralPositiv
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d)
+    (a : Homogenization.RegCoeffField d)
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a) :
     max
         (Homogenization.Book.Ch02.matrixNorm
@@ -303,7 +303,7 @@ theorem lowerRight_terminalPositiveExcess_le_barSigmaStar_inv_mul_terminalSpectr
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d)
+    (a : Homogenization.RegCoeffField d)
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a) :
     max
         (Homogenization.Book.Ch02.matrixNorm
@@ -331,7 +331,7 @@ theorem terminalMatrixPositiveExcessWeight_le_terminalNormalizer_mul_terminalSpe
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d)
+    (a : Homogenization.RegCoeffField d)
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a) :
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let upperExcess : ℝ :=
@@ -448,7 +448,7 @@ theorem terminalMatrixPositiveExcessWeight_le_two_mul_sqrt_thetaAtScale_mul_term
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d)
+    (a : Homogenization.RegCoeffField d)
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a) :
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let upperExcess : ℝ :=
@@ -516,7 +516,7 @@ noncomputable def terminalSpectralPositivePartSourceEnvelope
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) : Ω → ENNReal :=
+    (a : Ω → Homogenization.RegCoeffField d) : Ω → ENNReal :=
   fun ω => (Finset.Icc N m).sup
     (fun j => (Homogenization.descendantsAtDepth Q (m - j)).sup
       (fun R =>
@@ -535,7 +535,7 @@ noncomputable def terminalSpectralPositivePartSourceMax
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) : Ω → ℝ :=
+    (a : Ω → Homogenization.RegCoeffField d) : Ω → ℝ :=
   fun ω =>
     (terminalSpectralPositivePartSourceEnvelope hP hStruct hc N m Q a ω).toReal
 
@@ -554,7 +554,7 @@ theorem aemeasurable_terminalSpectralPositivePartSourceEnvelope_of_aemeasurable_
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d)
+    (a : Ω → Homogenization.RegCoeffField d)
     (hterm :
       ∀ (j : ℕ), j ∈ Finset.Icc N m →
         ∀ R ∈ Homogenization.descendantsAtDepth Q (m - j),
@@ -600,7 +600,7 @@ theorem aestronglyMeasurable_terminalSpectralPositivePartSourceMax_of_aemeasurab
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d)
+    (a : Ω → Homogenization.RegCoeffField d)
     (hterm :
       ∀ (j : ℕ), j ∈ Finset.Icc N m →
         ∀ R ∈ Homogenization.descendantsAtDepth Q (m - j),
@@ -621,11 +621,11 @@ theorem aestronglyMeasurable_terminalSpectralPositivePartSourceMax_origin
     AEStronglyMeasurable
       (terminalSpectralPositivePartSourceMax hP hStruct hc N m
         (Homogenization.originCube d (m : ℤ))
-        (fun x : Homogenization.CoeffField d => x)) P := by
+        (fun x : Homogenization.RegCoeffField d => x)) P := by
   refine
     aestronglyMeasurable_terminalSpectralPositivePartSourceMax_of_aemeasurable_terminalSpectralPositivePartAtScale
       hP hStruct hc N m (Homogenization.originCube d (m : ℤ))
-      (fun x : Homogenization.CoeffField d => x) ?_
+      (fun x : Homogenization.RegCoeffField d => x) ?_
   intro _j _hj R _hR
   exact aemeasurable_terminalSpectralPositivePartAtScale hP hStruct m R
 
@@ -636,7 +636,7 @@ theorem terminalSpectralPositivePartSourceMax_nonneg
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) :
+    (a : Ω → Homogenization.RegCoeffField d) :
     ∀ ω, 0 ≤ terminalSpectralPositivePartSourceMax hP hStruct hc N m Q a ω := by
   intro ω
   dsimp [terminalSpectralPositivePartSourceMax]
@@ -650,7 +650,7 @@ theorem terminalSpectralPositivePartSourceEnvelope_ne_top
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω) :
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω) :
     terminalSpectralPositivePartSourceEnvelope hP hStruct hc N m Q a ω ≠ ⊤ := by
   classical
   intro htop
@@ -673,7 +673,7 @@ theorem terminalSpectralPositivePartSourceEnvelope_le_of_start_le
     (hc : HighContrastExponents d) {N k m : ℕ}
     (hNk : N ≤ k)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω) :
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω) :
     terminalSpectralPositivePartSourceEnvelope hP hStruct hc k m Q a ω ≤
       terminalSpectralPositivePartSourceEnvelope hP hStruct hc N m Q a ω := by
   classical
@@ -705,7 +705,7 @@ theorem terminalSpectralPositivePartSourceMax_le_of_start_le
     (hc : HighContrastExponents d) {N k m : ℕ}
     (hNk : N ≤ k)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω) :
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω) :
     terminalSpectralPositivePartSourceMax hP hStruct hc k m Q a ω ≤
       terminalSpectralPositivePartSourceMax hP hStruct hc N m Q a ω := by
   dsimp [terminalSpectralPositivePartSourceMax]
@@ -740,7 +740,7 @@ theorem badEventTruncation_terminalSpectralPositivePartSourceMax_le_of_start_le
     (hc : HighContrastExponents d) {N k m : ℕ}
     (hNk : N ≤ k)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω) :
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω) :
     badEventTruncation
         (terminalSpectralPositivePartSourceMax hP hStruct hc k m Q a) ω ≤
       badEventTruncation
@@ -760,7 +760,7 @@ theorem weighted_terminalSpectralPositivePartAtScale_le_terminalSpectralPositive
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) {N m j : ℕ}
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω)
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω)
     {R : Homogenization.TriadicCube d}
     (hj : j ∈ Finset.Icc N m)
     (hR : R ∈ Homogenization.descendantsAtDepth Q (m - j)) :
@@ -840,7 +840,7 @@ theorem weighted_terminalMatrixPositiveExcessWeight_le_two_mul_sqrt_thetaAtScale
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N m j : ℕ}
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω)
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω)
     {R : Homogenization.TriadicCube d}
     (hj : j ∈ Finset.Icc N m)
     (hR : R ∈ Homogenization.descendantsAtDepth Q (m - j))

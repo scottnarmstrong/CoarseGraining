@@ -125,9 +125,9 @@ theorem isBigO_gammaSigma_descendantAverage_of_unitRangeDependentLaw
     (hk : k ≤ Q.scale)
     (hP : UnitRangeDependentLaw P)
     (hσ₀ : 0 < σ) (hσ₂ : σ ≤ 2) (hK : 0 < K)
-    (X : TriadicCube d → CoeffField d → ℝ)
+    (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
-      ∀ R ∈ descendantsAtScale Q k, IsLocalRandomVariable (cubeSet R) (X R))
+      ∀ R ∈ descendantsAtScale Q k, IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_meas : ∀ R ∈ descendantsAtScale Q k, Measurable (X R))
     (hX : ∀ R ∈ descendantsAtScale Q k, IsBigO P (gammaSigma σ) (X R) K)
     (h_mean : ∀ R ∈ descendantsAtScale Q k, ∫ a, X R a ∂P = 0) :
@@ -138,7 +138,7 @@ theorem isBigO_gammaSigma_descendantAverage_of_unitRangeDependentLaw
         (Real.sqrt ((descendantsAtScale Q k).card : ℝ) /
           ((descendantsAtScale Q k).card : ℝ)) * K) := by
   let colors : Finset (ScaleColor d k) := (descendantsAtScale Q k).image (cubeScaleColor k)
-  let Y : ScaleColor d k → CoeffField d → ℝ :=
+  let Y : ScaleColor d k → RegCoeffField d → ℝ :=
     fun c a => ∑ R ∈ descendantsAtScaleScaleColorClass Q k c, X R a
   let classCount : ScaleColor d k → ℝ :=
     fun c => ((descendantsAtScaleScaleColorClass Q k c).card : ℝ)
@@ -223,9 +223,9 @@ theorem isBigO_psiSigma_descendantAverage_of_unitRangeDependentLaw
     (hk : k ≤ Q.scale)
     (hP : UnitRangeDependentLaw P)
     (hσ : 1 ≤ σ) (hK : 0 < K)
-    (X : TriadicCube d → CoeffField d → ℝ)
+    (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
-      ∀ R ∈ descendantsAtScale Q k, IsLocalRandomVariable (cubeSet R) (X R))
+      ∀ R ∈ descendantsAtScale Q k, IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_meas : ∀ R ∈ descendantsAtScale Q k, Measurable (X R))
     (hX_int : ∀ R ∈ descendantsAtScale Q k, Integrable (X R) P)
     (hX : ∀ R ∈ descendantsAtScale Q k, IsBigO P (psiSigma σ) (X R) K)
@@ -237,7 +237,7 @@ theorem isBigO_psiSigma_descendantAverage_of_unitRangeDependentLaw
         (Real.sqrt ((descendantsAtScale Q k).card : ℝ) /
           ((descendantsAtScale Q k).card : ℝ)) * K) := by
   let colors : Finset (ScaleColor d k) := (descendantsAtScale Q k).image (cubeScaleColor k)
-  let Y : ScaleColor d k → CoeffField d → ℝ :=
+  let Y : ScaleColor d k → RegCoeffField d → ℝ :=
     fun c a => ∑ R ∈ descendantsAtScaleScaleColorClass Q k c, X R a
   let classCount : ScaleColor d k → ℝ :=
     fun c => ((descendantsAtScaleScaleColorClass Q k c).card : ℝ)

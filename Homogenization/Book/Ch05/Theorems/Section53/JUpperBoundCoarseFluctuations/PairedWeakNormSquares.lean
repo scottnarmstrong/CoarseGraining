@@ -413,9 +413,9 @@ theorem paired_weakNormSquares_special_le_componentIntegrals
       let q_e := specialQAtScale hP hStruct (m : ℤ) e
       let p0_e := (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ • q_e - p_e
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-              (originCube d (m : ℤ)) s p_e q_e p0_e a) ^ 2) P)
+              (originCube d (m : ℤ)) s p_e q_e p0_e a.toFun) ^ 2) P)
     (hFluxSq :
       let β := section53CoarseFluctuationBeta hP4
       let t := hP4.sUpper + 2 * β
@@ -423,9 +423,9 @@ theorem paired_weakNormSquares_special_le_componentIntegrals
       let q_e := specialQAtScale hP hStruct (m : ℤ) e
       let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d (m : ℤ)) t p_e q_e q0_e a) ^ 2) P) :
+              (originCube d (m : ℤ)) t p_e q_e q0_e a.toFun) ^ 2) P) :
     let β := section53CoarseFluctuationBeta hP4
     let s := hP4.sLower + 2 * β
     let s' := hP4.sLower + β
@@ -495,21 +495,21 @@ theorem paired_weakNormSquares_special_le_componentIntegrals
     Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e
   let fluxWeak :=
     Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e
-  let H : CoeffField d → ℝ := fun a =>
+  let H : RegCoeffField d → ℝ := fun a =>
     σ *
         (WeakNormsMaximizer.gradientAverageTermAtScale
           (m : ℤ) (k : ℤ) s p_e q_e p0_e a) ^ 2 +
       σ⁻¹ *
         (WeakNormsMaximizer.fluxAverageTermAtScale
           (m : ℤ) (k : ℤ) t p_e q_e q0_e a) ^ 2
-  let M : CoeffField d → ℝ := fun a =>
+  let M : RegCoeffField d → ℝ := fun a =>
     σ *
         (WeakNormsMaximizer.gradientMismatchTermAtScale
           (m : ℤ) (k : ℤ) s s' p_e q_e a) ^ 2 +
       σ⁻¹ *
         (WeakNormsMaximizer.fluxMismatchTermAtScale
           (m : ℤ) (k : ℤ) t t' p_e q_e a) ^ 2
-  let L : CoeffField d → ℝ := fun a =>
+  let L : RegCoeffField d → ℝ := fun a =>
     σ *
         (WeakNormsMaximizer.gradientLowScaleTailAtScale
           (m : ℤ) (k : ℤ) s s' p_e q_e a) ^ 2 +
@@ -523,22 +523,22 @@ theorem paired_weakNormSquares_special_le_componentIntegrals
       σ⁻¹ *
         (WeakNormsMaximizer.fluxConstantTailAtScale
           (m : ℤ) (k : ℤ) t q0_e) ^ 2
-  let W : CoeffField d → ℝ := fun a =>
+  let W : RegCoeffField d → ℝ := fun a =>
     σ * (gradWeak a) ^ 2 + σ⁻¹ * (fluxWeak a) ^ 2
-  let Z : CoeffField d → ℝ := fun a =>
+  let Z : RegCoeffField d → ℝ := fun a =>
     16 * (((H a + K ^ 2 * M a) + K ^ 2 * L a) + K ^ 2 * T)
   have hσ_nonneg : 0 ≤ σ := by
     exact Real.sqrt_nonneg _
   have hGradWeakSqInt :
-      Integrable (fun a : CoeffField d => (gradWeak a) ^ 2) P := by
+      Integrable (fun a : RegCoeffField d => (gradWeak a) ^ 2) P := by
     simpa [gradWeak, Q, s, p_e, q_e, p0_e, β] using hGradSq
   have hFluxWeakSqInt :
-      Integrable (fun a : CoeffField d => (fluxWeak a) ^ 2) P := by
+      Integrable (fun a : RegCoeffField d => (fluxWeak a) ^ 2) P := by
     simpa [fluxWeak, Q, t, p_e, q_e, q0_e, β] using hFluxSq
   have hWInt : Integrable W P := by
-    have hG : Integrable (fun a : CoeffField d => σ * (gradWeak a) ^ 2) P :=
+    have hG : Integrable (fun a : RegCoeffField d => σ * (gradWeak a) ^ 2) P :=
       hGradWeakSqInt.const_mul σ
-    have hF : Integrable (fun a : CoeffField d => σ⁻¹ * (fluxWeak a) ^ 2) P :=
+    have hF : Integrable (fun a : RegCoeffField d => σ⁻¹ * (fluxWeak a) ^ 2) P :=
       hFluxWeakSqInt.const_mul σ⁻¹
     simpa [W] using hG.add hF
   have hHigh := integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
@@ -557,7 +557,7 @@ theorem paired_weakNormSquares_special_le_componentIntegrals
     simpa [L, β, s, s', t, t', p_e, q_e, σ] using hLowRaw.1
   have hZInt : Integrable Z P := by
     have hinside :
-        Integrable (fun a : CoeffField d =>
+        Integrable (fun a : RegCoeffField d =>
           ((H a + K ^ 2 * M a) + K ^ 2 * L a) + K ^ 2 * T) P :=
       ((hHInt.add (hMInt.const_mul (K ^ 2))).add
         (hLInt.const_mul (K ^ 2))).add (integrable_const (K ^ 2 * T))
@@ -608,9 +608,9 @@ theorem paired_weakNormSquares_special_le_componentIntegrals
             K ^ 2 * (∫ a, M a ∂P) +
               K ^ 2 * (∫ a, L a ∂P) +
                 K ^ 2 * T) := by
-    let HM : CoeffField d → ℝ := fun a => H a + K ^ 2 * M a
-    let HML : CoeffField d → ℝ := fun a => HM a + K ^ 2 * L a
-    let TC : CoeffField d → ℝ := fun _ => K ^ 2 * T
+    let HM : RegCoeffField d → ℝ := fun a => H a + K ^ 2 * M a
+    let HML : RegCoeffField d → ℝ := fun a => HM a + K ^ 2 * L a
+    let TC : RegCoeffField d → ℝ := fun _ => K ^ 2 * T
     have hHMInt : Integrable HM P := by
       simpa [HM] using hHInt.add (hMInt.const_mul (K ^ 2))
     have hHMLInt : Integrable HML P := by
@@ -658,9 +658,9 @@ theorem paired_weakNormSquares_special_le_componentIntegrals
     σ * (∫ a, (gradWeak a) ^ 2 ∂P) +
         σ⁻¹ * (∫ a, (fluxWeak a) ^ 2 ∂P)
         = ∫ a, W a ∂P := by
-          have hG : Integrable (fun a : CoeffField d => σ * (gradWeak a) ^ 2) P :=
+          have hG : Integrable (fun a : RegCoeffField d => σ * (gradWeak a) ^ 2) P :=
             hGradWeakSqInt.const_mul σ
-          have hF : Integrable (fun a : CoeffField d => σ⁻¹ * (fluxWeak a) ^ 2) P :=
+          have hF : Integrable (fun a : RegCoeffField d => σ⁻¹ * (fluxWeak a) ^ 2) P :=
             hFluxWeakSqInt.const_mul σ⁻¹
           rw [integral_add hG hF, integral_const_mul, integral_const_mul]
     _ ≤ ∫ a, Z a ∂P := hmono
@@ -722,18 +722,18 @@ theorem paired_weakNormSquares_special_le_coarseFluctuationTerms
        let q_e := specialQAtScale hP hStruct (m : ℤ) e
        let p0_e := (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ • q_e - p_e
        Integrable
-         (fun a : CoeffField d =>
+         (fun a : RegCoeffField d =>
            (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-               (originCube d (m : ℤ)) s p_e q_e p0_e a) ^ 2) P) →
+               (originCube d (m : ℤ)) s p_e q_e p0_e a.toFun) ^ 2) P) →
       (let β := section53CoarseFluctuationBeta hP4
        let t := hP4.sUpper + 2 * β
        let p_e := specialPAtScale hP hStruct (m : ℤ) e
        let q_e := specialQAtScale hP hStruct (m : ℤ) e
        let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
        Integrable
-         (fun a : CoeffField d =>
+         (fun a : RegCoeffField d =>
            (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-               (originCube d (m : ℤ)) t p_e q_e q0_e a) ^ 2) P) →
+               (originCube d (m : ℤ)) t p_e q_e q0_e a.toFun) ^ 2) P) →
         let β := section53CoarseFluctuationBeta hP4
         let s := hP4.sLower + 2 * β
         let t := hP4.sUpper + 2 * β

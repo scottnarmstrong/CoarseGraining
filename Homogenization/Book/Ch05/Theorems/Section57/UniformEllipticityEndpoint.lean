@@ -101,18 +101,18 @@ theorem blockJObservableCubeSetBlockVec_originCube_le_of_scaleZero_ae
     Ch04.blockJObservableCubeSetBlockVec (originCube d n) Pvec Qvec
       ≤ᵐ[Pμ] fun _ => θ := by
   classical
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    Ch04.blockJSetObservableBlockVec Pvec Qvec
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fun U a => Ch04.blockJSetObservableBlockVec Pvec Qvec U a.toFun
   let D : Finset (TriadicCube d) := descendantsAtScale (originCube d n) 0
-  let Avg : CoeffField d → ℝ :=
+  let Avg : RegCoeffField d → ℝ :=
     fun a => ((D.card : ℝ)⁻¹) *
       D.sum (fun R => Ch04.blockJObservableCubeSetBlockVec R Pvec Qvec a)
   have hn0 : (0 : ℤ) ≤ (originCube d n).scale := by
     simpa [originCube] using hn
   have hD_nonempty : D.Nonempty := by
     simpa [D] using descendantsAtScale_nonempty (originCube d n) hn0
-  have hX_cov : IsTranslationCovariant X := by
-    simpa [X] using Ch04.blockJSetObservableBlockVec_translation_covariant Pvec Qvec
+  have hX_cov : Ch04.IsTranslationCovariantR X :=
+    Ch04.blockJSetObservableBlockVec_translation_covariantR Pvec Qvec
   have hX0_aemeas :
       AEMeasurable (X (cubeSet (originCube d 0))) Pμ := by
     simpa [X] using
@@ -148,7 +148,7 @@ theorem blockJObservableCubeSetBlockVec_originCube_le_of_scaleZero_ae
                   (cubeSet (originCube d 0)))) Pμ := by
               rw [hshift]
         _ = Measure.map (X (cubeSet (originCube d 0))) Pμ := by
-              exact map_eq_map_translateByInt_of_isTranslationCovariant_aemeasurable
+              exact Ch04.map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
                 (P := Pμ) hstat (U := cubeSet (originCube d 0))
                 hX0_aemeas hX_cov (Ch04.scaleTranslationShift 0 R)
     have h0X : X (cubeSet (originCube d 0)) ≤ᵐ[Pμ] fun _ => θ := by
@@ -277,7 +277,7 @@ theorem sLower_pos
 the normalizing scalar `barσ_0` is positive. -/
 theorem unitEllipticityObservable_nonneg
     (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     0 ≤ gammaSigmaUnitEllipticityObservable hP hStruct
       hInf.params.sUpper hInf.params.sLower a := by
   by_cases hbar : 0 < hP.barSigmaAtScale hStruct (0 : ℤ)
@@ -302,7 +302,7 @@ theorem unitEllipticityObservable_nonneg
 
 theorem abs_unitEllipticityObservable_le_thetaHat_ae
     (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       |gammaSigmaUnitEllipticityObservable hP hStruct
         hInf.params.sUpper hInf.params.sLower a|)
       ≤ᵐ[P] fun _ => hInf.thetaHat := by
@@ -320,22 +320,22 @@ theorem unitEllipticityObservable_isBigO
       hInf.thetaHat := by
   letI : IsProbabilityMeasure P := hP.isProbability
   change IsBigOWith P (gammaSigma σ)
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       |gammaSigmaUnitEllipticityObservable hP hStruct
         hInf.params.sUpper hInf.params.sLower a|)
     hInf.thetaHat
   have hconst :
       IsBigOWith P (gammaSigma σ)
-        (fun _ : CoeffField d => hInf.thetaHat) hInf.thetaHat := by
+        (fun _ : RegCoeffField d => hInf.thetaHat) hInf.thetaHat := by
     have hconstAbs :
         IsBigO P (gammaSigma σ)
-          (fun _ : CoeffField d => hInf.thetaHat) hInf.thetaHat :=
+          (fun _ : RegCoeffField d => hInf.thetaHat) hInf.thetaHat :=
       Ch04.isBigO_gammaSigma_const_of_abs_le (μ := P) (σ := σ)
         (A := hInf.thetaHat) (c := hInf.thetaHat)
         hInf.thetaHat_pos.le
         (by rw [abs_of_pos hInf.thetaHat_pos])
     change IsBigOWith P (gammaSigma σ)
-      (fun _ : CoeffField d => |hInf.thetaHat|) hInf.thetaHat at hconstAbs
+      (fun _ : RegCoeffField d => |hInf.thetaHat|) hInf.thetaHat at hconstAbs
     simpa [abs_of_pos hInf.thetaHat_pos] using hconstAbs
   exact
     Ch04.isBigOWith_of_ae_le (μ := P) (Ψ := gammaSigma σ)
@@ -398,10 +398,10 @@ theorem limitNormalizedBlockJObservable_unit_le_thetaHat_sq_ae
     hInf.toGammaSigma 1 zero_lt_one
   let Cdim : ℝ := (Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ)
   let G : ℝ := Ch04.gammaMomentConst (1 : ℝ) * (hInf.params.xi : ℝ)
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     gammaSigmaUnitEllipticityObservable hP hStruct
       hInf.params.sUpper hInf.params.sLower
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     limitWeightedUnitEllipticityObservable hP hStruct
       hInf.params.sUpper hInf.params.sLower
   have hJ_ae := hΓ.limitNormalizedBlockJObservable_le_card_sq_mul_weighted_ae e he
@@ -555,7 +555,7 @@ theorem localizedLimitWeightedUnitEllipticitySup_le_thetaHat_sq_ae
   let hD : D.Nonempty := descendantsAtScale_nonempty Q (by simp [Q, originCube])
   have hEach :
       ∀ U ∈ D,
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           limitWeightedUnitEllipticityObservableOnCube hP hStruct U
             hInf.params.sUpper hInf.params.sLower a)
           ≤ᵐ[P] fun _ => A := by

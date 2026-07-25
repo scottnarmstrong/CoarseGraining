@@ -75,21 +75,21 @@ theorem fullBlockNormalizedQuadraticObservable_scalarVariance_good_origin_le
     (q : FullBlockVec d) {K : ℝ}
     (hZ_int :
       Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-              (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q) a|) P ∧
+              (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ) q) a|) P ∧
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-              (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q) a| ^
+              (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ) q) a| ^
                 (2 : ℕ)) P)
     (hZ_le :
       (∫ a,
           |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-            (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q) a| ∂P ≤ K) ∧
+            (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ) q) a| ∂P ≤ K) ∧
         (∫ a,
           |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-            (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q) a| ^
+            (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ) q) a| ^
               (2 : ℕ) ∂P ≤ K ^ (2 : ℕ))) :
     ∫ a,
         |fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q
@@ -97,12 +97,12 @@ theorem fullBlockNormalizedQuadraticObservable_scalarVariance_good_origin_le
       4 * (delta * dotProduct q q) ^ (2 : ℕ) + 4 * K ^ (2 : ℕ) +
         2 * dotProduct q q * (delta * dotProduct q q + K) := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let X : CoeffField d → ℝ := fun a =>
+  let X : RegCoeffField d → ℝ := fun a =>
     fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q
       (cubeSet (originCube d (j : ℤ))) a
-  let Z : CoeffField d → ℝ :=
+  let Z : RegCoeffField d → ℝ :=
     Ch04.centeredDescendantAverage P 0 (j : ℤ)
-      (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q)
+      (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ) q)
   let base : ℝ := dotProduct q q
   let err : ℝ := delta * base
   have hinputs :=
@@ -121,7 +121,7 @@ theorem fullBlockNormalizedQuadraticObservable_scalarVariance_good_origin_le
       dotProduct_le_integral_origin_fullBlockNormalizedQuadraticObservable_of_scalarChain
         hP hStruct hP4 m j hj q
   have hpos :
-      (fun a : CoeffField d => max (X a - base) 0) ≤ᵐ[P]
+      (fun a : RegCoeffField d => max (X a - base) 0) ≤ᵐ[P]
         fun a => err + |Z a| := by
     simpa [X, Z, base, err] using
       fullBlockNormalizedQuadraticObservable_positivePart_good_origin_ae
@@ -185,11 +185,11 @@ theorem coordinateProbe_scalarVariance_good_origin_le
       (by norm_num) (by exact_mod_cast Nat.zero_le j) hOrigin.1
   have hZ_le : (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockCoordinateProbe α)) a| ∂P ≤ K) ∧
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockCoordinateProbe α)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) := by
     simpa [K, coordinateProbeDescendantAverageK] using
       coordinateProbe_centeredDescendantAverage_abs_and_sq_le
@@ -237,11 +237,11 @@ theorem plusProbe_scalarVariance_good_origin_le
       (by norm_num) (by exact_mod_cast Nat.zero_le j) hOrigin.1
   have hZ_le : (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockPlusProbe α β)) a| ∂P ≤ K) ∧
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockPlusProbe α β)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) := by
     simpa [K, pairProbeDescendantAverageK] using
       plusProbe_centeredDescendantAverage_abs_and_sq_le
@@ -289,11 +289,11 @@ theorem minusProbe_scalarVariance_good_origin_le
       (by norm_num) (by exact_mod_cast Nat.zero_le j) hOrigin.1
   have hZ_le : (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockMinusProbe α β)) a| ∂P ≤ K) ∧
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockMinusProbe α β)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) := by
     simpa [K, pairProbeDescendantAverageK] using
       minusProbe_centeredDescendantAverage_abs_and_sq_le

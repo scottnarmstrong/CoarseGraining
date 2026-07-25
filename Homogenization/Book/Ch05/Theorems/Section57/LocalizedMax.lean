@@ -25,7 +25,7 @@ noncomputable def localizedLimitNormalizedJMax
     {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier Pμ)
     (hStruct : Ch04.StructuralLaw Pμ)
-    (m n : ℕ) (e : FullBlockVec d) : CoeffField d → ℝ :=
+    (m n : ℕ) (e : FullBlockVec d) : RegCoeffField d → ℝ :=
   fun a =>
     let D : Finset (TriadicCube d) :=
       descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ)
@@ -47,7 +47,7 @@ theorem limitNormalizedBlockJObservable_le_localizedLimitNormalizedJMax
     (hP : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
     {m n : ℕ} (e : FullBlockVec d) {R : TriadicCube d}
     (hR : R ∈ descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ))
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     limitNormalizedBlockJObservable hP hStruct R e a ≤
       localizedLimitNormalizedJMax hP hStruct m n e a := by
   classical
@@ -65,7 +65,7 @@ noncomputable def discountedLocalizedLimitNormalizedJMax
     {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier Pμ)
     (hStruct : Ch04.StructuralLaw Pμ)
-    (t : ℝ) (m n : ℕ) (e : FullBlockVec d) : CoeffField d → ℝ :=
+    (t : ℝ) (m n : ℕ) (e : FullBlockVec d) : RegCoeffField d → ℝ :=
   fun a =>
       (3 : ℝ) ^ (-t * ((m - n : ℕ) : ℝ)) *
       localizedLimitNormalizedJMax hP hStruct m n e a
@@ -92,16 +92,16 @@ theorem map_limitNormalizedBlockJObservable_eq_origin_of_mem_descendantsAtScale
       Measure.map (limitNormalizedBlockJObservable hP hStruct (originCube d n) e) Pμ := by
   let Pvec : BlockVec d := scalarLimitInvSqrtBlockVec hP hStruct e
   let Qvec : BlockVec d := scalarLimitSqrtBlockVec hP hStruct e
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    Ch04.blockJSetObservableBlockVec Pvec Qvec
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fun U a => Ch04.blockJSetObservableBlockVec Pvec Qvec U a.toFun
   have hshift :
       cubeSet R =
         translateSet (intVecToRealVec (Ch04.scaleTranslationShift n R))
           (cubeSet (originCube d n)) := by
     exact Ch04.cubeSet_eq_translateSet_originCube_of_mem_descendantsAtScale_originCube
       (d := d) (n := n) (m := m) (R := R) hn hnm hR
-  have hX_cov : IsTranslationCovariant X := by
-    simpa [X] using Ch04.blockJSetObservableBlockVec_translation_covariant Pvec Qvec
+  have hX_cov : Ch04.IsTranslationCovariantR X :=
+    Ch04.blockJSetObservableBlockVec_translation_covariantR Pvec Qvec
   have hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) Pμ := by
     simpa [X] using
       Ch04.aemeasurable_blockJSetObservableBlockVec_cubeSet hP
@@ -117,7 +117,7 @@ theorem map_limitNormalizedBlockJObservable_eq_origin_of_mem_descendantsAtScale
               (cubeSet (originCube d n)))) Pμ := by
           rw [hshift]
     _ = Measure.map (X (cubeSet (originCube d n))) Pμ := by
-          exact map_eq_map_translateByInt_of_isTranslationCovariant_aemeasurable
+          exact Ch04.map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
             (P := Pμ) hstat (U := cubeSet (originCube d n))
             hX0_aemeas hX_cov (Ch04.scaleTranslationShift n R)
     _ = Measure.map
@@ -140,8 +140,8 @@ theorem isBigOWith_limitNormalizedBlockJObservable_sub_const_of_mem_descendantsA
       (fun a => limitNormalizedBlockJObservable hP hStruct R e a - c) A := by
   let Pvec : BlockVec d := scalarLimitInvSqrtBlockVec hP hStruct e
   let Qvec : BlockVec d := scalarLimitSqrtBlockVec hP hStruct e
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    fun U a => Ch04.blockJSetObservableBlockVec Pvec Qvec U a - c
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fun U a => Ch04.blockJSetObservableBlockVec Pvec Qvec U a.toFun - c
   letI : IsProbabilityMeasure Pμ := hP.isProbability
   have hshift :
       cubeSet R =
@@ -149,9 +149,9 @@ theorem isBigOWith_limitNormalizedBlockJObservable_sub_const_of_mem_descendantsA
           (cubeSet (originCube d n)) := by
     exact Ch04.cubeSet_eq_translateSet_originCube_of_mem_descendantsAtScale_originCube
       (d := d) (n := n) (m := m) (R := R) hn hnm hR
-  have hX_cov : IsTranslationCovariant X := by
+  have hX_cov : Ch04.IsTranslationCovariantR X := by
     intro U z a
-    simp [X, Ch04.blockJSetObservableBlockVec_translation_covariant Pvec Qvec U z a]
+    simp [X, Ch04.blockJSetObservableBlockVec_translation_covariantR Pvec Qvec U z a]
   have hXR_aemeas : AEMeasurable (X (cubeSet R)) Pμ := by
     exact (Ch04.aemeasurable_blockJSetObservableBlockVec_cubeSet hP R Pvec Qvec).sub
       aemeasurable_const
@@ -170,7 +170,7 @@ theorem isBigOWith_limitNormalizedBlockJObservable_sub_const_of_mem_descendantsA
                 (cubeSet (originCube d n)))) Pμ := by
             rw [hshift]
       _ = Measure.map (X (cubeSet (originCube d n))) Pμ := by
-            exact map_eq_map_translateByInt_of_isTranslationCovariant_aemeasurable
+            exact Ch04.map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
               (P := Pμ) hstat (U := cubeSet (originCube d n))
               hX0_aemeas hX_cov (Ch04.scaleTranslationShift n R)
   have htransfer :=
@@ -330,7 +330,7 @@ theorem localizedLimitNormalizedJMax_sub_const_le_sup_sub
     {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
     {m n : ℕ} (e : FullBlockVec d) (c : ℝ)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     let D : Finset (TriadicCube d) :=
       descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ)
     ∀ hD : D.Nonempty,

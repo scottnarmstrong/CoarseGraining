@@ -22,10 +22,10 @@ theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtSc
     {p : ℕ} {K : ℝ}
     (hP : UnitRangeDependentLaw P)
     (hp : 2 ≤ p) (hK_nonneg : 0 ≤ K)
-    (X : TriadicCube d → CoeffField d → ℝ)
+    (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c,
-        IsLocalRandomVariable (cubeSet R) (X R))
+        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_aemeas :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c, AEMeasurable (X R) P)
     (hLp_int :
@@ -46,7 +46,7 @@ theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtSc
   have hp_nat_ne_zero : p ≠ 0 := by omega
   let S : Finset (TriadicCube d) := descendantsAtScaleScaleColorClass Q k c
   by_cases hS : S.Nonempty
-  · let Y : {R : TriadicCube d // R ∈ S} → CoeffField d → ℝ :=
+  · let Y : {R : TriadicCube d // R ∈ S} → RegCoeffField d → ℝ :=
       fun R => X R.1
     have h_indep : ProbabilityTheory.iIndepFun Y P := by
       exact iIndepFun_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw
@@ -82,7 +82,7 @@ theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtSc
           ∫ a, |∑ R ∈ S, X R a| ^ p ∂P := by
       apply integral_congr_ae
       exact Filter.Eventually.of_forall fun a => by
-        have hpoint := congrArg (fun f : CoeffField d → ℝ => |f a| ^ p) hsum_eq
+        have hpoint := congrArg (fun f : RegCoeffField d → ℝ => |f a| ^ p) hsum_eq
         simpa using hpoint
     rw [hleft] at hmain
     simpa [S, rosenthalBennettIntegralConst] using hmain
@@ -112,9 +112,9 @@ theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtSc
     {p : ℕ} {K : ℝ}
     (hP : UnitRangeDependentLaw P)
     (hp : 2 ≤ p) (hK_nonneg : 0 ≤ K)
-    (X : TriadicCube d → CoeffField d → ℝ)
+    (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
-      ∀ R ∈ descendantsAtScale Q k, IsLocalRandomVariable (cubeSet R) (X R))
+      ∀ R ∈ descendantsAtScale Q k, IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_aemeas : ∀ R ∈ descendantsAtScale Q k, AEMeasurable (X R) P)
     (hLp_int :
       ∀ R ∈ descendantsAtScale Q k, Integrable (fun a => |X R a| ^ p) P)
@@ -134,7 +134,7 @@ theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtSc
   have hp_ennreal_top : (p : ENNReal) ≠ ⊤ := by simp
   let s : Finset (ScaleColor d k) := (descendantsAtScale Q k).image (cubeScaleColor k)
   by_cases hs : s.Nonempty
-  · let Y : ScaleColor d k → CoeffField d → ℝ :=
+  · let Y : ScaleColor d k → RegCoeffField d → ℝ :=
       fun c a => ∑ R ∈ descendantsAtScaleScaleColorClass Q k c, X R a
     have h_aemeas : ∀ c ∈ s, AEMeasurable (Y c) P := by
       intro c hc
@@ -347,7 +347,7 @@ theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtSc
               congr 1
               apply integral_congr_ae
               exact Filter.Eventually.of_forall fun a => by
-                have hpoint := congrArg (fun f : CoeffField d → ℝ => |f a| ^ p) hsum_eq
+                have hpoint := congrArg (fun f : RegCoeffField d → ℝ => |f a| ^ p) hsum_eq
                 simpa using hpoint.symm
       _ ≤ ∑ c ∈ s, (∫ a, |Y c a| ^ p ∂P) ^ (1 / (p : ℝ)) := hsum
       _ ≤ ∑ c ∈ s,

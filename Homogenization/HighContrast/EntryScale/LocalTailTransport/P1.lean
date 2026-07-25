@@ -45,16 +45,16 @@ theorem descendantsAverage_dilateCube {d : ℕ} (k : ℤ)
 /-- Origin-cube lower ellipticity coefficient transport from normalized window
 coordinates back to the original terminal scale. -/
 theorem lambdaSqCoeffField_originCube_dilateCoeffField_neg_nat_of_le
-    {d : ℕ} [NeZero d] {a : Homogenization.CoeffField d}
+    {d : ℕ} [NeZero d] {a : Homogenization.RegCoeffField d}
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℕ} (hkm : k ≤ m) (s : ℝ)
     (q : Homogenization.Book.Ch02.MultiscaleExponent) :
     Homogenization.Book.Ch04.lambdaSqCoeffField
         (Homogenization.originCube d ((m - k : ℕ) : ℤ)) s q
-        (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a) =
+        (Homogenization.dilateReg (-(k : ℤ)) a) =
       Homogenization.Book.Ch04.lambdaSqCoeffField
         (Homogenization.originCube d (m : ℤ)) s q a := by
-  rw [← Homogenization.Book.Ch04.rescaleCoeffField_eq_dilateCoeffField_neg_nat k]
+  rw [← Homogenization.Book.Ch04.rescaleReg_eq_dilateReg_neg_nat k]
   have hshift :=
     Homogenization.Book.Ch04.lambdaSqCoeffField_originCube_rescaleCoeffField_of_aelocallyUniformlyElliptic
       ha k (m - k) s q
@@ -64,16 +64,16 @@ theorem lambdaSqCoeffField_originCube_dilateCoeffField_neg_nat_of_le
 /-- Origin-cube upper ellipticity coefficient transport from normalized window
 coordinates back to the original terminal scale. -/
 theorem LambdaSqCoeffField_originCube_dilateCoeffField_neg_nat_of_le
-    {d : ℕ} [NeZero d] {a : Homogenization.CoeffField d}
+    {d : ℕ} [NeZero d] {a : Homogenization.RegCoeffField d}
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℕ} (hkm : k ≤ m) (s : ℝ)
     (q : Homogenization.Book.Ch02.MultiscaleExponent) :
     Homogenization.Book.Ch04.LambdaSqCoeffField
         (Homogenization.originCube d ((m - k : ℕ) : ℤ)) s q
-        (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a) =
+        (Homogenization.dilateReg (-(k : ℤ)) a) =
       Homogenization.Book.Ch04.LambdaSqCoeffField
         (Homogenization.originCube d (m : ℤ)) s q a := by
-  rw [← Homogenization.Book.Ch04.rescaleCoeffField_eq_dilateCoeffField_neg_nat k]
+  rw [← Homogenization.Book.Ch04.rescaleReg_eq_dilateReg_neg_nat k]
   have hshift :=
     Homogenization.Book.Ch04.LambdaSqCoeffField_originCube_rescaleCoeffField_of_aelocallyUniformlyElliptic
       ha k (m - k) s q
@@ -83,12 +83,12 @@ theorem LambdaSqCoeffField_originCube_dilateCoeffField_neg_nat_of_le
 /-- Origin-cube response observable transport from normalized window
 coordinates back to the original terminal scale. -/
 theorem responseJObservableCubeSet_originCube_dilateCoeffField_neg_nat_of_le
-    {d : ℕ} [NeZero d] {a : Homogenization.CoeffField d}
+    {d : ℕ} [NeZero d] {a : Homogenization.RegCoeffField d}
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℕ} (hkm : k ≤ m) (p q : Homogenization.Vec d) :
     Homogenization.Book.Ch04.responseJObservableCubeSet
         (Homogenization.originCube d ((m - k : ℕ) : ℤ)) p q
-        (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a) =
+        (Homogenization.dilateReg (-(k : ℤ)) a) =
       Homogenization.Book.Ch04.responseJObservableCubeSet
         (Homogenization.originCube d (m : ℤ)) p q a := by
   have hshift :=
@@ -100,13 +100,13 @@ theorem responseJObservableCubeSet_originCube_dilateCoeffField_neg_nat_of_le
 /-- LIH's gradient low-scale tail transports from normalized coordinates
 `(0,m-k)` back to the original local window `(k,m)`. -/
 theorem gradientLowScaleTailAtScale_dilateCoeffField_neg_nat_of_le
-    {d : ℕ} [NeZero d] {a : Homogenization.CoeffField d}
+    {d : ℕ} [NeZero d] {a : Homogenization.RegCoeffField d}
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℕ} (hkm : k ≤ m) (s s' : ℝ)
     (p q : Homogenization.Vec d) :
     Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.gradientLowScaleTailAtScale
         ((m - k : ℕ) : ℤ) (0 : ℤ) s s' p q
-        (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a) =
+        (Homogenization.dilateReg (-(k : ℤ)) a) =
       Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.gradientLowScaleTailAtScale
         (m : ℤ) (k : ℤ) s s' p q a := by
   have hdiff :
@@ -123,7 +123,7 @@ theorem gradientLowScaleTailAtScale_dilateCoeffField_neg_nat_of_le
       Homogenization.ResponseJ
           (Homogenization.cubeSet
             (Homogenization.originCube d ((m - k : ℕ) : ℤ))) p q
-          (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a) =
+          (Homogenization.dilateReg (-(k : ℤ)) a) =
         Homogenization.ResponseJ
           (Homogenization.cubeSet
             (Homogenization.originCube d (m : ℤ))) p q a := by
@@ -134,13 +134,13 @@ theorem gradientLowScaleTailAtScale_dilateCoeffField_neg_nat_of_le
 /-- LIH's flux low-scale tail transports from normalized coordinates
 `(0,m-k)` back to the original local window `(k,m)`. -/
 theorem fluxLowScaleTailAtScale_dilateCoeffField_neg_nat_of_le
-    {d : ℕ} [NeZero d] {a : Homogenization.CoeffField d}
+    {d : ℕ} [NeZero d] {a : Homogenization.RegCoeffField d}
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℕ} (hkm : k ≤ m) (t t' : ℝ)
     (p q : Homogenization.Vec d) :
     Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.fluxLowScaleTailAtScale
         ((m - k : ℕ) : ℤ) (0 : ℤ) t t' p q
-        (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a) =
+        (Homogenization.dilateReg (-(k : ℤ)) a) =
       Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.fluxLowScaleTailAtScale
         (m : ℤ) (k : ℤ) t t' p q a := by
   have hdiff :
@@ -157,7 +157,7 @@ theorem fluxLowScaleTailAtScale_dilateCoeffField_neg_nat_of_le
       Homogenization.ResponseJ
           (Homogenization.cubeSet
             (Homogenization.originCube d ((m - k : ℕ) : ℤ))) p q
-          (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a) =
+          (Homogenization.dilateReg (-(k : ℤ)) a) =
         Homogenization.ResponseJ
           (Homogenization.cubeSet
             (Homogenization.originCube d (m : ℤ))) p q a := by
@@ -217,20 +217,20 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
     let q_e :=
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-    let childAvg := fun a : Homogenization.CoeffField d =>
+    let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
         (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-    let lowerTerminal := fun a : Homogenization.CoeffField d =>
+    let lowerTerminal := fun a : Homogenization.RegCoeffField d =>
       max
         ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
           (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹)
         0
-    let upperTerminal := fun a : Homogenization.CoeffField d =>
+    let upperTerminal := fun a : Homogenization.RegCoeffField d =>
       max
         (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
           hP.barSigmaAtScale hStruct (m : ℤ))
         0
-    let terminalChild : Homogenization.CoeffField d → ℝ := fun a =>
+    let terminalChild : Homogenization.RegCoeffField d → ℝ := fun a =>
       (σ * lowerTerminal a + σ⁻¹ * upperTerminal a) * childAvg a
     let tailFactor : ℝ :=
       (β ^ 2)⁻¹ *
@@ -260,20 +260,20 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-  let childAvg : Homogenization.CoeffField d → ℝ := fun a =>
+  let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
       (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-  let lowerTerminal : Homogenization.CoeffField d → ℝ := fun a =>
+  let lowerTerminal : Homogenization.RegCoeffField d → ℝ := fun a =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
         (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹)
       0
-  let upperTerminal : Homogenization.CoeffField d → ℝ := fun a =>
+  let upperTerminal : Homogenization.RegCoeffField d → ℝ := fun a =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
         hP.barSigmaAtScale hStruct (m : ℤ))
       0
-  let terminalChild : Homogenization.CoeffField d → ℝ := fun a =>
+  let terminalChild : Homogenization.RegCoeffField d → ℝ := fun a =>
     (σ * lowerTerminal a + σ⁻¹ * upperTerminal a) * childAvg a
   let tailFactor : ℝ :=
     (β ^ 2)⁻¹ *
@@ -307,36 +307,36 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
   let σk :=
     Homogenization.Book.Ch05.sigmaHatAtScale
       (hP.scaleNormalized k) (hStruct.scaleNormalized k) (M : ℤ)
-  let childAvgK : Homogenization.CoeffField d → ℝ := fun a =>
+  let childAvgK : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Qk M
       (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_ek q_ek a)
-  let lowerZeroK : Homogenization.CoeffField d → ℝ := fun a =>
+  let lowerZeroK : Homogenization.RegCoeffField d → ℝ := fun a =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Qk sk' (.finite 1) a)⁻¹ -
         ((hP.scaleNormalized k).barSigmaStarAtScale
           (hStruct.scaleNormalized k) (0 : ℤ))⁻¹)
       0
-  let upperZeroK : Homogenization.CoeffField d → ℝ := fun a =>
+  let upperZeroK : Homogenization.RegCoeffField d → ℝ := fun a =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Qk tk' (.finite 1) a -
         (hP.scaleNormalized k).barSigmaAtScale
           (hStruct.scaleNormalized k) (0 : ℤ))
       0
-  let lowerTerminalK : Homogenization.CoeffField d → ℝ := fun a =>
+  let lowerTerminalK : Homogenization.RegCoeffField d → ℝ := fun a =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Qk sk' (.finite 1) a)⁻¹ -
         ((hP.scaleNormalized k).barSigmaStarAtScale
           (hStruct.scaleNormalized k) (M : ℤ))⁻¹)
       0
-  let upperTerminalK : Homogenization.CoeffField d → ℝ := fun a =>
+  let upperTerminalK : Homogenization.RegCoeffField d → ℝ := fun a =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Qk tk' (.finite 1) a -
         (hP.scaleNormalized k).barSigmaAtScale
           (hStruct.scaleNormalized k) (M : ℤ))
       0
-  let terminalChildK : Homogenization.CoeffField d → ℝ := fun a =>
+  let terminalChildK : Homogenization.RegCoeffField d → ℝ := fun a =>
     (σk * lowerTerminalK a + σk⁻¹ * upperTerminalK a) * childAvgK a
-  let X : Homogenization.CoeffField d → ℝ := fun a =>
+  let X : Homogenization.RegCoeffField d → ℝ := fun a =>
     σk *
         (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.gradientLowScaleTailAtScale
           (M : ℤ) (0 : ℤ) sk sk' p_ek q_ek a) ^ 2 +
@@ -524,7 +524,7 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
       simpa only [hsum] using h
     have hlambda :
         Homogenization.Book.Ch04.lambdaSqCoeffField Qk sk' (.finite 1)
-            (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a) =
+            (Homogenization.dilateReg (-(k : ℤ)) a) =
           Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a := by
       have h :=
         lambdaSqCoeffField_originCube_dilateCoeffField_neg_nat_of_le
@@ -532,27 +532,27 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
       simpa only [hsk'] using h
     have hLambda :
         Homogenization.Book.Ch04.LambdaSqCoeffField Qk tk' (.finite 1)
-            (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a) =
+            (Homogenization.dilateReg (-(k : ℤ)) a) =
           Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a := by
       have h :=
         LambdaSqCoeffField_originCube_dilateCoeffField_neg_nat_of_le
           (d := d) ha hkm.le tk' (.finite 1)
       simpa only [htk'] using h
     have hlower :
-        lowerTerminalK (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a) =
+        lowerTerminalK (Homogenization.dilateReg (-(k : ℤ)) a) =
           lowerTerminal a := by
       simp only [hlowerBase, hlambda, lowerTerminalK, lowerTerminal]
     have hupper :
-        upperTerminalK (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a) =
+        upperTerminalK (Homogenization.dilateReg (-(k : ℤ)) a) =
           upperTerminal a := by
       simp only [hupperBase, hLambda, upperTerminalK, upperTerminal]
     have hchild :
-        childAvgK (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a) =
+        childAvgK (Homogenization.dilateReg (-(k : ℤ)) a) =
           childAvg a := by
       have hfun :
           (fun R : Homogenization.TriadicCube d =>
               Homogenization.Book.Ch04.responseJObservableCubeSet R p_ek q_ek
-                (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a))
+                (Homogenization.dilateReg (-(k : ℤ)) a))
             =
           (fun R : Homogenization.TriadicCube d =>
               Homogenization.Book.Ch04.responseJObservableCubeSet
@@ -572,7 +572,7 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
         have hsum : k + M = m := by simpa only using Nat.add_sub_of_le hkm.le
         simp only [Book.Ch04.dilateCube_originCube_nat, hsum, M, Qk, Q] at h ⊢
       calc
-        childAvgK (Homogenization.Book.Ch02.dilateCoeffField (-(k : ℤ)) a)
+        childAvgK (Homogenization.dilateReg (-(k : ℤ)) a)
             =
           Homogenization.descendantsAverage Qk M
             (fun R : Homogenization.TriadicCube d =>
@@ -649,7 +649,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
     (hHM :
       HighCenteredMomentEstimate hm P N
         (intermediateCoarseBlockDeviation hP hStruct
-          (fun x : Homogenization.CoeffField d => x)))
+          (fun x : Homogenization.RegCoeffField d => x)))
     (e : Homogenization.Vec d)
     (hSmallInt :
       let β := section53CoarseFluctuationBeta hP4
@@ -661,21 +661,21 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
       let q_e :=
         Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
       let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-      let childAvg := fun a : Homogenization.CoeffField d =>
+      let childAvg := fun a : Homogenization.RegCoeffField d =>
         Homogenization.descendantsAverage Q (m - k)
           (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-      let response := fun a : Homogenization.CoeffField d =>
+      let response := fun a : Homogenization.RegCoeffField d =>
         (5 * β⁻¹) ^ 2 * childAvg a
-      let lowerSmall := fun a : Homogenization.CoeffField d =>
+      let lowerSmall := fun a : Homogenization.RegCoeffField d =>
         Homogenization.Book.Ch05.Section52.lowerSmallSqrtTailCoeffField
             (d := d) m s' a ^ 2 /
           Homogenization.Book.Ch05.Section52.section52SmallTailWeight s' m
-      let upperSmall := fun a : Homogenization.CoeffField d =>
+      let upperSmall := fun a : Homogenization.RegCoeffField d =>
         Homogenization.Book.Ch05.Section52.upperSmallSqrtTailCoeffField
             (d := d) m t' a ^ 2 /
           Homogenization.Book.Ch05.Section52.section52SmallTailWeight t' m
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           (σ * lowerSmall a + σ⁻¹ * upperSmall a) * response a) P)
     (hLowInt :
       let β := section53CoarseFluctuationBeta hP4
@@ -688,12 +688,12 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
       let q_e :=
         Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
       let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-      let childAvg := fun a : Homogenization.CoeffField d =>
+      let childAvg := fun a : Homogenization.RegCoeffField d =>
         Homogenization.descendantsAverage Q (m - k)
           (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-      let response := fun a : Homogenization.CoeffField d =>
+      let response := fun a : Homogenization.RegCoeffField d =>
         (5 * β⁻¹) ^ 2 * childAvg a
-      let lowerSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+      let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
         let parents := Homogenization.descendantsAtScale Q n.1
         let hparents : parents.Nonempty :=
           Homogenization.descendantsAtScale_nonempty Q
@@ -708,7 +708,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
             0
         Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s' m n.1 *
           (σ * parents.sup' hparents lowerExcess) * response a
-      let upperSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+      let upperSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
         let parents := Homogenization.descendantsAtScale Q n.1
         let hparents : parents.Nonempty :=
           Homogenization.descendantsAtScale_nonempty Q
@@ -723,7 +723,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
             0
         Homogenization.Book.Ch05.Section52.section52LargeScaleWeight t' m n.1 *
           (σ⁻¹ * parents.sup' hparents upperExcess) * response a
-      let lowSum := fun a : Homogenization.CoeffField d =>
+      let lowSum := fun a : Homogenization.RegCoeffField d =>
         S.attach.sum fun n =>
           if k ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
       MeasureTheory.Integrable lowSum P) :
@@ -739,20 +739,20 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
     let q_e :=
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-    let childAvg := fun a : Homogenization.CoeffField d =>
+    let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
         (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-    let response := fun a : Homogenization.CoeffField d =>
+    let response := fun a : Homogenization.RegCoeffField d =>
       (5 * β⁻¹) ^ 2 * childAvg a
-    let lowerSmall := fun a : Homogenization.CoeffField d =>
+    let lowerSmall := fun a : Homogenization.RegCoeffField d =>
       Homogenization.Book.Ch05.Section52.lowerSmallSqrtTailCoeffField
           (d := d) m s' a ^ 2 /
         Homogenization.Book.Ch05.Section52.section52SmallTailWeight s' m
-    let upperSmall := fun a : Homogenization.CoeffField d =>
+    let upperSmall := fun a : Homogenization.RegCoeffField d =>
       Homogenization.Book.Ch05.Section52.upperSmallSqrtTailCoeffField
           (d := d) m t' a ^ 2 /
         Homogenization.Book.Ch05.Section52.section52SmallTailWeight t' m
-    let lowerSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+    let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
       let parents := Homogenization.descendantsAtScale Q n.1
       let hparents : parents.Nonempty :=
         Homogenization.descendantsAtScale_nonempty Q
@@ -767,7 +767,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
           0
       Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s' m n.1 *
         (σ * parents.sup' hparents lowerExcess) * response a
-    let upperSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+    let upperSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
       let parents := Homogenization.descendantsAtScale Q n.1
       let hparents : parents.Nonempty :=
         Homogenization.descendantsAtScale_nonempty Q
@@ -782,12 +782,12 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
           0
       Homogenization.Book.Ch05.Section52.section52LargeScaleWeight t' m n.1 *
         (σ⁻¹ * parents.sup' hparents upperExcess) * response a
-    let lowSum := fun a : Homogenization.CoeffField d =>
+    let lowSum := fun a : Homogenization.RegCoeffField d =>
       S.attach.sum fun n =>
         if k ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
     let sourceMax :=
       terminalSpectralPositivePartSourceMax hP hStruct hc k m Q
-        (fun x : Homogenization.CoeffField d => x)
+        (fun x : Homogenization.RegCoeffField d => x)
     let weightLossSup : {n : ℤ // n ∈ S} → ℝ := fun n =>
       let parents := Homogenization.descendantsAtScale Q n.1
       let hparents : parents.Nonempty :=
@@ -844,40 +844,40 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-  let childAvg : Homogenization.CoeffField d → ℝ := fun a =>
+  let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
       (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-  let response : Homogenization.CoeffField d → ℝ := fun a =>
+  let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
-  let lowerZero : Homogenization.CoeffField d → ℝ := fun a =>
+  let lowerZero : Homogenization.RegCoeffField d → ℝ := fun a =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
         (hP.barSigmaStarAtScale hStruct 0)⁻¹)
       0
-  let upperZero : Homogenization.CoeffField d → ℝ := fun a =>
+  let upperZero : Homogenization.RegCoeffField d → ℝ := fun a =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
         hP.barSigmaAtScale hStruct 0)
       0
-  let lowerTerminal : Homogenization.CoeffField d → ℝ := fun a =>
+  let lowerTerminal : Homogenization.RegCoeffField d → ℝ := fun a =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
         (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹)
       0
-  let upperTerminal : Homogenization.CoeffField d → ℝ := fun a =>
+  let upperTerminal : Homogenization.RegCoeffField d → ℝ := fun a =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
         hP.barSigmaAtScale hStruct (m : ℤ))
       0
-  let lowerSmall : Homogenization.CoeffField d → ℝ := fun a =>
+  let lowerSmall : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.Book.Ch05.Section52.lowerSmallSqrtTailCoeffField
         (d := d) m s' a ^ 2 /
       Homogenization.Book.Ch05.Section52.section52SmallTailWeight s' m
-  let upperSmall : Homogenization.CoeffField d → ℝ := fun a =>
+  let upperSmall : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.Book.Ch05.Section52.upperSmallSqrtTailCoeffField
         (d := d) m t' a ^ 2 /
       Homogenization.Book.Ch05.Section52.section52SmallTailWeight t' m
-  let lowerSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+  let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
     let parents := Homogenization.descendantsAtScale Q n.1
     let hparents : parents.Nonempty :=
       Homogenization.descendantsAtScale_nonempty Q
@@ -892,7 +892,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
         0
     Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s' m n.1 *
       (σ * parents.sup' hparents lowerExcess) * response a
-  let upperSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+  let upperSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
     let parents := Homogenization.descendantsAtScale Q n.1
     let hparents : parents.Nonempty :=
       Homogenization.descendantsAtScale_nonempty Q
@@ -907,12 +907,12 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
         0
     Homogenization.Book.Ch05.Section52.section52LargeScaleWeight t' m n.1 *
       (σ⁻¹ * parents.sup' hparents upperExcess) * response a
-  let lowSum : Homogenization.CoeffField d → ℝ := fun a =>
+  let lowSum : Homogenization.RegCoeffField d → ℝ := fun a =>
     S.attach.sum fun n =>
       if k ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
-  let sourceMax : Homogenization.CoeffField d → ℝ :=
+  let sourceMax : Homogenization.RegCoeffField d → ℝ :=
     terminalSpectralPositivePartSourceMax hP hStruct hc k m Q
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   let weightLossSup : {n : ℤ // n ∈ S} → ℝ := fun n =>
     let parents := Homogenization.descendantsAtScale Q n.1
     let hparents : parents.Nonempty :=
@@ -951,13 +951,13 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
         σ⁻¹ *
           (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.fluxLowScaleTailAtScale
             (m : ℤ) (k : ℤ) t t' p_e q_e a) ^ 2) ∂P
-  let terminalChild : Homogenization.CoeffField d → ℝ := fun a =>
+  let terminalChild : Homogenization.RegCoeffField d → ℝ := fun a =>
     (σ * lowerTerminal a + σ⁻¹ * upperTerminal a) * childAvg a
-  let terminalResponse : Homogenization.CoeffField d → ℝ := fun a =>
+  let terminalResponse : Homogenization.RegCoeffField d → ℝ := fun a =>
     (σ * lowerTerminal a + σ⁻¹ * upperTerminal a) * response a
-  let smallTerm : Homogenization.CoeffField d → ℝ := fun a =>
+  let smallTerm : Homogenization.RegCoeffField d → ℝ := fun a =>
     (σ * lowerSmall a + σ⁻¹ * upperSmall a) * response a
-  let badTerm : Homogenization.CoeffField d → ℝ := fun a =>
+  let badTerm : Homogenization.RegCoeffField d → ℝ := fun a =>
     edgeWeightLoss *
       (2 * Real.sqrt (Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ)) *
         (min (sourceMax a) 1 * response a +
@@ -996,7 +996,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
       lowerSlot, upperSlot] using hLowInt
   have hMinChildInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           min (sourceMax a) 1 * childAvg a) P := by
     simpa only [β, Q, p_e, q_e, childAvg, sourceMax] using
       integrable_min_terminalSourceMax_one_mul_childResponseAverage_special
@@ -1006,12 +1006,12 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
       hP hstat hStruct hP4 hc hm hparams hNk hkm hHM e
   have hBadChildInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           badEventTruncation sourceMax a * childAvg a) P := by
     simpa only [β, Q, p_e, q_e, childAvg, sourceMax] using hBadChildPair.1
   have hMinRespInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           min (sourceMax a) 1 * response a) P := by
     refine (hMinChildInt.const_mul ((5 * β⁻¹) ^ 2)).congr ?_
     filter_upwards with a
@@ -1019,7 +1019,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
     ring
   have hBadRespInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           badEventTruncation sourceMax a * response a) P := by
     refine (hBadChildInt.const_mul ((5 * β⁻¹) ^ 2)).congr ?_
     filter_upwards with a
@@ -1089,12 +1089,12 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
         ≤ ∫ a, smallTerm a ∂P + ∫ a, lowSum a ∂P + sourceTerm := by
     have hRightInt :
         MeasureTheory.Integrable
-          (fun a : Homogenization.CoeffField d =>
+          (fun a : Homogenization.RegCoeffField d =>
             smallTerm a + lowSum a + badTerm a) P :=
       (hSmallInt'.add hLowInt').add hBadInt
     have hPoint :
         terminalResponse ≤ᵐ[P]
-          (fun a : Homogenization.CoeffField d =>
+          (fun a : Homogenization.RegCoeffField d =>
             smallTerm a + lowSum a + badTerm a) := by
       filter_upwards [hP.ae_locallyUniformlyEllipticField, hChild_nonneg] with a ha hchild
       have hresponse_nonneg : 0 ≤ response a := by
@@ -1107,7 +1107,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
         terminalPositiveExcessWeight_mul_le_section52SmallTail_mul_add_lowSum_add_edgeWeightLoss_mul_sqrtThetaAtScale_sourceMax_min_one_add_badEventTruncation_mul_response
           (hP := hP) (hStruct := hStruct) (hP4 := hP4) (hc := hc)
           (N := k) (m := m)
-          (a := fun x : Homogenization.CoeffField d => x) (ω := a) ha
+          (a := fun x : Homogenization.RegCoeffField d => x) (ω := a) ha
           (J := response a) hresponse_nonneg
     have hmono :
         ∫ a, terminalResponse a ∂P ≤

@@ -200,7 +200,7 @@ theorem thetaEllipticLaw_implies_homogenizationScale
   -- the variance block estimate from the pathwise budget (`T1` input) + landed bridge
   have hVar :
       VarianceBlockEstimate vp P T N2
-        (intermediateCoarseBlockDeviation hP hStruct (fun x : CoeffField d => x)) :=
+        (intermediateCoarseBlockDeviation hP hStruct (fun x : RegCoeffField d => x)) :=
     varianceBlockEstimate_of_thetaEllipticLaw hd hΘ hP hStruct hLaw hP4 N2
       (fun {j} _ {Q} hQ => hpath (j := j) (Q := Q) hQ)
   -- run the assembly (the subthreshold observable is discharged inside `P2`)

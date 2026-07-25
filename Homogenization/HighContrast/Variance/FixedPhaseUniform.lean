@@ -26,10 +26,10 @@ independent of `m, ℓ, Θ, σ, P, L`. -/
 theorem fixed_phase_variance_uniform [NeZero d] (hd : 3 ≤ d) :
     ∃ Cd : ℝ, 0 ≤ Cd ∧
       ∀ {m : ℤ} {ℓ Θ : ℝ} {σ : Vec d} (_hℓ4 : 4 ≤ ℓ) (_hℓL : ℓ ≤ (3 : ℝ) ^ m)
-        (_hΘ : 1 ≤ Θ) (P : BlockVec d) {L : Measure (CoeffField d)}
-        [IsProbabilityMeasure L] (_hURD : IsUnitRangeDependent L)
+        (_hΘ : 1 ≤ Θ) (P : BlockVec d) {L : Measure (RegCoeffField d)}
+        [IsProbabilityMeasure L] (_hURD : IsUnitRangeDependentR L)
         (_hLaw : ThetaEllipticLaw Θ L),
-      Var[fun a => phaseObservable ℓ σ m P a; L]
+      Var[fun a => phaseObservable ℓ σ m P a.toFun; L]
         ≤ Cd * Θ ^ 3 * (ℓ / (3 : ℝ) ^ m) ^ (d - 2)
             * (Θ * vecNormSq P.1 + vecNormSq P.2) ^ 2 := by
   classical
@@ -48,34 +48,32 @@ theorem fixed_phase_variance_uniform [NeZero d] (hd : 3 ≤ d) :
       * (Θ * vecNormSq P.1 + vecNormSq P.2) ^ 2 with hBtermdef
   have hBterm0 : (0 : ℝ) ≤ Bterm := by
     rw [hBtermdef]; positivity
-  set g : {k // k ∈ K} → CoeffField d × CoeffField d → ℝ :=
-    fun k p => (phaseObservable ℓ σ m P (patchCore ℓ σ k.val p.1 p.2)
-      - phaseObservable ℓ σ m P p.1) ^ 2 with hgdef
+  set g : {k // k ∈ K} → RegCoeffField d × RegCoeffField d → ℝ :=
+    fun k p => (phaseObservable ℓ σ m P (patchCore ℓ σ k.val p.1.toFun p.2.toFun)
+      - phaseObservable ℓ σ m P p.1.toFun) ^ 2 with hgdef
   have haeBound : ∀ᵐ p ∂(L.prod L), ∑ k : {k // k ∈ K}, g k p ≤ Bterm := by
     have hL1 : ∀ᵐ p ∂(L.prod L),
-        (∀ i j : Fin d, Measurable fun x : Vec d => p.1 x i j) ∧
-          ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (p.1 x) :=
+        ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (p.1 x) :=
       (Measure.quasiMeasurePreserving_fst).ae hLaw
     have hL2 : ∀ᵐ p ∂(L.prod L),
-        (∀ i j : Fin d, Measurable fun x : Vec d => p.2 x i j) ∧
-          ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (p.2 x) :=
+        ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (p.2 x) :=
       (Measure.quasiMeasurePreserving_snd).ae hLaw
     filter_upwards [hL1, hL2] with p hp1 hp2
     have hmeasA1 : Measurable (fun x => fun i j => if x ∈ cubeSet (originCube d m)
         then p.1 x i j else 0) := by
       refine measurable_pi_iff.2 fun i => measurable_pi_iff.2 fun j => ?_
-      simpa only [Set.indicator] using (hp1.1 i j).indicator hU
+      simpa only [Set.indicator] using (p.1.entry_measurable i j).indicator hU
     have hmeasA2 : Measurable (fun x => fun i j => if x ∈ cubeSet (originCube d m)
         then p.2 x i j else 0) := by
       refine measurable_pi_iff.2 fun i => measurable_pi_iff.2 fun j => ?_
-      simpa only [Set.indicator] using (hp2.1 i j).indicator hU
+      simpa only [Set.indicator] using (p.2.entry_measurable i j).indicator hU
     obtain ⟨ā1, hEll1, hā1ae, _, _⟩ :=
-      exists_ellipticFieldOn_ae_eq hU hΘ hmeasA1 (ae_restrict_of_ae hp1.2)
+      exists_ellipticFieldOn_ae_eq hU hΘ hmeasA1 (ae_restrict_of_ae hp1)
     obtain ⟨ā2, hEll2, hā2ae, _, _⟩ :=
-      exists_ellipticFieldOn_ae_eq hU hΘ hmeasA2 (ae_restrict_of_ae hp2.2)
-    have hphase_a : phaseObservable ℓ σ m P p.1 = phaseObservable ℓ σ m P ā1 :=
+      exists_ellipticFieldOn_ae_eq hU hΘ hmeasA2 (ae_restrict_of_ae hp2)
+    have hphase_a : phaseObservable ℓ σ m P p.1.toFun = phaseObservable ℓ σ m P ā1 :=
       (phaseObservable_congr_ae hā1ae.symm)
-    have hpatch_ae : ∀ k : Fin d → ℤ, (patchCore ℓ σ k p.1 p.2)
+    have hpatch_ae : ∀ k : Fin d → ℤ, (patchCore ℓ σ k p.1.toFun p.2.toFun)
         =ᵐ[volume.restrict (cubeSet (originCube d m))] (patchCore ℓ σ k ā1 ā2) := by
       intro k
       filter_upwards [hā1ae, hā2ae] with x hx1 hx2
@@ -83,7 +81,7 @@ theorem fixed_phase_variance_uniform [NeZero d] (hd : 3 ≤ d) :
       · rw [patchCore_apply_of_mem hc, patchCore_apply_of_mem hc, hx2]
       · rw [patchCore_apply_of_not_mem hc, patchCore_apply_of_not_mem hc, hx1]
     have hphase_patch : ∀ k : {k // k ∈ K},
-        phaseObservable ℓ σ m P (patchCore ℓ σ k.val p.1 p.2)
+        phaseObservable ℓ σ m P (patchCore ℓ σ k.val p.1.toFun p.2.toFun)
           = phaseObservable ℓ σ m P (patchCore ℓ σ k.val ā1 ā2) :=
       fun k => phaseObservable_congr_ae (hpatch_ae k.val)
     have hsum_eq : (∑ k : {k // k ∈ K}, g k p)
@@ -94,7 +92,8 @@ theorem fixed_phase_variance_uniform [NeZero d] (hd : 3 ≤ d) :
     rw [hsum_eq, hBtermdef]
     exact hsummedU hΘ hℓ4 hℓL σ P hEll1 hEll2 K
   have hAESM_diag : AEStronglyMeasurable
-      (fun p : CoeffField d × CoeffField d => phaseObservable ℓ σ m P p.1) (L.prod L) :=
+      (fun p : RegCoeffField d × RegCoeffField d =>
+        phaseObservable ℓ σ m P p.1.toFun) (L.prod L) :=
     (aestronglyMeasurable_phaseObservable_of_thetaLaw hℓ0 hΘ P hLaw K hK).comp_quasiMeasurePreserving
       (Measure.quasiMeasurePreserving_fst)
   have hAESM_g : ∀ k : {k // k ∈ K}, AEStronglyMeasurable (g k) (L.prod L) := by
@@ -122,16 +121,16 @@ theorem fixed_phase_variance_uniform [NeZero d] (hd : 3 ≤ d) :
             (integrable_const _) haeBound
       _ = Bterm := by rw [integral_const]; simp
   have hRHS_eq : (∑ k : {k // k ∈ K},
-        ∫ a, ∫ a', (phaseObservable ℓ σ m P (patchCore ℓ σ k.val a a')
-          - phaseObservable ℓ σ m P a) ^ 2 ∂L ∂L)
+        ∫ a, ∫ a', (phaseObservable ℓ σ m P (patchCore ℓ σ k.val a.toFun a'.toFun)
+          - phaseObservable ℓ σ m P a.toFun) ^ 2 ∂L ∂L)
       = ∑ k : {k // k ∈ K}, ∫ p, g k p ∂(L.prod L) := by
     refine Finset.sum_congr rfl (fun k _ => ?_)
     rw [hgdef]
     exact (integral_prod _ (hg_int k)).symm
-  calc Var[fun a => phaseObservable ℓ σ m P a; L]
+  calc Var[fun a => phaseObservable ℓ σ m P a.toFun; L]
       ≤ (1 / 2) * ∑ k : {k // k ∈ K},
-          ∫ a, ∫ a', (phaseObservable ℓ σ m P (patchCore ℓ σ k.val a a')
-            - phaseObservable ℓ σ m P a) ^ 2 ∂L ∂L :=
+          ∫ a, ∫ a', (phaseObservable ℓ σ m P (patchCore ℓ σ k.val a.toFun a'.toFun)
+            - phaseObservable ℓ σ m P a.toFun) ^ 2 ∂L ∂L :=
         efronStein_phaseObservable hℓ0 hΘ P hURD hLaw K hK
     _ = (1 / 2) * ∑ k : {k // k ∈ K}, ∫ p, g k p ∂(L.prod L) := by rw [hRHS_eq]
     _ = (1 / 2) * ∫ p, ∑ k : {k // k ∈ K}, g k p ∂(L.prod L) := by rw [hexchange]

@@ -30,14 +30,14 @@ theorem integrable_min_terminalSourceMax_one_mul_childResponseAverage_special
       Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
     let q_e :=
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
-    let childAvg := fun a : Homogenization.CoeffField d =>
+    let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Qm (m - k)
         (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
     let sourceMax :=
       terminalSpectralPositivePartSourceMax hP hStruct hc k m Qm
-        (fun x : Homogenization.CoeffField d => x)
+        (fun x : Homogenization.RegCoeffField d => x)
     MeasureTheory.Integrable
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         min (sourceMax a) 1 * childAvg a) P := by
   classical
   letI : MeasureTheory.IsProbabilityMeasure P := hP.isProbability
@@ -47,16 +47,16 @@ theorem integrable_min_terminalSourceMax_one_mul_childResponseAverage_special
   let Qm : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
-  let childAvg : Homogenization.CoeffField d → ℝ := fun a =>
+  let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Qm (m - k)
       (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-  let sourceMax : Homogenization.CoeffField d → ℝ :=
+  let sourceMax : Homogenization.RegCoeffField d → ℝ :=
     terminalSpectralPositivePartSourceMax hP hStruct hc k m Qm
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   have hζ_one : 1 ≤ ζ := (one_lt_section53CoarseFluctuationZeta hP4).le
   have hsrc_nonneg : ∀ a, 0 ≤ sourceMax a :=
     terminalSpectralPositivePartSourceMax_nonneg hP hStruct hc k m Qm
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   have hsrc_asm : MeasureTheory.AEStronglyMeasurable sourceMax P := by
     simpa [sourceMax, Qm] using
       aestronglyMeasurable_terminalSpectralPositivePartSourceMax_origin
@@ -104,19 +104,19 @@ theorem integral_badEventTruncation_terminalSourceMax_start_mul_childResponseAve
     (hHM :
       HighCenteredMomentEstimate hm P N
         (intermediateCoarseBlockDeviation hP hStruct
-          (fun x : Homogenization.CoeffField d => x)))
+          (fun x : Homogenization.RegCoeffField d => x)))
     (e : Homogenization.Vec d) :
     let Qm : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)
     let p_e :=
       Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
     let q_e :=
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
-    let childAvg := fun a : Homogenization.CoeffField d =>
+    let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Qm (m - k)
         (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
     let sourceMax :=
       terminalSpectralPositivePartSourceMax hP hStruct hc N m Qm
-        (fun x : Homogenization.CoeffField d => x)
+        (fun x : Homogenization.RegCoeffField d => x)
     let globalDrift := terminalBadMaximalDriftSup hP hStruct hc (hNk.trans hkm.le)
     let polynomialBound : ENNReal :=
       ENNReal.ofReal
@@ -127,7 +127,7 @@ theorem integral_badEventTruncation_terminalSourceMax_start_mul_childResponseAve
               (-(min (hm.Q * hc.rhoM - (d : ℝ)) (hm.Q * hm.gamma)) *
                 ((m - N : ℕ) : ℝ)))))
     MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           badEventTruncation sourceMax a * childAvg a) P ∧
       ∫ a, badEventTruncation sourceMax a * childAvg a ∂P ≤
         coarseFluctuationResponseMomentAtScale hP hStruct hP4 k m e *
@@ -139,13 +139,13 @@ theorem integral_badEventTruncation_terminalSourceMax_start_mul_childResponseAve
   let Qm : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
-  let childAvg : Homogenization.CoeffField d → ℝ := fun a =>
+  let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Qm (m - k)
       (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-  let sourceMax : Homogenization.CoeffField d → ℝ :=
+  let sourceMax : Homogenization.RegCoeffField d → ℝ :=
     terminalSpectralPositivePartSourceMax hP hStruct hc N m Qm
-      (fun x : Homogenization.CoeffField d => x)
-  let badTrunc : Homogenization.CoeffField d → ℝ := badEventTruncation sourceMax
+      (fun x : Homogenization.RegCoeffField d => x)
+  let badTrunc : Homogenization.RegCoeffField d → ℝ := badEventTruncation sourceMax
   let globalDrift : ℝ := terminalBadMaximalDriftSup hP hStruct hc (hNk.trans hkm.le)
   let polynomialBound : ENNReal :=
     ENNReal.ofReal
@@ -164,7 +164,7 @@ theorem integral_badEventTruncation_terminalSourceMax_start_mul_childResponseAve
   have hxi_one : 1 ≤ hP4.xi := Nat.succ_le_of_lt hP4.xi_pos
   have hsource_nonneg : ∀ a, 0 ≤ sourceMax a :=
     terminalSpectralPositivePartSourceMax_nonneg hP hStruct hc N m Qm
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   have hbad_nonneg : ∀ a, 0 ≤ badTrunc a := fun a =>
     badEventTruncation_nonneg (hsource_nonneg a)
   have hchild_nonneg : ∀ a, 0 ≤ childAvg a := by
@@ -213,7 +213,7 @@ theorem integral_badEventTruncation_terminalSourceMax_start_mul_childResponseAve
     simpa using Real.HolderTriple.ennrealOfReal hHolderXiZeta
   have hInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d => badTrunc a * childAvg a) P := by
+        (fun a : Homogenization.RegCoeffField d => badTrunc a * childAvg a) P := by
     simpa using hBadMem.integrable_mul hChildMem
   have hHolder :
       ∫ a, badTrunc a * childAvg a ∂P ≤
@@ -318,19 +318,19 @@ theorem integral_min_terminalSourceMax_start_one_mul_childResponseAverage_le_sto
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N k m : ℕ}
     (hNk : N ≤ k) (hkm : k < m)
-    (M_sub : ℕ → Homogenization.CoeffField d → ℝ)
+    (M_sub : ℕ → Homogenization.RegCoeffField d → ℝ)
     (hMsub : AEMeasurable (M_sub m) P)
     (e : Homogenization.Vec d)
     {stochRoot : ℝ}
     (hfin :
       (∫⁻ ω, ‖terminalCoarseBlockStochasticMax hP hStruct hc N m
           (Homogenization.originCube d (m : ℤ))
-          (fun x : Homogenization.CoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
+          (fun x : Homogenization.RegCoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
         (∫⁻ ω, ‖M_sub m ω‖ₑ ^ (2 : ℝ) ∂P) ≠ ⊤)
     (hstochRoot :
       2 * (((∫⁻ ω, ‖terminalCoarseBlockStochasticMax hP hStruct hc N m
             (Homogenization.originCube d (m : ℤ))
-            (fun x : Homogenization.CoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
+            (fun x : Homogenization.RegCoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
           (∫⁻ ω, ‖M_sub m ω‖ₑ ^ (2 : ℝ) ∂P)).toReal ^ (1 / (hP4.xi : ℝ))) ≤
         stochRoot) :
     let Qm : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)
@@ -338,12 +338,12 @@ theorem integral_min_terminalSourceMax_start_one_mul_childResponseAverage_le_sto
       Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
     let q_e :=
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
-    let childAvg := fun a : Homogenization.CoeffField d =>
+    let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Qm (m - k)
         (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
     let sourceMax :=
       terminalSpectralPositivePartSourceMax hP hStruct hc N m Qm
-        (fun x : Homogenization.CoeffField d => x)
+        (fun x : Homogenization.RegCoeffField d => x)
     ∫ a, min (sourceMax a) 1 * childAvg a ∂P ≤
       (stochRoot +
           min (terminalBadMaximalDriftSup hP hStruct hc (hNk.trans hkm.le)) 1) *
@@ -356,16 +356,16 @@ theorem integral_min_terminalSourceMax_start_one_mul_childResponseAverage_le_sto
   let Qm : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
-  let childAvg : Homogenization.CoeffField d → ℝ := fun a =>
+  let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Qm (m - k)
       (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-  let sourceMax : Homogenization.CoeffField d → ℝ :=
+  let sourceMax : Homogenization.RegCoeffField d → ℝ :=
     terminalSpectralPositivePartSourceMax hP hStruct hc N m Qm
-      (fun x : Homogenization.CoeffField d => x)
-  let S : Homogenization.CoeffField d → ℝ :=
+      (fun x : Homogenization.RegCoeffField d => x)
+  let S : Homogenization.RegCoeffField d → ℝ :=
     terminalCoarseBlockStochasticMax hP hStruct hc N m Qm
-      (fun x : Homogenization.CoeffField d => x)
-  let T : Homogenization.CoeffField d → ℝ := fun a => |M_sub m a|
+      (fun x : Homogenization.RegCoeffField d => x)
+  let T : Homogenization.RegCoeffField d → ℝ := fun a => |M_sub m a|
   let D : ℝ := terminalBadMaximalDriftSup hP hStruct hc (hNk.trans hkm.le)
   let lintSum : ENNReal :=
     (∫⁻ ω, ‖S ω‖ₑ ^ (2 : ℝ) ∂P) + (∫⁻ ω, ‖M_sub m ω‖ₑ ^ (2 : ℝ) ∂P)
@@ -379,13 +379,13 @@ theorem integral_min_terminalSourceMax_start_one_mul_childResponseAverage_le_sto
   have hζ_one : 1 ≤ ζ := (one_lt_section53CoarseFluctuationZeta hP4).le
   have hS_nonneg : ∀ a, 0 ≤ S a :=
     terminalCoarseBlockStochasticMax_nonneg hP hStruct hc N m Qm
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   have hT_nonneg : ∀ a, 0 ≤ T a := fun a => abs_nonneg _
   have hD_nonneg : 0 ≤ D :=
     terminalBadMaximalDriftSup_nonneg hP hStruct hc (hNk.trans hkm.le)
   have hsrc_nonneg : ∀ a, 0 ≤ sourceMax a :=
     terminalSpectralPositivePartSourceMax_nonneg hP hStruct hc N m Qm
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   have hchild_nonneg : ∀ a, 0 ≤ childAvg a := by
     intro a
     dsimp [childAvg]
@@ -460,18 +460,18 @@ theorem integral_min_terminalSourceMax_start_one_mul_childResponseAverage_le_sto
     have hstart :
         sourceMax a ≤
           terminalSpectralPositivePartSourceMax hP hStruct hc N m Qm
-            (fun x : Homogenization.CoeffField d => x) a := by
+            (fun x : Homogenization.RegCoeffField d => x) a := by
       simpa [sourceMax, Qm] using
         terminalSpectralPositivePartSourceMax_le_of_start_le
-          hP hStruct hc (le_refl N) Qm (fun x : Homogenization.CoeffField d => x) a
+          hP hStruct hc (le_refl N) Qm (fun x : Homogenization.RegCoeffField d => x) a
     have henv :
         terminalSpectralPositivePartSourceMax hP hStruct hc N m Qm
-            (fun x : Homogenization.CoeffField d => x) a ≤
+            (fun x : Homogenization.RegCoeffField d => x) a ≤
           S a + T a + D := by
       simpa [terminalBadMaximalSplitEnvelope, S, T, D, Qm] using
         terminalSpectralPositivePartSourceMax_le_terminalBadMaximalSplitEnvelope
           hP hStruct hc (hNk.trans hkm.le) Qm
-          (fun x : Homogenization.CoeffField d => x) M_sub a
+          (fun x : Homogenization.RegCoeffField d => x) M_sub a
     have h1 : min (sourceMax a) 1 ≤ min (S a + T a + D) 1 :=
       min_le_min (hstart.trans henv) le_rfl
     have h2 : min (S a + T a + D) 1 ≤ min (S a + T a) 1 + min D 1 :=
@@ -563,7 +563,7 @@ theorem integral_min_terminalSourceMax_start_one_mul_childResponseAverage_le_sto
   -- drift piece
   have hchild_int_le : ∫ a, childAvg a ∂P ≤ responseMoment := by
     have hOneMem :
-        MeasureTheory.MemLp (fun _ : Homogenization.CoeffField d => (1 : ℝ))
+        MeasureTheory.MemLp (fun _ : Homogenization.RegCoeffField d => (1 : ℝ))
           (ENNReal.ofReal ξr) P :=
       MeasureTheory.memLp_const 1
     have hH1 :=
@@ -621,14 +621,14 @@ theorem integrable_min_terminalSourceMax_start_one_mul_childResponseAverage_spec
       Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
     let q_e :=
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
-    let childAvg := fun a : Homogenization.CoeffField d =>
+    let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Qm (m - k)
         (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
     let sourceMax :=
       terminalSpectralPositivePartSourceMax hP hStruct hc N m Qm
-        (fun x : Homogenization.CoeffField d => x)
+        (fun x : Homogenization.RegCoeffField d => x)
     MeasureTheory.Integrable
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         min (sourceMax a) 1 * childAvg a) P := by
   classical
   letI : MeasureTheory.IsProbabilityMeasure P := hP.isProbability
@@ -638,16 +638,16 @@ theorem integrable_min_terminalSourceMax_start_one_mul_childResponseAverage_spec
   let Qm : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
-  let childAvg : Homogenization.CoeffField d → ℝ := fun a =>
+  let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Qm (m - k)
       (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-  let sourceMax : Homogenization.CoeffField d → ℝ :=
+  let sourceMax : Homogenization.RegCoeffField d → ℝ :=
     terminalSpectralPositivePartSourceMax hP hStruct hc N m Qm
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   have hζ_one : 1 ≤ ζ := (one_lt_section53CoarseFluctuationZeta hP4).le
   have hsrc_nonneg : ∀ a, 0 ≤ sourceMax a :=
     terminalSpectralPositivePartSourceMax_nonneg hP hStruct hc N m Qm
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   have hsrc_asm : MeasureTheory.AEStronglyMeasurable sourceMax P := by
     simpa [sourceMax, Qm] using
       aestronglyMeasurable_terminalSpectralPositivePartSourceMax_origin

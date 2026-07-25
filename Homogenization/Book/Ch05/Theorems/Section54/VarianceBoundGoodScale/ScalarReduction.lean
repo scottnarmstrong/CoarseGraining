@@ -88,12 +88,12 @@ theorem fullBlockNormalizedQuadraticObservable_le_descendantAverageOnCube_ae
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) (Q : TriadicCube d) {k : ℤ}
     (hk : k ≤ Q.scale) :
-    (fun a : CoeffField d =>
-      fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a)
+    (fun a : RegCoeffField d =>
+      fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a.toFun)
       ≤ᵐ[P]
-    fun a : CoeffField d =>
+    fun a : RegCoeffField d =>
       Ch04.descendantAverageOnCube Q k
-        (fullBlockNormalizedQuadraticObservable hP hStruct center q) a := by
+        (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a := by
   filter_upwards [hP.coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_ae Q hk]
     with a hSub
   let b := hP.barSigmaAtScale hStruct center
@@ -101,34 +101,35 @@ theorem fullBlockNormalizedQuadraticObservable_le_descendantAverageOnCube_ae
   let D : FullBlockMat d := Matrix.diagonal (Ch04.scalarFullBlockInvSqrtDiag b c)
   let X : BlockVec d := ofFullBlockVec (Matrix.mulVec D q)
   have hParent :
-      fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a =
-        blockVecDot X (blockMatVecMul (coarseBlockMatrix (cubeSet Q) a) X) := by
+      fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a.toFun =
+        blockVecDot X (blockMatVecMul (coarseBlockMatrix (cubeSet Q) a.toFun) X) := by
     dsimp [fullBlockNormalizedQuadraticObservable, fullBlockQuadratic, b, c, D, X]
     simpa [D] using
       fullBlockQuadratic_diagonal_toFullBlockMat_eq_blockVecDot
         (Ch04.scalarFullBlockInvSqrtDiag (d := d) b c)
-        (coarseBlockMatrix (cubeSet Q) a) q
+        (coarseBlockMatrix (cubeSet Q) a.toFun) q
   have hAvg :
       blockVecDot X
           (blockMatVecMul
             (descendantsAverageBlockMat Q (Int.toNat (Q.scale - k))
-              (fun R => coarseBlockMatrix (cubeSet R) a)) X) =
+              (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) X) =
         Ch04.descendantAverageOnCube Q k
-          (fullBlockNormalizedQuadraticObservable hP hStruct center q) a := by
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a := by
     rw [blockVecDot_blockMatVecMul_descendantsAverageBlockMat]
     simp [Ch04.descendantAverageOnCube, descendantsAtScale_eq_descendantsAtDepth Q hk,
+      fullBlockNormalizedQuadraticObservableR,
       fullBlockNormalizedQuadraticObservable, b, c, D,
       fullBlockQuadratic_diagonal_toFullBlockMat_eq_blockVecDot, descendantsAverage, X]
   calc
-    fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a
-        = blockVecDot X (blockMatVecMul (coarseBlockMatrix (cubeSet Q) a) X) := hParent
+    fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a.toFun
+        = blockVecDot X (blockMatVecMul (coarseBlockMatrix (cubeSet Q) a.toFun) X) := hParent
     _ ≤ blockVecDot X
           (blockMatVecMul
             (descendantsAverageBlockMat Q (Int.toNat (Q.scale - k))
-              (fun R => coarseBlockMatrix (cubeSet R) a)) X) := by
+              (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) X) := by
         nlinarith [hSub X]
     _ = Ch04.descendantAverageOnCube Q k
-          (fullBlockNormalizedQuadraticObservable hP hStruct center q) a := hAvg
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a := hAvg
 
 /-- Positive-part control for a normalized quadratic probe.  Once the origin
 scale-`k` annealed value is at most `1 + delta`, the pointwise positive excess
@@ -141,19 +142,19 @@ theorem fullBlockNormalizedQuadraticObservable_positivePart_le_delta_add_centere
     (hmean_le :
       (∫ b,
         fullBlockNormalizedQuadraticObservable hP hStruct center q
-          (cubeSet (originCube d k)) b ∂P) ≤ 1 + delta) :
-    (fun a : CoeffField d =>
-      max (fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a -
+          (cubeSet (originCube d k)) b.toFun ∂P) ≤ 1 + delta) :
+    (fun a : RegCoeffField d =>
+      max (fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a.toFun -
         1) 0) ≤ᵐ[P]
-    fun a : CoeffField d =>
+    fun a : RegCoeffField d =>
       delta +
         |Ch04.centeredDescendantAverageOnCube P Q k
-          (fullBlockNormalizedQuadraticObservable hP hStruct center q) a| := by
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| := by
   filter_upwards
     [fullBlockNormalizedQuadraticObservable_le_descendantAverageOnCube_ae
       hP hStruct center q Q hk] with a hsub
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    fullBlockNormalizedQuadraticObservable hP hStruct center q
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fullBlockNormalizedQuadraticObservableR hP hStruct center q
   let f := X (cubeSet Q) a
   let avg := Ch04.descendantAverageOnCube Q k X a
   let μ := ∫ b, X (cubeSet (originCube d k)) b ∂P
@@ -174,7 +175,7 @@ theorem fullBlockNormalizedQuadraticObservable_positivePart_le_delta_add_centere
   have hmax_abs : max (avg - μ) 0 ≤ |avg - μ| :=
     max_le (le_abs_self _) (abs_nonneg _)
   calc
-    max (fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a -
+    max (fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a.toFun -
         1) 0 = max (f - 1) 0 := rfl
     _ ≤ delta + max (avg - μ) 0 := hmax
     _ ≤ delta + |avg - μ| := by nlinarith [hmax_abs]
@@ -194,19 +195,19 @@ theorem fullBlockNormalizedQuadraticObservable_positivePart_base_le_error_add_ce
     (hmean_le :
       (∫ b,
         fullBlockNormalizedQuadraticObservable hP hStruct center q
-          (cubeSet (originCube d k)) b ∂P) ≤ base + err) :
-    (fun a : CoeffField d =>
-      max (fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a -
+          (cubeSet (originCube d k)) b.toFun ∂P) ≤ base + err) :
+    (fun a : RegCoeffField d =>
+      max (fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a.toFun -
         base) 0) ≤ᵐ[P]
-    fun a : CoeffField d =>
+    fun a : RegCoeffField d =>
       err +
         |Ch04.centeredDescendantAverageOnCube P Q k
-          (fullBlockNormalizedQuadraticObservable hP hStruct center q) a| := by
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| := by
   filter_upwards
     [fullBlockNormalizedQuadraticObservable_le_descendantAverageOnCube_ae
       hP hStruct center q Q hk] with a hsub
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    fullBlockNormalizedQuadraticObservable hP hStruct center q
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fullBlockNormalizedQuadraticObservableR hP hStruct center q
   let f := X (cubeSet Q) a
   let avg := Ch04.descendantAverageOnCube Q k X a
   let μ := ∫ b, X (cubeSet (originCube d k)) b ∂P
@@ -227,7 +228,7 @@ theorem fullBlockNormalizedQuadraticObservable_positivePart_base_le_error_add_ce
   have hmax_abs : max (avg - μ) 0 ≤ |avg - μ| :=
     max_le (le_abs_self _) (abs_nonneg _)
   calc
-    max (fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a -
+    max (fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a.toFun -
         base) 0 = max (f - base) 0 := rfl
     _ ≤ err + max (avg - μ) 0 := hmax
     _ ≤ err + |avg - μ| := by nlinarith [hmax_abs]
@@ -247,7 +248,7 @@ theorem integral_origin_fullBlockNormalizedQuadraticObservable_eq_annealedBlockM
     let D : FullBlockMat d := Matrix.diagonal (Ch04.scalarFullBlockInvSqrtDiag b c)
     (∫ a,
       fullBlockNormalizedQuadraticObservable hP hStruct center q
-        (cubeSet (originCube d n)) a ∂P) =
+        (cubeSet (originCube d n)) a.toFun ∂P) =
       fullBlockQuadratic (D * toFullBlockMat (Ch04.annealedBlockMatrixAtScale P n) * D) q := by
   classical
   dsimp only
@@ -255,10 +256,10 @@ theorem integral_origin_fullBlockNormalizedQuadraticObservable_eq_annealedBlockM
   let c := hP.barSigmaStarAtScale hStruct center
   let D : FullBlockMat d := Matrix.diagonal (Ch04.scalarFullBlockInvSqrtDiag b c)
   let X : BlockVec d := ofFullBlockVec (Matrix.mulVec D q)
-  let B : CoeffField d → BlockMat d :=
-    fun a => coarseBlockMatrix (cubeSet (originCube d n)) a
+  let B : RegCoeffField d → BlockMat d :=
+    fun a => coarseBlockMatrix (cubeSet (originCube d n)) a.toFun
   have hEntry : ∀ α β,
-      Integrable (fun a : CoeffField d => blockMatEntry (B a) α β) P := by
+      Integrable (fun a : RegCoeffField d => blockMatEntry (B a) α β) P := by
     intro α β
     simpa [B] using
       Ch04.LawCarrier.integrable_blockMatEntry_coarseBlockMatrix_cubeSet_of_integrable_coarseFullBlockMatrixAtCube
@@ -267,16 +268,16 @@ theorem integral_origin_fullBlockNormalizedQuadraticObservable_eq_annealedBlockM
     Ch04.integral_blockVecDot_blockMatVecMul_eq_of_integrable_entries
       (P := P) (B := B) hEntry X X
   have hObs :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         fullBlockNormalizedQuadraticObservable hP hStruct center q
-          (cubeSet (originCube d n)) a) =
-      fun a : CoeffField d => blockVecDot X (blockMatVecMul (B a) X) := by
+          (cubeSet (originCube d n)) a.toFun) =
+      fun a : RegCoeffField d => blockVecDot X (blockMatVecMul (B a) X) := by
     funext a
     dsimp [fullBlockNormalizedQuadraticObservable, fullBlockQuadratic, b, c, D, X, B]
     simpa [D] using
       fullBlockQuadratic_diagonal_toFullBlockMat_eq_blockVecDot
         (Ch04.scalarFullBlockInvSqrtDiag (d := d) b c)
-        (coarseBlockMatrix (cubeSet (originCube d n)) a) q
+        (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun) q
   rw [hObs]
   rw [hIntEq]
   have hAnnealed :
@@ -306,7 +307,7 @@ theorem integral_origin_fullBlockNormalizedQuadraticObservable_eq_annealedBlockM
     let D : FullBlockMat d := Matrix.diagonal (Ch04.scalarFullBlockInvSqrtDiag b c)
     (∫ a,
       fullBlockNormalizedQuadraticObservable hP hStruct center q
-        (cubeSet (originCube d n)) a ∂P) =
+        (cubeSet (originCube d n)) a.toFun ∂P) =
       fullBlockQuadratic (D * toFullBlockMat (Ch04.annealedBlockMatrixAtScale P n) * D) q := by
   have hBlock :
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d n)) P := by
@@ -511,7 +512,7 @@ theorem integral_origin_fullBlockNormalizedQuadraticObservable_le_base_add_delta
     (q : FullBlockVec d) :
     (∫ a,
       fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q
-        (cubeSet (originCube d (k : ℤ))) a ∂P) ≤
+        (cubeSet (originCube d (k : ℤ))) a.toFun ∂P) ≤
       dotProduct q q + delta * dotProduct q q := by
   have hmean :=
     integral_origin_fullBlockNormalizedQuadraticObservable_eq_annealedBlockMatrixAtScale_from_P4
@@ -542,7 +543,7 @@ theorem dotProduct_le_integral_origin_fullBlockNormalizedQuadraticObservable_of_
     dotProduct q q ≤
       ∫ a,
         fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q
-          (cubeSet (originCube d (k : ℤ))) a ∂P := by
+          (cubeSet (originCube d (k : ℤ))) a.toFun ∂P := by
   have hmean :=
     integral_origin_fullBlockNormalizedQuadraticObservable_eq_annealedBlockMatrixAtScale_from_P4
       hP hStruct hP4 (m : ℤ) (k : ℤ) (by exact_mod_cast Nat.zero_le k) q
@@ -566,14 +567,14 @@ theorem fullBlockNormalizedQuadraticObservable_positivePart_good_origin_ae
       (hP.barSigmaStarAtScale hStruct 0)⁻¹ ≤
         (1 + delta) * (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹)
     (q : FullBlockVec d) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       max (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q
-        (cubeSet (originCube d (j : ℤ))) a - dotProduct q q) 0)
+        (cubeSet (originCube d (j : ℤ))) a.toFun - dotProduct q q) 0)
       ≤ᵐ[P]
-    fun a : CoeffField d =>
+    fun a : RegCoeffField d =>
       delta * dotProduct q q +
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q) a| := by
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ) q) a| := by
   have hmean_le :=
     integral_origin_fullBlockNormalizedQuadraticObservable_le_base_add_delta_mul_dotProduct_of_good
       hP hStruct hP4 (m := m) (k := 0) (by omega) hgood_upper hgood_lower q

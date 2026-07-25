@@ -523,7 +523,7 @@ theorem lintegral_sup_Icc_descendantsAtDepth_weak_terminalCoarseBlockDeviation_l
     (μ : MeasureTheory.Measure Ω) (Q : Homogenization.TriadicCube d) {N m : ℕ}
     (hNm : N ≤ m) (hQ : Q.scale = (m : ℤ))
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
-    (a : Ω → Homogenization.CoeffField d)
+    (a : Ω → Homogenization.RegCoeffField d)
     (hHM :
       HighCenteredMomentEstimate hm μ N
         (intermediateCoarseBlockDeviation hP hStruct a))
@@ -564,7 +564,7 @@ theorem lintegral_sup_Icc_descendantsAtDepth_weak_terminalCoarseBlockDeviation_l
     (μ : MeasureTheory.Measure Ω) (Q : Homogenization.TriadicCube d) {N m : ℕ}
     (hNm : N ≤ m) (hQ : Q.scale = (m : ℤ))
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
-    (a : Ω → Homogenization.CoeffField d)
+    (a : Ω → Homogenization.RegCoeffField d)
     (hHM :
       HighCenteredMomentEstimate hm μ N
         (intermediateCoarseBlockDeviation hP hStruct a))
@@ -697,7 +697,7 @@ noncomputable def terminalCoarseBlockStochasticEnvelope
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (N m : ℕ) (Q : Homogenization.TriadicCube d)
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
-    (a : Ω → Homogenization.CoeffField d) : Ω → ENNReal :=
+    (a : Ω → Homogenization.RegCoeffField d) : Ω → ENNReal :=
   fun ω => (Finset.Icc N m).sup
     (fun j => (Homogenization.descendantsAtDepth Q (m - j)).sup
       (fun R =>
@@ -717,7 +717,7 @@ noncomputable def terminalCoarseBlockStochasticMaxOfWeak
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (N m : ℕ) (Q : Homogenization.TriadicCube d)
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
-    (a : Ω → Homogenization.CoeffField d) : Ω → ℝ :=
+    (a : Ω → Homogenization.RegCoeffField d) : Ω → ℝ :=
   fun ω =>
     (terminalCoarseBlockStochasticEnvelope hP hStruct N m Q weak a ω).toReal
 
@@ -732,7 +732,7 @@ noncomputable def terminalCoarseBlockStochasticMax
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) : Ω → ℝ :=
+    (a : Ω → Homogenization.RegCoeffField d) : Ω → ℝ :=
   terminalCoarseBlockStochasticMaxOfWeak hP hStruct N m Q
     (terminalStochasticWeakWeight hc m) a
 
@@ -749,7 +749,7 @@ noncomputable def terminalCoarseBlockStochasticQEnvelope
     (hm : HighCenteredMomentParameters d hc) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
-    (a : Ω → Homogenization.CoeffField d) : Ω → ENNReal :=
+    (a : Ω → Homogenization.RegCoeffField d) : Ω → ENNReal :=
   fun ω => (Finset.Icc N m).sup
     (fun j => (Homogenization.descendantsAtDepth Q (m - j)).sup
       (fun R =>
@@ -810,9 +810,9 @@ theorem aemeasurable_terminalCoarseBlockDeviation_origin_descendant
     (hR : R ∈ Homogenization.descendantsAtDepth
       (Homogenization.originCube d (m : ℤ)) (m - j)) :
     AEMeasurable
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         terminalCoarseBlockDeviation hP hStruct m
-          (fun x : Homogenization.CoeffField d => x) j R a) P := by
+          (fun x : Homogenization.RegCoeffField d => x) j R a) P := by
   have hjm : j ≤ m := (Finset.mem_Icc.mp hj).2
   have hRscale :
       R ∈ Homogenization.descendantsAtScale
@@ -837,7 +837,7 @@ theorem aemeasurable_terminalCoarseBlockDeviation_origin_descendant
       hStruct.stationary (by exact_mod_cast Nat.zero_le j) (by exact_mod_cast hjm)
       hRscale hOriginInt
   have hbase :
-      AEMeasurable (fun a : Homogenization.CoeffField d =>
+      AEMeasurable (fun a : Homogenization.RegCoeffField d =>
         Homogenization.Book.Ch04.coarseFullBlockMatrixAtCube R a) P :=
     hRInt.aestronglyMeasurable.aemeasurable
   have hcomp :=
@@ -860,7 +860,7 @@ theorem aemeasurable_terminalCoarseBlockStochasticEnvelope_origin
       (terminalCoarseBlockStochasticEnvelope hP hStruct N m
         (Homogenization.originCube d (m : ℤ))
         (terminalStochasticWeakWeight (d := d) hc m)
-        (fun x : Homogenization.CoeffField d => x)) P := by
+        (fun x : Homogenization.RegCoeffField d => x)) P := by
   classical
   unfold terminalCoarseBlockStochasticEnvelope
   refine aemeasurable_finset_sup_ennreal (Finset.Icc N m) _ ?_
@@ -888,7 +888,7 @@ theorem aestronglyMeasurable_terminalCoarseBlockStochasticMax_origin
     MeasureTheory.AEStronglyMeasurable
       (terminalCoarseBlockStochasticMax hP hStruct hc N m
         (Homogenization.originCube d (m : ℤ))
-        (fun x : Homogenization.CoeffField d => x)) P := by
+        (fun x : Homogenization.RegCoeffField d => x)) P := by
   have henv :=
     aemeasurable_terminalCoarseBlockStochasticEnvelope_origin hP hStruct hP4 hc N m
   have hreal := henv.ennreal_toReal

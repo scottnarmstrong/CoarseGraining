@@ -95,7 +95,7 @@ descendant-average fluctuation. -/
 theorem descendantsAverageNormalizedFluctuationOperatorNormSq_le_descendantsAverage
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) :
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     descendantsAverageNormalizedFluctuationOperatorNormSq hP hStruct center Q j a ≤
       descendantsAverage Q j
         (fun R =>
@@ -116,7 +116,7 @@ theorem aemeasurable_fullBlockNormalizedFluctuationMatrix_cubeSet
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         Section54.VarianceBoundGoodScale.fullBlockNormalizedFluctuationMatrix
           hP hStruct center (cubeSet Q) a) P := by
   let b := hP.barSigmaAtScale hStruct center
@@ -132,8 +132,8 @@ theorem aemeasurable_fullBlockNormalizedFluctuationMatrix_cubeSet
     exact hcont.measurable
   have hM :
       AEMeasurable
-        (fun a : CoeffField d =>
-          toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)) P :=
+        (fun a : RegCoeffField d =>
+          toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P :=
     hP.aemeasurable_coarseFullBlockMatrix_cubeSet Q
   simpa [Section54.VarianceBoundGoodScale.fullBlockNormalizedFluctuationMatrix,
     b, c, D, Abar, g] using hg.comp_aemeasurable hM
@@ -143,13 +143,13 @@ theorem aemeasurable_descendantsAverageNormalizedFluctuationMatrix
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (j : ℕ) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverageNormalizedFluctuationMatrix hP hStruct center Q j a) P := by
   classical
   let D : Finset (TriadicCube d) := descendantsAtDepth Q j
   have hsum :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ∑ R ∈ D,
             Section54.VarianceBoundGoodScale.fullBlockNormalizedFluctuationMatrix
               hP hStruct center (cubeSet R) a) P := by
@@ -160,7 +160,7 @@ theorem aemeasurable_descendantsAverageNormalizedFluctuationMatrix
     simp
   have hscaled :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ((D.card : ℝ)⁻¹) •
             (∑ R ∈ D,
               Section54.VarianceBoundGoodScale.fullBlockNormalizedFluctuationMatrix
@@ -176,7 +176,7 @@ theorem aemeasurable_descendantsAverageNormalizedFluctuationOperatorNormSq
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (j : ℕ) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverageNormalizedFluctuationOperatorNormSq
           hP hStruct center Q j a) P := by
   let g : FullBlockMat d → ℝ :=
@@ -206,7 +206,7 @@ theorem integrable_descendantsAverageNormalizedFluctuationOperatorNormSq_from_P4
   let j : ℕ := n - k
   have hdomInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           descendantsAverage Q j
             (fun R =>
               Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
@@ -257,7 +257,7 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_le_descendants
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     descendantsAverageFluctuationOperatorNormSqWithNormalizer
         hP hStruct center S Q j a ≤
       descendantsAverage Q j
@@ -279,7 +279,7 @@ theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_le_two_descendan
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer
         hP hStruct center S Q a ≤
       2 * descendantsAverageFluctuationOperatorNormSqWithNormalizer
@@ -326,7 +326,7 @@ theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_le_two_descendan
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer
         hP hStruct center S Q a ≤
       2 * descendantsAverage Q j
@@ -350,11 +350,11 @@ theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_le_two_descendan
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S T : FullBlockMat d) (Q : TriadicCube d) (j : ℕ) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer
         hP hStruct center S Q a)
       ≤ᵐ[P]
-    fun a : CoeffField d =>
+    fun a : RegCoeffField d =>
       2 * descendantsAverageFluctuationOperatorNormSqWithNormalizer
         hP hStruct center S Q j a +
       8 * blockJTraceAverageSqWithNormalizers S T Q j a := by
@@ -371,11 +371,11 @@ theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_le_two_descendan
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S T : FullBlockMat d) (Q : TriadicCube d) (j : ℕ) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer
         hP hStruct center S Q a)
       ≤ᵐ[P]
-    fun a : CoeffField d =>
+    fun a : RegCoeffField d =>
       2 * descendantsAverage Q j
         (fun R =>
           fullBlockFluctuationOperatorNormSqWithNormalizer

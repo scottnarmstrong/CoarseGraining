@@ -22,18 +22,18 @@ gradient on a deterministic triadic cube.
 
 This is the lower-row coarse-block formula from Chapter 2. -/
 noncomputable def canonicalAverageGradientCubeSet {d : ℕ}
-    (Q : TriadicCube d) (p q : Vec d) (a : CoeffField d) : Vec d :=
-  -p + matVecMul (coarseBlockMatrix (cubeSet Q) a).lowerRight q -
-    matVecMul (coarseBlockMatrix (cubeSet Q) a).lowerLeft p
+    (Q : TriadicCube d) (p q : Vec d) (a : RegCoeffField d) : Vec d :=
+  -p + matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight q -
+    matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft p
 
 /-- Ch4 measurable representative of the whole-cube canonical averaged flux on
 a deterministic triadic cube.
 
 This is the upper-row coarse-block formula from Chapter 2. -/
 noncomputable def canonicalAverageFluxCubeSet {d : ℕ}
-    (Q : TriadicCube d) (p q : Vec d) (a : CoeffField d) : Vec d :=
-  q + matVecMul (coarseBlockMatrix (cubeSet Q) a).upperRight q -
-    matVecMul (coarseBlockMatrix (cubeSet Q) a).upperLeft p
+    (Q : TriadicCube d) (p q : Vec d) (a : RegCoeffField d) : Vec d :=
+  q + matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight q -
+    matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft p
 
 private theorem aemeasurable_matVecMul_const
     {α : Type*} [MeasurableSpace α] {μ : Measure α}
@@ -59,11 +59,11 @@ theorem aemeasurable_canonicalAverageGradientCubeSet
     AEMeasurable (canonicalAverageGradientCubeSet Q p q) P := by
   have hLowerRight :
       AEMeasurable
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).lowerRight) P :=
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight) P :=
     hP.aemeasurable_coarseSigmaStarInv_cubeSet Q
   have hLowerLeft :
       AEMeasurable
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).lowerLeft) P :=
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft) P :=
     hP.aemeasurable_coarseBlockMatrix_lowerLeft_cubeSet Q
   have hRight := aemeasurable_matVecMul_const hLowerRight q
   have hLeft := aemeasurable_matVecMul_const hLowerLeft p
@@ -78,11 +78,11 @@ theorem aemeasurable_canonicalAverageFluxCubeSet
     AEMeasurable (canonicalAverageFluxCubeSet Q p q) P := by
   have hUpperRight :
       AEMeasurable
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).upperRight) P :=
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight) P :=
     hP.aemeasurable_coarseBlockMatrix_upperRight_cubeSet Q
   have hUpperLeft :
       AEMeasurable
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).upperLeft) P :=
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft) P :=
     hP.aemeasurable_coarseB_cubeSet Q
   have hRight := aemeasurable_matVecMul_const hUpperRight q
   have hLeft := aemeasurable_matVecMul_const hUpperLeft p
@@ -95,7 +95,7 @@ theorem aemeasurable_descendantsAverage_canonicalAverageGradientCubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         fun i : Fin d =>
           descendantsAverage Q j
             (fun R => canonicalAverageGradientCubeSet R p q a i)) P := by
@@ -115,7 +115,7 @@ theorem aemeasurable_descendantsAverage_canonicalAverageFluxCubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         fun i : Fin d =>
           descendantsAverage Q j
             (fun R => canonicalAverageFluxCubeSet R p q a i)) P := by

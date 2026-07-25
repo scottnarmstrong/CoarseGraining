@@ -13,7 +13,7 @@ noncomputable section
 
 theorem section52_integrable_abs_pow_of_ae_abs_le_nonneg
     {d : ℕ} {P : Ch04.CoeffLaw d} {ξ : ℕ}
-    {X Y : CoeffField d → ℝ}
+    {X Y : RegCoeffField d → ℝ}
     (hX_aemeas : AEMeasurable X P)
     (hY_nonneg : ∀ a, 0 ≤ Y a)
     (hXY : ∀ᵐ a ∂P, |X a| ≤ Y a)
@@ -32,7 +32,7 @@ theorem section52_integrable_abs_pow_of_ae_abs_le_nonneg
 
 theorem section52_integrable_abs_finset_sum_pow_of_integrable_abs_pow
     {d : ℕ} {P : Ch04.CoeffLaw d} {ι : Type*} {ξ : ℕ}
-    {s : Finset ι} {G : ι → CoeffField d → ℝ}
+    {s : Finset ι} {G : ι → RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
     (hG_aemeas : ∀ i ∈ s, AEMeasurable (G i) P)
     (hG_int : ∀ i ∈ s, Integrable (fun a => |G i a| ^ ξ) P) :
@@ -54,8 +54,8 @@ theorem section52_integrable_abs_finset_sum_pow_of_integrable_abs_pow
 
 theorem section52_integrable_abs_positiveExcess_pow_of_ae_finset_sum_bound
     {d : ℕ} {P : Ch04.CoeffLaw d} {ι : Type*} {ξ : ℕ}
-    {s : Finset ι} {X : CoeffField d → ℝ} {base : ℝ}
-    {G : ι → CoeffField d → ℝ}
+    {s : Finset ι} {X : RegCoeffField d → ℝ} {base : ℝ}
+    {G : ι → RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
     (hX_aemeas : AEMeasurable X P)
     (hG_nonneg : ∀ i ∈ s, ∀ a, 0 ≤ G i a)
@@ -63,7 +63,7 @@ theorem section52_integrable_abs_positiveExcess_pow_of_ae_finset_sum_bound
     (hG_int : ∀ i ∈ s, Integrable (fun a => |G i a| ^ ξ) P)
     (hPoint : ∀ᵐ a ∂P, max (X a - base) 0 ≤ ∑ i ∈ s, G i a) :
     Integrable (fun a => |max (X a - base) 0| ^ ξ) P := by
-  let Y : CoeffField d → ℝ := fun a => ∑ i ∈ s, G i a
+  let Y : RegCoeffField d → ℝ := fun a => ∑ i ∈ s, G i a
   have hY_nonneg : ∀ a, 0 ≤ Y a := by
     intro a
     exact Finset.sum_nonneg (fun i hi => hG_nonneg i hi a)
@@ -90,18 +90,18 @@ theorem upper_unitDescendant_Lambda_integrable_abs_pow
     {s : ℝ} {ξ m : ℕ} (hs : 0 < s)
     (hSourceInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.LambdaSqCoeffField (originCube d 0) s (.finite 1) a) ^ ξ) P)
     {U : TriadicCube d}
     (hU : U ∈ descendantsAtScale (originCube d (m : ℤ)) 0) :
     Integrable
-      (fun a : CoeffField d => |Ch04.LambdaSqCoeffField U s (.finite 1) a| ^ ξ) P := by
+      (fun a : RegCoeffField d => |Ch04.LambdaSqCoeffField U s (.finite 1) a| ^ ξ) P := by
   classical
-  let X0 : CoeffField d → ℝ :=
+  let X0 : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d 0) s (.finite 1) a
   have hX0_aemeas : AEMeasurable X0 P :=
     hP.aemeasurable_LambdaSqCoeffField_finite_one (originCube d 0) hs
-  have hX0_abs_int : Integrable (fun a : CoeffField d => |X0 a| ^ ξ) P := by
+  have hX0_abs_int : Integrable (fun a : RegCoeffField d => |X0 a| ^ ξ) P := by
     refine hSourceInt.congr ?_
     filter_upwards with a
     rw [abs_of_nonneg]
@@ -112,24 +112,24 @@ theorem upper_unitDescendant_Lambda_integrable_abs_pow
   have hUeq : U = translateCube z (originCube d 0) := by
     simpa [z] using (translateCube_originCube_zero_eq_of_scale_zero U hscale).symm
   have hae :
-      (fun a : CoeffField d => Ch04.LambdaSqCoeffField U s (.finite 1) a) =ᵐ[P]
-        fun a => X0 (translateByInt z a) := by
+      (fun a : RegCoeffField d => Ch04.LambdaSqCoeffField U s (.finite 1) a) =ᵐ[P]
+        fun a => X0 (translateReg (intVecToRealVec z) a) := by
     have hcov :=
       Ch04.LambdaSqCoeffField_originCube_zero_translateByInt_ae
         hP hStruct.stationary z s (.finite 1)
     simpa [X0, hUeq] using hcov
   have hmap :
-      Measure.map (fun a : CoeffField d => Ch04.LambdaSqCoeffField U s (.finite 1) a) P =
+      Measure.map (fun a : RegCoeffField d => Ch04.LambdaSqCoeffField U s (.finite 1) a) P =
         Measure.map X0 P := by
     calc
-      Measure.map (fun a : CoeffField d => Ch04.LambdaSqCoeffField U s (.finite 1) a) P =
-          Measure.map (fun a : CoeffField d => X0 (translateByInt z a)) P :=
+      Measure.map (fun a : RegCoeffField d => Ch04.LambdaSqCoeffField U s (.finite 1) a) P =
+          Measure.map (fun a : RegCoeffField d => X0 (translateReg (intVecToRealVec z) a)) P :=
             Measure.map_congr hae
-      _ = Measure.map X0 (Measure.map (translateByInt z) P) := by
+      _ = Measure.map X0 (Measure.map (translateReg (intVecToRealVec z)) P) := by
             symm
             exact AEMeasurable.map_map_of_aemeasurable
               (by simpa [hStruct.stationary z] using hX0_aemeas)
-              (measurable_translateByInt z).aemeasurable
+              (measurable_translateReg (intVecToRealVec z)).aemeasurable
       _ = Measure.map X0 P := by
             rw [hStruct.stationary z]
   exact integrable_abs_pow_of_map_eq_map_aemeasurable
@@ -140,7 +140,7 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) hP4.sUpper (.finite 1) a) ^
           hP4.xi) P := by
   classical
@@ -153,10 +153,10 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
   let base : ℝ := scalarization.barSigma 0
   let cSmall : ℝ :=
     Real.rpow (3 : ℝ) (-s * (m : ℝ)) ^ 2 * (D.card : ℝ) / V
-  let small : CoeffField d → ℝ :=
+  let small : RegCoeffField d → ℝ :=
     fun a => cSmall *
       ∑ U ∈ D, Ch04.LambdaSqCoeffField U s (.finite 1) a
-  let large : ℤ → CoeffField d → ℝ := fun n a =>
+  let large : ℤ → RegCoeffField d → ℝ := fun n a =>
     if hn : n ∈ section52LargeScaleSet m then
       section52LargeScaleWeight s m n *
         (let parents := descendantsAtScale (originCube d (m : ℤ)) n
@@ -166,12 +166,12 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
          parents.sup' hparents
           (fun Q =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                 Ch02.matrixNorm (base • (1 : Mat d)))
               0))
     else 0
   let I : Finset (Option ℤ) := insert none ((section52LargeScaleSet m).image some)
-  let G : Option ℤ → CoeffField d → ℝ := fun o a =>
+  let G : Option ℤ → RegCoeffField d → ℝ := fun o a =>
     match o with
     | none => small a + base
     | some n => large n a
@@ -233,9 +233,9 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
   have hsmall_aemeas : AEMeasurable small P := by
     have hsum :
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ∑ U ∈ D, Ch04.LambdaSqCoeffField U s (.finite 1) a) P := by
-      let F : TriadicCube d → CoeffField d → ℝ :=
+      let F : TriadicCube d → RegCoeffField d → ℝ :=
         fun U a => Ch04.LambdaSqCoeffField U s (.finite 1) a
       have h :
           AEMeasurable (D.sum fun U => F U) P :=
@@ -259,18 +259,18 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
         simpa [G, large, s, scalarization, base, hn] using
           upperLargeScalePositiveExcess_aemeasurable_source
             hP hStruct (r := s) hn
-  have hsmall_int : Integrable (fun a : CoeffField d => |small a| ^ ξ) P := by
+  have hsmall_int : Integrable (fun a : RegCoeffField d => |small a| ^ ξ) P := by
     have hunit_int :
         ∀ U ∈ D,
           Integrable
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               |Ch04.LambdaSqCoeffField U s (.finite 1) a| ^ ξ) P := by
       intro U hU
       exact upper_unitDescendant_Lambda_integrable_abs_pow
         hP hStruct hs hP4.upper_moment_integrable hU
     have hsum_int :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             |∑ U ∈ D, Ch04.LambdaSqCoeffField U s (.finite 1) a| ^ ξ) P :=
       section52_integrable_abs_finset_sum_pow_of_integrable_abs_pow
         (P := P) (ξ := ξ) (s := D)
@@ -281,19 +281,19 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
     refine (hsum_int.const_mul (|cSmall| ^ ξ)).congr ?_
     filter_upwards with a
     simp [small, abs_mul, mul_pow]
-  have hnone_int : Integrable (fun a : CoeffField d => |small a + base| ^ ξ) P := by
+  have hnone_int : Integrable (fun a : RegCoeffField d => |small a + base| ^ ξ) P := by
     have hξ_ne : ξ ≠ 0 := by omega
     have hsmall_mem : MemLp small (ξ : ENNReal) P := by
       rw [← MeasureTheory.integrable_norm_rpow_iff
         hsmall_aemeas.aestronglyMeasurable
         (by exact_mod_cast hξ_ne) (by simp)]
       simpa [Real.norm_eq_abs] using hsmall_int
-    have hbase_mem : MemLp (fun _ : CoeffField d => base) (ξ : ENNReal) P :=
+    have hbase_mem : MemLp (fun _ : RegCoeffField d => base) (ξ : ENNReal) P :=
       memLp_const base
     have hadd := hsmall_mem.add hbase_mem
     have hint := hadd.integrable_norm_pow hξ_ne
     simpa [Real.norm_eq_abs] using hint
-  have hG_int : ∀ o ∈ I, Integrable (fun a : CoeffField d => |G o a| ^ ξ) P := by
+  have hG_int : ∀ o ∈ I, Integrable (fun a : RegCoeffField d => |G o a| ^ ξ) P := by
     intro o ho
     cases o with
     | none =>
@@ -309,7 +309,7 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
             hP hStruct (sSource := s) (r := s) (ξ := ξ)
             hs hξ_one hξ_two hP4.upper_moment_integrable hn
         simpa [G, large, s, scalarization, base, Real.norm_eq_abs, hn] using hInt
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) s (.finite 1) a
   have hX_aemeas : AEMeasurable X P :=
     hP.aemeasurable_LambdaSqCoeffField_finite_one (originCube d (m : ℤ)) hs
@@ -371,7 +371,7 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
                               (fun Q =>
                                 max
                                   (Ch02.matrixNorm
-                                      (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                                      (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                                     Ch02.matrixNorm (base • (1 : Mat d)))
                                   0)) := by
                 simpa [s, scalarization, base] using hlarge
@@ -385,7 +385,7 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
                               (fun Q =>
                                 max
                                   (Ch02.matrixNorm
-                                      (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                                      (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                                     Ch02.matrixNorm (base • (1 : Mat d)))
                                   0)) =
                     ∑ n ∈ section52LargeScaleSet m, large n a := by
@@ -399,7 +399,7 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
                             (fun Q =>
                               max
                                 (Ch02.matrixNorm
-                                    (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                                    (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                                   Ch02.matrixNorm (base • (1 : Mat d)))
                                 0)) =
                     (section52LargeScaleSet m).attach.sum
@@ -417,11 +417,11 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
       _ = ∑ o ∈ I, G o a := by
             simp [I, G]
   have hAbsInt :
-      Integrable (fun a : CoeffField d => |max (X a - 0) 0| ^ ξ) P :=
+      Integrable (fun a : RegCoeffField d => |max (X a - 0) 0| ^ ξ) P :=
     section52_integrable_abs_positiveExcess_pow_of_ae_finset_sum_bound
       (P := P) (ξ := ξ) (s := I) (X := X) (base := 0) (G := G)
       hξ_one hX_aemeas hG_nonneg hG_aemeas hG_int hPoint
-  have hPowInt : Integrable (fun a : CoeffField d => X a ^ ξ) P := by
+  have hPowInt : Integrable (fun a : RegCoeffField d => X a ^ ξ) P := by
     refine hAbsInt.congr ?_
     filter_upwards with a
     have hX_nonneg : 0 ≤ X a :=

@@ -160,7 +160,7 @@ theorem exists_quantitative_threshold_smallBottomBadTail_quenchedProbeEnvelope_l
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
           ∀ {Nentry : ℕ},
-            let H : ℕ → ℕ → CoeffField d → ℝ :=
+            let H : ℕ → ℕ → RegCoeffField d → ℝ :=
               quenchedProbeEnvelope hP hStruct
             let scale : ℝ := K * (Ccrude * hΓ.thetaHat ^ (2 : ℕ))
             let ρsmall : ℝ := (3 : ℝ) ^ (t - α)
@@ -221,7 +221,7 @@ theorem exists_quantitative_threshold_smallBottomBadTail_quenchedProbeEnvelope_l
   · simpa [K, S, η, w, W, ρgap, C₀] using hR
   intro P hP hStruct hΓ hσ_eq hparams Nentry
   letI : IsProbabilityMeasure P := hP.isProbability
-  let H : ℕ → ℕ → CoeffField d → ℝ :=
+  let H : ℕ → ℕ → RegCoeffField d → ℝ :=
     quenchedProbeEnvelope hP hStruct
   let scale : ℝ := K * (Ccrude * hΓ.thetaHat ^ (2 : ℕ))
   let ρsmall : ℝ := (3 : ℝ) ^ (t - α)

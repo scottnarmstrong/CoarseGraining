@@ -31,7 +31,7 @@ variable {d : ℕ} [NeZero d]
 
 /-- Bilinear scalar observable of a block-entry-measurable matrix family is
 a.e.-measurable. -/
-private theorem aemeasurable_vecDot_matVecMul {L : CoeffLaw d} {Bfield : CoeffField d → Mat d}
+private theorem aemeasurable_vecDot_matVecMul {L : CoeffLaw d} {Bfield : RegCoeffField d → Mat d}
     (u v : Vec d) (hB : ∀ i j, AEMeasurable (fun a => Bfield a i j) L) :
     AEMeasurable (fun a => vecDot u (matVecMul (Bfield a) v)) L := by
   have heq :
@@ -49,7 +49,7 @@ private theorem aemeasurable_vecDot_matVecMul {L : CoeffLaw d} {Bfield : CoeffFi
 /-- The scalar quadratic observable of a block matrix family is a.e.-measurable
 whenever all four block entries are. -/
 private theorem aemeasurable_blockQuadratic {L : CoeffLaw d}
-    {Mfield : CoeffField d → BlockMat d} (P : BlockVec d)
+    {Mfield : RegCoeffField d → BlockMat d} (P : BlockVec d)
     (hUL : ∀ i j, AEMeasurable (fun a => (Mfield a).upperLeft i j) L)
     (hUR : ∀ i j, AEMeasurable (fun a => (Mfield a).upperRight i j) L)
     (hLL : ∀ i j, AEMeasurable (fun a => (Mfield a).lowerLeft i j) L)
@@ -80,7 +80,7 @@ theorem aestronglyMeasurable_coarseBlockQuadratic_cubeSet
     AEStronglyMeasurable
       (fun a =>
         blockVecDot P
-          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d n)) a) P)) L := by
+          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun) P)) L := by
   refine (aemeasurable_blockQuadratic P ?_ ?_ ?_ ?_).aestronglyMeasurable
   · exact fun i j => hP.aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet _ i j
   · exact fun i j => hP.aemeasurable_coarseBlockMatrix_upperRight_apply_cubeSet _ i j
@@ -103,12 +103,12 @@ deterministic C1′ sandwich transfers realization-by-realization. -/
 observable a.s. lands in `[0, 2(Θ|p|² + |q|²)]`. -/
 theorem coarseBlockQuadratic_ae_bounds_of_ae_isEllipticFieldOn
     {L : CoeffLaw d} {Θ : ℝ} (n : ℤ) (P : BlockVec d)
-    (hell : ∀ᵐ a ∂L, IsEllipticFieldOn 1 Θ (cubeSet (originCube d n)) a) :
+    (hell : ∀ᵐ a ∂L, IsEllipticFieldOn 1 Θ (cubeSet (originCube d n)) a.toFun) :
     ∀ᵐ a ∂L,
       0 ≤ blockVecDot P
-            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d n)) a) P) ∧
+            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun) P) ∧
         blockVecDot P
-            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d n)) a) P) ≤
+            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun) P) ≤
           2 * (Θ * vecNormSq P.1 + vecNormSq P.2) := by
   filter_upwards [hell] with a ha
   exact ⟨zero_le_blockVecDot_coarseBlockMatrix_cube ha P,
@@ -119,11 +119,11 @@ a.s.-`(1, Θ)`-elliptic law (for the deterministic bound), the coarse observable
 is integrable. -/
 theorem integrable_coarseBlockQuadratic_of_ae_isEllipticFieldOn
     {L : CoeffLaw d} (hP : LawCarrier L) {Θ : ℝ} (n : ℤ) (P : BlockVec d)
-    (hell : ∀ᵐ a ∂L, IsEllipticFieldOn 1 Θ (cubeSet (originCube d n)) a) :
+    (hell : ∀ᵐ a ∂L, IsEllipticFieldOn 1 Θ (cubeSet (originCube d n)) a.toFun) :
     Integrable
       (fun a =>
         blockVecDot P
-          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d n)) a) P)) L := by
+          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun) P)) L := by
   haveI : IsProbabilityMeasure L := hP.isProbability
   set C : ℝ := 2 * (Θ * vecNormSq P.1 + vecNormSq P.2) with hC
   refine (integrable_const C).mono'

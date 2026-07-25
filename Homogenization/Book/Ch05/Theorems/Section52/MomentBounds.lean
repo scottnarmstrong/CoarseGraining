@@ -51,8 +51,8 @@ private theorem section52_sum_insert_image_some_apply
 
 theorem section52_annealedMomentRoot_positiveExcess_le_finset_sum
     {d : ℕ} {P : Ch04.CoeffLaw d} {ι : Type*} {ξ : ℕ}
-    {s : Finset ι} {X : CoeffField d → ℝ} {base : ℝ}
-    {G : ι → CoeffField d → ℝ}
+    {s : Finset ι} {X : RegCoeffField d → ℝ} {base : ℝ}
+    {G : ι → RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
     (hG_nonneg : ∀ i ∈ s, ∀ a, 0 ≤ G i a)
     (hG_aemeas : ∀ i ∈ s, AEMeasurable (G i) P)
@@ -62,7 +62,7 @@ theorem section52_annealedMomentRoot_positiveExcess_le_finset_sum
     (hPoint : ∀ᵐ a ∂P, max (X a - base) 0 ≤ ∑ i ∈ s, G i a) :
     Ch04.annealedMomentRoot P ξ (fun a => max (X a - base) 0) ≤
       ∑ i ∈ s, Ch04.annealedMomentRoot P ξ (G i) := by
-  let Y : CoeffField d → ℝ := fun a => ∑ i ∈ s, G i a
+  let Y : RegCoeffField d → ℝ := fun a => ∑ i ∈ s, G i a
   have hY_nonneg : ∀ a, 0 ≤ Y a := by
     intro a
     exact Finset.sum_nonneg (fun i hi => hG_nonneg i hi a)
@@ -119,8 +119,8 @@ theorem section52_annealedMomentRoot_positiveExcess_le_finset_sum
 
 theorem section52_annealedMomentRoot_positiveExcess_le_scaled_initial
     {d : ℕ} {P : Ch04.CoeffLaw d} {ι : Type*} {ξ : ℕ}
-    {s : Finset ι} {X : CoeffField d → ℝ} {base initial finalCoeff : ℝ}
-    {G : ι → CoeffField d → ℝ} {coeff : ι → ℝ}
+    {s : Finset ι} {X : RegCoeffField d → ℝ} {base initial finalCoeff : ℝ}
+    {G : ι → RegCoeffField d → ℝ} {coeff : ι → ℝ}
     (hξ : 1 ≤ ξ)
     (hInitial_nonneg : 0 ≤ initial)
     (hG_nonneg : ∀ i ∈ s, ∀ a, 0 ≤ G i a)
@@ -148,8 +148,8 @@ theorem section52_annealedMomentRoot_positiveExcess_le_scaled_initial
 
 theorem section52_integrable_positiveExcess_pow_of_one_add_finset_bound
     {d : ℕ} {P : Ch04.CoeffLaw d} {ι : Type*} [DecidableEq ι] {ξ : ℕ}
-    {s : Finset ι} {X : CoeffField d → ℝ} {base : ℝ}
-    {G0 : CoeffField d → ℝ} {G : ι → CoeffField d → ℝ}
+    {s : Finset ι} {X : RegCoeffField d → ℝ} {base : ℝ}
+    {G0 : RegCoeffField d → ℝ} {G : ι → RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
     (hG0_nonneg : ∀ a, 0 ≤ G0 a)
     (hG_nonneg : ∀ i ∈ s, ∀ a, 0 ≤ G i a)
@@ -162,7 +162,7 @@ theorem section52_integrable_positiveExcess_pow_of_one_add_finset_bound
     Integrable (fun a => (max (X a - base) 0) ^ ξ) P := by
   classical
   let I : Finset (Option ι) := insert none (s.image some)
-  let H : Option ι → CoeffField d → ℝ := fun o =>
+  let H : Option ι → RegCoeffField d → ℝ := fun o =>
     match o with
     | none => G0
     | some i => G i
@@ -213,8 +213,8 @@ theorem section52_integrable_positiveExcess_pow_of_one_add_finset_bound
 
 theorem section52_annealedMomentRoot_positiveExcess_le_one_add_finset_scaled
     {d : ℕ} {P : Ch04.CoeffLaw d} {ι : Type*} [DecidableEq ι] {ξ : ℕ}
-    {s : Finset ι} {X : CoeffField d → ℝ} {base initial finalCoeff coeff0 : ℝ}
-    {G0 : CoeffField d → ℝ} {G : ι → CoeffField d → ℝ} {coeff : ι → ℝ}
+    {s : Finset ι} {X : RegCoeffField d → ℝ} {base initial finalCoeff coeff0 : ℝ}
+    {G0 : RegCoeffField d → ℝ} {G : ι → RegCoeffField d → ℝ} {coeff : ι → ℝ}
     (hξ : 1 ≤ ξ)
     (hInitial_nonneg : 0 ≤ initial)
     (hG0_nonneg : ∀ a, 0 ≤ G0 a)
@@ -232,7 +232,7 @@ theorem section52_annealedMomentRoot_positiveExcess_le_one_add_finset_scaled
       finalCoeff * initial := by
   classical
   let I : Finset (Option ι) := insert none (s.image some)
-  let H : Option ι → CoeffField d → ℝ := fun o =>
+  let H : Option ι → RegCoeffField d → ℝ := fun o =>
     match o with
     | none => G0
     | some i => G i
@@ -314,11 +314,11 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (0 : ℤ))) P)
     (hUpperSourceInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.LambdaSqCoeffField (originCube d 0) s (.finite 1) a) ^ ξ) P) :
     let D := descendantsAtScale (originCube d (m : ℤ)) 0
     Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a -
               hP.barSigmaAtScale hStruct 0)
@@ -344,10 +344,10 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
     (25 * s⁻¹ * (r - s)⁻¹ *
         Real.rpow (3 : ℝ) (-r * (m : ℝ))) ^ 2 /
       section52SmallTailWeight r m
-  let S : CoeffField d → ℝ :=
+  let S : RegCoeffField d → ℝ :=
     fun a => D.sup' hD (fun U => Ch04.LambdaSqCoeffField U s (.finite 1) a)
-  let G0 : CoeffField d → ℝ := fun a => c0 * S a
-  let G : ℤ → CoeffField d → ℝ := fun n a =>
+  let G0 : RegCoeffField d → ℝ := fun a => c0 * S a
+  let G : ℤ → RegCoeffField d → ℝ := fun n a =>
     if hn : n ∈ section52LargeScaleSet m then
       section52LargeScaleWeight r m n *
         (let parents := descendantsAtScale (originCube d (m : ℤ)) n
@@ -357,7 +357,7 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
          parents.sup' hparents
           (fun Q =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                 Ch02.matrixNorm
                   (scalarization.barSigma 0 • (1 : Mat d)))
               0))
@@ -415,17 +415,17 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
     simpa only [G, scalarization, hn, dif_pos] using
       upperLargeScalePositiveExcess_aemeasurable_source
         hP hStruct (r := r) hn
-  have hS_int : Integrable (fun a : CoeffField d => |S a| ^ ξ) P := by
+  have hS_int : Integrable (fun a : RegCoeffField d => |S a| ^ ξ) P := by
     exact upper_unitDescendantSup_integrable_abs_pow
       (d := d) (P := P) hP hStruct (s := s) (ξ := ξ) (m := m)
       hs hξ_one hUpperSourceInt
-  have hG0_int : Integrable (fun a : CoeffField d => |G0 a| ^ ξ) P := by
+  have hG0_int : Integrable (fun a : RegCoeffField d => |G0 a| ^ ξ) P := by
     refine (hS_int.const_mul (|c0| ^ ξ)).congr ?_
     filter_upwards with a
     simp only [G0, abs_mul, mul_pow]
   have hG_int :
       ∀ n ∈ section52LargeScaleSet m,
-        Integrable (fun a : CoeffField d => |G n a| ^ ξ) P := by
+        Integrable (fun a : RegCoeffField d => |G n a| ^ ξ) P := by
     intro n hn
     have hInt :=
       upperLargeScalePositiveExcess_integrable_abs_pow_source
@@ -434,7 +434,7 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
     simpa only [G, scalarization, Real.norm_eq_abs, hn, dif_pos] using hInt
   have hX_aemeas :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a) P :=
     hP.aemeasurable_LambdaSqCoeffField_finite_one (originCube d (m : ℤ)) hr_pos
   have hPoint :
@@ -467,7 +467,7 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
                parents.sup' hparents
                 (fun Q =>
                   max
-                    (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                    (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                       Ch02.matrixNorm (scalarization.barSigma 0 • (1 : Mat d)))
                     0))) := by
               exact hsplit
@@ -481,7 +481,7 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
                parents.sup' hparents
                 (fun Q =>
                   max
-                    (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                    (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                       Ch02.matrixNorm (scalarization.barSigma 0 • (1 : Mat d)))
                     0))) := by
               exact
@@ -495,7 +495,7 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
                        parents.sup' hparents
                         (fun Q =>
                           max
-                            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                               Ch02.matrixNorm (scalarization.barSigma 0 • (1 : Mat d)))
                             0))))
       _ = G0 a + ∑ n ∈ section52LargeScaleSet m, G n a := by
@@ -509,7 +509,7 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
                        parents.sup' hparents
                         (fun Q =>
                           max
-                            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                               Ch02.matrixNorm (scalarization.barSigma 0 • (1 : Mat d)))
                             0))) =
                     ∑ n ∈ section52LargeScaleSet m, G n a := by
@@ -523,7 +523,7 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
                          parents.sup' hparents
                           (fun Q =>
                             max
-                              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                                 Ch02.matrixNorm (scalarization.barSigma 0 • (1 : Mat d)))
                               0))) =
                       ∑ n ∈ (section52LargeScaleSet m).attach, G n.1 a := by
@@ -542,7 +542,7 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
           (D.card : ℝ) ^ (1 / (ξ : ℝ)) * initial := by
       change
         Ch04.annealedMomentRoot P ξ
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               D.sup' hD (fun U => Ch04.LambdaSqCoeffField U s (.finite 1) a)) ≤
           (D.card : ℝ) ^ (1 / (ξ : ℝ)) *
             Ch04.LambdaMomentAtScale P 0 s ξ
@@ -581,7 +581,7 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
   have hmain :=
     section52_annealedMomentRoot_positiveExcess_le_one_add_finset_scaled
       (P := P) (ξ := ξ) (s := section52LargeScaleSet m)
-      (X := fun a : CoeffField d =>
+      (X := fun a : RegCoeffField d =>
         Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a)
       (base := scalarization.barSigma 0) (initial := initial)
       (finalCoeff :=
@@ -594,28 +594,28 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
       hG0_int hG_int hX_aemeas hPoint hRoot0 hRoot hCoeffSum
   have hPowIntScalar :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a -
               scalarization.barSigma 0)
             0) ^ ξ) P :=
     section52_integrable_positiveExcess_pow_of_one_add_finset_bound
       (P := P) (ξ := ξ) (s := section52LargeScaleSet m)
-      (X := fun a : CoeffField d =>
+      (X := fun a : RegCoeffField d =>
         Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a)
       (base := scalarization.barSigma 0) (G0 := G0) (G := G)
       hξ_one hG0_nonneg hG_nonneg hG0_aemeas hG_aemeas
       hG0_int hG_int hX_aemeas hPoint
   have hPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a -
               hP.barSigmaAtScale hStruct 0)
             0) ^ ξ) P := by
     change
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a -
               scalarization.barSigma 0)
@@ -634,7 +634,7 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
           Ch04.LambdaMomentAtScale P 0 s ξ := by
     change
       Ch04.annealedMomentRoot P ξ
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             max
               (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a -
                 scalarization.barSigma 0)
@@ -657,7 +657,7 @@ theorem upperPositiveExcessMomentAtScale_le_raw_twoExponentCoeff
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (0 : ℤ))) P)
     (hUpperSourceInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.LambdaSqCoeffField (originCube d 0) s (.finite 1) a) ^ ξ) P) :
     let D := descendantsAtScale (originCube d (m : ℤ)) 0
     LambdaPositiveExcessMomentAtScale P (m : ℤ) r ξ
@@ -688,11 +688,11 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (0 : ℤ))) P)
     (hLowerSourceInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ((Ch04.lambdaSqCoeffField (originCube d 0) s (.finite 1) a)⁻¹) ^ ξ) P) :
     let D := descendantsAtScale (originCube d (m : ℤ)) 0
     Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a)⁻¹ -
               (hP.barSigmaStarAtScale hStruct 0)⁻¹)
@@ -718,10 +718,10 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
     (25 * s⁻¹ * (r - s)⁻¹ *
         Real.rpow (3 : ℝ) (-r * (m : ℝ))) ^ 2 /
       section52SmallTailWeight r m
-  let S : CoeffField d → ℝ :=
+  let S : RegCoeffField d → ℝ :=
     fun a => D.sup' hD (fun U => (Ch04.lambdaSqCoeffField U s (.finite 1) a)⁻¹)
-  let G0 : CoeffField d → ℝ := fun a => c0 * S a
-  let G : ℤ → CoeffField d → ℝ := fun n a =>
+  let G0 : RegCoeffField d → ℝ := fun a => c0 * S a
+  let G : ℤ → RegCoeffField d → ℝ := fun n a =>
     if hn : n ∈ section52LargeScaleSet m then
       section52LargeScaleWeight r m n *
         (let parents := descendantsAtScale (originCube d (m : ℤ)) n
@@ -731,7 +731,7 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
          parents.sup' hparents
           (fun Q =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                 Ch02.matrixNorm
                   ((scalarization.barSigmaStar 0)⁻¹ • (1 : Mat d)))
               0))
@@ -792,17 +792,17 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
     simpa only [G, scalarization, hn, dif_pos] using
       lowerLargeScalePositiveExcess_aemeasurable_source
         hP hStruct (r := r) hn
-  have hS_int : Integrable (fun a : CoeffField d => |S a| ^ ξ) P := by
+  have hS_int : Integrable (fun a : RegCoeffField d => |S a| ^ ξ) P := by
     exact lower_unitDescendantSup_integrable_abs_pow
       (d := d) (P := P) hP hStruct (s := s) (ξ := ξ) (m := m)
       hs hξ_one hLowerSourceInt
-  have hG0_int : Integrable (fun a : CoeffField d => |G0 a| ^ ξ) P := by
+  have hG0_int : Integrable (fun a : RegCoeffField d => |G0 a| ^ ξ) P := by
     refine (hS_int.const_mul (|c0| ^ ξ)).congr ?_
     filter_upwards with a
     simp only [G0, abs_mul, mul_pow]
   have hG_int :
       ∀ n ∈ section52LargeScaleSet m,
-        Integrable (fun a : CoeffField d => |G n a| ^ ξ) P := by
+        Integrable (fun a : RegCoeffField d => |G n a| ^ ξ) P := by
     intro n hn
     have hInt :=
       lowerLargeScalePositiveExcess_integrable_abs_pow_source
@@ -811,7 +811,7 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
     simpa only [G, scalarization, Real.norm_eq_abs, hn, dif_pos] using hInt
   have hX_aemeas :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a)⁻¹) P :=
     hP.aemeasurable_lambdaSqCoeffField_finite_one_inv (originCube d (m : ℤ)) hr_pos
   have hPoint :
@@ -844,7 +844,7 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
                parents.sup' hparents
                 (fun Q =>
                   max
-                    (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+                    (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                       Ch02.matrixNorm ((scalarization.barSigmaStar 0)⁻¹ • (1 : Mat d)))
                     0))) := by
               exact hsplit
@@ -858,7 +858,7 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
                parents.sup' hparents
                 (fun Q =>
                   max
-                    (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+                    (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                       Ch02.matrixNorm ((scalarization.barSigmaStar 0)⁻¹ • (1 : Mat d)))
                     0))) := by
               exact
@@ -872,7 +872,7 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
                        parents.sup' hparents
                         (fun Q =>
                           max
-                            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+                            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                               Ch02.matrixNorm ((scalarization.barSigmaStar 0)⁻¹ • (1 : Mat d)))
                             0))))
       _ = G0 a + ∑ n ∈ section52LargeScaleSet m, G n a := by
@@ -886,7 +886,7 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
                        parents.sup' hparents
                         (fun Q =>
                           max
-                            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+                            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                               Ch02.matrixNorm ((scalarization.barSigmaStar 0)⁻¹ • (1 : Mat d)))
                             0))) =
                     ∑ n ∈ section52LargeScaleSet m, G n a := by
@@ -900,7 +900,7 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
                          parents.sup' hparents
                           (fun Q =>
                             max
-                              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+                              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                                 Ch02.matrixNorm ((scalarization.barSigmaStar 0)⁻¹ • (1 : Mat d)))
                               0))) =
                       ∑ n ∈ (section52LargeScaleSet m).attach, G n.1 a := by
@@ -919,7 +919,7 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
           (D.card : ℝ) ^ (1 / (ξ : ℝ)) * initial := by
       change
         Ch04.annealedMomentRoot P ξ
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               D.sup' hD (fun U => (Ch04.lambdaSqCoeffField U s (.finite 1) a)⁻¹)) ≤
           (D.card : ℝ) ^ (1 / (ξ : ℝ)) *
             Ch04.lambdaInvMomentAtScale P 0 s ξ
@@ -958,7 +958,7 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
   have hmain :=
     section52_annealedMomentRoot_positiveExcess_le_one_add_finset_scaled
       (P := P) (ξ := ξ) (s := section52LargeScaleSet m)
-      (X := fun a : CoeffField d =>
+      (X := fun a : RegCoeffField d =>
         (Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a)⁻¹)
       (base := (scalarization.barSigmaStar 0)⁻¹) (initial := initial)
       (finalCoeff :=
@@ -971,28 +971,28 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
       hG0_int hG_int hX_aemeas hPoint hRoot0 hRoot hCoeffSum
   have hPowIntScalar :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a)⁻¹ -
               (scalarization.barSigmaStar 0)⁻¹)
             0) ^ ξ) P :=
     section52_integrable_positiveExcess_pow_of_one_add_finset_bound
       (P := P) (ξ := ξ) (s := section52LargeScaleSet m)
-      (X := fun a : CoeffField d =>
+      (X := fun a : RegCoeffField d =>
         (Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a)⁻¹)
       (base := (scalarization.barSigmaStar 0)⁻¹) (G0 := G0) (G := G)
       hξ_one hG0_nonneg hG_nonneg hG0_aemeas hG_aemeas
       hG0_int hG_int hX_aemeas hPoint
   have hPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a)⁻¹ -
               (hP.barSigmaStarAtScale hStruct 0)⁻¹)
             0) ^ ξ) P := by
     change
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a)⁻¹ -
               (scalarization.barSigmaStar 0)⁻¹)
@@ -1011,7 +1011,7 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
           Ch04.lambdaInvMomentAtScale P 0 s ξ := by
     change
       Ch04.annealedMomentRoot P ξ
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             max
               ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) r (.finite 1) a)⁻¹ -
                 (scalarization.barSigmaStar 0)⁻¹)
@@ -1034,7 +1034,7 @@ theorem lowerPositiveExcessMomentAtScale_le_raw_twoExponentCoeff
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (0 : ℤ))) P)
     (hLowerSourceInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ((Ch04.lambdaSqCoeffField (originCube d 0) s (.finite 1) a)⁻¹) ^ ξ) P) :
     let D := descendantsAtScale (originCube d (m : ℤ)) 0
     lambdaInvPositiveExcessMomentAtScale P (m : ℤ) r ξ
@@ -1069,7 +1069,7 @@ theorem LambdaPositiveExcessMomentAtScale_le_twoExponentMomentBoundCoeff
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (0 : ℤ))) P)
     (hUpperSourceInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.LambdaSqCoeffField (originCube d 0) s (.finite 1) a) ^ ξ) P) :
     LambdaPositiveExcessMomentAtScale P (m : ℤ) r ξ
         hP hStruct ≤
@@ -1130,7 +1130,7 @@ theorem lambdaInvPositiveExcessMomentAtScale_le_twoExponentMomentBoundCoeff
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (0 : ℤ))) P)
     (hLowerSourceInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ((Ch04.lambdaSqCoeffField (originCube d 0) s (.finite 1) a)⁻¹) ^ ξ) P) :
     lambdaInvPositiveExcessMomentAtScale P (m : ℤ) r ξ
         hP hStruct ≤
@@ -1188,7 +1188,7 @@ theorem upperPositiveExcessPowIntegrableAtScale_from_P4_twoExponent
     {rUpper : ℝ} (hrUpper_gt : hP4.sUpper < rUpper)
     (hrUpper_lt_one : rUpper < 1) (m : ℕ) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         (max
           (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) rUpper (.finite 1) a -
             hP.barSigmaAtScale hStruct 0)
@@ -1216,7 +1216,7 @@ theorem lowerPositiveExcessPowIntegrableAtScale_from_P4_twoExponent
     {rLower : ℝ} (hrLower_gt : hP4.sLower < rLower)
     (hrLower_lt_one : rLower < 1) (m : ℕ) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         (max
           ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹ -
             (hP.barSigmaStarAtScale hStruct 0)⁻¹)

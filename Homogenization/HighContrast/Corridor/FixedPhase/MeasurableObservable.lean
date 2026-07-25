@@ -200,15 +200,16 @@ under `ThetaEllipticLaw`, whose measurability + a.e.-ellipticity conjuncts suppl
 the per-field hypotheses. -/
 theorem rawPhaseObservable_restrict_ae_eq [NeZero d]
     {ℓ : ℝ} {σ : Vec d} {Θ : ℝ} {m : ℤ} (hℓ : 0 < ℓ) (hΘ : 1 ≤ Θ)
-    (P : BlockVec d) {L : MeasureTheory.Measure (CoeffField d)}
+    (P : BlockVec d) {L : MeasureTheory.Measure (RegCoeffField d)}
     (hL : ThetaEllipticLaw Θ L) (K : Finset (Fin d → ℤ))
     (hK : ∀ k : Fin d → ℤ,
       (coreBox ℓ σ k ∩ cubeSet (originCube d m)).Nonempty → k ∈ K) :
     ∀ᵐ a ∂L,
       rawPhaseObservable ℓ σ Θ m P K
-          (fun k : {k // k ∈ K} => restrictCoeffField (coreBox ℓ σ k.val) a)
-        = phaseObservable ℓ σ m P a := by
+          (fun k : {k // k ∈ K} => restrictCoeffField (coreBox ℓ σ k.val) a.toFun)
+        = phaseObservable ℓ σ m P a.toFun := by
   filter_upwards [hL] with a ha
-  exact rawPhaseObservable_restrict_eq_of_field hℓ hΘ P K hK a ha.1 ha.2
+  exact rawPhaseObservable_restrict_eq_of_field hℓ hΘ P K hK a.toFun
+    (fun i j => a.entry_measurable i j) ha
 
 end Homogenization

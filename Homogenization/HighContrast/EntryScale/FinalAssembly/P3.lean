@@ -39,7 +39,7 @@ theorem exists_bufferExponent_terminal_p_mul_responseMoment_add_star_le_const_on
             m →
           HighCenteredMomentEstimate hm P N
             (intermediateCoarseBlockDeviation hP hStruct
-              (fun x : Homogenization.CoeffField d => x)) →
+              (fun x : Homogenization.RegCoeffField d => x)) →
           terminalPAtScales hP hStruct k m *
               coarseFluctuationResponseMomentAtScale hP hStruct hP4 k m e +
             terminalPAtScales hP hStruct k m *

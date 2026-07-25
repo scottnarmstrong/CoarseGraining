@@ -81,18 +81,18 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
             Homogenization.Book.Ch02.vecNorm e = 1 →
             1 ≤ i →
             (hNNstar : N ≤ Nstar) →
-            ∀ (M_sub : ℕ → Homogenization.CoeffField d → ℝ),
+            ∀ (M_sub : ℕ → Homogenization.RegCoeffField d → ℝ),
             AEMeasurable (M_sub (memoryGridScale Nstar L i)) P →
             ∀ {stochRoot polyRoot : ℝ},
             ((∫⁻ ω, ‖terminalCoarseBlockStochasticMax hP hStruct hc N
                 (memoryGridScale Nstar L i)
                 (Homogenization.originCube d ((memoryGridScale Nstar L i : ℕ) : ℤ))
-                (fun x : Homogenization.CoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
+                (fun x : Homogenization.RegCoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
               (∫⁻ ω, ‖M_sub (memoryGridScale Nstar L i) ω‖ₑ ^ (2 : ℝ) ∂P) ≠ ⊤) →
             (2 * (((∫⁻ ω, ‖terminalCoarseBlockStochasticMax hP hStruct hc N
                   (memoryGridScale Nstar L i)
                   (Homogenization.originCube d ((memoryGridScale Nstar L i : ℕ) : ℤ))
-                  (fun x : Homogenization.CoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
+                  (fun x : Homogenization.RegCoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
                 (∫⁻ ω, ‖M_sub (memoryGridScale Nstar L i) ω‖ₑ ^ (2 : ℝ) ∂P)).toReal ^
                 (1 / (hP4.xi : ℝ))) ≤ stochRoot) →
             ((ENNReal.ofReal
@@ -189,17 +189,17 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
              let q_e :=
               Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
              let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-             let childAvg := fun a : Homogenization.CoeffField d =>
+             let childAvg := fun a : Homogenization.RegCoeffField d =>
               Homogenization.descendantsAverage Q (m - k)
                 (fun R =>
                   Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-             let response := fun a : Homogenization.CoeffField d =>
+             let response := fun a : Homogenization.RegCoeffField d =>
               (5 * β⁻¹) ^ 2 * childAvg a
-             let lowerSmall := fun a : Homogenization.CoeffField d =>
+             let lowerSmall := fun a : Homogenization.RegCoeffField d =>
               Homogenization.Book.Ch05.Section52.lowerSmallSqrtTailCoeffField
                   (d := d) m s' a ^ 2 /
                 Homogenization.Book.Ch05.Section52.section52SmallTailWeight s' m
-             let upperSmall := fun a : Homogenization.CoeffField d =>
+             let upperSmall := fun a : Homogenization.RegCoeffField d =>
               Homogenization.Book.Ch05.Section52.upperSmallSqrtTailCoeffField
                   (d := d) m t' a ^ 2 /
                 Homogenization.Book.Ch05.Section52.section52SmallTailWeight t' m
@@ -218,14 +218,14 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
              let q_e :=
               Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
              let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-             let childAvg := fun a : Homogenization.CoeffField d =>
+             let childAvg := fun a : Homogenization.RegCoeffField d =>
               Homogenization.descendantsAverage Q (m - k)
                 (fun R =>
                   Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-             let response := fun a : Homogenization.CoeffField d =>
+             let response := fun a : Homogenization.RegCoeffField d =>
               (5 * β⁻¹) ^ 2 * childAvg a
              let lowerSlot :
-                Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+                Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
               let parents := Homogenization.descendantsAtScale Q n.1
               let hparents : parents.Nonempty :=
                 Homogenization.descendantsAtScale_nonempty Q
@@ -241,7 +241,7 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
               Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s' m n.1 *
                 (σ * parents.sup' hparents lowerExcess) * response a
              let upperSlot :
-                Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+                Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
               let parents := Homogenization.descendantsAtScale Q n.1
               let hparents : parents.Nonempty :=
                 Homogenization.descendantsAtScale_nonempty Q
@@ -256,7 +256,7 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
                   0
               Homogenization.Book.Ch05.Section52.section52LargeScaleWeight t' m n.1 *
                 (σ⁻¹ * parents.sup' hparents upperExcess) * response a
-             let lowSum := fun a : Homogenization.CoeffField d =>
+             let lowSum := fun a : Homogenization.RegCoeffField d =>
               S.attach.sum fun n =>
                 if k ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
              ∫ a, lowSum a ∂P ≤ lowBudget) →
@@ -312,7 +312,7 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
               memoryGridScale Nstar L i →
             HighCenteredMomentEstimate hm P N
               (intermediateCoarseBlockDeviation hP hStruct
-                (fun x : Homogenization.CoeffField d => x)) →
+                (fun x : Homogenization.RegCoeffField d => x)) →
             C_delta *
               (Real.sqrt rho + eps + eps⁻¹ * (etaS + etaSt + rho + rho ^ 2) +
                 eps⁻¹ * decay) ≤ coeff →
@@ -746,18 +746,18 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
             Homogenization.Book.Ch02.vecNorm e = 1 →
             1 ≤ i →
             (hNNstar : N ≤ Nstar) →
-            ∀ (M_sub : ℕ → Homogenization.CoeffField d → ℝ),
+            ∀ (M_sub : ℕ → Homogenization.RegCoeffField d → ℝ),
             AEMeasurable (M_sub (memoryGridScale Nstar L i)) P →
             ∀ {stochRoot polyRoot : ℝ},
             ((∫⁻ ω, ‖terminalCoarseBlockStochasticMax hP hStruct hc N
                 (memoryGridScale Nstar L i)
                 (Homogenization.originCube d ((memoryGridScale Nstar L i : ℕ) : ℤ))
-                (fun x : Homogenization.CoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
+                (fun x : Homogenization.RegCoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
               (∫⁻ ω, ‖M_sub (memoryGridScale Nstar L i) ω‖ₑ ^ (2 : ℝ) ∂P) ≠ ⊤) →
             (2 * (((∫⁻ ω, ‖terminalCoarseBlockStochasticMax hP hStruct hc N
                   (memoryGridScale Nstar L i)
                   (Homogenization.originCube d ((memoryGridScale Nstar L i : ℕ) : ℤ))
-                  (fun x : Homogenization.CoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
+                  (fun x : Homogenization.RegCoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
                 (∫⁻ ω, ‖M_sub (memoryGridScale Nstar L i) ω‖ₑ ^ (2 : ℝ) ∂P)).toReal ^
                 (1 / (hP4.xi : ℝ))) ≤ stochRoot) →
             ((ENNReal.ofReal
@@ -910,7 +910,7 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
               memoryGridScale Nstar L i →
             HighCenteredMomentEstimate hm P N
               (intermediateCoarseBlockDeviation hP hStruct
-                (fun x : Homogenization.CoeffField d => x)) →
+                (fun x : Homogenization.RegCoeffField d => x)) →
             C_delta *
               (Real.sqrt rho + eps + eps⁻¹ * (etaS + etaSt + rho + rho ^ 2) +
                 eps⁻¹ * decay) ≤ coeff →

@@ -47,7 +47,7 @@ theorem homogenization_quenched_minimal_scale
                 P hP hStruct),
               hΓ.sigma = σ → hΓ.params = params →
               let η : ℝ := Section57.finiteQuenchedTailExponent d σ t
-              ∃ X : CoeffField d → ℝ,
+              ∃ X : RegCoeffField d → ℝ,
                 IsBigO P (gammaSigma η) X
                   (Real.exp
                     (Cscale * (Real.log (2 + hΓ.thetaHat)) ^ (2 : ℕ))) ∧
@@ -73,7 +73,7 @@ theorem homogenization_quenched_minimal_scale
               P hP hStruct),
             hInf.params = params →
             let η : ℝ := ((d : ℕ) : ℝ)
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hInf.thetaHat)) ^ (2 : ℕ))) ∧
@@ -159,7 +159,7 @@ theorem homogenization_quenched_homogenization_comparison
             (hΓ : Section57.GammaSigmaCoarseGrainedEllipticityNoXi
               P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma (Section57.finiteQuenchedTailExponent d σ t)) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hΓ.thetaHat)) ^ (2 : ℕ))) ∧
@@ -193,7 +193,7 @@ theorem homogenization_quenched_homogenization_comparison
             (hInf : Section57.GammaInfinityCoarseGrainedEllipticityNoXi
               P hP hStruct),
             hInf.params = params →
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma ((d : ℕ) : ℝ)) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hInf.thetaHat)) ^ (2 : ℕ))) ∧

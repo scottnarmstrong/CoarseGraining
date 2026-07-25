@@ -35,7 +35,7 @@ theorem section52_gap_decay_mul_scale_decay_eq
 
 theorem upperSmallSqrtTailCoeffField_term_le_two_exponent
     {d : ℕ} [NeZero d] (m j : ℕ) {s r : ℝ}
-    (hs : 0 < s) (hsr : s < r) (a : CoeffField d) :
+    (hs : 0 < s) (hsr : s < r) (a : RegCoeffField d) :
     geometricWeight r 1 (j + m) *
         Real.rpow
           (Ch04.maxDescendantBMatrixNormCoeffFieldAtScale
@@ -163,7 +163,7 @@ theorem upperSmallSqrtTailCoeffField_term_le_two_exponent
 
 theorem lowerSmallSqrtTailCoeffField_term_le_two_exponent
     {d : ℕ} [NeZero d] (m j : ℕ) {s r : ℝ}
-    (hs : 0 < s) (hsr : s < r) (a : CoeffField d) :
+    (hs : 0 < s) (hsr : s < r) (a : RegCoeffField d) :
     geometricWeight r 1 (j + m) *
         Real.rpow
           (Ch04.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
@@ -291,7 +291,7 @@ theorem lowerSmallSqrtTailCoeffField_term_le_two_exponent
 
 theorem upperSmallSqrtTailCoeffField_le_two_exponent_unitCube_source
     {d : ℕ} [NeZero d] (m : ℕ) {s r : ℝ}
-    (hs : 0 < s) (hsr : s < r) (hr : r < 1) (a : CoeffField d) :
+    (hs : 0 < s) (hsr : s < r) (hr : r < 1) (a : RegCoeffField d) :
     upperSmallSqrtTailCoeffField (d := d) m r a ≤
       25 * s⁻¹ * (r - s)⁻¹ *
         Real.rpow (3 : ℝ) (-r * (m : ℝ)) *
@@ -428,7 +428,7 @@ theorem upperSmallSqrtTailCoeffField_le_two_exponent_unitCube_source
 
 theorem lowerSmallSqrtTailCoeffField_le_two_exponent_unitCube_source
     {d : ℕ} [NeZero d] (m : ℕ) {s r : ℝ}
-    (hs : 0 < s) (hsr : s < r) (hr : r < 1) (a : CoeffField d) :
+    (hs : 0 < s) (hsr : s < r) (hr : r < 1) (a : RegCoeffField d) :
     lowerSmallSqrtTailCoeffField (d := d) m r a ≤
       25 * s⁻¹ * (r - s)⁻¹ *
         Real.rpow (3 : ℝ) (-r * (m : ℝ)) *

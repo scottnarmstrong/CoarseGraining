@@ -88,7 +88,7 @@ theorem scaleResponseAtScale_originCube_nat_le_rpow_of_weighted_localizedNormali
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n : ℕ} (hnm : n ≤ m) {τ R : ℝ} (hR : 0 ≤ R)
     (hweighted :
       Real.rpow (3 : ℝ) (-τ * ((m - n : ℕ) : ℝ)) *
@@ -129,7 +129,7 @@ theorem scaleResponseAtScale_originCube_nat_le_rpow_of_weighted_localizedUnitJMa
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n : ℕ} (hnm : n ≤ m) {τ R : ℝ} (hR : 0 ≤ R)
     (hunit : ∀ e : FullBlockVec d, dotProduct e e ≤ 1 →
       Real.rpow (3 : ℝ) (-τ * ((m - n : ℕ) : ℝ)) *
@@ -168,7 +168,7 @@ theorem scaleResponseAtScale_originCube_nat_sub_le_rpow_of_weighted_localizedUni
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n l : ℕ} (hln : l ≤ n) (hnm : n ≤ m) {τ R : ℝ} (hR : 0 ≤ R)
     (hunit : ∀ e : FullBlockVec d, dotProduct e e ≤ 1 →
       Real.rpow (3 : ℝ) (-τ * ((m - (n - l) : ℕ) : ℝ)) *
@@ -198,7 +198,7 @@ theorem scaleResponseAtScale_originCube_nat_sub_le_of_minimalScaleUnitJ
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n l : ℕ} (hln : l ≤ n) (hnm : n ≤ m)
     {τ X α : ℝ} (hX : 0 < X)
     (hunit : ∀ e : FullBlockVec d, dotProduct e e ≤ 1 →
@@ -245,7 +245,7 @@ theorem finset_sum_nat_scaleResponse_terms_le_of_minimalScaleUnitJ
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n : ℕ} (hnm : n ≤ m)
     {r τ δ q X α : ℝ}
     (hδ : δ = r - τ / 2)

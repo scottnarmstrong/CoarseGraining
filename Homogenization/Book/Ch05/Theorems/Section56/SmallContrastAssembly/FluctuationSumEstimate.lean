@@ -458,7 +458,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_center_ell
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
-    {ell m : ℕ} (hellm : ell ≤ m) (Q : TriadicCube d) (a : CoeffField d) :
+    {ell m : ℕ} (hellm : ell ≤ m) (Q : TriadicCube d) (a : RegCoeffField d) :
     Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct (m : ℤ) Q a ≤
       32 *
@@ -471,7 +471,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_center_ell
   let cell := hP.barSigmaStarAtScale hStruct (ell : ℤ)
   let Dm : FullBlockMat d := Matrix.diagonal (Ch04.scalarFullBlockInvSqrtDiag bm cm)
   let Dell : FullBlockMat d := Matrix.diagonal (Ch04.scalarFullBlockInvSqrtDiag bell cell)
-  let A : FullBlockMat d := toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)
+  let A : FullBlockMat d := toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)
   let Aell : FullBlockMat d :=
     toFullBlockMat (Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct (ell : ℤ))
   let Am : FullBlockMat d :=
@@ -582,11 +582,11 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_geometri
           (thetaAtScale hP hStruct (ell : ℤ) - 1) ^ (2 : ℕ) := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (j : ℤ)
-  let Fm : CoeffField d → ℝ :=
+  let Fm : RegCoeffField d → ℝ :=
     fun a =>
       Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct (m : ℤ) Q a
-  let Fell : CoeffField d → ℝ :=
+  let Fell : RegCoeffField d → ℝ :=
     fun a =>
       Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct (ell : ℤ) Q a
@@ -599,10 +599,10 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_geometri
       Section54.VarianceBoundGoodScale.integrable_origin_fullBlockNormalizedFluctuationOperatorNormSqAtScale_from_P4
         hP hStruct hP4 (ell : ℤ) j
   have hRhsInt :
-      Integrable (fun a : CoeffField d => 32 * Fell a + 2 * thetaSq) P :=
+      Integrable (fun a : RegCoeffField d => 32 * Fell a + 2 * thetaSq) P :=
     (hFellInt.const_mul (32 : ℝ)).add (integrable_const (2 * thetaSq))
   have hpoint :
-      Fm ≤ᵐ[P] fun a : CoeffField d => 32 * Fell a + 2 * thetaSq := by
+      Fm ≤ᵐ[P] fun a : RegCoeffField d => 32 * Fell a + 2 * thetaSq := by
     filter_upwards with a
     simpa [Fm, Fell, Q, thetaSq] using
       fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_center_ell

@@ -338,7 +338,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_weighted
         let N0 : ℕ :=
           annealedAlgebraicEntryScale P
             hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-        let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+        let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
           fun M N aω =>
             quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
         let D : Finset (TriadicCube d) :=
@@ -368,7 +368,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_weighted
         let N0 : ℕ :=
           annealedAlgebraicEntryScale P
             hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-        let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+        let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
           fun M N aω =>
             quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
         let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -406,7 +406,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_weighted
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-  let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+  let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>
       quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
   let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -567,7 +567,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_weighted
         let N0 : ℕ :=
           annealedAlgebraicEntryScale P
             hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-        let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+        let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
           fun M N aω =>
             quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
         let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -625,7 +625,7 @@ theorem measureReal_shiftedHighBottomBadScaleEvent_quenchedProbeEnvelope_le_weig
         let N0 : ℕ :=
           annealedAlgebraicEntryScale P
             hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-        let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+        let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
           fun M N aω =>
             quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
         let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -666,7 +666,7 @@ theorem measureReal_shiftedHighBottomBadScaleEvent_quenchedProbeEnvelope_le_weig
         let N0 : ℕ :=
           annealedAlgebraicEntryScale P
             hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-        let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+        let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
           fun M N aω =>
             quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
         let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -703,7 +703,7 @@ theorem measureReal_shiftedHighBottomBadScaleEvent_quenchedProbeEnvelope_le_weig
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-  let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+  let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>
       quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
   let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -788,7 +788,7 @@ theorem measureReal_shiftedHighBottomBadScaleEvent_quenchedProbeEnvelope_le_weig
         let N0 : ℕ :=
           annealedAlgebraicEntryScale P
             hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-        let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+        let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
           fun M N aω =>
             quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
         let S : Finset (NormalizedProbeIndex d) := Finset.univ

@@ -437,7 +437,7 @@ scalar-response surface.  The remaining hypotheses are the genuine analytic
 cutoff/duality inputs for this deterministic product estimate. -/
 theorem productTerm_le_cutoffProductBridge_of_dependentCanonicalMaximizer
     {d : ℕ} [NeZero d] (Q : TriadicCube d) (s : ℝ)
-    (a : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
+    (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (p q p0 q0 : Vec d)
     (dualField cutoffGradient : Vec d → Vec d)
     {cutoffCircOne cutoffCircS cutoffDerivative poincareConst cutoffConstant
@@ -503,18 +503,18 @@ theorem productTerm_le_cutoffProductBridge_of_dependentCanonicalMaximizer
                 ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
                 p q p0 x • cutoffGradient x))| ≤
       cutoffProductBridgeRHS Q s cutoffGradient
-        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a)
-        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a)
-        ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖
+        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
+        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun)
+        ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖
         cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant := by
   let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   let aQ : Ch02.CoeffOn (Ch02.cubeDomain Q) := F.coeffOn Q
   exact productTerm_le_cutoffProductBridge_of_canonicalMaximizer
     (Q := Q) (s := s) (a := aQ) (p := p) (q := q) (p0 := p0) (q0 := q0)
     (dualField := dualField) (cutoffGradient := cutoffGradient)
-    (fluxWeakOne := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a)
-    (fluxWeakS := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a)
-    (fluxAverage := ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖)
+    (fluxWeakOne := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
+    (fluxWeakS := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun)
+    (fluxAverage := ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖)
     (cutoffCircOne := cutoffCircOne) (cutoffCircS := cutoffCircS)
     (cutoffDerivative := cutoffDerivative) (poincareConst := poincareConst)
     (cutoffConstant := cutoffConstant)

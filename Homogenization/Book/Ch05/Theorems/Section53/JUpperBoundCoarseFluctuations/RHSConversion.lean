@@ -69,7 +69,7 @@ private theorem sigmaHatAtScale_nonneg
 private theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_nonneg
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (m : ℤ) (R : TriadicCube d) (a : CoeffField d) :
+    (m : ℤ) (R : TriadicCube d) (a : RegCoeffField d) :
     0 ≤ fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct m R a := by
   simp [fullBlockNormalizedFluctuationOperatorNormSqAtScale,
     Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale,
@@ -251,7 +251,7 @@ theorem coarseFluctuationResponseMomentAtScale_nonneg
   let p_e := specialPAtScale hP hStruct (m : ℤ) e
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
   have hJpow_nonneg :
-      ∀ a : CoeffField d,
+      ∀ a : RegCoeffField d,
         0 ≤ Real.rpow
           (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ := by
     intro a
@@ -369,7 +369,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
       fun n => Real.rpow (3 : ℝ)
         (-β * (Int.toNat ((m : ℤ) - n) : ℝ))
     Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           σ *
               (WeakNormsMaximizer.gradientAverageTermAtScale
                 (m : ℤ) (k : ℤ) s p_e q_e p0_e a) ^ 2 +
@@ -402,7 +402,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
   let w : ℤ → ℝ :=
     fun n => Real.rpow (3 : ℝ)
       (-β * (Int.toNat ((m : ℤ) - n) : ℝ))
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a =>
       σ *
           (WeakNormsMaximizer.gradientAverageTermAtScale
@@ -410,7 +410,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
         σ⁻¹ *
           (WeakNormsMaximizer.fluxAverageTermAtScale
             (m : ℤ) (k : ℤ) t p_e q_e q0_e a) ^ 2
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     fun a =>
       (∑ n ∈ S, w n) *
         ∑ n ∈ S, w n *
@@ -446,7 +446,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
   have hTermInt :
       ∀ n ∈ S,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             w n *
               descendantsAverage (originCube d (m : ℤ))
                 (Int.toNat ((m : ℤ) - n))
@@ -470,7 +470,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
       simpa [Int.toNat_of_nonneg hn_nonneg] using hnat
     have hdesc :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             descendantsAverage (originCube d (m : ℤ))
               (Int.toNat ((m : ℤ) - n))
               (fun R =>
@@ -489,7 +489,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
   have hY_int : Integrable Y P := by
     have hsum :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ∑ n ∈ S, w n *
               descendantsAverage (originCube d (m : ℤ))
                 (Int.toNat ((m : ℤ) - n))
@@ -501,12 +501,12 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
     simpa [Y] using hsum.const_mul (∑ n ∈ S, w n)
   have hGradAvgAE :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           WeakNormsMaximizer.gradientAverageTermAtScale
             (m : ℤ) (k : ℤ) s p_e q_e p0_e a) P := by
     dsimp [WeakNormsMaximizer.gradientAverageTermAtScale]
     change AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ∑ n ∈ S,
           Real.rpow (3 : ℝ) (-s * (Int.toNat ((m : ℤ) - n) : ℝ)) *
             Real.sqrt
@@ -515,7 +515,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
                 (fun R =>
                   vecNormSq
                     (Ch04.canonicalScalarResponseGradientAverageCubeSet
-                      R R p_e q_e a - p0_e)))) P
+                      R R p_e q_e a.toFun - p0_e)))) P
     refine S.aemeasurable_fun_sum (μ := P) ?_
     intro n _hn
     exact
@@ -526,19 +526,19 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
           (F := fun R a =>
             vecNormSq
               (Ch04.canonicalScalarResponseGradientAverageCubeSet
-                R R p_e q_e a - p0_e))
+                R R p_e q_e a.toFun - p0_e))
           (fun R _hR =>
             aemeasurable_vecNormSq_sub_const
               (hP.aemeasurable_canonicalScalarResponseGradientAverage_cubeSet
                 R R p_e q_e) p0_e)).sqrt)
   have hFluxAvgAE :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           WeakNormsMaximizer.fluxAverageTermAtScale
             (m : ℤ) (k : ℤ) t p_e q_e q0_e a) P := by
     dsimp [WeakNormsMaximizer.fluxAverageTermAtScale]
     change AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ∑ n ∈ S,
           Real.rpow (3 : ℝ) (-t * (Int.toNat ((m : ℤ) - n) : ℝ)) *
             Real.sqrt
@@ -547,7 +547,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
                 (fun R =>
                   vecNormSq
                     (Ch04.canonicalScalarResponseFluxAverageCubeSet
-                      R R p_e q_e a - q0_e)))) P
+                      R R p_e q_e a.toFun - q0_e)))) P
     refine S.aemeasurable_fun_sum (μ := P) ?_
     intro n _hn
     exact
@@ -558,7 +558,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
           (F := fun R a =>
             vecNormSq
               (Ch04.canonicalScalarResponseFluxAverageCubeSet
-                R R p_e q_e a - q0_e))
+                R R p_e q_e a.toFun - q0_e))
           (fun R _hR =>
             aemeasurable_vecNormSq_sub_const
               (hP.aemeasurable_canonicalScalarResponseFluxAverage_cubeSet

@@ -104,7 +104,7 @@ theorem exists_final_scale_decay_of_main_buffer_and_variance_scalars
           VarianceBlockEstimate vp P
             (Homogenization.Book.Ch05.widetildeThetaAtScale P (0 : ℤ) hP4) N2
             (intermediateCoarseBlockDeviation hP hStruct
-              (fun x : Homogenization.CoeffField d => x)) →
+              (fun x : Homogenization.RegCoeffField d => x)) →
             ∃ N0 : ℕ,
               (∀ n : ℕ,
                 Homogenization.Book.Ch05.thetaAtScale hP hStruct

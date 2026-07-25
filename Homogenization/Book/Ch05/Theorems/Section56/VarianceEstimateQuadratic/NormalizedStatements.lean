@@ -15,7 +15,7 @@ Section 5.4 squared operator-norm fluctuation. -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_descendantsAverageNormalized_add_two_error
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) :
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct center Q a ≤
       2 * descendantsAverageNormalizedFluctuationOperatorNormSq
@@ -64,7 +64,7 @@ Section 5.4 fluctuation observable. -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_descendantsAverage_add_two_error
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) :
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct center Q a ≤
       2 * descendantsAverage Q j
@@ -90,11 +90,11 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_descendantsAv
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : TriadicCube d) (j : ℕ) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct (m : ℤ) Q a)
       ≤ᵐ[P]
-    fun a : CoeffField d =>
+    fun a : RegCoeffField d =>
       2 * descendantsAverageNormalizedFluctuationOperatorNormSq
         hP hStruct (m : ℤ) Q j a +
       8 * normalizedBlockJTraceAverageSq hP hStruct (m : ℤ) Q j a := by
@@ -128,11 +128,11 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_two_desc
             (originCube d (n : ℤ)) (n - k) a ∂P := by
   let Q : TriadicCube d := originCube d (n : ℤ)
   let j : ℕ := n - k
-  let F : CoeffField d → ℝ :=
+  let F : RegCoeffField d → ℝ :=
     fun a =>
       descendantsAverageNormalizedFluctuationOperatorNormSq
         hP hStruct (m : ℤ) Q j a
-  let J : CoeffField d → ℝ :=
+  let J : RegCoeffField d → ℝ :=
     fun a => normalizedBlockJTraceAverageSq hP hStruct (m : ℤ) Q j a
   have hFInt : Integrable F P := by
     simpa [F, Q, j] using
@@ -142,14 +142,14 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_two_desc
     simpa [J, Q, j] using
       integrable_normalizedBlockJTraceAverageSq_from_P4_of_stationary
         hP hStruct hP4 m n k hk
-  have hRhsInt : Integrable (fun a : CoeffField d => 2 * F a + 8 * J a) P :=
+  have hRhsInt : Integrable (fun a : RegCoeffField d => 2 * F a + 8 * J a) P :=
     (hFInt.const_mul (2 : ℝ)).add (hJInt.const_mul (8 : ℝ))
   have hpoint :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
           hP hStruct (m : ℤ) Q a)
         ≤ᵐ[P]
-      fun a : CoeffField d => 2 * F a + 8 * J a := by
+      fun a : RegCoeffField d => 2 * F a + 8 * J a := by
     simpa [F, J, Q, j] using
       fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_descendantsAverageNormalized_add_eight_JTraceAverageSq_ae
         hP hStruct hP4 m Q j
@@ -196,11 +196,11 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_descendantsAv
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : TriadicCube d) (j : ℕ) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct (m : ℤ) Q a)
       ≤ᵐ[P]
-    fun a : CoeffField d =>
+    fun a : RegCoeffField d =>
       2 * descendantsAverage Q j
         (fun R =>
           Ch04.fullBlockNormalizedFluctuationOperatorNormSq hP hStruct (m : ℤ)

@@ -32,22 +32,22 @@ theorem integral_jUpperWeakNormManuscriptPointwiseRHSAtScale_le_manuscriptExpect
       Integrable (Ch04.responseJObservableCubeSet R p q) P)
     (hGradWeak :
       Integrable
-        (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-          (originCube d m) s p q p0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet
+          (originCube d m) s p q p0 a.toFun) P)
     (hFluxWeak :
       Integrable
-        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-          (originCube d m) t p q q0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseFluxWeakNormCubeSet
+          (originCube d m) t p q q0 a.toFun) P)
     (hGradSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-            (originCube d m) s p q p0 a) ^ 2) P)
+            (originCube d m) s p q p0 a.toFun) ^ 2) P)
     (hFluxSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-            (originCube d m) t p q q0 a) ^ 2) P) :
+            (originCube d m) t p q q0 a.toFun) ^ 2) P) :
     ∫ a,
         jUpperWeakNormManuscriptPointwiseRHSAtScale m k s t
           C Cosc scaleSep BφS BφT Cprod p q p0 q0 a ∂P
@@ -57,34 +57,34 @@ theorem integral_jUpperWeakNormManuscriptPointwiseRHSAtScale_le_manuscriptExpect
   letI : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d m
   let j : ℕ := Int.toNat (m - k)
-  let childAverage : CoeffField d → ℝ :=
+  let childAverage : RegCoeffField d → ℝ :=
     fun a => descendantsAverage Q j (fun R => Ch04.responseJObservableCubeSet R p q a)
-  let gradWeak : CoeffField d → ℝ :=
-    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0
-  let fluxWeak : CoeffField d → ℝ :=
-    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0
+  let gradWeak : RegCoeffField d → ℝ :=
+    fun a => Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
+  let fluxWeak : RegCoeffField d → ℝ :=
+    fun a => Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun
   let gradCoeff : ℝ :=
     (3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS
   let fluxCoeff : ℝ :=
     (3 : ℝ) ^ ((d : ℝ) + t) * cubeBesovScaleWeight (-t) Q * BφT
-  let scaledGrad : CoeffField d → ℝ := gradWeak
-  let scaledFlux : CoeffField d → ℝ := fluxWeak
-  let addPoint : CoeffField d → ℝ :=
+  let scaledGrad : RegCoeffField d → ℝ := gradWeak
+  let scaledFlux : RegCoeffField d → ℝ := fluxWeak
+  let addPoint : RegCoeffField d → ℝ :=
     fun a =>
       (2 * C) *
         (Real.sqrt (responseJAdditivityDefectAtScale m k p q a) *
           Real.sqrt (childAverage a))
-  let oscPoint : CoeffField d → ℝ :=
+  let oscPoint : RegCoeffField d → ℝ :=
     fun a => Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a
-  let gradPoint : CoeffField d → ℝ :=
+  let gradPoint : RegCoeffField d → ℝ :=
     fun a =>
       (1 / 2 : ℝ) * ‖q0‖ *
         (((Fintype.card (Fin d) : ℝ) * gradCoeff) * gradWeak a)
-  let fluxPoint : CoeffField d → ℝ :=
+  let fluxPoint : RegCoeffField d → ℝ :=
     fun a =>
       (1 / 2 : ℝ) * ‖p0‖ *
         (((Fintype.card (Fin d) : ℝ) * fluxCoeff) * fluxWeak a)
-  let productPoint : CoeffField d → ℝ :=
+  let productPoint : RegCoeffField d → ℝ :=
     fun a => Cprod * (scaledGrad a * scaledFlux a)
   have hDescDepth :
       ∀ R, R ∈ descendantsAtDepth Q j →
@@ -108,7 +108,7 @@ theorem integral_jUpperWeakNormManuscriptPointwiseRHSAtScale_le_manuscriptExpect
       descendantsAverage_responseJObservableCubeSet_nonneg Q j p q a
   have hSqrtProdInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Real.sqrt (responseJAdditivityDefectAtScale m k p q a) *
             Real.sqrt (childAverage a)) P :=
     integrable_sqrt_mul_sqrt_of_integrable_of_ae_nonneg
@@ -145,7 +145,7 @@ theorem integral_jUpperWeakNormManuscriptPointwiseRHSAtScale_le_manuscriptExpect
   have hProductInt : Integrable productPoint P := by
     simpa [productPoint] using hScaledProdInt.const_mul Cprod
   have hRHS_eq :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         jUpperWeakNormManuscriptPointwiseRHSAtScale m k s t
           C Cosc scaleSep BφS BφT Cprod p q p0 q0 a) =
         fun a => (addPoint a + oscPoint a) + ((gradPoint a + fluxPoint a) + productPoint a) := by
@@ -164,12 +164,12 @@ theorem integral_jUpperWeakNormManuscriptPointwiseRHSAtScale_le_manuscriptExpect
               ∫ a, productPoint a ∂P)) := by
     rw [hRHS_eq]
     rw [integral_add
-      (f := fun a : CoeffField d => addPoint a + oscPoint a)
-      (g := fun a : CoeffField d => (gradPoint a + fluxPoint a) + productPoint a)
+      (f := fun a : RegCoeffField d => addPoint a + oscPoint a)
+      (g := fun a : RegCoeffField d => (gradPoint a + fluxPoint a) + productPoint a)
       (hAddInt.add hOscInt) ((hGradInt.add hFluxInt).add hProductInt)]
     rw [integral_add (f := addPoint) (g := oscPoint) hAddInt hOscInt]
     rw [integral_add
-      (f := fun a : CoeffField d => gradPoint a + fluxPoint a)
+      (f := fun a : RegCoeffField d => gradPoint a + fluxPoint a)
       (g := productPoint) (hGradInt.add hFluxInt) hProductInt]
     rw [integral_add (f := gradPoint) (g := fluxPoint) hGradInt hFluxInt]
     ring
@@ -284,56 +284,56 @@ theorem integrable_jUpperWeakNormManuscriptPointwiseRHSAtScale
       Integrable (Ch04.responseJObservableCubeSet R p q) P)
     (hGradWeak :
       Integrable
-        (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-          (originCube d m) s p q p0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet
+          (originCube d m) s p q p0 a.toFun) P)
     (hFluxWeak :
       Integrable
-        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-          (originCube d m) t p q q0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseFluxWeakNormCubeSet
+          (originCube d m) t p q q0 a.toFun) P)
     (hGradSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-            (originCube d m) s p q p0 a) ^ 2) P)
+            (originCube d m) s p q p0 a.toFun) ^ 2) P)
     (hFluxSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-            (originCube d m) t p q q0 a) ^ 2) P) :
+            (originCube d m) t p q q0 a.toFun) ^ 2) P) :
     Integrable
       (jUpperWeakNormManuscriptPointwiseRHSAtScale m k s t
         C Cosc scaleSep BφS BφT Cprod p q p0 q0) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d m
   let j : ℕ := Int.toNat (m - k)
-  let childAverage : CoeffField d → ℝ :=
+  let childAverage : RegCoeffField d → ℝ :=
     fun a => descendantsAverage Q j (fun R => Ch04.responseJObservableCubeSet R p q a)
-  let gradWeak : CoeffField d → ℝ :=
-    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0
-  let fluxWeak : CoeffField d → ℝ :=
-    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0
+  let gradWeak : RegCoeffField d → ℝ :=
+    fun a => Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
+  let fluxWeak : RegCoeffField d → ℝ :=
+    fun a => Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun
   let gradCoeff : ℝ :=
     (3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS
   let fluxCoeff : ℝ :=
     (3 : ℝ) ^ ((d : ℝ) + t) * cubeBesovScaleWeight (-t) Q * BφT
-  let scaledGrad : CoeffField d → ℝ := gradWeak
-  let scaledFlux : CoeffField d → ℝ := fluxWeak
-  let addPoint : CoeffField d → ℝ :=
+  let scaledGrad : RegCoeffField d → ℝ := gradWeak
+  let scaledFlux : RegCoeffField d → ℝ := fluxWeak
+  let addPoint : RegCoeffField d → ℝ :=
     fun a =>
       (2 * C) *
         (Real.sqrt (responseJAdditivityDefectAtScale m k p q a) *
           Real.sqrt (childAverage a))
-  let oscPoint : CoeffField d → ℝ :=
+  let oscPoint : RegCoeffField d → ℝ :=
     fun a => Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a
-  let gradPoint : CoeffField d → ℝ :=
+  let gradPoint : RegCoeffField d → ℝ :=
     fun a =>
       (1 / 2 : ℝ) * ‖q0‖ *
         (((Fintype.card (Fin d) : ℝ) * gradCoeff) * gradWeak a)
-  let fluxPoint : CoeffField d → ℝ :=
+  let fluxPoint : RegCoeffField d → ℝ :=
     fun a =>
       (1 / 2 : ℝ) * ‖p0‖ *
         (((Fintype.card (Fin d) : ℝ) * fluxCoeff) * fluxWeak a)
-  let productPoint : CoeffField d → ℝ :=
+  let productPoint : RegCoeffField d → ℝ :=
     fun a => Cprod * (scaledGrad a * scaledFlux a)
   have hDescDepth :
       ∀ R, R ∈ descendantsAtDepth Q j →
@@ -357,7 +357,7 @@ theorem integrable_jUpperWeakNormManuscriptPointwiseRHSAtScale
       descendantsAverage_responseJObservableCubeSet_nonneg Q j p q a
   have hSqrtProdInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Real.sqrt (responseJAdditivityDefectAtScale m k p q a) *
             Real.sqrt (childAverage a)) P :=
     integrable_sqrt_mul_sqrt_of_integrable_of_ae_nonneg
@@ -395,7 +395,7 @@ theorem integrable_jUpperWeakNormManuscriptPointwiseRHSAtScale
     simpa [productPoint] using hScaledProdInt.const_mul Cprod
   have hSumInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (addPoint a + oscPoint a) + ((gradPoint a + fluxPoint a) + productPoint a)) P :=
     (hAddInt.add hOscInt).add ((hGradInt.add hFluxInt).add hProductInt)
   refine hSumInt.congr ?_

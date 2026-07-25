@@ -40,7 +40,7 @@ theorem coarseFluctuationResponseMoment_add_star_le_four_r_m_mul_window_stochast
       MeasureTheory.MemLp
         (terminalCoarseBlockStochasticMax hP hStruct hc N m
           (Homogenization.originCube d (m : ℤ))
-          (fun x : Homogenization.CoeffField d => x))
+          (fun x : Homogenization.RegCoeffField d => x))
         (2 : ENNReal) P) :
     coarseFluctuationResponseMomentAtScale hP hStruct hP4 k m e +
         coarseFluctuationResponseMomentStarAtScale hP hStruct hP4 k m e ≤
@@ -49,23 +49,23 @@ theorem coarseFluctuationResponseMoment_add_star_le_four_r_m_mul_window_stochast
             Homogenization.Book.Ch04.annealedMomentRoot P 2
               (terminalCoarseBlockStochasticMax hP hStruct hc N m
                 (Homogenization.originCube d (m : ℤ))
-                (fun x : Homogenization.CoeffField d => x)) + 2) := by
+                (fun x : Homogenization.RegCoeffField d => x)) + 2) := by
   letI : MeasureTheory.IsProbabilityMeasure P := hP.isProbability
   let θ := Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ)
   let Troot : ℝ :=
     Homogenization.Book.Ch04.annealedMomentRoot P 2
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         terminalUncenteredCoarseBlockNorm hP hStruct m
           (Homogenization.originCube d (k : ℤ)) a)
   let Mroot : ℝ :=
     Homogenization.Book.Ch04.annealedMomentRoot P 2
       (terminalCoarseBlockStochasticMax hP hStruct hc N m
         (Homogenization.originCube d (m : ℤ))
-        (fun x : Homogenization.CoeffField d => x))
+        (fun x : Homogenization.RegCoeffField d => x))
   let B : ℝ := (3 : ℝ) ^ (hc.rhoM * (L : ℝ)) * Mroot + 2
   have hT_mem :
       MeasureTheory.MemLp
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           terminalUncenteredCoarseBlockNorm hP hStruct m
             (Homogenization.originCube d (k : ℤ)) a)
         (2 : ENNReal) P :=
@@ -109,7 +109,7 @@ theorem coarseFluctuationResponseMoment_add_star_le_four_r_m_mul_window_stochast
               Homogenization.Book.Ch04.annealedMomentRoot P 2
                 (terminalCoarseBlockStochasticMax hP hStruct hc N m
                   (Homogenization.originCube d (m : ℤ))
-                  (fun x : Homogenization.CoeffField d => x)) + 2) := by
+                  (fun x : Homogenization.RegCoeffField d => x)) + 2) := by
           rfl
 
 /--
@@ -142,7 +142,7 @@ theorem exists_bufferExponent_responseMoment_add_star_le_four_r_m_mul_window_eta
             m →
           HighCenteredMomentEstimate hm P N
             (intermediateCoarseBlockDeviation hP hStruct
-              (fun x : Homogenization.CoeffField d => x)) →
+              (fun x : Homogenization.RegCoeffField d => x)) →
           coarseFluctuationResponseMomentAtScale hP hStruct hP4 k m e +
               coarseFluctuationResponseMomentStarAtScale hP hStruct hP4 k m e ≤
             4 * r_m * ((3 : ℝ) ^ (hc.rhoM * (L : ℝ)) * η_M + 2) := by
@@ -156,7 +156,7 @@ theorem exists_bufferExponent_responseMoment_add_star_le_four_r_m_mul_window_eta
     Homogenization.Book.Ch04.annealedMomentRoot P 2
       (terminalCoarseBlockStochasticMax hP hStruct hc N m
         (Homogenization.originCube d (m : ℤ))
-        (fun x : Homogenization.CoeffField d => x))
+        (fun x : Homogenization.RegCoeffField d => x))
   let Cw : ℝ := (3 : ℝ) ^ (hc.rhoM * (L : ℝ))
   obtain ⟨hM_mem, hMroot_le⟩ :=
     hB hP hStruct hP4 hNstar hHM

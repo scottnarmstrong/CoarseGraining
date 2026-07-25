@@ -13,7 +13,7 @@ noncomputable section
 
 theorem upperSmallTailTerm_le_raw_unitDescendantSup
     {d : ℕ} [NeZero d] (m : ℕ) {s r : ℝ}
-    (hs : 0 < s) (hsr : s < r) (hr : r < 1) (a : CoeffField d) :
+    (hs : 0 < s) (hsr : s < r) (hr : r < 1) (a : RegCoeffField d) :
     let D := descendantsAtScale (originCube d (m : ℤ)) 0
     let hD : D.Nonempty :=
       descendantsAtScale_nonempty (originCube d (m : ℤ)) (by simp [originCube])
@@ -84,7 +84,7 @@ theorem upperSmallTailTerm_le_raw_unitDescendantSup
 
 theorem lowerSmallTailTerm_le_raw_unitDescendantSup
     {d : ℕ} [NeZero d] (m : ℕ) {s r : ℝ}
-    (hs : 0 < s) (hsr : s < r) (hr : r < 1) (a : CoeffField d) :
+    (hs : 0 < s) (hsr : s < r) (hr : r < 1) (a : RegCoeffField d) :
     let D := descendantsAtScale (originCube d (m : ℤ)) 0
     let hD : D.Nonempty :=
       descendantsAtScale_nonempty (originCube d (m : ℤ)) (by simp [originCube])
@@ -154,7 +154,7 @@ theorem lowerSmallTailTerm_le_raw_unitDescendantSup
 
 theorem upperSmallTailTerm_le_sameExponent_unitDescendantSum
     {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 < s)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     let D := descendantsAtScale (originCube d (m : ℤ)) 0
     let V := section52SmallTailWeight s m
     upperSmallSqrtTailCoeffField (d := d) m s a ^ 2 / V ≤
@@ -202,7 +202,7 @@ theorem upperSmallTailTerm_le_sameExponent_unitDescendantSum
 
 theorem lowerSmallTailTerm_le_sameExponent_unitDescendantSum
     {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 < s)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     let D := descendantsAtScale (originCube d (m : ℤ)) 0
     let V := section52SmallTailWeight s m
     lowerSmallSqrtTailCoeffField (d := d) m s a ^ 2 / V ≤

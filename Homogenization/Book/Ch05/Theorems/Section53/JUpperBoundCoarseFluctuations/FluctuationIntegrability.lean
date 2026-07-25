@@ -14,7 +14,7 @@ noncomputable section
 
 private theorem memLp_two_of_nonneg_pow_integrable
     {d : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
-    {ξ : ℕ} {X : CoeffField d → ℝ}
+    {ξ : ℕ} {X : RegCoeffField d → ℝ}
     (hξ : 2 ≤ ξ) (hX_meas : AEMeasurable X P)
     (hX_nonneg : ∀ᵐ a ∂P, 0 ≤ X a)
     (hXpow_int : Integrable (fun a => X a ^ ξ) P) :
@@ -32,7 +32,7 @@ private theorem memLp_two_of_nonneg_pow_integrable
 
 private theorem integrable_abs_sq_of_ae_abs_le_nonneg_memLp_two
     {d : ℕ} {P : Ch04.CoeffLaw d}
-    {X Y : CoeffField d → ℝ}
+    {X Y : RegCoeffField d → ℝ}
     (hX_meas : AEMeasurable X P)
     (hY_nonneg : ∀ a, 0 ≤ Y a)
     (hXY : ∀ᵐ a ∂P, |X a| ≤ Y a)
@@ -84,7 +84,7 @@ private theorem aemeasurable_blockMatEntry_coarseBlockMatrix_cubeSet
     (hP : Ch04.LawCarrier P) (Q : TriadicCube d)
     (α β : BlockCoord d) :
     AEMeasurable
-      (fun a : CoeffField d => blockMatEntry (coarseBlockMatrix (cubeSet Q) a) α β) P := by
+      (fun a : RegCoeffField d => blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β) P := by
   cases α with
   | inl i =>
       cases β with
@@ -181,8 +181,8 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
     (hP : Ch04.LawCarrier P) (Q : TriadicCube d)
     {sUpper sLower : ℝ} (hsUpper : 0 < sUpper) (hsLower : 0 < sLower)
     (α β : BlockCoord d) :
-    (fun a : CoeffField d =>
-        |blockMatEntry (coarseBlockMatrix (cubeSet Q) a) α β|) ≤ᵐ[P]
+    (fun a : RegCoeffField d =>
+        |blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β|) ≤ᵐ[P]
       fun a =>
         Ch04.LambdaSqCoeffField Q sUpper (.finite 1) a +
           (Ch04.lambdaSqCoeffField Q sLower (.finite 1) a)⁻¹ := by
@@ -190,26 +190,26 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
   let F : Ch02.TriadicCoeffFamily d :=
     Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hEq :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
-  have hSymm : IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a) := by
+  have hSymm : IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) := by
     rw [hEq]
     exact Ch02.isSymmetricBlockMat_coarseBlockMatrix
       (Ch02.cubeDomain Q) (F.coeffOn Q)
-  have hPos : Ch02.BlockPosDef (coarseBlockMatrix (cubeSet Q) a) := by
+  have hPos : Ch02.BlockPosDef (coarseBlockMatrix (cubeSet Q) a.toFun) := by
     rw [hEq]
     exact
       (Ch02.blockCoarseMatrixTheory (Ch02.cubeDomain Q)
         (F.coeffOn Q)).block_matrix_posDef
   have hUpperEntry : ∀ i j : Fin d,
-      |(coarseBlockMatrix (cubeSet Q) a).upperLeft i j| ≤
+      |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j| ≤
         Ch04.LambdaSqCoeffField Q sUpper (.finite 1) a := by
     intro i j
     calc
-      |(coarseBlockMatrix (cubeSet Q) a).upperLeft i j|
+      |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j|
           = |(Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q)).upperLeft i j| := by
             rw [hEq]
       _ ≤ Ch02.coarseBMatrixNorm Q F := by
@@ -222,11 +222,11 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
       _ = Ch04.LambdaSqCoeffField Q sUpper (.finite 1) a := by
           simp [Ch04.LambdaSqCoeffField, ha, F]
   have hLowerEntry : ∀ i j : Fin d,
-      |(coarseBlockMatrix (cubeSet Q) a).lowerRight i j| ≤
+      |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j| ≤
         (Ch04.lambdaSqCoeffField Q sLower (.finite 1) a)⁻¹ := by
     intro i j
     calc
-      |(coarseBlockMatrix (cubeSet Q) a).lowerRight i j|
+      |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j|
           = |(Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q)).lowerRight i j| := by
             rw [hEq]
       _ ≤ Ch02.coarseSigmaStarInvMatrixNorm Q F := by
@@ -252,18 +252,18 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
           exact (hUpperEntry i j).trans (by linarith)
       | inr j =>
           have hcross :
-              |blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inl i) (Sum.inr j)| ≤
+              |blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inl i) (Sum.inr j)| ≤
                 (1 / 2 : ℝ) *
-                  (blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inl i) (Sum.inl i) +
-                    blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inr j) (Sum.inr j)) :=
+                  (blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inl i) (Sum.inl i) +
+                    blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inr j) (Sum.inr j)) :=
             abs_cross_blockMatEntry_le_diag_sum_of_blockPosDef' hSymm hPos
               (by intro h; cases h)
           have hUL :
-              blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inl i) (Sum.inl i) ≤
+              blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inl i) (Sum.inl i) ≤
                 Ch04.LambdaSqCoeffField Q sUpper (.finite 1) a := by
             exact (le_abs_self _).trans (by simpa [blockMatEntry] using hUpperEntry i i)
           have hLR :
-              blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inr j) (Sum.inr j) ≤
+              blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inr j) (Sum.inr j) ≤
                 (Ch04.lambdaSqCoeffField Q sLower (.finite 1) a)⁻¹ := by
             exact (le_abs_self _).trans (by simpa [blockMatEntry] using hLowerEntry j j)
           linarith
@@ -271,18 +271,18 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
       cases β with
       | inl j =>
           have hcross :
-              |blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inr i) (Sum.inl j)| ≤
+              |blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inr i) (Sum.inl j)| ≤
                 (1 / 2 : ℝ) *
-                  (blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inr i) (Sum.inr i) +
-                    blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inl j) (Sum.inl j)) :=
+                  (blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inr i) (Sum.inr i) +
+                    blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inl j) (Sum.inl j)) :=
             abs_cross_blockMatEntry_le_diag_sum_of_blockPosDef' hSymm hPos
               (by intro h; cases h)
           have hLR :
-              blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inr i) (Sum.inr i) ≤
+              blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inr i) (Sum.inr i) ≤
                 (Ch04.lambdaSqCoeffField Q sLower (.finite 1) a)⁻¹ := by
             exact (le_abs_self _).trans (by simpa [blockMatEntry] using hLowerEntry i i)
           have hUL :
-              blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inl j) (Sum.inl j) ≤
+              blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inl j) (Sum.inl j) ≤
                 Ch04.LambdaSqCoeffField Q sUpper (.finite 1) a := by
             exact (le_abs_self _).trans (by simpa [blockMatEntry] using hUpperEntry j j)
           linarith
@@ -295,14 +295,14 @@ private theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (n : ℕ) (α β : BlockCoord d) :
     MemLp
-      (fun a : CoeffField d =>
-        blockMatEntry (coarseBlockMatrix (cubeSet (originCube d (n : ℤ))) a) α β)
+      (fun a : RegCoeffField d =>
+        blockMatEntry (coarseBlockMatrix (cubeSet (originCube d (n : ℤ))) a.toFun) α β)
       (2 : ENNReal) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (n : ℤ)
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField Q hP4.sUpper (.finite 1) a
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     fun a => (Ch04.lambdaSqCoeffField Q hP4.sLower (.finite 1) a)⁻¹
   have hX_meas : AEMeasurable X P := by
     simpa [X, Q] using
@@ -336,8 +336,8 @@ private theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
     hX_mem2.add hY_mem2
   have hEntry_meas :
       AEMeasurable
-        (fun a : CoeffField d =>
-          blockMatEntry (coarseBlockMatrix (cubeSet Q) a) α β) P := by
+        (fun a : RegCoeffField d =>
+          blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β) P := by
     simpa [Q] using
       aemeasurable_blockMatEntry_coarseBlockMatrix_cubeSet
         hP (originCube d (n : ℤ)) α β
@@ -351,15 +351,15 @@ private theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
           (by norm_num : (1 : ℝ) ≤ 1)))
   have hEntry_bound :
       ∀ᵐ a ∂P,
-        |blockMatEntry (coarseBlockMatrix (cubeSet Q) a) α β| ≤
+        |blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β| ≤
           X a + Y a := by
     simpa [X, Y, Q] using
       blockMatEntry_abs_le_factor_sum_ae
         hP (originCube d (n : ℤ)) hP4.sUpper_pos hP4.sLower_pos α β
   have hEntry_abs_sq :
       Integrable
-        (fun a : CoeffField d =>
-          |blockMatEntry (coarseBlockMatrix (cubeSet Q) a) α β| ^ 2) P :=
+        (fun a : RegCoeffField d =>
+          |blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β| ^ 2) P :=
     integrable_abs_sq_of_ae_abs_le_nonneg_memLp_two
       hEntry_meas hXY_nonneg hEntry_bound hXY_mem2
   rw [← MeasureTheory.integrable_norm_rpow_iff hEntry_meas.aestronglyMeasurable
@@ -377,8 +377,8 @@ theorem memLp_two_responseJObservableCubeSet_originCube_from_P4
   classical
   letI : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (k : ℤ)
-  let M : CoeffField d → BlockMat d := fun a => coarseBlockMatrix (cubeSet Q) a
-  let quad : CoeffField d → ℝ :=
+  let M : RegCoeffField d → BlockMat d := fun a => coarseBlockMatrix (cubeSet Q) a.toFun
+  let quad : RegCoeffField d → ℝ :=
     fun a =>
       (1 / 2 : ℝ) * vecDot q (matVecMul (M a).lowerRight q) -
         vecDot p q -
@@ -386,7 +386,7 @@ theorem memLp_two_responseJObservableCubeSet_originCube_from_P4
         (1 / 2 : ℝ) * vecDot p (matVecMul (M a).upperLeft p)
   have hLR_entry :
       ∀ i j : Fin d,
-        MemLp (fun a : CoeffField d => (M a).lowerRight i j)
+        MemLp (fun a : RegCoeffField d => (M a).lowerRight i j)
           (2 : ENNReal) P := by
     intro i j
     simpa [M, Q, blockMatEntry] using
@@ -394,7 +394,7 @@ theorem memLp_two_responseJObservableCubeSet_originCube_from_P4
         hP hStruct hP4 k (Sum.inr i) (Sum.inr j)
   have hLL_entry :
       ∀ i j : Fin d,
-        MemLp (fun a : CoeffField d => (M a).lowerLeft i j)
+        MemLp (fun a : RegCoeffField d => (M a).lowerLeft i j)
           (2 : ENNReal) P := by
     intro i j
     simpa [M, Q, blockMatEntry] using
@@ -402,46 +402,46 @@ theorem memLp_two_responseJObservableCubeSet_originCube_from_P4
         hP hStruct hP4 k (Sum.inr i) (Sum.inl j)
   have hUL_entry :
       ∀ i j : Fin d,
-        MemLp (fun a : CoeffField d => (M a).upperLeft i j)
+        MemLp (fun a : RegCoeffField d => (M a).upperLeft i j)
           (2 : ENNReal) P := by
     intro i j
     simpa [M, Q, blockMatEntry] using
       memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
         hP hStruct hP4 k (Sum.inl i) (Sum.inl j)
   have hLR :
-      MemLp (fun a : CoeffField d => vecDot q (matVecMul (M a).lowerRight q))
+      MemLp (fun a : RegCoeffField d => vecDot q (matVecMul (M a).lowerRight q))
         (2 : ENNReal) P := by
     simp [vecDot, matVecMul]
     refine memLp_finset_sum (s := (Finset.univ : Finset (Fin d))) ?_
     intro i _hi
     have hinner :
-        MemLp (fun a : CoeffField d => ∑ j : Fin d, (M a).lowerRight i j * q j)
+        MemLp (fun a : RegCoeffField d => ∑ j : Fin d, (M a).lowerRight i j * q j)
           (2 : ENNReal) P := by
       refine memLp_finset_sum (s := (Finset.univ : Finset (Fin d))) ?_
       intro j _hj
       simpa [mul_comm] using (hLR_entry i j).const_mul (q j)
     exact hinner.const_mul (q i)
   have hLL :
-      MemLp (fun a : CoeffField d => vecDot q (matVecMul (M a).lowerLeft p))
+      MemLp (fun a : RegCoeffField d => vecDot q (matVecMul (M a).lowerLeft p))
         (2 : ENNReal) P := by
     simp [vecDot, matVecMul]
     refine memLp_finset_sum (s := (Finset.univ : Finset (Fin d))) ?_
     intro i _hi
     have hinner :
-        MemLp (fun a : CoeffField d => ∑ j : Fin d, (M a).lowerLeft i j * p j)
+        MemLp (fun a : RegCoeffField d => ∑ j : Fin d, (M a).lowerLeft i j * p j)
           (2 : ENNReal) P := by
       refine memLp_finset_sum (s := (Finset.univ : Finset (Fin d))) ?_
       intro j _hj
       simpa [mul_comm] using (hLL_entry i j).const_mul (p j)
     exact hinner.const_mul (q i)
   have hUL :
-      MemLp (fun a : CoeffField d => vecDot p (matVecMul (M a).upperLeft p))
+      MemLp (fun a : RegCoeffField d => vecDot p (matVecMul (M a).upperLeft p))
         (2 : ENNReal) P := by
     simp [vecDot, matVecMul]
     refine memLp_finset_sum (s := (Finset.univ : Finset (Fin d))) ?_
     intro i _hi
     have hinner :
-        MemLp (fun a : CoeffField d => ∑ j : Fin d, (M a).upperLeft i j * p j)
+        MemLp (fun a : RegCoeffField d => ∑ j : Fin d, (M a).upperLeft i j * p j)
           (2 : ENNReal) P := by
       refine memLp_finset_sum (s := (Finset.univ : Finset (Fin d))) ?_
       intro j _hj
@@ -454,7 +454,7 @@ theorem memLp_two_responseJObservableCubeSet_originCube_from_P4
           (memLp_const (c := vecDot p q) (μ := P) (p := (2 : ENNReal)))).sub hLL).add
         (hUL.const_mul (1 / 2 : ℝ))
   have hformula :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p q a) =ᵐ[P]
         quad := by
     simpa [quad, M, Q] using
@@ -471,8 +471,8 @@ theorem memLp_two_responseJObservableCubeSet_cubeSet_from_P4_of_stationary
     MemLp (Ch04.responseJObservableCubeSet R p q) (2 : ENNReal) P := by
   let n : ℕ := Int.toNat R.scale
   let z : Fin d → ℤ := Ch04.scaleTranslationShift R.scale R
-  let X : CoeffField d → ℝ :=
-    fun a => ResponseJ (cubeSet (originCube d R.scale)) p q a
+  let X : RegCoeffField d → ℝ :=
+    fun a => ResponseJ (cubeSet (originCube d R.scale)) p q a.toFun
   have hOrigin :
       MemLp X (2 : ENNReal) P := by
     have hbase :=
@@ -482,22 +482,22 @@ theorem memLp_two_responseJObservableCubeSet_cubeSet_from_P4_of_stationary
       simpa [n] using Int.toNat_of_nonneg hR_nonneg
     simpa [X, Ch04.responseJObservableCubeSet, hn] using hbase
   have hOrigin_map :
-      MemLp X (2 : ENNReal) (Measure.map (translateByInt z) P) := by
+      MemLp X (2 : ENNReal) (Measure.map (translateReg (intVecToRealVec z)) P) := by
     simpa [hstat z] using hOrigin
-  have hComp : MemLp (X ∘ translateByInt z) (2 : ENNReal) P :=
-    hOrigin_map.comp_of_map (measurable_translateByInt z).aemeasurable
+  have hComp : MemLp (X ∘ translateReg (intVecToRealVec z)) (2 : ENNReal) P :=
+    hOrigin_map.comp_of_map (measurable_translateReg (intVecToRealVec z)).aemeasurable
   have hshift :
       cubeSet R =
         translateSet (intVecToRealVec z) (cubeSet (originCube d R.scale)) := by
     simpa [z] using
       Ch04.cubeSet_eq_translateSet_originCube_of_nonneg_scale (R := R) hR_nonneg
   have hEq :
-      Ch04.responseJObservableCubeSet R p q =ᵐ[P] X ∘ translateByInt z := by
+      Ch04.responseJObservableCubeSet R p q =ᵐ[P] X ∘ translateReg (intVecToRealVec z) := by
     filter_upwards with a
     dsimp [X, Ch04.responseJObservableCubeSet, Function.comp]
-    rw [hshift]
+    rw [hshift, Ch04.translateReg_toFun]
     exact Ch04.responseJCubeSet_translation_covariant p q
-      (cubeSet (originCube d R.scale)) z a
+      (cubeSet (originCube d R.scale)) z a.toFun
   exact MemLp.ae_eq hEq.symm hComp
 
 theorem memLp_zeta_responseJObservableCubeSet_cubeSet_from_P4_of_stationary
@@ -526,7 +526,7 @@ theorem memLp_zeta_descendantsAverage_responseJObservableCubeSet_originCube_from
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     (p q : Vec d) :
     MemLp
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverage (originCube d m) (Int.toNat (m - k))
           (fun R => Ch04.responseJObservableCubeSet R p q a))
       (ENNReal.ofReal (section53CoarseFluctuationZeta hP4)) P := by
@@ -541,12 +541,16 @@ theorem memLp_zeta_descendantsAverage_responseJObservableCubeSet_originCube_from
 
 private theorem responseJObservableCubeSet_rpow_translation_covariant
     {d : ℕ} (ζ : ℝ) (p q : Vec d) :
-    IsTranslationCovariant
+    Ch04.IsTranslationCovariantR
+      (fun U : Set (Vec d) => fun a : RegCoeffField d =>
+        Real.rpow (ResponseJ U p q a.toFun) ζ) := by
+  have hraw : IsTranslationCovariant
       (fun U : Set (Vec d) => fun a : CoeffField d =>
         Real.rpow (ResponseJ U p q a) ζ) := by
-  intro U z a
-  exact congrArg (fun x : ℝ => Real.rpow x ζ)
-    (Ch04.responseJCubeSet_translation_covariant p q U z a)
+    intro U z a
+    exact congrArg (fun x : ℝ => Real.rpow x ζ)
+      (Ch04.responseJCubeSet_translation_covariant p q U z a)
+  exact Ch04.isTranslationCovariantR_comp_toFun hraw
 
 theorem integral_rpow_responseJObservableCubeSet_cubeSet_eq_originCube_of_stationary
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
@@ -563,7 +567,7 @@ theorem integral_rpow_responseJObservableCubeSet_cubeSet_eq_originCube_of_statio
   calc
     ∫ a, Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ ∂P
         =
-      ∫ a, Real.rpow (ResponseJ (cubeSet R) p q a) ζ ∂P := by
+      ∫ a, Real.rpow (ResponseJ (cubeSet R) p q a.toFun) ζ ∂P := by
         rfl
     _ =
       ∫ a,
@@ -573,9 +577,9 @@ theorem integral_rpow_responseJObservableCubeSet_cubeSet_eq_originCube_of_statio
               (cubeSet (originCube d R.scale))) p q a) ζ ∂P := by
           rw [hshift]
     _ =
-      ∫ a, Real.rpow (ResponseJ (cubeSet (originCube d R.scale)) p q a) ζ ∂P := by
+      ∫ a, Real.rpow (ResponseJ (cubeSet (originCube d R.scale)) p q a.toFun) ζ ∂P := by
         exact
-          integral_eq_of_isTranslationCovariant_of_isStationary_aestronglyMeasurable
+          Ch04.integral_eq_of_isTranslationCovariantR_of_stationary_aestronglyMeasurable
             (P := P) hstat
             (U := cubeSet (originCube d R.scale))
             (by
@@ -657,7 +661,7 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
   let ζ := section53CoarseFluctuationZeta hP4
   let Q : TriadicCube d := originCube d m
   let j : ℕ := Int.toNat (m - k)
-  let childAvg : CoeffField d → ℝ :=
+  let childAvg : RegCoeffField d → ℝ :=
     fun a =>
       descendantsAverage Q j
         (fun R => Ch04.responseJObservableCubeSet R p q a)
@@ -671,13 +675,13 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
       memLp_zeta_descendantsAverage_responseJObservableCubeSet_originCube_from_P4_of_stationary
         hP hstat hStruct hP4 hk_nonneg hkm p q
   have hchild_int :
-      Integrable (fun a : CoeffField d => Real.rpow (childAvg a) ζ) P := by
+      Integrable (fun a : RegCoeffField d => Real.rpow (childAvg a) ζ) P := by
     have hζ_ne_zero : ENNReal.ofReal ζ ≠ 0 := by
       simp [ENNReal.ofReal_eq_zero, not_le.mpr hζ_pos]
     have hζ_ne_top : ENNReal.ofReal ζ ≠ ⊤ := by simp
     have hint :
         Integrable
-          (fun a : CoeffField d => ‖childAvg a‖ ^ (ENNReal.ofReal ζ).toReal) P :=
+          (fun a : RegCoeffField d => ‖childAvg a‖ ^ (ENNReal.ofReal ζ).toReal) P :=
       hchild_mem.integrable_norm_rpow hζ_ne_zero hζ_ne_top
     refine hint.congr ?_
     filter_upwards with a
@@ -690,11 +694,11 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
       Real.rpow_eq_pow]
   have horigin_int :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Real.rpow (Ch04.responseJObservableCubeSet (originCube d k) p q a) ζ) P := by
     have hknat : ((Int.toNat k : ℕ) : ℤ) = k :=
       Int.toNat_of_nonneg hk_nonneg
-    let J : CoeffField d → ℝ :=
+    let J : RegCoeffField d → ℝ :=
       Ch04.responseJObservableCubeSet (originCube d k) p q
     have hζ_le_two : ENNReal.ofReal ζ ≤ (2 : ENNReal) := by
       rw [← ENNReal.ofReal_ofNat]
@@ -712,7 +716,7 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
     have hζ_ne_top : ENNReal.ofReal ζ ≠ ⊤ := by
       simp
     have hint :
-        Integrable (fun a : CoeffField d => ‖J a‖ ^ (ENNReal.ofReal ζ).toReal) P :=
+        Integrable (fun a : RegCoeffField d => ‖J a‖ ^ (ENNReal.ofReal ζ).toReal) P :=
       hJ_memζ.integrable_norm_rpow hζ_ne_zero hζ_ne_top
     refine hint.congr ?_
     filter_upwards with a
@@ -721,7 +725,7 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
     rw [ENNReal.toReal_ofReal hζ_pos.le, Real.norm_of_nonneg hJ_nonneg,
       Real.rpow_eq_pow]
   have hpoint :
-      (fun a : CoeffField d => Real.rpow (childAvg a) ζ) ≤ᵐ[P]
+      (fun a : RegCoeffField d => Real.rpow (childAvg a) ζ) ≤ᵐ[P]
         fun a => descendantsAverage Q j
           (fun R => Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ) := by
     filter_upwards with a
@@ -731,7 +735,7 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
         (fun R hR => Ch04.responseJObservableCubeSet_nonneg R p q a)
   have hdesc_int :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           descendantsAverage Q j
             (fun R => Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ)) P := by
     refine Ch04.integrable_descendantsAverage ?_
@@ -753,7 +757,7 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
     have hζ_ne_top : ENNReal.ofReal ζ ≠ ⊤ := by simp
     have hint :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ‖Ch04.responseJObservableCubeSet R p q a‖ ^
               (ENNReal.ofReal ζ).toReal) P :=
       hR_mem.integrable_norm_rpow hζ_ne_zero hζ_ne_top
@@ -781,7 +785,7 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
     have hFint :
         ∀ R, R ∈ descendantsAtDepth Q j →
           Integrable
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ) P := by
       intro R hR
       have hRscaleMem : R ∈ descendantsAtScale (originCube d m) k := by
@@ -798,7 +802,7 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
       have hζ_ne_top : ENNReal.ofReal ζ ≠ ⊤ := by simp
       have hint :
           Integrable
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               ‖Ch04.responseJObservableCubeSet R p q a‖ ^
                 (ENNReal.ofReal ζ).toReal) P :=
         hR_mem.integrable_norm_rpow hζ_ne_zero hζ_ne_top

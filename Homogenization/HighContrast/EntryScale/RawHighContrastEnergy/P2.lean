@@ -361,17 +361,17 @@ theorem specialWeakNormEnergy_componentBudget_childTail_le_weakNormContribution_
        let q_e :=
         Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
        let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-       let lowerTerminal := fun a : Homogenization.CoeffField d =>
+       let lowerTerminal := fun a : Homogenization.RegCoeffField d =>
         max
           ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
             (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹)
           0
-       let upperTerminal := fun a : Homogenization.CoeffField d =>
+       let upperTerminal := fun a : Homogenization.RegCoeffField d =>
         max
           (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
             hP.barSigmaAtScale hStruct (m : ℤ))
           0
-       let defectSum := fun a : Homogenization.CoeffField d =>
+       let defectSum := fun a : Homogenization.RegCoeffField d =>
         ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
           Real.rpow (3 : ℝ)
               (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
@@ -408,17 +408,17 @@ theorem specialWeakNormEnergy_componentBudget_childTail_le_weakNormContribution_
             σ⁻¹ *
               (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.fluxAverageTermAtScale
                 (m : ℤ) (k : ℤ) t p_e q_e q0_e a) ^ 2) ∂P
-      let lowerExcess := fun a : Homogenization.CoeffField d =>
+      let lowerExcess := fun a : Homogenization.RegCoeffField d =>
         max
           ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
             (hP.barSigmaStarAtScale hStruct (k : ℤ))⁻¹)
           0
-      let upperExcess := fun a : Homogenization.CoeffField d =>
+      let upperExcess := fun a : Homogenization.RegCoeffField d =>
         max
           (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
             hP.barSigmaAtScale hStruct (k : ℤ))
           0
-      let defectSum := fun a : Homogenization.CoeffField d =>
+      let defectSum := fun a : Homogenization.RegCoeffField d =>
         ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
           Real.rpow (3 : ℝ)
               (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
@@ -480,27 +480,27 @@ theorem specialWeakNormEnergy_componentBudget_childTail_le_weakNormContribution_
         σ⁻¹ *
           (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.fluxAverageTermAtScale
             (m : ℤ) (k : ℤ) t p_e q_e q0_e a) ^ 2) ∂P
-  let lowerLocal := fun a : Homogenization.CoeffField d =>
+  let lowerLocal := fun a : Homogenization.RegCoeffField d =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
         (hP.barSigmaStarAtScale hStruct (k : ℤ))⁻¹)
       0
-  let upperLocal := fun a : Homogenization.CoeffField d =>
+  let upperLocal := fun a : Homogenization.RegCoeffField d =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
         hP.barSigmaAtScale hStruct (k : ℤ))
       0
-  let lowerTerminal := fun a : Homogenization.CoeffField d =>
+  let lowerTerminal := fun a : Homogenization.RegCoeffField d =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
         (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹)
       0
-  let upperTerminal := fun a : Homogenization.CoeffField d =>
+  let upperTerminal := fun a : Homogenization.RegCoeffField d =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
         hP.barSigmaAtScale hStruct (m : ℤ))
       0
-  let defectSum := fun a : Homogenization.CoeffField d =>
+  let defectSum := fun a : Homogenization.RegCoeffField d =>
     ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
       Real.rpow (3 : ℝ)
           (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
@@ -528,7 +528,7 @@ theorem specialWeakNormEnergy_componentBudget_childTail_le_weakNormContribution_
         P_km * coarseFluctuationResponseMomentAtScale hP hStruct hP4 k m e)
   have hTerminalEdge_int :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           (σ * lowerTerminal a + σ⁻¹ * upperTerminal a) *
             defectSum a ^ 2) P := by
     simpa only [β, s', t', Q, p_e, q_e, σ, lowerTerminal, upperTerminal, defectSum]
@@ -675,17 +675,17 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
         (hHM :
           HighCenteredMomentEstimate hm P N
             (intermediateCoarseBlockDeviation hP hStruct
-              (fun x : Homogenization.CoeffField d => x))) →
-        ∀ (M_sub : ℕ → Homogenization.CoeffField d → ℝ),
+              (fun x : Homogenization.RegCoeffField d => x))) →
+        ∀ (M_sub : ℕ → Homogenization.RegCoeffField d → ℝ),
         AEMeasurable (M_sub m) P →
         ∀ {stochRoot polyRoot : ℝ},
         ((∫⁻ ω, ‖terminalCoarseBlockStochasticMax hP hStruct hc N m
             (Homogenization.originCube d (m : ℤ))
-            (fun x : Homogenization.CoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
+            (fun x : Homogenization.RegCoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
           (∫⁻ ω, ‖M_sub m ω‖ₑ ^ (2 : ℝ) ∂P) ≠ ⊤) →
         (2 * (((∫⁻ ω, ‖terminalCoarseBlockStochasticMax hP hStruct hc N m
               (Homogenization.originCube d (m : ℤ))
-              (fun x : Homogenization.CoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
+              (fun x : Homogenization.RegCoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
             (∫⁻ ω, ‖M_sub m ω‖ₑ ^ (2 : ℝ) ∂P)).toReal ^ (1 / (hP4.xi : ℝ))) ≤
           stochRoot) →
         ((ENNReal.ofReal
@@ -739,16 +739,16 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
          let q_e :=
           Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
          let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-         let childAvg := fun a : Homogenization.CoeffField d =>
+         let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
             (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-         let response := fun a : Homogenization.CoeffField d =>
+         let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
-         let lowerSmall := fun a : Homogenization.CoeffField d =>
+         let lowerSmall := fun a : Homogenization.RegCoeffField d =>
           Homogenization.Book.Ch05.Section52.lowerSmallSqrtTailCoeffField
               (d := d) m s' a ^ 2 /
             Homogenization.Book.Ch05.Section52.section52SmallTailWeight s' m
-         let upperSmall := fun a : Homogenization.CoeffField d =>
+         let upperSmall := fun a : Homogenization.RegCoeffField d =>
           Homogenization.Book.Ch05.Section52.upperSmallSqrtTailCoeffField
               (d := d) m t' a ^ 2 /
             Homogenization.Book.Ch05.Section52.section52SmallTailWeight t' m
@@ -764,12 +764,12 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
          let q_e :=
           Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
          let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-         let childAvg := fun a : Homogenization.CoeffField d =>
+         let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
             (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-         let response := fun a : Homogenization.CoeffField d =>
+         let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
-         let lowerSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+         let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
           let parents := Homogenization.descendantsAtScale Q n.1
           let hparents : parents.Nonempty :=
             Homogenization.descendantsAtScale_nonempty Q
@@ -784,7 +784,7 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
               0
           Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s' m n.1 *
             (σ * parents.sup' hparents lowerExcess) * response a
-         let upperSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+         let upperSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
           let parents := Homogenization.descendantsAtScale Q n.1
           let hparents : parents.Nonempty :=
             Homogenization.descendantsAtScale_nonempty Q
@@ -799,7 +799,7 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
               0
           Homogenization.Book.Ch05.Section52.section52LargeScaleWeight t' m n.1 *
             (σ⁻¹ * parents.sup' hparents upperExcess) * response a
-         let lowSum := fun a : Homogenization.CoeffField d =>
+         let lowSum := fun a : Homogenization.RegCoeffField d =>
           S.attach.sum fun n =>
             if k ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
          ∫ a, lowSum a ∂P ≤ lowBudget) →
@@ -888,27 +888,27 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
         σ⁻¹ *
           (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.fluxAverageTermAtScale
             (m : ℤ) (k : ℤ) t p_e q_e q0_e a) ^ 2) ∂P
-  let lowerExcess := fun a : Homogenization.CoeffField d =>
+  let lowerExcess := fun a : Homogenization.RegCoeffField d =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
         (hP.barSigmaStarAtScale hStruct (k : ℤ))⁻¹)
       0
-  let upperExcess := fun a : Homogenization.CoeffField d =>
+  let upperExcess := fun a : Homogenization.RegCoeffField d =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
         hP.barSigmaAtScale hStruct (k : ℤ))
       0
-  let lowerTerminal := fun a : Homogenization.CoeffField d =>
+  let lowerTerminal := fun a : Homogenization.RegCoeffField d =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
         (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹)
       0
-  let upperTerminal := fun a : Homogenization.CoeffField d =>
+  let upperTerminal := fun a : Homogenization.RegCoeffField d =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
         hP.barSigmaAtScale hStruct (m : ℤ))
       0
-  let defectSum := fun a : Homogenization.CoeffField d =>
+  let defectSum := fun a : Homogenization.RegCoeffField d =>
     ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
       Real.rpow (3 : ℝ)
           (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
@@ -930,21 +930,21 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
         weightedTauSumAtScales hP hStruct hP4 k m e +
       lowerEdge +
       (1 + contrastExcessAtScale hP hStruct m) * 0
-  let childAvg := fun a : Homogenization.CoeffField d =>
+  let childAvg := fun a : Homogenization.RegCoeffField d =>
     Homogenization.descendantsAverage Q (m - k)
       (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-  let response := fun a : Homogenization.CoeffField d =>
+  let response := fun a : Homogenization.RegCoeffField d =>
     (5 * β⁻¹) ^ 2 * childAvg a
-  let lowerSmall := fun a : Homogenization.CoeffField d =>
+  let lowerSmall := fun a : Homogenization.RegCoeffField d =>
     Homogenization.Book.Ch05.Section52.lowerSmallSqrtTailCoeffField
         (d := d) m s' a ^ 2 /
       Homogenization.Book.Ch05.Section52.section52SmallTailWeight s' m
-  let upperSmall := fun a : Homogenization.CoeffField d =>
+  let upperSmall := fun a : Homogenization.RegCoeffField d =>
     Homogenization.Book.Ch05.Section52.upperSmallSqrtTailCoeffField
         (d := d) m t' a ^ 2 /
       Homogenization.Book.Ch05.Section52.section52SmallTailWeight t' m
   let S := Homogenization.Book.Ch05.Section52.section52LargeScaleSet m
-  let lowerSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+  let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
     let parents := Homogenization.descendantsAtScale Q n.1
     let hparents : parents.Nonempty :=
       Homogenization.descendantsAtScale_nonempty Q
@@ -959,7 +959,7 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
         0
     Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s' m n.1 *
       (σ * parents.sup' hparents lowerExcess) * response a
-  let upperSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+  let upperSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
     let parents := Homogenization.descendantsAtScale Q n.1
     let hparents : parents.Nonempty :=
       Homogenization.descendantsAtScale_nonempty Q
@@ -974,12 +974,12 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
         0
     Homogenization.Book.Ch05.Section52.section52LargeScaleWeight t' m n.1 *
       (σ⁻¹ * parents.sup' hparents upperExcess) * response a
-  let lowSum := fun a : Homogenization.CoeffField d =>
+  let lowSum := fun a : Homogenization.RegCoeffField d =>
     S.attach.sum fun n =>
       if k ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
   let sourceMax :=
     terminalSpectralPositivePartSourceMax hP hStruct hc k m Q
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   let responseMoment : ℝ :=
     coarseFluctuationResponseMomentAtScale hP hStruct hP4 k m e
   let edgeLossBudget : ℝ :=
@@ -1023,10 +1023,10 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
         Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg R p_e q_e a)
   have hsrc_nonneg_pb : ∀ a, 0 ≤ sourceMax a :=
     terminalSpectralPositivePartSourceMax_nonneg hP hStruct hc k m Q
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   have hMinChildInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           min (sourceMax a) 1 * childAvg a) P := by
     simpa only [β, Q, p_e, q_e, childAvg, sourceMax] using
       integrable_min_terminalSourceMax_one_mul_childResponseAverage_special
@@ -1036,12 +1036,12 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
       hP hStruct.stationary hStruct hP4 hc hm hparams hNk hkm hHM e
   have hBadChildInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           badEventTruncation sourceMax a * childAvg a) P := by
     simpa only [β, Q, p_e, q_e, childAvg, sourceMax] using hBadChildPair.1
   have hMinRespInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           min (sourceMax a) 1 * response a) P := by
     refine (hMinChildInt.const_mul ((5 * β⁻¹) ^ 2)).congr ?_
     filter_upwards with a
@@ -1049,7 +1049,7 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
     ring
   have hBadRespInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           badEventTruncation sourceMax a * response a) P := by
     refine (hBadChildInt.const_mul ((5 * β⁻¹) ^ 2)).congr ?_
     filter_upwards with a
@@ -1215,21 +1215,21 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
       let q_e :=
         Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
       let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-      let childAvg := fun a : Homogenization.CoeffField d =>
+      let childAvg := fun a : Homogenization.RegCoeffField d =>
         Homogenization.descendantsAverage Q (m - k)
           (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-      let response := fun a : Homogenization.CoeffField d =>
+      let response := fun a : Homogenization.RegCoeffField d =>
         (5 * β⁻¹) ^ 2 * childAvg a
-      let lowerSmall := fun a : Homogenization.CoeffField d =>
+      let lowerSmall := fun a : Homogenization.RegCoeffField d =>
         Homogenization.Book.Ch05.Section52.lowerSmallSqrtTailCoeffField
             (d := d) m s' a ^ 2 /
           Homogenization.Book.Ch05.Section52.section52SmallTailWeight s' m
-      let upperSmall := fun a : Homogenization.CoeffField d =>
+      let upperSmall := fun a : Homogenization.RegCoeffField d =>
         Homogenization.Book.Ch05.Section52.upperSmallSqrtTailCoeffField
             (d := d) m t' a ^ 2 /
           Homogenization.Book.Ch05.Section52.section52SmallTailWeight t' m
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           (σ * lowerSmall a + σ⁻¹ * upperSmall a) * response a) P := by
     simpa only [Homogenization.Book.Ch05.sigmaHatAtScale_eq, Homogenization.Book.Ch05.specialPAtScale_eq, one_div, Real.rpow_eq_pow, Homogenization.Book.Ch05.specialQAtScale_eq, Homogenization.Book.Ch04.responseJObservableCubeSet_apply] using
       (integrable_section52SmallTail_childResponseAverage_special_and_integral_le_responseMoment
@@ -1245,12 +1245,12 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
       let q_e :=
         Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
       let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-      let childAvg := fun a : Homogenization.CoeffField d =>
+      let childAvg := fun a : Homogenization.RegCoeffField d =>
         Homogenization.descendantsAverage Q (m - k)
           (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-      let response := fun a : Homogenization.CoeffField d =>
+      let response := fun a : Homogenization.RegCoeffField d =>
         (5 * β⁻¹) ^ 2 * childAvg a
-      let lowerSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+      let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
         let parents := Homogenization.descendantsAtScale Q n.1
         let hparents : parents.Nonempty :=
           Homogenization.descendantsAtScale_nonempty Q
@@ -1265,7 +1265,7 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
             0
         Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s' m n.1 *
           (σ * parents.sup' hparents lowerExcess) * response a
-      let upperSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+      let upperSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
         let parents := Homogenization.descendantsAtScale Q n.1
         let hparents : parents.Nonempty :=
           Homogenization.descendantsAtScale_nonempty Q
@@ -1280,7 +1280,7 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
             0
         Homogenization.Book.Ch05.Section52.section52LargeScaleWeight t' m n.1 *
           (σ⁻¹ * parents.sup' hparents upperExcess) * response a
-      let lowSum := fun a : Homogenization.CoeffField d =>
+      let lowSum := fun a : Homogenization.RegCoeffField d =>
         S.attach.sum fun n =>
           if k ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
       MeasureTheory.Integrable lowSum P := by
@@ -1301,17 +1301,17 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
       let q_e :=
         Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
       let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-      let lowerTerminal := fun a : Homogenization.CoeffField d =>
+      let lowerTerminal := fun a : Homogenization.RegCoeffField d =>
         max
           ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
             (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹)
           0
-      let upperTerminal := fun a : Homogenization.CoeffField d =>
+      let upperTerminal := fun a : Homogenization.RegCoeffField d =>
         max
           (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
             hP.barSigmaAtScale hStruct (m : ℤ))
           0
-      let defectSum := fun a : Homogenization.CoeffField d =>
+      let defectSum := fun a : Homogenization.RegCoeffField d =>
         ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
           Real.rpow (3 : ℝ)
               (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *

@@ -156,7 +156,7 @@ theorem exists_weightedEllipticityOnOriginCube_interpolated_expLogSq
             (hStruct : Ch04.StructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hΓ.thetaHat)) ^ (2 : ℕ))) ∧
@@ -318,7 +318,7 @@ theorem exists_weightedEllipticityOnOriginCube_uniformEndpoint_expLogSq
             (hStruct : Ch04.StructuralLaw P)
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hInf.thetaHat)) ^ (2 : ℕ))) ∧

@@ -76,7 +76,7 @@ theorem homogenizationErrorOnOriginCube_le_of_minimalScaleUnitJ_and_unitElliptic
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m : ℕ} {r τ δ q X α : ℝ}
     (hδ : δ = r - τ / 2)
     (hτ : 0 < τ) (hrq : 0 ≤ r * q) (hδq : 0 < δ * q) (hq : 0 < q)
@@ -331,7 +331,7 @@ theorem scaleResponseAtScale_originCube_nat_sub_le_of_minimalScaleProbeJ
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n l : ℕ} (hln : l ≤ n) (hnm : n ≤ m)
     {τ X α : ℝ} (hX : 0 < X)
     (hprobe :
@@ -376,7 +376,7 @@ theorem homogenizationErrorOnOriginCube_le_of_positiveScaleResponses_and_unitEll
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m : ℕ} {r τ δ q X α : ℝ}
     (hδ : δ = r - τ / 2)
     (hτ : 0 < τ) (hrq : 0 ≤ r * q) (hδq : 0 < δ * q) (hq : 0 < q)
@@ -618,7 +618,7 @@ theorem homogenizationErrorOnOriginCube_le_of_minimalScaleProbeJ_and_unitEllipti
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m : ℕ} {r τ δ q X α : ℝ}
     (hδ : δ = r - τ / 2)
     (hτ : 0 < τ) (hrq : 0 ≤ r * q) (hδq : 0 < δ * q) (hq : 0 < q)
@@ -693,7 +693,7 @@ theorem homogenizationErrorOnOriginCube_le_of_two_minimalScales_probeJ
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m : ℕ} {r τ δ q XJ XU α : ℝ}
     (hδ : δ = r - τ / 2)
     (hτ : 0 < τ) (hrq : 0 ≤ r * q) (hδq : 0 < δ * q) (hq : 0 < q)
@@ -774,7 +774,7 @@ theorem homogenizationErrorOnOriginCube_le_of_two_minimalScales
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m : ℕ} {r τ δ q XJ XU α : ℝ}
     (hδ : δ = r - τ / 2)
     (hτ : 0 < τ) (hrq : 0 ≤ r * q) (hδq : 0 < δ * q) (hq : 0 < q)

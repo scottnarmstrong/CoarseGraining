@@ -57,7 +57,7 @@ end UniformEllipticityBounds
 constants.  This avoids losing the displayed constants to `Classical.choose`
 inside the generic Chapter 4 bridge. -/
 noncomputable def coeffOnOfUniformAEEllipticOn {d : ℕ}
-    (a : CoeffField d) (Q : TriadicCube d)
+    (a : RegCoeffField d) (Q : TriadicCube d)
     {lam Lam : ℝ} (hlam : 0 < lam) (hle : lam ≤ Lam)
     (hQ : Ch04.AEEllipticOn lam Lam (openCubeSet Q) a) :
     Ch02.CoeffOn (Ch02.cubeDomain Q) where
@@ -77,7 +77,7 @@ noncomputable def coeffOnOfUniformAEEllipticOn {d : ℕ}
 
 @[simp]
 theorem coeffOnOfUniformAEEllipticOn_toCoeffField {d : ℕ}
-    (a : CoeffField d) (Q : TriadicCube d)
+    (a : RegCoeffField d) (Q : TriadicCube d)
     {lam Lam : ℝ} (hlam : 0 < lam) (hle : lam ≤ Lam)
     (hQ : Ch04.AEEllipticOn lam Lam (openCubeSet Q) a) :
     (coeffOnOfUniformAEEllipticOn a Q hlam hle hQ).toCoeffField = a :=
@@ -86,7 +86,7 @@ theorem coeffOnOfUniformAEEllipticOn_toCoeffField {d : ℕ}
 /-- The Chapter 2 family associated to fixed law-level uniform ellipticity
 constants. -/
 noncomputable def triadicCoeffFamilyOfUniformEllipticity {d : ℕ}
-    (a : CoeffField d) {lam Lam : ℝ}
+    (a : RegCoeffField d) {lam Lam : ℝ}
     (hlam : 0 < lam) (hle : lam ≤ Lam)
     (ha : ∀ Q : TriadicCube d,
       Ch04.AEEllipticOn lam Lam (openCubeSet Q) a) :
@@ -98,7 +98,7 @@ noncomputable def triadicCoeffFamilyOfUniformEllipticity {d : ℕ}
     exact Filter.EventuallyEq.rfl
 
 theorem triadicCoeffFamilyOfAELocallyUniformlyEllipticField_aeeq_uniform
-    {d : ℕ} {a : CoeffField d} {lam Lam : ℝ}
+    {d : ℕ} {a : RegCoeffField d} {lam Lam : ℝ}
     (hlam : 0 < lam) (hle : lam ≤ Lam)
     (ha : ∀ Q : TriadicCube d,
       Ch04.AEEllipticOn lam Lam (openCubeSet Q) a)
@@ -134,7 +134,7 @@ theorem uniformLowerInvBlockConst_nonneg {d : ℕ} {lam : ℝ}
   positivity
 
 private theorem maxDescendantBMatrixNormAtScale_le_uniform_of_uniformEllipticity
-    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : CoeffField d)
+    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : RegCoeffField d)
     {lam Lam : ℝ} (hlam : 0 < lam) (hle : lam ≤ Lam)
     (ha : ∀ T : TriadicCube d,
       Ch04.AEEllipticOn lam Lam (openCubeSet T) a)
@@ -166,7 +166,7 @@ private theorem maxDescendantBMatrixNormAtScale_le_uniform_of_uniformEllipticity
               Q A hEll hData n
 
 private theorem maxDescendantSigmaStarInvMatrixNormAtScale_le_uniform_of_uniformEllipticity
-    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : CoeffField d)
+    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : RegCoeffField d)
     {lam Lam : ℝ} (hlam : 0 < lam) (hle : lam ≤ Lam)
     (ha : ∀ T : TriadicCube d,
       Ch04.AEEllipticOn lam Lam (openCubeSet T) a)
@@ -226,7 +226,7 @@ private theorem tsum_geometricWeight_one_mul_le_const
 /-- A sample satisfying fixed uniform ellipticity bounds has bounded upper
 multiscale ellipticity on every cube. -/
 theorem LambdaSqCoeffField_finite_one_le_of_uniformEllipticitySample
-    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : CoeffField d)
+    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : RegCoeffField d)
     {lam Lam s : ℝ} (hlam : 0 < lam) (hle : lam ≤ Lam)
     (ha : ∀ T : TriadicCube d,
       Ch04.AEEllipticOn lam Lam (openCubeSet T) a)
@@ -284,7 +284,7 @@ theorem LambdaSqCoeffField_finite_one_le_of_uniformEllipticitySample
 /-- A sample satisfying fixed uniform ellipticity bounds has bounded inverse
 lower multiscale ellipticity on every cube. -/
 theorem lambdaSqCoeffField_finite_one_inv_le_of_uniformEllipticitySample
-    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : CoeffField d)
+    {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : RegCoeffField d)
     {lam Lam s : ℝ} (hlam : 0 < lam) (hle : lam ≤ Lam)
     (ha : ∀ T : TriadicCube d,
       Ch04.AEEllipticOn lam Lam (openCubeSet T) a)
@@ -344,13 +344,13 @@ theorem lambdaSqCoeffField_finite_one_inv_le_of_uniformEllipticitySample
     _ ≤ uniformLowerInvBlockConst d lam := hsum_le
 
 private theorem integrable_pow_of_ae_nonneg_le_const
-    {d : ℕ} {P : Ch04.CoeffLaw d} {X : CoeffField d → ℝ}
+    {d : ℕ} {P : Ch04.CoeffLaw d} {X : RegCoeffField d → ℝ}
     [IsFiniteMeasure P]
     {C : ℝ} (ξ : ℕ)
     (hC : 0 ≤ C) (hX_nonneg : ∀ a, 0 ≤ X a)
     (hX_aemeas : AEMeasurable X P)
     (hX_le : X ≤ᵐ[P] fun _ => C) :
-    Integrable (fun a : CoeffField d => X a ^ ξ) P := by
+    Integrable (fun a : RegCoeffField d => X a ^ ξ) P := by
   refine Integrable.mono' (integrable_const (C ^ ξ))
     (hX_aemeas.pow_const ξ).aestronglyMeasurable ?_
   filter_upwards [hX_le] with a ha
@@ -366,23 +366,23 @@ theorem LambdaSqCoeffField_pow_integrable_of_uniformEllipticityBounds
     (hUE : UniformEllipticityBounds P lam Lam)
     (Q : TriadicCube d) (hs : 0 < s) (ξ : ℕ) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         (Ch04.LambdaSqCoeffField Q s (.finite 1) a) ^ ξ) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let C : ℝ := uniformUpperBlockConst d lam Lam
   have hC : 0 ≤ C := by
     simpa [C] using uniformUpperBlockConst_nonneg hUE.lam_pos hUE.lam_le_Lam
   have hX_nonneg :
-      ∀ a : CoeffField d, 0 ≤ Ch04.LambdaSqCoeffField Q s (.finite 1) a :=
+      ∀ a : RegCoeffField d, 0 ≤ Ch04.LambdaSqCoeffField Q s (.finite 1) a :=
     fun a => Ch04.LambdaSqCoeffField_finite_nonneg Q a hs
       (by norm_num : (1 : ℝ) ≤ 1)
   have hX_aemeas :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Ch04.LambdaSqCoeffField Q s (.finite 1) a) P :=
     hP.aemeasurable_LambdaSqCoeffField_finite_one Q hs
   have hX_le :
-      (fun a : CoeffField d => Ch04.LambdaSqCoeffField Q s (.finite 1) a)
+      (fun a : RegCoeffField d => Ch04.LambdaSqCoeffField Q s (.finite 1) a)
         ≤ᵐ[P] fun _ => C := by
     filter_upwards [hUE.aee_elliptic] with a ha
     simpa [C] using
@@ -396,24 +396,24 @@ theorem lambdaSqCoeffField_inv_pow_integrable_of_uniformEllipticityBounds
     (hUE : UniformEllipticityBounds P lam Lam)
     (Q : TriadicCube d) (hs : 0 < s) (ξ : ℕ) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ((Ch04.lambdaSqCoeffField Q s (.finite 1) a)⁻¹) ^ ξ) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let C : ℝ := uniformLowerInvBlockConst d lam
   have hC : 0 ≤ C := by
     simpa [C] using uniformLowerInvBlockConst_nonneg hUE.lam_pos
   have hX_nonneg :
-      ∀ a : CoeffField d, 0 ≤ (Ch04.lambdaSqCoeffField Q s (.finite 1) a)⁻¹ :=
+      ∀ a : RegCoeffField d, 0 ≤ (Ch04.lambdaSqCoeffField Q s (.finite 1) a)⁻¹ :=
     fun a => inv_nonneg.mpr
       (Ch04.lambdaSqCoeffField_finite_nonneg Q a hs
         (by norm_num : (1 : ℝ) ≤ 1))
   have hX_aemeas :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.lambdaSqCoeffField Q s (.finite 1) a)⁻¹) P :=
     hP.aemeasurable_lambdaSqCoeffField_finite_one_inv Q hs
   have hX_le :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
           (Ch04.lambdaSqCoeffField Q s (.finite 1) a)⁻¹)
         ≤ᵐ[P] fun _ => C := by
     filter_upwards [hUE.aee_elliptic] with a ha
@@ -425,7 +425,7 @@ theorem lambdaSqCoeffField_inv_pow_integrable_of_uniformEllipticityBounds
 private theorem annealedMomentRoot_const_one
     {d : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
     {ξ : ℕ} (_hξ : 1 ≤ ξ) :
-    Ch04.annealedMomentRoot P ξ (fun _ : CoeffField d => 1) = 1 := by
+    Ch04.annealedMomentRoot P ξ (fun _ : RegCoeffField d => 1) = 1 := by
   simp [Ch04.annealedMomentRoot]
 
 theorem LambdaMomentAtScale_le_of_uniformEllipticityBounds
@@ -439,22 +439,22 @@ theorem LambdaMomentAtScale_le_of_uniformEllipticityBounds
   let C : ℝ := uniformUpperBlockConst d lam Lam
   have hC : 0 ≤ C := by
     simpa [C] using uniformUpperBlockConst_nonneg hUE.lam_pos hUE.lam_le_Lam
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d n) s (.finite 1) a
   have hX_nonneg : ∀ a, 0 ≤ X a := by
     intro a
     exact Ch04.LambdaSqCoeffField_finite_nonneg (originCube d n) a hs
       (by norm_num : (1 : ℝ) ≤ 1)
-  have hY_nonneg : ∀ a : CoeffField d, 0 ≤ (1 : ℝ) := fun _ => by norm_num
+  have hY_nonneg : ∀ a : RegCoeffField d, 0 ≤ (1 : ℝ) := fun _ => by norm_num
   have hX_aemeas : AEMeasurable X P := by
     simpa [X] using
       hP.aemeasurable_LambdaSqCoeffField_finite_one (originCube d n) hs
   have hY_abs_int :
-      Integrable (fun a : CoeffField d => |(1 : ℝ)| ^ ξ) P := by
+      Integrable (fun a : RegCoeffField d => |(1 : ℝ)| ^ ξ) P := by
     simpa only [abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 1), one_pow] using
       (integrable_const (1 : ℝ) :
-        Integrable (fun _ : CoeffField d => (1 : ℝ)) P)
-  have hXY : X ≤ᵐ[P] fun _ : CoeffField d => C * (1 : ℝ) := by
+        Integrable (fun _ : RegCoeffField d => (1 : ℝ)) P)
+  have hXY : X ≤ᵐ[P] fun _ : RegCoeffField d => C * (1 : ℝ) := by
     filter_upwards [hUE.aee_elliptic] with a ha
     simpa [X, C] using
       LambdaSqCoeffField_finite_one_le_of_uniformEllipticitySample
@@ -462,12 +462,12 @@ theorem LambdaMomentAtScale_le_of_uniformEllipticityBounds
   have hroot :=
     Section52.section52_annealedMomentRoot_le_const_mul_of_ae_le
       (P := P) (ξ := ξ) (c := C) (X := X)
-      (Y := fun _ : CoeffField d => 1)
+      (Y := fun _ : RegCoeffField d => 1)
       hξ hC hX_nonneg hY_nonneg hX_aemeas hY_abs_int hXY
   calc
     Ch04.LambdaMomentAtScale P n s ξ =
         Ch04.annealedMomentRoot P ξ X := by rfl
-    _ ≤ C * Ch04.annealedMomentRoot P ξ (fun _ : CoeffField d => 1) := hroot
+    _ ≤ C * Ch04.annealedMomentRoot P ξ (fun _ : RegCoeffField d => 1) := hroot
     _ = C := by rw [annealedMomentRoot_const_one (P := P) hξ]; ring
 
 theorem lambdaInvMomentAtScale_le_of_uniformEllipticityBounds
@@ -481,23 +481,23 @@ theorem lambdaInvMomentAtScale_le_of_uniformEllipticityBounds
   let C : ℝ := uniformLowerInvBlockConst d lam
   have hC : 0 ≤ C := by
     simpa [C] using uniformLowerInvBlockConst_nonneg hUE.lam_pos
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a => (Ch04.lambdaSqCoeffField (originCube d n) s (.finite 1) a)⁻¹
   have hX_nonneg : ∀ a, 0 ≤ X a := by
     intro a
     exact inv_nonneg.mpr
       (Ch04.lambdaSqCoeffField_finite_nonneg (originCube d n) a hs
         (by norm_num : (1 : ℝ) ≤ 1))
-  have hY_nonneg : ∀ a : CoeffField d, 0 ≤ (1 : ℝ) := fun _ => by norm_num
+  have hY_nonneg : ∀ a : RegCoeffField d, 0 ≤ (1 : ℝ) := fun _ => by norm_num
   have hX_aemeas : AEMeasurable X P := by
     simpa [X] using
       hP.aemeasurable_lambdaSqCoeffField_finite_one_inv (originCube d n) hs
   have hY_abs_int :
-      Integrable (fun a : CoeffField d => |(1 : ℝ)| ^ ξ) P := by
+      Integrable (fun a : RegCoeffField d => |(1 : ℝ)| ^ ξ) P := by
     simpa only [abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 1), one_pow] using
       (integrable_const (1 : ℝ) :
-        Integrable (fun _ : CoeffField d => (1 : ℝ)) P)
-  have hXY : X ≤ᵐ[P] fun _ : CoeffField d => C * (1 : ℝ) := by
+        Integrable (fun _ : RegCoeffField d => (1 : ℝ)) P)
+  have hXY : X ≤ᵐ[P] fun _ : RegCoeffField d => C * (1 : ℝ) := by
     filter_upwards [hUE.aee_elliptic] with a ha
     simpa [X, C] using
       lambdaSqCoeffField_finite_one_inv_le_of_uniformEllipticitySample
@@ -505,12 +505,12 @@ theorem lambdaInvMomentAtScale_le_of_uniformEllipticityBounds
   have hroot :=
     Section52.section52_annealedMomentRoot_le_const_mul_of_ae_le
       (P := P) (ξ := ξ) (c := C) (X := X)
-      (Y := fun _ : CoeffField d => 1)
+      (Y := fun _ : RegCoeffField d => 1)
       hξ hC hX_nonneg hY_nonneg hX_aemeas hY_abs_int hXY
   calc
     Ch04.lambdaInvMomentAtScale P n s ξ =
         Ch04.annealedMomentRoot P ξ X := by rfl
-    _ ≤ C * Ch04.annealedMomentRoot P ξ (fun _ : CoeffField d => 1) := hroot
+    _ ≤ C * Ch04.annealedMomentRoot P ξ (fun _ : RegCoeffField d => 1) := hroot
     _ = C := by rw [annealedMomentRoot_const_one (P := P) hξ]; ring
 
 theorem originBlockIntegrableAtScale_of_uniformEllipticityBounds
@@ -545,7 +545,7 @@ theorem barSigmaAtScale_le_of_uniformEllipticityBounds
   have hUpperPowInt :
       ∀ n : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (Ch04.LambdaSqCoeffField (originCube d (n : ℤ)) sUpper (.finite 1) a) ^
               ξ) P :=
     fun n =>
@@ -554,7 +554,7 @@ theorem barSigmaAtScale_le_of_uniformEllipticityBounds
   have hLowerPowInt :
       ∀ n : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((Ch04.lambdaSqCoeffField (originCube d (n : ℤ)) sLower (.finite 1) a)⁻¹) ^
               ξ) P :=
     fun n =>
@@ -591,7 +591,7 @@ theorem barSigmaStarAtScale_inv_le_of_uniformEllipticityBounds
   have hUpperPowInt :
       ∀ n : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (Ch04.LambdaSqCoeffField (originCube d (n : ℤ)) sUpper (.finite 1) a) ^
               ξ) P :=
     fun n =>
@@ -600,7 +600,7 @@ theorem barSigmaStarAtScale_inv_le_of_uniformEllipticityBounds
   have hLowerPowInt :
       ∀ n : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((Ch04.lambdaSqCoeffField (originCube d (n : ℤ)) sLower (.finite 1) a)⁻¹) ^
               ξ) P :=
     fun n =>

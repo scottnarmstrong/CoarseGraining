@@ -220,7 +220,7 @@ theorem cutoffFluxLinearTermOnCube_eq_half_vecDot_cubeAverageVec
 scalar-response gradient and flux weak norms.  The only cutoff inputs are the
 ordinary Besov dual-test bounds for the scalar cutoff `φ`. -/
 theorem abs_cutoffLinearPairTermOnDependentFamily_le_ch04WeakNorms_of_cutoffDualBounds
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (s t : ℝ) (φ : Vec d → ℝ)
     (p q p0 q0 : Vec d) {BφS BφT : ℝ}
@@ -248,8 +248,8 @@ theorem abs_cutoffLinearPairTermOnDependentFamily_le_ch04WeakNorms_of_cutoffDual
       ∀ N : ℕ, cubeBesovDualTestNorm Q t (2 : ℝ≥0∞) (1 : ℝ≥0∞) N φ ≤ BφT)
     (hφMem : CubeBesovDualLocalMemLpGlobal Q (2 : ℝ≥0∞) φ) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
-    let gradWeak := Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a
-    let fluxWeak := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a
+    let gradWeak := Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
+    let fluxWeak := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun
     let gradCoeff :=
       (3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS
     let fluxCoeff :=

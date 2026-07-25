@@ -1,7 +1,7 @@
 import Homogenization.Book.Ch04.Measurability
 import Homogenization.Book.Ch04.Theorems.CoarseObservables
 import Homogenization.Book.Ch02.Theorems.SolutionIntegrability
-import Homogenization.Book.Ch04.Internal.AEESliceAssembly.MuFamily
+import Homogenization.Book.Ch04.Internal.AEESliceAssembly.CarrierMinimizerFamily
 
 import Homogenization.Book.Ch04.Theorems.CanonicalSolutions.AverageIdentities
 
@@ -12,6 +12,24 @@ namespace Ch04
 open scoped ENNReal
 open MeasureTheory
 
+/-!
+# Canonical solution-field measurability (carrier re-aim, Packet P5f)
+
+This file re-aims the public Ch4 canonical doubled-`Mu` Hilbert-minimizer
+measurability surface onto the honest carrier `RegCoeffField d`, mirroring the
+`Mu` re-aim (`Theorems/Mu.lean`).  The two per-slice primitives (minimizer strong
+measurability and fixed-test energy pairing) are re-derived Ω-generically through
+the `L²` realization in `Internal/AEESliceAssembly/CarrierMinimizerFamily.lean`.
+
+The selected minimizer/energy-pairing observables are totalized with the **least**
+AEE quantitative slice index (else `0`), so a **genuine `liftCover`** over the
+first-slice partition makes `a ↦ observable a.toFun` genuinely
+`LocalSigmaR (cubeSet Q)`-measurable on the whole carrier (a genuine-where-null
+strengthening: no a.e. bookkeeping is needed for these observables, unlike `Mu`).
+The honest bridge `nullMeasurableSet_of_localSigmaR` then promotes it, and the
+separable range of the slice-indexed minimizers upgrades to
+`AEStronglyMeasurable`.
+-/
 
 namespace LawCarrier
 
@@ -28,40 +46,36 @@ private theorem aemeasurable_vecNormSq_sub_const
       (f := fun i a => (F a i - v i) * (F a i - v i))
       (fun i _hi => (hcoord i).mul (hcoord i)))
 
-private theorem measurable_canonicalMuHilbertMinimizerCubeSet_localSigma
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
-    (Q : TriadicCube d) (P0 : BlockVec d) :
-    @Measurable (CoeffField d) (HilbertBlockL2 (cubeSet Q))
-      (localSigma (cubeSet Q)) (borel (HilbertBlockL2 (cubeSet Q)))
-      (canonicalMuHilbertMinimizerCubeSet Q P0) := by
+/-- **The carrier selected minimizer is genuinely `LocalSigmaR (cubeSet Q)`-
+measurable.**  A genuine `liftCover` over the first-slice partition, whose pieces
+are the carrier slice-minimizers of `CarrierMinimizerFamily`. -/
+private theorem measurable_canonicalMuHilbertMinimizerCubeSet_localSigmaR
+    {d : ℕ} (Q : TriadicCube d) (P0 : BlockVec d) :
+    @Measurable (RegCoeffField d) (HilbertBlockL2 (cubeSet Q))
+      (LocalSigmaR (cubeSet Q)) (borel (HilbertBlockL2 (cubeSet Q)))
+      (fun a : RegCoeffField d => canonicalMuHilbertMinimizerCubeSet Q P0 a.toFun) := by
   classical
-  let U : Set (Vec d) := cubeSet Q
-  letI : MeasurableSpace (CoeffField d) := localSigma U
-  letI : MeasurableSpace (HilbertBlockL2 U) := borel _
-  haveI : BorelSpace (HilbertBlockL2 U) := ⟨rfl⟩
-  let slice : ℕ → Set (CoeffField d) :=
-    fun k => {a : CoeffField d | AEEQuantitativeEllipticSlice U k a}
-  let firstSlice : ℕ → Set (CoeffField d) :=
+  letI : MeasurableSpace (RegCoeffField d) := LocalSigmaR (cubeSet Q)
+  letI : MeasurableSpace (HilbertBlockL2 (cubeSet Q)) := borel _
+  haveI : BorelSpace (HilbertBlockL2 (cubeSet Q)) := ⟨rfl⟩
+  let slice : ℕ → Set (RegCoeffField d) :=
+    fun k => {a : RegCoeffField d | AEEQuantitativeEllipticSlice (cubeSet Q) k a.toFun}
+  let firstSlice : ℕ → Set (RegCoeffField d) :=
     fun k => slice k ∩ ⋂ j ∈ Finset.range k, (slice j)ᶜ
-  let S : Set (CoeffField d) := ⋃ k : ℕ, firstSlice k
-  let cover : Option ℕ → Set (CoeffField d)
+  let S : Set (RegCoeffField d) := ⋃ k : ℕ, firstSlice k
+  let cover : Option ℕ → Set (RegCoeffField d)
     | none => Sᶜ
     | some k => firstSlice k
-  let piece : (i : Option ℕ) → cover i → HilbertBlockL2 U
+  let piece : (i : Option ℕ) → cover i → HilbertBlockL2 (cubeSet Q)
     | none, _ => 0
-    | some k, a => by
-        let ak :
-            {a : CoeffField d // AEEQuantitativeEllipticSlice (cubeSet Q) k a} :=
-          ⟨a.1, by simpa [U] using a.2.1⟩
-        exact ((canonicalAEEMuOperatorSystemData Q k ak).toMuHilbertRealization).minimizerMap P0
+    | some k, a =>
+        ((canonicalAEEMuOperatorSystemData Q k ⟨(a.1).toFun, a.2.1⟩).toMuHilbertRealization).minimizerMap P0
   have hslice_meas : ∀ k : ℕ, MeasurableSet (slice k) := by
     intro k
-    simpa [slice, U] using
-      hP.measurableSet_aeeQuantitativeEllipticSlice_cubeSet Q k
+    exact measurableSet_localSigmaR_aeeQuantitativeEllipticSlice Q k
   have hfirst_meas : ∀ k : ℕ, MeasurableSet (firstSlice k) := by
     intro k
-    have hprev :
-        MeasurableSet (⋂ j ∈ Finset.range k, (slice j)ᶜ) :=
+    have hprev : MeasurableSet (⋂ j ∈ Finset.range k, (slice j)ᶜ) :=
       (Finset.range k).measurableSet_biInter fun j _hj => (hslice_meas j).compl
     exact (hslice_meas k).inter hprev
   have hcover_meas : ∀ i : Option ℕ, MeasurableSet (cover i) := by
@@ -70,7 +84,7 @@ private theorem measurable_canonicalMuHilbertMinimizerCubeSet_localSigma
     | none => exact (MeasurableSet.iUnion hfirst_meas).compl
     | some k => exact hfirst_meas k
   have hfirst_unique :
-      ∀ {i j : ℕ} {a : CoeffField d}, a ∈ firstSlice i → a ∈ firstSlice j → i = j := by
+      ∀ {i j : ℕ} {a : RegCoeffField d}, a ∈ firstSlice i → a ∈ firstSlice j → i = j := by
     intro i j a hi hj
     by_cases hij : i = j
     · exact hij
@@ -78,21 +92,17 @@ private theorem measurable_canonicalMuHilbertMinimizerCubeSet_localSigma
     · have hnot : a ∉ slice i := by
         have hcompl : a ∈ (slice i)ᶜ := by
           simpa using
-            (Set.mem_iInter.mp
-              (Set.mem_iInter.mp hj.2 i)
-              (by simpa using hlt))
+            (Set.mem_iInter.mp (Set.mem_iInter.mp hj.2 i) (by simpa using hlt))
         simpa using hcompl
       exact False.elim (hnot hi.1)
     · have hnot : a ∉ slice j := by
         have hcompl : a ∈ (slice j)ᶜ := by
           simpa using
-            (Set.mem_iInter.mp
-              (Set.mem_iInter.mp hi.2 j)
-              (by simpa using hgt))
+            (Set.mem_iInter.mp (Set.mem_iInter.mp hi.2 j) (by simpa using hgt))
         simpa using hcompl
       exact False.elim (hnot hj.1)
   have hagree :
-      ∀ (i j : Option ℕ) (a : CoeffField d)
+      ∀ (i j : Option ℕ) (a : RegCoeffField d)
         (hai : a ∈ cover i) (haj : a ∈ cover j),
         piece i ⟨a, hai⟩ = piece j ⟨a, haj⟩ := by
     intro i j a hai haj
@@ -131,43 +141,25 @@ private theorem measurable_canonicalMuHilbertMinimizerCubeSet_localSigma
     cases i with
     | none => exact measurable_const
     | some k =>
-        let sliceSubtype :=
-          {a : CoeffField d // AEEQuantitativeEllipticSlice U k a}
-        letI : MeasurableSpace sliceSubtype :=
-          AEEQuantitativeEllipticSlice.localMeasurableSpace U k
-        let toSlice : cover (some k) → sliceSubtype :=
-          fun a => ⟨a.1, a.2.1⟩
-        have htoSlice :
-            @Measurable (cover (some k)) sliceSubtype
-              (inferInstance : MeasurableSpace (cover (some k)))
-              (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) toSlice := by
-          apply Measurable.of_comap_le
-          unfold AEEQuantitativeEllipticSlice.localMeasurableSpace
-          rw [MeasurableSpace.comap_comp]
-          rw [show Subtype.val ∘ toSlice = Subtype.val by
-            funext a
-            rfl]
-          exact
-            (measurable_subtype_coe :
-              @Measurable (cover (some k)) (CoeffField d)
-                (inferInstance : MeasurableSpace (cover (some k))) (localSigma U)
-                Subtype.val).comap_le
-        have hslice : StronglyMeasurable
-            (fun a : sliceSubtype =>
-              ((canonicalAEEMuOperatorSystemData Q k a).toMuHilbertRealization).minimizerMap P0) := by
-          simpa [sliceSubtype, U] using
-            Homogenization.stronglyMeasurable_canonicalAEEMuHilbertMinimizer_aeeQuantitativeSlice_cubeSet
-              (Q := Q) (k := k) P0
-        change Measurable (fun a : cover (some k) =>
-          ((canonicalAEEMuOperatorSystemData Q k (toSlice a)).toMuHilbertRealization).minimizerMap P0)
-        exact hslice.measurable.comp htoSlice
+        have hEntry :
+            ∀ (i' j' : Fin d) {φ : Vec d → ℝ}, IsProbeR φ → Function.support φ ⊆ cubeSet Q →
+              @Measurable (cover (some k)) ℝ _ _
+                (fun x => entryTestR i' j' φ (x : RegCoeffField d)) := by
+          intro i' j' φ hφ hsupp
+          exact (measurable_entryTestR_localSigmaR i' j' hφ hsupp).comp measurable_subtype_coe
+        have hsm :=
+          stronglyMeasurable_canonicalMinimizer_carrier
+            (mΩ := (inferInstance : MeasurableSpace (cover (some k)))) Q
+            (A := fun x : cover (some k) => (x : RegCoeffField d))
+            (fun x => x.2.1) hEntry P0
+        exact hsm.measurable
   have hLift : Measurable (Set.liftCover cover piece hagree hcover) :=
     measurable_liftCover cover hcover_meas piece hpiece_meas hagree hcover
   have hEq :
       Set.liftCover cover piece hagree hcover =
-        canonicalMuHilbertMinimizerCubeSet Q P0 := by
+        fun a : RegCoeffField d => canonicalMuHilbertMinimizerCubeSet Q P0 a.toFun := by
     funext a
-    by_cases ha : ∃ k : ℕ, AEEQuantitativeEllipticSlice U k a
+    by_cases ha : ∃ k : ℕ, AEEQuantitativeEllipticSlice (cubeSet Q) k a.toFun
     · let k : ℕ := Nat.find ha
       have hafirst : a ∈ firstSlice k := by
         refine ⟨?_, ?_⟩
@@ -177,14 +169,14 @@ private theorem measurable_canonicalMuHilbertMinimizerCubeSet_localSigma
           refine Set.mem_iInter.mpr ?_
           intro hj
           have hjlt : j < k := by simpa [k] using hj
-          have hnot : ¬ AEEQuantitativeEllipticSlice U j a := by
+          have hnot : ¬ AEEQuantitativeEllipticSlice (cubeSet Q) j a.toFun := by
             intro hja
             exact (not_lt_of_ge (Nat.find_min' ha hja)) (by simpa [k] using hjlt)
           simpa [slice] using hnot
       rw [Set.liftCover_of_mem
         (S := cover) (f := piece) (hf := hagree) (hS := hcover) (i := some k)
         (by simpa [cover] using hafirst)]
-      simp [canonicalMuHilbertMinimizerCubeSet, U, ha, k, piece, cover]
+      simp [canonicalMuHilbertMinimizerCubeSet, ha, k, piece, cover]
     · have ha_notS : a ∉ S := by
         intro haS
         rcases Set.mem_iUnion.mp haS with ⟨k, hafirst⟩
@@ -192,45 +184,39 @@ private theorem measurable_canonicalMuHilbertMinimizerCubeSet_localSigma
       rw [Set.liftCover_of_mem
         (S := cover) (f := piece) (hf := hagree) (hS := hcover) (i := none)
         (by simpa [cover] using ha_notS)]
-      simp [canonicalMuHilbertMinimizerCubeSet, U, ha, piece, cover]
-  simpa [hEq, U] using hLift
+      simp [canonicalMuHilbertMinimizerCubeSet, ha, piece, cover]
+  simpa [hEq] using hLift
 
-private theorem measurable_canonicalMuHilbertEnergyBilinFixedCubeSet_localSigma
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
-    (Q : TriadicCube d) (P0 : BlockVec d)
+/-- **The carrier fixed-test energy pairing is genuinely `LocalSigmaR`-
+measurable.** -/
+private theorem measurable_canonicalMuHilbertEnergyBilinFixedCubeSet_localSigmaR
+    {d : ℕ} (Q : TriadicCube d) (P0 : BlockVec d)
     (Y : BlockState d) (hY : MemBlockL2 (cubeSet Q) Y.eval) :
-    @Measurable (CoeffField d) ℝ
-      (localSigma (cubeSet Q)) (borel ℝ)
-      (canonicalMuHilbertEnergyBilinFixedCubeSet Q P0 Y hY) := by
+    @Measurable (RegCoeffField d) ℝ
+      (LocalSigmaR (cubeSet Q)) (borel ℝ)
+      (fun a : RegCoeffField d => canonicalMuHilbertEnergyBilinFixedCubeSet Q P0 Y hY a.toFun) := by
   classical
-  let U : Set (Vec d) := cubeSet Q
-  letI : MeasurableSpace (CoeffField d) := localSigma U
-  let slice : ℕ → Set (CoeffField d) :=
-    fun k => {a : CoeffField d | AEEQuantitativeEllipticSlice U k a}
-  let firstSlice : ℕ → Set (CoeffField d) :=
+  letI : MeasurableSpace (RegCoeffField d) := LocalSigmaR (cubeSet Q)
+  let slice : ℕ → Set (RegCoeffField d) :=
+    fun k => {a : RegCoeffField d | AEEQuantitativeEllipticSlice (cubeSet Q) k a.toFun}
+  let firstSlice : ℕ → Set (RegCoeffField d) :=
     fun k => slice k ∩ ⋂ j ∈ Finset.range k, (slice j)ᶜ
-  let S : Set (CoeffField d) := ⋃ k : ℕ, firstSlice k
-  let cover : Option ℕ → Set (CoeffField d)
+  let S : Set (RegCoeffField d) := ⋃ k : ℕ, firstSlice k
+  let cover : Option ℕ → Set (RegCoeffField d)
     | none => Sᶜ
     | some k => firstSlice k
   let piece : (i : Option ℕ) → cover i → ℝ
     | none, _ => 0
-    | some k, a => by
-        let ak :
-            {a : CoeffField d // AEEQuantitativeEllipticSlice (cubeSet Q) k a} :=
-          ⟨a.1, by simpa [U] using a.2.1⟩
-        exact
-          ((canonicalAEEMuOperatorSystemData Q k ak).toMuHilbertRealization).energyBilin
-            (toHilbertBlockL2OfBlockField (U := cubeSet Q) hY)
-            (((canonicalAEEMuOperatorSystemData Q k ak).toMuHilbertRealization).minimizerMap P0)
+    | some k, a =>
+        ((canonicalAEEMuOperatorSystemData Q k ⟨(a.1).toFun, a.2.1⟩).toMuHilbertRealization).energyBilin
+          (toHilbertBlockL2OfBlockField (U := cubeSet Q) hY)
+          (((canonicalAEEMuOperatorSystemData Q k ⟨(a.1).toFun, a.2.1⟩).toMuHilbertRealization).minimizerMap P0)
   have hslice_meas : ∀ k : ℕ, MeasurableSet (slice k) := by
     intro k
-    simpa [slice, U] using
-      hP.measurableSet_aeeQuantitativeEllipticSlice_cubeSet Q k
+    exact measurableSet_localSigmaR_aeeQuantitativeEllipticSlice Q k
   have hfirst_meas : ∀ k : ℕ, MeasurableSet (firstSlice k) := by
     intro k
-    have hprev :
-        MeasurableSet (⋂ j ∈ Finset.range k, (slice j)ᶜ) :=
+    have hprev : MeasurableSet (⋂ j ∈ Finset.range k, (slice j)ᶜ) :=
       (Finset.range k).measurableSet_biInter fun j _hj => (hslice_meas j).compl
     exact (hslice_meas k).inter hprev
   have hcover_meas : ∀ i : Option ℕ, MeasurableSet (cover i) := by
@@ -239,7 +225,7 @@ private theorem measurable_canonicalMuHilbertEnergyBilinFixedCubeSet_localSigma
     | none => exact (MeasurableSet.iUnion hfirst_meas).compl
     | some k => exact hfirst_meas k
   have hfirst_unique :
-      ∀ {i j : ℕ} {a : CoeffField d}, a ∈ firstSlice i → a ∈ firstSlice j → i = j := by
+      ∀ {i j : ℕ} {a : RegCoeffField d}, a ∈ firstSlice i → a ∈ firstSlice j → i = j := by
     intro i j a hi hj
     by_cases hij : i = j
     · exact hij
@@ -247,21 +233,17 @@ private theorem measurable_canonicalMuHilbertEnergyBilinFixedCubeSet_localSigma
     · have hnot : a ∉ slice i := by
         have hcompl : a ∈ (slice i)ᶜ := by
           simpa using
-            (Set.mem_iInter.mp
-              (Set.mem_iInter.mp hj.2 i)
-              (by simpa using hlt))
+            (Set.mem_iInter.mp (Set.mem_iInter.mp hj.2 i) (by simpa using hlt))
         simpa using hcompl
       exact False.elim (hnot hi.1)
     · have hnot : a ∉ slice j := by
         have hcompl : a ∈ (slice j)ᶜ := by
           simpa using
-            (Set.mem_iInter.mp
-              (Set.mem_iInter.mp hi.2 j)
-              (by simpa using hgt))
+            (Set.mem_iInter.mp (Set.mem_iInter.mp hi.2 j) (by simpa using hgt))
         simpa using hcompl
       exact False.elim (hnot hj.1)
   have hagree :
-      ∀ (i j : Option ℕ) (a : CoeffField d)
+      ∀ (i j : Option ℕ) (a : RegCoeffField d)
         (hai : a ∈ cover i) (haj : a ∈ cover j),
         piece i ⟨a, hai⟩ = piece j ⟨a, haj⟩ := by
     intro i j a hai haj
@@ -300,47 +282,24 @@ private theorem measurable_canonicalMuHilbertEnergyBilinFixedCubeSet_localSigma
     cases i with
     | none => exact measurable_const
     | some k =>
-        let sliceSubtype :=
-          {a : CoeffField d // AEEQuantitativeEllipticSlice U k a}
-        letI : MeasurableSpace sliceSubtype :=
-          AEEQuantitativeEllipticSlice.localMeasurableSpace U k
-        let toSlice : cover (some k) → sliceSubtype :=
-          fun a => ⟨a.1, a.2.1⟩
-        have htoSlice :
-            @Measurable (cover (some k)) sliceSubtype
-              (inferInstance : MeasurableSpace (cover (some k)))
-              (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) toSlice := by
-          apply Measurable.of_comap_le
-          unfold AEEQuantitativeEllipticSlice.localMeasurableSpace
-          rw [MeasurableSpace.comap_comp]
-          rw [show Subtype.val ∘ toSlice = Subtype.val by
-            funext a
-            rfl]
-          exact
-            (measurable_subtype_coe :
-              @Measurable (cover (some k)) (CoeffField d)
-                (inferInstance : MeasurableSpace (cover (some k))) (localSigma U)
-                Subtype.val).comap_le
-        have hslice : Measurable
-            (fun a : sliceSubtype =>
-              ((canonicalAEEMuOperatorSystemData Q k a).toMuHilbertRealization).energyBilin
-                (toHilbertBlockL2OfBlockField (U := cubeSet Q) hY)
-                (((canonicalAEEMuOperatorSystemData Q k a).toMuHilbertRealization).minimizerMap P0)) := by
-          simpa [sliceSubtype, U] using
-            Homogenization.measurable_energyBilin_fixed_canonicalAEEMuHilbertMinimizer_aeeQuantitativeSlice_cubeSet
-              (Q := Q) (k := k) P0 Y hY
-        change Measurable (fun a : cover (some k) =>
-          ((canonicalAEEMuOperatorSystemData Q k (toSlice a)).toMuHilbertRealization).energyBilin
-            (toHilbertBlockL2OfBlockField (U := cubeSet Q) hY)
-            (((canonicalAEEMuOperatorSystemData Q k (toSlice a)).toMuHilbertRealization).minimizerMap P0))
-        exact hslice.comp htoSlice
+        have hEntry :
+            ∀ (i' j' : Fin d) {φ : Vec d → ℝ}, IsProbeR φ → Function.support φ ⊆ cubeSet Q →
+              @Measurable (cover (some k)) ℝ _ _
+                (fun x => entryTestR i' j' φ (x : RegCoeffField d)) := by
+          intro i' j' φ hφ hsupp
+          exact (measurable_entryTestR_localSigmaR i' j' hφ hsupp).comp measurable_subtype_coe
+        exact
+          measurable_energyBilin_fixed_canonicalMinimizer_carrier
+            (mΩ := (inferInstance : MeasurableSpace (cover (some k)))) Q
+            (A := fun x : cover (some k) => (x : RegCoeffField d))
+            (fun x => x.2.1) hEntry P0 Y hY
   have hLift : Measurable (Set.liftCover cover piece hagree hcover) :=
     measurable_liftCover cover hcover_meas piece hpiece_meas hagree hcover
   have hEq :
       Set.liftCover cover piece hagree hcover =
-        canonicalMuHilbertEnergyBilinFixedCubeSet Q P0 Y hY := by
+        fun a : RegCoeffField d => canonicalMuHilbertEnergyBilinFixedCubeSet Q P0 Y hY a.toFun := by
     funext a
-    by_cases ha : ∃ k : ℕ, AEEQuantitativeEllipticSlice U k a
+    by_cases ha : ∃ k : ℕ, AEEQuantitativeEllipticSlice (cubeSet Q) k a.toFun
     · let k : ℕ := Nat.find ha
       have hafirst : a ∈ firstSlice k := by
         refine ⟨?_, ?_⟩
@@ -350,14 +309,14 @@ private theorem measurable_canonicalMuHilbertEnergyBilinFixedCubeSet_localSigma
           refine Set.mem_iInter.mpr ?_
           intro hj
           have hjlt : j < k := by simpa [k] using hj
-          have hnot : ¬ AEEQuantitativeEllipticSlice U j a := by
+          have hnot : ¬ AEEQuantitativeEllipticSlice (cubeSet Q) j a.toFun := by
             intro hja
             exact (not_lt_of_ge (Nat.find_min' ha hja)) (by simpa [k] using hjlt)
           simpa [slice] using hnot
       rw [Set.liftCover_of_mem
         (S := cover) (f := piece) (hf := hagree) (hS := hcover) (i := some k)
         (by simpa [cover] using hafirst)]
-      simp [canonicalMuHilbertEnergyBilinFixedCubeSet, U, ha, k, piece, cover]
+      simp [canonicalMuHilbertEnergyBilinFixedCubeSet, ha, k, piece, cover]
     · have ha_notS : a ∉ S := by
         intro haS
         rcases Set.mem_iUnion.mp haS with ⟨k, hafirst⟩
@@ -365,29 +324,29 @@ private theorem measurable_canonicalMuHilbertEnergyBilinFixedCubeSet_localSigma
       rw [Set.liftCover_of_mem
         (S := cover) (f := piece) (hf := hagree) (hS := hcover) (i := none)
         (by simpa [cover] using ha_notS)]
-      simp [canonicalMuHilbertEnergyBilinFixedCubeSet, U, ha, piece, cover]
-  simpa [hEq, U] using hLift
+      simp [canonicalMuHilbertEnergyBilinFixedCubeSet, ha, piece, cover]
+  simpa [hEq] using hLift
 
 /-- Public Ch4 law-facing measurability of the selected canonical doubled-`Mu`
-Hilbert minimizer on a deterministic cube. -/
+Hilbert minimizer on a deterministic cube (carrier re-type). -/
 theorem aestronglyMeasurable_canonicalMuHilbertMinimizer_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : CoeffLaw d} (_hP : LawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d) :
-    AEStronglyMeasurable (canonicalMuHilbertMinimizerCubeSet Q P0) P := by
+    AEStronglyMeasurable
+      (fun a : RegCoeffField d => canonicalMuHilbertMinimizerCubeSet Q P0 a.toFun) P := by
   classical
   let U : Set (Vec d) := cubeSet Q
   letI : MeasurableSpace (HilbertBlockL2 U) := borel _
   haveI : BorelSpace (HilbertBlockL2 U) := ⟨rfl⟩
-  let f : CoeffField d → HilbertBlockL2 U :=
-    canonicalMuHilbertMinimizerCubeSet Q P0
+  let f : RegCoeffField d → HilbertBlockL2 U :=
+    fun a => canonicalMuHilbertMinimizerCubeSet Q P0 a.toFun
   have hLocalMeas :
-      @Measurable (CoeffField d) (HilbertBlockL2 U)
-        (localSigma U) (borel (HilbertBlockL2 U)) f := by
-    simpa [f, U] using measurable_canonicalMuHilbertMinimizerCubeSet_localSigma hP Q P0
+      @Measurable (RegCoeffField d) (HilbertBlockL2 U)
+        (LocalSigmaR U) (borel (HilbertBlockL2 U)) f :=
+    measurable_canonicalMuHilbertMinimizerCubeSet_localSigmaR Q P0
   have hNull : NullMeasurable f P := by
     intro s hs
-    exact hP.local_observable_measurable.nullMeasurable_localSigma U
-      (by simpa [U] using isBounded_cubeSet Q) (f ⁻¹' s) (hLocalMeas hs)
+    exact nullMeasurableSet_of_localSigmaR P (hLocalMeas hs)
   let sliceRange : ℕ → Set (HilbertBlockL2 U) := fun k =>
     Set.range fun a : {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} =>
       ((canonicalAEEMuOperatorSystemData Q k a).toMuHilbertRealization).minimizerMap P0
@@ -397,12 +356,10 @@ theorem aestronglyMeasurable_canonicalMuHilbertMinimizer_cubeSet
     have hSlices : TopologicalSpace.IsSeparable (⋃ k : ℕ, sliceRange k) := by
       refine .iUnion ?_
       intro k
-      let sliceSubtype :=
-        {a : CoeffField d // AEEQuantitativeEllipticSlice U k a}
-      letI : MeasurableSpace sliceSubtype :=
+      letI : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
         AEEQuantitativeEllipticSlice.localMeasurableSpace U k
       have hslice : StronglyMeasurable
-          (fun a : sliceSubtype =>
+          (fun a : {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} =>
             ((canonicalAEEMuOperatorSystemData Q k a).toMuHilbertRealization).minimizerMap P0) := by
         simpa [U] using
           Homogenization.stronglyMeasurable_canonicalAEEMuHilbertMinimizer_aeeQuantitativeSlice_cubeSet
@@ -412,13 +369,13 @@ theorem aestronglyMeasurable_canonicalMuHilbertMinimizer_cubeSet
   have hMemSep : ∀ᵐ a ∂P, f a ∈ sepSet := by
     refine Filter.Eventually.of_forall ?_
     intro a
-    by_cases ha : ∃ k : ℕ, AEEQuantitativeEllipticSlice U k a
+    by_cases ha : ∃ k : ℕ, AEEQuantitativeEllipticSlice U k a.toFun
     · let k : ℕ := Nat.find ha
-      have hslice : AEEQuantitativeEllipticSlice U k a := by
+      have hslice : AEEQuantitativeEllipticSlice U k a.toFun := by
         simpa [k] using Nat.find_spec ha
       right
       exact Set.mem_iUnion.mpr
-        ⟨k, ⟨⟨a, hslice⟩, by simp [f, canonicalMuHilbertMinimizerCubeSet, U, ha, k]⟩⟩
+        ⟨k, ⟨⟨a.toFun, hslice⟩, by simp [f, canonicalMuHilbertMinimizerCubeSet, U, ha, k]⟩⟩
     · left
       simp [f, canonicalMuHilbertMinimizerCubeSet, U, ha]
   exact (aestronglyMeasurable_iff_nullMeasurable_separable).2
@@ -429,7 +386,8 @@ doubled-`Mu` Hilbert minimizer. -/
 theorem aestronglyMeasurable_canonicalMuHilbertPotential_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d) :
-    AEStronglyMeasurable (canonicalMuHilbertPotentialCubeSet Q P0) P := by
+    AEStronglyMeasurable
+      (fun a : RegCoeffField d => canonicalMuHilbertPotentialCubeSet Q P0 a.toFun) P := by
   have hmin := hP.aestronglyMeasurable_canonicalMuHilbertMinimizer_cubeSet Q P0
   simpa [canonicalMuHilbertPotentialCubeSet] using
     (hilbertBlockL2PotentialCLM (d := d) (U := cubeSet Q)).continuous.comp_aestronglyMeasurable hmin
@@ -439,7 +397,8 @@ doubled-`Mu` Hilbert minimizer. -/
 theorem aestronglyMeasurable_canonicalMuHilbertFlux_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d) :
-    AEStronglyMeasurable (canonicalMuHilbertFluxCubeSet Q P0) P := by
+    AEStronglyMeasurable
+      (fun a : RegCoeffField d => canonicalMuHilbertFluxCubeSet Q P0 a.toFun) P := by
   have hmin := hP.aestronglyMeasurable_canonicalMuHilbertMinimizer_cubeSet Q P0
   simpa [canonicalMuHilbertFluxCubeSet] using
     (hilbertBlockL2FluxCLM (d := d) (U := cubeSet Q)).continuous.comp_aestronglyMeasurable hmin
@@ -449,7 +408,8 @@ doubled-`Mu` Hilbert minimizer. -/
 theorem aemeasurable_canonicalMuHilbertPotential_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d) :
-    AEMeasurable (canonicalMuHilbertPotentialCubeSet Q P0) P :=
+    AEMeasurable
+      (fun a : RegCoeffField d => canonicalMuHilbertPotentialCubeSet Q P0 a.toFun) P :=
   (hP.aestronglyMeasurable_canonicalMuHilbertPotential_cubeSet Q P0).aemeasurable
 
 /-- Law-facing a.e.-measurability of the flux component of the selected
@@ -457,14 +417,16 @@ doubled-`Mu` Hilbert minimizer. -/
 theorem aemeasurable_canonicalMuHilbertFlux_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d) :
-    AEMeasurable (canonicalMuHilbertFluxCubeSet Q P0) P :=
+    AEMeasurable
+      (fun a : RegCoeffField d => canonicalMuHilbertFluxCubeSet Q P0 a.toFun) P :=
   (hP.aestronglyMeasurable_canonicalMuHilbertFlux_cubeSet Q P0).aemeasurable
 
 /-- Law-facing strong measurability of the selected doubled-`Mu` potential field. -/
 theorem aestronglyMeasurable_canonicalDoubledMuResponsePotentialField_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
-    AEStronglyMeasurable (canonicalDoubledMuResponsePotentialFieldCubeSet Q p q) P := by
+    AEStronglyMeasurable
+      (fun a : RegCoeffField d => canonicalDoubledMuResponsePotentialFieldCubeSet Q p q a.toFun) P := by
   simpa [canonicalDoubledMuResponsePotentialFieldCubeSet] using
     hP.aestronglyMeasurable_canonicalMuHilbertPotential_cubeSet Q (-p, q)
 
@@ -472,7 +434,8 @@ theorem aestronglyMeasurable_canonicalDoubledMuResponsePotentialField_cubeSet
 theorem aestronglyMeasurable_canonicalDoubledMuResponseFluxField_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
-    AEStronglyMeasurable (canonicalDoubledMuResponseFluxFieldCubeSet Q p q) P := by
+    AEStronglyMeasurable
+      (fun a : RegCoeffField d => canonicalDoubledMuResponseFluxFieldCubeSet Q p q a.toFun) P := by
   simpa [canonicalDoubledMuResponseFluxFieldCubeSet] using
     hP.aestronglyMeasurable_canonicalMuHilbertFlux_cubeSet Q (-p, q)
 
@@ -480,14 +443,16 @@ theorem aestronglyMeasurable_canonicalDoubledMuResponseFluxField_cubeSet
 theorem aemeasurable_canonicalDoubledMuResponsePotentialField_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
-    AEMeasurable (canonicalDoubledMuResponsePotentialFieldCubeSet Q p q) P :=
+    AEMeasurable
+      (fun a : RegCoeffField d => canonicalDoubledMuResponsePotentialFieldCubeSet Q p q a.toFun) P :=
   (hP.aestronglyMeasurable_canonicalDoubledMuResponsePotentialField_cubeSet Q p q).aemeasurable
 
 /-- Law-facing a.e.-measurability of the selected doubled-`Mu` flux field. -/
 theorem aemeasurable_canonicalDoubledMuResponseFluxField_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
-    AEMeasurable (canonicalDoubledMuResponseFluxFieldCubeSet Q p q) P :=
+    AEMeasurable
+      (fun a : RegCoeffField d => canonicalDoubledMuResponseFluxFieldCubeSet Q p q a.toFun) P :=
   (hP.aestronglyMeasurable_canonicalDoubledMuResponseFluxField_cubeSet Q p q).aemeasurable
 
 /-- Law-facing measurability of selected doubled-`Mu` potential averages over a
@@ -495,7 +460,9 @@ deterministic subcube. -/
 theorem aemeasurable_canonicalDoubledMuResponsePotentialFieldAverage_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q R : TriadicCube d) (p q : Vec d) :
-    AEMeasurable (canonicalDoubledMuResponsePotentialFieldAverageCubeSet Q R p q) P := by
+    AEMeasurable
+      (fun a : RegCoeffField d =>
+        canonicalDoubledMuResponsePotentialFieldAverageCubeSet Q R p q a.toFun) P := by
   rw [aemeasurable_pi_iff]
   intro i
   let ℓ : HilbertVectorL2 (cubeSet Q) →L[ℝ] ℝ :=
@@ -503,7 +470,9 @@ theorem aemeasurable_canonicalDoubledMuResponsePotentialFieldAverage_cubeSet
       hilbertVectorL2CoordSetIntegralCLM (U := cubeSet Q)
         (cubeSet R) (measurableSet_cubeSet R) i
   have hfield := hP.aestronglyMeasurable_canonicalDoubledMuResponsePotentialField_cubeSet Q p q
-  have hℓ : AEMeasurable (fun a : CoeffField d => ℓ (canonicalDoubledMuResponsePotentialFieldCubeSet Q p q a)) P :=
+  have hℓ : AEMeasurable
+      (fun a : RegCoeffField d =>
+        ℓ (canonicalDoubledMuResponsePotentialFieldCubeSet Q p q a.toFun)) P :=
     (ℓ.continuous.comp_aestronglyMeasurable hfield).aemeasurable
   simpa [canonicalDoubledMuResponsePotentialFieldAverageCubeSet, ℓ, smul_eq_mul] using hℓ
 
@@ -512,7 +481,9 @@ deterministic subcube. -/
 theorem aemeasurable_canonicalDoubledMuResponseFluxFieldAverage_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q R : TriadicCube d) (p q : Vec d) :
-    AEMeasurable (canonicalDoubledMuResponseFluxFieldAverageCubeSet Q R p q) P := by
+    AEMeasurable
+      (fun a : RegCoeffField d =>
+        canonicalDoubledMuResponseFluxFieldAverageCubeSet Q R p q a.toFun) P := by
   rw [aemeasurable_pi_iff]
   intro i
   let ℓ : HilbertVectorL2 (cubeSet Q) →L[ℝ] ℝ :=
@@ -520,7 +491,9 @@ theorem aemeasurable_canonicalDoubledMuResponseFluxFieldAverage_cubeSet
       hilbertVectorL2CoordSetIntegralCLM (U := cubeSet Q)
         (cubeSet R) (measurableSet_cubeSet R) i
   have hfield := hP.aestronglyMeasurable_canonicalDoubledMuResponseFluxField_cubeSet Q p q
-  have hℓ : AEMeasurable (fun a : CoeffField d => ℓ (canonicalDoubledMuResponseFluxFieldCubeSet Q p q a)) P :=
+  have hℓ : AEMeasurable
+      (fun a : RegCoeffField d =>
+        ℓ (canonicalDoubledMuResponseFluxFieldCubeSet Q p q a.toFun)) P :=
     (ℓ.continuous.comp_aestronglyMeasurable hfield).aemeasurable
   simpa [canonicalDoubledMuResponseFluxFieldAverageCubeSet, ℓ, smul_eq_mul] using hℓ
 
@@ -530,13 +503,14 @@ theorem aemeasurable_descendantsAverageCanonicalDoubledMuResponsePotentialFieldA
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEMeasurable
-      (descendantsAverageCanonicalDoubledMuResponsePotentialFieldAverageCubeSet Q j p q) P := by
+      (fun a : RegCoeffField d =>
+        descendantsAverageCanonicalDoubledMuResponsePotentialFieldAverageCubeSet Q j p q a.toFun) P := by
   rw [aemeasurable_pi_iff]
   intro i
   exact
     aemeasurable_descendantsAverage
       (P := P) (Q := Q) (j := j)
-      (F := fun R a => canonicalDoubledMuResponsePotentialFieldAverageCubeSet Q R p q a i)
+      (F := fun R a => canonicalDoubledMuResponsePotentialFieldAverageCubeSet Q R p q a.toFun i)
       (fun R _hR =>
         (aemeasurable_pi_iff.mp
           (hP.aemeasurable_canonicalDoubledMuResponsePotentialFieldAverage_cubeSet Q R p q)) i)
@@ -547,13 +521,14 @@ theorem aemeasurable_descendantsAverageCanonicalDoubledMuResponseFluxFieldAverag
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEMeasurable
-      (descendantsAverageCanonicalDoubledMuResponseFluxFieldAverageCubeSet Q j p q) P := by
+      (fun a : RegCoeffField d =>
+        descendantsAverageCanonicalDoubledMuResponseFluxFieldAverageCubeSet Q j p q a.toFun) P := by
   rw [aemeasurable_pi_iff]
   intro i
   exact
     aemeasurable_descendantsAverage
       (P := P) (Q := Q) (j := j)
-      (F := fun R a => canonicalDoubledMuResponseFluxFieldAverageCubeSet Q R p q a i)
+      (F := fun R a => canonicalDoubledMuResponseFluxFieldAverageCubeSet Q R p q a.toFun i)
       (fun R _hR =>
         (aemeasurable_pi_iff.mp
           (hP.aemeasurable_canonicalDoubledMuResponseFluxFieldAverage_cubeSet Q R p q)) i)
@@ -563,15 +538,17 @@ norms. -/
 theorem aemeasurable_canonicalDoubledMuResponsePotentialWeakNormPartial_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (s : ℝ) (N : ℕ) (p q p0 : Vec d) :
-    AEMeasurable (canonicalDoubledMuResponsePotentialWeakNormPartialCubeSet Q s N p q p0) P := by
-  unfold canonicalDoubledMuResponsePotentialWeakNormPartialCubeSet
+    AEMeasurable
+      (fun a : RegCoeffField d =>
+        canonicalDoubledMuResponsePotentialWeakNormPartialCubeSet Q s N p q p0 a.toFun) P := by
+  simp only [canonicalDoubledMuResponsePotentialWeakNormPartialCubeSet]
   exact
     Finset.aemeasurable_fun_sum (Finset.range (N + 1)) fun j _hj =>
       (aemeasurable_const.mul <|
         (aemeasurable_descendantsAverage
           (P := P) (Q := Q) (j := j)
           (F := fun R a =>
-            vecNormSq (canonicalDoubledMuResponsePotentialFieldAverageCubeSet Q R p q a - p0))
+            vecNormSq (canonicalDoubledMuResponsePotentialFieldAverageCubeSet Q R p q a.toFun - p0))
           (fun R _hR =>
             aemeasurable_vecNormSq_sub_const
               (hP.aemeasurable_canonicalDoubledMuResponsePotentialFieldAverage_cubeSet Q R p q) p0)).sqrt)
@@ -581,15 +558,17 @@ norms. -/
 theorem aemeasurable_canonicalDoubledMuResponseFluxWeakNormPartial_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (t : ℝ) (N : ℕ) (p q q0 : Vec d) :
-    AEMeasurable (canonicalDoubledMuResponseFluxWeakNormPartialCubeSet Q t N p q q0) P := by
-  unfold canonicalDoubledMuResponseFluxWeakNormPartialCubeSet
+    AEMeasurable
+      (fun a : RegCoeffField d =>
+        canonicalDoubledMuResponseFluxWeakNormPartialCubeSet Q t N p q q0 a.toFun) P := by
+  simp only [canonicalDoubledMuResponseFluxWeakNormPartialCubeSet]
   exact
     Finset.aemeasurable_fun_sum (Finset.range (N + 1)) fun j _hj =>
       (aemeasurable_const.mul <|
         (aemeasurable_descendantsAverage
           (P := P) (Q := Q) (j := j)
           (F := fun R a =>
-            vecNormSq (canonicalDoubledMuResponseFluxFieldAverageCubeSet Q R p q a - q0))
+            vecNormSq (canonicalDoubledMuResponseFluxFieldAverageCubeSet Q R p q a.toFun - q0))
           (fun R _hR =>
             aemeasurable_vecNormSq_sub_const
               (hP.aemeasurable_canonicalDoubledMuResponseFluxFieldAverage_cubeSet Q R p q) q0)).sqrt)
@@ -598,7 +577,9 @@ theorem aemeasurable_canonicalDoubledMuResponseFluxWeakNormPartial_cubeSet
 theorem aemeasurable_canonicalDoubledMuResponsePotentialWeakNorm_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (s : ℝ) (p q p0 : Vec d) :
-    AEMeasurable (canonicalDoubledMuResponsePotentialWeakNormCubeSet Q s p q p0) P := by
+    AEMeasurable
+      (fun a : RegCoeffField d =>
+        canonicalDoubledMuResponsePotentialWeakNormCubeSet Q s p q p0 a.toFun) P := by
   simpa [canonicalDoubledMuResponsePotentialWeakNormCubeSet] using
     (AEMeasurable.iSup fun N =>
       hP.aemeasurable_canonicalDoubledMuResponsePotentialWeakNormPartial_cubeSet Q s N p q p0)
@@ -607,7 +588,9 @@ theorem aemeasurable_canonicalDoubledMuResponsePotentialWeakNorm_cubeSet
 theorem aemeasurable_canonicalDoubledMuResponseFluxWeakNorm_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (t : ℝ) (p q q0 : Vec d) :
-    AEMeasurable (canonicalDoubledMuResponseFluxWeakNormCubeSet Q t p q q0) P := by
+    AEMeasurable
+      (fun a : RegCoeffField d =>
+        canonicalDoubledMuResponseFluxWeakNormCubeSet Q t p q q0 a.toFun) P := by
   simpa [canonicalDoubledMuResponseFluxWeakNormCubeSet] using
     (AEMeasurable.iSup fun N =>
       hP.aemeasurable_canonicalDoubledMuResponseFluxWeakNormPartial_cubeSet Q t N p q q0)
@@ -616,29 +599,23 @@ theorem aemeasurable_canonicalDoubledMuResponseFluxWeakNorm_cubeSet
 the selected canonical doubled-`Mu` minimizer. This is the public Ch4 source for
 raw scalar-response operator-image averages. -/
 theorem aemeasurable_canonicalMuHilbertEnergyBilinFixed_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : CoeffLaw d} (_hP : LawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d)
     (Y : BlockState d) (hY : MemBlockL2 (cubeSet Q) Y.eval) :
-    AEMeasurable (canonicalMuHilbertEnergyBilinFixedCubeSet Q P0 Y hY) P := by
+    AEMeasurable
+      (fun a : RegCoeffField d => canonicalMuHilbertEnergyBilinFixedCubeSet Q P0 Y hY a.toFun) P := by
   refine NullMeasurable.aemeasurable ?_
   intro s hs
-  have hLocal :
-      @Measurable (CoeffField d) ℝ
-        (localSigma (cubeSet Q)) (borel ℝ)
-        (canonicalMuHilbertEnergyBilinFixedCubeSet Q P0 Y hY) :=
-    measurable_canonicalMuHilbertEnergyBilinFixedCubeSet_localSigma hP Q P0 Y hY
-  exact hP.local_observable_measurable.nullMeasurable_localSigma
-    (cubeSet Q)
-    (isBounded_cubeSet Q)
-    ((canonicalMuHilbertEnergyBilinFixedCubeSet Q P0 Y hY) ⁻¹' s)
-    (hLocal hs)
+  exact nullMeasurableSet_of_localSigmaR P
+    (measurable_canonicalMuHilbertEnergyBilinFixedCubeSet_localSigmaR Q P0 Y hY hs)
 
 /-- Law-facing measurability of the upper coefficient-operator image averages
 of the selected doubled-`Mu` response minimizer. -/
 theorem aemeasurable_canonicalDoubledMuResponseUpperImageAverage_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q R : TriadicCube d) (p q : Vec d) :
-    AEMeasurable (canonicalDoubledMuResponseUpperImageAverageCubeSet Q R p q) P := by
+    AEMeasurable
+      (fun a : RegCoeffField d => canonicalDoubledMuResponseUpperImageAverageCubeSet Q R p q a.toFun) P := by
   rw [aemeasurable_pi_iff]
   intro i
   have hpair :=
@@ -653,7 +630,8 @@ of the selected doubled-`Mu` response minimizer. -/
 theorem aemeasurable_canonicalDoubledMuResponseLowerImageAverage_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q R : TriadicCube d) (p q : Vec d) :
-    AEMeasurable (canonicalDoubledMuResponseLowerImageAverageCubeSet Q R p q) P := by
+    AEMeasurable
+      (fun a : RegCoeffField d => canonicalDoubledMuResponseLowerImageAverageCubeSet Q R p q a.toFun) P := by
   rw [aemeasurable_pi_iff]
   intro i
   have hpair :=
@@ -668,7 +646,8 @@ theorem aemeasurable_canonicalDoubledMuResponseLowerImageAverage_cubeSet
 theorem aemeasurable_canonicalScalarResponseGradientAverage_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q R : TriadicCube d) (p q : Vec d) :
-    AEMeasurable (canonicalScalarResponseGradientAverageCubeSet Q R p q) P := by
+    AEMeasurable
+      (fun a : RegCoeffField d => canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun) P := by
   rw [aemeasurable_pi_iff]
   intro i
   have hPot :=
@@ -684,7 +663,8 @@ theorem aemeasurable_canonicalScalarResponseGradientAverage_cubeSet
 theorem aemeasurable_canonicalScalarResponseFluxAverage_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q R : TriadicCube d) (p q : Vec d) :
-    AEMeasurable (canonicalScalarResponseFluxAverageCubeSet Q R p q) P := by
+    AEMeasurable
+      (fun a : RegCoeffField d => canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun) P := by
   rw [aemeasurable_pi_iff]
   intro i
   have hFlux :=
@@ -700,15 +680,17 @@ norms. -/
 theorem aemeasurable_canonicalScalarResponseGradientWeakNormPartial_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (s : ℝ) (N : ℕ) (p q p0 : Vec d) :
-    AEMeasurable (canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0) P := by
-  unfold canonicalScalarResponseGradientWeakNormPartialCubeSet
+    AEMeasurable
+      (fun a : RegCoeffField d =>
+        canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a.toFun) P := by
+  simp only [canonicalScalarResponseGradientWeakNormPartialCubeSet]
   exact
     Finset.aemeasurable_fun_sum (Finset.range (N + 1)) fun j _hj =>
       (aemeasurable_const.mul <|
         (aemeasurable_descendantsAverage
           (P := P) (Q := Q) (j := j)
           (F := fun R a =>
-            vecNormSq (canonicalScalarResponseGradientAverageCubeSet Q R p q a - p0))
+            vecNormSq (canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun - p0))
           (fun R _hR =>
             aemeasurable_vecNormSq_sub_const
               (hP.aemeasurable_canonicalScalarResponseGradientAverage_cubeSet Q R p q) p0)).sqrt)
@@ -718,15 +700,17 @@ norms. -/
 theorem aemeasurable_canonicalScalarResponseFluxWeakNormPartial_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (t : ℝ) (N : ℕ) (p q q0 : Vec d) :
-    AEMeasurable (canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0) P := by
-  unfold canonicalScalarResponseFluxWeakNormPartialCubeSet
+    AEMeasurable
+      (fun a : RegCoeffField d =>
+        canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0 a.toFun) P := by
+  simp only [canonicalScalarResponseFluxWeakNormPartialCubeSet]
   exact
     Finset.aemeasurable_fun_sum (Finset.range (N + 1)) fun j _hj =>
       (aemeasurable_const.mul <|
         (aemeasurable_descendantsAverage
           (P := P) (Q := Q) (j := j)
           (F := fun R a =>
-            vecNormSq (canonicalScalarResponseFluxAverageCubeSet Q R p q a - q0))
+            vecNormSq (canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun - q0))
           (fun R _hR =>
             aemeasurable_vecNormSq_sub_const
               (hP.aemeasurable_canonicalScalarResponseFluxAverage_cubeSet Q R p q) q0)).sqrt)
@@ -736,7 +720,8 @@ norm. -/
 theorem aemeasurable_canonicalScalarResponseGradientWeakNorm_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (s : ℝ) (p q p0 : Vec d) :
-    AEMeasurable (canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0) P := by
+    AEMeasurable
+      (fun a : RegCoeffField d => canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun) P := by
   simpa [canonicalScalarResponseGradientWeakNormCubeSet] using
     (AEMeasurable.iSup fun N =>
       hP.aemeasurable_canonicalScalarResponseGradientWeakNormPartial_cubeSet Q s N p q p0)
@@ -745,7 +730,8 @@ theorem aemeasurable_canonicalScalarResponseGradientWeakNorm_cubeSet
 theorem aemeasurable_canonicalScalarResponseFluxWeakNorm_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (t : ℝ) (p q q0 : Vec d) :
-    AEMeasurable (canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0) P := by
+    AEMeasurable
+      (fun a : RegCoeffField d => canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun) P := by
   simpa [canonicalScalarResponseFluxWeakNormCubeSet] using
     (AEMeasurable.iSup fun N =>
       hP.aemeasurable_canonicalScalarResponseFluxWeakNormPartial_cubeSet Q t N p q q0)
@@ -755,7 +741,8 @@ weak norm. -/
 theorem aestronglyMeasurable_canonicalScalarResponseGradientWeakNorm_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (s : ℝ) (p q p0 : Vec d) :
-    AEStronglyMeasurable (canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0) P :=
+    AEStronglyMeasurable
+      (fun a : RegCoeffField d => canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun) P :=
   (hP.aemeasurable_canonicalScalarResponseGradientWeakNorm_cubeSet Q s p q p0).aestronglyMeasurable
 
 /-- Law-facing strong measurability of the full raw scalar response-flux weak
@@ -763,7 +750,8 @@ norm. -/
 theorem aestronglyMeasurable_canonicalScalarResponseFluxWeakNorm_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (t : ℝ) (p q q0 : Vec d) :
-    AEStronglyMeasurable (canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0) P :=
+    AEStronglyMeasurable
+      (fun a : RegCoeffField d => canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun) P :=
   (hP.aemeasurable_canonicalScalarResponseFluxWeakNorm_cubeSet Q t p q q0).aestronglyMeasurable
 
 end LawCarrier

@@ -85,7 +85,7 @@ theorem sqrt_vecNormSq_le_succ_mul_norm {d : ℕ} (v : Vec d) :
   exact (Real.sqrt_le_iff).2 ⟨mul_nonneg (by positivity) (norm_nonneg v), hsq⟩
 
 private theorem gradientMismatchTermAtScale_nonneg {d : ℕ} [NeZero d]
-    (m k : ℤ) (s s' : ℝ) (p q : Vec d) (a : CoeffField d) :
+    (m k : ℤ) (s s' : ℝ) (p q : Vec d) (a : RegCoeffField d) :
     0 ≤ gradientMismatchTermAtScale m k s s' p q a := by
   unfold gradientMismatchTermAtScale
   refine mul_nonneg (Real.sqrt_nonneg _) ?_
@@ -95,7 +95,7 @@ private theorem gradientMismatchTermAtScale_nonneg {d : ℕ} [NeZero d]
     (Real.sqrt_nonneg _)
 
 theorem fluxMismatchTermAtScale_nonneg {d : ℕ} [NeZero d]
-    (m k : ℤ) (t t' : ℝ) (p q : Vec d) (a : CoeffField d) :
+    (m k : ℤ) (t t' : ℝ) (p q : Vec d) (a : RegCoeffField d) :
     0 ≤ fluxMismatchTermAtScale m k t t' p q a := by
   unfold fluxMismatchTermAtScale
   refine mul_nonneg (Real.sqrt_nonneg _) ?_
@@ -173,46 +173,46 @@ private theorem sum_range_to_Icc_descending {k m : ℤ} (hkm : k ≤ m)
 
 private theorem canonicalScalarResponseGradientWeakNormCubeSet_le_of_partialBound
     {d : ℕ} [NeZero d] (Q : TriadicCube d) (s : ℝ) (p q p0 : Vec d)
-    (a : CoeffField d) {B : ℝ}
+    (a : RegCoeffField d) {B : ℝ}
     (hB :
       ∀ N : ℕ,
-        Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a ≤ B) :
-    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a ≤ B := by
+        Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a.toFun ≤ B) :
+    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun ≤ B := by
   unfold Ch04.canonicalScalarResponseGradientWeakNormCubeSet
   refine csSup_le ?_ ?_
-  · exact ⟨Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s 0 p q p0 a,
+  · exact ⟨Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s 0 p q p0 a.toFun,
       ⟨0, rfl⟩⟩
   · rintro x ⟨N, rfl⟩
     exact hB N
 
 private theorem canonicalScalarResponseFluxWeakNormCubeSet_le_of_partialBound
     {d : ℕ} [NeZero d] (Q : TriadicCube d) (t : ℝ) (p q q0 : Vec d)
-    (a : CoeffField d) {B : ℝ}
+    (a : RegCoeffField d) {B : ℝ}
     (hB :
       ∀ N : ℕ,
-        Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0 a ≤ B) :
-    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a ≤ B := by
+        Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0 a.toFun ≤ B) :
+    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun ≤ B := by
   unfold Ch04.canonicalScalarResponseFluxWeakNormCubeSet
   refine csSup_le ?_ ?_
-  · exact ⟨Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t 0 p q q0 a,
+  · exact ⟨Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t 0 p q q0 a.toFun,
       ⟨0, rfl⟩⟩
   · rintro x ⟨N, rfl⟩
     exact hB N
 
 private theorem gradientWeakNormPartial_le_depthRHS
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (N L : ℕ) {s s' : ℝ}
     (hs : 0 < s) (hs' : 0 < s') (hgap : 0 < s - s')
     (p q p0 : Vec d) :
-    Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a ≤
+    Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a.toFun ≤
       2 *
         ((∑ j ∈ (Finset.range (N + 1)).filter (fun j => j < L),
             Real.rpow (3 : ℝ) (-s * (j : ℝ)) *
               Real.sqrt
                 (descendantsAverage Q j fun R =>
                   vecNormSq
-                    (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a - p0))) +
+                    (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun - p0))) +
           (2 * Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹)) *
             ∑ j ∈ (Finset.range (N + 1)).filter (fun j => j < L),
               Real.rpow (3 : ℝ) (-(s - s') * (j : ℝ)) *
@@ -237,14 +237,14 @@ private theorem gradientWeakNormPartial_le_depthRHS
       Real.sqrt
         (descendantsAverage Q j fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a - p0))
+            (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun - p0))
   let mismatchTerm : ℕ → ℝ := fun j =>
     Real.rpow (3 : ℝ) (-s * (j : ℝ)) *
       Real.sqrt
         (descendantsAverage Q j fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a))
+            (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun))
   let zeroTerm : ℕ → ℝ := fun j =>
     Real.rpow (3 : ℝ) (-s * (j : ℝ)) *
       Real.sqrt (descendantsAverage Q j fun _R => vecNormSq (0 : Vec d))
@@ -277,7 +277,7 @@ private theorem gradientWeakNormPartial_le_depthRHS
     rw [descendantsAverage_zero_vecNormSq]
     simp
   have hsplit' :
-      Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a ≤
+      Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a.toFun ≤
         (∑ j ∈ (Finset.range (N + 1)).filter high,
             2 * (avgTerm j + mismatchTerm j + zeroTerm j + zeroTerm j)) +
           2 * (lowSum + constTail) := by
@@ -318,7 +318,7 @@ private theorem gradientWeakNormPartial_le_depthRHS
       gradientLowScaleDepthSum_le_lambdaSqCoeffField_responseJ
         a ha Q N L hs' hgap p q
   calc
-    Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a
+    Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a.toFun
         ≤
           (∑ j ∈ (Finset.range (N + 1)).filter high,
               2 * (avgTerm j + mismatchTerm j + zeroTerm j + zeroTerm j)) +
@@ -341,7 +341,7 @@ private theorem gradientWeakNormPartial_le_depthRHS
               Real.sqrt
                 (descendantsAverage Q j fun R =>
                   vecNormSq
-                    (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a - p0))) +
+                    (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun - p0))) +
           (2 * Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹)) *
             ∑ j ∈ (Finset.range (N + 1)).filter (fun j => j < L),
               Real.rpow (3 : ℝ) (-(s - s') * (j : ℝ)) *
@@ -360,19 +360,19 @@ private theorem gradientWeakNormPartial_le_depthRHS
           simp [high, avgTerm, mismatchRHS, lowRHS, constTail]
 
 private theorem fluxWeakNormPartial_le_depthRHS
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (N L : ℕ) {t t' : ℝ}
     (ht : 0 < t) (ht' : 0 < t') (hgap : 0 < t - t')
     (p q q0 : Vec d) :
-    Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0 a ≤
+    Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0 a.toFun ≤
       2 *
         ((∑ j ∈ (Finset.range (N + 1)).filter (fun j => j < L),
             Real.rpow (3 : ℝ) (-t * (j : ℝ)) *
               Real.sqrt
                 (descendantsAverage Q j fun R =>
                   vecNormSq
-                    (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a - q0))) +
+                    (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun - q0))) +
           (2 * Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a)) *
             ∑ j ∈ (Finset.range (N + 1)).filter (fun j => j < L),
               Real.rpow (3 : ℝ) (-(t - t') * (j : ℝ)) *
@@ -397,14 +397,14 @@ private theorem fluxWeakNormPartial_le_depthRHS
       Real.sqrt
         (descendantsAverage Q j fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a - q0))
+            (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun - q0))
   let mismatchTerm : ℕ → ℝ := fun j =>
     Real.rpow (3 : ℝ) (-t * (j : ℝ)) *
       Real.sqrt
         (descendantsAverage Q j fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a))
+            (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+              Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun))
   let zeroTerm : ℕ → ℝ := fun j =>
     Real.rpow (3 : ℝ) (-t * (j : ℝ)) *
       Real.sqrt (descendantsAverage Q j fun _R => vecNormSq (0 : Vec d))
@@ -437,7 +437,7 @@ private theorem fluxWeakNormPartial_le_depthRHS
     rw [descendantsAverage_zero_vecNormSq]
     simp
   have hsplit' :
-      Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0 a ≤
+      Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0 a.toFun ≤
         (∑ j ∈ (Finset.range (N + 1)).filter high,
             2 * (avgTerm j + mismatchTerm j + zeroTerm j + zeroTerm j)) +
           2 * (lowSum + constTail) := by
@@ -478,7 +478,7 @@ private theorem fluxWeakNormPartial_le_depthRHS
       fluxLowScaleDepthSum_le_LambdaSqCoeffField_responseJ
         a ha Q N L ht' hgap p q
   calc
-    Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0 a
+    Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0 a.toFun
         ≤
           (∑ j ∈ (Finset.range (N + 1)).filter high,
               2 * (avgTerm j + mismatchTerm j + zeroTerm j + zeroTerm j)) +
@@ -501,7 +501,7 @@ private theorem fluxWeakNormPartial_le_depthRHS
               Real.sqrt
                 (descendantsAverage Q j fun R =>
                   vecNormSq
-                    (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a - q0))) +
+                    (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun - q0))) +
           (2 * Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a)) *
             ∑ j ∈ (Finset.range (N + 1)).filter (fun j => j < L),
               Real.rpow (3 : ℝ) (-(t - t') * (j : ℝ)) *
@@ -520,19 +520,19 @@ private theorem fluxWeakNormPartial_le_depthRHS
           simp [high, avgTerm, mismatchRHS, lowRHS, constTail]
 
 private theorem gradientWeakNorm_le_depthRHS
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (L : ℕ) {s s' : ℝ}
     (hs : 0 < s) (hs' : 0 < s') (hgap : 0 < s - s')
     (p q p0 : Vec d) :
-    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a ≤
+    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun ≤
       2 *
         ((∑ j ∈ Finset.range L,
             Real.rpow (3 : ℝ) (-s * (j : ℝ)) *
               Real.sqrt
                 (descendantsAverage Q j fun R =>
                   vecNormSq
-                    (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a - p0))) +
+                    (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun - p0))) +
           (2 * Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹)) *
             ∑ j ∈ Finset.range L,
               Real.rpow (3 : ℝ) (-(s - s') * (j : ℝ)) *
@@ -553,7 +553,7 @@ private theorem gradientWeakNorm_le_depthRHS
       Real.sqrt
         (descendantsAverage Q j fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a - p0))
+            (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun - p0))
   let defectTerm : ℕ → ℝ := fun j =>
     Real.rpow (3 : ℝ) (-(s - s') * (j : ℝ)) *
       Real.sqrt
@@ -600,7 +600,7 @@ private theorem gradientWeakNorm_le_depthRHS
         coeff * ∑ j ∈ Finset.range L, defectTerm j :=
     mul_le_mul_of_nonneg_left hdefect hcoeff_nonneg
   have hmain :
-      Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a ≤
+      Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a.toFun ≤
         2 * ((∑ j ∈ Finset.range L, avgTerm j) +
             coeff * ∑ j ∈ Finset.range L, defectTerm j) +
           2 * (lowTail + constTail) := by
@@ -608,19 +608,19 @@ private theorem gradientWeakNorm_le_depthRHS
   simpa [avgTerm, defectTerm, coeff, lowTail, constTail] using hmain
 
 private theorem fluxWeakNorm_le_depthRHS
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (L : ℕ) {t t' : ℝ}
     (ht : 0 < t) (ht' : 0 < t') (hgap : 0 < t - t')
     (p q q0 : Vec d) :
-    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a ≤
+    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun ≤
       2 *
         ((∑ j ∈ Finset.range L,
             Real.rpow (3 : ℝ) (-t * (j : ℝ)) *
               Real.sqrt
                 (descendantsAverage Q j fun R =>
                   vecNormSq
-                    (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a - q0))) +
+                    (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun - q0))) +
           (2 * Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a)) *
             ∑ j ∈ Finset.range L,
               Real.rpow (3 : ℝ) (-(t - t') * (j : ℝ)) *
@@ -641,7 +641,7 @@ private theorem fluxWeakNorm_le_depthRHS
       Real.sqrt
         (descendantsAverage Q j fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a - q0))
+            (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun - q0))
   let defectTerm : ℕ → ℝ := fun j =>
     Real.rpow (3 : ℝ) (-(t - t') * (j : ℝ)) *
       Real.sqrt
@@ -688,7 +688,7 @@ private theorem fluxWeakNorm_le_depthRHS
         coeff * ∑ j ∈ Finset.range L, defectTerm j :=
     mul_le_mul_of_nonneg_left hdefect hcoeff_nonneg
   have hmain :
-      Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0 a ≤
+      Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0 a.toFun ≤
         2 * ((∑ j ∈ Finset.range L, avgTerm j) +
             coeff * ∑ j ∈ Finset.range L, defectTerm j) +
           2 * (lowTail + constTail) := by
@@ -696,7 +696,7 @@ private theorem fluxWeakNorm_le_depthRHS
   simpa [avgTerm, defectTerm, coeff, lowTail, constTail] using hmain
 
 theorem gradientWeakNorm_le_scaleGeometricRHS
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℤ} (hkm : k ≤ m) {s s' : ℝ}
     (hs : 0 < s) (hs' : 0 < s') (hgap : 0 < s - s')
@@ -725,13 +725,13 @@ theorem gradientWeakNorm_le_scaleGeometricRHS
             Real.sqrt
               (descendantsAverage Q j fun R =>
                 vecNormSq
-                  (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a - p0))) =
+                  (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun - p0))) =
         ∑ n ∈ Finset.Icc (k + 1) m,
           Real.rpow (3 : ℝ) (-s * (Int.toNat (m - n) : ℝ)) *
             Real.sqrt
               (descendantsAverage Q (Int.toNat (m - n)) fun R =>
                 vecNormSq
-                  (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a - p0)) := by
+                  (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun - p0)) := by
     simpa [L] using
       sum_range_to_Icc_descending (k := k) (m := m) hkm
         (fun j =>
@@ -739,7 +739,7 @@ theorem gradientWeakNorm_le_scaleGeometricRHS
             Real.sqrt
               (descendantsAverage Q j fun R =>
                 vecNormSq
-                  (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a - p0)))
+                  (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun - p0)))
   have hDefect :
       (∑ j ∈ Finset.range L,
           Real.rpow (3 : ℝ) (-(s - s') * (j : ℝ)) *
@@ -765,7 +765,7 @@ theorem gradientWeakNorm_le_scaleGeometricRHS
     mul_assoc] using hraw
 
 theorem fluxWeakNorm_le_scaleGeometricRHS
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℤ} (hkm : k ≤ m) {t t' : ℝ}
     (ht : 0 < t) (ht' : 0 < t') (hgap : 0 < t - t')
@@ -794,13 +794,13 @@ theorem fluxWeakNorm_le_scaleGeometricRHS
             Real.sqrt
               (descendantsAverage Q j fun R =>
                 vecNormSq
-                  (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a - q0))) =
+                  (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun - q0))) =
         ∑ n ∈ Finset.Icc (k + 1) m,
           Real.rpow (3 : ℝ) (-t * (Int.toNat (m - n) : ℝ)) *
             Real.sqrt
               (descendantsAverage Q (Int.toNat (m - n)) fun R =>
                 vecNormSq
-                  (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a - q0)) := by
+                  (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun - q0)) := by
     simpa [L] using
       sum_range_to_Icc_descending (k := k) (m := m) hkm
         (fun j =>
@@ -808,7 +808,7 @@ theorem fluxWeakNorm_le_scaleGeometricRHS
             Real.sqrt
               (descendantsAverage Q j fun R =>
                 vecNormSq
-                  (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a - q0)))
+                  (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun - q0)))
   have hDefect :
       (∑ j ∈ Finset.range L,
           Real.rpow (3 : ℝ) (-(t - t') * (j : ℝ)) *
@@ -834,7 +834,7 @@ theorem fluxWeakNorm_le_scaleGeometricRHS
     mul_assoc] using hraw
 
 theorem gradientScaleGeometricRHS_le_two_gradientRHSAtScale
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     {k m : ℤ} {s s' : ℝ}
     (hs : 0 < s) (hs_le : s ≤ 1)
     (hgap : 0 < s - s') (hgap_le : s - s' ≤ 1)

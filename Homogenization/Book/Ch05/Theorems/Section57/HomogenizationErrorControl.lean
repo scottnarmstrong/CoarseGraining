@@ -147,7 +147,7 @@ theorem limitNormalizedJProbeSum_le_four_normalizedProbeSum_of_aelocallyUniforml
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) :
     limitNormalizedJProbeSum hP hStruct Q a ≤
       4 * limitNormalizedJNormalizedProbeSum hP hStruct Q a := by
@@ -241,7 +241,7 @@ theorem normalizedBlockResponseMax_scalarMatrix_le_limitNormalizedJNormalizedPro
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) :
     Ch02.normalizedBlockResponseMax Q
         (Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha)
@@ -323,7 +323,7 @@ theorem limitNormalizedJNormalizedProbeSum_le_localizedLimitNormalizedJNormalize
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     {m n : ℕ} {R : TriadicCube d}
     (hR : R ∈ descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ))
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     limitNormalizedJNormalizedProbeSum hP hStruct R a ≤
       localizedLimitNormalizedJNormalizedProbeSumMax hP hStruct m n a := by
   classical
@@ -342,7 +342,7 @@ theorem maxDescendantNormalizedBlockResponseAtScale_originCube_scalarMatrix_le_l
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n : ℕ} (hnm : n ≤ m) :
     Ch02.maxDescendantNormalizedBlockResponseAtScale
         (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ)
@@ -399,7 +399,7 @@ then the finite-probe maximum satisfies the same weighted estimate. -/
 theorem weighted_localizedNormalizedProbeJMax_le_of_forall_probe
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    {m n : ℕ} (a : CoeffField d) {W R : ℝ}
+    {m n : ℕ} (a : RegCoeffField d) {W R : ℝ}
     (hW : 0 < W)
     (hprobe : ∀ i : NormalizedProbeIndex d,
       W * localizedLimitNormalizedJMax hP hStruct m n
@@ -428,7 +428,7 @@ theorem weighted_localizedNormalizedProbeJMax_le_of_forall_probe
 theorem limitNormalizedBlockJObservable_nonneg
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (Q : TriadicCube d) (e : FullBlockVec d) (a : CoeffField d) :
+    (Q : TriadicCube d) (e : FullBlockVec d) (a : RegCoeffField d) :
     0 ≤ limitNormalizedBlockJObservable hP hStruct Q e a := by
   simpa [limitNormalizedBlockJObservable] using
     Ch04.blockJObservableCubeSetBlockVec_nonneg Q
@@ -439,7 +439,7 @@ theorem limitNormalizedBlockJObservable_nonneg
 theorem localizedLimitNormalizedJMax_nonneg
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    {m n : ℕ} (hnm : n ≤ m) (e : FullBlockVec d) (a : CoeffField d) :
+    {m n : ℕ} (hnm : n ≤ m) (e : FullBlockVec d) (a : RegCoeffField d) :
     0 ≤ localizedLimitNormalizedJMax hP hStruct m n e a := by
   classical
   let D : Finset (TriadicCube d) :=
@@ -461,7 +461,7 @@ theorem localizedLimitNormalizedJMax_nonneg
 theorem localizedNormalizedProbeJMax_nonneg
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    {m n : ℕ} (hnm : n ≤ m) (a : CoeffField d) :
+    {m n : ℕ} (hnm : n ≤ m) (a : RegCoeffField d) :
     0 ≤ localizedNormalizedProbeJMax hP hStruct m n a := by
   classical
   let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -490,7 +490,7 @@ theorem scaleResponseAtScale_originCube_nat_le_sqrt_const_mul_localizedNormalize
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n : ℕ} (hnm : n ≤ m) :
     Ch02.scaleResponseAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ)
         Ch02.MultiscaleExponent.infinity

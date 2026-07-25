@@ -66,7 +66,7 @@ theorem exists_quantitative_absolute_quenchedLocalizedEstimate_interpolated
             let N0 : ℕ :=
               annealedAlgebraicEntryScale P
                 hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-            let H : ℕ → ℕ → CoeffField d → ℝ :=
+            let H : ℕ → ℕ → RegCoeffField d → ℝ :=
               quenchedProbeEnvelope hP hStruct
             let Dhigh : ℝ := 2 * K * Cfluct * hΓ.thetaHat ^ (2 : ℕ)
             let Dcrude : ℝ := K * CcrudeShift * hΓ.thetaHat ^ (2 : ℕ)
@@ -108,8 +108,8 @@ theorem exists_quantitative_absolute_quenchedLocalizedEstimate_interpolated
                   Real.log ρgap)))
             let Q : ℕ := max Qshift (max Qsmall Qunion)
             let B : ℝ := max 1 BtailUnion
-            let Bad : ℕ → Set (CoeffField d) := badScaleEvent H t α
-            let X : CoeffField d → ℝ := quenchedMinimalScale (N0 + Q) Bad
+            let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent H t α
+            let X : RegCoeffField d → ℝ := quenchedMinimalScale (N0 + Q) Bad
             IsBigO P (gammaSigma η) X
               (3 * ((3 : ℝ) ^ (N0 + Q)) * B) ∧
               (∀ aω, 1 ≤ X aω) ∧
@@ -164,7 +164,7 @@ theorem exists_quantitative_absolute_quenchedLocalizedEstimate_interpolated
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-  let H : ℕ → ℕ → CoeffField d → ℝ :=
+  let H : ℕ → ℕ → RegCoeffField d → ℝ :=
     quenchedProbeEnvelope hP hStruct
   let Dhigh : ℝ := 2 * K * Cfluct * hΓ.thetaHat ^ (2 : ℕ)
   let Dcrude : ℝ := K * CcrudeShift * hΓ.thetaHat ^ (2 : ℕ)
@@ -205,8 +205,8 @@ theorem exists_quantitative_absolute_quenchedLocalizedEstimate_interpolated
         Real.log ρgap)))
   let Q : ℕ := max Qshift (max Qsmall Qunion)
   let B : ℝ := max 1 BtailUnion
-  let Bad : ℕ → Set (CoeffField d) := badScaleEvent H t α
-  let X : CoeffField d → ℝ := quenchedMinimalScale (N0 + Q) Bad
+  let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent H t α
+  let X : RegCoeffField d → ℝ := quenchedMinimalScale (N0 + Q) Bad
   have hη_pos : 0 < η := by
     simpa [η] using finiteQuenchedTailExponent_pos
       (d := d) (σ := σ) (t := t) hσ_pos ht
@@ -336,7 +336,7 @@ theorem exists_quantitative_absolute_quenchedLocalizedEstimate_interpolated_unif
                 let N0 : ℕ :=
                   annealedAlgebraicEntryScale P
                     hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-                let H : ℕ → ℕ → CoeffField d → ℝ :=
+                let H : ℕ → ℕ → RegCoeffField d → ℝ :=
                   quenchedProbeEnvelope hP hStruct
                 let Dhigh : ℝ := 2 * K * Cfluct * hΓ.thetaHat ^ (2 : ℕ)
                 let Dcrude : ℝ := K * CcrudeShift * hΓ.thetaHat ^ (2 : ℕ)
@@ -378,8 +378,8 @@ theorem exists_quantitative_absolute_quenchedLocalizedEstimate_interpolated_unif
                       Real.log ρgap)))
                 let Q : ℕ := max Qshift (max Qsmall Qunion)
                 let B : ℝ := max 1 BtailUnion
-                let Bad : ℕ → Set (CoeffField d) := badScaleEvent H t α
-                let X : CoeffField d → ℝ := quenchedMinimalScale (N0 + Q) Bad
+                let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent H t α
+                let X : RegCoeffField d → ℝ := quenchedMinimalScale (N0 + Q) Bad
                 IsBigO P (gammaSigma η) X
                   (3 * ((3 : ℝ) ^ (N0 + Q)) * B) ∧
                   (∀ aω, 1 ≤ X aω) ∧
@@ -438,7 +438,7 @@ theorem exists_quantitative_absolute_quenchedLocalizedEstimate_interpolated_unif
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-  let H : ℕ → ℕ → CoeffField d → ℝ :=
+  let H : ℕ → ℕ → RegCoeffField d → ℝ :=
     quenchedProbeEnvelope hP hStruct
   let Dhigh : ℝ := 2 * K * Cfluct * hΓ.thetaHat ^ (2 : ℕ)
   let Dcrude : ℝ := K * CcrudeShift * hΓ.thetaHat ^ (2 : ℕ)
@@ -479,8 +479,8 @@ theorem exists_quantitative_absolute_quenchedLocalizedEstimate_interpolated_unif
         Real.log ρgap)))
   let Q : ℕ := max Qshift (max Qsmall Qunion)
   let B : ℝ := max 1 BtailUnion
-  let Bad : ℕ → Set (CoeffField d) := badScaleEvent H t α
-  let X : CoeffField d → ℝ := quenchedMinimalScale (N0 + Q) Bad
+  let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent H t α
+  let X : RegCoeffField d → ℝ := quenchedMinimalScale (N0 + Q) Bad
   have hη_pos : 0 < η := by
     simpa [η] using finiteQuenchedTailExponent_pos
       (d := d) (σ := σ) (t := t) hσ_pos ht

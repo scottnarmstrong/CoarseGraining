@@ -47,7 +47,7 @@ variable {d : ℕ}
 /-- Integrability of the finite probe square budget, generic in the matrix
 family. -/
 theorem integrable_fullBlockProbeSqBudget {P : CoeffLaw d} [IsProbabilityMeasure P]
-    {M : CoeffField d → FullBlockMat d}
+    {M : RegCoeffField d → FullBlockMat d}
     (hint : ∀ q : FullBlockVec d,
       Integrable (fun a => (fullBlockQuadratic (M a) q) ^ 2) P) :
     Integrable (fun a => fullBlockProbeSqBudget (M a)) P := by
@@ -61,7 +61,7 @@ theorem integrable_fullBlockProbeSqBudget {P : CoeffLaw d} [IsProbabilityMeasure
 /-- The finite probe square budget integrates to a finite sum of per-probe
 second moments, generic in the matrix family. -/
 theorem integral_fullBlockProbeSqBudget_eq {P : CoeffLaw d} [IsProbabilityMeasure P]
-    {M : CoeffField d → FullBlockMat d}
+    {M : RegCoeffField d → FullBlockMat d}
     (hint : ∀ q : FullBlockVec d,
       Integrable (fun a => (fullBlockQuadratic (M a) q) ^ 2) P) :
     ∫ a, fullBlockProbeSqBudget (M a) ∂P =
@@ -73,7 +73,7 @@ theorem integral_fullBlockProbeSqBudget_eq {P : CoeffLaw d} [IsProbabilityMeasur
               ∫ a, (fullBlockQuadratic (M a) (fullBlockMinusProbe α β)) ^ (2 : ℕ) ∂P) := by
   have hterm_int : ∀ α β : BlockCoord d,
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           3 * ((fullBlockQuadratic (M a) (fullBlockCoordinateProbe α)) ^ (2 : ℕ) +
             (fullBlockQuadratic (M a) (fullBlockPlusProbe α β)) ^ (2 : ℕ) +
             (fullBlockQuadratic (M a) (fullBlockMinusProbe α β)) ^ (2 : ℕ))) P :=
@@ -112,7 +112,7 @@ theorem integral_fullBlockProbeSqBudget_eq {P : CoeffLaw d} [IsProbabilityMeasur
 /-- The finite probe square budget integral is bounded by a uniform per-probe
 bound `K` (valid on probes of Euclidean square norm `≤ 4`), generic in `M`. -/
 theorem integral_fullBlockProbeSqBudget_le {P : CoeffLaw d} [IsProbabilityMeasure P]
-    {M : CoeffField d → FullBlockMat d} (K : ℝ)
+    {M : RegCoeffField d → FullBlockMat d} (K : ℝ)
     (hint : ∀ q : FullBlockVec d,
       Integrable (fun a => (fullBlockQuadratic (M a) q) ^ 2) P)
     (hbd : ∀ q : FullBlockVec d, dotProduct q q ≤ 4 →
@@ -141,11 +141,11 @@ theorem integral_observable_le_of_probeBounds [NeZero d] {P : CoeffLaw d}
     [IsProbabilityMeasure P] (hP : LawCarrier P) (hStruct : StructuralLaw P)
     (m : ℤ) (K : ℝ)
     (hint : ∀ q : FullBlockVec d,
-      Integrable (fun a => (fullBlockQuadratic
+      Integrable (fun a : RegCoeffField d => (fullBlockQuadratic
         (fullBlockNormalizedFluctuationMatrix hP hStruct m (cubeSet (originCube d m)) a) q)
           ^ 2) P)
     (hbd : ∀ q : FullBlockVec d, dotProduct q q ≤ 4 →
-      (∫ a, (fullBlockQuadratic
+      (∫ a : RegCoeffField d, (fullBlockQuadratic
         (fullBlockNormalizedFluctuationMatrix hP hStruct m (cubeSet (originCube d m)) a) q)
           ^ 2 ∂P) ≤ K) :
     (∫ a, fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct m (originCube d m) a ∂P)
@@ -157,7 +157,7 @@ theorem integral_observable_le_of_probeBounds [NeZero d] {P : CoeffLaw d}
     fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_probeSqBudget_ae
       hP hStruct m (originCube d m)
   have hnonneg :
-      (0 : CoeffField d → ℝ) ≤ᵐ[P]
+      (0 : RegCoeffField d → ℝ) ≤ᵐ[P]
         fun a => fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct m
           (originCube d m) a :=
     Filter.Eventually.of_forall fun a =>

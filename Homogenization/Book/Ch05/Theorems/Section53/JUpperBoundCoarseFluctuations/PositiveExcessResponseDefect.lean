@@ -28,7 +28,7 @@ private theorem ellipticityPositiveExcessContribution_expectation_le_of_integrab
       let β := section53CoarseFluctuationBeta hP4
       let rLower := hP4.sLower + β
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             ((Ch04.lambdaSqCoeffField
                 (originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹ -
@@ -38,7 +38,7 @@ private theorem ellipticityPositiveExcessContribution_expectation_le_of_integrab
       let β := section53CoarseFluctuationBeta hP4
       let rUpper := hP4.sUpper + β
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             (Ch04.LambdaSqCoeffField
                 (originCube d (m : ℤ)) rUpper (.finite 1) a -
@@ -49,7 +49,7 @@ private theorem ellipticityPositiveExcessContribution_expectation_le_of_integrab
       let p_e := specialPAtScale hP hStruct (m : ℤ) e
       let q_e := specialQAtScale hP hStruct (m : ℤ) e
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Real.rpow
             (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ) P) :
     ∃ C : ℝ, 0 ≤ C ∧
@@ -59,7 +59,7 @@ private theorem ellipticityPositiveExcessContribution_expectation_le_of_integrab
       let σ := sigmaHatAtScale hP hStruct (m : ℤ)
       let p_e := specialPAtScale hP hStruct (m : ℤ) e
       let q_e := specialQAtScale hP hStruct (m : ℤ) e
-      let J : CoeffField d → ℝ :=
+      let J : RegCoeffField d → ℝ :=
         fun a => Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a
       σ *
           (∫ a,
@@ -87,16 +87,16 @@ private theorem ellipticityPositiveExcessContribution_expectation_le_of_integrab
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
   let p_e := specialPAtScale hP hStruct (m : ℤ) e
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
-  let J : CoeffField d → ℝ :=
+  let J : RegCoeffField d → ℝ :=
     fun a => Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a
-  let lowerExcess : CoeffField d → ℝ :=
+  let lowerExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
         ((Ch04.lambdaSqCoeffField
             (originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹ -
           (hP.barSigmaStarAtScale hStruct 0)⁻¹)
         0
-  let upperExcess : CoeffField d → ℝ :=
+  let upperExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
         (Ch04.LambdaSqCoeffField
@@ -374,7 +374,7 @@ theorem ellipticityPositiveExcess_childResponseAverage_expectation_le_uniform
         let σ := sigmaHatAtScale hP hStruct (m : ℤ)
         let p_e := specialPAtScale hP hStruct (m : ℤ) e
         let q_e := specialQAtScale hP hStruct (m : ℤ) e
-        let childAvg : CoeffField d → ℝ :=
+        let childAvg : RegCoeffField d → ℝ :=
           fun a =>
             descendantsAverage (originCube d (m : ℤ))
               (Int.toNat ((m : ℤ) - (k : ℤ)))
@@ -454,19 +454,19 @@ theorem ellipticityPositiveExcess_childResponseAverage_expectation_le_uniform
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
   let p_e := specialPAtScale hP hStruct (m : ℤ) e
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
-  let childAvg : CoeffField d → ℝ :=
+  let childAvg : RegCoeffField d → ℝ :=
     fun a =>
       descendantsAverage (originCube d (m : ℤ))
         (Int.toNat ((m : ℤ) - (k : ℤ)))
         (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
-  let lowerExcess : CoeffField d → ℝ :=
+  let lowerExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
         ((Ch04.lambdaSqCoeffField
             (originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹ -
           (hP.barSigmaStarAtScale hStruct 0)⁻¹)
         0
-  let upperExcess : CoeffField d → ℝ :=
+  let upperExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
         (Ch04.LambdaSqCoeffField
@@ -521,12 +521,12 @@ theorem ellipticityPositiveExcess_childResponseAverage_expectation_le_uniform
       _ ≤ C0 * decay :=
             mul_le_mul_of_nonneg_right hC0_ge_lower hdecay_nonneg
   have hLowerPowInt :
-      Integrable (fun a : CoeffField d => lowerExcess a ^ hP4.xi) P := by
+      Integrable (fun a : RegCoeffField d => lowerExcess a ^ hP4.xi) P := by
     simpa [lowerExcess, rLower, β] using
       Section52.lowerPositiveExcessPowIntegrableAtScale_from_P4_twoExponent
         hP hStruct hP4 hrLower_gt hrLower_lt_one m
   have hUpperPowInt :
-      Integrable (fun a : CoeffField d => upperExcess a ^ hP4.xi) P := by
+      Integrable (fun a : RegCoeffField d => upperExcess a ^ hP4.xi) P := by
     simpa [upperExcess, rUpper, β] using
       Section52.upperPositiveExcessPowIntegrableAtScale_from_P4_twoExponent
         hP hStruct hP4 hrUpper_gt hrUpper_lt_one m

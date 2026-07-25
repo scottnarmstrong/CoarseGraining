@@ -9,51 +9,60 @@ namespace Ch04
 open MeasureTheory
 
 /-!
-# Law-relative measurability promotion
+# Law-relative measurability promotion (carrier re-type, Packet P3)
 
 This is the canonical Ch4 bridge:
 
-`IsLocalRandomVariable U X → AEMeasurable X P → AEStronglyMeasurable X P`.
+`IsLocalRandomVariable U hU X → AEMeasurable X P → AEStronglyMeasurable X P`.
+
+On the honest-fields carrier the promotion is genuine: the restriction σ-algebra
+`RestrictionSigmaR U hU` is contained in the canonical carrier σ-algebra
+(`restrictionSigmaR_le`), so a restriction-local random variable is honestly
+measurable, hence null- and a.e.-strongly measurable.  This is unconditional in
+the law: the former `LocalObservableLawCarrier` hypothesis was always derivable
+(a vestigial hypothesis, Packet P4 R3-family strengthening) and has been dropped
+from these bridges — they now hold for *every* carrier law.
 
 Later chapters should not introduce section-local copies of this bridge.
+
+Reference: the paper (Armstrong–Kuusi–Loher, in prep).
 -/
 
 namespace IsLocalRandomVariable
 
-/-- A restriction-local random variable is null-measurable under any coefficient
+/-- A restriction-local random variable is null-measurable under any carrier
 law. -/
 theorem nullMeasurable {β : Type*} [MeasurableSpace β] {d : ℕ}
-    {P : CoeffLaw d} (_hP : LocalObservableLawCarrier P)
-    {U : Set (Vec d)} {X : CoeffField d → β}
-    (hX : IsLocalRandomVariable U X) :
+    {P : CoeffLaw d}
+    {U : Set (Vec d)} {hU : MeasurableSet U} {X : RegCoeffField d → β}
+    (hX : IsLocalRandomVariable U hU X) :
     NullMeasurable X P := by
   intro s hs
   have hXm : Measurable X :=
-    Measurable.mono hX (restrictionSigma_le_coeffField U) le_rfl
+    Measurable.mono hX (restrictionSigmaR_le U hU) le_rfl
   exact (hXm hs).nullMeasurableSet
 
 /-- A local random variable with countably generated target sigma algebra is
-a.e. measurable under a law that sees local coefficient-field events as
-null-measurable. -/
+a.e. measurable under any carrier law. -/
 theorem aemeasurable {β : Type*} [MeasurableSpace β]
     [MeasurableSpace.CountablyGenerated β] {d : ℕ}
-    {P : CoeffLaw d} (hP : LocalObservableLawCarrier P)
-    {U : Set (Vec d)} {X : CoeffField d → β}
-    (hX : IsLocalRandomVariable U X) :
+    {P : CoeffLaw d}
+    {U : Set (Vec d)} {hU : MeasurableSet U} {X : RegCoeffField d → β}
+    (hX : IsLocalRandomVariable U hU X) :
     AEMeasurable X P :=
-  (hX.nullMeasurable hP).aemeasurable
+  (hX.nullMeasurable (P := P)).aemeasurable
 
 /-- A local random variable into a second-countable pseudometrizable measurable
-space is a.e. strongly measurable under a local-observable law carrier. -/
+space is a.e. strongly measurable under any carrier law. -/
 theorem aestronglyMeasurable {β : Type*} [TopologicalSpace β]
     [MeasurableSpace β] [TopologicalSpace.PseudoMetrizableSpace β]
     [OpensMeasurableSpace β] [SecondCountableTopology β]
     [MeasurableSpace.CountablyGenerated β]
-    {d : ℕ} {P : CoeffLaw d} (hP : LocalObservableLawCarrier P)
-    {U : Set (Vec d)} {X : CoeffField d → β}
-    (hX : IsLocalRandomVariable U X) :
+    {d : ℕ} {P : CoeffLaw d}
+    {U : Set (Vec d)} {hU : MeasurableSet U} {X : RegCoeffField d → β}
+    (hX : IsLocalRandomVariable U hU X) :
     AEStronglyMeasurable X P :=
-  (hX.aemeasurable hP).aestronglyMeasurable
+  (hX.aemeasurable (P := P)).aestronglyMeasurable
 
 end IsLocalRandomVariable
 
@@ -62,20 +71,20 @@ namespace LawCarrier
 /-- Dot-notation promotion from local-test measurability to null measurability. -/
 theorem nullMeasurable_of_isLocalRandomVariable
     {β : Type*} [MeasurableSpace β] {d : ℕ} {P : CoeffLaw d}
-    (hP : LawCarrier P) {U : Set (Vec d)}
-    {X : CoeffField d → β} (hX : IsLocalRandomVariable U X) :
+    (_hP : LawCarrier P) {U : Set (Vec d)} {hU : MeasurableSet U}
+    {X : RegCoeffField d → β} (hX : IsLocalRandomVariable U hU X) :
     NullMeasurable X P :=
-  hX.nullMeasurable hP.local_observable_measurable
+  hX.nullMeasurable (P := P)
 
 /-- Dot-notation promotion from local-test measurability to a.e.
 measurability. -/
 theorem aemeasurable_of_isLocalRandomVariable
     {β : Type*} [MeasurableSpace β] [MeasurableSpace.CountablyGenerated β]
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
-    {U : Set (Vec d)} {X : CoeffField d → β}
-    (hX : IsLocalRandomVariable U X) :
+    {d : ℕ} {P : CoeffLaw d} (_hP : LawCarrier P)
+    {U : Set (Vec d)} {hU : MeasurableSet U} {X : RegCoeffField d → β}
+    (hX : IsLocalRandomVariable U hU X) :
     AEMeasurable X P :=
-  hX.aemeasurable hP.local_observable_measurable
+  hX.aemeasurable (P := P)
 
 /-- Dot-notation promotion from local-test measurability to a.e. strong
 measurability. -/
@@ -83,11 +92,11 @@ theorem aestronglyMeasurable_of_isLocalRandomVariable
     {β : Type*} [TopologicalSpace β] [MeasurableSpace β]
     [TopologicalSpace.PseudoMetrizableSpace β] [OpensMeasurableSpace β]
     [SecondCountableTopology β] [MeasurableSpace.CountablyGenerated β]
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
-    {U : Set (Vec d)} {X : CoeffField d → β}
-    (hX : IsLocalRandomVariable U X) :
+    {d : ℕ} {P : CoeffLaw d} (_hP : LawCarrier P)
+    {U : Set (Vec d)} {hU : MeasurableSet U} {X : RegCoeffField d → β}
+    (hX : IsLocalRandomVariable U hU X) :
     AEStronglyMeasurable X P :=
-  hX.aestronglyMeasurable hP.local_observable_measurable
+  hX.aestronglyMeasurable (P := P)
 
 /-- Bundled-observable promotion to null measurability. -/
 theorem nullMeasurable_observable
@@ -114,19 +123,22 @@ theorem aestronglyMeasurable_observable
     AEStronglyMeasurable X P :=
   hP.aestronglyMeasurable_of_isLocalRandomVariable X.isLocal
 
-/-- Canonical access to AEE quantitative slice local measurability. -/
+/-- Canonical access to AEE quantitative slice local measurability, now the
+law-independent honest form (Packet P4b): genuine `LocalSigmaR (cubeSet Q)`
+measurability.  The `LawCarrier` argument is retained only for the dot-notation
+call site; the content no longer depends on the law. -/
 theorem measurableSet_aeeQuantitativeEllipticSlice_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : CoeffLaw d} (_hP : LawCarrier P)
     (Q : TriadicCube d) (k : ℕ) :
-    @MeasurableSet (CoeffField d) (localSigma (cubeSet Q))
-      {a : CoeffField d | AEEQuantitativeEllipticSlice (cubeSet Q) k a} :=
-  hP.aee_quantitative_slice_measurable Q k
+    @MeasurableSet (RegCoeffField d) (LocalSigmaR (cubeSet Q))
+      {a : RegCoeffField d | AEEQuantitativeEllipticSlice (cubeSet Q) k a.toFun} :=
+  measurableSet_localSigmaR_aeeQuantitativeEllipticSlice Q k
 
 /-- A Chapter 4 law carrier gives the a.s. countable AEE quantitative-slice
 cover on each deterministic triadic cube. -/
 theorem ae_exists_aeeQuantitativeEllipticSlice_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P) (Q : TriadicCube d) :
-    ∀ᵐ a ∂P, ∃ k : ℕ, AEEQuantitativeEllipticSlice (cubeSet Q) k a :=
+    ∀ᵐ a ∂P, ∃ k : ℕ, AEEQuantitativeEllipticSlice (cubeSet Q) k a.toFun :=
   hP.ae_locally_uniformly_elliptic.ae_exists_aeeQuantitativeEllipticSlice_cubeSet Q
 
 end LawCarrier

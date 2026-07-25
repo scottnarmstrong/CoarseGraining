@@ -37,7 +37,7 @@ sampled coefficient field, so this needs no representative-identification
 layer.
 -/
 noncomputable def parentResponseSolutionOnDependentFamilyRestrictedToCube
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -71,7 +71,7 @@ noncomputable def parentResponseSolutionOnDependentFamilyRestrictedToCube
 
 /-- The restricted parent solution has the parent canonical gradient. -/
 theorem parentResponseSolutionOnDependentFamilyRestrictedToCube_grad
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -88,7 +88,7 @@ One-child diff-energy identity with the restricted parent solution supplied by
 the Chapter 4 dependent coefficient family.
 -/
 theorem cubeAverage_additivityDiffHalfEnergyDensityOnDependentFamilyOnCube_eq_responseJOnCube_sub_parentRestrictedResponseValue
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -111,7 +111,7 @@ The response value of the restricted parent solution on one child cube is the
 child cube average of the parent response integrand.
 -/
 theorem parentRestrictedResponseValueOnDependentFamily_eq_cubeAverage_parentResponseIntegrand
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -128,7 +128,7 @@ theorem parentRestrictedResponseValueOnDependentFamily_eq_cubeAverage_parentResp
 
 /-- The descendant-indexed restricted-parent response value. -/
 noncomputable def parentRestrictedResponseValueOnDependentFamilyAtDepth
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     TriadicCube d → ℝ :=
@@ -145,7 +145,7 @@ The descendant average of restricted-parent response values is the parent
 response.
 -/
 theorem descendantsAverage_parentRestrictedResponseValueOnDependentFamilyAtDepth_eq_responseJOnCube
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
@@ -198,7 +198,7 @@ The descendant average of the local difference half-energy is exactly the
 response partition defect for the Chapter 4 dependent coefficient family.
 -/
 theorem descendantsAverage_additivityDiffHalfEnergyOnDependentFamily_eq_responseJPartitionDefectOnFamilyAtDepth
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha

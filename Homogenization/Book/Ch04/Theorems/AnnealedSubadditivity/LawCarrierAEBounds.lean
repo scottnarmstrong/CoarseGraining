@@ -23,7 +23,7 @@ theorem responseJObservableCubeSet_le_descendantsAverage_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     {n m : ℤ} (hnm : n ≤ m) (p q : Vec d) :
     responseJObservableCubeSet (originCube d m) p q ≤ᵐ[P]
-      fun a : CoeffField d =>
+      fun a : RegCoeffField d =>
         descendantsAverage (originCube d m) (Int.toNat (m - n))
           (fun R => responseJObservableCubeSet R p q a) := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
@@ -38,9 +38,9 @@ theorem coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_ae
     (Q : TriadicCube d) {k : ℤ} (hk : k ≤ Q.scale) :
     ∀ᵐ a ∂P,
       BlockMatLoewnerLE
-        (coarseBlockMatrix (cubeSet Q) a)
+        (coarseBlockMatrix (cubeSet Q) a.toFun)
         (descendantsAverageBlockMat Q (Int.toNat (Q.scale - k))
-          (fun R => coarseBlockMatrix (cubeSet R) a)) := by
+          (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   exact
     coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_of_aelocallyUniformlyEllipticField
@@ -53,9 +53,9 @@ theorem coarseBlockMatrix_le_descendantsAverageBlockMat_ae
     {n m : ℤ} (hnm : n ≤ m) :
     ∀ᵐ a ∂P,
       BlockMatLoewnerLE
-        (coarseBlockMatrix (cubeSet (originCube d m)) a)
+        (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun)
         (descendantsAverageBlockMat (originCube d m) (Int.toNat (m - n))
-          (fun R => coarseBlockMatrix (cubeSet R) a)) := by
+          (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) := by
   simpa using
     hP.coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_ae
       (originCube d m) hnm
@@ -65,26 +65,26 @@ descendant average of the corresponding entry observable. -/
 theorem coarseBlockMatrix_upperLeft_apply_positiveExcess_le_abs_centeredDescendantAverageOnCube_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {k : ℤ} (hk : k ≤ Q.scale) (i : Fin d) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       max
-        ((coarseBlockMatrix (cubeSet Q) a).upperLeft i i -
-          ∫ b, (coarseBlockMatrix (cubeSet (originCube d k)) b).upperLeft i i ∂P)
+        ((coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i i -
+          ∫ b, (coarseBlockMatrix (cubeSet (originCube d k)) b.toFun).upperLeft i i ∂P)
         0) ≤ᵐ[P]
       fun a =>
         |centeredDescendantAverageOnCube P Q k
-          (fun U a => (coarseBlockMatrix U a).upperLeft i i) a| := by
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    fun U a => (coarseBlockMatrix U a).upperLeft i i
+          (fun U a => (coarseBlockMatrix U a.toFun).upperLeft i i) a| := by
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fun U a => (coarseBlockMatrix U a.toFun).upperLeft i i
   let μ0 : ℝ := ∫ b, X (cubeSet (originCube d k)) b ∂P
   filter_upwards [hP.coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_ae Q hk]
     with a hSub
   have hEntryBlock := blockMatLoewnerLE_upperLeft_apply hSub i
   have hEntry :
-      (coarseBlockMatrix (cubeSet Q) a).upperLeft i i ≤
+      (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i i ≤
         descendantAverageOnCube Q k X a := by
     have hAvg :
         (descendantsAverageBlockMat Q (Int.toNat (Q.scale - k))
-            (fun R => coarseBlockMatrix (cubeSet R) a)).upperLeft i i =
+            (fun R => coarseBlockMatrix (cubeSet R) a.toFun)).upperLeft i i =
           descendantAverageOnCube Q k X a := by
       simp [X, descendantAverageOnCube, descendantsAverageBlockMat,
         descendantsAverageMat, descendantsAverage,
@@ -97,14 +97,14 @@ theorem coarseBlockMatrix_upperLeft_apply_positiveExcess_le_abs_centeredDescenda
       (centeredDescendantAverageOnCube_eq_descendantAverageOnCube_sub
         (P := P) (Q := Q) (n := k) hk X) a
   have hPoint :
-      max ((coarseBlockMatrix (cubeSet Q) a).upperLeft i i - μ0) 0 ≤
+      max ((coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i i - μ0) 0 ≤
         |centeredDescendantAverageOnCube P Q k X a| := by
     have hle :
-        (coarseBlockMatrix (cubeSet Q) a).upperLeft i i - μ0 ≤
+        (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i i - μ0 ≤
           descendantAverageOnCube Q k X a - μ0 := by
       linarith
     have hmax :
-        max ((coarseBlockMatrix (cubeSet Q) a).upperLeft i i - μ0) 0 ≤
+        max ((coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i i - μ0) 0 ≤
           max (descendantAverageOnCube Q k X a - μ0) 0 :=
       max_le_max hle le_rfl
     have hmax_abs :
@@ -124,33 +124,33 @@ theorem coarseBlockMatrix_upperLeft_matrixNorm_positiveExcess_le_sum_abs_centere
       ∀ i j : Fin d,
         center i j =
           ∫ b,
-            (coarseBlockMatrix (cubeSet (originCube d k)) b).upperLeft i j ∂P) :
-    (fun a : CoeffField d =>
+            (coarseBlockMatrix (cubeSet (originCube d k)) b.toFun).upperLeft i j ∂P) :
+    (fun a : RegCoeffField d =>
       max
-        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
           Ch02.matrixNorm center)
         0) ≤ᵐ[P]
       fun a =>
         ∑ i : Fin d, ∑ j : Fin d,
           |centeredDescendantAverageOnCube P Q k
-            (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| := by
+            (fun U a => (coarseBlockMatrix U a.toFun).upperLeft i j) a| := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField,
       hP.coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_ae Q hk]
     with a ha hSub
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
-  let A : Mat d := (coarseBlockMatrix (cubeSet Q) a).upperLeft
+  let A : Mat d := (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft
   let B : Mat d :=
     (descendantsAverageBlockMat Q (Int.toNat (Q.scale - k))
-      (fun R => coarseBlockMatrix (cubeSet R) a)).upperLeft
+      (fun R => coarseBlockMatrix (cubeSet R) a.toFun)).upperLeft
   have hEq :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   have hApsd : A.PosSemidef := by
-    change ((coarseBlockMatrix (cubeSet Q) a).upperLeft).PosSemidef
+    change ((coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft).PosSemidef
     rw [hEq]
     exact Ch02.bCoarse_posSemidef (Ch02.cubeDomain Q) (F.coeffOn Q)
   have hAB : MatLoewnerLE A B := by
@@ -158,14 +158,14 @@ theorem coarseBlockMatrix_upperLeft_matrixNorm_positiveExcess_le_sum_abs_centere
   have hBpsd : B.PosSemidef := by
     change
       ((descendantsAverageBlockMat Q (Int.toNat (Q.scale - k))
-        (fun R => coarseBlockMatrix (cubeSet R) a)).upperLeft).PosSemidef
+        (fun R => coarseBlockMatrix (cubeSet R) a.toFun)).upperLeft).PosSemidef
     change
       (descendantsAverageMat Q (Int.toNat (Q.scale - k))
-        (fun R => (coarseBlockMatrix (cubeSet R) a).upperLeft)).PosSemidef
+        (fun R => (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft)).PosSemidef
     refine descendantsAverageMat_posSemidef ?_
     intro R hR
     have hEqR :
-        coarseBlockMatrix (cubeSet R) a =
+        coarseBlockMatrix (cubeSet R) a.toFun =
           Ch02.coarseBlockMatrix (Ch02.cubeDomain R) (F.coeffOn R) := by
       simpa [F] using
         LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -177,7 +177,7 @@ theorem coarseBlockMatrix_upperLeft_matrixNorm_positiveExcess_le_sum_abs_centere
         Ch02.matrixNorm center +
           ∑ i : Fin d, ∑ j : Fin d,
             |centeredDescendantAverageOnCube P Q k
-              (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| := by
+              (fun U a => (coarseBlockMatrix U a.toFun).upperLeft i j) a| := by
     calc
       Ch02.matrixNorm A ≤
           Ch02.matrixNorm center + ∑ i : Fin d, ∑ j : Fin d, |B i j - center i j| :=
@@ -187,14 +187,14 @@ theorem coarseBlockMatrix_upperLeft_matrixNorm_positiveExcess_le_sum_abs_centere
           Ch02.matrixNorm center +
             ∑ i : Fin d, ∑ j : Fin d,
               |centeredDescendantAverageOnCube P Q k
-                (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| := by
+                (fun U a => (coarseBlockMatrix U a.toFun).upperLeft i j) a| := by
         congr 1
         refine Finset.sum_congr rfl ?_
         intro i _hi
         refine Finset.sum_congr rfl ?_
         intro j _hj
-        let X : Set (Vec d) → CoeffField d → ℝ :=
-          fun U a => (coarseBlockMatrix U a).upperLeft i j
+        let X : Set (Vec d) → RegCoeffField d → ℝ :=
+          fun U a => (coarseBlockMatrix U a.toFun).upperLeft i j
         have hAvg :
             B i j = descendantAverageOnCube Q k X a := by
           simp [B, X, descendantAverageOnCube, descendantsAverageBlockMat,
@@ -219,14 +219,14 @@ theorem coarseBlockMatrix_upperLeft_matrixNorm_positiveExcess_le_sum_abs_centere
       0 ≤
         ∑ i : Fin d, ∑ j : Fin d,
           |centeredDescendantAverageOnCube P Q k
-            (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| := by
+            (fun U a => (coarseBlockMatrix U a.toFun).upperLeft i j) a| := by
     exact Finset.sum_nonneg fun i _ =>
       Finset.sum_nonneg fun j _ => abs_nonneg _
   have hsub :
       Ch02.matrixNorm A - Ch02.matrixNorm center ≤
         ∑ i : Fin d, ∑ j : Fin d,
           |centeredDescendantAverageOnCube P Q k
-            (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| := by
+            (fun U a => (coarseBlockMatrix U a.toFun).upperLeft i j) a| := by
     linarith
   exact max_le hsub hsum_nonneg
 
@@ -242,12 +242,12 @@ theorem coarseBlockMatrix_upperLeft_matrixNorm_positiveExcess_finsetSup_le_sum_f
       ∀ i j : Fin d,
         center i j =
           ∫ b,
-            (coarseBlockMatrix (cubeSet (originCube d k)) b).upperLeft i j ∂P) :
-    (fun a : CoeffField d =>
+            (coarseBlockMatrix (cubeSet (originCube d k)) b.toFun).upperLeft i j ∂P) :
+    (fun a : RegCoeffField d =>
       parents.sup' hparents
         (fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm center)
             0)) ≤ᵐ[P]
       fun a =>
@@ -255,16 +255,16 @@ theorem coarseBlockMatrix_upperLeft_matrixNorm_positiveExcess_finsetSup_le_sum_f
           parents.sup' hparents
             (fun Q =>
               |centeredDescendantAverageOnCube P Q k
-                (fun U a => (coarseBlockMatrix U a).upperLeft i j) a|) := by
+                (fun U a => (coarseBlockMatrix U a.toFun).upperLeft i j) a|) := by
   have hPoint :
       ∀ᵐ a ∂P, ∀ Q, Q ∈ parents →
         max
-          (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+          (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
             Ch02.matrixNorm center)
           0 ≤
           ∑ i : Fin d, ∑ j : Fin d,
             |centeredDescendantAverageOnCube P Q k
-              (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| :=
+              (fun U a => (coarseBlockMatrix U a.toFun).upperLeft i j) a| :=
     ae_forall_mem_finset (P := P) parents fun Q hQ =>
       hP.coarseBlockMatrix_upperLeft_matrixNorm_positiveExcess_le_sum_abs_centeredDescendantAverageOnCube_ae
         Q (hparent_scale Q hQ) center hcenter
@@ -273,24 +273,24 @@ theorem coarseBlockMatrix_upperLeft_matrixNorm_positiveExcess_finsetSup_le_sum_f
   intro Q hQ
   calc
     max
-        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
           Ch02.matrixNorm center)
         0
         ≤ ∑ i : Fin d, ∑ j : Fin d,
             |centeredDescendantAverageOnCube P Q k
-              (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| :=
+              (fun U a => (coarseBlockMatrix U a.toFun).upperLeft i j) a| :=
           hPoint_a Q hQ
     _ ≤ ∑ i : Fin d, ∑ j : Fin d,
           parents.sup' hparents
             (fun Q' =>
               |centeredDescendantAverageOnCube P Q' k
-                (fun U a => (coarseBlockMatrix U a).upperLeft i j) a|) := by
+                (fun U a => (coarseBlockMatrix U a.toFun).upperLeft i j) a|) := by
           exact Finset.sum_le_sum fun i _ =>
             Finset.sum_le_sum fun j _ =>
               Finset.le_sup'
                 (f := fun Q' =>
                   |centeredDescendantAverageOnCube P Q' k
-                    (fun U a => (coarseBlockMatrix U a).upperLeft i j) a|) hQ
+                    (fun U a => (coarseBlockMatrix U a.toFun).upperLeft i j) a|) hQ
 
 /-- Representative version of
 `coarseBlockMatrix_upperLeft_matrixNorm_positiveExcess_le_sum_abs_centeredDescendantAverageOnCube_ae`.
@@ -303,27 +303,27 @@ theorem coarseBlockMatrix_upperLeft_matrixNorm_positiveExcess_le_sum_abs_centere
       ∀ i j : Fin d,
         center i j =
           ∫ b,
-            (coarseBlockMatrix (cubeSet (originCube d k)) b).upperLeft i j ∂P)
-    (Y : Fin d → Fin d → Set (Vec d) → CoeffField d → ℝ)
+            (coarseBlockMatrix (cubeSet (originCube d k)) b.toFun).upperLeft i j ∂P)
+    (Y : Fin d → Fin d → Set (Vec d) → RegCoeffField d → ℝ)
     (hOrigin :
       ∀ i j : Fin d,
-        (fun a : CoeffField d =>
-          (coarseBlockMatrix (cubeSet (originCube d k)) a).upperLeft i j) =ᵐ[P]
+        (fun a : RegCoeffField d =>
+          (coarseBlockMatrix (cubeSet (originCube d k)) a.toFun).upperLeft i j) =ᵐ[P]
             Y i j (cubeSet (originCube d k)))
     (hDesc :
       ∀ i j : Fin d, ∀ R, R ∈ descendantsAtScale Q k →
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet R) a).upperLeft i j) =ᵐ[P]
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft i j) =ᵐ[P]
           Y i j (cubeSet R)) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       max
-        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
           Ch02.matrixNorm center)
         0) ≤ᵐ[P]
       fun a =>
         ∑ i : Fin d, ∑ j : Fin d,
           |centeredDescendantAverageOnCube P Q k (Y i j) a| := by
-  let X : Fin d → Fin d → Set (Vec d) → CoeffField d → ℝ :=
-    fun i j U a => (coarseBlockMatrix U a).upperLeft i j
+  let X : Fin d → Fin d → Set (Vec d) → RegCoeffField d → ℝ :=
+    fun i j U a => (coarseBlockMatrix U a.toFun).upperLeft i j
   have hRaw :=
     hP.coarseBlockMatrix_upperLeft_matrixNorm_positiveExcess_le_sum_abs_centeredDescendantAverageOnCube_ae
       Q hk center hcenter
@@ -360,23 +360,23 @@ by local/measurable representative arguments. -/
 theorem coarseBlockMatrix_upperLeft_apply_positiveExcess_le_abs_centeredDescendantAverageOnCube_rep_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {k : ℤ} (hk : k ≤ Q.scale) (i : Fin d)
-    (Y : Set (Vec d) → CoeffField d → ℝ)
+    (Y : Set (Vec d) → RegCoeffField d → ℝ)
     (hOrigin :
-      (fun a : CoeffField d =>
-        (coarseBlockMatrix (cubeSet (originCube d k)) a).upperLeft i i) =ᵐ[P]
+      (fun a : RegCoeffField d =>
+        (coarseBlockMatrix (cubeSet (originCube d k)) a.toFun).upperLeft i i) =ᵐ[P]
           Y (cubeSet (originCube d k)))
     (hDesc :
       ∀ R, R ∈ descendantsAtScale Q k →
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet R) a).upperLeft i i) =ᵐ[P]
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft i i) =ᵐ[P]
           Y (cubeSet R)) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       max
-        ((coarseBlockMatrix (cubeSet Q) a).upperLeft i i -
-          ∫ b, (coarseBlockMatrix (cubeSet (originCube d k)) b).upperLeft i i ∂P)
+        ((coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i i -
+          ∫ b, (coarseBlockMatrix (cubeSet (originCube d k)) b.toFun).upperLeft i i ∂P)
         0) ≤ᵐ[P]
       fun a => |centeredDescendantAverageOnCube P Q k Y a| := by
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    fun U a => (coarseBlockMatrix U a).upperLeft i i
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fun U a => (coarseBlockMatrix U a.toFun).upperLeft i i
   have hRaw :=
     hP.coarseBlockMatrix_upperLeft_apply_positiveExcess_le_abs_centeredDescendantAverageOnCube_ae
       Q hk i
@@ -395,26 +395,26 @@ descendant average of the corresponding entry observable. -/
 theorem coarseBlockMatrix_lowerRight_apply_positiveExcess_le_abs_centeredDescendantAverageOnCube_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {k : ℤ} (hk : k ≤ Q.scale) (i : Fin d) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       max
-        ((coarseBlockMatrix (cubeSet Q) a).lowerRight i i -
-          ∫ b, (coarseBlockMatrix (cubeSet (originCube d k)) b).lowerRight i i ∂P)
+        ((coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i i -
+          ∫ b, (coarseBlockMatrix (cubeSet (originCube d k)) b.toFun).lowerRight i i ∂P)
         0) ≤ᵐ[P]
       fun a =>
         |centeredDescendantAverageOnCube P Q k
-          (fun U a => (coarseBlockMatrix U a).lowerRight i i) a| := by
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    fun U a => (coarseBlockMatrix U a).lowerRight i i
+          (fun U a => (coarseBlockMatrix U a.toFun).lowerRight i i) a| := by
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fun U a => (coarseBlockMatrix U a.toFun).lowerRight i i
   let μ0 : ℝ := ∫ b, X (cubeSet (originCube d k)) b ∂P
   filter_upwards [hP.coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_ae Q hk]
     with a hSub
   have hEntryBlock := blockMatLoewnerLE_lowerRight_apply hSub i
   have hEntry :
-      (coarseBlockMatrix (cubeSet Q) a).lowerRight i i ≤
+      (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i i ≤
         descendantAverageOnCube Q k X a := by
     have hAvg :
         (descendantsAverageBlockMat Q (Int.toNat (Q.scale - k))
-            (fun R => coarseBlockMatrix (cubeSet R) a)).lowerRight i i =
+            (fun R => coarseBlockMatrix (cubeSet R) a.toFun)).lowerRight i i =
           descendantAverageOnCube Q k X a := by
       simp [X, descendantAverageOnCube, descendantsAverageBlockMat,
         descendantsAverageMat, descendantsAverage,
@@ -427,14 +427,14 @@ theorem coarseBlockMatrix_lowerRight_apply_positiveExcess_le_abs_centeredDescend
       (centeredDescendantAverageOnCube_eq_descendantAverageOnCube_sub
         (P := P) (Q := Q) (n := k) hk X) a
   have hPoint :
-      max ((coarseBlockMatrix (cubeSet Q) a).lowerRight i i - μ0) 0 ≤
+      max ((coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i i - μ0) 0 ≤
         |centeredDescendantAverageOnCube P Q k X a| := by
     have hle :
-        (coarseBlockMatrix (cubeSet Q) a).lowerRight i i - μ0 ≤
+        (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i i - μ0 ≤
           descendantAverageOnCube Q k X a - μ0 := by
       linarith
     have hmax :
-        max ((coarseBlockMatrix (cubeSet Q) a).lowerRight i i - μ0) 0 ≤
+        max ((coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i i - μ0) 0 ≤
           max (descendantAverageOnCube Q k X a - μ0) 0 :=
       max_le_max hle le_rfl
     have hmax_abs :
@@ -454,33 +454,33 @@ theorem coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_le_sum_abs_center
       ∀ i j : Fin d,
         center i j =
           ∫ b,
-            (coarseBlockMatrix (cubeSet (originCube d k)) b).lowerRight i j ∂P) :
-    (fun a : CoeffField d =>
+            (coarseBlockMatrix (cubeSet (originCube d k)) b.toFun).lowerRight i j ∂P) :
+    (fun a : RegCoeffField d =>
       max
-        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
           Ch02.matrixNorm center)
         0) ≤ᵐ[P]
       fun a =>
         ∑ i : Fin d, ∑ j : Fin d,
           |centeredDescendantAverageOnCube P Q k
-            (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| := by
+            (fun U a => (coarseBlockMatrix U a.toFun).lowerRight i j) a| := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField,
       hP.coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_ae Q hk]
     with a ha hSub
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
-  let A : Mat d := (coarseBlockMatrix (cubeSet Q) a).lowerRight
+  let A : Mat d := (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight
   let B : Mat d :=
     (descendantsAverageBlockMat Q (Int.toNat (Q.scale - k))
-      (fun R => coarseBlockMatrix (cubeSet R) a)).lowerRight
+      (fun R => coarseBlockMatrix (cubeSet R) a.toFun)).lowerRight
   have hEq :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   have hApsd : A.PosSemidef := by
-    change ((coarseBlockMatrix (cubeSet Q) a).lowerRight).PosSemidef
+    change ((coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight).PosSemidef
     rw [hEq]
     exact (Ch02.sigmaStarInvCoarse_posDef (Ch02.cubeDomain Q) (F.coeffOn Q)).posSemidef
   have hAB : MatLoewnerLE A B := by
@@ -488,14 +488,14 @@ theorem coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_le_sum_abs_center
   have hBpsd : B.PosSemidef := by
     change
       ((descendantsAverageBlockMat Q (Int.toNat (Q.scale - k))
-        (fun R => coarseBlockMatrix (cubeSet R) a)).lowerRight).PosSemidef
+        (fun R => coarseBlockMatrix (cubeSet R) a.toFun)).lowerRight).PosSemidef
     change
       (descendantsAverageMat Q (Int.toNat (Q.scale - k))
-        (fun R => (coarseBlockMatrix (cubeSet R) a).lowerRight)).PosSemidef
+        (fun R => (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight)).PosSemidef
     refine descendantsAverageMat_posSemidef ?_
     intro R hR
     have hEqR :
-        coarseBlockMatrix (cubeSet R) a =
+        coarseBlockMatrix (cubeSet R) a.toFun =
           Ch02.coarseBlockMatrix (Ch02.cubeDomain R) (F.coeffOn R) := by
       simpa [F] using
         LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -507,7 +507,7 @@ theorem coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_le_sum_abs_center
         Ch02.matrixNorm center +
           ∑ i : Fin d, ∑ j : Fin d,
             |centeredDescendantAverageOnCube P Q k
-              (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| := by
+              (fun U a => (coarseBlockMatrix U a.toFun).lowerRight i j) a| := by
     calc
       Ch02.matrixNorm A ≤
           Ch02.matrixNorm center + ∑ i : Fin d, ∑ j : Fin d, |B i j - center i j| :=
@@ -517,14 +517,14 @@ theorem coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_le_sum_abs_center
           Ch02.matrixNorm center +
             ∑ i : Fin d, ∑ j : Fin d,
               |centeredDescendantAverageOnCube P Q k
-                (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| := by
+                (fun U a => (coarseBlockMatrix U a.toFun).lowerRight i j) a| := by
         congr 1
         refine Finset.sum_congr rfl ?_
         intro i _hi
         refine Finset.sum_congr rfl ?_
         intro j _hj
-        let X : Set (Vec d) → CoeffField d → ℝ :=
-          fun U a => (coarseBlockMatrix U a).lowerRight i j
+        let X : Set (Vec d) → RegCoeffField d → ℝ :=
+          fun U a => (coarseBlockMatrix U a.toFun).lowerRight i j
         have hAvg :
             B i j = descendantAverageOnCube Q k X a := by
           simp [B, X, descendantAverageOnCube, descendantsAverageBlockMat,
@@ -549,14 +549,14 @@ theorem coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_le_sum_abs_center
       0 ≤
         ∑ i : Fin d, ∑ j : Fin d,
           |centeredDescendantAverageOnCube P Q k
-            (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| := by
+            (fun U a => (coarseBlockMatrix U a.toFun).lowerRight i j) a| := by
     exact Finset.sum_nonneg fun i _ =>
       Finset.sum_nonneg fun j _ => abs_nonneg _
   have hsub :
       Ch02.matrixNorm A - Ch02.matrixNorm center ≤
         ∑ i : Fin d, ∑ j : Fin d,
           |centeredDescendantAverageOnCube P Q k
-            (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| := by
+            (fun U a => (coarseBlockMatrix U a.toFun).lowerRight i j) a| := by
     linarith
   exact max_le hsub hsum_nonneg
 
@@ -572,12 +572,12 @@ theorem coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_finsetSup_le_sum_
       ∀ i j : Fin d,
         center i j =
           ∫ b,
-            (coarseBlockMatrix (cubeSet (originCube d k)) b).lowerRight i j ∂P) :
-    (fun a : CoeffField d =>
+            (coarseBlockMatrix (cubeSet (originCube d k)) b.toFun).lowerRight i j ∂P) :
+    (fun a : RegCoeffField d =>
       parents.sup' hparents
         (fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
               Ch02.matrixNorm center)
             0)) ≤ᵐ[P]
       fun a =>
@@ -585,16 +585,16 @@ theorem coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_finsetSup_le_sum_
           parents.sup' hparents
             (fun Q =>
               |centeredDescendantAverageOnCube P Q k
-                (fun U a => (coarseBlockMatrix U a).lowerRight i j) a|) := by
+                (fun U a => (coarseBlockMatrix U a.toFun).lowerRight i j) a|) := by
   have hPoint :
       ∀ᵐ a ∂P, ∀ Q, Q ∈ parents →
         max
-          (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+          (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
             Ch02.matrixNorm center)
           0 ≤
           ∑ i : Fin d, ∑ j : Fin d,
             |centeredDescendantAverageOnCube P Q k
-              (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| :=
+              (fun U a => (coarseBlockMatrix U a.toFun).lowerRight i j) a| :=
     ae_forall_mem_finset (P := P) parents fun Q hQ =>
       hP.coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_le_sum_abs_centeredDescendantAverageOnCube_ae
         Q (hparent_scale Q hQ) center hcenter
@@ -603,24 +603,24 @@ theorem coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_finsetSup_le_sum_
   intro Q hQ
   calc
     max
-        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
           Ch02.matrixNorm center)
         0
         ≤ ∑ i : Fin d, ∑ j : Fin d,
             |centeredDescendantAverageOnCube P Q k
-              (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| :=
+              (fun U a => (coarseBlockMatrix U a.toFun).lowerRight i j) a| :=
           hPoint_a Q hQ
     _ ≤ ∑ i : Fin d, ∑ j : Fin d,
           parents.sup' hparents
             (fun Q' =>
               |centeredDescendantAverageOnCube P Q' k
-                (fun U a => (coarseBlockMatrix U a).lowerRight i j) a|) := by
+                (fun U a => (coarseBlockMatrix U a.toFun).lowerRight i j) a|) := by
           exact Finset.sum_le_sum fun i _ =>
             Finset.sum_le_sum fun j _ =>
               Finset.le_sup'
                 (f := fun Q' =>
                   |centeredDescendantAverageOnCube P Q' k
-                    (fun U a => (coarseBlockMatrix U a).lowerRight i j) a|) hQ
+                    (fun U a => (coarseBlockMatrix U a.toFun).lowerRight i j) a|) hQ
 
 /-- Representative version of
 `coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_le_sum_abs_centeredDescendantAverageOnCube_ae`.
@@ -633,27 +633,27 @@ theorem coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_le_sum_abs_center
       ∀ i j : Fin d,
         center i j =
           ∫ b,
-            (coarseBlockMatrix (cubeSet (originCube d k)) b).lowerRight i j ∂P)
-    (Y : Fin d → Fin d → Set (Vec d) → CoeffField d → ℝ)
+            (coarseBlockMatrix (cubeSet (originCube d k)) b.toFun).lowerRight i j ∂P)
+    (Y : Fin d → Fin d → Set (Vec d) → RegCoeffField d → ℝ)
     (hOrigin :
       ∀ i j : Fin d,
-        (fun a : CoeffField d =>
-          (coarseBlockMatrix (cubeSet (originCube d k)) a).lowerRight i j) =ᵐ[P]
+        (fun a : RegCoeffField d =>
+          (coarseBlockMatrix (cubeSet (originCube d k)) a.toFun).lowerRight i j) =ᵐ[P]
             Y i j (cubeSet (originCube d k)))
     (hDesc :
       ∀ i j : Fin d, ∀ R, R ∈ descendantsAtScale Q k →
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet R) a).lowerRight i j) =ᵐ[P]
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight i j) =ᵐ[P]
           Y i j (cubeSet R)) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       max
-        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
           Ch02.matrixNorm center)
         0) ≤ᵐ[P]
       fun a =>
         ∑ i : Fin d, ∑ j : Fin d,
           |centeredDescendantAverageOnCube P Q k (Y i j) a| := by
-  let X : Fin d → Fin d → Set (Vec d) → CoeffField d → ℝ :=
-    fun i j U a => (coarseBlockMatrix U a).lowerRight i j
+  let X : Fin d → Fin d → Set (Vec d) → RegCoeffField d → ℝ :=
+    fun i j U a => (coarseBlockMatrix U a.toFun).lowerRight i j
   have hRaw :=
     hP.coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_le_sum_abs_centeredDescendantAverageOnCube_ae
       Q hk center hcenter
@@ -689,23 +689,23 @@ coarse-block entry by an a.e.-equal representative. -/
 theorem coarseBlockMatrix_lowerRight_apply_positiveExcess_le_abs_centeredDescendantAverageOnCube_rep_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {k : ℤ} (hk : k ≤ Q.scale) (i : Fin d)
-    (Y : Set (Vec d) → CoeffField d → ℝ)
+    (Y : Set (Vec d) → RegCoeffField d → ℝ)
     (hOrigin :
-      (fun a : CoeffField d =>
-        (coarseBlockMatrix (cubeSet (originCube d k)) a).lowerRight i i) =ᵐ[P]
+      (fun a : RegCoeffField d =>
+        (coarseBlockMatrix (cubeSet (originCube d k)) a.toFun).lowerRight i i) =ᵐ[P]
           Y (cubeSet (originCube d k)))
     (hDesc :
       ∀ R, R ∈ descendantsAtScale Q k →
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet R) a).lowerRight i i) =ᵐ[P]
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight i i) =ᵐ[P]
           Y (cubeSet R)) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       max
-        ((coarseBlockMatrix (cubeSet Q) a).lowerRight i i -
-          ∫ b, (coarseBlockMatrix (cubeSet (originCube d k)) b).lowerRight i i ∂P)
+        ((coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i i -
+          ∫ b, (coarseBlockMatrix (cubeSet (originCube d k)) b.toFun).lowerRight i i ∂P)
         0) ≤ᵐ[P]
       fun a => |centeredDescendantAverageOnCube P Q k Y a| := by
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    fun U a => (coarseBlockMatrix U a).lowerRight i i
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fun U a => (coarseBlockMatrix U a.toFun).lowerRight i i
   have hRaw :=
     hP.coarseBlockMatrix_lowerRight_apply_positiveExcess_le_abs_centeredDescendantAverageOnCube_ae
       Q hk i

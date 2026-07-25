@@ -1,6 +1,7 @@
 import Homogenization.HighContrast.Corridor.FixedPhase.Variance
 import Homogenization.HighContrast.Corridor.FixedPhase.Recombination
 import Homogenization.CoarseGraining.CoarseBounds.AeBridge
+import Homogenization.HighContrast.Corridor.FixedPhase.CarrierObservable
 
 /-!
 # The fixed-phase variance (Proposition 4.3), final assembly
@@ -63,19 +64,21 @@ theorem phaseObservable_congr_ae {ℓ : ℝ} {σ : Vec d} {m : ℤ} {P : BlockVe
 restriction tuple). -/
 theorem aestronglyMeasurable_phaseObservable_of_thetaLaw [NeZero d]
     {ℓ : ℝ} {σ : Vec d} {Θ : ℝ} {m : ℤ} (hℓ : 0 < ℓ) (hΘ : 1 ≤ Θ) (P : BlockVec d)
-    {L : Measure (CoeffField d)} (hLaw : ThetaEllipticLaw Θ L) (K : Finset (Fin d → ℤ))
+    {L : Measure (RegCoeffField d)} (hLaw : ThetaEllipticLaw Θ L) (K : Finset (Fin d → ℤ))
     (hK : ∀ k : Fin d → ℤ,
       (coreBox ℓ σ k ∩ cubeSet (originCube d m)).Nonempty → k ∈ K) :
-    AEStronglyMeasurable (fun a => phaseObservable ℓ σ m P a) L := by
+    AEStronglyMeasurable (fun a => phaseObservable ℓ σ m P a.toFun) L := by
   classical
-  have hmeas : Measurable (fun a : CoeffField d =>
-      clampedPhaseObservable ℓ σ Θ m P K
-        (fun k : {k // k ∈ K} => restrictCoeffField (coreBox ℓ σ k.val) a)) :=
-    (measurable_clampedPhaseObservable P K).comp
-      (measurable_pi_iff.2 (fun k => measurable_restrictCoeffField (coreBox ℓ σ k.val)))
+  have hmeas : Measurable (fun a : RegCoeffField d =>
+      clampedPhaseObservableR ℓ σ Θ m P K
+        (fun k : {k // k ∈ K} =>
+          restrictReg (coreBox ℓ σ k.val) (measurableSet_coreBox ℓ σ k.val) a)) :=
+    (measurable_clampedPhaseObservableR hΘ P K).comp
+      (measurable_pi_iff.2 (fun k =>
+        measurable_restrictReg (coreBox ℓ σ k.val) (measurableSet_coreBox ℓ σ k.val)))
   refine hmeas.aestronglyMeasurable.congr ?_
   filter_upwards [hLaw] with a ha
-  exact clampedPhaseObservable_restrict_eq_of_field hℓ hΘ P K hK a ha.1 ha.2
+  exact clampedPhaseObservableR_restrict_eq_of_field hℓ hΘ P K hK a ha
 
 /-- **Obstruction 2 — joint measurability for the sum/integral exchange.**  For
 each core `k`, the two-field resampled observable
@@ -83,49 +86,40 @@ each core `k`, the two-field resampled observable
 `L ⊗ L`. -/
 theorem aestronglyMeasurable_phaseObservable_patchCore [NeZero d]
     {ℓ : ℝ} {σ : Vec d} {Θ : ℝ} {m : ℤ} (hℓ : 0 < ℓ) (hΘ : 1 ≤ Θ) (P : BlockVec d)
-    {L : Measure (CoeffField d)} [IsProbabilityMeasure L] (hLaw : ThetaEllipticLaw Θ L)
+    {L : Measure (RegCoeffField d)} [IsProbabilityMeasure L] (hLaw : ThetaEllipticLaw Θ L)
     (K : Finset (Fin d → ℤ))
     (hK : ∀ k : Fin d → ℤ,
       (coreBox ℓ σ k ∩ cubeSet (originCube d m)).Nonempty → k ∈ K)
     (k : {k // k ∈ K}) :
     AEStronglyMeasurable
-      (fun p : CoeffField d × CoeffField d =>
-        phaseObservable ℓ σ m P (patchCore ℓ σ k.val p.1 p.2)) (L.prod L) := by
+      (fun p : RegCoeffField d × RegCoeffField d =>
+        phaseObservable ℓ σ m P (patchCore ℓ σ k.val p.1.toFun p.2.toFun)) (L.prod L) := by
   classical
   have hRmeas : Measurable
-      (fun a : CoeffField d => fun k' : {k // k ∈ K} =>
-        restrictCoeffField (coreBox ℓ σ k'.val) a) :=
-    measurable_pi_iff.2 (fun k' => measurable_restrictCoeffField (coreBox ℓ σ k'.val))
+      (fun a : RegCoeffField d => fun k' : {k // k ∈ K} =>
+        restrictReg (coreBox ℓ σ k'.val) (measurableSet_coreBox ℓ σ k'.val) a) :=
+    measurable_pi_iff.2 (fun k' =>
+      measurable_restrictReg (coreBox ℓ σ k'.val) (measurableSet_coreBox ℓ σ k'.val))
   have hi_meas : Measurable
-      (fun p : CoeffField d × CoeffField d =>
+      (fun p : RegCoeffField d × RegCoeffField d =>
         Function.update
-          (fun k' : {k // k ∈ K} => restrictCoeffField (coreBox ℓ σ k'.val) p.1) k
-          (restrictCoeffField (coreBox ℓ σ k.val) p.2)) :=
+          (fun k' : {k // k ∈ K} => restrictReg (coreBox ℓ σ k'.val)
+            (measurableSet_coreBox ℓ σ k'.val) p.1) k
+          (restrictReg (coreBox ℓ σ k.val) (measurableSet_coreBox ℓ σ k.val) p.2)) :=
     (measurable_update' (a := k)).comp
       ((hRmeas.comp measurable_fst).prodMk
-        ((measurable_restrictCoeffField (coreBox ℓ σ k.val)).comp measurable_snd))
+        ((measurable_restrictReg (coreBox ℓ σ k.val)
+          (measurableSet_coreBox ℓ σ k.val)).comp measurable_snd))
   have hmeasG : Measurable
-      (fun p : CoeffField d × CoeffField d =>
-        clampedPhaseObservable ℓ σ Θ m P K
+      (fun p : RegCoeffField d × RegCoeffField d =>
+        clampedPhaseObservableR ℓ σ Θ m P K
           (Function.update
-            (fun k' : {k // k ∈ K} => restrictCoeffField (coreBox ℓ σ k'.val) p.1) k
-            (restrictCoeffField (coreBox ℓ σ k.val) p.2))) :=
-    (measurable_clampedPhaseObservable P K).comp hi_meas
-  refine hmeasG.aestronglyMeasurable.congr ?_
-  have hL1 : ∀ᵐ p ∂(L.prod L),
-      (∀ i j : Fin d, Measurable fun x : Vec d => p.1 x i j) ∧
-        ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (p.1 x) :=
-    (Measure.quasiMeasurePreserving_fst).ae hLaw
-  have hL2 : ∀ᵐ p ∂(L.prod L),
-      (∀ i j : Fin d, Measurable fun x : Vec d => p.2 x i j) ∧
-        ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (p.2 x) :=
-    (Measure.quasiMeasurePreserving_snd).ae hLaw
-  filter_upwards [hL1, hL2] with p hp1 hp2
-  rw [update_restrict_eq_restrict_patchCore hℓ.le k p.1 p.2]
-  exact clampedPhaseObservable_restrict_eq_of_field hℓ hΘ P K hK
-    (patchCore ℓ σ k.val p.1 p.2)
-    (measurable_patchCore_entry hp1.1 hp2.1)
-    (ae_isEllipticMatrix_patchCore hp1.2 hp2.2)
+            (fun k' : {k // k ∈ K} => restrictReg (coreBox ℓ σ k'.val)
+              (measurableSet_coreBox ℓ σ k'.val) p.1) k
+            (restrictReg (coreBox ℓ σ k.val) (measurableSet_coreBox ℓ σ k.val) p.2))) :=
+    (measurable_clampedPhaseObservableR hΘ P K).comp hi_meas
+  exact hmeasG.aestronglyMeasurable.congr
+    (clampedPhaseObservableR_update_ae hℓ hΘ P hLaw K hK k)
 
 /-! ## The fixed-phase variance (Proposition 4.3) -/
 
@@ -134,10 +128,10 @@ theorem aestronglyMeasurable_phaseObservable_patchCore [NeZero d]
 `O((ℓ/3^m)^{d−2})` bound with a single dimensional constant. -/
 theorem fixed_phase_variance [NeZero d] (hd : 3 ≤ d) {m : ℤ} {ℓ Θ : ℝ} {σ : Vec d}
     (hℓ4 : 4 ≤ ℓ) (hℓL : ℓ ≤ (3 : ℝ) ^ m) (hΘ : 1 ≤ Θ) (P : BlockVec d)
-    {L : Measure (CoeffField d)} [IsProbabilityMeasure L]
-    (hURD : IsUnitRangeDependent L) (hLaw : ThetaEllipticLaw Θ L) :
+    {L : Measure (RegCoeffField d)} [IsProbabilityMeasure L]
+    (hURD : IsUnitRangeDependentR L) (hLaw : ThetaEllipticLaw Θ L) :
     ∃ Cd : ℝ, 0 ≤ Cd ∧
-      Var[fun a => phaseObservable ℓ σ m P a; L]
+      Var[fun a => phaseObservable ℓ σ m P a.toFun; L]
         ≤ Cd * Θ ^ 3 * (ℓ / (3 : ℝ) ^ m) ^ (d - 2)
             * (Θ * vecNormSq P.1 + vecNormSq P.2) ^ 2 := by
   classical
@@ -157,37 +151,35 @@ theorem fixed_phase_variance [NeZero d] (hd : 3 ≤ d) {m : ℤ} {ℓ Θ : ℝ} 
   have hBterm0 : (0 : ℝ) ≤ Bterm := by
     rw [hBtermdef]; positivity
   -- the two-field resampled squared deviation as a product-space function
-  set g : {k // k ∈ K} → CoeffField d × CoeffField d → ℝ :=
-    fun k p => (phaseObservable ℓ σ m P (patchCore ℓ σ k.val p.1 p.2)
-      - phaseObservable ℓ σ m P p.1) ^ 2 with hgdef
+  set g : {k // k ∈ K} → RegCoeffField d × RegCoeffField d → ℝ :=
+    fun k p => (phaseObservable ℓ σ m P (patchCore ℓ σ k.val p.1.toFun p.2.toFun)
+      - phaseObservable ℓ σ m P p.1.toFun) ^ 2 with hgdef
   -- a.e. (over L ⊗ L) summed bound, via the C2 bridge to everywhere-elliptic reps
   have haeBound : ∀ᵐ p ∂(L.prod L), ∑ k : {k // k ∈ K}, g k p ≤ Bterm := by
     have hL1 : ∀ᵐ p ∂(L.prod L),
-        (∀ i j : Fin d, Measurable fun x : Vec d => p.1 x i j) ∧
-          ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (p.1 x) :=
+        ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (p.1 x) :=
       (Measure.quasiMeasurePreserving_fst).ae hLaw
     have hL2 : ∀ᵐ p ∂(L.prod L),
-        (∀ i j : Fin d, Measurable fun x : Vec d => p.2 x i j) ∧
-          ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (p.2 x) :=
+        ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (p.2 x) :=
       (Measure.quasiMeasurePreserving_snd).ae hLaw
     filter_upwards [hL1, hL2] with p hp1 hp2
     -- bridge each draw to an everywhere-elliptic representative on the cube
     have hmeasA1 : Measurable (fun x => fun i j => if x ∈ cubeSet (originCube d m)
         then p.1 x i j else 0) := by
       refine measurable_pi_iff.2 fun i => measurable_pi_iff.2 fun j => ?_
-      simpa only [Set.indicator] using (hp1.1 i j).indicator hU
+      simpa only [Set.indicator] using (p.1.entry_measurable i j).indicator hU
     have hmeasA2 : Measurable (fun x => fun i j => if x ∈ cubeSet (originCube d m)
         then p.2 x i j else 0) := by
       refine measurable_pi_iff.2 fun i => measurable_pi_iff.2 fun j => ?_
-      simpa only [Set.indicator] using (hp2.1 i j).indicator hU
+      simpa only [Set.indicator] using (p.2.entry_measurable i j).indicator hU
     obtain ⟨ā1, hEll1, hā1ae, _, _⟩ :=
-      exists_ellipticFieldOn_ae_eq hU hΘ hmeasA1 (ae_restrict_of_ae hp1.2)
+      exists_ellipticFieldOn_ae_eq hU hΘ hmeasA1 (ae_restrict_of_ae hp1)
     obtain ⟨ā2, hEll2, hā2ae, _, _⟩ :=
-      exists_ellipticFieldOn_ae_eq hU hΘ hmeasA2 (ae_restrict_of_ae hp2.2)
+      exists_ellipticFieldOn_ae_eq hU hΘ hmeasA2 (ae_restrict_of_ae hp2)
     -- the fixed-phase observable is unchanged under the bridge
-    have hphase_a : phaseObservable ℓ σ m P p.1 = phaseObservable ℓ σ m P ā1 :=
+    have hphase_a : phaseObservable ℓ σ m P p.1.toFun = phaseObservable ℓ σ m P ā1 :=
       (phaseObservable_congr_ae hā1ae.symm)
-    have hpatch_ae : ∀ k : Fin d → ℤ, (patchCore ℓ σ k p.1 p.2)
+    have hpatch_ae : ∀ k : Fin d → ℤ, (patchCore ℓ σ k p.1.toFun p.2.toFun)
         =ᵐ[volume.restrict (cubeSet (originCube d m))] (patchCore ℓ σ k ā1 ā2) := by
       intro k
       filter_upwards [hā1ae, hā2ae] with x hx1 hx2
@@ -195,7 +187,7 @@ theorem fixed_phase_variance [NeZero d] (hd : 3 ≤ d) {m : ℤ} {ℓ Θ : ℝ} 
       · rw [patchCore_apply_of_mem hc, patchCore_apply_of_mem hc, hx2]
       · rw [patchCore_apply_of_not_mem hc, patchCore_apply_of_not_mem hc, hx1]
     have hphase_patch : ∀ k : {k // k ∈ K},
-        phaseObservable ℓ σ m P (patchCore ℓ σ k.val p.1 p.2)
+        phaseObservable ℓ σ m P (patchCore ℓ σ k.val p.1.toFun p.2.toFun)
           = phaseObservable ℓ σ m P (patchCore ℓ σ k.val ā1 ā2) :=
       fun k => phaseObservable_congr_ae (hpatch_ae k.val)
     have hsum_eq : (∑ k : {k // k ∈ K}, g k p)
@@ -207,7 +199,8 @@ theorem fixed_phase_variance [NeZero d] (hd : 3 ≤ d) {m : ℤ} {ℓ Θ : ℝ} 
     exact hsummedU hΘ hℓ4 hℓL σ P hEll1 hEll2 K
   -- AESM of each product-space term
   have hAESM_diag : AEStronglyMeasurable
-      (fun p : CoeffField d × CoeffField d => phaseObservable ℓ σ m P p.1) (L.prod L) :=
+      (fun p : RegCoeffField d × RegCoeffField d =>
+        phaseObservable ℓ σ m P p.1.toFun) (L.prod L) :=
     (aestronglyMeasurable_phaseObservable_of_thetaLaw hℓ0 hΘ P hLaw K hK).comp_quasiMeasurePreserving
       (Measure.quasiMeasurePreserving_fst)
   have hAESM_g : ∀ k : {k // k ∈ K}, AEStronglyMeasurable (g k) (L.prod L) := by
@@ -238,18 +231,18 @@ theorem fixed_phase_variance [NeZero d] (hd : 3 ≤ d) {m : ℤ} {ℓ Θ : ℝ} 
       _ = Bterm := by rw [integral_const]; simp
   -- relate the Efron–Stein iterated integrals to the product integrals
   have hRHS_eq : (∑ k : {k // k ∈ K},
-        ∫ a, ∫ a', (phaseObservable ℓ σ m P (patchCore ℓ σ k.val a a')
-          - phaseObservable ℓ σ m P a) ^ 2 ∂L ∂L)
+        ∫ a, ∫ a', (phaseObservable ℓ σ m P (patchCore ℓ σ k.val a.toFun a'.toFun)
+          - phaseObservable ℓ σ m P a.toFun) ^ 2 ∂L ∂L)
       = ∑ k : {k // k ∈ K}, ∫ p, g k p ∂(L.prod L) := by
     refine Finset.sum_congr rfl (fun k _ => ?_)
     rw [hgdef]
     exact (integral_prod _ (hg_int k)).symm
   -- assemble
   refine ⟨B / 2, by linarith [hB0], ?_⟩
-  calc Var[fun a => phaseObservable ℓ σ m P a; L]
+  calc Var[fun a => phaseObservable ℓ σ m P a.toFun; L]
       ≤ (1 / 2) * ∑ k : {k // k ∈ K},
-          ∫ a, ∫ a', (phaseObservable ℓ σ m P (patchCore ℓ σ k.val a a')
-            - phaseObservable ℓ σ m P a) ^ 2 ∂L ∂L :=
+          ∫ a, ∫ a', (phaseObservable ℓ σ m P (patchCore ℓ σ k.val a.toFun a'.toFun)
+            - phaseObservable ℓ σ m P a.toFun) ^ 2 ∂L ∂L :=
         efronStein_phaseObservable hℓ0 hΘ P hURD hLaw K hK
     _ = (1 / 2) * ∑ k : {k // k ∈ K}, ∫ p, g k p ∂(L.prod L) := by rw [hRHS_eq]
     _ = (1 / 2) * ∫ p, ∑ k : {k // k ∈ K}, g k p ∂(L.prod L) := by rw [hexchange]

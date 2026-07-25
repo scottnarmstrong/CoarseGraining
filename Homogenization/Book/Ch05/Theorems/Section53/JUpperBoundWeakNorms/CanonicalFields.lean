@@ -253,7 +253,7 @@ theorem canonicalMaximizerGradientOnCube_memLp_descendant {d : ℕ}
   exact memLp_normalizedCubeMeasure_of_memVectorL2_openCubeSet R hgradOpenR
 
 theorem cubeAverageVec_canonicalMaximizerGradientDefectOnDependentFamily_eq_ch04
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     {Q R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q p0 : Vec d) :
@@ -261,7 +261,7 @@ theorem cubeAverageVec_canonicalMaximizerGradientDefectOnDependentFamily_eq_ch04
         (canonicalMaximizerGradientDefectOnCube Q
           ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
           p q p0) =
-      Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a - p0 := by
+      Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun - p0 := by
   let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   let aQ : Ch02.CoeffOn (Ch02.cubeDomain Q) := F.coeffOn Q
   have hgrad :
@@ -269,7 +269,7 @@ theorem cubeAverageVec_canonicalMaximizerGradientDefectOnDependentFamily_eq_ch04
         (2 : ℝ≥0∞) (normalizedCubeMeasure R) :=
     canonicalMaximizerGradientOnCube_memLp_descendant Q R aQ hR p q
   have hch04 :
-      Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a =
+      Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun =
         cubeAverageVec R (canonicalMaximizerGradientOnCube Q aQ p q) := by
     simpa [F, aQ, canonicalMaximizerGradientOnCube, canonicalMaximizerSolutionOnCube]
       using
@@ -284,18 +284,18 @@ theorem cubeAverageVec_canonicalMaximizerGradientDefectOnDependentFamily_eq_ch04
           rfl
     _ = cubeAverageVec R (canonicalMaximizerGradientOnCube Q aQ p q) - p0 := by
           simpa using cubeAverageVec_sub_const R (canonicalMaximizerGradientOnCube Q aQ p q) p0 hgrad
-    _ = Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a - p0 := by
+    _ = Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun - p0 := by
           rw [hch04]
 
 theorem cubeBesovNegativeVectorPartialSeminorm_canonicalMaximizerGradientDefectOnDependentFamily_eq_ch04
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (s : ℝ) (N : ℕ) (p q p0 : Vec d) :
     cubeBesovNegativeVectorPartialSeminorm Q s N
         (canonicalMaximizerGradientDefectOnCube Q
           ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
           p q p0) =
-      Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a := by
+      Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a.toFun := by
   unfold cubeBesovNegativeVectorPartialSeminorm
     cubeBesovNegativeVectorDepthSeminorm cubeBesovNegativeVectorDepthAverage
     Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet
@@ -310,14 +310,14 @@ theorem cubeBesovNegativeVectorPartialSeminorm_canonicalMaximizerGradientDefectO
     a ha hR p q p0]
 
 theorem cubeBesovNegativeVectorPartialSeminorm_canonicalMaximizerGradientDefectOnDependentFamily_le_ch04WeakNorm
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) (N : ℕ) (p q p0 : Vec d) :
     cubeBesovNegativeVectorPartialSeminorm Q s N
         (canonicalMaximizerGradientDefectOnCube Q
           ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
           p q p0) ≤
-      Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a := by
+      Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun := by
   let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   let aQ : Ch02.CoeffOn (Ch02.cubeDomain Q) := F.coeffOn Q
   have hRawBdd :
@@ -330,7 +330,7 @@ theorem cubeBesovNegativeVectorPartialSeminorm_canonicalMaximizerGradientDefectO
   rcases hRawBdd with ⟨B, hB⟩
   have hCh4Bdd :
       BddAbove (Set.range fun M : ℕ =>
-        Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s M p q p0 a) := by
+        Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s M p q p0 a.toFun) := by
     refine ⟨B, ?_⟩
     rintro x ⟨M, rfl⟩
     have hRaw :
@@ -366,7 +366,7 @@ theorem canonicalMaximizerFluxOnCube_memLp_descendant {d : ℕ}
   exact memLp_normalizedCubeMeasure_of_memVectorL2_openCubeSet R hfluxOpenR
 
 theorem cubeAverageVec_canonicalMaximizerFluxDefectOnDependentFamily_eq_ch04
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     {Q R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q q0 : Vec d) :
@@ -374,7 +374,7 @@ theorem cubeAverageVec_canonicalMaximizerFluxDefectOnDependentFamily_eq_ch04
         (canonicalMaximizerFluxDefectOnCube Q
           ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
           p q q0) =
-      Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a - q0 := by
+      Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun - q0 := by
   let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   let aQ : Ch02.CoeffOn (Ch02.cubeDomain Q) := F.coeffOn Q
   have hflux :
@@ -382,7 +382,7 @@ theorem cubeAverageVec_canonicalMaximizerFluxDefectOnDependentFamily_eq_ch04
         (2 : ℝ≥0∞) (normalizedCubeMeasure R) :=
     canonicalMaximizerFluxOnCube_memLp_descendant Q R aQ hR p q
   have hch04 :
-      Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a =
+      Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun =
         cubeAverageVec R (canonicalMaximizerFluxOnCube Q aQ p q) := by
     simpa [F, aQ, canonicalMaximizerFluxOnCube, canonicalMaximizerGradientOnCube,
       canonicalMaximizerSolutionOnCube] using
@@ -397,18 +397,18 @@ theorem cubeAverageVec_canonicalMaximizerFluxDefectOnDependentFamily_eq_ch04
           rfl
     _ = cubeAverageVec R (canonicalMaximizerFluxOnCube Q aQ p q) - q0 := by
           simpa using cubeAverageVec_sub_const R (canonicalMaximizerFluxOnCube Q aQ p q) q0 hflux
-    _ = Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a - q0 := by
+    _ = Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun - q0 := by
           rw [hch04]
 
 theorem cubeBesovNegativeVectorPartialSeminorm_canonicalMaximizerFluxDefectOnDependentFamily_eq_ch04
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (s : ℝ) (N : ℕ) (p q q0 : Vec d) :
     cubeBesovNegativeVectorPartialSeminorm Q s N
         (canonicalMaximizerFluxDefectOnCube Q
           ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
           p q q0) =
-      Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q s N p q q0 a := by
+      Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q s N p q q0 a.toFun := by
   unfold cubeBesovNegativeVectorPartialSeminorm
     cubeBesovNegativeVectorDepthSeminorm cubeBesovNegativeVectorDepthAverage
     Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet
@@ -423,14 +423,14 @@ theorem cubeBesovNegativeVectorPartialSeminorm_canonicalMaximizerFluxDefectOnDep
     a ha hR p q q0]
 
 theorem cubeBesovNegativeVectorPartialSeminorm_canonicalMaximizerFluxDefectOnDependentFamily_le_ch04WeakNorm
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) (N : ℕ) (p q q0 : Vec d) :
     cubeBesovNegativeVectorPartialSeminorm Q s N
         (canonicalMaximizerFluxDefectOnCube Q
           ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
           p q q0) ≤
-      Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a := by
+      Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun := by
   let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   let aQ : Ch02.CoeffOn (Ch02.cubeDomain Q) := F.coeffOn Q
   have hRawBdd :
@@ -443,7 +443,7 @@ theorem cubeBesovNegativeVectorPartialSeminorm_canonicalMaximizerFluxDefectOnDep
   rcases hRawBdd with ⟨B, hB⟩
   have hCh4Bdd :
       BddAbove (Set.range fun M : ℕ =>
-        Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q s M p q q0 a) := by
+        Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q s M p q q0 a.toFun) := by
     refine ⟨B, ?_⟩
     rintro x ⟨M, rfl⟩
     have hRaw :
@@ -459,14 +459,14 @@ theorem cubeBesovNegativeVectorPartialSeminorm_canonicalMaximizerFluxDefectOnDep
   exact le_csSup hCh4Bdd ⟨N, rfl⟩
 
 theorem norm_cubeAverageVec_canonicalMaximizerFluxDefectOnDependentFamily_le_ch04
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (p q q0 : Vec d) :
     ‖cubeAverageVec Q
         (canonicalMaximizerFluxDefectOnCube Q
           ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
           p q q0)‖ ≤
-      ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖ := by
+      ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖ := by
   rw [cubeAverageVec_canonicalMaximizerFluxDefectOnDependentFamily_eq_ch04
     (a := a) (ha := ha) (Q := Q) (R := Q) (j := 0) (by simp) p q q0]
 

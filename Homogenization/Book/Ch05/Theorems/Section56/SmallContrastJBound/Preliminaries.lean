@@ -295,7 +295,7 @@ theorem coarseFluctuationResponseMomentAtScale_le_zero
   have hζ_nonneg : 0 ≤ ζ := hζ_pos.le
   have hζ_inv_nonneg : 0 ≤ ζ⁻¹ := inv_nonneg.mpr hζ_nonneg
   have hk_nonneg_int : (0 : ℤ) ≤ (k : ℤ) := by exact_mod_cast Nat.zero_le k
-  let unitAvg : CoeffField d → ℝ :=
+  let unitAvg : RegCoeffField d → ℝ :=
     fun a =>
       descendantsAverage (originCube d (k : ℤ))
         (Int.toNat ((k : ℤ) - (0 : ℤ)))
@@ -322,7 +322,7 @@ theorem coarseFluctuationResponseMomentAtScale_le_zero
         simp [ENNReal.ofReal_eq_zero, not_le.mpr hζ_pos]
       have hζ_ne_top : ENNReal.ofReal ζ ≠ ⊤ := by simp
       have hint :
-          Integrable (fun a : CoeffField d => ‖unitAvg a‖ ^ (ENNReal.ofReal ζ).toReal) P :=
+          Integrable (fun a : RegCoeffField d => ‖unitAvg a‖ ^ (ENNReal.ofReal ζ).toReal) P :=
         hmem.integrable_norm_rpow hζ_ne_zero hζ_ne_top
       refine hint.congr ?_
       filter_upwards with a

@@ -23,7 +23,7 @@ theorem section52LargeScale_terminalPositiveExcess_highSum_mul_le_edgeWeightLoss
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N m : ℕ} {sLower sUpper : ℝ}
     (hsLower : 0 ≤ sLower) (hsUpper : 0 ≤ sUpper)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω)
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω)
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField (a ω))
     {J : ℝ} (hJ_nonneg : 0 ≤ J) :
     let S := Homogenization.Book.Ch05.Section52.section52LargeScaleSet m
@@ -200,7 +200,7 @@ theorem section52LargeScale_terminalPositiveExcess_allSum_mul_le_lowSum_add_edge
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N m : ℕ} {sLower sUpper : ℝ}
     (hsLower : 0 < sLower) (hsUpper : 0 < sUpper)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω)
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω)
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField (a ω))
     {J : ℝ} (hJ_nonneg : 0 ≤ J) :
     let S := Homogenization.Book.Ch05.Section52.section52LargeScaleSet m

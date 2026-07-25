@@ -94,7 +94,7 @@ theorem fullBlockNormalizedQuadraticObservable_coordinateProbe_abs_le_weighted_f
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (α : BlockCoord d) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
         |fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
           (fullBlockCoordinateProbe α) (cubeSet (originCube d 0)) a|)
       ≤ᵐ[P]
@@ -200,14 +200,14 @@ theorem fullBlockNormalizedQuadraticObservable_coordinateProbe_abs_le_weighted_f
             c, I, hcoeff]
 
 private theorem isSymmetricBlockMat_coarseBlockMatrix_origin_of_ae
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : Ch04.AELocallyUniformlyEllipticField a) :
     IsSymmetricBlockMat (coarseBlockMatrix (cubeSet (originCube d 0)) a) := by
   let Q : TriadicCube d := originCube d 0
   let F : Ch02.TriadicCoeffFamily d :=
     Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hEq :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -220,7 +220,7 @@ private theorem fullBlockNormalizedQuadraticObservable_plus_add_minus_eq_two_coo
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (m : ℕ) {α β : BlockCoord d} (hαβ : α ≠ β)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a) :
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a) :
     fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
         (fullBlockPlusProbe α β) (cubeSet (originCube d 0)) a +
       fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
@@ -268,7 +268,7 @@ private theorem fullBlockNormalizedQuadraticObservable_pairProbe_abs_le_weighted
     (m : ℕ) {α β : BlockCoord d} (_hαβ : α ≠ β)
     (probe otherProbe : FullBlockVec d)
     (hsum :
-      ∀ {a : CoeffField d}, Ch04.AELocallyUniformlyEllipticField a →
+      ∀ {a : RegCoeffField d}, Ch04.AELocallyUniformlyEllipticField a →
         fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
             probe (cubeSet (originCube d 0)) a +
           fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
@@ -278,7 +278,7 @@ private theorem fullBlockNormalizedQuadraticObservable_pairProbe_abs_le_weighted
               (fullBlockCoordinateProbe α) (cubeSet (originCube d 0)) a +
             fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
               (fullBlockCoordinateProbe β) (cubeSet (originCube d 0)) a)) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
         |fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
           probe (cubeSet (originCube d 0)) a|)
       ≤ᵐ[P]
@@ -369,7 +369,7 @@ theorem fullBlockNormalizedQuadraticObservable_plusProbe_abs_le_weighted_factors
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) {α β : BlockCoord d} (hαβ : α ≠ β) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
         |fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
           (fullBlockPlusProbe α β) (cubeSet (originCube d 0)) a|)
       ≤ᵐ[P]
@@ -398,7 +398,7 @@ theorem fullBlockNormalizedQuadraticObservable_minusProbe_abs_le_weighted_factor
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) {α β : BlockCoord d} (hαβ : α ≠ β) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
         |fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
           (fullBlockMinusProbe α β) (cubeSet (originCube d 0)) a|)
       ≤ᵐ[P]
@@ -427,7 +427,7 @@ private theorem fullBlockNormalizedQuadraticObservable_origin_regular'
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         fullBlockNormalizedQuadraticObservable hP hStruct center q
           (cubeSet (originCube d 0)) a) P := by
   rcases exists_isLocalRandomVariable_ae_eq_fullBlockNormalizedQuadraticObservable_cubeSet
@@ -548,16 +548,16 @@ theorem coordinateProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
     Integrable
         (fun a =>
           |Ch04.centeredOriginObservable P 0
-            (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+            (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
               (fullBlockCoordinateProbe α)) a| ^ hP4.xi) P ∧
       Ch04.annealedMomentRoot P hP4.xi
           (fun a =>
             |Ch04.centeredOriginObservable P 0
-              (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+              (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 (fullBlockCoordinateProbe α)) a|)
         ≤
           2 * ((1 + delta) * widetildeThetaAtScale P 0 hP4) := by
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a =>
       fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
         (fullBlockCoordinateProbe α) (cubeSet (originCube d 0)) a
@@ -589,7 +589,7 @@ theorem coordinateProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
       Ch04.annealedMomentRoot P hP4.xi
           (fun a =>
             |Ch04.centeredOriginObservable P 0
-              (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+              (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 (fullBlockCoordinateProbe α)) a|)
           ≤ 2 *
               (Cu * Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
@@ -611,7 +611,7 @@ private theorem pairProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good_au
         (1 + delta) * (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹)
     {α β : BlockCoord d} (_hαβ : α ≠ β) (probe : FullBlockVec d)
     (hbound :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
           |fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
             probe (cubeSet (originCube d 0)) a|)
         ≤ᵐ[P]
@@ -628,16 +628,16 @@ private theorem pairProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good_au
     Integrable
         (fun a =>
           |Ch04.centeredOriginObservable P 0
-            (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+            (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
               probe) a| ^ hP4.xi) P ∧
       Ch04.annealedMomentRoot P hP4.xi
           (fun a =>
             |Ch04.centeredOriginObservable P 0
-              (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+              (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 probe) a|)
         ≤
           8 * ((1 + delta) * widetildeThetaAtScale P 0 hP4) := by
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a =>
       fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
         probe (cubeSet (originCube d 0)) a
@@ -677,7 +677,7 @@ private theorem pairProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good_au
       Ch04.annealedMomentRoot P hP4.xi
           (fun a =>
             |Ch04.centeredOriginObservable P 0
-              (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+              (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 probe) a|)
           ≤ 2 *
               (Cu * Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
@@ -704,12 +704,12 @@ theorem plusProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
     Integrable
         (fun a =>
           |Ch04.centeredOriginObservable P 0
-            (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+            (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
               (fullBlockPlusProbe α β)) a| ^ hP4.xi) P ∧
       Ch04.annealedMomentRoot P hP4.xi
           (fun a =>
             |Ch04.centeredOriginObservable P 0
-              (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+              (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 (fullBlockPlusProbe α β)) a|)
         ≤
           8 * ((1 + delta) * widetildeThetaAtScale P 0 hP4) :=
@@ -736,12 +736,12 @@ theorem minusProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
     Integrable
         (fun a =>
           |Ch04.centeredOriginObservable P 0
-            (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+            (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
               (fullBlockMinusProbe α β)) a| ^ hP4.xi) P ∧
       Ch04.annealedMomentRoot P hP4.xi
           (fun a =>
             |Ch04.centeredOriginObservable P 0
-              (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+              (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 (fullBlockMinusProbe α β)) a|)
         ≤
           8 * ((1 + delta) * widetildeThetaAtScale P 0 hP4) :=

@@ -149,7 +149,7 @@ theorem betaShiftedWidetildeThetaAtScale_scaleNormalizedLaw_of_le
 
 private theorem annealedMomentRoot_le_const_add_of_nonneg_le_of_error_pow_integrable
     {d : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
-    {ξ : ℕ} {X E : CoeffField d → ℝ} {A : ℝ}
+    {ξ : ℕ} {X E : RegCoeffField d → ℝ} {A : ℝ}
     (hξ : 1 ≤ ξ) (hA_nonneg : 0 ≤ A)
     (hX_nonneg : ∀ a, 0 ≤ X a)
     (hE_nonneg : ∀ a, 0 ≤ E a)
@@ -197,7 +197,7 @@ private theorem LambdaMomentAtScale_le_barSigma_zero_add_positiveExcessMomentAtS
     (hBarSigma0_nonneg : 0 ≤ hP.barSigmaAtScale hStruct 0)
     (hExcessPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             (Ch04.LambdaSqCoeffField (originCube d m) s (.finite 1) a -
               hP.barSigmaAtScale hStruct 0)
@@ -206,9 +206,9 @@ private theorem LambdaMomentAtScale_le_barSigma_zero_add_positiveExcessMomentAtS
       hP.barSigmaAtScale hStruct 0 +
         LambdaPositiveExcessMomentAtScale P m s ξ hP hStruct := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d m) s (.finite 1) a
-  let E : CoeffField d → ℝ :=
+  let E : RegCoeffField d → ℝ :=
     fun a => max (X a - hP.barSigmaAtScale hStruct 0) 0
   have hX_meas : AEMeasurable X P := by
     simpa [X] using
@@ -239,7 +239,7 @@ private theorem lambdaInvMomentAtScale_le_barSigmaStar_zero_inv_add_positiveExce
     (hBarSigmaStar0_inv_nonneg : 0 ≤ (hP.barSigmaStarAtScale hStruct 0)⁻¹)
     (hExcessPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             ((Ch04.lambdaSqCoeffField (originCube d m) s (.finite 1) a)⁻¹ -
               (hP.barSigmaStarAtScale hStruct 0)⁻¹)
@@ -248,9 +248,9 @@ private theorem lambdaInvMomentAtScale_le_barSigmaStar_zero_inv_add_positiveExce
       (hP.barSigmaStarAtScale hStruct 0)⁻¹ +
         lambdaInvPositiveExcessMomentAtScale P m s ξ hP hStruct := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a => (Ch04.lambdaSqCoeffField (originCube d m) s (.finite 1) a)⁻¹
-  let E : CoeffField d → ℝ :=
+  let E : RegCoeffField d → ℝ :=
     fun a => max (X a - (hP.barSigmaStarAtScale hStruct 0)⁻¹) 0
   have hX_meas : AEMeasurable X P := by
     simpa [X] using
@@ -370,27 +370,27 @@ private theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_positiveEx
     (hUpperPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (Ch04.LambdaSqCoeffField (originCube d (l : ℤ)) hP4.sUpper (.finite 1) a) ^
               hP4.xi) P)
     (hLowerPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((Ch04.lambdaSqCoeffField (originCube d (l : ℤ)) hP4.sLower (.finite 1) a)⁻¹) ^
               hP4.xi) P)
     {rUpper rLower : ℝ} (hrUpper_pos : 0 < rUpper) (hrLower_pos : 0 < rLower)
     (m : ℕ)
     (hUpperExcessPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) rUpper (.finite 1) a -
               hP.barSigmaAtScale hStruct 0)
             0) ^ hP4.xi) P)
     (hLowerExcessPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹ -
               (hP.barSigmaStarAtScale hStruct 0)⁻¹)
@@ -557,27 +557,27 @@ private theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_error_of_i
     (hUpperPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (Ch04.LambdaSqCoeffField (originCube d (l : ℤ)) hP4.sUpper (.finite 1) a) ^
               hP4.xi) P)
     (hLowerPowInt :
       ∀ l : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((Ch04.lambdaSqCoeffField (originCube d (l : ℤ)) hP4.sLower (.finite 1) a)⁻¹) ^
               hP4.xi) P)
     {rUpper rLower : ℝ} (hrUpper_pos : 0 < rUpper) (hrLower_pos : 0 < rLower)
     (m : ℕ)
     (hUpperExcessPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) rUpper (.finite 1) a -
               hP.barSigmaAtScale hStruct 0)
             0) ^ hP4.xi) P)
     (hLowerExcessPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹ -
               (hP.barSigmaStarAtScale hStruct 0)⁻¹)

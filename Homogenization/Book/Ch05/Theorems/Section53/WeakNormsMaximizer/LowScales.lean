@@ -37,7 +37,7 @@ private theorem multiscaleDescendantWeight_sub_nat {d : ℕ}
   norm_num
 
 private theorem averageGradient_parentResponseSolutionOnDependentFamilyRestrictedToCube_eq_cubeAverageVec
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -55,7 +55,7 @@ private theorem averageGradient_parentResponseSolutionOnDependentFamilyRestricte
     JUpperBoundWeakNorms.parentResponseSolutionOnDependentFamilyRestrictedToCube_grad]
 
 private theorem averageFlux_parentResponseSolutionOnDependentFamilyRestrictedToCube_eq_cubeAverageVec
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -75,7 +75,7 @@ private theorem averageFlux_parentResponseSolutionOnDependentFamilyRestrictedToC
     JUpperBoundWeakNorms.canonicalMaximizerFluxOnCube, F]
 
 private theorem variationEnergyValue_parentResponseSolutionOnDependentFamilyRestrictedToCube_eq
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
@@ -100,7 +100,7 @@ private theorem variationEnergyValue_parentResponseSolutionOnDependentFamilyRest
   rw [hpoint, cubeAverage_const_mul]
 
 private theorem descendantsAverage_parentGradient_le_maxSigmaStarInv_mul_responseJ
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
@@ -182,7 +182,7 @@ private theorem descendantsAverage_parentGradient_le_maxSigmaStarInv_mul_respons
           rw [JUpperBoundWeakNorms.descendantsAverage_cubeAverage_topHalfEnergyOnCube_eq_responseJOnCube]
 
 private theorem descendantsAverage_parentFlux_le_maxB_mul_responseJ
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
@@ -263,7 +263,7 @@ private theorem descendantsAverage_parentFlux_le_maxB_mul_responseJ
           rw [JUpperBoundWeakNorms.descendantsAverage_cubeAverage_topHalfEnergyOnCube_eq_responseJOnCube]
 
 theorem descendantsAverage_parentGradient_le_lambdaSqCoeffField_responseJ
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) {s' : ℝ} (hs' : 0 < s') (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
@@ -354,7 +354,7 @@ theorem descendantsAverage_parentGradient_le_lambdaSqCoeffField_responseJ
   nlinarith [hA1, hfactor_nonneg]
 
 theorem descendantsAverage_parentFlux_le_LambdaSqCoeffField_responseJ
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) {t' : ℝ} (ht' : 0 < t') (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
@@ -444,7 +444,7 @@ theorem descendantsAverage_parentFlux_le_LambdaSqCoeffField_responseJ
   nlinarith [hA1, hfactor_nonneg]
 
 theorem gradientLowScaleDepthSum_le_lambdaSqCoeffField_responseJ
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (N L : ℕ) {s s' : ℝ}
     (hs' : 0 < s') (hgap : 0 < s - s') (p q : Vec d) :
@@ -507,7 +507,7 @@ theorem gradientLowScaleDepthSum_le_lambdaSqCoeffField_responseJ
     low, C, J, F, mul_assoc] using hmain
 
 theorem fluxLowScaleDepthSum_le_LambdaSqCoeffField_responseJ
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (N L : ℕ) {t t' : ℝ}
     (ht' : 0 < t') (hgap : 0 < t - t') (p q : Vec d) :

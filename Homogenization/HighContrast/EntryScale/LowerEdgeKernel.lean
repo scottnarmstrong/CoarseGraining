@@ -689,7 +689,7 @@ noncomputable def lowerEdgeCurrentUpperSection52LowLargeScalePositiveExcessSum
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (N k : Nat) (s : Real) :
-    Homogenization.CoeffField d -> Real := fun a =>
+    Homogenization.RegCoeffField d -> Real := fun a =>
   (Homogenization.Book.Ch05.Section52.section52LargeScaleSet k).attach.sum
     fun n =>
       if N <= Int.toNat n.1 then
@@ -704,7 +704,7 @@ noncomputable def lowerEdgeCurrentLowerSection52LowLargeScalePositiveExcessSum
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (N k : Nat) (s : Real) :
-    Homogenization.CoeffField d -> Real := fun a =>
+    Homogenization.RegCoeffField d -> Real := fun a =>
   (Homogenization.Book.Ch05.Section52.section52LargeScaleSet k).attach.sum
     fun n =>
       if N <= Int.toNat n.1 then

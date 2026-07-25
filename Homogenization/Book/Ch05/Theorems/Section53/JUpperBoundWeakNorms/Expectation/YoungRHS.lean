@@ -30,12 +30,14 @@ noncomputable def jUpperWeakNormYoungManuscriptExpectedRHSAtScale {d : ℕ}
     (C Cosc scaleSep BφS BφT Cprod η : ℝ)
     (p q p0 q0 : Vec d) : ℝ :=
   let Q : TriadicCube d := originCube d m
-  let gradWeak := Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0
-  let fluxWeak := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0
+  let gradWeak : RegCoeffField d → ℝ := fun a =>
+    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
+  let fluxWeak : RegCoeffField d → ℝ := fun a =>
+    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun
   let gradCoeff := (3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS
   let fluxCoeff := (3 : ℝ) ^ ((d : ℝ) + t) * cubeBesovScaleWeight (-t) Q * BφT
-  let scaledGrad : CoeffField d → ℝ := gradWeak
-  let scaledFlux : CoeffField d → ℝ := fluxWeak
+  let scaledGrad : RegCoeffField d → ℝ := gradWeak
+  let scaledFlux : RegCoeffField d → ℝ := fluxWeak
   C *
       (η * Ch04.expectedResponseJCubeSet P (originCube d k) p q +
         η⁻¹ * tauAtScale P m k p q) +
@@ -127,14 +129,14 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormYoungManuscriptEx
     (p q p0 q0 : Vec d) {η : ℝ} (hη : 0 < η)
     (hGradSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-            (originCube d m) s p q p0 a) ^ 2) P)
+            (originCube d m) s p q p0 a.toFun) ^ 2) P)
     (hFluxSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-            (originCube d m) t p q q0 a) ^ 2) P) :
+            (originCube d m) t p q q0 a.toFun) ^ 2) P) :
     let Q : TriadicCube d := originCube d m
     let j : ℕ := Int.toNat (m - k)
     Ch04.expectedResponseJCubeSet P Q p q -

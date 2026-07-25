@@ -37,7 +37,7 @@ theorem measureReal_shiftedBadScaleEvent_quenchedProbeEnvelope_le_interpolated_t
         let N0 : ℕ :=
           annealedAlgebraicEntryScale P
             hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-        let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+        let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
           fun M N aω =>
             quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
         let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -101,7 +101,7 @@ theorem measureReal_shiftedBadScaleEvent_quenchedProbeEnvelope_le_interpolated_t
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-  let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+  let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>
       quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
   let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -251,7 +251,7 @@ theorem measureReal_shiftedBadScaleEvent_quenchedProbeEnvelope_le_interpolated_t
             let N0 : ℕ :=
               annealedAlgebraicEntryScale P
                 hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-            let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+            let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
               fun M N aω =>
                 quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
             let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -317,7 +317,7 @@ theorem measureReal_shiftedBadScaleEvent_quenchedProbeEnvelope_le_interpolated_t
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-  let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+  let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>
       quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
   let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -468,7 +468,7 @@ theorem measureReal_shiftedBadScaleEvent_quenchedProbeEnvelope_le_interpolated_t
         let N0 : ℕ :=
           annealedAlgebraicEntryScale P
             hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-        let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+        let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
           fun M N aω =>
             quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
         let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -597,7 +597,7 @@ theorem measureReal_shiftedBadScaleEvent_quenchedProbeEnvelope_le_interpolated_t
             let N0 : ℕ :=
               annealedAlgebraicEntryScale P
                 hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-            let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+            let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
               fun M N aω =>
                 quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
             let S : Finset (NormalizedProbeIndex d) := Finset.univ

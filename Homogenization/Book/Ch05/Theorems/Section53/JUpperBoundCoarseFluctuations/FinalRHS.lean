@@ -319,14 +319,14 @@ theorem specialWeakNormManuscriptRHSAtScale_le_coarseFluctuationManuscriptRHSAtS
           (Real.sqrt G * Real.sqrt F)
   let Pairs := σ * G + σ⁻¹ * F
   have hGradSq :
-      Integrable (fun a : CoeffField d => (gradWeak a) ^ 2) P := by
+      Integrable (fun a : RegCoeffField d => (gradWeak a) ^ 2) P := by
     have h :=
       integrable_specialGradientWeakNormSquare_from_weakNormMaximizer
         hP hstat hStruct hP4 hkm e he
     unfold Internal.specialGradientWeakNormSquare at h
     simpa [gradWeak, Q, s, p_e, q_e, p0_e, β] using h
   have hFluxSq :
-      Integrable (fun a : CoeffField d => (fluxWeak a) ^ 2) P := by
+      Integrable (fun a : RegCoeffField d => (fluxWeak a) ^ 2) P := by
     have h :=
       integrable_specialFluxWeakNormSquare_from_weakNormMaximizer
         hP hstat hStruct hP4 hkm e he
@@ -496,14 +496,14 @@ theorem JUpperBoundCoarseFluctuations_homogenizationScale
   let fluxWeak :=
     Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e
   have hGradSq :
-      Integrable (fun a : CoeffField d => (gradWeak a) ^ 2) P := by
+      Integrable (fun a : RegCoeffField d => (gradWeak a) ^ 2) P := by
     have h :=
       integrable_specialGradientWeakNormSquare_from_weakNormMaximizer
         hP hstat hStruct hP4 hkm e he
     unfold Internal.specialGradientWeakNormSquare at h
     simpa [gradWeak, Q, s, p_e, q_e, p0_e, β] using h
   have hFluxSq :
-      Integrable (fun a : CoeffField d => (fluxWeak a) ^ 2) P := by
+      Integrable (fun a : RegCoeffField d => (fluxWeak a) ^ 2) P := by
     have h :=
       integrable_specialFluxWeakNormSquare_from_weakNormMaximizer
         hP hstat hStruct hP4 hkm e he

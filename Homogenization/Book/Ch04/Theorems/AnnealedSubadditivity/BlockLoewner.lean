@@ -26,7 +26,7 @@ noncomputable section
 comparison. -/
 theorem matLoewnerLE_of_integral_quadratic_mono
     {d : ℕ} {P : CoeffLaw d} {A B : Mat d}
-    {F G : Vec d → CoeffField d → ℝ}
+    {F G : Vec d → RegCoeffField d → ℝ}
     (hFint : ∀ x : Vec d, Integrable (F x) P)
     (hGint : ∀ x : Vec d, Integrable (G x) P)
     (hA : ∀ x : Vec d,
@@ -46,7 +46,7 @@ theorem matLoewnerLE_of_integral_quadratic_mono
 Löwner comparison. -/
 theorem blockMatLoewnerLE_of_integral_quadratic_mono
     {d : ℕ} {P : CoeffLaw d} {A B : BlockMat d}
-    {F G : BlockVec d → CoeffField d → ℝ}
+    {F G : BlockVec d → RegCoeffField d → ℝ}
     (hFint : ∀ X : BlockVec d, Integrable (F X) P)
     (hGint : ∀ X : BlockVec d, Integrable (G X) P)
     (hA : ∀ X : BlockVec d,
@@ -97,7 +97,7 @@ theorem blockMatLoewnerLE_lowerRight_apply {d : ℕ} {A B : BlockMat d}
 /-- Finite-dimensional matrix quadratic forms are integrable when all entries
 are integrable. -/
 private theorem integrable_vecDot_matVecMul_of_integrable_entries
-    {d : ℕ} {P : CoeffLaw d} {M : CoeffField d → Mat d}
+    {d : ℕ} {P : CoeffLaw d} {M : RegCoeffField d → Mat d}
     (hM : ∀ i j, Integrable (fun a => M a i j) P) (x y : Vec d) :
     Integrable (fun a => vecDot x (matVecMul (M a) y)) P := by
   simp [vecDot, matVecMul]
@@ -108,7 +108,7 @@ private theorem integrable_vecDot_matVecMul_of_integrable_entries
 /-- Finite-dimensional matrix quadratic forms commute with entrywise
 expectation under entrywise integrability. -/
 private theorem integral_vecDot_matVecMul_eq_of_integrable_entries
-    {d : ℕ} {P : CoeffLaw d} {M : CoeffField d → Mat d}
+    {d : ℕ} {P : CoeffLaw d} {M : RegCoeffField d → Mat d}
     (hM : ∀ i j, Integrable (fun a => M a i j) P) (x y : Vec d) :
     ∫ a, vecDot x (matVecMul (M a) y) ∂P =
       vecDot x (matVecMul (fun i j => ∫ a, M a i j ∂P) y) := by
@@ -128,7 +128,7 @@ private theorem integral_vecDot_matVecMul_eq_of_integrable_entries
 /-- Finite-dimensional block quadratic forms are integrable when all block
 entries are integrable. -/
 theorem integrable_blockVecDot_blockMatVecMul_of_integrable_entries
-    {d : ℕ} {P : CoeffLaw d} {B : CoeffField d → BlockMat d}
+    {d : ℕ} {P : CoeffLaw d} {B : RegCoeffField d → BlockMat d}
     (hB : ∀ α β, Integrable (fun a => blockMatEntry (B a) α β) P)
     (X Y : BlockVec d) :
     Integrable (fun a => blockVecDot X (blockMatVecMul (B a) Y)) P := by
@@ -156,7 +156,7 @@ theorem integrable_blockVecDot_blockMatVecMul_of_integrable_entries
 /-- Finite-dimensional block quadratic forms commute with entrywise expectation
 under entrywise integrability. -/
 theorem integral_blockVecDot_blockMatVecMul_eq_of_integrable_entries
-    {d : ℕ} {P : CoeffLaw d} {B : CoeffField d → BlockMat d}
+    {d : ℕ} {P : CoeffLaw d} {B : RegCoeffField d → BlockMat d}
     (hB : ∀ α β, Integrable (fun a => blockMatEntry (B a) α β) P)
     (X Y : BlockVec d) :
     ∫ a, blockVecDot X (blockMatVecMul (B a) Y) ∂P =
@@ -180,10 +180,10 @@ theorem integral_blockVecDot_blockMatVecMul_eq_of_integrable_entries
   have hLR : ∀ i j, Integrable (fun a => (B a).lowerRight i j) P := by
     intro i j
     simpa [blockMatEntry] using hB (Sum.inr i) (Sum.inr j)
-  let f1 : CoeffField d → ℝ := fun a => vecDot p (matVecMul (B a).upperLeft r)
-  let f2 : CoeffField d → ℝ := fun a => vecDot p (matVecMul (B a).upperRight s)
-  let f3 : CoeffField d → ℝ := fun a => vecDot q (matVecMul (B a).lowerLeft r)
-  let f4 : CoeffField d → ℝ := fun a => vecDot q (matVecMul (B a).lowerRight s)
+  let f1 : RegCoeffField d → ℝ := fun a => vecDot p (matVecMul (B a).upperLeft r)
+  let f2 : RegCoeffField d → ℝ := fun a => vecDot p (matVecMul (B a).upperRight s)
+  let f3 : RegCoeffField d → ℝ := fun a => vecDot q (matVecMul (B a).lowerLeft r)
+  let f4 : RegCoeffField d → ℝ := fun a => vecDot q (matVecMul (B a).lowerRight s)
   have h1int : Integrable f1 P :=
     integrable_vecDot_matVecMul_of_integrable_entries hUL p r
   have h2int : Integrable f2 P :=
@@ -259,7 +259,7 @@ theorem matLoewnerLE_upperLeft_of_blockMatLoewnerLE {d : ℕ} {A B : BlockMat d}
 with the a.e. coefficient representative handled by the Chapter 2 coefficient
 family. -/
 theorem responseJObservableCubeSet_le_descendantsAverage_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) {n m : ℤ} (hnm : n ≤ m)
     (p q : Vec d) :
     responseJObservableCubeSet (originCube d m) p q a ≤
@@ -288,13 +288,13 @@ theorem responseJObservableCubeSet_le_descendantsAverage_of_aelocallyUniformlyEl
         responseJObservableCubeSet Q p q a := by
     calc
       Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q) p q
-          = ResponseJ (openCubeSet Q) p q a := by
+          = ResponseJ (openCubeSet Q) p q a.toFun := by
               simpa [F, Q, triadicCoeffFamilyOfAELocallyUniformlyEllipticField,
                 coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                 Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                   (Ch02.cubeDomain Q) (F.coeffOn Q) p q
       _ = responseJObservableCubeSet Q p q a := by
-            rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q p q a]
+            rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q p q a.toFun]
             rfl
   have hTerm :
       (fun R : TriadicCube d =>
@@ -303,13 +303,13 @@ theorem responseJObservableCubeSet_le_descendantsAverage_of_aelocallyUniformlyEl
     funext R
     calc
       Ch02.responseJ (Ch02.cubeDomain R) (F.coeffOn R) p q
-          = ResponseJ (openCubeSet R) p q a := by
+          = ResponseJ (openCubeSet R) p q a.toFun := by
               simpa [F, triadicCoeffFamilyOfAELocallyUniformlyEllipticField,
                 coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                 Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                   (Ch02.cubeDomain R) (F.coeffOn R) p q
       _ = responseJObservableCubeSet R p q a := by
-            rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube R p q a]
+            rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube R p q a.toFun]
             rfl
   have hAvg :
       Pcell.weightedAverage
@@ -346,7 +346,7 @@ theorem responseJObservableCubeSet_le_descendantsAverage_of_aelocallyUniformlyEl
 scalar response observable, with the a.e. coefficient representative handled
 by the Chapter 2 coefficient family. -/
 theorem responseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (Q : TriadicCube d) {k : ℤ}
     (hk : k ≤ Q.scale) (p q : Vec d) :
     responseJObservableCubeSet Q p q a ≤
@@ -374,13 +374,13 @@ theorem responseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUni
         responseJObservableCubeSet Q p q a := by
     calc
       Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q) p q
-          = ResponseJ (openCubeSet Q) p q a := by
+          = ResponseJ (openCubeSet Q) p q a.toFun := by
               simpa [F, triadicCoeffFamilyOfAELocallyUniformlyEllipticField,
                 coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                 Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                   (Ch02.cubeDomain Q) (F.coeffOn Q) p q
       _ = responseJObservableCubeSet Q p q a := by
-            rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q p q a]
+            rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q p q a.toFun]
             rfl
   have hTerm :
       (fun R : TriadicCube d =>
@@ -389,13 +389,13 @@ theorem responseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUni
     funext R
     calc
       Ch02.responseJ (Ch02.cubeDomain R) (F.coeffOn R) p q
-          = ResponseJ (openCubeSet R) p q a := by
+          = ResponseJ (openCubeSet R) p q a.toFun := by
               simpa [F, triadicCoeffFamilyOfAELocallyUniformlyEllipticField,
                 coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                 Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                   (Ch02.cubeDomain R) (F.coeffOn R) p q
       _ = responseJObservableCubeSet R p q a := by
-            rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube R p q a]
+            rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube R p q a.toFun]
             rfl
   have hAvg :
       Pcell.weightedAverage
@@ -431,13 +431,13 @@ theorem responseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUni
 for a locally a.e.-elliptic coefficient field, with the a.e. representative
 handled by the Chapter 2 coefficient family. -/
 theorem coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (Q : TriadicCube d) {k : ℤ}
     (hk : k ≤ Q.scale) :
     BlockMatLoewnerLE
-      (coarseBlockMatrix (cubeSet Q) a)
+      (coarseBlockMatrix (cubeSet Q) a.toFun)
       (descendantsAverageBlockMat Q (Int.toNat (Q.scale - k))
-        (fun R => coarseBlockMatrix (cubeSet R) a)) := by
+        (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) := by
   let j : ℕ := Int.toNat (Q.scale - k)
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
@@ -456,7 +456,7 @@ theorem coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_of_aelocallyUnif
       (F.coeffOn Q)).block_matrix_subadditive
         Pcell (fun i : Pcell.Cell => F.coeffOn i.1) hcell
   have hParent :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -464,7 +464,7 @@ theorem coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_of_aelocallyUnif
   have hTerm :
       (fun R : TriadicCube d =>
           Ch02.coarseBlockMatrix (Ch02.cubeDomain R) (F.coeffOn R)) =
-        fun R : TriadicCube d => coarseBlockMatrix (cubeSet R) a := by
+        fun R : TriadicCube d => coarseBlockMatrix (cubeSet R) a.toFun := by
     funext R
     simpa [F] using
       (LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -472,7 +472,7 @@ theorem coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_of_aelocallyUnif
   have hAvg :
       Pcell.weightedBlockAverage
           (fun i : Pcell.Cell => Ch02.coarseBlockMatrix (Pcell.cell i) (F.coeffOn i.1)) =
-        descendantsAverageBlockMat Q j (fun R => coarseBlockMatrix (cubeSet R) a) := by
+        descendantsAverageBlockMat Q j (fun R => coarseBlockMatrix (cubeSet R) a.toFun) := by
     calc
       Pcell.weightedBlockAverage
           (fun i : Pcell.Cell => Ch02.coarseBlockMatrix (Pcell.cell i) (F.coeffOn i.1))
@@ -485,7 +485,7 @@ theorem coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_of_aelocallyUnif
                 (fun R : TriadicCube d =>
                   Ch02.coarseBlockMatrix (Ch02.cubeDomain R) (F.coeffOn R))
       _ = descendantsAverageBlockMat Q j
-            (fun R => coarseBlockMatrix (cubeSet R) a) := by
+            (fun R => coarseBlockMatrix (cubeSet R) a.toFun) := by
             rw [hTerm]
   simpa [j, hParent, hAvg] using hsub
 
@@ -493,12 +493,12 @@ theorem coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_of_aelocallyUnif
 coefficient field, with the a.e. representative handled by the Chapter 2
 coefficient family. -/
 theorem coarseBlockMatrix_le_descendantsAverageBlockMat_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) {n m : ℤ} (hnm : n ≤ m) :
     BlockMatLoewnerLE
-      (coarseBlockMatrix (cubeSet (originCube d m)) a)
+      (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun)
       (descendantsAverageBlockMat (originCube d m) (Int.toNat (m - n))
-        (fun R => coarseBlockMatrix (cubeSet R) a)) := by
+        (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) := by
   simpa using
     coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_of_aelocallyUniformlyEllipticField
       ha (originCube d m) hnm

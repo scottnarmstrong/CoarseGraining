@@ -37,12 +37,12 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
     let q_e :=
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-    let childAvg := fun a : Homogenization.CoeffField d =>
+    let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
         (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-    let response := fun a : Homogenization.CoeffField d =>
+    let response := fun a : Homogenization.RegCoeffField d =>
       (5 * β⁻¹) ^ 2 * childAvg a
-    let lowerSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+    let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
       let parents := Homogenization.descendantsAtScale Q n.1
       let hparents : parents.Nonempty :=
         Homogenization.descendantsAtScale_nonempty Q
@@ -57,7 +57,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
           0
       Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s' m n.1 *
         (σ * parents.sup' hparents lowerExcess) * response a
-    let upperSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+    let upperSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
       let parents := Homogenization.descendantsAtScale Q n.1
       let hparents : parents.Nonempty :=
         Homogenization.descendantsAtScale_nonempty Q
@@ -72,7 +72,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
           0
       Homogenization.Book.Ch05.Section52.section52LargeScaleWeight t' m n.1 *
         (σ⁻¹ * parents.sup' hparents upperExcess) * response a
-    let lowSum := fun a : Homogenization.CoeffField d =>
+    let lowSum := fun a : Homogenization.RegCoeffField d =>
       S.attach.sum fun n =>
         if N0 ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
     let dimCoeff : ℝ := (Fintype.card (Fin d) : ℝ) * (Fintype.card (Fin d) : ℝ)
@@ -119,10 +119,10 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-  let childAvg : Homogenization.CoeffField d → ℝ := fun a =>
+  let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
       (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-  let response : Homogenization.CoeffField d → ℝ := fun a =>
+  let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
   let coeffResponse : ℝ := (5 * β⁻¹) ^ 2
   let responseMoment :=
@@ -156,7 +156,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
   let lowCoeff : ℝ :=
     S.attach.sum fun n =>
       if N0 ≤ Int.toNat n.1 then 0 else coeffTerm n
-  let lowerSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+  let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
     let parents := Homogenization.descendantsAtScale Q n.1
     let hparents : parents.Nonempty :=
       Homogenization.descendantsAtScale_nonempty Q
@@ -171,7 +171,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
         0
     Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s' m n.1 *
       (σ * parents.sup' hparents lowerExcess) * response a
-  let upperSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+  let upperSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
     let parents := Homogenization.descendantsAtScale Q n.1
     let hparents : parents.Nonempty :=
       Homogenization.descendantsAtScale_nonempty Q
@@ -186,10 +186,10 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
         0
     Homogenization.Book.Ch05.Section52.section52LargeScaleWeight t' m n.1 *
       (σ⁻¹ * parents.sup' hparents upperExcess) * response a
-  let lowSum : Homogenization.CoeffField d → ℝ := fun a =>
+  let lowSum : Homogenization.RegCoeffField d → ℝ := fun a =>
     S.attach.sum fun n =>
       if N0 ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
-  let lowerZero : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+  let lowerZero : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
     let parents := Homogenization.descendantsAtScale Q n.1
     let hparents : parents.Nonempty :=
       Homogenization.descendantsAtScale_nonempty Q
@@ -205,7 +205,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
               ((hP.barSigmaStarAtScale hStruct (0 : ℤ))⁻¹ •
                 (1 : Homogenization.Mat d)))
           0)
-  let upperZero : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+  let upperZero : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
     let parents := Homogenization.descendantsAtScale Q n.1
     let hparents : parents.Nonempty :=
       Homogenization.descendantsAtScale_nonempty Q
@@ -221,12 +221,12 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
               (hP.barSigmaAtScale hStruct (0 : ℤ) •
                 (1 : Homogenization.Mat d)))
           0)
-  let envelopeTerm : {n : ℤ // n ∈ S} → Homogenization.CoeffField d → ℝ := fun n a =>
+  let envelopeTerm : {n : ℤ // n ∈ S} → Homogenization.RegCoeffField d → ℝ := fun n a =>
     if N0 ≤ Int.toNat n.1 then 0 else
       coeffResponse *
         ((σ * lowerZero a n + σ⁻¹ * upperZero a n + gapCoeff n) *
           childAvg a)
-  let envelope : Homogenization.CoeffField d → ℝ := fun a =>
+  let envelope : Homogenization.RegCoeffField d → ℝ := fun a =>
     S.attach.sum fun n => envelopeTerm n a
   have hβ_pos : 0 < β := by
     simpa only using section53CoarseFluctuationBeta_pos hP4
@@ -338,17 +338,17 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
         (d := d) (P := P) hP hStruct (r := t') ht'_pos.le n.2 a
   have hLowerZeroMem :
       ∀ n : {n : ℤ // n ∈ S},
-        MeasureTheory.MemLp (fun a : Homogenization.CoeffField d => lowerZero a n)
+        MeasureTheory.MemLp (fun a : Homogenization.RegCoeffField d => lowerZero a n)
           (ENNReal.ofReal (hP4.xi : ℝ)) P := by
     intro n
     have hAE : AEMeasurable
-        (fun a : Homogenization.CoeffField d => lowerZero a n) P := by
+        (fun a : Homogenization.RegCoeffField d => lowerZero a n) P := by
       simpa only using
         Homogenization.Book.Ch05.Section52.lowerLargeScalePositiveExcess_aemeasurable_source
           (d := d) (P := P) hP hStruct (r := s') n.2
     have hAbsInt :
         MeasureTheory.Integrable
-          (fun a : Homogenization.CoeffField d => |lowerZero a n| ^ hP4.xi) P := by
+          (fun a : Homogenization.RegCoeffField d => |lowerZero a n| ^ hP4.xi) P := by
       simpa only [lowerZero, Q, Real.norm_eq_abs] using
         Homogenization.Book.Ch05.Section52.lowerLargeScalePositiveExcess_integrable_abs_pow_source
           (d := d) (P := P) hP hStruct
@@ -357,7 +357,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
           hP4.lower_inv_moment_integrable n.2
     have hPowInt :
         MeasureTheory.Integrable
-          (fun a : Homogenization.CoeffField d => lowerZero a n ^ hP4.xi) P := by
+          (fun a : Homogenization.RegCoeffField d => lowerZero a n ^ hP4.xi) P := by
       refine hAbsInt.congr ?_
       filter_upwards with a
       rw [abs_of_nonneg (hLowerZero_nonneg_all n a)]
@@ -365,17 +365,17 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
       (Filter.Eventually.of_forall (hLowerZero_nonneg_all n)) hPowInt
   have hUpperZeroMem :
       ∀ n : {n : ℤ // n ∈ S},
-        MeasureTheory.MemLp (fun a : Homogenization.CoeffField d => upperZero a n)
+        MeasureTheory.MemLp (fun a : Homogenization.RegCoeffField d => upperZero a n)
           (ENNReal.ofReal (hP4.xi : ℝ)) P := by
     intro n
     have hAE : AEMeasurable
-        (fun a : Homogenization.CoeffField d => upperZero a n) P := by
+        (fun a : Homogenization.RegCoeffField d => upperZero a n) P := by
       simpa only using
         Homogenization.Book.Ch05.Section52.upperLargeScalePositiveExcess_aemeasurable_source
           (d := d) (P := P) hP hStruct (r := t') n.2
     have hAbsInt :
         MeasureTheory.Integrable
-          (fun a : Homogenization.CoeffField d => |upperZero a n| ^ hP4.xi) P := by
+          (fun a : Homogenization.RegCoeffField d => |upperZero a n| ^ hP4.xi) P := by
       simpa only [upperZero, Q, Real.norm_eq_abs] using
         Homogenization.Book.Ch05.Section52.upperLargeScalePositiveExcess_integrable_abs_pow_source
           (d := d) (P := P) hP hStruct
@@ -384,7 +384,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
           hP4.upper_moment_integrable n.2
     have hPowInt :
         MeasureTheory.Integrable
-          (fun a : Homogenization.CoeffField d => upperZero a n ^ hP4.xi) P := by
+          (fun a : Homogenization.RegCoeffField d => upperZero a n ^ hP4.xi) P := by
       refine hAbsInt.congr ?_
       filter_upwards with a
       rw [abs_of_nonneg (hUpperZero_nonneg_all n a)]
@@ -393,19 +393,19 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
   have hLowerProdInt :
       ∀ n : {n : ℤ // n ∈ S},
         MeasureTheory.Integrable
-          (fun a : Homogenization.CoeffField d => lowerZero a n * childAvg a) P := by
+          (fun a : Homogenization.RegCoeffField d => lowerZero a n * childAvg a) P := by
     intro n
     exact (hLowerZeroMem n).integrable_mul hChildMem
   have hUpperProdInt :
       ∀ n : {n : ℤ // n ∈ S},
         MeasureTheory.Integrable
-          (fun a : Homogenization.CoeffField d => upperZero a n * childAvg a) P := by
+          (fun a : Homogenization.RegCoeffField d => upperZero a n * childAvg a) P := by
     intro n
     exact (hUpperZeroMem n).integrable_mul hChildMem
   have hLowerRoot_le :
       ∀ n : {n : ℤ // n ∈ S},
         Homogenization.Book.Ch04.annealedMomentRoot P hP4.xi
-            (fun a : Homogenization.CoeffField d => lowerZero a n) ≤
+            (fun a : Homogenization.RegCoeffField d => lowerZero a n) ≤
           lowerRootCoeff n := by
     intro n
     simpa only [lowerZero, lowerRootCoeff, dimCoeff, Q] using
@@ -417,7 +417,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
   have hUpperRoot_le :
       ∀ n : {n : ℤ // n ∈ S},
         Homogenization.Book.Ch04.annealedMomentRoot P hP4.xi
-            (fun a : Homogenization.CoeffField d => upperZero a n) ≤
+            (fun a : Homogenization.RegCoeffField d => upperZero a n) ≤
           upperRootCoeff n := by
     intro n
     simpa only [upperZero, upperRootCoeff, dimCoeff, Q] using
@@ -475,7 +475,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
     have hHolder :
         ∫ a, lowerZero a n * childAvg a ∂P ≤
           Homogenization.Book.Ch04.annealedMomentRoot P hP4.xi
-              (fun a : Homogenization.CoeffField d => lowerZero a n) *
+              (fun a : Homogenization.RegCoeffField d => lowerZero a n) *
             (∫ a, childAvg a ^ ζ ∂P) ^ (1 / ζ) := by
       simpa only [Book.Ch04.annealedMomentRoot, one_div, Real.rpow_natCast] using hHolderRaw
     exact hHolder.trans
@@ -493,7 +493,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
     have hHolder :
         ∫ a, upperZero a n * childAvg a ∂P ≤
           Homogenization.Book.Ch04.annealedMomentRoot P hP4.xi
-              (fun a : Homogenization.CoeffField d => upperZero a n) *
+              (fun a : Homogenization.RegCoeffField d => upperZero a n) *
             (∫ a, childAvg a ^ ζ ∂P) ^ (1 / ζ) := by
       simpa only [Book.Ch04.annealedMomentRoot, one_div, Real.rpow_natCast] using hHolderRaw
     exact hHolder.trans
@@ -507,18 +507,18 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
         MeasureTheory.integrable_const_enorm, envelopeTerm]
     · have hsumNested :
           MeasureTheory.Integrable
-            ((fun a : Homogenization.CoeffField d =>
+            ((fun a : Homogenization.RegCoeffField d =>
                 σ * (lowerZero a n * childAvg a)) +
-              ((fun a : Homogenization.CoeffField d =>
+              ((fun a : Homogenization.RegCoeffField d =>
                   σ⁻¹ * (upperZero a n * childAvg a)) +
-                fun a : Homogenization.CoeffField d =>
+                fun a : Homogenization.RegCoeffField d =>
                   gapCoeff n * childAvg a)) P :=
         ((hLowerProdInt n).const_mul σ).add
           (((hUpperProdInt n).const_mul σ⁻¹).add
             (hChildInt.const_mul (gapCoeff n)))
       have hsum :
           MeasureTheory.Integrable
-            (fun a : Homogenization.CoeffField d =>
+            (fun a : Homogenization.RegCoeffField d =>
               σ * (lowerZero a n * childAvg a) +
                 σ⁻¹ * (upperZero a n * childAvg a) +
                 gapCoeff n * childAvg a) P := by
@@ -844,7 +844,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
         (by simpa [Q, Homogenization.originCube] using
           Homogenization.Book.Ch05.Section52.section52LargeScaleSet_mem_le_m n.2)
     let lowerTerminal : Homogenization.TriadicCube d →
-        Homogenization.CoeffField d → ℝ := fun R a =>
+        Homogenization.RegCoeffField d → ℝ := fun R a =>
       max
         (Homogenization.Book.Ch02.matrixNorm
             (Homogenization.coarseBlockMatrix
@@ -853,7 +853,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
         0
     have hsup_base :
         AEMeasurable
-          (fun a : Homogenization.CoeffField d =>
+          (fun a : Homogenization.RegCoeffField d =>
             parents.sup' hparents
             (fun R =>
               max
@@ -870,12 +870,12 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
             (1 : Homogenization.Mat d))
     have hsup :
         AEMeasurable
-          (fun a : Homogenization.CoeffField d =>
+          (fun a : Homogenization.RegCoeffField d =>
             parents.sup' hparents (fun R => lowerTerminal R a)) P := by
       simpa only [hstar_m_matrix] using hsup_base
     have hslot :
         AEMeasurable
-          (fun a : Homogenization.CoeffField d =>
+          (fun a : Homogenization.RegCoeffField d =>
             Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s' m n.1 *
               (σ * parents.sup' hparents (fun R => lowerTerminal R a)) * response a) P :=
       ((aemeasurable_const.mul (aemeasurable_const.mul hsup)).mul hResponseAE)
@@ -889,7 +889,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
         (by simpa [Q, Homogenization.originCube] using
           Homogenization.Book.Ch05.Section52.section52LargeScaleSet_mem_le_m n.2)
     let upperTerminal : Homogenization.TriadicCube d →
-        Homogenization.CoeffField d → ℝ := fun R a =>
+        Homogenization.RegCoeffField d → ℝ := fun R a =>
       max
         (Homogenization.Book.Ch02.matrixNorm
             (Homogenization.coarseBlockMatrix
@@ -898,7 +898,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
         0
     have hsup_base :
         AEMeasurable
-          (fun a : Homogenization.CoeffField d =>
+          (fun a : Homogenization.RegCoeffField d =>
             parents.sup' hparents
             (fun R =>
               max
@@ -915,12 +915,12 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
             (1 : Homogenization.Mat d))
     have hsup :
         AEMeasurable
-          (fun a : Homogenization.CoeffField d =>
+          (fun a : Homogenization.RegCoeffField d =>
             parents.sup' hparents (fun R => upperTerminal R a)) P := by
       simpa only [hbar_m_matrix] using hsup_base
     have hslot :
         AEMeasurable
-          (fun a : Homogenization.CoeffField d =>
+          (fun a : Homogenization.RegCoeffField d =>
             Homogenization.Book.Ch05.Section52.section52LargeScaleWeight t' m n.1 *
               (σ⁻¹ * parents.sup' hparents (fun R => upperTerminal R a)) * response a) P :=
       ((aemeasurable_const.mul (aemeasurable_const.mul hsup)).mul hResponseAE)
@@ -929,14 +929,14 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
     have hterm :
         ∀ n ∈ S.attach,
           AEMeasurable
-            (fun a : Homogenization.CoeffField d =>
+            (fun a : Homogenization.RegCoeffField d =>
               if N0 ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n) P := by
       intro n _hn
       by_cases hnlow : N0 ≤ Int.toNat n.1
       · simp only [hnlow, ↓reduceIte, aemeasurable_const]
       · simpa only [hnlow, ↓reduceIte] using (hLowerSlotAE n).add (hUpperSlotAE n)
     simpa only using Finset.aemeasurable_fun_sum (μ := P)
-      (f := fun n (a : Homogenization.CoeffField d) =>
+      (f := fun n (a : Homogenization.RegCoeffField d) =>
         if N0 ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n)
       S.attach hterm
   have hLowInt : MeasureTheory.Integrable lowSum P := by
@@ -988,11 +988,11 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
               σ * ∫ a, lowerZero a n * childAvg a ∂P +
                 σ⁻¹ * ∫ a, upperZero a n * childAvg a ∂P +
                 gapCoeff n * ∫ a, childAvg a ∂P := by
-          let lowerProd : Homogenization.CoeffField d → ℝ := fun a =>
+          let lowerProd : Homogenization.RegCoeffField d → ℝ := fun a =>
             lowerZero a n * childAvg a
-          let upperProd : Homogenization.CoeffField d → ℝ := fun a =>
+          let upperProd : Homogenization.RegCoeffField d → ℝ := fun a =>
             upperZero a n * childAvg a
-          let gapProd : Homogenization.CoeffField d → ℝ := childAvg
+          let gapProd : Homogenization.RegCoeffField d → ℝ := childAvg
           have hlowerInt : MeasureTheory.Integrable lowerProd P := by
             simpa only using hLowerProdInt n
           have hupperInt : MeasureTheory.Integrable upperProd P := by
@@ -1001,7 +1001,7 @@ theorem integrable_section52LowTailBelow_childResponseAverage_special_and_integr
             simpa only using hChildInt
           have hpairInt :
               MeasureTheory.Integrable
-                (fun a : Homogenization.CoeffField d =>
+                (fun a : Homogenization.RegCoeffField d =>
                   σ * lowerProd a + σ⁻¹ * upperProd a) P :=
             (hlowerInt.const_mul σ).add (hupperInt.const_mul σ⁻¹)
           calc

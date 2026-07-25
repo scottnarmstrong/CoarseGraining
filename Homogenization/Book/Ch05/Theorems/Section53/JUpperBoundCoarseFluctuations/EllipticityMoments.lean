@@ -31,7 +31,7 @@ theorem holderConjugate_xi_section53CoarseFluctuationZeta
   right_pos := section53CoarseFluctuationZeta_pos hP4
 
 theorem memLp_of_integrable_nonneg_nat_pow
-    {d : ℕ} {P : Ch04.CoeffLaw d} {ξ : ℕ} {X : CoeffField d → ℝ}
+    {d : ℕ} {P : Ch04.CoeffLaw d} {ξ : ℕ} {X : RegCoeffField d → ℝ}
     (hξ : 0 < ξ) (hX_aemeas : AEMeasurable X P)
     (hX_nonneg : ∀ᵐ a ∂P, 0 ≤ X a)
     (hX_int : Integrable (fun a => X a ^ ξ) P) :
@@ -49,7 +49,7 @@ theorem memLp_of_integrable_nonneg_nat_pow
   simpa using hmem
 
 private theorem memLp_of_integrable_nonneg_rpow
-    {d : ℕ} {P : Ch04.CoeffLaw d} {p : ℝ} {X : CoeffField d → ℝ}
+    {d : ℕ} {P : Ch04.CoeffLaw d} {p : ℝ} {X : RegCoeffField d → ℝ}
     (hp : 0 < p) (hX_aemeas : AEMeasurable X P)
     (hX_nonneg : ∀ᵐ a ∂P, 0 ≤ X a)
     (hX_int : Integrable (fun a => Real.rpow (X a) p) P) :
@@ -225,7 +225,7 @@ private theorem sum_Icc_betaWeight_le_five_beta_inv
     _ ≤ 5 * β⁻¹ := hgeom_five
 
 private theorem descendantsAverage_responseJObservableCubeSet_mono_to_finerScale
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     {k n m : ℤ} (hkn : k ≤ n) (hnm : n ≤ m) (p q : Vec d) :
     descendantsAverage (originCube d m) (Int.toNat (m - n))
@@ -268,7 +268,7 @@ private theorem descendantsAverage_responseJObservableCubeSet_mono_to_finerScale
         (fun R => Ch04.responseJObservableCubeSet R p q a) := rfl
 
 private theorem responseDefectAverageAtScale_le_childResponseAverageAtScale
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     {k n m : ℤ} (hkn : k ≤ n) (hnm : n ≤ m) (p q : Vec d) :
     WeakNormsMaximizer.responseDefectAverageAtScale m n p q a ≤
@@ -291,7 +291,7 @@ private theorem responseDefectAverageAtScale_le_childResponseAverageAtScale
       ha hkn hnm p q)
 
 theorem sq_beta_weighted_sqrt_responseDefectAverageAtScale_le_childResponseAverageAtScale
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℤ} (_hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     {β : ℝ} (hβ : 0 < β) (hβ_le : β ≤ 1) (p q : Vec d) :
@@ -377,7 +377,7 @@ theorem lowerPositiveExcess_responseJ_expectation_le_of_integrable
       let β := section53CoarseFluctuationBeta hP4
       let rLower := hP4.sLower + β
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             ((Ch04.lambdaSqCoeffField
                 (originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹ -
@@ -388,7 +388,7 @@ theorem lowerPositiveExcess_responseJ_expectation_le_of_integrable
       let p_e := specialPAtScale hP hStruct (m : ℤ) e
       let q_e := specialQAtScale hP hStruct (m : ℤ) e
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Real.rpow
             (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ) P) :
     let β := section53CoarseFluctuationBeta hP4
@@ -411,14 +411,14 @@ theorem lowerPositiveExcess_responseJ_expectation_le_of_integrable
   let rLower := hP4.sLower + β
   let p_e := specialPAtScale hP hStruct (m : ℤ) e
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
-  let lowerExcess : CoeffField d → ℝ :=
+  let lowerExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
         ((Ch04.lambdaSqCoeffField
             (originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹ -
           (hP.barSigmaStarAtScale hStruct 0)⁻¹)
         0
-  let J : CoeffField d → ℝ :=
+  let J : RegCoeffField d → ℝ :=
     fun a => Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a
   have hζ_pos : 0 < ζ := by
     simpa [ζ] using section53CoarseFluctuationZeta_pos hP4
@@ -467,7 +467,7 @@ theorem upperPositiveExcess_responseJ_expectation_le_of_integrable
       let β := section53CoarseFluctuationBeta hP4
       let rUpper := hP4.sUpper + β
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (max
             (Ch04.LambdaSqCoeffField
                 (originCube d (m : ℤ)) rUpper (.finite 1) a -
@@ -478,7 +478,7 @@ theorem upperPositiveExcess_responseJ_expectation_le_of_integrable
       let p_e := specialPAtScale hP hStruct (m : ℤ) e
       let q_e := specialQAtScale hP hStruct (m : ℤ) e
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Real.rpow
             (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ) P) :
     let β := section53CoarseFluctuationBeta hP4
@@ -501,14 +501,14 @@ theorem upperPositiveExcess_responseJ_expectation_le_of_integrable
   let rUpper := hP4.sUpper + β
   let p_e := specialPAtScale hP hStruct (m : ℤ) e
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
-  let upperExcess : CoeffField d → ℝ :=
+  let upperExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
         (Ch04.LambdaSqCoeffField
             (originCube d (m : ℤ)) rUpper (.finite 1) a -
           hP.barSigmaAtScale hStruct 0)
         0
-  let J : CoeffField d → ℝ :=
+  let J : RegCoeffField d → ℝ :=
     fun a => Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a
   have hζ_pos : 0 < ζ := by
     simpa [ζ] using section53CoarseFluctuationZeta_pos hP4

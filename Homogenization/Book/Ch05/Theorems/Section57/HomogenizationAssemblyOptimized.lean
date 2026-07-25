@@ -85,8 +85,8 @@ theorem assemblyConstantCoeffMatrixOfScalar_normHalf
 
 /-- The depth `j ≈ (α/(4r)) log_3 (3^m / X)`, which balances the gradient and
 forcing terms of the compressed two-exponent RHS. -/
-def assemblyOptimizedDepth {d : ℕ} (α r : ℝ) (X : CoeffField d → ℝ)
-    (aω : CoeffField d) (m : ℕ) : ℕ :=
+def assemblyOptimizedDepth {d : ℕ} (α r : ℝ) (X : RegCoeffField d → ℝ)
+    (aω : RegCoeffField d) (m : ℕ) : ℕ :=
   ⌈α * Real.log ((3 : ℝ) ^ m / X aω) / (4 * r * Real.log 3)⌉₊
 
 theorem rpow_le_rpow_three_of_div_le {α r Y : ℝ} {J : ℕ}
@@ -146,8 +146,8 @@ energy of `u` weighted by `sqrt σ0`, and the scale-normalized positive Besov
 seminorm of the force. -/
 def assemblyHomogenizationComparisonRHSOfScalar {d : ℕ} [NeZero d]
     (σ0 : ℝ) (hσ0 : 0 < σ0)
-    (C α r₂ : ℝ) (X : CoeffField d → ℝ)
-    (aω : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
+    (C α r₂ : ℝ) (X : RegCoeffField d → ℝ)
+    (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (m : ℕ) (g : Vec d → Vec d)
     (w : assemblyComparisonDatumOfScalar σ0 hσ0 aω ha m g) : ℝ :=
   C * ((3 : ℝ) ^ m / X aω) ^ (-α) *
@@ -162,8 +162,8 @@ def assemblyHomogenizationComparisonRHS {d : ℕ} [NeZero d]
     {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
     (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    (C α r₂ : ℝ) (X : CoeffField d → ℝ)
-    (aω : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
+    (C α r₂ : ℝ) (X : RegCoeffField d → ℝ)
+    (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (m : ℕ) (g : Vec d → Vec d)
     (w : assemblyComparisonDatum hP hStruct hΓ aω ha m g) : ℝ :=
   assemblyHomogenizationComparisonRHSOfScalar
@@ -182,7 +182,7 @@ theorem exists_compressedTwoExponentRHS_le_homogenizationComparisonRHS
     (hs : 0 < s) (hr : 0 < r) (hrs : r < s / 2) (hs_one : s < 1)
     (hrr₂ : 3 / 2 * r ≤ r₂) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {σ0 : ℝ} (hσ0 : 0 < σ0) (X : CoeffField d → ℝ) (aω : CoeffField d)
+      ∀ {σ0 : ℝ} (hσ0 : 0 < σ0) (X : RegCoeffField d → ℝ) (aω : RegCoeffField d)
         (ha : Ch04.AELocallyUniformlyEllipticField aω) (m : ℕ)
         (g : Vec d → Vec d)
         (w : assemblyComparisonDatumOfScalar σ0 hσ0 aω ha m g),

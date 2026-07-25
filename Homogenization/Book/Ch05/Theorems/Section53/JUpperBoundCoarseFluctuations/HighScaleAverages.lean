@@ -96,7 +96,7 @@ fluctuation. -/
 theorem paired_highScaleAverageTerms_special_le_weighted_fullBlockNormalized_fluctuation
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (a : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
+    (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℕ} (β s t : ℝ) (hβs : β ≤ s) (hβt : β ≤ t) (e : Vec d)
     (hb : 0 < hP.barSigmaAtScale hStruct (m : ℤ))
     (hc : 0 < hP.barSigmaStarAtScale hStruct (m : ℤ))
@@ -148,14 +148,14 @@ theorem paired_highScaleAverageTerms_special_le_weighted_fullBlockNormalized_flu
         (Int.toNat ((m : ℤ) - n))
         (fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a - p0_e))
+            (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a.toFun - p0_e))
   let F : ℤ → ℝ :=
     fun n =>
       descendantsAverage (originCube d (m : ℤ))
         (Int.toNat ((m : ℤ) - n))
         (fun R =>
           vecNormSq
-            (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a - q0_e))
+            (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a.toFun - q0_e))
   let H : ℤ → ℝ :=
     fun n =>
       descendantsAverage (originCube d (m : ℤ))
@@ -236,11 +236,11 @@ theorem paired_highScaleAverageTerms_special_le_weighted_fullBlockNormalized_flu
     let Grad : TriadicCube d → ℝ :=
       fun R =>
         vecNormSq
-          (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a - p0_e)
+          (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a.toFun - p0_e)
     let Flux : TriadicCube d → ℝ :=
       fun R =>
         vecNormSq
-          (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a - q0_e)
+          (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a.toFun - q0_e)
     have hlinear :
         descendantsAverage Q j (fun R => σ * Grad R + σ⁻¹ * Flux R) =
           σ * G n + σ⁻¹ * F n := by

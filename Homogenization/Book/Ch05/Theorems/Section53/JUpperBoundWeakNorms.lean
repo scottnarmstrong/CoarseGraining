@@ -34,14 +34,14 @@ theorem JUpperBoundWeakNorms_homogenizationScale
     (p q p0 q0 : Vec d)
     (hGradSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-            (originCube d m) s p q p0 a) ^ 2) P)
+            (originCube d m) s p q p0 a.toFun) ^ 2) P)
     (hFluxSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-            (originCube d m) t p q q0 a) ^ 2) P) :
+            (originCube d m) t p q q0 a.toFun) ^ 2) P) :
     let Q : TriadicCube d := originCube d m
     let j : ℕ := Int.toNat (m - k)
     Ch04.expectedResponseJCubeSet P Q p q -
@@ -74,14 +74,14 @@ theorem JUpperBoundWeakNorms_young_homogenizationScale
     (p q p0 q0 : Vec d) {η : ℝ} (hη : 0 < η)
     (hGradSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-            (originCube d m) s p q p0 a) ^ 2) P)
+            (originCube d m) s p q p0 a.toFun) ^ 2) P)
     (hFluxSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-            (originCube d m) t p q q0 a) ^ 2) P) :
+            (originCube d m) t p q q0 a.toFun) ^ 2) P) :
     let Q : TriadicCube d := originCube d m
     let j : ℕ := Int.toNat (m - k)
     Ch04.expectedResponseJCubeSet P Q p q -

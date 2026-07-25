@@ -499,7 +499,7 @@ theorem section52LargeScale_terminalMatrixPositiveExcessWeight_mul_le_two_mul_sq
     {n : ℤ}
     (hn : n ∈ Homogenization.Book.Ch05.Section52.section52LargeScaleSet m)
     (hN : N ≤ Int.toNat n)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω)
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω)
     {R : Homogenization.TriadicCube d}
     (hR :
       R ∈ Homogenization.descendantsAtScale
@@ -598,7 +598,7 @@ theorem section52LargeScale_terminalMatrixPositiveExcessWeight_mul_le_weightLoss
     {n : ℤ}
     (hn : n ∈ Homogenization.Book.Ch05.Section52.section52LargeScaleSet m)
     (hN : N ≤ Int.toNat n)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω)
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω)
     {R : Homogenization.TriadicCube d}
     (hR :
       R ∈ Homogenization.descendantsAtScale
@@ -692,7 +692,7 @@ theorem section52LargeScaleWeight_terminalLowerPositiveExcess_sup_mul_le_weightL
     {n : ℤ}
     (hn : n ∈ Homogenization.Book.Ch05.Section52.section52LargeScaleSet m)
     (hN : N ≤ Int.toNat n)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω)
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω)
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField (a ω))
     {J : ℝ} (hJ_nonneg : 0 ≤ J) :
     let Q : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)
@@ -826,7 +826,7 @@ theorem section52LargeScaleWeight_terminalUpperPositiveExcess_sup_mul_le_weightL
     {n : ℤ}
     (hn : n ∈ Homogenization.Book.Ch05.Section52.section52LargeScaleSet m)
     (hN : N ≤ Int.toNat n)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω)
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω)
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField (a ω))
     {J : ℝ} (hJ_nonneg : 0 ≤ J) :
     let Q : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)

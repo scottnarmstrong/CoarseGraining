@@ -247,9 +247,9 @@ theorem expectedCenteredResponseJAtScale_le_rawEnergyRHS_of_remainder_bound_atSc
       let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
       let p0_e := (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ • q_e - p_e
       Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           (Homogenization.Book.Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-              (Homogenization.originCube d (m : ℤ)) s p_e q_e p0_e a) ^ 2) P)
+              (Homogenization.originCube d (m : ℤ)) s p_e q_e p0_e a.toFun) ^ 2) P)
     (hFluxSq :
       let β :=
         Homogenization.Book.Ch05.Section53.JUpperBoundCoarseFluctuations.section53CoarseFluctuationBeta
@@ -259,9 +259,9 @@ theorem expectedCenteredResponseJAtScale_le_rawEnergyRHS_of_remainder_bound_atSc
       let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
       let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
       Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           (Homogenization.Book.Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (Homogenization.originCube d (m : ℤ)) t p_e q_e q0_e a) ^ 2) P) :
+              (Homogenization.originCube d (m : ℤ)) t p_e q_e q0_e a.toFun) ^ 2) P) :
     Homogenization.Book.Ch05.expectedCenteredResponseJAtScale hP hStruct
         (m : ℤ)
         (Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e)
@@ -309,9 +309,9 @@ theorem expectedCenteredResponseJStarAtScale_le_rawEnergyRHS_of_remainder_bound_
       let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
       let p0_e := (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ • q_e - p_e
       Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           (Homogenization.Book.Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-              (Homogenization.originCube d (m : ℤ)) s p_e q_e p0_e a) ^ 2) P)
+              (Homogenization.originCube d (m : ℤ)) s p_e q_e p0_e a.toFun) ^ 2) P)
     (hFluxSq :
       let β :=
         Homogenization.Book.Ch05.Section53.JUpperBoundCoarseFluctuations.section53CoarseFluctuationBeta
@@ -321,9 +321,9 @@ theorem expectedCenteredResponseJStarAtScale_le_rawEnergyRHS_of_remainder_bound_
       let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
       let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
       Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           (Homogenization.Book.Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (Homogenization.originCube d (m : ℤ)) t p_e q_e q0_e a) ^ 2) P) :
+              (Homogenization.originCube d (m : ℤ)) t p_e q_e q0_e a.toFun) ^ 2) P) :
     Homogenization.Book.Ch05.expectedCenteredResponseJStarAtScale hP hStruct
         (m : ℤ)
         (Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e)

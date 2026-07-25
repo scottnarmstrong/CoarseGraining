@@ -88,7 +88,7 @@ theorem integrable_fluctuationQuadratic_sq_from_P4
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m j : ℕ) (q : FullBlockVec d) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         (fullBlockQuadratic
           (fullBlockNormalizedFluctuationMatrix hP hStruct (m : ℤ)
             (cubeSet (originCube d (j : ℤ))) a) q) ^ (2 : ℕ)) P := by
@@ -114,7 +114,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_probeBou
     (hcoord_int :
       ∀ α : BlockCoord d,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (fullBlockQuadratic
               (fullBlockNormalizedFluctuationMatrix hP hStruct (m : ℤ)
                 (cubeSet (originCube d (j : ℤ))) a)
@@ -122,7 +122,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_probeBou
     (hplus_int :
       ∀ α β : BlockCoord d,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (fullBlockQuadratic
               (fullBlockNormalizedFluctuationMatrix hP hStruct (m : ℤ)
                 (cubeSet (originCube d (j : ℤ))) a)
@@ -130,7 +130,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_probeBou
     (hminus_int :
       ∀ α β : BlockCoord d,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (fullBlockQuadratic
               (fullBlockNormalizedFluctuationMatrix hP hStruct (m : ℤ)
                 (cubeSet (originCube d (j : ℤ))) a)
@@ -167,7 +167,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_probeBou
                 3 * (Ccoord α + Cplus α β + Cminus α β)) := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (j : ℤ)
-  let M : CoeffField d → FullBlockMat d := fun a =>
+  let M : RegCoeffField d → FullBlockMat d := fun a =>
     fullBlockNormalizedFluctuationMatrix hP hStruct (m : ℤ) (cubeSet Q) a
   have hF_int :
       Integrable
@@ -178,37 +178,37 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_probeBou
         hP hStruct hP4 (m : ℤ) j
   have hterm_int : ∀ α β : BlockCoord d,
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           3 * ((fullBlockQuadratic (M a) (fullBlockCoordinateProbe α)) ^ (2 : ℕ) +
             (fullBlockQuadratic (M a) (fullBlockPlusProbe α β)) ^ (2 : ℕ) +
             (fullBlockQuadratic (M a) (fullBlockMinusProbe α β)) ^ (2 : ℕ))) P := by
     intro α β
     have hsum :
         Integrable
-              (fun a : CoeffField d =>
+              (fun a : RegCoeffField d =>
             (fullBlockQuadratic (M a) (fullBlockCoordinateProbe α)) ^ (2 : ℕ) +
               (fullBlockQuadratic (M a) (fullBlockPlusProbe α β)) ^ (2 : ℕ) +
               (fullBlockQuadratic (M a) (fullBlockMinusProbe α β)) ^ (2 : ℕ)) P := by
       have hci :
           Integrable
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               (fullBlockQuadratic (M a) (fullBlockCoordinateProbe α)) ^ (2 : ℕ)) P := by
         simpa [M, Q] using hcoord_int α
       have hpi :
           Integrable
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               (fullBlockQuadratic (M a) (fullBlockPlusProbe α β)) ^ (2 : ℕ)) P := by
         simpa [M, Q] using hplus_int α β
       have hmi :
           Integrable
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               (fullBlockQuadratic (M a) (fullBlockMinusProbe α β)) ^ (2 : ℕ)) P := by
         simpa [M, Q] using hminus_int α β
       exact (hci.add hpi).add hmi
     exact hsum.const_mul 3
   have hbudget_int :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           fullBlockProbeSqBudget (M a)) P := by
     unfold fullBlockProbeSqBudget
     refine (MeasureTheory.integrable_finset_sum _ ?_).const_mul _
@@ -217,11 +217,11 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_probeBou
     intro β _hβ
     simpa [M] using hterm_int α β
   have hpoint :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
           hP hStruct (m : ℤ) Q a)
       ≤ᵐ[P]
-        fun a : CoeffField d =>
+        fun a : RegCoeffField d =>
           ((Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ)) *
             fullBlockProbeSqBudget (M a) := by
     simpa [M, Q] using
@@ -266,17 +266,17 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_probeBou
         congr 1
         have hci :
             Integrable
-              (fun a : CoeffField d =>
+              (fun a : RegCoeffField d =>
                 (fullBlockQuadratic (M a) (fullBlockCoordinateProbe α)) ^ (2 : ℕ)) P := by
           simpa [M, Q] using hcoord_int α
         have hpi :
             Integrable
-              (fun a : CoeffField d =>
+              (fun a : RegCoeffField d =>
                 (fullBlockQuadratic (M a) (fullBlockPlusProbe α β)) ^ (2 : ℕ)) P := by
           simpa [M, Q] using hplus_int α β
         have hmi :
             Integrable
-              (fun a : CoeffField d =>
+              (fun a : RegCoeffField d =>
                 (fullBlockQuadratic (M a) (fullBlockMinusProbe α β)) ^ (2 : ℕ)) P := by
           simpa [M, Q] using hminus_int α β
         calc

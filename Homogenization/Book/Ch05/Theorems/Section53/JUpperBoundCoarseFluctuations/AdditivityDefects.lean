@@ -25,7 +25,7 @@ noncomputable section
 /-- The weak-norm maximizer response-defect observable is the same
 parent/descendant response defect used in the first Section 5.3 lemma. -/
 private theorem responseDefectAverageAtScale_eq_responseJAdditivityDefectAtScale
-    {d : ℕ} [NeZero d] (m n : ℤ) (p q : Vec d) (a : CoeffField d) :
+    {d : ℕ} [NeZero d] (m n : ℤ) (p q : Vec d) (a : RegCoeffField d) :
     WeakNormsMaximizer.responseDefectAverageAtScale m n p q a =
       JUpperBoundWeakNorms.responseJAdditivityDefectAtScale m n p q a := by
   rfl
@@ -178,16 +178,16 @@ theorem integrable_sq_weighted_sqrt_responseDefectAverageAtScale
         ∀ R, R ∈ descendantsAtScale (originCube d m) n →
           Integrable (Ch04.responseJObservableCubeSet R p q) P) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         (∑ n ∈ Finset.Icc (k + 1) m,
           w n * Real.sqrt
             (WeakNormsMaximizer.responseDefectAverageAtScale m n p q a)) ^ 2) P := by
   let S : Finset ℤ := Finset.Icc (k + 1) m
-  let D : ℤ → CoeffField d → ℝ :=
+  let D : ℤ → RegCoeffField d → ℝ :=
     fun n a => WeakNormsMaximizer.responseDefectAverageAtScale m n p q a
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a => (∑ n ∈ S, w n * Real.sqrt (D n a)) ^ 2
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     fun a => (∑ n ∈ S, w n) * ∑ n ∈ S, w n * D n a
   have hIndex : ∀ n ∈ S, 0 ≤ n ∧ n ≤ m := by
     intro n hn
@@ -205,22 +205,22 @@ theorem integrable_sq_weighted_sqrt_responseDefectAverageAtScale
       (l := ae P) (p := fun n a => 0 ≤ D n a)).2 hDNonneg
   have hYInt : Integrable Y P := by
     have hsum :
-        Integrable (fun a : CoeffField d => ∑ n ∈ S, w n * D n a) P :=
+        Integrable (fun a : RegCoeffField d => ∑ n ∈ S, w n * D n a) P :=
       integrable_finset_sum S
         (fun n hn => (hDInt n hn).const_mul (w n))
     exact hsum.const_mul (∑ n ∈ S, w n)
   have hsumAEMeas :
       AEStronglyMeasurable
-        (fun a : CoeffField d => ∑ n ∈ S, w n * Real.sqrt (D n a)) P := by
+        (fun a : RegCoeffField d => ∑ n ∈ S, w n * Real.sqrt (D n a)) P := by
     have hfun :
         AEStronglyMeasurable
-          (∑ n ∈ S, fun a : CoeffField d => w n * Real.sqrt (D n a)) P :=
+          (∑ n ∈ S, fun a : RegCoeffField d => w n * Real.sqrt (D n a)) P :=
       Finset.aestronglyMeasurable_sum S
         (f := fun n a => w n * Real.sqrt (D n a))
         (by
           intro n hn
           have hsqrt :
-              AEStronglyMeasurable (fun a : CoeffField d => Real.sqrt (D n a)) P :=
+              AEStronglyMeasurable (fun a : RegCoeffField d => Real.sqrt (D n a)) P :=
             (hDInt n hn).aestronglyMeasurable.aemeasurable.sqrt.aestronglyMeasurable
           exact hsqrt.const_mul (w n))
     refine hfun.congr ?_
@@ -266,11 +266,11 @@ theorem integral_sq_weighted_sqrt_responseDefectAverageAtScale_le_sum_weights_mu
         (∑ n ∈ Finset.Icc (k + 1) m, w n) *
           ∑ n ∈ Finset.Icc (k + 1) m, w n * tauAtScale P m n p q := by
   let S : Finset ℤ := Finset.Icc (k + 1) m
-  let D : ℤ → CoeffField d → ℝ :=
+  let D : ℤ → RegCoeffField d → ℝ :=
     fun n a => WeakNormsMaximizer.responseDefectAverageAtScale m n p q a
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a => (∑ n ∈ S, w n * Real.sqrt (D n a)) ^ 2
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     fun a => (∑ n ∈ S, w n) * ∑ n ∈ S, w n * D n a
   have hIndex : ∀ n ∈ S, 0 ≤ n ∧ n ≤ m := by
     intro n hn
@@ -288,22 +288,22 @@ theorem integral_sq_weighted_sqrt_responseDefectAverageAtScale_le_sum_weights_mu
       (l := ae P) (p := fun n a => 0 ≤ D n a)).2 hDNonneg
   have hYInt : Integrable Y P := by
     have hsum :
-        Integrable (fun a : CoeffField d => ∑ n ∈ S, w n * D n a) P :=
+        Integrable (fun a : RegCoeffField d => ∑ n ∈ S, w n * D n a) P :=
       integrable_finset_sum S
         (fun n hn => (hDInt n hn).const_mul (w n))
     exact hsum.const_mul (∑ n ∈ S, w n)
   have hsumAEMeas :
       AEStronglyMeasurable
-        (fun a : CoeffField d => ∑ n ∈ S, w n * Real.sqrt (D n a)) P := by
+        (fun a : RegCoeffField d => ∑ n ∈ S, w n * Real.sqrt (D n a)) P := by
     have hfun :
         AEStronglyMeasurable
-          (∑ n ∈ S, fun a : CoeffField d => w n * Real.sqrt (D n a)) P :=
+          (∑ n ∈ S, fun a : RegCoeffField d => w n * Real.sqrt (D n a)) P :=
       Finset.aestronglyMeasurable_sum S
         (f := fun n a => w n * Real.sqrt (D n a))
         (by
           intro n hn
           have hsqrt :
-              AEStronglyMeasurable (fun a : CoeffField d => Real.sqrt (D n a)) P :=
+              AEStronglyMeasurable (fun a : RegCoeffField d => Real.sqrt (D n a)) P :=
             (hDInt n hn).aestronglyMeasurable.aemeasurable.sqrt.aestronglyMeasurable
           exact hsqrt.const_mul (w n))
     refine hfun.congr ?_

@@ -41,7 +41,7 @@ theorem exists_homogenizationComparison_controlledFactors_uniformEndpoint_expLog
             (hStruct : Ch04.StructuralLaw P)
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hInf.thetaHat)) ^ (2 : ℕ))) ∧
@@ -104,7 +104,7 @@ theorem exists_homogenizationComparison_controlledFactors_uniformEndpoint_expLog
     hLaw₁ hP hStruct hInf hparams
   obtain ⟨X₂, hX₂O, hX₂_one, hX₂ae⟩ :=
     hLaw₂ hP hStruct hInf hparams
-  let X : CoeffField d → ℝ := fun aω => max (X₁ aω) (X₂ aω)
+  let X : RegCoeffField d → ℝ := fun aω => max (X₁ aω) (X₂ aω)
   have hXO :
       IsBigO P (gammaSigma η) X
         (Real.exp
@@ -333,7 +333,7 @@ theorem exists_homogenizationComparison_controlledFactors_twoExponent_uniformEnd
             (hStruct : Ch04.StructuralLaw P)
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hInf.thetaHat)) ^ (2 : ℕ))) ∧
@@ -425,7 +425,7 @@ theorem exists_homogenizationComparison_compressedTwoExponentRHS_uniformEndpoint
             (hStruct : Ch04.StructuralLaw P)
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hInf.thetaHat)) ^ (2 : ℕ))) ∧

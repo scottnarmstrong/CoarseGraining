@@ -16,8 +16,8 @@ Under a `ThetaEllipticLaw Θ P` on a probability law, the moment-enhanced contra
 
 Route: `widetildeThetaAtScale = LambdaMomentAtScale * lambdaInvMomentAtScale`.
 The C1 upper sandwich gives, for every triadic cube `R`,
-`matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft ≤ 2Θ` and
-`matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight ≤ 2`; through the `q = 1`
+`matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft ≤ 2Θ` and
+`matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight ≤ 2`; through the `q = 1`
 tsum representation of `LambdaSqCoeffField` (geometric weights sum to `1`) this
 yields `LambdaSqCoeffField … ≤ 2Θ` and `(lambdaSqCoeffField …)⁻¹ ≤ 2` a.s., hence
 `LambdaMomentAtScale ≤ 2Θ`, `lambdaInvMomentAtScale ≤ 2`, and `widetildeTheta ≤ 4Θ`.
@@ -105,11 +105,11 @@ theorem coarseBlockMatrix_cubeSet_blockMatLoewnerLE_blockDiag
 
 /-- PSD of the upper-left coarse block on any cube, from a.e.-local ellipticity. -/
 private theorem coarseBlockMatrix_upperLeft_posSemidef
-    {R : TriadicCube d} {a : CoeffField d}
+    {R : TriadicCube d} {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) :
-    ((coarseBlockMatrix (cubeSet R) a).upperLeft).PosSemidef := by
+    ((coarseBlockMatrix (cubeSet R) a.toFun).upperLeft).PosSemidef := by
   have hEqR :
-      coarseBlockMatrix (cubeSet R) a =
+      coarseBlockMatrix (cubeSet R) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain R)
           ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn R) :=
     LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -121,11 +121,11 @@ private theorem coarseBlockMatrix_upperLeft_posSemidef
 
 /-- PSD of the lower-right coarse block on any cube, from a.e.-local ellipticity. -/
 private theorem coarseBlockMatrix_lowerRight_posSemidef
-    {R : TriadicCube d} {a : CoeffField d}
+    {R : TriadicCube d} {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) :
-    ((coarseBlockMatrix (cubeSet R) a).lowerRight).PosSemidef := by
+    ((coarseBlockMatrix (cubeSet R) a.toFun).lowerRight).PosSemidef := by
   have hEqR :
-      coarseBlockMatrix (cubeSet R) a =
+      coarseBlockMatrix (cubeSet R) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain R)
           ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn R) :=
     LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -190,42 +190,42 @@ private theorem matrixNorm_lowerRight_le_of_isEllipticFieldOn
 /-- **P1/P2-upper.** For an a.e.-`(1,Θ)`-elliptic, entrywise-measurable
 realization, the upper-left coarse block on any cube has operator norm `≤ 2Θ`. -/
 theorem matrixNorm_upperLeft_cubeSet_le
-    {R : TriadicCube d} {Θ : ℝ} {a : CoeffField d}
+    {R : TriadicCube d} {Θ : ℝ} {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (hΘ : 1 ≤ Θ)
-    (hmeas : ∀ i j : Fin d, Measurable fun x : Vec d => a x i j)
     (haeR : ∀ᵐ x ∂(volume.restrict (cubeSet R)), IsEllipticMatrix 1 Θ (a x)) :
-    Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft ≤ 2 * Θ := by
-  have hae_eq : a =ᵐ[volume.restrict (cubeSet R)] ellipticTruncate Θ a :=
+    Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft ≤ 2 * Θ := by
+  have hae_eq : a.toFun =ᵐ[volume.restrict (cubeSet R)] ellipticTruncate Θ a.toFun :=
     (ellipticTruncate_ae_eq haeR).symm
   have hM :
-      coarseBlockMatrix (cubeSet R) a =
-        coarseBlockMatrix (cubeSet R) (ellipticTruncate Θ a) :=
+      coarseBlockMatrix (cubeSet R) a.toFun =
+        coarseBlockMatrix (cubeSet R) (ellipticTruncate Θ a.toFun) :=
     coarseBlockMatrix_congr_of_ae_eq (measurableSet_cubeSet R) hae_eq
-  have hEll' : IsEllipticFieldOn 1 Θ (cubeSet R) (ellipticTruncate Θ a) :=
+  have hEll' : IsEllipticFieldOn 1 Θ (cubeSet R) (ellipticTruncate Θ a.toFun) :=
     isEllipticFieldOn_ellipticTruncate (measurableSet_cubeSet R) hΘ
-      (measurable_ite_cubeSet hmeas)
-  have hPSD : ((coarseBlockMatrix (cubeSet R) (ellipticTruncate Θ a)).upperLeft).PosSemidef := by
+      (measurable_ite_cubeSet (fun i j => a.entry_measurable i j))
+  have hPSD :
+      ((coarseBlockMatrix (cubeSet R) (ellipticTruncate Θ a.toFun)).upperLeft).PosSemidef := by
     rw [← hM]; exact coarseBlockMatrix_upperLeft_posSemidef ha
   rw [hM]
   exact matrixNorm_upperLeft_le_of_isEllipticFieldOn (by linarith) hEll' hPSD
 
 /-- **P1/P2-lower.** Lower-right coarse block operator norm `≤ 2`. -/
 theorem matrixNorm_lowerRight_cubeSet_le
-    {R : TriadicCube d} {Θ : ℝ} {a : CoeffField d}
+    {R : TriadicCube d} {Θ : ℝ} {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (hΘ : 1 ≤ Θ)
-    (hmeas : ∀ i j : Fin d, Measurable fun x : Vec d => a x i j)
     (haeR : ∀ᵐ x ∂(volume.restrict (cubeSet R)), IsEllipticMatrix 1 Θ (a x)) :
-    Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight ≤ 2 := by
-  have hae_eq : a =ᵐ[volume.restrict (cubeSet R)] ellipticTruncate Θ a :=
+    Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight ≤ 2 := by
+  have hae_eq : a.toFun =ᵐ[volume.restrict (cubeSet R)] ellipticTruncate Θ a.toFun :=
     (ellipticTruncate_ae_eq haeR).symm
   have hM :
-      coarseBlockMatrix (cubeSet R) a =
-        coarseBlockMatrix (cubeSet R) (ellipticTruncate Θ a) :=
+      coarseBlockMatrix (cubeSet R) a.toFun =
+        coarseBlockMatrix (cubeSet R) (ellipticTruncate Θ a.toFun) :=
     coarseBlockMatrix_congr_of_ae_eq (measurableSet_cubeSet R) hae_eq
-  have hEll' : IsEllipticFieldOn 1 Θ (cubeSet R) (ellipticTruncate Θ a) :=
+  have hEll' : IsEllipticFieldOn 1 Θ (cubeSet R) (ellipticTruncate Θ a.toFun) :=
     isEllipticFieldOn_ellipticTruncate (measurableSet_cubeSet R) hΘ
-      (measurable_ite_cubeSet hmeas)
-  have hPSD : ((coarseBlockMatrix (cubeSet R) (ellipticTruncate Θ a)).lowerRight).PosSemidef := by
+      (measurable_ite_cubeSet (fun i j => a.entry_measurable i j))
+  have hPSD :
+      ((coarseBlockMatrix (cubeSet R) (ellipticTruncate Θ a.toFun)).lowerRight).PosSemidef := by
     rw [← hM]; exact coarseBlockMatrix_lowerRight_posSemidef ha
   rw [hM]
   exact matrixNorm_lowerRight_le_of_isEllipticFieldOn hEll' hPSD
@@ -235,18 +235,19 @@ theorem matrixNorm_lowerRight_cubeSet_le
 /-- Witness plumbing: an entrywise-measurable, a.e.-`(1,Θ)`-elliptic field is
 locally a.e.-uniformly elliptic (uniform constants `(1,Θ)`). -/
 theorem aeLocallyUniformlyEllipticField_of_ae_isEllipticMatrix
-    {Θ : ℝ} {a : CoeffField d} (hΘ : 1 ≤ Θ)
-    (hmeas : ∀ i j : Fin d, Measurable fun x : Vec d => a x i j)
+    {Θ : ℝ} {a : RegCoeffField d} (hΘ : 1 ≤ Θ)
     (hae : ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (a x)) :
     AELocallyUniformlyEllipticField a := by
   intro Q
   refine ⟨1, Θ, one_pos, hΘ, (isOpen_openCubeSet Q).measurableSet, ?_, ?_⟩
   · intro i j
-    have hcoord : Measurable fun x : Vec d => restrictCoeffField (openCubeSet Q) a x i j := by
+    have hcoord :
+        Measurable fun x : Vec d => restrictCoeffField (openCubeSet Q) a.toFun x i j := by
       have h0 : Measurable fun x : Vec d => if x ∈ openCubeSet Q then a x i j else 0 :=
-        Measurable.ite (isOpen_openCubeSet Q).measurableSet (hmeas i j) measurable_const
+        Measurable.ite (isOpen_openCubeSet Q).measurableSet (a.entry_measurable i j)
+          measurable_const
       have heq :
-          (fun x : Vec d => restrictCoeffField (openCubeSet Q) a x i j) =
+          (fun x : Vec d => restrictCoeffField (openCubeSet Q) a.toFun x i j) =
             fun x : Vec d => if x ∈ openCubeSet Q then a x i j else 0 := by
         funext x
         by_cases hx : x ∈ openCubeSet Q <;> simp [restrictCoeffField, hx]
@@ -266,13 +267,12 @@ private theorem rpow_half_sq {c : ℝ} (hc : 0 ≤ c) :
 /-- **P3-upper.** Pointwise upper multiscale ellipticity bound at the origin
 cube for an a.e.-elliptic, measurable realization. -/
 theorem LambdaSqCoeffField_originCube_zero_le_of_ae
-    {Θ s : ℝ} {a : CoeffField d} (hΘ : 1 ≤ Θ) (hs : 0 < s)
-    (hmeas : ∀ i j : Fin d, Measurable fun x : Vec d => a x i j)
+    {Θ s : ℝ} {a : RegCoeffField d} (hΘ : 1 ≤ Θ) (hs : 0 < s)
     (hae : ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (a x)) :
     LambdaSqCoeffField (originCube d 0) s (.finite 1) a ≤ 2 * Θ := by
   have hΘ0 : (0 : ℝ) ≤ 2 * Θ := by linarith
   have ha : AELocallyUniformlyEllipticField a :=
-    aeLocallyUniformlyEllipticField_of_ae_isEllipticMatrix hΘ hmeas hae
+    aeLocallyUniformlyEllipticField_of_ae_isEllipticMatrix hΘ hae
   set Q := originCube d 0 with hQ
   have hMax : ∀ n : ℕ,
       maxDescendantBMatrixNormCoeffFieldAtScale Q (Q.scale - (n : ℤ)) a ≤ 2 * Θ := by
@@ -284,7 +284,7 @@ theorem LambdaSqCoeffField_originCube_zero_le_of_ae
       (Q.scale - (n : ℤ))]
     refine Ch02.finsetSupReal_le _ (descendantsAtScale_nonempty Q hk) ?_
     intro R _hR
-    exact matrixNorm_upperLeft_cubeSet_le ha hΘ hmeas (ae_restrict_of_ae hae)
+    exact matrixNorm_upperLeft_cubeSet_le ha hΘ (ae_restrict_of_ae hae)
   have hMaxNonneg : ∀ n : ℕ,
       0 ≤ maxDescendantBMatrixNormCoeffFieldAtScale Q (Q.scale - (n : ℤ)) a := by
     intro n
@@ -294,9 +294,9 @@ theorem LambdaSqCoeffField_originCube_zero_le_of_ae
     rw [LawCarrier.maxDescendantBMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae ha Q
       (Q.scale - (n : ℤ))]
     obtain ⟨R, hR⟩ := descendantsAtScale_nonempty Q hk
-    exact le_trans (Ch02.matrixNorm_nonneg (coarseBlockMatrix (cubeSet R) a).upperLeft)
+    exact le_trans (Ch02.matrixNorm_nonneg (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft)
       (le_finsetSupReal _
-        (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft) hR)
+        (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft) hR)
   set C : ℝ := Real.rpow (2 * Θ) (1 / 2) with hC
   have hC0 : 0 ≤ C := Real.rpow_nonneg hΘ0 _
   have hterm : ∀ n : ℕ,
@@ -356,12 +356,11 @@ theorem LambdaSqCoeffField_originCube_zero_le_of_ae
 
 /-- **P3-lower.** Pointwise lower inverse multiscale ellipticity bound `≤ 2`. -/
 theorem lambdaSqCoeffField_originCube_zero_inv_le_of_ae
-    {Θ s : ℝ} {a : CoeffField d} (hΘ : 1 ≤ Θ) (hs : 0 < s)
-    (hmeas : ∀ i j : Fin d, Measurable fun x : Vec d => a x i j)
+    {Θ s : ℝ} {a : RegCoeffField d} (hΘ : 1 ≤ Θ) (hs : 0 < s)
     (hae : ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (a x)) :
     (lambdaSqCoeffField (originCube d 0) s (.finite 1) a)⁻¹ ≤ 2 := by
   have ha : AELocallyUniformlyEllipticField a :=
-    aeLocallyUniformlyEllipticField_of_ae_isEllipticMatrix hΘ hmeas hae
+    aeLocallyUniformlyEllipticField_of_ae_isEllipticMatrix hΘ hae
   set Q := originCube d 0 with hQ
   have hMax : ∀ n : ℕ,
       maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale Q (Q.scale - (n : ℤ)) a ≤ 2 := by
@@ -373,7 +372,7 @@ theorem lambdaSqCoeffField_originCube_zero_inv_le_of_ae
       (Q.scale - (n : ℤ))]
     refine Ch02.finsetSupReal_le _ (descendantsAtScale_nonempty Q hk) ?_
     intro R _hR
-    exact matrixNorm_lowerRight_cubeSet_le ha hΘ hmeas (ae_restrict_of_ae hae)
+    exact matrixNorm_lowerRight_cubeSet_le ha hΘ (ae_restrict_of_ae hae)
   have hMaxNonneg : ∀ n : ℕ,
       0 ≤ maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale Q (Q.scale - (n : ℤ)) a := by
     intro n
@@ -383,9 +382,9 @@ theorem lambdaSqCoeffField_originCube_zero_inv_le_of_ae
     rw [LawCarrier.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae ha Q
       (Q.scale - (n : ℤ))]
     obtain ⟨R, hR⟩ := descendantsAtScale_nonempty Q hk
-    exact le_trans (Ch02.matrixNorm_nonneg (coarseBlockMatrix (cubeSet R) a).lowerRight)
+    exact le_trans (Ch02.matrixNorm_nonneg (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight)
       (le_finsetSupReal _
-        (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight) hR)
+        (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight) hR)
   set C : ℝ := Real.rpow (2 : ℝ) (1 / 2) with hC
   have hC0 : 0 ≤ C := Real.rpow_nonneg (by norm_num) _
   have hterm : ∀ n : ℕ,
@@ -455,7 +454,7 @@ private theorem annealedMomentRoot_const
   have hξ0 : (ξ : ℝ) ≠ 0 := by
     have : ξ ≠ 0 := by omega
     exact_mod_cast this
-  have hint : (∫ _a : CoeffField d, (fun _ => c) _a ^ ξ ∂P) = c ^ ξ := by
+  have hint : (∫ _a : RegCoeffField d, (fun _ => c) _a ^ ξ ∂P) = c ^ ξ := by
     simp [integral_const]
   rw [annealedMomentRoot, hint, ← Real.rpow_natCast c ξ, ← Real.rpow_mul hc,
     mul_one_div, div_self hξ0, Real.rpow_one]
@@ -467,7 +466,7 @@ theorem LambdaMomentAtScale_le
     (hEllLaw : ThetaEllipticLaw Θ P) [IsProbabilityMeasure P]
     (hUpperInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (LambdaSqCoeffField (originCube d 0) sUpper (.finite 1) a) ^ ξ) P) :
     LambdaMomentAtScale P 0 sUpper ξ ≤ 2 * Θ := by
   have hΘ0 : (0 : ℝ) ≤ 2 * Θ := by linarith
@@ -475,7 +474,7 @@ theorem LambdaMomentAtScale_le
       (fun a => LambdaSqCoeffField (originCube d 0) sUpper (.finite 1) a) ≤ᵐ[P]
         fun _ => 2 * Θ := by
     filter_upwards [hEllLaw] with a ha
-    exact LambdaSqCoeffField_originCube_zero_le_of_ae hΘ hsU ha.1 ha.2
+    exact LambdaSqCoeffField_originCube_zero_le_of_ae hΘ hsU ha
   have hmono :
       annealedMomentRoot P ξ
           (fun a => LambdaSqCoeffField (originCube d 0) sUpper (.finite 1) a) ≤
@@ -493,14 +492,14 @@ theorem lambdaInvMomentAtScale_le
     (hEllLaw : ThetaEllipticLaw Θ P) [IsProbabilityMeasure P]
     (hLowerInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ((lambdaSqCoeffField (originCube d 0) sLower (.finite 1) a)⁻¹) ^ ξ) P) :
     lambdaInvMomentAtScale P 0 sLower ξ ≤ 2 := by
   have hXY :
       (fun a => (lambdaSqCoeffField (originCube d 0) sLower (.finite 1) a)⁻¹) ≤ᵐ[P]
         fun _ => (2 : ℝ) := by
     filter_upwards [hEllLaw] with a ha
-    exact lambdaSqCoeffField_originCube_zero_inv_le_of_ae hΘ hsL ha.1 ha.2
+    exact lambdaSqCoeffField_originCube_zero_inv_le_of_ae hΘ hsL ha
   have hmono :
       annealedMomentRoot P ξ
           (fun a => (lambdaSqCoeffField (originCube d 0) sLower (.finite 1) a)⁻¹) ≤
@@ -519,7 +518,7 @@ theorem one_le_Theta_of_thetaEllipticLaw
     {P : CoeffLaw d} {Θ : ℝ} [IsProbabilityMeasure P]
     (hEllLaw : ThetaEllipticLaw Θ P) :
     1 ≤ Θ := by
-  obtain ⟨a, _hmeas, hae⟩ := hEllLaw.exists
+  obtain ⟨a, hae⟩ := hEllLaw.exists
   obtain ⟨x, hx⟩ := hae.exists
   exact hx.2.1
 
@@ -533,11 +532,11 @@ theorem widetildeThetaAtScale_le
     (hEllLaw : ThetaEllipticLaw Θ P) [IsProbabilityMeasure P]
     (hUpperInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (LambdaSqCoeffField (originCube d 0) sUpper (.finite 1) a) ^ ξ) P)
     (hLowerInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ((lambdaSqCoeffField (originCube d 0) sLower (.finite 1) a)⁻¹) ^ ξ) P) :
     widetildeThetaAtScale P 0 sUpper sLower ξ ≤ 4 * Θ := by
   have hΘ : 1 ≤ Θ := one_le_Theta_of_thetaEllipticLaw hEllLaw

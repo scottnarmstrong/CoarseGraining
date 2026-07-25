@@ -25,24 +25,24 @@ noncomputable section
 mismatch.  Depths `L ≤ j` are left as the raw parent-gradient low-scale term
 plus the affine `p0` tail. -/
 theorem canonicalScalarResponseGradientWeakNormPartialCubeSet_le_highLowSplit
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (s : ℝ) (N L : ℕ) (hs : 0 < s)
     (p q p0 : Vec d) :
-    Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a ≤
+    Ch04.canonicalScalarResponseGradientWeakNormPartialCubeSet Q s N p q p0 a.toFun ≤
       (∑ j ∈ (Finset.range (N + 1)).filter (fun j => j < L),
           2 *
             (Real.rpow (3 : ℝ) (-s * (j : ℝ)) *
                 Real.sqrt
                   (descendantsAverage Q j fun R =>
                     vecNormSq
-                      (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a - p0)) +
+                      (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun - p0)) +
               Real.rpow (3 : ℝ) (-s * (j : ℝ)) *
                 Real.sqrt
                   (descendantsAverage Q j fun R =>
                     vecNormSq
-                      (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-                        Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a)) +
+                      (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+                        Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun)) +
               Real.rpow (3 : ℝ) (-s * (j : ℝ)) *
                 Real.sqrt (descendantsAverage Q j fun _R => vecNormSq (0 : Vec d)) +
               Real.rpow (3 : ℝ) (-s * (j : ℝ)) *
@@ -69,13 +69,13 @@ theorem canonicalScalarResponseGradientWeakNormPartialCubeSet_le_highLowSplit
                   Real.sqrt
                     (descendantsAverage Q j fun R =>
                       vecNormSq
-                        (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a - p0)) +
+                        (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun - p0)) +
                 Real.rpow (3 : ℝ) (-s * (j : ℝ)) *
                   Real.sqrt
                     (descendantsAverage Q j fun R =>
                       vecNormSq
-                        (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-                          Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a)) +
+                        (Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+                          Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun)) +
                 Real.rpow (3 : ℝ) (-s * (j : ℝ)) *
                   Real.sqrt (descendantsAverage Q j fun _R => vecNormSq (0 : Vec d)) +
                 Real.rpow (3 : ℝ) (-s * (j : ℝ)) *
@@ -90,16 +90,16 @@ theorem canonicalScalarResponseGradientWeakNormPartialCubeSet_le_highLowSplit
       cubeBesovNegativeVectorPartialSeminorm_le_cubeTerms_below_cutoff_add_low_self_add_geometric_const
         Q s N L gradDefect grad (-p0)
         (fun _j R =>
-          Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a - p0)
+          Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun - p0)
         (fun _j R =>
-          Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a -
-            Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a)
+          Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun -
+            Ch04.canonicalScalarResponseGradientAverageCubeSet R R p q a.toFun)
         (fun _j _R => (0 : Vec d)) (fun _j _R => (0 : Vec d))
         hs ?_ ?_
     · intro j hj hjL R hR
       have hparent :
           cubeAverageVec R gradDefect =
-            Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a - p0 := by
+            Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun - p0 := by
         simpa [F, aQ, gradDefect] using
           JUpperBoundWeakNorms.cubeAverageVec_canonicalMaximizerGradientDefectOnDependentFamily_eq_ch04
             a ha hR p q p0
@@ -123,24 +123,24 @@ theorem canonicalScalarResponseGradientWeakNormPartialCubeSet_le_highLowSplit
 flux analogue of
 `canonicalScalarResponseGradientWeakNormPartialCubeSet_le_highLowSplit`. -/
 theorem canonicalScalarResponseFluxWeakNormPartialCubeSet_le_highLowSplit
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (t : ℝ) (N L : ℕ) (ht : 0 < t)
     (p q q0 : Vec d) :
-    Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0 a ≤
+    Ch04.canonicalScalarResponseFluxWeakNormPartialCubeSet Q t N p q q0 a.toFun ≤
       (∑ j ∈ (Finset.range (N + 1)).filter (fun j => j < L),
           2 *
             (Real.rpow (3 : ℝ) (-t * (j : ℝ)) *
                 Real.sqrt
                   (descendantsAverage Q j fun R =>
                     vecNormSq
-                      (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a - q0)) +
+                      (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun - q0)) +
               Real.rpow (3 : ℝ) (-t * (j : ℝ)) *
                 Real.sqrt
                   (descendantsAverage Q j fun R =>
                     vecNormSq
-                      (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-                        Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a)) +
+                      (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+                        Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun)) +
               Real.rpow (3 : ℝ) (-t * (j : ℝ)) *
                 Real.sqrt (descendantsAverage Q j fun _R => vecNormSq (0 : Vec d)) +
               Real.rpow (3 : ℝ) (-t * (j : ℝ)) *
@@ -167,13 +167,13 @@ theorem canonicalScalarResponseFluxWeakNormPartialCubeSet_le_highLowSplit
                   Real.sqrt
                     (descendantsAverage Q j fun R =>
                       vecNormSq
-                        (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a - q0)) +
+                        (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun - q0)) +
                 Real.rpow (3 : ℝ) (-t * (j : ℝ)) *
                   Real.sqrt
                     (descendantsAverage Q j fun R =>
                       vecNormSq
-                        (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-                          Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a)) +
+                        (Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+                          Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun)) +
                 Real.rpow (3 : ℝ) (-t * (j : ℝ)) *
                   Real.sqrt (descendantsAverage Q j fun _R => vecNormSq (0 : Vec d)) +
                 Real.rpow (3 : ℝ) (-t * (j : ℝ)) *
@@ -188,16 +188,16 @@ theorem canonicalScalarResponseFluxWeakNormPartialCubeSet_le_highLowSplit
       cubeBesovNegativeVectorPartialSeminorm_le_cubeTerms_below_cutoff_add_low_self_add_geometric_const
         Q t N L fluxDefect flux (-q0)
         (fun _j R =>
-          Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a - q0)
+          Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun - q0)
         (fun _j R =>
-          Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a -
-            Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a)
+          Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun -
+            Ch04.canonicalScalarResponseFluxAverageCubeSet R R p q a.toFun)
         (fun _j _R => (0 : Vec d)) (fun _j _R => (0 : Vec d))
         ht ?_ ?_
     · intro j hj hjL R hR
       have hparent :
           cubeAverageVec R fluxDefect =
-            Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a - q0 := by
+            Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun - q0 := by
         simpa [F, aQ, fluxDefect] using
           JUpperBoundWeakNorms.cubeAverageVec_canonicalMaximizerFluxDefectOnDependentFamily_eq_ch04
             a ha hR p q q0

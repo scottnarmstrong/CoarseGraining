@@ -55,7 +55,7 @@ theorem toReal_eLpNorm_eq_integral_norm_pow_rpow_inv
 
 theorem integrable_of_ae_nonneg_pow_integrable
     {d : ℕ} {P : CoeffLaw d} [IsProbabilityMeasure P]
-    {ξ : ℕ} {X : CoeffField d → ℝ}
+    {ξ : ℕ} {X : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ) (hX_meas : AEMeasurable X P)
     (hX_nonneg : ∀ᵐ a ∂P, 0 ≤ X a)
     (hXpow_int : Integrable (fun a => X a ^ ξ) P) :
@@ -75,7 +75,7 @@ theorem integrable_of_ae_nonneg_pow_integrable
 
 theorem integral_le_annealedMomentRoot_of_ae_nonneg
     {d : ℕ} {P : CoeffLaw d} [IsProbabilityMeasure P]
-    {ξ : ℕ} {X : CoeffField d → ℝ}
+    {ξ : ℕ} {X : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ) (hX_meas : AEMeasurable X P)
     (hX_nonneg : ∀ᵐ a ∂P, 0 ≤ X a)
     (hXpow_int : Integrable (fun a => X a ^ ξ) P) :
@@ -140,7 +140,7 @@ namespace LawCarrier
 theorem finsetSup_abs_centeredDescendantAverageOnCube_nonneg
     {d : ℕ} {n : ℤ} {P : CoeffLaw d}
     {parents : Finset (TriadicCube d)} (hparents : parents.Nonempty)
-    (X : Set (Vec d) → CoeffField d → ℝ) (a : CoeffField d) :
+    (X : Set (Vec d) → RegCoeffField d → ℝ) (a : RegCoeffField d) :
     0 ≤ parents.sup' hparents
       (fun Q => |centeredDescendantAverageOnCube P Q n X a|) := by
   rcases hparents with ⟨Q0, hQ0⟩
@@ -151,24 +151,24 @@ theorem finsetSup_abs_centeredDescendantAverageOnCube_nonneg
 theorem aemeasurable_finsetSup_abs_centeredDescendantAverageOnCube
     {d : ℕ} {n : ℤ} {P : CoeffLaw d}
     {parents : Finset (TriadicCube d)} (hparents : parents.Nonempty)
-    (X : Set (Vec d) → CoeffField d → ℝ)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_desc_aemeas :
       ∀ Q ∈ parents, ∀ R ∈ descendantsAtScale Q n,
         AEMeasurable (X (cubeSet R)) P) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         parents.sup' hparents
           (fun Q => |centeredDescendantAverageOnCube P Q n X a|)) P := by
   have h :
       AEMeasurable
         (parents.sup' hparents
-          (fun Q (a : CoeffField d) =>
+          (fun Q (a : RegCoeffField d) =>
             |centeredDescendantAverageOnCube P Q n X a|)) P := by
     refine aemeasurable_finset_sup' (μ := P) (s := parents) hparents ?_
     intro Q hQ
     have havg :
         AEMeasurable
-          (fun a : CoeffField d => centeredDescendantAverageOnCube P Q n X a) P := by
+          (fun a : RegCoeffField d => centeredDescendantAverageOnCube P Q n X a) P := by
       unfold centeredDescendantAverageOnCube
       have hsum :
           AEMeasurable
@@ -188,8 +188,8 @@ theorem aemeasurable_finsetSup_abs_centeredDescendantAverageOnCube
     simpa [Real.norm_eq_abs] using havg.norm
   convert h using 1
   ext a
-  exact (Finset.sup'_apply (C := fun _ : CoeffField d => ℝ) hparents
-    (fun Q (a : CoeffField d) =>
+  exact (Finset.sup'_apply (C := fun _ : RegCoeffField d => ℝ) hparents
+    (fun Q (a : RegCoeffField d) =>
       |centeredDescendantAverageOnCube P Q n X a|) a).symm
 
 /-- AEMeasurability of the upper-left finite-parent positive excess for the
@@ -199,36 +199,36 @@ theorem aemeasurable_upperLeft_matrixNorm_positiveExcess_finsetSup
     {parents : Finset (TriadicCube d)} (hparents : parents.Nonempty)
     (center : Mat d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         parents.sup' hparents
           (fun Q =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                 Ch02.matrixNorm center)
               0)) P := by
   have h :
       AEMeasurable
         (parents.sup' hparents
-          (fun Q (a : CoeffField d) =>
+          (fun Q (a : RegCoeffField d) =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                 Ch02.matrixNorm center)
               0)) P := by
     refine aemeasurable_finset_sup' (μ := P) (s := parents) hparents ?_
     intro Q _hQ
     have hNorm :
         AEMeasurable
-          (fun a : CoeffField d =>
-            Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft) P := by
+          (fun a : RegCoeffField d =>
+            Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft) P := by
       simpa [Ch02.matrixNorm, Real.norm_eq_abs] using
         (hP.aemeasurable_coarseB_cubeSet Q).norm
     exact (hNorm.sub aemeasurable_const).max aemeasurable_const
   convert h using 1
   ext a
-  exact (Finset.sup'_apply (C := fun _ : CoeffField d => ℝ) hparents
-    (fun Q (a : CoeffField d) =>
+  exact (Finset.sup'_apply (C := fun _ : RegCoeffField d => ℝ) hparents
+    (fun Q (a : RegCoeffField d) =>
       max
-        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
           Ch02.matrixNorm center)
         0) a).symm
 
@@ -239,36 +239,36 @@ theorem aemeasurable_lowerRight_matrixNorm_positiveExcess_finsetSup
     {parents : Finset (TriadicCube d)} (hparents : parents.Nonempty)
     (center : Mat d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         parents.sup' hparents
           (fun Q =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                 Ch02.matrixNorm center)
               0)) P := by
   have h :
       AEMeasurable
         (parents.sup' hparents
-          (fun Q (a : CoeffField d) =>
+          (fun Q (a : RegCoeffField d) =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                 Ch02.matrixNorm center)
               0)) P := by
     refine aemeasurable_finset_sup' (μ := P) (s := parents) hparents ?_
     intro Q _hQ
     have hNorm :
         AEMeasurable
-          (fun a : CoeffField d =>
-            Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight) P := by
+          (fun a : RegCoeffField d =>
+            Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight) P := by
       simpa [Ch02.matrixNorm, Real.norm_eq_abs] using
         (hP.aemeasurable_coarseSigmaStarInv_cubeSet Q).norm
     exact (hNorm.sub aemeasurable_const).max aemeasurable_const
   convert h using 1
   ext a
-  exact (Finset.sup'_apply (C := fun _ : CoeffField d => ℝ) hparents
-    (fun Q (a : CoeffField d) =>
+  exact (Finset.sup'_apply (C := fun _ : RegCoeffField d => ℝ) hparents
+    (fun Q (a : RegCoeffField d) =>
       max
-        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
           Ch02.matrixNorm center)
         0) a).symm
 
@@ -286,8 +286,8 @@ private theorem finset_univ_pair_sum_eq_sum_sum
 private theorem integrable_abs_pow_excess_of_ae_nonneg_le_entry_sum
     {d : ℕ} {P : CoeffLaw d} {ξ : ℕ}
     (hξ : 1 ≤ ξ)
-    (excess : CoeffField d → ℝ)
-    (entry : Fin d → Fin d → CoeffField d → ℝ)
+    (excess : RegCoeffField d → ℝ)
+    (entry : Fin d → Fin d → RegCoeffField d → ℝ)
     (hexcess_nonneg : ∀ a, 0 ≤ excess a)
     (hexcess_aemeas : AEMeasurable excess P)
     (hentry_nonneg : ∀ i j a, 0 ≤ entry i j a)
@@ -299,9 +299,9 @@ private theorem integrable_abs_pow_excess_of_ae_nonneg_le_entry_sum
     Integrable (fun a => |excess a| ^ ξ) P := by
   classical
   let s : Finset (Fin d × Fin d) := Finset.univ
-  let entryPair : Fin d × Fin d → CoeffField d → ℝ :=
+  let entryPair : Fin d × Fin d → RegCoeffField d → ℝ :=
     fun ij a => entry ij.1 ij.2 a
-  let entrySum : CoeffField d → ℝ :=
+  let entrySum : RegCoeffField d → ℝ :=
     fun a => ∑ ij ∈ s, entryPair ij a
   have hξ_ne_zero : ξ ≠ 0 := by
     exact Nat.pos_iff_ne_zero.mp (lt_of_lt_of_le zero_lt_one hξ)
@@ -360,8 +360,8 @@ private theorem integrable_abs_pow_excess_of_ae_nonneg_le_entry_sum
 theorem momentRoot_excess_le_card_mul_entryRootBound
     {d : ℕ} {P : CoeffLaw d} {ξ : ℕ} {C : ℝ}
     (hξ : 1 ≤ ξ)
-    (excess : CoeffField d → ℝ)
-    (entry : Fin d → Fin d → CoeffField d → ℝ)
+    (excess : RegCoeffField d → ℝ)
+    (entry : Fin d → Fin d → RegCoeffField d → ℝ)
     (hexcess_nonneg : ∀ a, 0 ≤ excess a)
     (hexcess_aemeas : AEMeasurable excess P)
     (hentry_nonneg : ∀ i j a, 0 ≤ entry i j a)
@@ -377,9 +377,9 @@ theorem momentRoot_excess_le_card_mul_entryRootBound
       ((Fintype.card (Fin d) : ℝ) * (Fintype.card (Fin d) : ℝ)) * C := by
   classical
   let s : Finset (Fin d × Fin d) := Finset.univ
-  let entryPair : Fin d × Fin d → CoeffField d → ℝ :=
+  let entryPair : Fin d × Fin d → RegCoeffField d → ℝ :=
     fun ij a => entry ij.1 ij.2 a
-  let entrySum : CoeffField d → ℝ :=
+  let entrySum : RegCoeffField d → ℝ :=
     fun a => ∑ ij ∈ s, entryPair ij a
   have hξ_ne_zero : ξ ≠ 0 := by
     exact Nat.pos_iff_ne_zero.mp (lt_of_lt_of_le zero_lt_one hξ)
@@ -505,20 +505,20 @@ theorem upperLeft_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_stat
         ‖(parents.sup' hparents
             (fun Q =>
               max
-                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                   Ch02.matrixNorm center)
                 0))‖ ^ ξ) P := by
   classical
   letI : IsProbabilityMeasure P := hP.isProbability
-  let excess : CoeffField d → ℝ :=
+  let excess : RegCoeffField d → ℝ :=
     fun a =>
       parents.sup' hparents
         (fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm center)
             0)
-  let entry : Fin d → Fin d → CoeffField d → ℝ :=
+  let entry : Fin d → Fin d → RegCoeffField d → ℝ :=
     fun i j a =>
       parents.sup' hparents
         (fun Q =>
@@ -532,7 +532,7 @@ theorem upperLeft_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_stat
       (Finset.le_sup'
         (f := fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm center)
             0) hQ0)
   have hentry_nonneg : ∀ i j a, 0 ≤ entry i j a := by
@@ -555,7 +555,7 @@ theorem upperLeft_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_stat
     intro i j
     have hint :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (parents.sup' hparents
               (fun Q =>
                 |centeredDescendantAverageOnCube P Q n
@@ -566,7 +566,7 @@ theorem upperLeft_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_stat
         (fun U a => (coarseBlockMatrix U a).upperLeft i j)
         (by
           simpa [blockMatEntry] using
-            coarseBlockMatrix_entry_translation_covariant (Sum.inl i) (Sum.inl j))
+            isTranslationCovariantR_comp_toFun (coarseBlockMatrix_entry_translation_covariant (Sum.inl i) (Sum.inl j)))
         (hP.aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet (originCube d n) i j)
         (fun Q hQ R hR =>
           hP.aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet R i j)
@@ -625,7 +625,7 @@ theorem upperLeft_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRange
         parents.sup' hparents
           (fun Q =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                 Ch02.matrixNorm center)
               0)) ≤
       ((Fintype.card (Fin d) : ℝ) * (Fintype.card (Fin d) : ℝ)) *
@@ -633,15 +633,15 @@ theorem upperLeft_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRange
   classical
   letI : IsProbabilityMeasure P := hP.isProbability
   let C : ℝ := (parents.card : ℝ) ^ (1 / (ξ : ℝ)) * B
-  let excess : CoeffField d → ℝ :=
+  let excess : RegCoeffField d → ℝ :=
     fun a =>
       parents.sup' hparents
         (fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm center)
             0)
-  let entry : Fin d → Fin d → CoeffField d → ℝ :=
+  let entry : Fin d → Fin d → RegCoeffField d → ℝ :=
     fun i j a =>
       parents.sup' hparents
         (fun Q =>
@@ -655,7 +655,7 @@ theorem upperLeft_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRange
       (Finset.le_sup'
         (f := fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm center)
             0) hQ0)
   have hentry_nonneg : ∀ i j a, 0 ≤ entry i j a := by
@@ -678,7 +678,7 @@ theorem upperLeft_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRange
     intro i j
     have hint :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (parents.sup' hparents
               (fun Q =>
                 |centeredDescendantAverageOnCube P Q n
@@ -689,7 +689,7 @@ theorem upperLeft_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRange
         (fun U a => (coarseBlockMatrix U a).upperLeft i j)
         (by
           simpa [blockMatEntry] using
-            coarseBlockMatrix_entry_translation_covariant (Sum.inl i) (Sum.inl j))
+            isTranslationCovariantR_comp_toFun (coarseBlockMatrix_entry_translation_covariant (Sum.inl i) (Sum.inl j)))
         (hP.aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet (originCube d n) i j)
         (fun Q hQ R hR =>
           hP.aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet R i j)
@@ -711,7 +711,7 @@ theorem upperLeft_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRange
           hP.exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_upperLeft_apply_cubeSet R i j)
         (by
           simpa [blockMatEntry] using
-            coarseBlockMatrix_entry_translation_covariant (Sum.inl i) (Sum.inl j))
+            isTranslationCovariantR_comp_toFun (coarseBlockMatrix_entry_translation_covariant (Sum.inl i) (Sum.inl j)))
         (hP.aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet (originCube d n) i j)
         (fun Q hQ R hR =>
           hP.aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet R i j)
@@ -763,20 +763,20 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_sta
         ‖(parents.sup' hparents
             (fun Q =>
               max
-                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                   Ch02.matrixNorm center)
                 0))‖ ^ ξ) P := by
   classical
   letI : IsProbabilityMeasure P := hP.isProbability
-  let excess : CoeffField d → ℝ :=
+  let excess : RegCoeffField d → ℝ :=
     fun a =>
       parents.sup' hparents
         (fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
               Ch02.matrixNorm center)
             0)
-  let entry : Fin d → Fin d → CoeffField d → ℝ :=
+  let entry : Fin d → Fin d → RegCoeffField d → ℝ :=
     fun i j a =>
       parents.sup' hparents
         (fun Q =>
@@ -790,7 +790,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_sta
       (Finset.le_sup'
         (f := fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
               Ch02.matrixNorm center)
             0) hQ0)
   have hentry_nonneg : ∀ i j a, 0 ≤ entry i j a := by
@@ -813,7 +813,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_sta
     intro i j
     have hint :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (parents.sup' hparents
               (fun Q =>
                 |centeredDescendantAverageOnCube P Q n
@@ -824,7 +824,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_sta
         (fun U a => (coarseBlockMatrix U a).lowerRight i j)
         (by
           simpa [blockMatEntry] using
-            coarseBlockMatrix_entry_translation_covariant (Sum.inr i) (Sum.inr j))
+            isTranslationCovariantR_comp_toFun (coarseBlockMatrix_entry_translation_covariant (Sum.inr i) (Sum.inr j)))
         (hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet (originCube d n) i j)
         (fun Q hQ R hR =>
           hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet R i j)

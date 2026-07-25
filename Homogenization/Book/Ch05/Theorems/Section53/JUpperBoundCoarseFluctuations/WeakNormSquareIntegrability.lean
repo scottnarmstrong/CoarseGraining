@@ -25,33 +25,33 @@ namespace Internal
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
-    (m : ℕ) (e : Vec d) (a : CoeffField d) : ℝ :=
+    (m : ℕ) (e : Vec d) (a : RegCoeffField d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
   let s := hP4.sLower + 2 * β
   let Q : TriadicCube d := originCube d (m : ℤ)
   let p_e := specialPAtScale hP hStruct (m : ℤ) e
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
   let p0_e := (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ • q_e - p_e
-  (Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e a) ^ 2
+  (Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e a.toFun) ^ 2
 
 @[irreducible] noncomputable def specialFluxWeakNormSquare
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
-    (m : ℕ) (e : Vec d) (a : CoeffField d) : ℝ :=
+    (m : ℕ) (e : Vec d) (a : RegCoeffField d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
   let t := hP4.sUpper + 2 * β
   let Q : TriadicCube d := originCube d (m : ℤ)
   let p_e := specialPAtScale hP hStruct (m : ℤ) e
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
   let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
-  (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e a) ^ 2
+  (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e a.toFun) ^ 2
 
 @[irreducible] noncomputable def specialPairedWeakNormSquare
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
-    (m : ℕ) (e : Vec d) (a : CoeffField d) : ℝ :=
+    (m : ℕ) (e : Vec d) (a : RegCoeffField d) : ℝ :=
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
   σ * specialGradientWeakNormSquare hP hStruct hP4 m e a +
     σ⁻¹ * specialFluxWeakNormSquare hP hStruct hP4 m e a
@@ -60,7 +60,7 @@ namespace Internal
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
-    (k m : ℕ) (e : Vec d) (a : CoeffField d) : ℝ :=
+    (k m : ℕ) (e : Vec d) (a : RegCoeffField d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
   let s := hP4.sLower + 2 * β
   let s' := hP4.sLower + β
@@ -72,21 +72,21 @@ namespace Internal
   let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
   let K := WeakNormsMaximizer.section53WeakNormMaximizerConst d
-  let H : CoeffField d → ℝ := fun a =>
+  let H : RegCoeffField d → ℝ := fun a =>
     σ *
         (WeakNormsMaximizer.gradientAverageTermAtScale
           (m : ℤ) (k : ℤ) s p_e q_e p0_e a) ^ 2 +
       σ⁻¹ *
         (WeakNormsMaximizer.fluxAverageTermAtScale
           (m : ℤ) (k : ℤ) t p_e q_e q0_e a) ^ 2
-  let M : CoeffField d → ℝ := fun a =>
+  let M : RegCoeffField d → ℝ := fun a =>
     σ *
         (WeakNormsMaximizer.gradientMismatchTermAtScale
           (m : ℤ) (k : ℤ) s s' p_e q_e a) ^ 2 +
       σ⁻¹ *
         (WeakNormsMaximizer.fluxMismatchTermAtScale
           (m : ℤ) (k : ℤ) t t' p_e q_e a) ^ 2
-  let L : CoeffField d → ℝ := fun a =>
+  let L : RegCoeffField d → ℝ := fun a =>
     σ *
         (WeakNormsMaximizer.gradientLowScaleTailAtScale
           (m : ℤ) (k : ℤ) s s' p_e q_e a) ^ 2 +
@@ -219,21 +219,21 @@ private theorem integrable_specialWeakNormComponentSquareSum
     Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e
   let fluxWeak :=
     Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e
-  let H : CoeffField d → ℝ := fun a =>
+  let H : RegCoeffField d → ℝ := fun a =>
     σ *
         (WeakNormsMaximizer.gradientAverageTermAtScale
           (m : ℤ) (k : ℤ) s p_e q_e p0_e a) ^ 2 +
       σ⁻¹ *
         (WeakNormsMaximizer.fluxAverageTermAtScale
           (m : ℤ) (k : ℤ) t p_e q_e q0_e a) ^ 2
-  let M : CoeffField d → ℝ := fun a =>
+  let M : RegCoeffField d → ℝ := fun a =>
     σ *
         (WeakNormsMaximizer.gradientMismatchTermAtScale
           (m : ℤ) (k : ℤ) s s' p_e q_e a) ^ 2 +
       σ⁻¹ *
         (WeakNormsMaximizer.fluxMismatchTermAtScale
           (m : ℤ) (k : ℤ) t t' p_e q_e a) ^ 2
-  let L : CoeffField d → ℝ := fun a =>
+  let L : RegCoeffField d → ℝ := fun a =>
     σ *
         (WeakNormsMaximizer.gradientLowScaleTailAtScale
           (m : ℤ) (k : ℤ) s s' p_e q_e a) ^ 2 +
@@ -248,7 +248,7 @@ private theorem integrable_specialWeakNormComponentSquareSum
         (WeakNormsMaximizer.fluxConstantTailAtScale
           (m : ℤ) (k : ℤ) t q0_e) ^ 2
   let W := Internal.specialPairedWeakNormSquare hP hStruct hP4 m e
-  let Z : CoeffField d → ℝ := fun a =>
+  let Z : RegCoeffField d → ℝ := fun a =>
     16 * (((H a + K ^ 2 * M a) + K ^ 2 * L a) + K ^ 2 * T)
   have hHigh :=
     integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
@@ -266,14 +266,14 @@ private theorem integrable_specialWeakNormComponentSquareSum
   have hLInt : Integrable L P := by
     simpa [L, β, s, s', t, t', p_e, q_e, σ] using hLowRaw.1
   have hinside :
-      Integrable (fun a : CoeffField d =>
+      Integrable (fun a : RegCoeffField d =>
         ((H a + K ^ 2 * M a) + K ^ 2 * L a) + K ^ 2 * T) P :=
     ((hHighInt.add (hMInt.const_mul (K ^ 2))).add
       (hLInt.const_mul (K ^ 2))).add (integrable_const (K ^ 2 * T))
   unfold Internal.specialWeakNormComponentSquareSum
   change
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         16 * (((H a + K ^ 2 * M a) + K ^ 2 * L a) + K ^ 2 * T)) P
   simpa [mul_assoc] using hinside.const_mul 16
 
@@ -372,21 +372,21 @@ private theorem ae_specialPairedWeakNormSquares_le_componentSquareSum
     Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e
   let fluxWeak :=
     Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e
-  let H : CoeffField d → ℝ := fun a =>
+  let H : RegCoeffField d → ℝ := fun a =>
     σ *
         (WeakNormsMaximizer.gradientAverageTermAtScale
           (m : ℤ) (k : ℤ) s p_e q_e p0_e a) ^ 2 +
       σ⁻¹ *
         (WeakNormsMaximizer.fluxAverageTermAtScale
           (m : ℤ) (k : ℤ) t p_e q_e q0_e a) ^ 2
-  let M : CoeffField d → ℝ := fun a =>
+  let M : RegCoeffField d → ℝ := fun a =>
     σ *
         (WeakNormsMaximizer.gradientMismatchTermAtScale
           (m : ℤ) (k : ℤ) s s' p_e q_e a) ^ 2 +
       σ⁻¹ *
         (WeakNormsMaximizer.fluxMismatchTermAtScale
           (m : ℤ) (k : ℤ) t t' p_e q_e a) ^ 2
-  let L : CoeffField d → ℝ := fun a =>
+  let L : RegCoeffField d → ℝ := fun a =>
     σ *
         (WeakNormsMaximizer.gradientLowScaleTailAtScale
           (m : ℤ) (k : ℤ) s s' p_e q_e a) ^ 2 +

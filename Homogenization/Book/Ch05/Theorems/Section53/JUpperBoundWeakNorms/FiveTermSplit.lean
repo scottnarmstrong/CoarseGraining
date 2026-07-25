@@ -311,7 +311,7 @@ theorem centeredResponseJOnCube_sub_cutoffWeightedChildResponseJ_eq_concreteAddi
 coefficient family.  Here the parent and child representatives are definitionally
 the sampled coefficient field, so no representative-equality hypothesis remains. -/
 theorem centeredResponseJOnCube_sub_cutoffWeightedChildResponseJ_eq_concreteAdditivityCross_add_cutoffOscillation_add_linearPair_add_product_of_aELocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a) (Q : TriadicCube d)
     (j : ℕ) (φ : Vec d → ℝ) (p q p0 q0 : Vec d)
     (hφ_int : IntegrableOn φ (cubeSet Q) volume)
@@ -376,7 +376,7 @@ the additivity-cross term is in the manuscript response-partition-defect form,
 while the cutoff oscillation, linear pair, and product terms remain as the
 separate deterministic terms estimated elsewhere. -/
 theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentFamily_le_additivityDefect_add_cutoffOscillation_add_linearPair_add_product
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a) (Q : TriadicCube d)
     (j : ℕ) (φ : Vec d → ℝ) (p q p0 q0 : Vec d)
     {C : ℝ}
@@ -470,7 +470,7 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
 /-- Raw Ch2 response for the Chapter 4 dependent coefficient family is the
 Ch4 cube-set response observable. -/
 theorem responseJOnDependentFamily_eq_responseJObservableCubeSet
-    {d : ℕ} [NeZero d] (a : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (p q : Vec d) :
     Ch02.responseJ (Ch02.cubeDomain Q)
         ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
@@ -491,7 +491,7 @@ theorem responseJOnDependentFamily_eq_responseJObservableCubeSet
 /-- At origin scales, the deterministic response partition defect for the Ch4
 dependent family is the Ch4 additivity-defect observable. -/
 theorem responseJPartitionDefectOnDependentFamilyAtScale_eq_responseJAdditivityDefectAtScale
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m k : ℤ) (p q : Vec d) :
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
@@ -510,7 +510,7 @@ theorem responseJPartitionDefectOnDependentFamilyAtScale_eq_responseJAdditivityD
 /-- Centered raw Ch2 response for the Chapter 4 dependent family is the Ch4
 centered response observable. -/
 theorem centeredResponseJOnDependentFamily_eq_centeredResponseJObservableCubeSet
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (p q p0 q0 : Vec d) :
     centeredResponseJOnCube Q
@@ -523,7 +523,7 @@ theorem centeredResponseJOnDependentFamily_eq_centeredResponseJObservableCubeSet
 /-- The deterministic child-weighted raw Ch2 response average agrees with the
 Ch4 response-observable average. -/
 theorem cutoffWeightedChildResponseJOnDependentFamilyAtDepth_eq_ch04
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (φ : Vec d → ℝ) (p q : Vec d) :
     cutoffWeightedChildResponseJOnFamilyAtDepth
@@ -539,7 +539,7 @@ theorem cutoffWeightedChildResponseJOnDependentFamilyAtDepth_eq_ch04
 /-- Pointwise bridge from the deterministic raw split left side to the Ch4
 centered-minus-child expression used before taking expectations. -/
 theorem centeredResponseJOnDependentFamily_sub_cutoffWeightedChildResponseJ_eq_ch04
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (φ : Vec d → ℝ) (p q p0 q0 : Vec d) :
     centeredResponseJOnCube Q
@@ -557,7 +557,7 @@ theorem centeredResponseJOnDependentFamily_sub_cutoffWeightedChildResponseJ_eq_c
 /-- Origin-scale version of the raw/Ch4 left-side bridge, matching the private
 stochastic expression used above. -/
 theorem centeredJMinusCutoffWeightedChildAtScale_eq_dependentFamily_left
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m k : ℤ) (φ : Vec d → ℝ) (p q p0 q0 : Vec d) :
     centeredJMinusCutoffWeightedChildAtScale m k φ p q p0 q0 a =

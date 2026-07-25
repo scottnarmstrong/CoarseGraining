@@ -16,13 +16,20 @@ theorem fullBlockFluctuationOperatorNormSqWithNormalizer_translation_covariant
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) :
-    IsTranslationCovariant
-      (fun U : Set (Vec d) => fun a : CoeffField d =>
+    Ch04.IsTranslationCovariantR
+      (fun U : Set (Vec d) => fun a : RegCoeffField d =>
         fullBlockFluctuationOperatorNormSqWithNormalizer hP hStruct center S U a) := by
-  intro U z a
-  simp [fullBlockFluctuationOperatorNormSqWithNormalizer,
-    fullBlockFluctuationMatrixWithNormalizer, translateByInt,
-    coarseBlockMatrix_translateSet_eq_translateCoeffField]
+  have hraw : IsTranslationCovariant
+      (fun U : Set (Vec d) => fun b : CoeffField d =>
+        ‖Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ)
+            (Matrix.transpose S *
+              (toFullBlockMat (coarseBlockMatrix U b) -
+                toFullBlockMat
+                  (Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct center)) *
+              S)‖ ^ (2 : ℕ)) := by
+    intro U z b
+    simp [translateByInt, coarseBlockMatrix_translateSet_eq_translateCoeffField]
+  exact Ch04.isTranslationCovariantR_comp_toFun hraw
 
 theorem section56_norm_toEuclideanCLM_le_sum_abs_entries
     {ι : Type*} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℝ) :
@@ -83,14 +90,14 @@ theorem section56_norm_toEuclideanCLM_le_sum_abs_entries
     (mul_nonneg (mul_nonneg (Nat.cast_nonneg _) hS_nonneg) (norm_nonneg x))).mp hnorm_sq
 
 theorem section56_norm_toEuclideanCLM_sq_integrable_of_entry_memLp_two
-    {d : ℕ} {P : Ch04.CoeffLaw d} {Z : CoeffField d → FullBlockMat d}
+    {d : ℕ} {P : Ch04.CoeffLaw d} {Z : RegCoeffField d → FullBlockMat d}
     (hZ_aemeas : AEMeasurable Z P)
     (hZ_entry : ∀ α β : BlockCoord d, MemLp (fun a => Z a α β) (2 : ENNReal) P) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ‖Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ) (Z a)‖ ^ 2) P := by
   classical
-  let S : CoeffField d → ℝ := fun a => ∑ α : BlockCoord d, ∑ β : BlockCoord d, |Z a α β|
+  let S : RegCoeffField d → ℝ := fun a => ∑ α : BlockCoord d, ∑ β : BlockCoord d, |Z a α β|
   have hS_mem : MemLp S (2 : ENNReal) P := by
     dsimp [S]
     refine memLp_finset_sum _ ?_
@@ -133,26 +140,26 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_f
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (center : ℤ) (S : FullBlockMat d) (n : ℕ) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         fullBlockFluctuationOperatorNormSqWithNormalizer hP hStruct center S
           (cubeSet (originCube d (n : ℤ))) a) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (n : ℤ)
   let Abar : BlockMat d := Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct center
-  let Z : CoeffField d → FullBlockMat d :=
+  let Z : RegCoeffField d → FullBlockMat d :=
     fun a =>
       Matrix.transpose S *
-        (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) - toFullBlockMat Abar) * S
+        (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) - toFullBlockMat Abar) * S
   have hZ_entry : ∀ α β : BlockCoord d, MemLp (fun a => Z a α β) (2 : ENNReal) P := by
     intro α β
     dsimp [Z]
     have hsum :
         MemLp
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ∑ γ : BlockCoord d,
               (∑ δ : BlockCoord d,
                 Matrix.transpose S α δ *
-                  (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) δ γ -
+                  (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) δ γ -
                     toFullBlockMat Abar δ γ)) *
                 S γ β)
           (2 : ENNReal) P := by
@@ -161,10 +168,10 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_f
       intro γ _hγ
       have hinner :
           MemLp
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               ∑ δ : BlockCoord d,
                 Matrix.transpose S α δ *
-                  (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) δ γ -
+                  (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) δ γ -
                     toFullBlockMat Abar δ γ))
             (2 : ENNReal) P := by
         refine memLp_finset_sum (s := (Finset.univ : Finset (BlockCoord d)))
@@ -172,14 +179,14 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_f
         intro δ _hδ
         have hbase :
             MemLp
-              (fun a : CoeffField d =>
-                toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) δ γ -
+              (fun a : RegCoeffField d =>
+                toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) δ γ -
                   toFullBlockMat Abar δ γ)
               (2 : ENNReal) P := by
           have hentry :
               MemLp
-                (fun a : CoeffField d =>
-                  toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) δ γ)
+                (fun a : RegCoeffField d =>
+                  toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) δ γ)
                 (2 : ENNReal) P := by
             simpa [Q, toFullBlockMat, blockMatEntry] using
               Homogenization.Book.Ch05.Section52.memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
@@ -199,10 +206,10 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_f
     exact (hZ_entry α β).aestronglyMeasurable.aemeasurable
   change
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ‖Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ)
           (Matrix.transpose S *
-            (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) - toFullBlockMat Abar) *
+            (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) - toFullBlockMat Abar) *
               S)‖ ^ 2) P
   exact section56_norm_toEuclideanCLM_sq_integrable_of_entry_memLp_two hZ_aemeas hZ_entry
 
@@ -212,7 +219,7 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_f
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (center : ℤ) (S : FullBlockMat d) (n : ℤ) (hn : 0 ≤ n) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         fullBlockFluctuationOperatorNormSqWithNormalizer hP hStruct center S
           (cubeSet (originCube d n)) a) P := by
   have hnat :=
@@ -227,7 +234,7 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_from_P4_of_n
     (center : ℤ) (S : FullBlockMat d) (R : TriadicCube d)
     (hR_nonneg : 0 ≤ R.scale) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
           fullBlockFluctuationOperatorNormSqWithNormalizer hP hStruct center S
           (cubeSet R) a) P := by
   let z : Fin d → ℤ := Ch04.scaleTranslationShift R.scale R
@@ -238,32 +245,32 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_from_P4_of_n
       Ch04.cubeSet_eq_translateSet_originCube_of_nonneg_scale (R := R) hR_nonneg
   have hOrigin :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           fullBlockFluctuationOperatorNormSqWithNormalizer hP hStruct center S
             (cubeSet (originCube d R.scale)) a) P :=
     integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_from_P4_of_nonneg
       hP hStruct hP4 center S R.scale hR_nonneg
   have hcomp :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           fullBlockFluctuationOperatorNormSqWithNormalizer hP hStruct center S
-            (cubeSet (originCube d R.scale)) (translateByInt z a)) P := by
+            (cubeSet (originCube d R.scale)) (translateReg (intVecToRealVec z) a)) P := by
     have hOrigin_map :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             fullBlockFluctuationOperatorNormSqWithNormalizer hP hStruct center S
               (cubeSet (originCube d R.scale)) a)
-          (Measure.map (translateByInt z) P) := by
+          (Measure.map (translateReg (intVecToRealVec z)) P) := by
       simpa [hStruct.stationary z] using hOrigin
     simpa [Function.comp_def] using
-      hOrigin_map.comp_measurable (measurable_translateByInt z)
+      hOrigin_map.comp_measurable (measurable_translateReg (intVecToRealVec z))
   have hae :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         fullBlockFluctuationOperatorNormSqWithNormalizer hP hStruct center S
           (cubeSet R) a) =ᵐ[P]
-      fun a : CoeffField d =>
+      fun a : RegCoeffField d =>
         fullBlockFluctuationOperatorNormSqWithNormalizer hP hStruct center S
-          (cubeSet (originCube d R.scale)) (translateByInt z a) := by
+          (cubeSet (originCube d R.scale)) (translateReg (intVecToRealVec z) a) := by
     filter_upwards with a
     rw [hset]
     exact
@@ -277,7 +284,7 @@ theorem integrable_descendantsAverage_fullBlockFluctuationOperatorNormSqWithNorm
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m n k : ℕ) (_hk : k ≤ n) (S : FullBlockMat d) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverage (originCube d (n : ℤ)) (n - k)
           (fun R =>
             fullBlockFluctuationOperatorNormSqWithNormalizer
@@ -304,7 +311,7 @@ theorem aemeasurable_fullBlockFluctuationMatrixWithNormalizer_cubeSet
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         fullBlockFluctuationMatrixWithNormalizer hP hStruct center S
           (cubeSet Q) a) P := by
   let Abar : FullBlockMat d :=
@@ -317,8 +324,8 @@ theorem aemeasurable_fullBlockFluctuationMatrixWithNormalizer_cubeSet
     exact hcont.measurable
   have hM :
       AEMeasurable
-        (fun a : CoeffField d =>
-          toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)) P :=
+        (fun a : RegCoeffField d =>
+          toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P :=
     hP.aemeasurable_coarseFullBlockMatrix_cubeSet Q
   simpa [fullBlockFluctuationMatrixWithNormalizer, Abar, g] using hg.comp_aemeasurable hM
 
@@ -327,14 +334,14 @@ theorem aemeasurable_descendantsAverageFluctuationMatrixWithNormalizer
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverageFluctuationMatrixWithNormalizer
           hP hStruct center S Q j a) P := by
   classical
   let D : Finset (TriadicCube d) := descendantsAtDepth Q j
   have hsum :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ∑ R ∈ D,
             fullBlockFluctuationMatrixWithNormalizer hP hStruct center S
               (cubeSet R) a) P := by
@@ -345,7 +352,7 @@ theorem aemeasurable_descendantsAverageFluctuationMatrixWithNormalizer
     simp
   have hscaled :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ((D.card : ℝ)⁻¹) •
             (∑ R ∈ D,
               fullBlockFluctuationMatrixWithNormalizer hP hStruct center S
@@ -361,7 +368,7 @@ theorem aemeasurable_descendantsAverageFluctuationOperatorNormSqWithNormalizer
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverageFluctuationOperatorNormSqWithNormalizer
           hP hStruct center S Q j a) P := by
   let g : FullBlockMat d → ℝ :=
@@ -399,7 +406,7 @@ theorem integrable_descendantsAverageFluctuationOperatorNormSqWithNormalizer_fro
   let j : ℕ := n - k
   have hdomInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           descendantsAverage Q j
             (fun R =>
               fullBlockFluctuationOperatorNormSqWithNormalizer
@@ -436,7 +443,7 @@ theorem memLp_two_blockJTraceAverageWithNormalizers_from_P4_of_stationary
   have hchild :
       ∀ R, R ∈ descendantsAtDepth Q j →
         MemLp
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ∑ α : BlockCoord d,
               blockJObservableCubeSetBlockVec R
                 (fullBlockMatrixProbe S α) (fullBlockMatrixProbe T α) a)
@@ -457,7 +464,7 @@ theorem memLp_two_blockJTraceAverageWithNormalizers_from_P4_of_stationary
           (fullBlockMatrixProbe S α) (fullBlockMatrixProbe T α))
   change
     MemLp
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverage (originCube d (n : ℤ)) (n - k)
           (fun R =>
             ∑ α : BlockCoord d,
@@ -507,11 +514,11 @@ theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_integral_le_two_
             (originCube d (n : ℤ)) (n - k) a ∂P := by
   let Q : TriadicCube d := originCube d (n : ℤ)
   let j : ℕ := n - k
-  let F : CoeffField d → ℝ :=
+  let F : RegCoeffField d → ℝ :=
     fun a =>
       descendantsAverageFluctuationOperatorNormSqWithNormalizer
         hP hStruct (m : ℤ) S Q j a
-  let J : CoeffField d → ℝ :=
+  let J : RegCoeffField d → ℝ :=
     fun a => blockJTraceAverageSqWithNormalizers S T Q j a
   have hFInt : Integrable F P := by
     simpa [F, Q, j] using
@@ -521,14 +528,14 @@ theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_integral_le_two_
     simpa [J, Q, j] using
       integrable_blockJTraceAverageSqWithNormalizers_from_P4_of_stationary
         hP hStruct hP4 m n k hk S T
-  have hRhsInt : Integrable (fun a : CoeffField d => 2 * F a + 8 * J a) P :=
+  have hRhsInt : Integrable (fun a : RegCoeffField d => 2 * F a + 8 * J a) P :=
     (hFInt.const_mul (2 : ℝ)).add (hJInt.const_mul (8 : ℝ))
   have hpoint :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer
           hP hStruct (m : ℤ) S Q a)
         ≤ᵐ[P]
-      fun a : CoeffField d => 2 * F a + 8 * J a := by
+      fun a : RegCoeffField d => 2 * F a + 8 * J a := by
     simpa [F, J, Q, j] using
       fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_le_two_descendantsAverageWithNormalizer_add_eight_blockJTraceAverageSqWithNormalizers_ae
         hP hStruct (m : ℤ) S T Q j

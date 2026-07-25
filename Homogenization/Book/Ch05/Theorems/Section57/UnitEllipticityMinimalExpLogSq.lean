@@ -36,7 +36,7 @@ theorem exists_unitEllipticityMinimalScale_interpolated_expLogSq
           (hStruct : Ch04.StructuralLaw P)
           (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
           hΓ.sigma = σ → hΓ.params = params →
-          ∃ X : CoeffField d → ℝ,
+          ∃ X : RegCoeffField d → ℝ,
             IsBigO P (gammaSigma η) X
               (Real.exp
                 (Cscale * (Real.log (2 + hΓ.thetaHat)) ^ (2 : ℕ))) ∧
@@ -93,9 +93,9 @@ theorem exists_unitEllipticityMinimalScale_interpolated_expLogSq
         Real.log ρgap)))
   let Qlead : ℕ := Nat.ceil (Real.log Blead / Real.log 3)
   let Q : ℕ := max Qpref Qlead
-  let Bad : ℕ → Set (CoeffField d) :=
+  let Bad : ℕ → Set (RegCoeffField d) :=
     unitEllipticityBadScaleEvent hP hStruct hΓ.params t α
-  let X : CoeffField d → ℝ := quenchedMinimalScale Q Bad
+  let X : RegCoeffField d → ℝ := quenchedMinimalScale Q Bad
   let C : ℝ := 3 * ((3 : ℝ) ^ Q) * B
   have hθ_one : 1 ≤ thetaAtScale hP hStruct (0 : ℤ) := by
     simpa using

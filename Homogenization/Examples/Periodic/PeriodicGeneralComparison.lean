@@ -34,10 +34,10 @@ ellipticity bounds; the stochastic setup is the Dirac law produced by
 theorem periodicGeneral_comparison {d : ℕ} [NeZero d] :
     ∃ C alpha Cscale : ℝ,
       0 < C ∧ 0 < alpha ∧ 0 < Cscale ∧
-      ∀ (two_le_dim : 2 ≤ d) (a₀ : CoeffField d) (lam Lam : ℝ)
-        (hper : IsPeriodicCoeffField a₀)
-        (hiso : IsIsotropicCoeffField a₀)
-        (hadj : IsAdjointInvariantCoeffField a₀)
+      ∀ (two_le_dim : 2 ≤ d) (a₀ : RegCoeffField d) (lam Lam : ℝ)
+        (hper : IsPeriodicCoeffField a₀.toFun)
+        (hiso : IsIsotropicCoeffField a₀.toFun)
+        (hadj : IsAdjointInvariantCoeffField a₀.toFun)
         (hlam : 0 < lam) (hle : lam ≤ Lam)
         (hell : ∀ Q : TriadicCube d,
           Book.Ch04.AEEllipticOn lam Lam (openCubeSet Q) a₀),
@@ -45,7 +45,7 @@ theorem periodicGeneral_comparison {d : ℕ} [NeZero d] :
           periodicSetup two_le_dim a₀ lam Lam hper hiso hadj hlam hle hell
         ∃ sigmaBar : ℝ,
           0 < sigmaBar ∧
-          ∃ X : CoeffField d → ℝ,
+          ∃ X : RegCoeffField d → ℝ,
             S.IsMinimalScale X Cscale ∧
             ∀ᵐ aω ∂S.P,
               ∀ (ha : Book.Ch04.AELocallyUniformlyEllipticField aω)

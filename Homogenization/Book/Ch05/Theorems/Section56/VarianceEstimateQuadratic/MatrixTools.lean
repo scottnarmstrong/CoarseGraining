@@ -287,7 +287,7 @@ theorem descendantsAverageFullBlockMat_transpose_sub_const_mul
 theorem normalizedCoarseAveragePositiveErrorMatrix_eq_diagonal_blockSub
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) :
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     let b := hP.barSigmaAtScale hStruct center
     let c := hP.barSigmaStarAtScale hStruct center
     let D : FullBlockMat d :=
@@ -296,15 +296,15 @@ theorem normalizedCoarseAveragePositiveErrorMatrix_eq_diagonal_blockSub
       D *
         (toFullBlockMat
             (descendantsAverageBlockMat Q j
-              (fun R => coarseBlockMatrix (cubeSet R) a)) -
-          toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)) *
+              (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) -
+          toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) *
         D := by
   classical
   intro b c D
   let Abar : FullBlockMat d :=
     toFullBlockMat (Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct center)
   let F : TriadicCube d → FullBlockMat d :=
-    fun R => toFullBlockMat (coarseBlockMatrix (cubeSet R) a)
+    fun R => toFullBlockMat (coarseBlockMatrix (cubeSet R) a.toFun)
   have hAvg :
       descendantsAverageNormalizedFluctuationMatrix hP hStruct center Q j a =
         D * (descendantsAverageFullBlockMat Q j F - Abar) * D := by
@@ -330,8 +330,8 @@ theorem normalizedCoarseAveragePositiveErrorMatrix_eq_diagonal_blockSub
         D *
           (toFullBlockMat
               (descendantsAverageBlockMat Q j
-                (fun R => coarseBlockMatrix (cubeSet R) a)) -
-            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)) *
+                (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) -
+            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) *
           D := by
           rw [toFullBlockMat_descendantsAverageBlockMat]
 
@@ -339,19 +339,19 @@ theorem coarseAveragePositiveErrorMatrixWithNormalizer_eq_transpose_blockSub
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     coarseAveragePositiveErrorMatrixWithNormalizer hP hStruct center S Q j a =
       Matrix.transpose S *
         (toFullBlockMat
             (descendantsAverageBlockMat Q j
-              (fun R => coarseBlockMatrix (cubeSet R) a)) -
-          toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)) *
+              (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) -
+          toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) *
         S := by
   classical
   let Abar : FullBlockMat d :=
     toFullBlockMat (Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct center)
   let F : TriadicCube d → FullBlockMat d :=
-    fun R => toFullBlockMat (coarseBlockMatrix (cubeSet R) a)
+    fun R => toFullBlockMat (coarseBlockMatrix (cubeSet R) a.toFun)
   have hAvg :
       descendantsAverageFluctuationMatrixWithNormalizer hP hStruct center S Q j a =
         Matrix.transpose S * (descendantsAverageFullBlockMat Q j F - Abar) * S := by
@@ -374,8 +374,8 @@ theorem coarseAveragePositiveErrorMatrixWithNormalizer_eq_transpose_blockSub
         Matrix.transpose S *
           (toFullBlockMat
               (descendantsAverageBlockMat Q j
-                (fun R => coarseBlockMatrix (cubeSet R) a)) -
-            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)) *
+                (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) -
+            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) *
           S := by
           rw [toFullBlockMat_descendantsAverageBlockMat]
 end

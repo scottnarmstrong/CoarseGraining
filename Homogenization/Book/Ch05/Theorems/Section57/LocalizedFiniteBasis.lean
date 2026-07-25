@@ -23,7 +23,7 @@ noncomputable def localizedLimitNormalizedJProbeSumMax
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P)
     (hStruct : Ch04.StructuralLaw P)
-    (m n : ℕ) : CoeffField d → ℝ :=
+    (m n : ℕ) : RegCoeffField d → ℝ :=
   fun a =>
     let D : Finset (TriadicCube d) :=
       descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ)
@@ -37,7 +37,7 @@ noncomputable def localizedLimitNormalizedJNormalizedProbeSumMax
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P)
     (hStruct : Ch04.StructuralLaw P)
-    (m n : ℕ) : CoeffField d → ℝ :=
+    (m n : ℕ) : RegCoeffField d → ℝ :=
   fun a =>
     let D : Finset (TriadicCube d) :=
       descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ)
@@ -51,7 +51,7 @@ theorem limitNormalizedJProbeSum_le_localizedLimitNormalizedJProbeSumMax
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     {m n : ℕ} {R : TriadicCube d}
     (hR : R ∈ descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ))
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     limitNormalizedJProbeSum hP hStruct R a ≤
       localizedLimitNormalizedJProbeSumMax hP hStruct m n a := by
   classical
@@ -74,7 +74,7 @@ theorem localizedLimitNormalizedJMax_le_probeSumMax_ae
     {m n : ℕ} (hnm : n ≤ m)
     (e : FullBlockVec d) (he : dotProduct e e ≤ 1) :
     (localizedLimitNormalizedJMax hP hStruct m n e) ≤ᵐ[P]
-      fun a : CoeffField d =>
+      fun a : RegCoeffField d =>
         (Fintype.card (BlockCoord d) : ℝ) *
           localizedLimitNormalizedJProbeSumMax hP hStruct m n a := by
   classical
@@ -124,7 +124,7 @@ theorem localizedLimitNormalizedJMax_le_normalizedProbeSumMax_ae
     {m n : ℕ} (hnm : n ≤ m)
     (e : FullBlockVec d) (he : dotProduct e e ≤ 1) :
     (localizedLimitNormalizedJMax hP hStruct m n e) ≤ᵐ[P]
-      fun a : CoeffField d =>
+      fun a : RegCoeffField d =>
         (4 * (Fintype.card (BlockCoord d) : ℝ)) *
           localizedLimitNormalizedJNormalizedProbeSumMax hP hStruct m n a := by
   classical
@@ -176,7 +176,7 @@ theorem localizedLimitNormalizedJMax_smul_ae
     {m n : ℕ} (hnm : n ≤ m)
     (c : ℝ) (hc : c ≠ 0) (e : FullBlockVec d) :
     localizedLimitNormalizedJMax hP hStruct m n (c • e) =ᵐ[P]
-      fun a : CoeffField d =>
+      fun a : RegCoeffField d =>
         c ^ (2 : ℕ) * localizedLimitNormalizedJMax hP hStruct m n e a := by
   classical
   let D : Finset (TriadicCube d) :=

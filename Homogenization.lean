@@ -71,6 +71,16 @@ import Homogenization.Deterministic.WeakFluxRHS
 import Homogenization.Deterministic.WeakNormInterfaces.HodgeZero
 import Homogenization.Deterministic.HomogenizationBlackBoxes
 import Homogenization.Probability.RandomField
+import Homogenization.Probability.RegCoeffField
+import Homogenization.Probability.RegCoeffField.Sigma
+import Homogenization.Probability.RegCoeffField.EllipticSet
+import Homogenization.Probability.RegCoeffField.Endomorphisms
+import Homogenization.Probability.RegCoeffField.Restriction
+import Homogenization.Probability.RegCoeffField.RestrictionBridge
+import Homogenization.Probability.RegCoeffField.Laws
+import Homogenization.Probability.RegCoeffField.Differentiation
+import Homogenization.Probability.RegCoeffField.SliceMeasurability
+import Homogenization.Probability.RegCoeffField.EllipticSupport
 import Homogenization.Probability.SeparableHilbertMeasurability
 import Homogenization.Probability.LocalEllipticitySlices
 import Homogenization.Probability.RandomFieldMeasurability
@@ -135,6 +145,7 @@ import Homogenization.Examples.Periodic.PeriodicConcreteComparison
 import Homogenization.Examples.Periodic.PeriodicGeneralComparison
 import Homogenization.Examples.Periodic.PeriodicSmoothComparison
 import Homogenization.Examples.RandomCheckerboard.Basic
+import Homogenization.Examples.RandomCheckerboard.CarrierLaw
 import Homogenization.Internal
 import Homogenization.Internal.Ch02
 import Homogenization.Sobolev.Fractional.AssemblyPieces

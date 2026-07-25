@@ -77,7 +77,7 @@ theorem exists_quantitative_shifted_quenchedLocalizedEstimate_interpolated
             let N0 : ℕ :=
               annealedAlgebraicEntryScale P
                 hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-            let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+            let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
               fun M N aω =>
                 quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
             let Dhigh : ℝ := 2 * K * Cfluct * hΓ.thetaHat ^ (2 : ℕ)
@@ -97,8 +97,8 @@ theorem exists_quantitative_shifted_quenchedLocalizedEstimate_interpolated
             let Qlead : ℕ := Nat.ceil (Real.log Blead / Real.log 3)
             let Qcut : ℕ := Nat.ceil ((L + 1) / (1 - αbad / a) + 1)
             let Q : ℕ := max Qpref (max Qlead Qcut)
-            let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t αbad
-            let X : CoeffField d → ℝ := quenchedMinimalScale Q Bad
+            let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t αbad
+            let X : RegCoeffField d → ℝ := quenchedMinimalScale Q Bad
             IsBigO P (gammaSigma η) X
               (3 * ((3 : ℝ) ^ Q) * B) ∧
               (∀ aω, 1 ≤ X aω) ∧
@@ -158,7 +158,7 @@ theorem exists_quantitative_shifted_quenchedLocalizedEstimate_interpolated
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-  let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+  let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>
       quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
   let Dhigh : ℝ := 2 * K * Cfluct * hΓ.thetaHat ^ (2 : ℕ)
@@ -177,7 +177,7 @@ theorem exists_quantitative_shifted_quenchedLocalizedEstimate_interpolated
   let Qlead : ℕ := Nat.ceil (Real.log Blead / Real.log 3)
   let Qcut : ℕ := Nat.ceil ((L + 1) / (1 - αbad / a) + 1)
   let Q : ℕ := max Qpref (max Qlead Qcut)
-  let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t αbad
+  let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t αbad
   have hη_pos : 0 < η := by
     simpa [η] using finiteQuenchedTailExponent_pos
       (d := d) (σ := σ) (t := t) hσ_pos ht

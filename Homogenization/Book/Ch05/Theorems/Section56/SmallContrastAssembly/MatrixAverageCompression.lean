@@ -317,19 +317,19 @@ private theorem centeredOriginNormalizedQuadratic_sq_integral_le_smallContrastCo
     (child : ℕ) (q : FullBlockVec d) :
     ∫ a,
         |Ch04.centeredOriginObservable P (child : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (child : ℤ) q) a| ^
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q) a| ^
           (2 : ℕ) ∂P ≤
       refinedMatrixBudgetConst d * refinedVarianceBasicBudgetSmallContrastConst hP4 *
         (dotProduct q q) ^ (2 : ℕ) := by
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    fullBlockNormalizedQuadraticObservable hP hStruct (child : ℤ) q
-  let F : CoeffField d → ℝ := fun a =>
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q
+  let F : RegCoeffField d → ℝ := fun a =>
     Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
       hP hStruct (child : ℤ) (originCube d (child : ℤ)) a
   let Dq : ℝ := (dotProduct q q) ^ (2 : ℕ)
   have hleft_int :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           |Ch04.centeredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ)) P := by
     simpa [X] using
       fullBlockNormalizedQuadraticObservable_centeredOrigin_sq_integrable_at_self
@@ -338,17 +338,17 @@ private theorem centeredOriginNormalizedQuadratic_sq_integral_le_smallContrastCo
     simpa [F] using
       integrable_origin_fullBlockNormalizedFluctuationOperatorNormSqAtScale_from_P4
         hP hStruct hP4 (child : ℤ) child
-  have hright_int : Integrable (fun a : CoeffField d => F a * Dq) P :=
+  have hright_int : Integrable (fun a : RegCoeffField d => F a * Dq) P :=
     hF_int.mul_const Dq
   have hpoint :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
           |Ch04.centeredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ))
         ≤ᵐ[P] fun a => F a * Dq := by
     filter_upwards with a
     have hmean :
         (∫ b,
           fullBlockNormalizedQuadraticObservable hP hStruct (child : ℤ) q
-            (cubeSet (originCube d (child : ℤ))) b ∂P) =
+            (cubeSet (originCube d (child : ℤ))) b.toFun ∂P) =
           dotProduct q q :=
       integral_origin_fullBlockNormalizedQuadraticObservable_self_eq_dotProduct
         hP hStruct hP4 child q
@@ -357,7 +357,9 @@ private theorem centeredOriginNormalizedQuadratic_sq_integral_le_smallContrastCo
           fullBlockQuadratic
             (fullBlockNormalizedFluctuationMatrix hP hStruct (child : ℤ)
               (cubeSet (originCube d (child : ℤ))) a) q := by
-      rw [Ch04.centeredOriginObservable, hmean]
+      simp only [Ch04.centeredOriginObservable, X,
+        fullBlockNormalizedQuadraticObservableR]
+      rw [hmean]
       exact
         fullBlockNormalizedQuadraticObservable_sub_dotProduct_eq_fluctuationQuadratic
           hP hStruct hP4 child q (cubeSet (originCube d (child : ℤ))) a
@@ -403,7 +405,7 @@ private theorem centeredOriginNormalizedQuadratic_sq_integral_le_smallContrastCo
   calc
     ∫ a,
         |Ch04.centeredOriginObservable P (child : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (child : ℤ) q) a| ^
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q) a| ^
           (2 : ℕ) ∂P =
         ∫ a, |Ch04.centeredOriginObservable P (child : ℤ) X a| ^
           (2 : ℕ) ∂P := rfl
@@ -546,8 +548,8 @@ private theorem normalizedQuadraticProbeAverageRootBound_sq_le_card_inv_mul_smal
     (normalizedQuadraticProbeAverageRootBound hP hStruct child parent q) ^ (2 : ℕ) ≤
       (((descendantsAtScale (originCube d (parent : ℤ)) (child : ℤ)).card : ℝ)⁻¹) *
         normalizedQuadraticProbeAverageRootSqConst hP4 q := by
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    fullBlockNormalizedQuadraticObservable hP hStruct (child : ℤ) q
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q
   let I : ℝ :=
     ∫ a, |Ch04.centeredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ) ∂P
   let K : ℝ := I ^ (1 / (2 : ℝ))

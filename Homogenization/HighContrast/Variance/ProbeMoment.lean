@@ -35,7 +35,7 @@ fluctuation matrix `H = D·(A_m − Ā_m)·D` equals the centered block quadrati
 form of the diagonally rescaled probe vector `w = ofFullBlockVec (D q)`. -/
 theorem fluctuation_probe_eq_centered_blockQuadratic [NeZero d] {L : CoeffLaw d}
     (hP : LawCarrier L) (hStruct : StructuralLaw L) (m : ℤ) (q : FullBlockVec d)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     fullBlockQuadratic
         (fullBlockNormalizedFluctuationMatrix hP hStruct m (cubeSet (originCube d m)) a) q
       = blockVecDot
@@ -194,7 +194,7 @@ theorem integrable_fluctuation_probe_sq [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
     (hΘ : 1 ≤ Θ) (hP : LawCarrier L) (hStruct : StructuralLaw L)
     (hLaw : ThetaEllipticLaw Θ L) (m : ℤ) (q : FullBlockVec d) :
     Integrable
-      (fun a => (fullBlockQuadratic
+      (fun a : RegCoeffField d => (fullBlockQuadratic
         (fullBlockNormalizedFluctuationMatrix hP hStruct m (cubeSet (originCube d m)) a) q)
           ^ 2) L := by
   haveI : IsProbabilityMeasure L := hP.isProbability
@@ -203,7 +203,7 @@ theorem integrable_fluctuation_probe_sq [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
     (scalarFullBlockInvSqrtDiag (hP.barSigmaAtScale hStruct m)
       (hP.barSigmaStarAtScale hStruct m))) q) with hwdef
   set c₀ : ℝ := blockVecDot w (blockMatVecMul (annealedBlockMatrixAtScale L m) w) with hc0def
-  have hpt : ∀ a, fullBlockQuadratic
+  have hpt : ∀ a : RegCoeffField d, fullBlockQuadratic
         (fullBlockNormalizedFluctuationMatrix hP hStruct m (cubeSet (originCube d m)) a) q
       = blockVecDot w
           (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) w) - c₀ := by
@@ -217,7 +217,7 @@ theorem integrable_fluctuation_probe_sq [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
     exact mul_nonneg (by norm_num)
       (add_nonneg (mul_nonneg hΘ0 (vecNormSq_nonneg _)) (vecNormSq_nonneg _))
   have hsqint : Integrable
-      (fun a => (blockVecDot w
+      (fun a : RegCoeffField d => (blockVecDot w
         (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) w) - c₀) ^ 2) L := by
     refine (integrable_const ((Mub + |c₀|) ^ 2)).mono' ?_ ?_
     · exact (hXint.aestronglyMeasurable.sub aestronglyMeasurable_const).pow 2

@@ -21,7 +21,7 @@ noncomputable section
 
 private theorem isBigO_gammaSigma_iff_of_map_eq_map
     {d : ℕ} {P : CoeffLaw d} {σ A : ℝ}
-    {f g : CoeffField d → ℝ}
+    {f g : RegCoeffField d → ℝ}
     (hf : Measurable f) (hg : Measurable g)
     (hmap : Measure.map f P = Measure.map g P) :
     IsBigO P (gammaSigma σ) f A ↔ IsBigO P (gammaSigma σ) g A := by
@@ -56,7 +56,7 @@ private theorem isBigO_gammaSigma_iff_of_map_eq_map
 
 private theorem isBigO_psiSigma_iff_of_map_eq_map
     {d : ℕ} {P : CoeffLaw d} {σ A : ℝ}
-    {f g : CoeffField d → ℝ}
+    {f g : RegCoeffField d → ℝ}
     (hf : Measurable f) (hg : Measurable g)
     (hmap : Measure.map f P = Measure.map g P) :
     IsBigO P (psiSigma σ) f A ↔ IsBigO P (psiSigma σ) g A := by
@@ -92,16 +92,16 @@ private theorem isBigO_psiSigma_iff_of_map_eq_map
 private theorem centered_descendant_map_eq_origin {d : ℕ} {n m : ℤ}
     {P : CoeffLaw d} [IsProbabilityMeasure P]
     (hn : 0 ≤ n) (hnm : n ≤ m) (hPstat : StationaryLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX0_meas : Measurable (X (cubeSet (originCube d n))))
-    (hX_cov : IsTranslationCovariant X)
+    (hX_cov : IsTranslationCovariantR X)
     (R : TriadicCube d) (hR : R ∈ descendantsAtScale (originCube d m) n) :
     let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
     Measure.map (fun a => X (cubeSet R) a - μ0) P =
       Measure.map (fun a => X (cubeSet (originCube d n)) a - μ0) P := by
   intro μ0
-  let Y : Set (Vec d) → CoeffField d → ℝ := fun U a => X U a - μ0
-  have hY_cov : IsTranslationCovariant Y := by
+  let Y : Set (Vec d) → RegCoeffField d → ℝ := fun U a => X U a - μ0
+  have hY_cov : IsTranslationCovariantR Y := by
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_meas : Measurable (Y (cubeSet (originCube d n))) := by
@@ -119,7 +119,7 @@ private theorem centered_descendant_map_eq_origin {d : ℕ} {n m : ℤ}
               (cubeSet (originCube d n)))) P := by
           rw [hshift]
     _ = Measure.map (Y (cubeSet (originCube d n))) P := by
-          exact map_eq_map_translateByInt_of_isTranslationCovariant
+          exact map_eq_map_translateReg_of_isTranslationCovariantR
             (P := P) hPstat (U := cubeSet (originCube d n)) hY0_meas hY_cov
             (scaleTranslationShift n R)
     _ = Measure.map (fun a => X (cubeSet (originCube d n)) a - μ0) P := by
@@ -132,11 +132,11 @@ theorem integral_descendantAverage_eq_integral_originCube_of_stationary
     {d : ℕ} {n m : ℤ} {P : CoeffLaw d} [IsProbabilityMeasure P]
     (hn : 0 ≤ n) (hnm : n ≤ m)
     (hPstat : StationaryLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX0_meas : Measurable (X (cubeSet (originCube d n))))
     (hX_desc_int :
       ∀ R ∈ descendantsAtScale (originCube d m) n, Integrable (X (cubeSet R)) P)
-    (hX_cov : IsTranslationCovariant X) :
+    (hX_cov : IsTranslationCovariantR X) :
     ∫ a, descendantAverage n m X a ∂P =
       ∫ a, X (cubeSet (originCube d n)) a ∂P := by
   let s := descendantsAtScale (originCube d m) n
@@ -158,7 +158,7 @@ theorem integral_descendantAverage_eq_integral_originCube_of_stationary
                   (cubeSet (originCube d n))) a ∂P := by
               rw [hshift]
       _ = ∫ a, X (cubeSet (originCube d n)) a ∂P := by
-            exact integral_eq_of_isTranslationCovariant_of_isStationary
+            exact integral_eq_of_isTranslationCovariantR_of_stationary
               (P := P) hPstat (U := cubeSet (originCube d n)) hX0_meas hX_cov
               (scaleTranslationShift n R)
       _ = μ0 := by
@@ -189,11 +189,11 @@ theorem integral_centeredDescendantAverage_eq_zero_of_stationary
     {d : ℕ} {n m : ℤ} {P : CoeffLaw d} [IsProbabilityMeasure P]
     (hn : 0 ≤ n) (hnm : n ≤ m)
     (hPstat : StationaryLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX0_meas : Measurable (X (cubeSet (originCube d n))))
     (hX_desc_int :
       ∀ R ∈ descendantsAtScale (originCube d m) n, Integrable (X (cubeSet R)) P)
-    (hX_cov : IsTranslationCovariant X) :
+    (hX_cov : IsTranslationCovariantR X) :
     ∫ a, centeredDescendantAverage P n m X a ∂P = 0 := by
   let s := descendantsAtScale (originCube d m) n
   let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
@@ -247,11 +247,11 @@ theorem isBigO_gammaSigma_centeredDescendantAverage_of_unitRangeDependentLaw
     {σ K : ℝ}
     (hn : 0 ≤ n) (hnm : n ≤ m)
     (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        IsLocalRandomVariable (cubeSet R) (X (cubeSet R)))
-    (hX_cov : IsTranslationCovariant X)
+        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X (cubeSet R)))
+    (hX_cov : IsTranslationCovariantR X)
     (hX0_meas : Measurable (X (cubeSet (originCube d n))))
     (hX_desc_meas :
       ∀ R ∈ descendantsAtScale (originCube d m) n, Measurable (X (cubeSet R)))
@@ -261,10 +261,10 @@ theorem isBigO_gammaSigma_centeredDescendantAverage_of_unitRangeDependentLaw
       (gammaSigmaDescendantsAtScaleConst d n σ *
         partitionCardinalityScale (d := d) n m * K) := by
   let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
-  let Z : TriadicCube d → CoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
+  let Z : TriadicCube d → RegCoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
   have hZ_local :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        IsLocalRandomVariable (cubeSet R) (Z R) := by
+        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Z R) := by
     intro R hR
     simpa [Z] using (hX_local R hR).sub measurable_const
   have hZ_meas :
@@ -329,7 +329,7 @@ theorem isBigO_gammaSigma_centeredDescendantAverage_of_unitRangeDependentLaw
     have hshift :=
       cubeSet_eq_translateSet_originCube_of_mem_descendantsAtScale_originCube
         (d := d) hn hnm hR
-    have hZ_cov : IsTranslationCovariant (fun U a => X U a - μ0) := by
+    have hZ_cov : IsTranslationCovariantR (fun U a => X U a - μ0) := by
       intro U z a
       simpa using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
     have hZ0_meas' : Measurable ((fun U a => X U a - μ0) (cubeSet (originCube d n))) := by
@@ -350,7 +350,7 @@ theorem isBigO_gammaSigma_centeredDescendantAverage_of_unitRangeDependentLaw
                         (cubeSet (originCube d n))) a ∂P
               rw [hshift]
         _ = ∫ a, (fun U a => X U a - μ0) (cubeSet (originCube d n)) a ∂P := by
-              exact integral_eq_of_isTranslationCovariant_of_isStationary
+              exact integral_eq_of_isTranslationCovariantR_of_stationary
                 (P := P) hPstat (U := cubeSet (originCube d n)) hZ0_meas' hZ_cov
                 (scaleTranslationShift n R)
         _ = ∫ a, Z (originCube d n) a ∂P := by
@@ -376,11 +376,11 @@ theorem isBigO_psiSigma_centeredDescendantAverage_of_unitRangeDependentLaw
     {σ K : ℝ}
     (hn : 0 ≤ n) (hnm : n ≤ m)
     (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        IsLocalRandomVariable (cubeSet R) (X (cubeSet R)))
-    (hX_cov : IsTranslationCovariant X)
+        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X (cubeSet R)))
+    (hX_cov : IsTranslationCovariantR X)
     (hX0_meas : Measurable (X (cubeSet (originCube d n))))
     (hX0_int : Integrable (X (cubeSet (originCube d n))) P)
     (hX_desc_meas :
@@ -393,10 +393,10 @@ theorem isBigO_psiSigma_centeredDescendantAverage_of_unitRangeDependentLaw
       (psiSigmaDescendantsAtScaleConst d n σ *
         partitionCardinalityScale (d := d) n m * K) := by
   let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
-  let Z : TriadicCube d → CoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
+  let Z : TriadicCube d → RegCoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
   have hZ_local :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        IsLocalRandomVariable (cubeSet R) (Z R) := by
+        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Z R) := by
     intro R hR
     simpa [Z] using (hX_local R hR).sub measurable_const
   have hZ_meas :
@@ -441,7 +441,7 @@ theorem isBigO_psiSigma_centeredDescendantAverage_of_unitRangeDependentLaw
     have hshift :=
       cubeSet_eq_translateSet_originCube_of_mem_descendantsAtScale_originCube
         (d := d) hn hnm hR
-    have hZ_cov : IsTranslationCovariant (fun U a => X U a - μ0) := by
+    have hZ_cov : IsTranslationCovariantR (fun U a => X U a - μ0) := by
       intro U z a
       simpa using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
     have hZ0_meas' : Measurable ((fun U a => X U a - μ0) (cubeSet (originCube d n))) := by
@@ -462,7 +462,7 @@ theorem isBigO_psiSigma_centeredDescendantAverage_of_unitRangeDependentLaw
                         (cubeSet (originCube d n))) a ∂P
               rw [hshift]
         _ = ∫ a, (fun U a => X U a - μ0) (cubeSet (originCube d n)) a ∂P := by
-              exact integral_eq_of_isTranslationCovariant_of_isStationary
+              exact integral_eq_of_isTranslationCovariantR_of_stationary
                 (P := P) hPstat (U := cubeSet (originCube d n)) hZ0_meas' hZ_cov
                 (scaleTranslationShift n R)
         _ = ∫ a, Z (originCube d n) a ∂P := by

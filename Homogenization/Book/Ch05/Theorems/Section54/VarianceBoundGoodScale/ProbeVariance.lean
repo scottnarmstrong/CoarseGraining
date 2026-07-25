@@ -25,7 +25,7 @@ private theorem fullBlockNormalizedQuadraticObservable_cubeSet_regular
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) (Q : TriadicCube d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a) P := by
   rcases exists_isLocalRandomVariable_ae_eq_fullBlockNormalizedQuadraticObservable_cubeSet
       hP hStruct center q Q with ⟨Y, hY_local, hY_eq⟩
@@ -37,7 +37,7 @@ private theorem fullBlockNormalizedQuadraticObservable_descendants_regular
     (center : ℤ) (q : FullBlockVec d) (Q : TriadicCube d) (n : ℤ) :
     ∀ R ∈ descendantsAtScale Q n,
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet R) a) P := by
   intro R hR
   exact
@@ -50,15 +50,15 @@ private theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage
     (center n m : ℤ) (q : FullBlockVec d) :
     AEMeasurable
       (Ch04.centeredDescendantAverage P n m
-        (fullBlockNormalizedQuadraticObservable hP hStruct center q)) P := by
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    fullBlockNormalizedQuadraticObservable hP hStruct center q
+        (fullBlockNormalizedQuadraticObservableR hP hStruct center q)) P := by
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fullBlockNormalizedQuadraticObservableR hP hStruct center q
   let μ0 : ℝ := ∫ b, X (cubeSet (originCube d n)) b ∂P
-  let S : CoeffField d → ℝ :=
+  let S : RegCoeffField d → ℝ :=
     fun a => ∑ R ∈ descendantsAtScale (originCube d m) n, (X (cubeSet R) a - μ0)
   have hdesc :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        AEMeasurable (fun a : CoeffField d => X (cubeSet R) a) P := by
+        AEMeasurable (fun a : RegCoeffField d => X (cubeSet R) a) P := by
     simpa [X] using
       fullBlockNormalizedQuadraticObservable_descendants_regular
         hP hStruct center q (originCube d m) n
@@ -66,7 +66,7 @@ private theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage
     have hS' :
         AEMeasurable
           (∑ R ∈ descendantsAtScale (originCube d m) n,
-            fun a : CoeffField d => X (cubeSet R) a - μ0) P :=
+            fun a : RegCoeffField d => X (cubeSet R) a - μ0) P :=
       Finset.aemeasurable_sum _ fun R hR =>
         (hdesc R hR).sub aemeasurable_const
     refine hS'.congr ?_
@@ -87,10 +87,10 @@ theorem integrable_abs_sub_dotProduct_sq_fullBlockNormalizedQuadraticObservable_
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m j : ℕ) (q : FullBlockVec d) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         |fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q
             (cubeSet (originCube d (j : ℤ))) a - dotProduct q q| ^ (2 : ℕ)) P := by
-  let F : CoeffField d → ℝ := fun a =>
+  let F : RegCoeffField d → ℝ := fun a =>
     Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
       hP hStruct (m : ℤ) (originCube d (j : ℤ)) a
   have hF_int : Integrable F P := by
@@ -98,7 +98,7 @@ theorem integrable_abs_sub_dotProduct_sq_fullBlockNormalizedQuadraticObservable_
       integrable_origin_fullBlockNormalizedFluctuationOperatorNormSqAtScale_from_P4
         hP hStruct hP4 (m : ℤ) j
   have hR_int : Integrable
-      (fun a : CoeffField d => F a * (dotProduct q q) ^ (2 : ℕ)) P :=
+      (fun a : RegCoeffField d => F a * (dotProduct q q) ^ (2 : ℕ)) P :=
     hF_int.mul_const _
   refine Integrable.mono' hR_int ?_ ?_
   · have hX_meas :=
@@ -139,24 +139,24 @@ theorem integrable_fullBlockNormalizedQuadraticObservable_and_abs_sub_dotProduct
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m j : ℕ) (q : FullBlockVec d) :
     Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q
             (cubeSet (originCube d (j : ℤ))) a) P ∧
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           |fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q
             (cubeSet (originCube d (j : ℤ))) a - dotProduct q q|) P ∧
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           |fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q
             (cubeSet (originCube d (j : ℤ))) a - dotProduct q q| ^ (2 : ℕ)) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let X : CoeffField d → ℝ := fun a =>
+  let X : RegCoeffField d → ℝ := fun a =>
     fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q
       (cubeSet (originCube d (j : ℤ))) a
-  let Y : CoeffField d → ℝ := fun a => X a - dotProduct q q
+  let Y : RegCoeffField d → ℝ := fun a => X a - dotProduct q q
   have hSq :
-      Integrable (fun a : CoeffField d => |Y a| ^ (2 : ℕ)) P := by
+      Integrable (fun a : RegCoeffField d => |Y a| ^ (2 : ℕ)) P := by
     simpa [X, Y] using
       integrable_abs_sub_dotProduct_sq_fullBlockNormalizedQuadraticObservable_from_P4
         hP hStruct hP4 m j q
@@ -172,10 +172,10 @@ theorem integrable_fullBlockNormalizedQuadraticObservable_and_abs_sub_dotProduct
   have hY_int : Integrable Y P :=
     hY_mem2.integrable (by norm_num : (1 : ENNReal) ≤ 2)
   have hX_int : Integrable X P := by
-    have hsum : Integrable (fun a : CoeffField d => Y a + dotProduct q q) P :=
+    have hsum : Integrable (fun a : RegCoeffField d => Y a + dotProduct q q) P :=
       hY_int.add (integrable_const _)
     simpa [Y, X, sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using hsum
-  have hY_abs_int : Integrable (fun a : CoeffField d => |Y a|) P := by
+  have hY_abs_int : Integrable (fun a : RegCoeffField d => |Y a|) P := by
     simpa [Real.norm_eq_abs] using hY_int.norm
   exact ⟨by simpa [X] using hX_int, by simpa [X, Y] using hY_abs_int,
     by simpa [X, Y] using hSq⟩
@@ -192,33 +192,33 @@ theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and
       Integrable
         (fun a =>
           |Ch04.centeredOriginObservable P n
-            (fullBlockNormalizedQuadraticObservable hP hStruct center q) a| ^
+            (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^
               hP4.xi) P)
     (hroot :
       (∫ a,
         |Ch04.centeredDescendantAverage P n m
-          (fullBlockNormalizedQuadraticObservable hP hStruct center q) a| ^
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^
           hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤ K) :
     (∫ a,
         |Ch04.centeredDescendantAverage P n m
-          (fullBlockNormalizedQuadraticObservable hP hStruct center q) a| ∂P ≤ K) ∧
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ∂P ≤ K) ∧
       (∫ a,
         |Ch04.centeredDescendantAverage P n m
-          (fullBlockNormalizedQuadraticObservable hP hStruct center q) a| ^ (2 : ℕ) ∂P
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^ (2 : ℕ) ∂P
           ≤ K ^ (2 : ℕ)) := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    fullBlockNormalizedQuadraticObservable hP hStruct center q
-  let Z : CoeffField d → ℝ := Ch04.centeredDescendantAverage P n m X
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fullBlockNormalizedQuadraticObservableR hP hStruct center q
+  let Z : RegCoeffField d → ℝ := Ch04.centeredDescendantAverage P n m X
   have hX0 :
-      AEMeasurable (fun a : CoeffField d => X (cubeSet (originCube d n)) a) P := by
+      AEMeasurable (fun a : RegCoeffField d => X (cubeSet (originCube d n)) a) P := by
     simpa [X] using
       fullBlockNormalizedQuadraticObservable_cubeSet_regular
         hP hStruct center q (originCube d n)
   have hXdesc :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        AEMeasurable (fun a : CoeffField d => X (cubeSet R) a) P := by
+        AEMeasurable (fun a : RegCoeffField d => X (cubeSet R) a) P := by
     simpa [X] using
       fullBlockNormalizedQuadraticObservable_descendants_regular
         hP hStruct center q (originCube d m) n
@@ -233,7 +233,8 @@ theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and
       Ch04.integrable_abs_pow_centeredDescendantAverage_of_stationary
         (d := d) (n := n) (m := m) (P := P) (p := hP4.xi)
         hn hnm hStruct.stationary X
-        (fullBlockNormalizedQuadraticObservable_translation_covariant hP hStruct center q)
+        (Ch04.isTranslationCovariantR_comp_toFun
+      (fullBlockNormalizedQuadraticObservable_translation_covariant hP hStruct center q))
         hX0 hXdesc hxi_one
         (by simpa [X] using hOriginMoment_int)
   simpa [Z, X] using
@@ -253,29 +254,29 @@ theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and
       Integrable
         (fun a =>
           |Ch04.centeredOriginObservable P n
-            (fullBlockNormalizedQuadraticObservable hP hStruct center q) a| ^
+            (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^
               hP4.xi) P) :
     Integrable
         (fun a =>
           |Ch04.centeredDescendantAverage P n m
-            (fullBlockNormalizedQuadraticObservable hP hStruct center q) a|) P ∧
+            (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a|) P ∧
       Integrable
         (fun a =>
           |Ch04.centeredDescendantAverage P n m
-            (fullBlockNormalizedQuadraticObservable hP hStruct center q) a| ^
+            (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^
               (2 : ℕ)) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let X : Set (Vec d) → CoeffField d → ℝ :=
-    fullBlockNormalizedQuadraticObservable hP hStruct center q
-  let Z : CoeffField d → ℝ := Ch04.centeredDescendantAverage P n m X
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fullBlockNormalizedQuadraticObservableR hP hStruct center q
+  let Z : RegCoeffField d → ℝ := Ch04.centeredDescendantAverage P n m X
   have hX0 :
-      AEMeasurable (fun a : CoeffField d => X (cubeSet (originCube d n)) a) P := by
+      AEMeasurable (fun a : RegCoeffField d => X (cubeSet (originCube d n)) a) P := by
     simpa [X] using
       fullBlockNormalizedQuadraticObservable_cubeSet_regular
         hP hStruct center q (originCube d n)
   have hXdesc :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        AEMeasurable (fun a : CoeffField d => X (cubeSet R) a) P := by
+        AEMeasurable (fun a : RegCoeffField d => X (cubeSet R) a) P := by
     simpa [X] using
       fullBlockNormalizedQuadraticObservable_descendants_regular
         hP hStruct center q (originCube d m) n
@@ -290,7 +291,8 @@ theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and
       Ch04.integrable_abs_pow_centeredDescendantAverage_of_stationary
         (d := d) (n := n) (m := m) (P := P) (p := hP4.xi)
         hn hnm hStruct.stationary X
-        (fullBlockNormalizedQuadraticObservable_translation_covariant hP hStruct center q)
+        (Ch04.isTranslationCovariantR_comp_toFun
+      (fullBlockNormalizedQuadraticObservable_translation_covariant hP hStruct center q))
         hX0 hXdesc hxi_one
         (by simpa [X] using hOriginMoment_int)
   have hZ_memξ : MemLp Z (hP4.xi : ENNReal) P := by
@@ -328,11 +330,11 @@ theorem coordinateProbe_centeredDescendantAverage_abs_and_sq_le
                   Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi)))
     (∫ a,
         |Ch04.centeredDescendantAverage P 0 m
-          (fullBlockNormalizedQuadraticObservable hP hStruct center
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockCoordinateProbe α)) a| ∂P ≤ K) ∧
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 m
-          (fullBlockNormalizedQuadraticObservable hP hStruct center
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockCoordinateProbe α)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) := by
   classical
   dsimp only
@@ -354,7 +356,7 @@ theorem coordinateProbe_centeredDescendantAverage_abs_and_sq_le
   have hroot :
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 m
-          (fullBlockNormalizedQuadraticObservable hP hStruct center
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockCoordinateProbe α)) a| ^
           hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤ K := by
@@ -387,11 +389,11 @@ theorem plusProbe_centeredDescendantAverage_abs_and_sq_le
                   Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi)))
     (∫ a,
         |Ch04.centeredDescendantAverage P 0 m
-          (fullBlockNormalizedQuadraticObservable hP hStruct center
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockPlusProbe α β)) a| ∂P ≤ K) ∧
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 m
-          (fullBlockNormalizedQuadraticObservable hP hStruct center
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockPlusProbe α β)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) := by
   classical
   dsimp only
@@ -413,7 +415,7 @@ theorem plusProbe_centeredDescendantAverage_abs_and_sq_le
   have hroot :
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 m
-          (fullBlockNormalizedQuadraticObservable hP hStruct center
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockPlusProbe α β)) a| ^
           hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤ K := by
@@ -446,11 +448,11 @@ theorem minusProbe_centeredDescendantAverage_abs_and_sq_le
                   Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi)))
     (∫ a,
         |Ch04.centeredDescendantAverage P 0 m
-          (fullBlockNormalizedQuadraticObservable hP hStruct center
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockMinusProbe α β)) a| ∂P ≤ K) ∧
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 m
-          (fullBlockNormalizedQuadraticObservable hP hStruct center
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockMinusProbe α β)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) := by
   classical
   dsimp only
@@ -472,7 +474,7 @@ theorem minusProbe_centeredDescendantAverage_abs_and_sq_le
   have hroot :
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 m
-          (fullBlockNormalizedQuadraticObservable hP hStruct center
+          (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockMinusProbe α β)) a| ^
           hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤ K := by

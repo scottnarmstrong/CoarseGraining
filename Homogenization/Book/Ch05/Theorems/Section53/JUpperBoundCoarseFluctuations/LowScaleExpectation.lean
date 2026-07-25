@@ -63,16 +63,16 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
     let q_e := specialQAtScale hP hStruct (m : ℤ) e
     let σ := sigmaHatAtScale hP hStruct (m : ℤ)
-    let childAvg : CoeffField d → ℝ :=
+    let childAvg : RegCoeffField d → ℝ :=
       fun a => descendantsAverage Q j
         (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
-    let lowerExcess : CoeffField d → ℝ :=
+    let lowerExcess : RegCoeffField d → ℝ :=
       fun a =>
         max
           ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
             (hP.barSigmaStarAtScale hStruct 0)⁻¹)
           0
-    let upperExcess : CoeffField d → ℝ :=
+    let upperExcess : RegCoeffField d → ℝ :=
       fun a =>
         max
           (Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
@@ -82,7 +82,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
       (β ^ 2)⁻¹ *
         Real.rpow (3 : ℝ) (-2 * β * (((m - k : ℕ) : ℝ)))
     Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           σ *
               (WeakNormsMaximizer.gradientLowScaleTailAtScale
                 (m : ℤ) (k : ℤ) s s' p_e q_e a) ^ 2 +
@@ -113,18 +113,18 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
   let p_e := specialPAtScale hP hStruct (m : ℤ) e
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
-  let Jm : CoeffField d → ℝ :=
+  let Jm : RegCoeffField d → ℝ :=
     fun a => Ch04.responseJObservableCubeSet Q p_e q_e a
-  let childAvg : CoeffField d → ℝ :=
+  let childAvg : RegCoeffField d → ℝ :=
     fun a => descendantsAverage Q j
       (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
-  let lowerExcess : CoeffField d → ℝ :=
+  let lowerExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
         ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
           (hP.barSigmaStarAtScale hStruct 0)⁻¹)
         0
-  let upperExcess : CoeffField d → ℝ :=
+  let upperExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
         (Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
@@ -133,7 +133,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
   let tailFactor :=
     (β ^ 2)⁻¹ *
       Real.rpow (3 : ℝ) (-2 * β * (((m - k : ℕ) : ℝ)))
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a =>
       σ *
           (WeakNormsMaximizer.gradientLowScaleTailAtScale
@@ -141,7 +141,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
         σ⁻¹ *
           (WeakNormsMaximizer.fluxLowScaleTailAtScale
             (m : ℤ) (k : ℤ) t t' p_e q_e a) ^ 2
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     fun a =>
       tailFactor *
         (coarseFluctuationScalarWeightAtScale hP hStruct m * Jm a +
@@ -171,18 +171,18 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
     dsimp [t', β]
     linarith [hP4.sUpper_pos, hβ_pos]
   have hLowerAE :
-      AEMeasurable (fun a : CoeffField d =>
+      AEMeasurable (fun a : RegCoeffField d =>
         (Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹) P :=
     hP.aemeasurable_lambdaSqCoeffField_finite_one_inv Q hs'_pos
   have hUpperAE :
-      AEMeasurable (fun a : CoeffField d =>
+      AEMeasurable (fun a : RegCoeffField d =>
         Ch04.LambdaSqCoeffField Q t' (.finite 1) a) P :=
     hP.aemeasurable_LambdaSqCoeffField_finite_one Q ht'_pos
   have hJAE : AEMeasurable Jm P := by
     simpa [Jm] using hP.aemeasurable_responseJObservableCubeSet Q p_e q_e
   have hGradAE :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           WeakNormsMaximizer.gradientLowScaleTailAtScale
             (m : ℤ) (k : ℤ) s s' p_e q_e a) P := by
     simpa [WeakNormsMaximizer.gradientLowScaleTailAtScale, Q, s, s', Jm] using
@@ -190,7 +190,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
         hJAE.sqrt)
   have hFluxAE :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           WeakNormsMaximizer.fluxLowScaleTailAtScale
             (m : ℤ) (k : ℤ) t t' p_e q_e a) P := by
     simpa [WeakNormsMaximizer.fluxLowScaleTailAtScale, Q, t, t', Jm] using
@@ -227,12 +227,12 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
     filter_upwards with a
     exact le_max_right _ _
   have hLowerPowInt :
-      Integrable (fun a : CoeffField d => lowerExcess a ^ hP4.xi) P := by
+      Integrable (fun a : RegCoeffField d => lowerExcess a ^ hP4.xi) P := by
     simpa [lowerExcess, Q, s', β] using
       Section52.lowerPositiveExcessPowIntegrableAtScale_from_P4_twoExponent
         hP hStruct hP4 hs'_gt hs'_lt_one m
   have hUpperPowInt :
-      Integrable (fun a : CoeffField d => upperExcess a ^ hP4.xi) P := by
+      Integrable (fun a : RegCoeffField d => upperExcess a ^ hP4.xi) P := by
     simpa [upperExcess, Q, t', β] using
       Section52.upperPositiveExcessPowIntegrableAtScale_from_P4_twoExponent
         hP hStruct hP4 ht'_gt ht'_lt_one m
@@ -259,18 +259,18 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
       (ENNReal.ofReal (hP4.xi : ℝ)) 1 := by
     simpa using Real.HolderTriple.ennrealOfReal hHolderReal
   have hLowerChildInt :
-      Integrable (fun a : CoeffField d => lowerExcess a * childAvg a) P := by
+      Integrable (fun a : RegCoeffField d => lowerExcess a * childAvg a) P := by
     simpa [mul_comm] using hChildMem.integrable_mul hLowerMem
   have hUpperChildInt :
-      Integrable (fun a : CoeffField d => upperExcess a * childAvg a) P := by
+      Integrable (fun a : RegCoeffField d => upperExcess a * childAvg a) P := by
     simpa [mul_comm] using hChildMem.integrable_mul hUpperMem
   have hPosInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (σ * lowerExcess a + σ⁻¹ * upperExcess a) * childAvg a) P := by
     have hsum :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             σ * (lowerExcess a * childAvg a) +
               σ⁻¹ * (upperExcess a * childAvg a)) P :=
       (hLowerChildInt.const_mul σ).add (hUpperChildInt.const_mul σ⁻¹)
@@ -280,7 +280,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
   have hYInt : Integrable Y P := by
     have hInside :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             coarseFluctuationScalarWeightAtScale hP hStruct m * Jm a +
               (σ * lowerExcess a + σ⁻¹ * upperExcess a) * childAvg a) P :=
       (hJInt.const_mul (coarseFluctuationScalarWeightAtScale hP hStruct m)).add
@@ -440,16 +440,16 @@ theorem integral_paired_lowScaleTailSquares_special_le_coarseFluctuationTerms_un
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
   let θ := thetaAtScale hP hStruct (m : ℤ)
-  let childAvg : CoeffField d → ℝ :=
+  let childAvg : RegCoeffField d → ℝ :=
     fun a => descendantsAverage Q j
       (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
-  let lowerExcess : CoeffField d → ℝ :=
+  let lowerExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
         ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
           (hP.barSigmaStarAtScale hStruct 0)⁻¹)
         0
-  let upperExcess : CoeffField d → ℝ :=
+  let upperExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
         (Ch04.LambdaSqCoeffField Q t' (.finite 1) a -

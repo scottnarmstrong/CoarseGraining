@@ -143,7 +143,7 @@ def unitEllipticityBadScaleEvent
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (params : QuantitativeCoarseGrainedEllipticityParams d)
-    (t α : ℝ) (N : ℕ) : Set (CoeffField d) :=
+    (t α : ℝ) (N : ℕ) : Set (RegCoeffField d) :=
   {a | ∃ m : ℕ, N ≤ m ∧
     unitEllipticityEnvelopeThreshold t α m N <
       localizedLimitWeightedUnitEllipticitySup hP hStruct params m a}
@@ -253,7 +253,7 @@ theorem unitEllipticityBadScaleEvent_subset_rows
     {t α : ℝ} {N : ℕ} :
     unitEllipticityBadScaleEvent hP hStruct params t α N ⊆
       ⋃ r : ℕ,
-        {a : CoeffField d |
+        {a : RegCoeffField d |
           unitEllipticityEnvelopeThreshold t α (N + r) N <
             localizedLimitWeightedUnitEllipticitySup hP hStruct params (N + r) a} := by
   intro a hbad
@@ -279,7 +279,7 @@ theorem measureReal_unitEllipticityBadScaleRow_le_weighted
     α < t →
     1 ≤ A →
     P.real
-        {a : CoeffField d |
+        {a : RegCoeffField d |
           unitEllipticityEnvelopeThreshold t α (N + r) N <
             localizedLimitWeightedUnitEllipticitySup hP hStruct hΓ.params (N + r) a} ≤
       w ^ N * (w ^ r * Real.exp (-((A * ρ ^ r) ^ hΓ.sigma))) := by
@@ -325,7 +325,7 @@ theorem measureReal_unitEllipticityBadScaleRow_le_weighted
         (d := d) (m := N + r) (n := 0) (Nat.zero_le _)
   have hmeasure :
       P.real
-          {a : CoeffField d |
+          {a : RegCoeffField d |
             scale * lam <
               localizedLimitWeightedUnitEllipticitySup hP hStruct hΓ.params (N + r) a} ≤
         (D.card : ℝ) * Real.exp (-(lam ^ hΓ.sigma)) := by
@@ -333,10 +333,10 @@ theorem measureReal_unitEllipticityBadScaleRow_le_weighted
       measureReal_localizedLimitWeightedUnitEllipticitySup_tail_le_card_mul_exp
         hP hStruct hΓ (N + r) hlam_one
   have hrow_subset :
-      {a : CoeffField d |
+      {a : RegCoeffField d |
           unitEllipticityEnvelopeThreshold t α (N + r) N <
             localizedLimitWeightedUnitEllipticitySup hP hStruct hΓ.params (N + r) a} ⊆
-        {a : CoeffField d |
+        {a : RegCoeffField d |
           scale * lam <
             localizedLimitWeightedUnitEllipticitySup hP hStruct hΓ.params (N + r) a} := by
     intro a ha
@@ -347,7 +347,7 @@ theorem measureReal_unitEllipticityBadScaleRow_le_weighted
     simpa [hscale_lam] using ha
   have hrow_measure :
       P.real
-          {a : CoeffField d |
+          {a : RegCoeffField d |
             unitEllipticityEnvelopeThreshold t α (N + r) N <
               localizedLimitWeightedUnitEllipticitySup hP hStruct hΓ.params (N + r) a} ≤
         (D.card : ℝ) * Real.exp (-(lam ^ hΓ.sigma)) :=
@@ -370,7 +370,7 @@ theorem measureReal_unitEllipticityBadScaleRow_le_weighted
     exact Real.exp_le_exp.mpr (by linarith)
   calc
     P.real
-        {a : CoeffField d |
+        {a : RegCoeffField d |
           unitEllipticityEnvelopeThreshold t α (N + r) N <
             localizedLimitWeightedUnitEllipticitySup hP hStruct hΓ.params (N + r) a}
         ≤ (D.card : ℝ) * Real.exp (-(lam ^ hΓ.sigma)) := hrow_measure
@@ -399,9 +399,9 @@ theorem measureReal_unitEllipticityBadScaleEvent_le_weighted_kernel
   classical
   intro scale w A ρ ht hαt hA_one
   letI : IsProbabilityMeasure P := hP.isProbability
-  let E : ℕ → Fin 1 → Set (CoeffField d) :=
+  let E : ℕ → Fin 1 → Set (RegCoeffField d) :=
     fun r _ =>
-      {a : CoeffField d |
+      {a : RegCoeffField d |
         unitEllipticityEnvelopeThreshold t α (N + r) N <
           localizedLimitWeightedUnitEllipticitySup hP hStruct hΓ.params (N + r) a}
   have hw_pos : 0 < w := by
@@ -753,7 +753,7 @@ theorem localizedLimitWeightedUnitEllipticitySup_le_of_not_mem_unitEllipticityBa
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (params : QuantitativeCoarseGrainedEllipticityParams d)
-    {t α : ℝ} {N m : ℕ} {a : CoeffField d}
+    {t α : ℝ} {N m : ℕ} {a : RegCoeffField d}
     (hnot : a ∉ unitEllipticityBadScaleEvent hP hStruct params t α N)
     (hNm : N ≤ m) :
     localizedLimitWeightedUnitEllipticitySup hP hStruct params m a ≤
@@ -766,7 +766,7 @@ theorem localizedLimitWeightedUnitEllipticitySup_le_above_quenchedMinimalScale
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (params : QuantitativeCoarseGrainedEllipticityParams d)
-    {N0 m : ℕ} {t α : ℝ} {a : CoeffField d}
+    {N0 m : ℕ} {t α : ℝ} {a : RegCoeffField d}
     (hgood :
       hasGoodTailFrom N0
         (unitEllipticityBadScaleEvent hP hStruct params t α) a)
@@ -781,7 +781,7 @@ theorem localizedLimitWeightedUnitEllipticitySup_le_above_quenchedMinimalScale
             quenchedMinimalScale N0
               (unitEllipticityBadScaleEvent hP hStruct params t α) a) ^
             (-α))) ^ (2 : ℕ) := by
-  let Bad : ℕ → Set (CoeffField d) :=
+  let Bad : ℕ → Set (RegCoeffField d) :=
     unitEllipticityBadScaleEvent hP hStruct params t α
   let L : ℕ := quenchedMinimalScaleIndex N0 Bad a
   have hLm : L ≤ m := by
@@ -810,7 +810,7 @@ theorem exists_unitEllipticityMinimalScale_interpolated
     0 < t →
     0 ≤ α →
     α < t →
-    ∃ X : CoeffField d → ℝ, ∃ C : ℝ, 0 < C ∧
+    ∃ X : RegCoeffField d → ℝ, ∃ C : ℝ, 0 < C ∧
       IsBigO P (gammaSigma η) X C ∧
       (∀ aω, 1 ≤ X aω) ∧
         ∀ᵐ aω ∂P,
@@ -845,9 +845,9 @@ theorem exists_unitEllipticityMinimalScale_interpolated
         Real.log ρgap)))
   let Qlead : ℕ := Nat.ceil (Real.log Blead / Real.log 3)
   let Q : ℕ := max Qpref Qlead
-  let Bad : ℕ → Set (CoeffField d) :=
+  let Bad : ℕ → Set (RegCoeffField d) :=
     unitEllipticityBadScaleEvent hP hStruct hΓ.params t α
-  let X : CoeffField d → ℝ := quenchedMinimalScale Q Bad
+  let X : RegCoeffField d → ℝ := quenchedMinimalScale Q Bad
   let C : ℝ := 3 * ((3 : ℝ) ^ Q) * B
   have hη_pos : 0 < η := by
     simpa [η] using finiteQuenchedTailExponent_pos

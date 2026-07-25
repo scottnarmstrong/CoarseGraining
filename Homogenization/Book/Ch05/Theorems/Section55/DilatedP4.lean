@@ -15,10 +15,10 @@ private theorem upperMomentIntegrable_scaleNormalizedLaw
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (k : ℕ) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         (Ch04.LambdaSqCoeffField (originCube d (0 : ℤ)) hP4.sUpper (.finite 1) a) ^
           hP4.xi) (Ch04.scaleNormalizedLaw k P) := by
-  let X : CoeffField d → ℝ := fun a =>
+  let X : RegCoeffField d → ℝ := fun a =>
     (Ch04.LambdaSqCoeffField (originCube d (0 : ℤ)) hP4.sUpper (.finite 1) a) ^
       hP4.xi
   have hX :
@@ -30,7 +30,7 @@ private theorem upperMomentIntegrable_scaleNormalizedLaw
   have hbase := Section52.upperFactorPowerIntegrableAtScale_from_P4 hP hStruct hP4 k
   refine hbase.congr ?_
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
-  rw [← Ch04.rescaleCoeffField_eq_dilateCoeffField_neg_nat k]
+  rw [← Ch04.rescaleReg_eq_dilateReg_neg_nat k]
   have hshift :=
     Ch04.LambdaSqCoeffField_originCube_rescaleCoeffField_of_aelocallyUniformlyElliptic
       ha k 0 hP4.sUpper (.finite 1)
@@ -41,10 +41,10 @@ private theorem lowerInvMomentIntegrable_scaleNormalizedLaw
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (k : ℕ) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ((Ch04.lambdaSqCoeffField (originCube d (0 : ℤ)) hP4.sLower (.finite 1) a)⁻¹) ^
           hP4.xi) (Ch04.scaleNormalizedLaw k P) := by
-  let X : CoeffField d → ℝ := fun a =>
+  let X : RegCoeffField d → ℝ := fun a =>
     ((Ch04.lambdaSqCoeffField (originCube d (0 : ℤ)) hP4.sLower (.finite 1) a)⁻¹) ^
       hP4.xi
   have hX :
@@ -56,7 +56,7 @@ private theorem lowerInvMomentIntegrable_scaleNormalizedLaw
   have hbase := Section52.lowerFactorPowerIntegrableAtScale_from_P4 hP hStruct hP4 k
   refine hbase.congr ?_
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
-  rw [← Ch04.rescaleCoeffField_eq_dilateCoeffField_neg_nat k]
+  rw [← Ch04.rescaleReg_eq_dilateReg_neg_nat k]
   have hshift :=
     Ch04.lambdaSqCoeffField_originCube_rescaleCoeffField_of_aelocallyUniformlyElliptic
       ha k 0 hP4.sLower (.finite 1)

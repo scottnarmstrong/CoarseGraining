@@ -86,7 +86,7 @@ theorem exists_shifted_quenchedLocalizedEstimate_interpolated
         let N0 : ℕ :=
           annealedAlgebraicEntryScale P
             hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-        let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+        let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
           fun M N aω =>
             quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
         let b : ℝ := (d : ℝ) / 2
@@ -110,8 +110,8 @@ theorem exists_shifted_quenchedLocalizedEstimate_interpolated
         αbad * (1 + b / a) < b →
         αbad < a →
         ∃ Q : ℕ,
-          let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t αbad
-          let X : CoeffField d → ℝ := quenchedMinimalScale Q Bad
+          let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t αbad
+          let X : RegCoeffField d → ℝ := quenchedMinimalScale Q Bad
           IsBigO P (gammaSigma η) X
             (3 * ((3 : ℝ) ^ Q) * B) ∧
             (∀ aω, 1 ≤ X aω) ∧
@@ -138,7 +138,7 @@ theorem exists_shifted_quenchedLocalizedEstimate_interpolated
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-  let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+  let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>
       quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
   let b : ℝ := (d : ℝ) / 2
@@ -176,7 +176,7 @@ theorem exists_shifted_quenchedLocalizedEstimate_interpolated
     hbad (t := t) (αbad := αbad) hP hStruct hΓ hσ_eq hparams
       ht htb hα_nonneg hαt hαb hαharm hαa
   refine ⟨Q, ?_⟩
-  let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t αbad
+  let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t αbad
   have htail :
       ∀ N : ℕ, Q ≤ N →
         P.real (badTailEvent Bad N) ≤

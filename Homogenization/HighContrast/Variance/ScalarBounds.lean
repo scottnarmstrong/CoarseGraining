@@ -46,16 +46,15 @@ theorem ae_coarseBlockQuadratic_lower_of_thetaEllipticLaw [NeZero d] {L : CoeffL
     ∀ᵐ a ∂L,
       (1 / 2 : ℝ) * vecNormSq P.1 + (2 * Θ)⁻¹ * vecNormSq P.2 ≤
         blockVecDot P
-          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P) := by
+          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P) := by
   classical
-  filter_upwards [hell] with a ha
-  obtain ⟨hmeas, haeEll⟩ := ha
+  filter_upwards [hell] with a haeEll
   have hU : MeasurableSet (cubeSet (originCube d m)) := measurableSet_cubeSet (originCube d m)
   have hmeasA :
       Measurable (fun x => fun i j =>
         if x ∈ cubeSet (originCube d m) then a x i j else 0) := by
     refine measurable_pi_iff.2 fun i => measurable_pi_iff.2 fun j => ?_
-    simpa only [Set.indicator] using (hmeas i j).indicator hU
+    simpa only [Set.indicator] using (a.entry_measurable i j).indicator hU
   have haeU : ∀ᵐ x ∂(volume.restrict (cubeSet (originCube d m))),
       IsEllipticMatrix 1 Θ (a x) := ae_restrict_of_ae haeEll
   obtain ⟨a', hEll', _, hcoarse, _⟩ := exists_ellipticFieldOn_ae_eq hU hΘ hmeasA haeU
@@ -72,7 +71,7 @@ theorem integrable_coarseBlockQuadratic_of_thetaEllipticLaw [NeZero d] {L : Coef
     (m : ℤ) (P : BlockVec d) :
     Integrable
       (fun a => blockVecDot P
-        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P)) L := by
+        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P)) L := by
   haveI : IsProbabilityMeasure L := hP.isProbability
   refine (integrable_const (2 * (Θ * vecNormSq P.1 + vecNormSq P.2))).mono'
     (aestronglyMeasurable_coarseBlockQuadratic_cubeSet hP m P) ?_
@@ -108,7 +107,7 @@ theorem half_le_barSigmaAtScale [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
   have hInt := integrable_coarseBlockQuadratic_of_thetaEllipticLaw hΘ hP hLaw m P0
   have hlow : ∀ᵐ a ∂L,
       (1 / 2 : ℝ) ≤ blockVecDot P0
-        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P0) := by
+        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P0) := by
     filter_upwards [ae_coarseBlockQuadratic_lower_of_thetaEllipticLaw hΘ hLaw m P0] with a ha
     have h1 : vecNormSq P0.1 = 1 := by rw [hP0]; simp [blockBasis, vecNormSq_single_one]
     have h2 : vecNormSq P0.2 = 0 := by rw [hP0]; simp [blockBasis, vecNormSq, vecDot]
@@ -116,7 +115,7 @@ theorem half_le_barSigmaAtScale [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
     simpa using ha
   calc (1 / 2 : ℝ) = ∫ _a, (1 / 2 : ℝ) ∂L := by simp
     _ ≤ ∫ a, blockVecDot P0
-          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P0) ∂L :=
+          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P0) ∂L :=
         integral_mono_ae (integrable_const _) hInt hlow
     _ = blockVecDot P0 (blockMatVecMul (annealedBlockMatrixAtScale L m) P0) := hmean
     _ = hP.barSigmaAtScale hStruct m := hEntry
@@ -145,24 +144,24 @@ private theorem barSigmaStarInv_mem [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
   constructor
   · have hlow : ∀ᵐ a ∂L,
         (2 * Θ)⁻¹ ≤ blockVecDot P1
-          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P1) := by
+          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P1) := by
       filter_upwards [ae_coarseBlockQuadratic_lower_of_thetaEllipticLaw hΘ hLaw m P1] with a ha
       rw [h1, h2] at ha
       simpa using ha
     calc (2 * Θ)⁻¹ = ∫ _a, (2 * Θ)⁻¹ ∂L := by simp
       _ ≤ ∫ a, blockVecDot P1
-            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P1) ∂L :=
+            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P1) ∂L :=
           integral_mono_ae (integrable_const _) hInt hlow
       _ = (hP.barSigmaStarAtScale hStruct m)⁻¹ := by rw [hmean, hEntry]
   · have hup : ∀ᵐ a ∂L,
         blockVecDot P1
-          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P1) ≤ 2 := by
+          (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P1) ≤ 2 := by
       filter_upwards [ae_coarseBlockQuadratic_bounds_of_thetaEllipticLaw hΘ hLaw m P1] with a ha
       rw [h1, h2] at ha
       simpa using ha.2
     calc (hP.barSigmaStarAtScale hStruct m)⁻¹
           = ∫ a, blockVecDot P1
-              (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) P1) ∂L := by
+              (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P1) ∂L := by
             rw [hmean, hEntry]
       _ ≤ ∫ _a, (2 : ℝ) ∂L := integral_mono_ae hInt (integrable_const _) hup
       _ = 2 := by simp

@@ -17,7 +17,7 @@ Origin-block integrability consequences of P4.
 
 private theorem memLp_two_of_nonneg_pow_integrable
     {d : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
-    {ξ : ℕ} {X : CoeffField d → ℝ}
+    {ξ : ℕ} {X : RegCoeffField d → ℝ}
     (hξ : 2 ≤ ξ) (hX_meas : AEMeasurable X P)
     (hX_nonneg : ∀ᵐ a ∂P, 0 ≤ X a)
     (hXpow_int : Integrable (fun a => X a ^ ξ) P) :
@@ -35,7 +35,7 @@ private theorem memLp_two_of_nonneg_pow_integrable
 
 private theorem integrable_abs_sq_of_ae_abs_le_nonneg_memLp_two
     {d : ℕ} {P : Ch04.CoeffLaw d}
-    {X Y : CoeffField d → ℝ}
+    {X Y : RegCoeffField d → ℝ}
     (hX_meas : AEMeasurable X P)
     (hY_nonneg : ∀ a, 0 ≤ Y a)
     (hXY : ∀ᵐ a ∂P, |X a| ≤ Y a)
@@ -113,14 +113,14 @@ private theorem norm_toEuclideanCLM_le_sum_abs_entries
     (mul_nonneg (mul_nonneg (Nat.cast_nonneg _) hS_nonneg) (norm_nonneg x))).mp hnorm_sq
 
 private theorem norm_toEuclideanCLM_sq_integrable_of_entry_memLp_two
-    {d : ℕ} {P : Ch04.CoeffLaw d} {Z : CoeffField d → FullBlockMat d}
+    {d : ℕ} {P : Ch04.CoeffLaw d} {Z : RegCoeffField d → FullBlockMat d}
     (hZ_aemeas : AEMeasurable Z P)
     (hZ_entry : ∀ α β : BlockCoord d, MemLp (fun a => Z a α β) (2 : ENNReal) P) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ‖Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ) (Z a)‖ ^ 2) P := by
   classical
-  let S : CoeffField d → ℝ := fun a => ∑ α : BlockCoord d, ∑ β : BlockCoord d, |Z a α β|
+  let S : RegCoeffField d → ℝ := fun a => ∑ α : BlockCoord d, ∑ β : BlockCoord d, |Z a α β|
   have hS_mem : MemLp S (2 : ENNReal) P := by
     dsimp [S]
     refine memLp_finset_sum _ ?_
@@ -189,7 +189,7 @@ private theorem aemeasurable_blockMatEntry_coarseBlockMatrix_cubeSet
     (hP : Ch04.LawCarrier P) (Q : TriadicCube d)
     (α β : BlockCoord d) :
     AEMeasurable
-      (fun a : CoeffField d => blockMatEntry (coarseBlockMatrix (cubeSet Q) a) α β) P := by
+      (fun a : RegCoeffField d => blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β) P := by
   cases α with
   | inl i =>
       cases β with
@@ -286,8 +286,8 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
     (hP : Ch04.LawCarrier P) (Q : TriadicCube d)
     {sUpper sLower : ℝ} (hsUpper : 0 < sUpper) (hsLower : 0 < sLower)
     (α β : BlockCoord d) :
-    (fun a : CoeffField d =>
-        |blockMatEntry (coarseBlockMatrix (cubeSet Q) a) α β|) ≤ᵐ[P]
+    (fun a : RegCoeffField d =>
+        |blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β|) ≤ᵐ[P]
       fun a =>
         Ch04.LambdaSqCoeffField Q sUpper (.finite 1) a +
           (Ch04.lambdaSqCoeffField Q sLower (.finite 1) a)⁻¹ := by
@@ -295,26 +295,26 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
   let F : Ch02.TriadicCoeffFamily d :=
     Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hEq :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
-  have hSymm : IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a) := by
+  have hSymm : IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) := by
     rw [hEq]
     exact Ch02.isSymmetricBlockMat_coarseBlockMatrix
       (Ch02.cubeDomain Q) (F.coeffOn Q)
-  have hPos : Ch02.BlockPosDef (coarseBlockMatrix (cubeSet Q) a) := by
+  have hPos : Ch02.BlockPosDef (coarseBlockMatrix (cubeSet Q) a.toFun) := by
     rw [hEq]
     exact
       (Ch02.blockCoarseMatrixTheory (Ch02.cubeDomain Q)
         (F.coeffOn Q)).block_matrix_posDef
   have hUpperEntry : ∀ i j : Fin d,
-      |(coarseBlockMatrix (cubeSet Q) a).upperLeft i j| ≤
+      |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j| ≤
         Ch04.LambdaSqCoeffField Q sUpper (.finite 1) a := by
     intro i j
     calc
-      |(coarseBlockMatrix (cubeSet Q) a).upperLeft i j|
+      |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j|
           = |(Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q)).upperLeft i j| := by
             rw [hEq]
       _ ≤ Ch02.coarseBMatrixNorm Q F := by
@@ -327,11 +327,11 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
       _ = Ch04.LambdaSqCoeffField Q sUpper (.finite 1) a := by
           simp [Ch04.LambdaSqCoeffField, ha, F]
   have hLowerEntry : ∀ i j : Fin d,
-      |(coarseBlockMatrix (cubeSet Q) a).lowerRight i j| ≤
+      |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j| ≤
         (Ch04.lambdaSqCoeffField Q sLower (.finite 1) a)⁻¹ := by
     intro i j
     calc
-      |(coarseBlockMatrix (cubeSet Q) a).lowerRight i j|
+      |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j|
           = |(Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q)).lowerRight i j| := by
             rw [hEq]
       _ ≤ Ch02.coarseSigmaStarInvMatrixNorm Q F := by
@@ -357,18 +357,18 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
           exact (hUpperEntry i j).trans (by linarith)
       | inr j =>
           have hcross :
-              |blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inl i) (Sum.inr j)| ≤
+              |blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inl i) (Sum.inr j)| ≤
                 (1 / 2 : ℝ) *
-                  (blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inl i) (Sum.inl i) +
-                    blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inr j) (Sum.inr j)) :=
+                  (blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inl i) (Sum.inl i) +
+                    blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inr j) (Sum.inr j)) :=
             abs_cross_blockMatEntry_le_diag_sum_of_blockPosDef' hSymm hPos
               (by intro h; cases h)
           have hUL :
-              blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inl i) (Sum.inl i) ≤
+              blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inl i) (Sum.inl i) ≤
                 Ch04.LambdaSqCoeffField Q sUpper (.finite 1) a := by
             exact (le_abs_self _).trans (by simpa [blockMatEntry] using hUpperEntry i i)
           have hLR :
-              blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inr j) (Sum.inr j) ≤
+              blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inr j) (Sum.inr j) ≤
                 (Ch04.lambdaSqCoeffField Q sLower (.finite 1) a)⁻¹ := by
             exact (le_abs_self _).trans (by simpa [blockMatEntry] using hLowerEntry j j)
           linarith
@@ -376,18 +376,18 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
       cases β with
       | inl j =>
           have hcross :
-              |blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inr i) (Sum.inl j)| ≤
+              |blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inr i) (Sum.inl j)| ≤
                 (1 / 2 : ℝ) *
-                  (blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inr i) (Sum.inr i) +
-                    blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inl j) (Sum.inl j)) :=
+                  (blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inr i) (Sum.inr i) +
+                    blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inl j) (Sum.inl j)) :=
             abs_cross_blockMatEntry_le_diag_sum_of_blockPosDef' hSymm hPos
               (by intro h; cases h)
           have hLR :
-              blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inr i) (Sum.inr i) ≤
+              blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inr i) (Sum.inr i) ≤
                 (Ch04.lambdaSqCoeffField Q sLower (.finite 1) a)⁻¹ := by
             exact (le_abs_self _).trans (by simpa [blockMatEntry] using hLowerEntry i i)
           have hUL :
-              blockMatEntry (coarseBlockMatrix (cubeSet Q) a) (Sum.inl j) (Sum.inl j) ≤
+              blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) (Sum.inl j) (Sum.inl j) ≤
                 Ch04.LambdaSqCoeffField Q sUpper (.finite 1) a := by
             exact (le_abs_self _).trans (by simpa [blockMatEntry] using hUpperEntry j j)
           linarith
@@ -411,14 +411,14 @@ theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (n : ℕ) (α β : BlockCoord d) :
     MemLp
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         blockMatEntry (coarseBlockMatrix (cubeSet (originCube d (n : ℤ))) a) α β)
       (2 : ENNReal) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (n : ℤ)
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField Q hP4.sUpper (.finite 1) a
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     fun a => (Ch04.lambdaSqCoeffField Q hP4.sLower (.finite 1) a)⁻¹
   have hX_meas : AEMeasurable X P := by
     simpa [X, Q] using
@@ -452,8 +452,8 @@ theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
     hX_mem2.add hY_mem2
   have hEntry_meas :
       AEMeasurable
-        (fun a : CoeffField d =>
-          blockMatEntry (coarseBlockMatrix (cubeSet Q) a) α β) P := by
+        (fun a : RegCoeffField d =>
+          blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β) P := by
     simpa [Q] using
       aemeasurable_blockMatEntry_coarseBlockMatrix_cubeSet
         hP (originCube d (n : ℤ)) α β
@@ -467,15 +467,15 @@ theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
           (by norm_num : (1 : ℝ) ≤ 1)))
   have hEntry_bound :
       ∀ᵐ a ∂P,
-        |blockMatEntry (coarseBlockMatrix (cubeSet Q) a) α β| ≤
+        |blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β| ≤
           X a + Y a := by
     simpa [X, Y, Q] using
       blockMatEntry_abs_le_factor_sum_ae
         hP (originCube d (n : ℤ)) hP4.sUpper_pos hP4.sLower_pos α β
   have hEntry_abs_sq :
       Integrable
-        (fun a : CoeffField d =>
-          |blockMatEntry (coarseBlockMatrix (cubeSet Q) a) α β| ^ 2) P :=
+        (fun a : RegCoeffField d =>
+          |blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β| ^ 2) P :=
     integrable_abs_sq_of_ae_abs_le_nonneg_memLp_two
       hEntry_meas hXY_nonneg hEntry_bound hXY_mem2
   rw [← MeasureTheory.integrable_norm_rpow_iff hEntry_meas.aestronglyMeasurable
@@ -495,18 +495,18 @@ theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_originCub
   let c := hP.barSigmaStarAtScale hStruct m
   let D : FullBlockMat d := Matrix.diagonal (Ch04.scalarFullBlockInvSqrtDiag b c)
   let Abar : BlockMat d := Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct m
-  let Z : CoeffField d → FullBlockMat d :=
-    fun a => D * (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) - toFullBlockMat Abar) * D
+  let Z : RegCoeffField d → FullBlockMat d :=
+    fun a => D * (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) - toFullBlockMat Abar) * D
   have hZ_entry : ∀ α β : BlockCoord d, MemLp (fun a => Z a α β) (2 : ENNReal) P := by
     intro α β
     dsimp [Z]
     have hsum :
         MemLp
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ∑ γ : BlockCoord d,
               (∑ δ : BlockCoord d,
                 D α δ *
-                  (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) δ γ -
+                  (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) δ γ -
                     toFullBlockMat Abar δ γ)) *
                 D γ β)
           (2 : ENNReal) P := by
@@ -515,10 +515,10 @@ theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_originCub
       intro γ _hγ
       have hinner :
           MemLp
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               ∑ δ : BlockCoord d,
                 D α δ *
-                  (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) δ γ -
+                  (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) δ γ -
                     toFullBlockMat Abar δ γ))
             (2 : ENNReal) P := by
         refine memLp_finset_sum (s := (Finset.univ : Finset (BlockCoord d)))
@@ -526,14 +526,14 @@ theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_originCub
         intro δ _hδ
         have hbase :
             MemLp
-                (fun a : CoeffField d =>
-                toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) δ γ -
+                (fun a : RegCoeffField d =>
+                toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) δ γ -
                   toFullBlockMat Abar δ γ)
               (2 : ENNReal) P := by
           have hentry :
               MemLp
-                (fun a : CoeffField d =>
-                  toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) δ γ)
+                (fun a : RegCoeffField d =>
+                  toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) δ γ)
                 (2 : ENNReal) P := by
             simpa [Q, toFullBlockMat, blockMatEntry] using
               memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
@@ -553,9 +553,9 @@ theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_originCub
     exact (hZ_entry α β).aestronglyMeasurable.aemeasurable
   change
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ‖Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ)
-          (D * (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) - toFullBlockMat Abar) * D)‖ ^ 2)
+          (D * (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) - toFullBlockMat Abar) * D)‖ ^ 2)
       P
   exact norm_toEuclideanCLM_sq_integrable_of_entry_memLp_two hZ_aemeas hZ_entry
 

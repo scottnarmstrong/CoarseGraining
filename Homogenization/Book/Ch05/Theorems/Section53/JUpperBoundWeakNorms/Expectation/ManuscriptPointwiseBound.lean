@@ -21,7 +21,7 @@ noncomputable section
 /-- Pointwise bridge from the deterministic split directly to the
 manuscript-product RHS at origin scales. -/
 theorem abs_centeredJMinusCutoffWeightedChildAtScale_le_jUpperWeakNormManuscriptPointwiseRHS
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m k : ℤ) (s t : ℝ) (φ : Vec d → ℝ) (p q p0 q0 : Vec d)
     {C B Cosc scaleSep BφS BφT cutoffDerivative Cprod : ℝ}
@@ -123,9 +123,9 @@ theorem abs_centeredJMinusCutoffWeightedChildAtScale_le_jUpperWeakNormManuscript
   let productCoeff : ℝ :=
     cutoffProductScaledWeakNormCoeff Q s t cutoffDerivative (scalarCutoffGradientField φ)
   let gradWeak : ℝ :=
-    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a
+    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
   let fluxWeak : ℝ :=
-    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a
+    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun
   let scaledGrad : ℝ := cubeBesovScaleWeight (-s) Q * gradWeak
   let scaledFlux : ℝ := cubeBesovScaleWeight (-t) Q * fluxWeak
   have hgradWeak_nonneg : 0 ≤ gradWeak := by
@@ -156,11 +156,11 @@ theorem abs_centeredJMinusCutoffWeightedChildAtScale_le_jUpperWeakNormManuscript
             ((1 / 2 : ℝ) * ‖q0‖ *
                 (((Fintype.card (Fin d) : ℝ) *
                   ((3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS)) *
-                    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a) +
+                    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun) +
               (1 / 2 : ℝ) * ‖p0‖ *
                 (((Fintype.card (Fin d) : ℝ) *
                   ((3 : ℝ) ^ ((d : ℝ) + t) * cubeBesovScaleWeight (-t) Q * BφT)) *
-                    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a)) +
+                    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun)) +
               productCoeff * (scaledGrad * scaledFlux) := by
     simpa [Q, j, F, productCoeff, scaledGrad, scaledFlux] using
       abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentFamily_le_additivityDefect_add_cutoffOscillationBound_add_linearWeakNorms_add_scaledProduct
@@ -226,11 +226,11 @@ theorem abs_centeredJMinusCutoffWeightedChildAtScale_le_jUpperWeakNormManuscript
             ((1 / 2 : ℝ) * ‖q0‖ *
                 (((Fintype.card (Fin d) : ℝ) *
                   ((3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS)) *
-                    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a) +
+                    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun) +
               (1 / 2 : ℝ) * ‖p0‖ *
                 (((Fintype.card (Fin d) : ℝ) *
                   ((3 : ℝ) ^ ((d : ℝ) + t) * cubeBesovScaleWeight (-t) Q * BφT)) *
-                    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a)) +
+                    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun)) +
               Cprod * (gradWeak * fluxWeak) := by
     nlinarith [hdet, hproductCoeff']
   simpa [jUpperWeakNormManuscriptPointwiseRHSAtScale, Q, j, F, hleft,

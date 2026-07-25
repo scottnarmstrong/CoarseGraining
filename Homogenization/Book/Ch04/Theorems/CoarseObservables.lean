@@ -24,13 +24,13 @@ no section-local wrapper tracks here.
 /-- Finite descendant averages preserve a.e.-measurability. -/
 theorem aemeasurable_descendantsAverage
     {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {j : ℕ}
-    {F : TriadicCube d → CoeffField d → ℝ}
+    {F : TriadicCube d → RegCoeffField d → ℝ}
     (hF : ∀ R, R ∈ descendantsAtDepth Q j → AEMeasurable (F R) P) :
     AEMeasurable
-      (fun a : CoeffField d => descendantsAverage Q j (fun R => F R a)) P := by
+      (fun a : RegCoeffField d => descendantsAverage Q j (fun R => F R a)) P := by
   classical
   let D : Finset (TriadicCube d) := descendantsAtDepth Q j
-  have hsum : AEMeasurable (fun a : CoeffField d => D.sum (fun R => F R a)) P := by
+  have hsum : AEMeasurable (fun a : RegCoeffField d => D.sum (fun R => F R a)) P := by
     simpa using
       (D.aemeasurable_fun_sum (μ := P) (f := fun R => F R)
         (fun R hR => hF R (by simpa [D] using hR)))
@@ -42,16 +42,16 @@ namespace LawCarrier
 each triadic open cube, with the a.e. coefficient representative handled by the
 Chapter 2 doubled-`Mu` theory. -/
 theorem exists_coarseBlockMatrix_openCubeSet_of_aelocallyUniformlyEllipticField
-    {d : ℕ} {a : CoeffField d}
+    {d : ℕ} {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (Q : TriadicCube d) :
-    ∃ Abar : BlockMat d, IsCoarseBlockMatrix (openCubeSet Q) a Abar := by
+    ∃ Abar : BlockMat d, IsCoarseBlockMatrix (openCubeSet Q) a.toFun Abar := by
   let U : Ch02.Domain d := Ch02.cubeDomain Q
   let aQ : Ch02.CoeffOn U := coeffOnOfAEEllipticOn a Q (ha Q)
   refine ⟨Ch02.coarseBlockMatrix U aQ, ?_⟩
   refine ⟨Ch02.isSymmetricBlockMat_coarseBlockMatrix U aQ, ?_⟩
   intro P
   calc
-    Mu (openCubeSet Q) P a
+    Mu (openCubeSet Q) P a.toFun
         = Mu (U : Set (Vec d)) P aQ.toCoeffField := by
             simp [U, aQ, Ch02.cubeDomain_coe]
     _ = Ch02.doubledMu U aQ P := by
@@ -65,21 +65,21 @@ theorem exists_coarseBlockMatrix_openCubeSet_of_aelocallyUniformlyEllipticField
 coarse block matrix built from the canonical a.e.-elliptic coefficient
 representative on the cube. -/
 theorem coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (Q : TriadicCube d) :
-    coarseBlockMatrix (cubeSet Q) a =
+    coarseBlockMatrix (cubeSet Q) a.toFun =
       Ch02.coarseBlockMatrix (Ch02.cubeDomain Q)
         ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q) := by
   let U : Ch02.Domain d := Ch02.cubeDomain Q
   let aQ : Ch02.CoeffOn U :=
     (triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q
   have hIso :
-      IsCoarseBlockMatrix (openCubeSet Q) a
+      IsCoarseBlockMatrix (openCubeSet Q) a.toFun
         (Ch02.coarseBlockMatrix U aQ) := by
     refine ⟨Ch02.isSymmetricBlockMat_coarseBlockMatrix U aQ, ?_⟩
     intro P
     calc
-      Mu (openCubeSet Q) P a
+      Mu (openCubeSet Q) P a.toFun
           = Mu (U : Set (Vec d)) P aQ.toCoeffField := by
               simp [U, aQ, Ch02.cubeDomain_coe,
                 triadicCoeffFamilyOfAELocallyUniformlyEllipticField,
@@ -91,8 +91,8 @@ theorem coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniforml
             (blockMatVecMul (Ch02.coarseBlockMatrix U aQ) P) :=
             (Ch02.doubledMuTheory U aQ).doubledMu_eq_coarseBlockMatrix P
   calc
-    coarseBlockMatrix (cubeSet Q) a = coarseBlockMatrix (openCubeSet Q) a :=
-      coarseBlockMatrix_cubeSet_eq_openCubeSet_of_triadicCube Q a
+    coarseBlockMatrix (cubeSet Q) a.toFun = coarseBlockMatrix (openCubeSet Q) a.toFun :=
+      coarseBlockMatrix_cubeSet_eq_openCubeSet_of_triadicCube Q a.toFun
     _ = Ch02.coarseBlockMatrix U aQ :=
       (eq_coarseBlockMatrix_of_isCoarseBlockMatrix hIso).symm
 
@@ -100,7 +100,7 @@ theorem coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniforml
 existence on every fixed triadic open cube. -/
 theorem ae_exists_coarseBlockMatrix_openCubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P) (Q : TriadicCube d) :
-    ∀ᵐ a ∂P, ∃ Abar : BlockMat d, IsCoarseBlockMatrix (openCubeSet Q) a Abar := by
+    ∀ᵐ a ∂P, ∃ Abar : BlockMat d, IsCoarseBlockMatrix (openCubeSet Q) a.toFun Abar := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   exact exists_coarseBlockMatrix_openCubeSet_of_aelocallyUniformlyEllipticField ha Q
 
@@ -109,7 +109,7 @@ theorem ae_exists_coarseBlockMatrix_openCubeSet
 theorem ae_exists_coarseBlockMatrix_openCubeSet_originCube
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P) (n : ℤ) :
     ∀ᵐ a ∂P,
-      ∃ Abar : BlockMat d, IsCoarseBlockMatrix (openCubeSet (originCube d n)) a Abar :=
+      ∃ Abar : BlockMat d, IsCoarseBlockMatrix (openCubeSet (originCube d n)) a.toFun Abar :=
   hP.ae_exists_coarseBlockMatrix_openCubeSet (originCube d n)
 
 /-- The lower-right coarse entry `σ_*⁻¹(U; a)ᵢⱼ` is a.e.-measurable on a
@@ -118,33 +118,33 @@ theorem aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
     AEMeasurable
-      (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).lowerRight i j) P := by
+      (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j) P := by
   by_cases hij : i = j
   · subst j
     have hEq :
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).lowerRight i i) =
-          (fun a : CoeffField d => (2 : ℝ) * Mu (cubeSet Q) (0, Pi.single i 1) a) := by
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i i) =
+          (fun a : RegCoeffField d => (2 : ℝ) * Mu (cubeSet Q) (0, Pi.single i 1) a.toFun) := by
       funext a
       simp [coarseBlockMatrix_lowerRight_apply]
     rw [hEq]
     exact (hP.aemeasurable_Mu_cubeSet Q (0, Pi.single i 1)).const_mul (2 : ℝ)
   · have hsum :
         AEMeasurable
-          (fun a : CoeffField d =>
-            Mu (cubeSet Q) ((0, Pi.single i 1) + (0, Pi.single j 1)) a) P :=
+          (fun a : RegCoeffField d =>
+            Mu (cubeSet Q) ((0, Pi.single i 1) + (0, Pi.single j 1)) a.toFun) P :=
       hP.aemeasurable_Mu_cubeSet Q ((0, Pi.single i 1) + (0, Pi.single j 1))
     have hi :
-        AEMeasurable (fun a : CoeffField d => Mu (cubeSet Q) (0, Pi.single i 1) a) P :=
+        AEMeasurable (fun a : RegCoeffField d => Mu (cubeSet Q) (0, Pi.single i 1) a.toFun) P :=
       hP.aemeasurable_Mu_cubeSet Q (0, Pi.single i 1)
     have hj :
-        AEMeasurable (fun a : CoeffField d => Mu (cubeSet Q) (0, Pi.single j 1) a) P :=
+        AEMeasurable (fun a : RegCoeffField d => Mu (cubeSet Q) (0, Pi.single j 1) a.toFun) P :=
       hP.aemeasurable_Mu_cubeSet Q (0, Pi.single j 1)
     have hEq :
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).lowerRight i j) =
-          (fun a : CoeffField d =>
-            Mu (cubeSet Q) ((0, Pi.single i 1) + (0, Pi.single j 1)) a
-              - Mu (cubeSet Q) (0, Pi.single i 1) a
-              - Mu (cubeSet Q) (0, Pi.single j 1) a) := by
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j) =
+          (fun a : RegCoeffField d =>
+            Mu (cubeSet Q) ((0, Pi.single i 1) + (0, Pi.single j 1)) a.toFun
+              - Mu (cubeSet Q) (0, Pi.single i 1) a.toFun
+              - Mu (cubeSet Q) (0, Pi.single j 1) a.toFun) := by
       funext a
       simp [coarseBlockMatrix_lowerRight_apply, hij]
     rw [hEq]
@@ -156,33 +156,33 @@ theorem aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
     AEMeasurable
-      (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).upperLeft i j) P := by
+      (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j) P := by
   by_cases hij : i = j
   · subst j
     have hEq :
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).upperLeft i i) =
-          (fun a : CoeffField d => (2 : ℝ) * Mu (cubeSet Q) (Pi.single i 1, 0) a) := by
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i i) =
+          (fun a : RegCoeffField d => (2 : ℝ) * Mu (cubeSet Q) (Pi.single i 1, 0) a.toFun) := by
       funext a
       simp [coarseBlockMatrix_upperLeft_apply]
     rw [hEq]
     exact (hP.aemeasurable_Mu_cubeSet Q (Pi.single i 1, 0)).const_mul (2 : ℝ)
   · have hsum :
         AEMeasurable
-          (fun a : CoeffField d =>
-            Mu (cubeSet Q) ((Pi.single i 1, 0) + (Pi.single j 1, 0)) a) P :=
+          (fun a : RegCoeffField d =>
+            Mu (cubeSet Q) ((Pi.single i 1, 0) + (Pi.single j 1, 0)) a.toFun) P :=
       hP.aemeasurable_Mu_cubeSet Q ((Pi.single i 1, 0) + (Pi.single j 1, 0))
     have hi :
-        AEMeasurable (fun a : CoeffField d => Mu (cubeSet Q) (Pi.single i 1, 0) a) P :=
+        AEMeasurable (fun a : RegCoeffField d => Mu (cubeSet Q) (Pi.single i 1, 0) a.toFun) P :=
       hP.aemeasurable_Mu_cubeSet Q (Pi.single i 1, 0)
     have hj :
-        AEMeasurable (fun a : CoeffField d => Mu (cubeSet Q) (Pi.single j 1, 0) a) P :=
+        AEMeasurable (fun a : RegCoeffField d => Mu (cubeSet Q) (Pi.single j 1, 0) a.toFun) P :=
       hP.aemeasurable_Mu_cubeSet Q (Pi.single j 1, 0)
     have hEq :
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).upperLeft i j) =
-          (fun a : CoeffField d =>
-            Mu (cubeSet Q) ((Pi.single i 1, 0) + (Pi.single j 1, 0)) a
-              - Mu (cubeSet Q) (Pi.single i 1, 0) a
-              - Mu (cubeSet Q) (Pi.single j 1, 0) a) := by
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j) =
+          (fun a : RegCoeffField d =>
+            Mu (cubeSet Q) ((Pi.single i 1, 0) + (Pi.single j 1, 0)) a.toFun
+              - Mu (cubeSet Q) (Pi.single i 1, 0) a.toFun
+              - Mu (cubeSet Q) (Pi.single j 1, 0) a.toFun) := by
       funext a
       simp [coarseBlockMatrix_upperLeft_apply, hij]
     rw [hEq]
@@ -194,9 +194,9 @@ canonical `Mu` representatives and agrees a.e. with the raw coarse entry. -/
 theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_upperLeft_apply_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
-    ∃ Y : CoeffField d → ℝ,
-      IsLocalRandomVariable (cubeSet Q) Y ∧
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).upperLeft i j)
+    ∃ Y : RegCoeffField d → ℝ,
+      IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j)
           =ᵐ[P] Y := by
   by_cases hij : i = j
   · subst j
@@ -205,8 +205,8 @@ theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_upperLeft_apply_cub
     refine ⟨fun a => (2 : ℝ) * Y a, measurable_const.mul hY_local, ?_⟩
     filter_upwards [hY_eq] with a ha
     calc
-      (coarseBlockMatrix (cubeSet Q) a).upperLeft i i =
-          (2 : ℝ) * Mu (cubeSet Q) (Pi.single i 1, 0) a := by
+      (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i i =
+          (2 : ℝ) * Mu (cubeSet Q) (Pi.single i 1, 0) a.toFun := by
             simp [coarseBlockMatrix_upperLeft_apply]
       _ = (2 : ℝ) * Y a := by rw [ha]
   · rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
@@ -220,10 +220,10 @@ theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_upperLeft_apply_cub
       (hYsum_local.sub hYi_local).sub hYj_local, ?_⟩
     filter_upwards [hYsum_eq, hYi_eq, hYj_eq] with a hsum hi hj
     calc
-      (coarseBlockMatrix (cubeSet Q) a).upperLeft i j =
-          Mu (cubeSet Q) ((Pi.single i 1, 0) + (Pi.single j 1, 0)) a -
-            Mu (cubeSet Q) (Pi.single i 1, 0) a -
-            Mu (cubeSet Q) (Pi.single j 1, 0) a := by
+      (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j =
+          Mu (cubeSet Q) ((Pi.single i 1, 0) + (Pi.single j 1, 0)) a.toFun -
+            Mu (cubeSet Q) (Pi.single i 1, 0) a.toFun -
+            Mu (cubeSet Q) (Pi.single j 1, 0) a.toFun := by
             simp [coarseBlockMatrix_upperLeft_apply, hij]
       _ = Ysum a - Yi a - Yj a := by rw [hsum, hi, hj]
 
@@ -233,9 +233,9 @@ canonical `Mu` representatives and agrees a.e. with the raw coarse entry. -/
 theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerRight_apply_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
-    ∃ Y : CoeffField d → ℝ,
-      IsLocalRandomVariable (cubeSet Q) Y ∧
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).lowerRight i j)
+    ∃ Y : RegCoeffField d → ℝ,
+      IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j)
           =ᵐ[P] Y := by
   by_cases hij : i = j
   · subst j
@@ -244,8 +244,8 @@ theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerRight_apply_cu
     refine ⟨fun a => (2 : ℝ) * Y a, measurable_const.mul hY_local, ?_⟩
     filter_upwards [hY_eq] with a ha
     calc
-      (coarseBlockMatrix (cubeSet Q) a).lowerRight i i =
-          (2 : ℝ) * Mu (cubeSet Q) (0, Pi.single i 1) a := by
+      (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i i =
+          (2 : ℝ) * Mu (cubeSet Q) (0, Pi.single i 1) a.toFun := by
             simp [coarseBlockMatrix_lowerRight_apply]
       _ = (2 : ℝ) * Y a := by rw [ha]
   · rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
@@ -259,10 +259,10 @@ theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerRight_apply_cu
       (hYsum_local.sub hYi_local).sub hYj_local, ?_⟩
     filter_upwards [hYsum_eq, hYi_eq, hYj_eq] with a hsum hi hj
     calc
-      (coarseBlockMatrix (cubeSet Q) a).lowerRight i j =
-          Mu (cubeSet Q) ((0, Pi.single i 1) + (0, Pi.single j 1)) a -
-            Mu (cubeSet Q) (0, Pi.single i 1) a -
-            Mu (cubeSet Q) (0, Pi.single j 1) a := by
+      (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j =
+          Mu (cubeSet Q) ((0, Pi.single i 1) + (0, Pi.single j 1)) a.toFun -
+            Mu (cubeSet Q) (0, Pi.single i 1) a.toFun -
+            Mu (cubeSet Q) (0, Pi.single j 1) a.toFun := by
             simp [coarseBlockMatrix_lowerRight_apply, hij]
       _ = Ysum a - Yi a - Yj a := by rw [hsum, hi, hj]
 
@@ -272,24 +272,24 @@ theorem aemeasurable_coarseBlockMatrix_upperRight_apply_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
     AEMeasurable
-      (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).upperRight i j) P := by
+      (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight i j) P := by
   have hsum :
       AEMeasurable
-        (fun a : CoeffField d =>
-          Mu (cubeSet Q) ((Pi.single i 1, 0) + (0, Pi.single j 1)) a) P :=
+        (fun a : RegCoeffField d =>
+          Mu (cubeSet Q) ((Pi.single i 1, 0) + (0, Pi.single j 1)) a.toFun) P :=
     hP.aemeasurable_Mu_cubeSet Q ((Pi.single i 1, 0) + (0, Pi.single j 1))
   have hi :
-      AEMeasurable (fun a : CoeffField d => Mu (cubeSet Q) (Pi.single i 1, 0) a) P :=
+      AEMeasurable (fun a : RegCoeffField d => Mu (cubeSet Q) (Pi.single i 1, 0) a.toFun) P :=
     hP.aemeasurable_Mu_cubeSet Q (Pi.single i 1, 0)
   have hj :
-      AEMeasurable (fun a : CoeffField d => Mu (cubeSet Q) (0, Pi.single j 1) a) P :=
+      AEMeasurable (fun a : RegCoeffField d => Mu (cubeSet Q) (0, Pi.single j 1) a.toFun) P :=
     hP.aemeasurable_Mu_cubeSet Q (0, Pi.single j 1)
   have hEq :
-      (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).upperRight i j) =
-        (fun a : CoeffField d =>
-          Mu (cubeSet Q) ((Pi.single i 1, 0) + (0, Pi.single j 1)) a
-            - Mu (cubeSet Q) (Pi.single i 1, 0) a
-            - Mu (cubeSet Q) (0, Pi.single j 1) a) := by
+      (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight i j) =
+        (fun a : RegCoeffField d =>
+          Mu (cubeSet Q) ((Pi.single i 1, 0) + (0, Pi.single j 1)) a.toFun
+            - Mu (cubeSet Q) (Pi.single i 1, 0) a.toFun
+            - Mu (cubeSet Q) (0, Pi.single j 1) a.toFun) := by
     funext a
     simp [coarseBlockMatrix_upperRight_apply]
   rw [hEq]
@@ -301,24 +301,24 @@ theorem aemeasurable_coarseBlockMatrix_lowerLeft_apply_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
     AEMeasurable
-      (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).lowerLeft i j) P := by
+      (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft i j) P := by
   have hsum :
       AEMeasurable
-        (fun a : CoeffField d =>
-          Mu (cubeSet Q) ((0, Pi.single i 1) + (Pi.single j 1, 0)) a) P :=
+        (fun a : RegCoeffField d =>
+          Mu (cubeSet Q) ((0, Pi.single i 1) + (Pi.single j 1, 0)) a.toFun) P :=
     hP.aemeasurable_Mu_cubeSet Q ((0, Pi.single i 1) + (Pi.single j 1, 0))
   have hi :
-      AEMeasurable (fun a : CoeffField d => Mu (cubeSet Q) (0, Pi.single i 1) a) P :=
+      AEMeasurable (fun a : RegCoeffField d => Mu (cubeSet Q) (0, Pi.single i 1) a.toFun) P :=
     hP.aemeasurable_Mu_cubeSet Q (0, Pi.single i 1)
   have hj :
-      AEMeasurable (fun a : CoeffField d => Mu (cubeSet Q) (Pi.single j 1, 0) a) P :=
+      AEMeasurable (fun a : RegCoeffField d => Mu (cubeSet Q) (Pi.single j 1, 0) a.toFun) P :=
     hP.aemeasurable_Mu_cubeSet Q (Pi.single j 1, 0)
   have hEq :
-      (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).lowerLeft i j) =
-        (fun a : CoeffField d =>
-          Mu (cubeSet Q) ((0, Pi.single i 1) + (Pi.single j 1, 0)) a
-            - Mu (cubeSet Q) (0, Pi.single i 1) a
-            - Mu (cubeSet Q) (Pi.single j 1, 0) a) := by
+      (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft i j) =
+        (fun a : RegCoeffField d =>
+          Mu (cubeSet Q) ((0, Pi.single i 1) + (Pi.single j 1, 0)) a.toFun
+            - Mu (cubeSet Q) (0, Pi.single i 1) a.toFun
+            - Mu (cubeSet Q) (Pi.single j 1, 0) a.toFun) := by
     funext a
     simp [coarseBlockMatrix_lowerLeft_apply]
   rw [hEq]
@@ -329,7 +329,7 @@ theorem aemeasurable_coarseFullBlockMatrix_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
-      (fun a : CoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)) P := by
+      (fun a : RegCoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P := by
   rw [aemeasurable_pi_iff]
   intro α
   rw [aemeasurable_pi_iff]
@@ -358,7 +358,7 @@ theorem aemeasurable_coarseB_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
-      (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).upperLeft) P := by
+      (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft) P := by
   rw [aemeasurable_pi_iff]
   intro i
   rw [aemeasurable_pi_iff]
@@ -370,7 +370,7 @@ theorem aemeasurable_coarseBlockMatrix_upperRight_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
-      (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).upperRight) P := by
+      (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight) P := by
   rw [aemeasurable_pi_iff]
   intro i
   rw [aemeasurable_pi_iff]
@@ -382,7 +382,7 @@ theorem aemeasurable_coarseBlockMatrix_lowerLeft_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
-      (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).lowerLeft) P := by
+      (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft) P := by
   rw [aemeasurable_pi_iff]
   intro i
   rw [aemeasurable_pi_iff]
@@ -395,7 +395,7 @@ theorem aemeasurable_coarseSigmaStarInv_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
-      (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).lowerRight) P := by
+      (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight) P := by
   rw [aemeasurable_pi_iff]
   intro i
   rw [aemeasurable_pi_iff]
@@ -408,7 +408,7 @@ theorem aemeasurable_coarseSigmaStarInvKappaMean_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
-      (fun a : CoeffField d => -((coarseBlockMatrix (cubeSet Q) a).lowerLeft)) P := by
+      (fun a : RegCoeffField d => -((coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft)) P := by
   rw [aemeasurable_pi_iff]
   intro i
   rw [aemeasurable_pi_iff]
@@ -420,7 +420,7 @@ theorem aemeasurable_coarseStarredFullBlockMatrixInv_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
-      (fun a : CoeffField d => toFullBlockMat (coarseStarredBlockMatrixInv (cubeSet Q) a)) P := by
+      (fun a : RegCoeffField d => toFullBlockMat (coarseStarredBlockMatrixInv (cubeSet Q) a.toFun)) P := by
   rw [aemeasurable_pi_iff]
   intro α
   rw [aemeasurable_pi_iff]
@@ -448,11 +448,11 @@ theorem aemeasurable_descendantsAverage_Mu_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (P0 : BlockVec d) :
     AEMeasurable
-      (fun a : CoeffField d =>
-        descendantsAverage Q j (fun R => Mu (cubeSet R) P0 a)) P :=
+      (fun a : RegCoeffField d =>
+        descendantsAverage Q j (fun R => Mu (cubeSet R) P0 a.toFun)) P :=
   aemeasurable_descendantsAverage
     (P := P) (Q := Q) (j := j)
-    (F := fun R a => Mu (cubeSet R) P0 a)
+    (F := fun R a => Mu (cubeSet R) P0 a.toFun)
     (fun R _ => hP.aemeasurable_Mu_cubeSet R P0)
 
 /-- Finite descendant averages of upper-left coarse entries are
@@ -461,12 +461,12 @@ theorem aemeasurable_descendantsAverage_coarseBlockMatrix_upperLeft_apply_cubeSe
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (i k : Fin d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverage Q j
-          (fun R => (coarseBlockMatrix (cubeSet R) a).upperLeft i k)) P :=
+          (fun R => (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft i k)) P :=
   aemeasurable_descendantsAverage
     (P := P) (Q := Q) (j := j)
-    (F := fun R a => (coarseBlockMatrix (cubeSet R) a).upperLeft i k)
+    (F := fun R a => (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft i k)
     (fun R _ => hP.aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet R i k)
 
 /-- Finite descendant averages of upper-right coarse entries are
@@ -475,12 +475,12 @@ theorem aemeasurable_descendantsAverage_coarseBlockMatrix_upperRight_apply_cubeS
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (i k : Fin d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverage Q j
-          (fun R => (coarseBlockMatrix (cubeSet R) a).upperRight i k)) P :=
+          (fun R => (coarseBlockMatrix (cubeSet R) a.toFun).upperRight i k)) P :=
   aemeasurable_descendantsAverage
     (P := P) (Q := Q) (j := j)
-    (F := fun R a => (coarseBlockMatrix (cubeSet R) a).upperRight i k)
+    (F := fun R a => (coarseBlockMatrix (cubeSet R) a.toFun).upperRight i k)
     (fun R _ => hP.aemeasurable_coarseBlockMatrix_upperRight_apply_cubeSet R i k)
 
 /-- Finite descendant averages of lower-left coarse entries are
@@ -489,12 +489,12 @@ theorem aemeasurable_descendantsAverage_coarseBlockMatrix_lowerLeft_apply_cubeSe
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (i k : Fin d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverage Q j
-          (fun R => (coarseBlockMatrix (cubeSet R) a).lowerLeft i k)) P :=
+          (fun R => (coarseBlockMatrix (cubeSet R) a.toFun).lowerLeft i k)) P :=
   aemeasurable_descendantsAverage
     (P := P) (Q := Q) (j := j)
-    (F := fun R a => (coarseBlockMatrix (cubeSet R) a).lowerLeft i k)
+    (F := fun R a => (coarseBlockMatrix (cubeSet R) a.toFun).lowerLeft i k)
     (fun R _ => hP.aemeasurable_coarseBlockMatrix_lowerLeft_apply_cubeSet R i k)
 
 /-- Finite descendant averages of lower-right coarse entries are
@@ -503,26 +503,26 @@ theorem aemeasurable_descendantsAverage_coarseBlockMatrix_lowerRight_apply_cubeS
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (i k : Fin d) :
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverage Q j
-          (fun R => (coarseBlockMatrix (cubeSet R) a).lowerRight i k)) P :=
+          (fun R => (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight i k)) P :=
   aemeasurable_descendantsAverage
     (P := P) (Q := Q) (j := j)
-    (F := fun R a => (coarseBlockMatrix (cubeSet R) a).lowerRight i k)
+    (F := fun R a => (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight i k)
     (fun R _ => hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet R i k)
 
 /-- Compose an a.e.-measurable observable with adjointing the coefficient
 field when the law is adjoint-invariant. -/
 theorem aemeasurable_comp_adjointCoeffField_of_adjointInvariantLaw
     {d : ℕ} {P : CoeffLaw d} {β : Type*} [MeasurableSpace β]
-    {F : CoeffField d → β}
+    {F : RegCoeffField d → β}
     (hAdj : AdjointInvariantLaw P) (hF : AEMeasurable F P) :
-    AEMeasurable (fun a : CoeffField d => F (adjointCoeffField a)) P := by
+    AEMeasurable (fun a : RegCoeffField d => F (adjointReg a)) P := by
   have hFMap :
-      AEMeasurable F (Measure.map (adjointCoeffField (d := d)) P) := by
+      AEMeasurable F (Measure.map (adjointReg (d := d)) P) := by
     rwa [hAdj]
   simpa [Function.comp_def] using
-    hFMap.comp_measurable (measurable_adjointCoeffField (d := d))
+    hFMap.comp_measurable (measurable_adjointReg (d := d))
 
 /-- The adjointed `Mu` observable is a.e.-measurable under an adjoint-invariant
 law. -/
@@ -530,7 +530,7 @@ theorem aemeasurable_Mu_adjointCoeffField_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (hAdj : AdjointInvariantLaw P) (Q : TriadicCube d) (P0 : BlockVec d) :
     AEMeasurable
-      (fun a : CoeffField d => Mu (cubeSet Q) P0 (adjointCoeffField a)) P :=
+      (fun a : RegCoeffField d => Mu (cubeSet Q) P0 (adjointReg a).toFun) P :=
   aemeasurable_comp_adjointCoeffField_of_adjointInvariantLaw hAdj
     (hP.aemeasurable_Mu_cubeSet Q P0)
 
@@ -540,12 +540,12 @@ theorem aemeasurable_ResponseJ_cubeSet_of_ae_eq_mu
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (p q : Vec d)
     (hEq :
-      (fun a : CoeffField d => ResponseJ (cubeSet Q) p q a) =ᵐ[P]
-        (fun a : CoeffField d => Mu (cubeSet Q) (-p, q) a - vecDot p q)) :
-    AEMeasurable (fun a : CoeffField d => ResponseJ (cubeSet Q) p q a) P := by
+      (fun a : RegCoeffField d => ResponseJ (cubeSet Q) p q a.toFun) =ᵐ[P]
+        (fun a : RegCoeffField d => Mu (cubeSet Q) (-p, q) a.toFun - vecDot p q)) :
+    AEMeasurable (fun a : RegCoeffField d => ResponseJ (cubeSet Q) p q a.toFun) P := by
   have hMu :
       AEMeasurable
-        (fun a : CoeffField d => Mu (cubeSet Q) (-p, q) a - vecDot p q) P :=
+        (fun a : RegCoeffField d => Mu (cubeSet Q) (-p, q) a.toFun - vecDot p q) P :=
     (hP.aemeasurable_Mu_cubeSet Q (-p, q)).sub aemeasurable_const
   exact hMu.congr hEq.symm
 
@@ -555,8 +555,8 @@ triadic cube. -/
 theorem ResponseJ_cubeSet_eq_Mu_neg_left_sub_vecDot_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
-    (fun a : CoeffField d => ResponseJ (cubeSet Q) p q a) =ᵐ[P]
-      (fun a : CoeffField d => Mu (cubeSet Q) (-p, q) a - vecDot p q) := by
+    (fun a : RegCoeffField d => ResponseJ (cubeSet Q) p q a.toFun) =ᵐ[P]
+      (fun a : RegCoeffField d => Mu (cubeSet Q) (-p, q) a.toFun - vecDot p q) := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   have hId :=
     Ch02.ResponseJ_cubeSet_eq_Mu_neg_left_sub_vecDot
@@ -567,7 +567,7 @@ theorem ResponseJ_cubeSet_eq_Mu_neg_left_sub_vecDot_ae
 theorem aemeasurable_ResponseJ_cubeSet
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
-    AEMeasurable (fun a : CoeffField d => ResponseJ (cubeSet Q) p q a) P :=
+    AEMeasurable (fun a : RegCoeffField d => ResponseJ (cubeSet Q) p q a.toFun) P :=
   hP.aemeasurable_ResponseJ_cubeSet_of_ae_eq_mu Q p q
     (hP.ResponseJ_cubeSet_eq_Mu_neg_left_sub_vecDot_ae Q p q)
 
@@ -579,14 +579,14 @@ theorem aemeasurable_descendantsAverage_ResponseJ_cubeSet_of_ae_eq_mu
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d)
     (hEq :
       ∀ R, R ∈ descendantsAtDepth Q j →
-        (fun a : CoeffField d => ResponseJ (cubeSet R) p q a) =ᵐ[P]
-          (fun a : CoeffField d => Mu (cubeSet R) (-p, q) a - vecDot p q)) :
+        (fun a : RegCoeffField d => ResponseJ (cubeSet R) p q a.toFun) =ᵐ[P]
+          (fun a : RegCoeffField d => Mu (cubeSet R) (-p, q) a.toFun - vecDot p q)) :
     AEMeasurable
-      (fun a : CoeffField d =>
-        descendantsAverage Q j (fun R => ResponseJ (cubeSet R) p q a)) P :=
+      (fun a : RegCoeffField d =>
+        descendantsAverage Q j (fun R => ResponseJ (cubeSet R) p q a.toFun)) P :=
   aemeasurable_descendantsAverage
     (P := P) (Q := Q) (j := j)
-    (F := fun R a => ResponseJ (cubeSet R) p q a)
+    (F := fun R a => ResponseJ (cubeSet R) p q a.toFun)
     (fun R hR => hP.aemeasurable_ResponseJ_cubeSet_of_ae_eq_mu R p q (hEq R hR))
 
 /-- Finite descendant averages of scalar response observables are
@@ -595,11 +595,11 @@ theorem aemeasurable_descendantsAverage_ResponseJ_cubeSet
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEMeasurable
-      (fun a : CoeffField d =>
-        descendantsAverage Q j (fun R => ResponseJ (cubeSet R) p q a)) P :=
+      (fun a : RegCoeffField d =>
+        descendantsAverage Q j (fun R => ResponseJ (cubeSet R) p q a.toFun)) P :=
   aemeasurable_descendantsAverage
     (P := P) (Q := Q) (j := j)
-    (F := fun R a => ResponseJ (cubeSet R) p q a)
+    (F := fun R a => ResponseJ (cubeSet R) p q a.toFun)
     (fun R _hR => hP.aemeasurable_ResponseJ_cubeSet R p q)
 
 /-- The adjointed `ResponseJ` observable is a.e.-measurable whenever the
@@ -608,15 +608,15 @@ theorem aemeasurable_ResponseJ_adjointCoeffField_cubeSet_of_ae_eq_mu
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (hAdj : AdjointInvariantLaw P) (Q : TriadicCube d) (p q : Vec d)
     (hEq :
-      (fun a : CoeffField d => ResponseJ (cubeSet Q) p q (adjointCoeffField a)) =ᵐ[P]
-        (fun a : CoeffField d =>
-          Mu (cubeSet Q) (-p, q) (adjointCoeffField a) - vecDot p q)) :
+      (fun a : RegCoeffField d => ResponseJ (cubeSet Q) p q (adjointReg a).toFun) =ᵐ[P]
+        (fun a : RegCoeffField d =>
+          Mu (cubeSet Q) (-p, q) (adjointReg a).toFun - vecDot p q)) :
     AEMeasurable
-      (fun a : CoeffField d => ResponseJ (cubeSet Q) p q (adjointCoeffField a)) P := by
+      (fun a : RegCoeffField d => ResponseJ (cubeSet Q) p q (adjointReg a).toFun) P := by
   have hMu :
       AEMeasurable
-        (fun a : CoeffField d =>
-          Mu (cubeSet Q) (-p, q) (adjointCoeffField a) - vecDot p q) P :=
+        (fun a : RegCoeffField d =>
+          Mu (cubeSet Q) (-p, q) (adjointReg a).toFun - vecDot p q) P :=
     (hP.aemeasurable_Mu_adjointCoeffField_cubeSet hAdj Q (-p, q)).sub aemeasurable_const
   exact hMu.congr hEq.symm
 

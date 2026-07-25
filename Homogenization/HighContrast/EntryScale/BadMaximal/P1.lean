@@ -118,7 +118,7 @@ noncomputable def terminalBadMaximalSplitEnvelope
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) {N m : ℕ} (hNm : N ≤ m)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) (M_sub : ℕ → Ω → ℝ) : Ω → ℝ :=
+    (a : Ω → Homogenization.RegCoeffField d) (M_sub : ℕ → Ω → ℝ) : Ω → ℝ :=
   fun ω =>
     terminalCoarseBlockStochasticMax hP hStruct hc N m Q a ω +
       |M_sub m ω| +
@@ -131,7 +131,7 @@ theorem terminalCoarseBlockStochasticMax_nonneg
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) :
+    (a : Ω → Homogenization.RegCoeffField d) :
     ∀ ω, 0 ≤ terminalCoarseBlockStochasticMax hP hStruct hc N m Q a ω := by
   intro ω
   dsimp [terminalCoarseBlockStochasticMax, terminalCoarseBlockStochasticMaxOfWeak]
@@ -508,7 +508,7 @@ noncomputable def terminalSpectralPositivePartAtScale
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) : ℝ :=
+    (a : Homogenization.RegCoeffField d) : ℝ :=
   fullBlockOperatorNorm
     ((Homogenization.Book.Ch05.Section54.VarianceBoundGoodScale.fullBlockNormalizedFluctuationMatrix
         hP hStruct (m : ℤ)
@@ -519,7 +519,7 @@ theorem terminalSpectralPositivePartAtScale_nonneg
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     0 ≤ terminalSpectralPositivePartAtScale hP hStruct m Q a := by
   dsimp [terminalSpectralPositivePartAtScale]
   exact fullBlockOperatorNorm_nonneg _
@@ -530,7 +530,7 @@ theorem aemeasurable_terminalFullBlockNormalizedFluctuationMatrixAtScale
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d) :
     AEMeasurable
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         Homogenization.Book.Ch05.Section54.VarianceBoundGoodScale.fullBlockNormalizedFluctuationMatrix
           hP hStruct (m : ℤ) (Homogenization.cubeSet Q) a) P :=
   Homogenization.Book.Ch05.Section56.aemeasurable_fullBlockNormalizedFluctuationMatrix_cubeSet
@@ -542,7 +542,7 @@ theorem aemeasurable_terminalSpectralPositivePartAtScale
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d) :
     AEMeasurable
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         terminalSpectralPositivePartAtScale hP hStruct m Q a) P := by
   exact
     (measurable_fullBlockOperatorNorm_posPart.comp_aemeasurable
@@ -616,7 +616,7 @@ theorem fullBlockNormalizedQuadraticObservable_sub_dotProduct_le_terminalSpectra
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d)
+    (a : Homogenization.RegCoeffField d)
     (hSymm : Homogenization.IsSymmetricBlockMat
       (Homogenization.coarseBlockMatrix (Homogenization.cubeSet Q) a))
     (q : Homogenization.FullBlockVec d) :
@@ -706,7 +706,7 @@ theorem vecDot_matVecMul_smul_one
 
 theorem coarseBlockMatrix_cubeSet_symm_of_aelocallyUniformlyEllipticField
     {d : ℕ} [NeZero d] (Q : Homogenization.TriadicCube d)
-    {a : Homogenization.CoeffField d}
+    {a : Homogenization.RegCoeffField d}
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a) :
     Homogenization.IsSymmetricBlockMat
       (Homogenization.coarseBlockMatrix (Homogenization.cubeSet Q) a) := by
@@ -726,7 +726,7 @@ theorem coarseBlockMatrix_cubeSet_symm_of_aelocallyUniformlyEllipticField
 
 theorem coarseBlockMatrix_cubeSet_blockPosDef_of_aelocallyUniformlyEllipticField
     {d : ℕ} [NeZero d] (Q : Homogenization.TriadicCube d)
-    {a : Homogenization.CoeffField d}
+    {a : Homogenization.RegCoeffField d}
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a) :
     Homogenization.Book.Ch02.BlockPosDef
       (Homogenization.coarseBlockMatrix (Homogenization.cubeSet Q) a) := by
@@ -750,7 +750,7 @@ theorem fullBlockNormalizedQuadraticObservable_upperLift_eq
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) (e : Homogenization.Vec d) :
+    (a : Homogenization.RegCoeffField d) (e : Homogenization.Vec d) :
     let b := hP.barSigmaAtScale hStruct (m : ℤ)
     let xu : Homogenization.FullBlockVec d :=
       Homogenization.toFullBlockVec ((Real.sqrt b) • e, 0)
@@ -816,7 +816,7 @@ theorem fullBlockNormalizedQuadraticObservable_lowerLift_eq
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) (e : Homogenization.Vec d) :
+    (a : Homogenization.RegCoeffField d) (e : Homogenization.Vec d) :
     let c := hP.barSigmaStarAtScale hStruct (m : ℤ)
     let xl : Homogenization.FullBlockVec d :=
       Homogenization.toFullBlockVec (0, (Real.sqrt c)⁻¹ • e)

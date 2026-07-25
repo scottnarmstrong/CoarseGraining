@@ -86,7 +86,7 @@ noncomputable def localizedNormalizedProbeJMax
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P)
     (hStruct : Ch04.StructuralLaw P)
-    (m n : ℕ) : CoeffField d → ℝ :=
+    (m n : ℕ) : RegCoeffField d → ℝ :=
   fun a =>
     let S : Finset (NormalizedProbeIndex d) := Finset.univ
     have hS : S.Nonempty := by
@@ -99,7 +99,7 @@ noncomputable def localizedNormalizedProbeJMax
 theorem localizedLimitNormalizedJNormalizedProbeSumMax_le_probeJMax
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    {m n : ℕ} (hnm : n ≤ m) (a : CoeffField d) :
+    {m n : ℕ} (hnm : n ≤ m) (a : RegCoeffField d) :
     localizedLimitNormalizedJNormalizedProbeSumMax hP hStruct m n a ≤
       (Fintype.card (NormalizedProbeIndex d) : ℝ) *
         localizedNormalizedProbeJMax hP hStruct m n a := by
@@ -201,7 +201,7 @@ theorem localizedLimitNormalizedJMax_le_normalizedProbeJMax_ae
     {m n : ℕ} (hnm : n ≤ m)
     (e : FullBlockVec d) (he : dotProduct e e ≤ 1) :
     (localizedLimitNormalizedJMax hP hStruct m n e) ≤ᵐ[P]
-      fun a : CoeffField d =>
+      fun a : RegCoeffField d =>
         (4 * (Fintype.card (BlockCoord d) : ℝ) *
             (Fintype.card (NormalizedProbeIndex d) : ℝ)) *
           localizedNormalizedProbeJMax hP hStruct m n a := by
@@ -229,7 +229,7 @@ theorem localizedLimitNormalizedJMax_le_normalizedProbeJMax_ae
 theorem localizedNormalizedProbeJMax_sub_const_le_sup_sub
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    {m n : ℕ} (c : ℝ) (a : CoeffField d) :
+    {m n : ℕ} (c : ℝ) (a : RegCoeffField d) :
     let S : Finset (NormalizedProbeIndex d) := Finset.univ
     ∀ hS : S.Nonempty,
       localizedNormalizedProbeJMax hP hStruct m n a - c ≤

@@ -102,19 +102,19 @@ theorem integral_section52LowTail_childResponseAverage_special_le_lowTailSharpBu
     (hHM :
       HighCenteredMomentEstimate hm P N
         (intermediateCoarseBlockDeviation hP hStruct
-          (fun x : Homogenization.CoeffField d => x)))
-    (M_sub : ℕ → Homogenization.CoeffField d → ℝ)
+          (fun x : Homogenization.RegCoeffField d => x)))
+    (M_sub : ℕ → Homogenization.RegCoeffField d → ℝ)
     (hMsub : AEMeasurable (M_sub m) P)
     {stochRoot polyRoot : ℝ}
     (hfin :
       (∫⁻ ω, ‖terminalCoarseBlockStochasticMax hP hStruct hc N m
           (Homogenization.originCube d (m : ℤ))
-          (fun x : Homogenization.CoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
+          (fun x : Homogenization.RegCoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
         (∫⁻ ω, ‖M_sub m ω‖ₑ ^ (2 : ℝ) ∂P) ≠ ⊤)
     (hstochRoot :
       2 * (((∫⁻ ω, ‖terminalCoarseBlockStochasticMax hP hStruct hc N m
             (Homogenization.originCube d (m : ℤ))
-            (fun x : Homogenization.CoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
+            (fun x : Homogenization.RegCoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
           (∫⁻ ω, ‖M_sub m ω‖ₑ ^ (2 : ℝ) ∂P)).toReal ^ (1 / (hP4.xi : ℝ))) ≤
         stochRoot)
     (hpolyRoot :
@@ -136,12 +136,12 @@ theorem integral_section52LowTail_childResponseAverage_special_le_lowTailSharpBu
     let q_e :=
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-    let childAvg := fun a : Homogenization.CoeffField d =>
+    let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
         (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-    let response := fun a : Homogenization.CoeffField d =>
+    let response := fun a : Homogenization.RegCoeffField d =>
       (5 * β⁻¹) ^ 2 * childAvg a
-    let lowerSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+    let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
       let parents := Homogenization.descendantsAtScale Q n.1
       let hparents : parents.Nonempty :=
         Homogenization.descendantsAtScale_nonempty Q
@@ -156,7 +156,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_lowTailSharpBu
           0
       Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s' m n.1 *
         (σ * parents.sup' hparents lowerExcess) * response a
-    let upperSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+    let upperSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
       let parents := Homogenization.descendantsAtScale Q n.1
       let hparents : parents.Nonempty :=
         Homogenization.descendantsAtScale_nonempty Q
@@ -171,7 +171,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_lowTailSharpBu
           0
       Homogenization.Book.Ch05.Section52.section52LargeScaleWeight t' m n.1 *
         (σ⁻¹ * parents.sup' hparents upperExcess) * response a
-    let lowSum := fun a : Homogenization.CoeffField d =>
+    let lowSum := fun a : Homogenization.RegCoeffField d =>
       S.attach.sum fun n =>
         if k ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
     ∫ a, lowSum a ∂P ≤
@@ -188,14 +188,14 @@ theorem integral_section52LowTail_childResponseAverage_special_le_lowTailSharpBu
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-  let childAvg : Homogenization.CoeffField d → ℝ := fun a =>
+  let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
       (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-  let response : Homogenization.CoeffField d → ℝ := fun a =>
+  let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
-  let sourceMax : Homogenization.CoeffField d → ℝ :=
+  let sourceMax : Homogenization.RegCoeffField d → ℝ :=
     terminalSpectralPositivePartSourceMax hP hStruct hc N m Q
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   let weightLossSup : {n : ℤ // n ∈ S} → ℝ := fun n =>
     let parents := Homogenization.descendantsAtScale Q n.1
     let hparents : parents.Nonempty :=
@@ -299,7 +299,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_lowTailSharpBu
         Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg R p_e q_e a)
   have hsrc_nonneg : ∀ a, 0 ≤ sourceMax a :=
     terminalSpectralPositivePartSourceMax_nonneg hP hStruct hc N m Q
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   have hdrift_nonneg : 0 ≤ terminalBadMaximalDriftSup hP hStruct hc (hNk.trans hkm.le) :=
     terminalBadMaximalDriftSup_nonneg hP hStruct hc (hNk.trans hkm.le)
   have hstochRoot_nonneg : 0 ≤ stochRoot := by

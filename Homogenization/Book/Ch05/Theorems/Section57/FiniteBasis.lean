@@ -63,8 +63,8 @@ private theorem fullBlockReflect_isSymm
 noncomputable def limitNormalizedBlockJMatrix
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (Q : TriadicCube d) (a : CoeffField d) : FullBlockMat d :=
-  let M : FullBlockMat d := toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)
+    (Q : TriadicCube d) (a : RegCoeffField d) : FullBlockMat d :=
+  let M : FullBlockMat d := toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)
   let S : FullBlockMat d := scalarLimitInvSqrtMatrix hP hStruct
   let T : FullBlockMat d := scalarLimitSqrtMatrix hP hStruct
   (1 / 2 : ℝ) • (S * M * S) +
@@ -74,10 +74,10 @@ noncomputable def limitNormalizedBlockJMatrix
 theorem limitNormalizedBlockJMatrix_isSymm_of_isSymmetricBlockMat
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    {Q : TriadicCube d} {a : CoeffField d}
-    (hA : IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a)) :
+    {Q : TriadicCube d} {a : RegCoeffField d}
+    (hA : IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) :
     (limitNormalizedBlockJMatrix hP hStruct Q a).IsSymm := by
-  let M : FullBlockMat d := toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)
+  let M : FullBlockMat d := toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)
   let S : FullBlockMat d := scalarLimitInvSqrtMatrix hP hStruct
   let T : FullBlockMat d := scalarLimitSqrtMatrix hP hStruct
   have hM : M.IsSymm := by
@@ -111,14 +111,14 @@ theorem limitNormalizedBlockJMatrix_quadratic_eq_blockJQuadratic
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    (Q : TriadicCube d) (e : FullBlockVec d) (a : CoeffField d) :
+    (Q : TriadicCube d) (e : FullBlockVec d) (a : RegCoeffField d) :
     fullBlockQuadratic (limitNormalizedBlockJMatrix hP hStruct Q a) e =
       Ch04.blockJQuadraticFullBlockMat
-        (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a))
+        (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun))
         (scalarLimitInvSqrtBlockVec hP hStruct e)
         (scalarLimitSqrtBlockVec hP hStruct e) := by
-  let M : FullBlockMat d := toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)
-  let A : BlockMat d := coarseBlockMatrix (cubeSet Q) a
+  let M : FullBlockMat d := toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)
+  let A : BlockMat d := coarseBlockMatrix (cubeSet Q) a.toFun
   let S : FullBlockMat d := scalarLimitInvSqrtMatrix hP hStruct
   let T : FullBlockMat d := scalarLimitSqrtMatrix hP hStruct
   let Pvec : BlockVec d := scalarLimitInvSqrtBlockVec hP hStruct e
@@ -182,7 +182,7 @@ theorem limitNormalizedBlockJMatrix_quadratic_eq_blockJQuadratic
           simp [Ch04.blockJQuadraticFullBlockMat, hfirst, hsecond, hpair]
     _ =
         Ch04.blockJQuadraticFullBlockMat
-          (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a))
+          (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun))
           (scalarLimitInvSqrtBlockVec hP hStruct e)
           (scalarLimitSqrtBlockVec hP hStruct e) := by
           rfl
@@ -193,13 +193,13 @@ theorem limitNormalizedBlockJObservable_ae_eq_limitNormalizedBlockJMatrix_quadra
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (Q : TriadicCube d) (e : FullBlockVec d) :
     limitNormalizedBlockJObservable hP hStruct Q e =ᵐ[P]
-      fun a : CoeffField d =>
+      fun a : RegCoeffField d =>
         fullBlockQuadratic (limitNormalizedBlockJMatrix hP hStruct Q a) e := by
   have hJ :
       limitNormalizedBlockJObservable hP hStruct Q e =ᵐ[P]
-        fun a : CoeffField d =>
+        fun a : RegCoeffField d =>
           Ch04.blockJQuadraticFullBlockMat
-            (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a))
+            (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun))
             (scalarLimitInvSqrtBlockVec hP hStruct e)
             (scalarLimitSqrtBlockVec hP hStruct e) := by
     simpa [limitNormalizedBlockJObservable] using
@@ -216,14 +216,14 @@ theorem limitNormalizedBlockJObservable_eq_limitNormalizedBlockJMatrix_quadratic
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (e : FullBlockVec d) :
     limitNormalizedBlockJObservable hP hStruct Q e a =
       fullBlockQuadratic (limitNormalizedBlockJMatrix hP hStruct Q a) e := by
   calc
     limitNormalizedBlockJObservable hP hStruct Q e a =
         Ch04.blockJQuadraticFullBlockMat
-          (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a))
+          (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun))
           (scalarLimitInvSqrtBlockVec hP hStruct e)
           (scalarLimitSqrtBlockVec hP hStruct e) := by
           simpa [limitNormalizedBlockJObservable] using
@@ -242,7 +242,7 @@ theorem limitNormalizedBlockJObservable_smul_ae
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (Q : TriadicCube d) (c : ℝ) (e : FullBlockVec d) :
     limitNormalizedBlockJObservable hP hStruct Q (c • e) =ᵐ[P]
-      fun a : CoeffField d =>
+      fun a : RegCoeffField d =>
         c ^ (2 : ℕ) * limitNormalizedBlockJObservable hP hStruct Q e a := by
   have hEq_ce :=
     limitNormalizedBlockJObservable_ae_eq_limitNormalizedBlockJMatrix_quadratic
@@ -260,7 +260,7 @@ quadratic on one cube. -/
 noncomputable def limitNormalizedJProbeSum
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (Q : TriadicCube d) : CoeffField d → ℝ :=
+    (Q : TriadicCube d) : RegCoeffField d → ℝ :=
   fun a =>
     ∑ α : BlockCoord d, ∑ β : BlockCoord d,
       (limitNormalizedBlockJObservable hP hStruct Q
@@ -276,7 +276,7 @@ most one. -/
 noncomputable def limitNormalizedJNormalizedProbeSum
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (Q : TriadicCube d) : CoeffField d → ℝ :=
+    (Q : TriadicCube d) : RegCoeffField d → ℝ :=
   fun a =>
     ∑ α : BlockCoord d, ∑ β : BlockCoord d,
       (limitNormalizedBlockJObservable hP hStruct Q
@@ -289,7 +289,7 @@ noncomputable def limitNormalizedJNormalizedProbeSum
 private theorem limitNormalizedBlockJObservable_probe_nonneg
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (Q : TriadicCube d) (e : FullBlockVec d) (a : CoeffField d) :
+    (Q : TriadicCube d) (e : FullBlockVec d) (a : RegCoeffField d) :
     0 ≤ limitNormalizedBlockJObservable hP hStruct Q e a := by
   simpa [limitNormalizedBlockJObservable] using
     Ch04.blockJObservableCubeSetBlockVec_nonneg Q
@@ -303,7 +303,7 @@ theorem limitNormalizedBlockJObservable_le_probeSum_of_aelocallyUniformlyEllipti
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {a : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
+    {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (e : FullBlockVec d)
     (he : dotProduct e e ≤ 1) :
     limitNormalizedBlockJObservable hP hStruct Q e a ≤
@@ -311,15 +311,15 @@ theorem limitNormalizedBlockJObservable_le_probeSum_of_aelocallyUniformlyEllipti
         limitNormalizedJProbeSum hP hStruct Q a := by
   classical
   let card : ℝ := (Fintype.card (BlockCoord d) : ℝ)
-  let K : CoeffField d → FullBlockMat d :=
+  let K : RegCoeffField d → FullBlockMat d :=
     fun a => limitNormalizedBlockJMatrix hP hStruct Q a
   let M : FullBlockMat d := K a
   have hA :
-      IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a) := by
+      IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) := by
     let F : Ch02.TriadicCoeffFamily d :=
       Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
     have hcoarse :
-        coarseBlockMatrix (cubeSet Q) a =
+        coarseBlockMatrix (cubeSet Q) a.toFun =
           Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
       simpa [F] using
         Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -440,7 +440,7 @@ theorem limitNormalizedJProbeSum_le_four_normalizedProbeSum_ae
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (Q : TriadicCube d) :
     (limitNormalizedJProbeSum hP hStruct Q) ≤ᵐ[P]
-      fun a : CoeffField d =>
+      fun a : RegCoeffField d =>
         4 * limitNormalizedJNormalizedProbeSum hP hStruct Q a := by
   classical
   have hPlus :
@@ -527,16 +527,16 @@ theorem limitNormalizedBlockJObservable_le_probeSum_ae
     (Q : TriadicCube d) (e : FullBlockVec d)
     (he : dotProduct e e ≤ 1) :
     (limitNormalizedBlockJObservable hP hStruct Q e) ≤ᵐ[P]
-      fun a : CoeffField d =>
+      fun a : RegCoeffField d =>
         (Fintype.card (BlockCoord d) : ℝ) *
           limitNormalizedJProbeSum hP hStruct Q a := by
   classical
   let card : ℝ := (Fintype.card (BlockCoord d) : ℝ)
-  let K : CoeffField d → FullBlockMat d :=
+  let K : RegCoeffField d → FullBlockMat d :=
     fun a => limitNormalizedBlockJMatrix hP hStruct Q a
   have hEq_e :
       limitNormalizedBlockJObservable hP hStruct Q e =ᵐ[P]
-        fun a : CoeffField d => fullBlockQuadratic (K a) e := by
+        fun a : RegCoeffField d => fullBlockQuadratic (K a) e := by
     simpa [K] using
       limitNormalizedBlockJObservable_ae_eq_limitNormalizedBlockJMatrix_quadratic
         hP hStruct hΓ Q e
@@ -657,7 +657,7 @@ theorem limitNormalizedBlockJObservable_le_normalizedProbeSum_ae
     (Q : TriadicCube d) (e : FullBlockVec d)
     (he : dotProduct e e ≤ 1) :
     (limitNormalizedBlockJObservable hP hStruct Q e) ≤ᵐ[P]
-      fun a : CoeffField d =>
+      fun a : RegCoeffField d =>
         (4 * (Fintype.card (BlockCoord d) : ℝ)) *
           limitNormalizedJNormalizedProbeSum hP hStruct Q a := by
   have hle :=

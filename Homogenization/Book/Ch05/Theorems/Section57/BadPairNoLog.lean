@@ -44,7 +44,7 @@ theorem measureReal_shiftedHigh_badPairEvent_quenchedProbeEnvelope_le_card_mul_c
         let N0 : ℕ :=
           annealedAlgebraicEntryScale P
             hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-        let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+        let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
           fun M N aω =>
             quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
         let D : Finset (TriadicCube d) :=
@@ -82,7 +82,7 @@ theorem measureReal_shiftedHigh_badPairEvent_quenchedProbeEnvelope_le_card_mul_c
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-  let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+  let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>
       quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
   let D : Finset (TriadicCube d) :=
@@ -198,7 +198,7 @@ theorem measureReal_shiftedHigh_badPairEvent_quenchedProbeEnvelope_le_card_mul_c
             let N0 : ℕ :=
               annealedAlgebraicEntryScale P
                 hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-            let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+            let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
               fun M N aω =>
                 quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
             let D : Finset (TriadicCube d) :=
@@ -239,7 +239,7 @@ theorem measureReal_shiftedHigh_badPairEvent_quenchedProbeEnvelope_le_card_mul_c
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
-  let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+  let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>
       quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
   let D : Finset (TriadicCube d) :=
@@ -345,7 +345,7 @@ theorem measureReal_shiftedCrude_badPairEvent_quenchedProbeEnvelope_le_card_mul_
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {N0 q m n : ℕ},
         let K : ℝ := quenchedProbeEnvelopeConst d
-        let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+        let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
           fun M N aω =>
             quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
         let x : ℝ :=
@@ -371,7 +371,7 @@ theorem measureReal_shiftedCrude_badPairEvent_quenchedProbeEnvelope_le_card_mul_
   classical
   letI : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
-  let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+  let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>
       quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
   let x : ℝ :=

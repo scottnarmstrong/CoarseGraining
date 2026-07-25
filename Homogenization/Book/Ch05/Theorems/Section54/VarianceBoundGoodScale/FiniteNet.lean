@@ -350,10 +350,10 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_probeSqBudget_ae
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct center Q a)
       ≤ᵐ[P]
-    fun a : CoeffField d =>
+    fun a : RegCoeffField d =>
       ((Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ)) *
         fullBlockProbeSqBudget
           (fullBlockNormalizedFluctuationMatrix hP hStruct center (cubeSet Q) a) := by

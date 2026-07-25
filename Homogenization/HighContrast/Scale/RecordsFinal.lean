@@ -276,7 +276,7 @@ noncomputable def locOfParams {d : ℕ} [NeZero d]
 /-- Integrability of a bounded nonnegative power on a probability measure. -/
 private theorem integrable_pow_of_ae_bound {d : ℕ}
     {P : CoeffLaw d} [IsProbabilityMeasure P]
-    {f : CoeffField d → ℝ} {C : ℝ} (hf : AEMeasurable f P)
+    {f : RegCoeffField d → ℝ} {C : ℝ} (hf : AEMeasurable f P)
     (hnonneg : ∀ᵐ a ∂P, 0 ≤ f a) (hbound : ∀ᵐ a ∂P, f a ≤ C) (ξ : ℕ) :
     Integrable (fun a => f a ^ ξ) P := by
   refine (integrable_const (C ^ ξ)).mono' (hf.pow_const ξ).aestronglyMeasurable ?_
@@ -317,7 +317,7 @@ noncomputable def qcgeOfThetaEllipticLaw {d : ℕ} [NeZero d] (hd : 2 ≤ d)
     · filter_upwards with a
       exact Homogenization.Book.Ch04.LambdaSqCoeffField_finite_nonneg (originCube d 0) a (by norm_num) le_rfl
     · filter_upwards [hLaw] with a ha
-      exact LambdaSqCoeffField_originCube_zero_le_of_ae hΘ (by norm_num) ha.1 ha.2
+      exact LambdaSqCoeffField_originCube_zero_le_of_ae hΘ (by norm_num) ha
   lower_inv_moment_integrable := by
     refine integrable_pow_of_ae_bound (C := 2)
       (hP.aemeasurable_lambdaSqCoeffField_finite_one_inv (originCube d 0) (by norm_num))
@@ -326,7 +326,7 @@ noncomputable def qcgeOfThetaEllipticLaw {d : ℕ} [NeZero d] (hd : 2 ≤ d)
       exact inv_nonneg.mpr
         (Homogenization.Book.Ch04.lambdaSqCoeffField_finite_nonneg (originCube d 0) a (by norm_num) le_rfl)
     · filter_upwards [hLaw] with a ha
-      exact lambdaSqCoeffField_originCube_zero_inv_le_of_ae hΘ (by norm_num) ha.1 ha.2
+      exact lambdaSqCoeffField_originCube_zero_inv_le_of_ae hΘ (by norm_num) ha
 
 @[simp] theorem qcgeOfThetaEllipticLaw_params {d : ℕ} [NeZero d] (hd : 2 ≤ d)
     {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffLaw d} [IsProbabilityMeasure P]

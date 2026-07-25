@@ -705,14 +705,14 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpecte
       Integrable (Ch04.responseJObservableCubeSet R p q) P)
     (hGradSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-            (originCube d m) s p q p0 a) ^ 2) P)
+            (originCube d m) s p q p0 a.toFun) ^ 2) P)
     (hFluxSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-            (originCube d m) t p q q0 a) ^ 2) P) :
+            (originCube d m) t p q q0 a.toFun) ^ 2) P) :
     let Q : TriadicCube d := originCube d m
     let j : ℕ := Int.toNat (m - k)
     Ch04.expectedResponseJCubeSet P Q p q -
@@ -824,26 +824,32 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpecte
     exact le_max_left _ _
   have hCprod : 0 ≤ section53CutoffProductCoeff Q s t := by
     exact section53CutoffProductCoeff_nonneg Q s t
-  have hOneSq : Integrable (fun _ : CoeffField d => (1 : ℝ) ^ 2) P := by
+  have hOneSq : Integrable (fun _ : RegCoeffField d => (1 : ℝ) ^ 2) P := by
     simp
   have hGradWeak :
-      Integrable (Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0) P := by
+      Integrable
+        (fun a : RegCoeffField d =>
+          Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun) P := by
     have hprod :=
       integrable_mul_of_integrable_sq_of_ae_nonneg
         (μ := P)
-        (X := Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0)
-        (Y := fun _ : CoeffField d => (1 : ℝ))
+        (X := fun a : RegCoeffField d =>
+          Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun)
+        (Y := fun _ : RegCoeffField d => (1 : ℝ))
         (by simpa [Q] using hGradSq) hOneSq
         (canonicalScalarResponseGradientWeakNormCubeSet_nonneg_ae hP Q hs p q p0)
         (by filter_upwards with a; norm_num)
     simpa using hprod
   have hFluxWeak :
-      Integrable (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0) P := by
+      Integrable
+        (fun a : RegCoeffField d =>
+          Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun) P := by
     have hprod :=
       integrable_mul_of_integrable_sq_of_ae_nonneg
         (μ := P)
-        (X := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0)
-        (Y := fun _ : CoeffField d => (1 : ℝ))
+        (X := fun a : RegCoeffField d =>
+          Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun)
+        (Y := fun _ : RegCoeffField d => (1 : ℝ))
         (by simpa [Q] using hFluxSq) hOneSq
         (canonicalScalarResponseFluxWeakNormCubeSet_nonneg_ae hP Q ht p q q0)
         (by filter_upwards with a; norm_num)
@@ -884,14 +890,14 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpecte
     (p q p0 q0 : Vec d)
     (hGradSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-            (originCube d m) s p q p0 a) ^ 2) P)
+            (originCube d m) s p q p0 a.toFun) ^ 2) P)
     (hFluxSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-            (originCube d m) t p q q0 a) ^ 2) P) :
+            (originCube d m) t p q q0 a.toFun) ^ 2) P) :
     let Q : TriadicCube d := originCube d m
     let j : ℕ := Int.toNat (m - k)
     Ch04.expectedResponseJCubeSet P Q p q -

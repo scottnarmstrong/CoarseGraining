@@ -95,13 +95,13 @@ private theorem integral_plusProbe_self_sq_eq
               (cubeSet (originCube d (j : ℤ))) a)
             (fullBlockCoordinateProbe α)) ^ (2 : ℕ) ∂P := by
   have hpoint :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         (fullBlockQuadratic
           (fullBlockNormalizedFluctuationMatrix hP hStruct (m : ℤ)
             (cubeSet (originCube d (j : ℤ))) a)
           (fullBlockPlusProbe α α)) ^ (2 : ℕ))
         =
-      fun a : CoeffField d =>
+      fun a : RegCoeffField d =>
         16 *
           (fullBlockQuadratic
             (fullBlockNormalizedFluctuationMatrix hP hStruct (m : ℤ)
@@ -122,13 +122,13 @@ private theorem integral_minusProbe_self_sq_eq_zero
             (cubeSet (originCube d (j : ℤ))) a)
           (fullBlockMinusProbe α α)) ^ (2 : ℕ) ∂P = 0 := by
   have hpoint :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         (fullBlockQuadratic
           (fullBlockNormalizedFluctuationMatrix hP hStruct (m : ℤ)
             (cubeSet (originCube d (j : ℤ))) a)
           (fullBlockMinusProbe α α)) ^ (2 : ℕ))
         =
-      fun _a : CoeffField d => 0 := by
+      fun _a : RegCoeffField d => 0 := by
     funext a
     rw [fullBlockQuadratic_minusProbe_self]
     norm_num
@@ -160,7 +160,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_matrixVa
     if α = β then 0 else minusProbeVarianceBound hP hStruct hP4 delta m j α β
   have hcoord_int : ∀ α : BlockCoord d,
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (fullBlockQuadratic
             (fullBlockNormalizedFluctuationMatrix hP hStruct (m : ℤ)
               (cubeSet (originCube d (j : ℤ))) a)
@@ -170,7 +170,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_matrixVa
       hP hStruct hP4 m j (fullBlockCoordinateProbe α)
   have hplus_int : ∀ α β : BlockCoord d,
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (fullBlockQuadratic
             (fullBlockNormalizedFluctuationMatrix hP hStruct (m : ℤ)
               (cubeSet (originCube d (j : ℤ))) a)
@@ -180,7 +180,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_matrixVa
       hP hStruct hP4 m j (fullBlockPlusProbe α β)
   have hminus_int : ∀ α β : BlockCoord d,
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (fullBlockQuadratic
             (fullBlockNormalizedFluctuationMatrix hP hStruct (m : ℤ)
               (cubeSet (originCube d (j : ℤ))) a)

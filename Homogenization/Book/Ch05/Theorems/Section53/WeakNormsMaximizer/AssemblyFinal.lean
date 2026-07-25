@@ -19,7 +19,7 @@ open scoped ENNReal BigOperators
 noncomputable section
 
 private theorem fluxScaleGeometricRHS_le_two_fluxRHSAtScale
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     {k m : ℤ} {t t' : ℝ}
     (ht : 0 < t) (ht_le : t ≤ 1)
     (hgap : 0 < t - t') (hgap_le : t - t' ≤ 1)
@@ -126,7 +126,7 @@ private theorem fluxScaleGeometricRHS_le_two_fluxRHSAtScale
 at homogenization scale.  The leading factor `2` records the current
 high/low split normalization and is absorbed harmlessly in later constants. -/
 theorem weakNormsMaximizerGradient_homogenizationScale
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℤ} (hkm : k < m) {s s' : ℝ}
     (hs : 0 < s) (hs_le : s ≤ 1)
@@ -149,7 +149,7 @@ theorem weakNormsMaximizerGradient_homogenizationScale
 homogenization scale.  The leading factor `2` records the accepted split
 loss and is absorbed harmlessly in later constants. -/
 theorem weakNormsMaximizerFlux_homogenizationScale
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℤ} (hkm : k < m) {t t' : ℝ}
     (ht : 0 < t) (ht_le : t ≤ 1)
@@ -171,7 +171,7 @@ theorem weakNormsMaximizerFlux_homogenizationScale
 /-- The paired deterministic weak-norm maximizer estimate, in the manuscript
 parameter regime. -/
 theorem weakNormsMaximizer_homogenizationScale
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℤ} (hkm : k < m)
     {s s' t t' : ℝ}

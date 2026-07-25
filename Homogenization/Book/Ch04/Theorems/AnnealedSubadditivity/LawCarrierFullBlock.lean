@@ -27,9 +27,9 @@ so downstream code should not assemble entrywise integrability by hand. -/
 theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_diagonalBlockNorms
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d)
-    (hBInt : Integrable (fun a : CoeffField d => coarseBBlockNorm Q a) P)
+    (hBInt : Integrable (fun a : RegCoeffField d => coarseBBlockNorm Q a.toFun) P)
     (hStarInt :
-      Integrable (fun a : CoeffField d => coarseSigmaStarInvBlockNorm Q a) P) :
+      Integrable (fun a : RegCoeffField d => coarseSigmaStarInvBlockNorm Q a.toFun) P) :
     Integrable (coarseFullBlockMatrixAtCube Q) P := by
   refine MeasureTheory.Integrable.of_eval ?_
   intro α
@@ -37,8 +37,8 @@ theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_diagonalBlockNorms
   intro β
   have hEntryMeas :
       AEMeasurable
-        (fun a : CoeffField d =>
-          blockMatEntry (coarseBlockMatrix (cubeSet Q) a) α β) P := by
+        (fun a : RegCoeffField d =>
+          blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β) P := by
     cases α with
     | inl i =>
         cases β with
@@ -58,7 +58,7 @@ theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_diagonalBlockNorms
               hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet Q i j
   have hStrong :
       AEStronglyMeasurable
-        (fun a : CoeffField d => coarseFullBlockMatrixAtCube Q a α β) P := by
+        (fun a : RegCoeffField d => coarseFullBlockMatrixAtCube Q a α β) P := by
     simpa [coarseFullBlockMatrixAtCube, coarseFullBlockMatrixObservable,
       toFullBlockMat, blockMatEntry] using hEntryMeas.aestronglyMeasurable
   refine (hBInt.add hStarInt).mono' hStrong ?_
@@ -66,23 +66,23 @@ theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_diagonalBlockNorms
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hEq :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
-  have hSymm : IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a) := by
+  have hSymm : IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) := by
     rw [hEq]
     exact Ch02.isSymmetricBlockMat_coarseBlockMatrix
       (Ch02.cubeDomain Q) (F.coeffOn Q)
-  have hPos : Ch02.BlockPosDef (coarseBlockMatrix (cubeSet Q) a) := by
+  have hPos : Ch02.BlockPosDef (coarseBlockMatrix (cubeSet Q) a.toFun) := by
     rw [hEq]
     exact
       (Ch02.blockCoarseMatrixTheory (Ch02.cubeDomain Q)
         (F.coeffOn Q)).block_matrix_posDef
   have hBound :=
     abs_blockMatEntry_le_diagonalBlockNorms_of_symm_pos
-      (A := coarseBlockMatrix (cubeSet Q) a) hSymm hPos α β
+      (A := coarseBlockMatrix (cubeSet Q) a.toFun) hSymm hPos α β
   simpa [Real.norm_eq_abs, coarseFullBlockMatrixAtCube, coarseFullBlockMatrixObservable,
     toFullBlockMat, blockMatEntry, coarseBBlockNorm, coarseSigmaStarInvBlockNorm]
     using hBound
@@ -94,11 +94,11 @@ theorem integrable_blockMatEntry_coarseBlockMatrix_cubeSet_of_integrable_coarseF
     (hInt : Integrable (coarseFullBlockMatrixAtCube Q) P) :
     ∀ α β,
       Integrable
-        (fun a : CoeffField d => blockMatEntry (coarseBlockMatrix (cubeSet Q) a) α β) P := by
+        (fun a : RegCoeffField d => blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β) P := by
   intro α β
-  have hα : Integrable (fun a : CoeffField d => coarseFullBlockMatrixAtCube Q a α) P :=
+  have hα : Integrable (fun a : RegCoeffField d => coarseFullBlockMatrixAtCube Q a α) P :=
     MeasureTheory.Integrable.eval hInt α
-  have hαβ : Integrable (fun a : CoeffField d => coarseFullBlockMatrixAtCube Q a α β) P :=
+  have hαβ : Integrable (fun a : RegCoeffField d => coarseFullBlockMatrixAtCube Q a α β) P :=
     MeasureTheory.Integrable.eval hα β
   simpa [coarseFullBlockMatrixAtCube, coarseFullBlockMatrixObservable, toFullBlockMat,
     blockMatEntry] using hαβ
@@ -108,12 +108,12 @@ definite on every deterministic triadic cube. -/
 theorem coarseBlockMatrix_lowerRight_posDef_cubeSet_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) :
-    ∀ᵐ a ∂P, (coarseBlockMatrix (cubeSet Q) a).lowerRight.PosDef := by
+    ∀ᵐ a ∂P, (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight.PosDef := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hEq :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -126,12 +126,12 @@ definite on every deterministic triadic cube. -/
 theorem coarseBlockMatrix_upperLeft_posDef_cubeSet_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) :
-    ∀ᵐ a ∂P, (coarseBlockMatrix (cubeSet Q) a).upperLeft.PosDef := by
+    ∀ᵐ a ∂P, (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft.PosDef := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hEq :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -147,8 +147,8 @@ theorem Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube
     (hBlock : Integrable (coarseFullBlockMatrixAtCube (originCube d n)) P) :
     0 < hPrim.barSigmaStarInv := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let F : CoeffField d → Mat d :=
-    fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a).lowerRight
+  let F : RegCoeffField d → Mat d :=
+    fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight
   have hFint : Integrable F P := by
     refine MeasureTheory.Integrable.of_eval ?_
     intro i
@@ -178,8 +178,8 @@ theorem Internal.barB_pos_of_integrable_coarseFullBlockMatrixAtCube
     (hBlock : Integrable (coarseFullBlockMatrixAtCube (originCube d n)) P) :
     0 < hPrim.barB := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let F : CoeffField d → Mat d :=
-    fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a).upperLeft
+  let F : RegCoeffField d → Mat d :=
+    fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft
   have hFint : Integrable F P := by
     refine MeasureTheory.Integrable.of_eval ?_
     intro i

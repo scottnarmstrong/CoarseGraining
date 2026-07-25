@@ -4,6 +4,7 @@ import Homogenization.HighContrast.Corridor.FixedPhase.Resample
 import Homogenization.HighContrast.Corridor.FixedPhase.CorePatchEnergy
 import Homogenization.HighContrast.Corridor.FixedPhase.MeasurableObservable
 import Homogenization.HighContrast.Corridor.FixedPhase.ClampedObservable
+import Homogenization.HighContrast.Corridor.FixedPhase.CarrierObservable
 import Homogenization.HighContrast.Corridor.FixedPhase.EfronSteinPhase
 
 /-!
@@ -25,6 +26,9 @@ Facade re-exporting the fixed-phase components:
   its five-link a.e. identity (`rawPhaseObservable`, `rawPhaseObservable_restrict_eq_of_field`).
 * `FixedPhase.ClampedObservable` — the globally bounded clamped observable
   (`clampedPhaseObservable`, `abs_clampedPhaseObservable_le`).
+* `FixedPhase.CarrierObservable` — the honest carrier-measurable clamped
+  observable (`clampedPhaseObservableR`, `measurable_coreLocalEnergyR`) built on
+  the `slicePart` good events and the carrier `L²` realization engine.
 * `FixedPhase.EfronSteinPhase` — the Efron–Stein bound in the `patchCore` form
   (`efronStein_phaseObservable`).
 -/

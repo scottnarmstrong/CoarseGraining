@@ -47,7 +47,7 @@ noncomputable def quenchedProbeEnvelope
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P)
     (hStruct : Ch04.StructuralLaw P)
-    (m n : ℕ) : CoeffField d → ℝ :=
+    (m n : ℕ) : RegCoeffField d → ℝ :=
   fun a =>
     quenchedProbeEnvelopeConst d *
       localizedNormalizedProbeJMax hP hStruct m n a

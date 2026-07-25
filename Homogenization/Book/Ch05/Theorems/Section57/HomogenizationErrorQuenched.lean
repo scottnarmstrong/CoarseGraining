@@ -200,7 +200,7 @@ theorem exists_homogenizationErrorOnOriginCube_interpolated_expLogSq
             (hStruct : Ch04.StructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hΓ.thetaHat)) ^ (2 : ℕ))) ∧
@@ -278,7 +278,7 @@ theorem exists_homogenizationErrorOnOriginCube_interpolated_expLogSq
     hJlaw hP hStruct hΓ hσ_eq hparams
   obtain ⟨XU, hOU_raw, hXU_one, hUpoint⟩ :=
     hUlaw hP hStruct hΓ hσ_eq hparams
-  let X : CoeffField d → ℝ := fun aω => max (XJ aω) (XU aω)
+  let X : RegCoeffField d → ℝ := fun aω => max (XJ aω) (XU aω)
   let AJ : ℝ :=
     Real.exp (CJ * (Real.log (2 + hΓ.thetaHat)) ^ (2 : ℕ))
   let AU : ℝ :=
@@ -427,7 +427,7 @@ theorem exists_homogenizationErrorOnOriginCube_uniformEndpoint_expLogSq
             (hStruct : Ch04.StructuralLaw P)
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hInf.thetaHat)) ^ (2 : ℕ))) ∧
@@ -516,7 +516,7 @@ theorem exists_homogenizationErrorOnOriginCube_uniformEndpoint_expLogSq
     hJlaw hP hStruct hInf hparams
   let θ : ℝ := hInf.thetaHat
   let D : ℝ := (max 1 (Kunit * θ ^ (2 : ℕ))) ^ α⁻¹
-  let X : CoeffField d → ℝ := fun aω => max (XJ aω) D
+  let X : RegCoeffField d → ℝ := fun aω => max (XJ aω) D
   have hD_one : 1 ≤ D := by
     dsimp [D]
     exact Real.one_le_rpow (le_max_left 1 (Kunit * θ ^ (2 : ℕ)))
@@ -534,7 +534,7 @@ theorem exists_homogenizationErrorOnOriginCube_uniformEndpoint_expLogSq
       _ = D ^ α := hDpow_eq.symm
   let AJ : ℝ := Real.exp (CJ * (Real.log (2 + θ)) ^ (2 : ℕ))
   have hOD_raw :
-      IsBigO P (gammaSigma η) (fun _ : CoeffField d => D) D := by
+      IsBigO P (gammaSigma η) (fun _ : RegCoeffField d => D) D := by
     exact Ch04.isBigO_gammaSigma_const_of_abs_le
       (μ := P) (σ := η) (A := D) (c := D)
       hD_pos.le (by rw [abs_of_pos hD_pos])

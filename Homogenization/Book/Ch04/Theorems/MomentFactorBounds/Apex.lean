@@ -29,23 +29,23 @@ theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_factor_observables
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower) (hξ : 1 ≤ ξ)
     (hUpperPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (LambdaSqCoeffField Q sUpper (.finite 1) a) ^ ξ) P)
     (hLowerPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ((lambdaSqCoeffField Q sLower (.finite 1) a)⁻¹) ^ ξ) P) :
     Integrable (coarseFullBlockMatrixAtCube Q) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
   have hUpperEntryAbsInt :
       ∀ i j : Fin d,
         Integrable
-          (fun a : CoeffField d =>
-            |(coarseBlockMatrix (cubeSet Q) a).upperLeft i j|) P := by
+          (fun a : RegCoeffField d =>
+            |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j|) P := by
     intro i j
-    let X : CoeffField d → ℝ :=
-      fun a => (coarseBlockMatrix (cubeSet Q) a).upperLeft i j
-    let Y : CoeffField d → ℝ :=
+    let X : RegCoeffField d → ℝ :=
+      fun a => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j
+    let Y : RegCoeffField d → ℝ :=
       fun a => LambdaSqCoeffField Q sUpper (.finite 1) a
     have hX_meas : AEMeasurable X P := by
       simpa [X] using hP.aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet Q i j
@@ -67,12 +67,12 @@ theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_factor_observables
   have hLowerEntryAbsInt :
       ∀ i j : Fin d,
         Integrable
-          (fun a : CoeffField d =>
-            |(coarseBlockMatrix (cubeSet Q) a).lowerRight i j|) P := by
+          (fun a : RegCoeffField d =>
+            |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j|) P := by
     intro i j
-    let X : CoeffField d → ℝ :=
-      fun a => (coarseBlockMatrix (cubeSet Q) a).lowerRight i j
-    let Y : CoeffField d → ℝ :=
+    let X : RegCoeffField d → ℝ :=
+      fun a => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j
+    let Y : RegCoeffField d → ℝ :=
       fun a => (lambdaSqCoeffField Q sLower (.finite 1) a)⁻¹
     have hX_meas : AEMeasurable X P := by
       simpa [X] using hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet Q i j
@@ -92,23 +92,23 @@ theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_factor_observables
       Filter.Eventually.of_forall fun a => abs_nonneg (X a)
     simpa [X] using
       integrable_of_ae_nonneg_pow_integrable hξ hAbsMeas hAbsNonneg hAbsPowInt
-  have hBInt : Integrable (fun a : CoeffField d => coarseBBlockNorm Q a) P := by
+  have hBInt : Integrable (fun a : RegCoeffField d => coarseBBlockNorm Q a.toFun) P := by
     have hSumInt :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ∑ i : Fin d, ∑ j : Fin d,
-              |(coarseBlockMatrix (cubeSet Q) a).upperLeft i j|) P := by
+              |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j|) P := by
       refine integrable_finset_sum Finset.univ ?_
       intro i _hi
       refine integrable_finset_sum Finset.univ ?_
       intro j _hj
       exact hUpperEntryAbsInt i j
     have hBMeas :
-        AEMeasurable (fun a : CoeffField d => coarseBBlockNorm Q a) P := by
+        AEMeasurable (fun a : RegCoeffField d => coarseBBlockNorm Q a.toFun) P := by
       have hSqMeas :
           AEMeasurable
-            (fun a : CoeffField d =>
-              matNormSq (coarseBlockMatrix (cubeSet Q) a).upperLeft) P := by
+            (fun a : RegCoeffField d =>
+              matNormSq (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft) P := by
         unfold matNormSq
         exact
           Finset.aemeasurable_fun_sum Finset.univ fun i _hi =>
@@ -119,45 +119,45 @@ theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_factor_observables
     filter_upwards with a
     have hbound :=
       Ch02.matNorm_le_sum_abs_entries
-        ((coarseBlockMatrix (cubeSet Q) a).upperLeft)
+        ((coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft)
     have hsum_nonneg :
         0 ≤ ∑ i : Fin d, ∑ j : Fin d,
-          |(coarseBlockMatrix (cubeSet Q) a).upperLeft i j| := by
+          |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j| := by
       exact Finset.sum_nonneg fun i _ =>
         Finset.sum_nonneg fun j _ => abs_nonneg _
     have hleft :
-        ‖coarseBBlockNorm Q a‖ = coarseBBlockNorm Q a := by
+        ‖coarseBBlockNorm Q a.toFun‖ = coarseBBlockNorm Q a.toFun := by
       simp [Real.norm_eq_abs, abs_of_nonneg (coarseBBlockNorm_nonneg Q a)]
     have hright :
         ‖(∑ i : Fin d, ∑ j : Fin d,
-          |(coarseBlockMatrix (cubeSet Q) a).upperLeft i j|)‖ =
+          |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j|)‖ =
             ∑ i : Fin d, ∑ j : Fin d,
-              |(coarseBlockMatrix (cubeSet Q) a).upperLeft i j| := by
+              |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j| := by
       simp [Real.norm_eq_abs, abs_of_nonneg hsum_nonneg]
     have hbound_abs :
-        |matNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft| ≤
+        |matNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft| ≤
           ∑ i : Fin d, ∑ j : Fin d,
-            |(coarseBlockMatrix (cubeSet Q) a).upperLeft i j| := by
+            |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j| := by
       simpa [abs_of_nonneg (matNorm_nonneg _)] using hbound
     simpa [hleft, hright, coarseBBlockNorm] using hbound_abs
   have hStarInt :
-      Integrable (fun a : CoeffField d => coarseSigmaStarInvBlockNorm Q a) P := by
+      Integrable (fun a : RegCoeffField d => coarseSigmaStarInvBlockNorm Q a.toFun) P := by
     have hSumInt :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ∑ i : Fin d, ∑ j : Fin d,
-              |(coarseBlockMatrix (cubeSet Q) a).lowerRight i j|) P := by
+              |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j|) P := by
       refine integrable_finset_sum Finset.univ ?_
       intro i _hi
       refine integrable_finset_sum Finset.univ ?_
       intro j _hj
       exact hLowerEntryAbsInt i j
     have hStarMeas :
-        AEMeasurable (fun a : CoeffField d => coarseSigmaStarInvBlockNorm Q a) P := by
+        AEMeasurable (fun a : RegCoeffField d => coarseSigmaStarInvBlockNorm Q a.toFun) P := by
       have hSqMeas :
           AEMeasurable
-            (fun a : CoeffField d =>
-              matNormSq (coarseBlockMatrix (cubeSet Q) a).lowerRight) P := by
+            (fun a : RegCoeffField d =>
+              matNormSq (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight) P := by
         unfold matNormSq
         exact
           Finset.aemeasurable_fun_sum Finset.univ fun i _hi =>
@@ -168,25 +168,25 @@ theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_factor_observables
     filter_upwards with a
     have hbound :=
       Ch02.matNorm_le_sum_abs_entries
-        ((coarseBlockMatrix (cubeSet Q) a).lowerRight)
+        ((coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight)
     have hsum_nonneg :
         0 ≤ ∑ i : Fin d, ∑ j : Fin d,
-          |(coarseBlockMatrix (cubeSet Q) a).lowerRight i j| := by
+          |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j| := by
       exact Finset.sum_nonneg fun i _ =>
         Finset.sum_nonneg fun j _ => abs_nonneg _
     have hleft :
-        ‖coarseSigmaStarInvBlockNorm Q a‖ = coarseSigmaStarInvBlockNorm Q a := by
+        ‖coarseSigmaStarInvBlockNorm Q a.toFun‖ = coarseSigmaStarInvBlockNorm Q a.toFun := by
       simp [Real.norm_eq_abs, abs_of_nonneg (coarseSigmaStarInvBlockNorm_nonneg Q a)]
     have hright :
         ‖(∑ i : Fin d, ∑ j : Fin d,
-          |(coarseBlockMatrix (cubeSet Q) a).lowerRight i j|)‖ =
+          |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j|)‖ =
             ∑ i : Fin d, ∑ j : Fin d,
-              |(coarseBlockMatrix (cubeSet Q) a).lowerRight i j| := by
+              |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j| := by
       simp [Real.norm_eq_abs, abs_of_nonneg hsum_nonneg]
     have hbound_abs :
-        |matNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight| ≤
+        |matNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight| ≤
           ∑ i : Fin d, ∑ j : Fin d,
-            |(coarseBlockMatrix (cubeSet Q) a).lowerRight i j| := by
+            |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j| := by
       simpa [abs_of_nonneg (matNorm_nonneg _)] using hbound
     simpa [hleft, hright, coarseSigmaStarInvBlockNorm] using hbound_abs
   exact
@@ -201,11 +201,11 @@ theorem integrable_coarseFullBlockMatrixAtCube_origin_of_integrable_factor_obser
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower) (hξ : 1 ≤ ξ)
     (hUpperPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (LambdaSqCoeffField (originCube d 0) sUpper (.finite 1) a) ^ ξ) P)
     (hLowerPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ((lambdaSqCoeffField (originCube d 0) sLower (.finite 1) a)⁻¹) ^ ξ) P) :
     Integrable (coarseFullBlockMatrixAtCube (originCube d (0 : ℤ))) P := by
   simpa using
@@ -227,31 +227,31 @@ private theorem annealedPrimitiveMomentFactorBounds_of_integrable_factor_observa
     (hUpperMeas :
       ∀ n : ℕ,
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             LambdaSqCoeffField (originCube d (n : ℤ)) sUpper (.finite 1) a) P)
     (hLowerMeas :
       ∀ n : ℕ,
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (lambdaSqCoeffField (originCube d (n : ℤ)) sLower (.finite 1) a)⁻¹) P)
     (hUpperPowInt :
       ∀ n : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (LambdaSqCoeffField (originCube d (n : ℤ)) sUpper (.finite 1) a) ^ ξ) P)
     (hLowerPowInt :
       ∀ n : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((lambdaSqCoeffField (originCube d (n : ℤ)) sLower (.finite 1) a)⁻¹) ^ ξ) P) :
     AnnealedPrimitiveMomentFactorBounds (d := d) P sUpper sLower ξ where
   upper := by
     intro primitive n
     letI : IsProbabilityMeasure P := hP.isProbability
     let Q : TriadicCube d := originCube d (n : ℤ)
-    let X : CoeffField d → ℝ :=
-      fun a => (coarseBlockMatrix (cubeSet Q) a).upperLeft 0 0
-    let Y : CoeffField d → ℝ :=
+    let X : RegCoeffField d → ℝ :=
+      fun a => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft 0 0
+    let Y : RegCoeffField d → ℝ :=
       fun a => LambdaSqCoeffField Q sUpper (.finite 1) a
     have hEntryInt : Integrable X P := by
       simpa [X, Q, blockMatEntry] using
@@ -288,9 +288,9 @@ private theorem annealedPrimitiveMomentFactorBounds_of_integrable_factor_observa
     intro primitive n
     letI : IsProbabilityMeasure P := hP.isProbability
     let Q : TriadicCube d := originCube d (n : ℤ)
-    let X : CoeffField d → ℝ :=
-      fun a => (coarseBlockMatrix (cubeSet Q) a).lowerRight 0 0
-    let Y : CoeffField d → ℝ :=
+    let X : RegCoeffField d → ℝ :=
+      fun a => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight 0 0
+    let Y : RegCoeffField d → ℝ :=
       fun a => (lambdaSqCoeffField Q sLower (.finite 1) a)⁻¹
     have hEntryInt : Integrable X P := by
       simpa [X, Q, blockMatEntry] using
@@ -338,22 +338,22 @@ theorem barSigmaAtScale_le_LambdaMomentAtScale_of_integrable_factor_observables
     (hUpperMeas :
       ∀ n : ℕ,
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             LambdaSqCoeffField (originCube d (n : ℤ)) sUpper (.finite 1) a) P)
     (hLowerMeas :
       ∀ n : ℕ,
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (lambdaSqCoeffField (originCube d (n : ℤ)) sLower (.finite 1) a)⁻¹) P)
     (hUpperPowInt :
       ∀ n : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (LambdaSqCoeffField (originCube d (n : ℤ)) sUpper (.finite 1) a) ^ ξ) P)
     (hLowerPowInt :
       ∀ n : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((lambdaSqCoeffField (originCube d (n : ℤ)) sLower (.finite 1) a)⁻¹) ^ ξ) P)
     (n : ℕ) :
     hP.barSigmaAtScale hStruct (n : ℤ) ≤
@@ -380,22 +380,22 @@ theorem barSigmaStarAtScale_inv_le_lambdaInvMomentAtScale_of_integrable_factor_o
     (hUpperMeas :
       ∀ n : ℕ,
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             LambdaSqCoeffField (originCube d (n : ℤ)) sUpper (.finite 1) a) P)
     (hLowerMeas :
       ∀ n : ℕ,
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (lambdaSqCoeffField (originCube d (n : ℤ)) sLower (.finite 1) a)⁻¹) P)
     (hUpperPowInt :
       ∀ n : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (LambdaSqCoeffField (originCube d (n : ℤ)) sUpper (.finite 1) a) ^ ξ) P)
     (hLowerPowInt :
       ∀ n : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((lambdaSqCoeffField (originCube d (n : ℤ)) sLower (.finite 1) a)⁻¹) ^ ξ) P)
     (n : ℕ) :
     (hP.barSigmaStarAtScale hStruct (n : ℤ))⁻¹ ≤
@@ -422,22 +422,22 @@ theorem thetaAtScale_le_widetildeThetaAtScale_of_integrable_factor_observables
     (hUpperMeas :
       ∀ n : ℕ,
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             LambdaSqCoeffField (originCube d (n : ℤ)) sUpper (.finite 1) a) P)
     (hLowerMeas :
       ∀ n : ℕ,
         AEMeasurable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (lambdaSqCoeffField (originCube d (n : ℤ)) sLower (.finite 1) a)⁻¹) P)
     (hUpperPowInt :
       ∀ n : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (LambdaSqCoeffField (originCube d (n : ℤ)) sUpper (.finite 1) a) ^ ξ) P)
     (hLowerPowInt :
       ∀ n : ℕ,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ((lambdaSqCoeffField (originCube d (n : ℤ)) sLower (.finite 1) a)⁻¹) ^ ξ) P)
     (n : ℕ) :
     hP.thetaAtScale hStruct (n : ℤ) ≤

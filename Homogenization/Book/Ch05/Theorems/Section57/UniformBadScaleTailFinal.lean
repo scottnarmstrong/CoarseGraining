@@ -65,7 +65,7 @@ theorem exists_quantitative_threshold_shiftedBadScaleEvent_quenchedProbeEnvelope
             let N0 : ℕ :=
               annealedAlgebraicEntryScale P
                 hInf.toQuantitativeCoarseGrainedEllipticity Centry
-            let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+            let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
               fun M N aω =>
                 quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
             let Dhigh : ℝ := 2 * K * Cfluct * hInf.thetaHat ^ (2 : ℕ)
@@ -136,7 +136,7 @@ theorem exists_quantitative_threshold_shiftedBadScaleEvent_quenchedProbeEnvelope
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hInf.toQuantitativeCoarseGrainedEllipticity Centry
-  let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+  let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>
       quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
   let Dhigh : ℝ := 2 * K * Cfluct * hInf.thetaHat ^ (2 : ℕ)

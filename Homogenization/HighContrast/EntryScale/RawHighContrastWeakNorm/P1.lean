@@ -25,7 +25,7 @@ theorem aemeasurable_maxDescendantBMatrixNormCoeffFieldAtScale_sub_nat
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (Q : Homogenization.TriadicCube d) (n : ℕ) :
     AEMeasurable
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         Homogenization.Book.Ch04.maxDescendantBMatrixNormCoeffFieldAtScale
           Q (Q.scale - (n : ℤ)) a) P := by
   classical
@@ -36,7 +36,7 @@ theorem aemeasurable_maxDescendantBMatrixNormCoeffFieldAtScale_sub_nat
   have hsup :
       AEMeasurable
         (sDesc.sup' hsDesc
-          (fun R (a : Homogenization.CoeffField d) =>
+          (fun R (a : Homogenization.RegCoeffField d) =>
             Homogenization.Book.Ch02.matrixNorm
               (Homogenization.coarseBlockMatrix
                 (Homogenization.cubeSet R) a).upperLeft)) P := by
@@ -49,7 +49,7 @@ theorem aemeasurable_maxDescendantBMatrixNormCoeffFieldAtScale_sub_nat
       (hP.aemeasurable_coarseB_cubeSet R).norm
   have hfin :
       AEMeasurable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           Homogenization.Book.Ch02.finsetSupReal sDesc
             (fun R =>
               Homogenization.Book.Ch02.matrixNorm
@@ -77,7 +77,7 @@ theorem aemeasurable_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_sub_na
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (Q : Homogenization.TriadicCube d) (n : ℕ) :
     AEMeasurable
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         Homogenization.Book.Ch04.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
           Q (Q.scale - (n : ℤ)) a) P := by
   classical
@@ -88,7 +88,7 @@ theorem aemeasurable_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_sub_na
   have hsup :
       AEMeasurable
         (sDesc.sup' hsDesc
-          (fun R (a : Homogenization.CoeffField d) =>
+          (fun R (a : Homogenization.RegCoeffField d) =>
             Homogenization.Book.Ch02.matrixNorm
               (Homogenization.coarseBlockMatrix
                 (Homogenization.cubeSet R) a).lowerRight)) P := by
@@ -101,7 +101,7 @@ theorem aemeasurable_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_sub_na
       (hP.aemeasurable_coarseSigmaStarInv_cubeSet R).norm
   have hfin :
       AEMeasurable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           Homogenization.Book.Ch02.finsetSupReal sDesc
             (fun R =>
               Homogenization.Book.Ch02.matrixNorm
@@ -128,7 +128,7 @@ theorem aemeasurable_upperSmallSqrtTailCoeffField
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (m : ℕ) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         Homogenization.Book.Ch05.Section52.upperSmallSqrtTailCoeffField
           (d := d) m s a) P := by
   classical
@@ -151,7 +151,7 @@ theorem aemeasurable_upperSmallSqrtTailCoeffField
               (1 / 2 : ℝ)) ?_ ?_
   · intro N
     refine Finset.aemeasurable_fun_sum (μ := P)
-      (f := fun j (a : Homogenization.CoeffField d) =>
+      (f := fun j (a : Homogenization.RegCoeffField d) =>
         Homogenization.Book.Ch02.geometricWeight s 1 (j + m) *
           Real.rpow
             (Homogenization.Book.Ch04.maxDescendantBMatrixNormCoeffFieldAtScale
@@ -164,7 +164,7 @@ theorem aemeasurable_upperSmallSqrtTailCoeffField
       simp [Homogenization.originCube]
     have hmax :
         AEMeasurable
-          (fun a : Homogenization.CoeffField d =>
+          (fun a : Homogenization.RegCoeffField d =>
             Homogenization.Book.Ch04.maxDescendantBMatrixNormCoeffFieldAtScale
               Q (-(j : ℤ)) a) P := by
       convert
@@ -213,7 +213,7 @@ theorem aemeasurable_lowerSmallSqrtTailCoeffField
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (m : ℕ) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         Homogenization.Book.Ch05.Section52.lowerSmallSqrtTailCoeffField
           (d := d) m s a) P := by
   classical
@@ -236,7 +236,7 @@ theorem aemeasurable_lowerSmallSqrtTailCoeffField
               (1 / 2 : ℝ)) ?_ ?_
   · intro N
     refine Finset.aemeasurable_fun_sum (μ := P)
-      (f := fun j (a : Homogenization.CoeffField d) =>
+      (f := fun j (a : Homogenization.RegCoeffField d) =>
         Homogenization.Book.Ch02.geometricWeight s 1 (j + m) *
           Real.rpow
             (Homogenization.Book.Ch04.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
@@ -249,7 +249,7 @@ theorem aemeasurable_lowerSmallSqrtTailCoeffField
       simp [Homogenization.originCube]
     have hmax :
         AEMeasurable
-          (fun a : Homogenization.CoeffField d =>
+          (fun a : Homogenization.RegCoeffField d =>
             Homogenization.Book.Ch04.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
               Q (-(j : ℤ)) a) P := by
       convert
@@ -491,7 +491,7 @@ theorem integrable_defectSum_sq_special_of_P4
     let q_e :=
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
     MeasureTheory.Integrable
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         (∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
           Real.rpow (3 : ℝ)
               (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
@@ -657,17 +657,17 @@ theorem integral_paired_mismatchTermSquares_special_le_rawHighContrastWeakNormSl
       let q_e :=
         Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
       let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-      let lowerExcess := fun a : Homogenization.CoeffField d =>
+      let lowerExcess := fun a : Homogenization.RegCoeffField d =>
         max
           ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
             (hP.barSigmaStarAtScale hStruct (k : ℤ))⁻¹)
           0
-      let upperExcess := fun a : Homogenization.CoeffField d =>
+      let upperExcess := fun a : Homogenization.RegCoeffField d =>
         max
           (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
             hP.barSigmaAtScale hStruct (k : ℤ))
           0
-      let defectSum := fun a : Homogenization.CoeffField d =>
+      let defectSum := fun a : Homogenization.RegCoeffField d =>
         ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
           Real.rpow (3 : ℝ)
               (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
@@ -675,7 +675,7 @@ theorem integral_paired_mismatchTermSquares_special_le_rawHighContrastWeakNormSl
               (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.responseDefectAverageAtScale
                 (m : ℤ) n p_e q_e a)
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           (σ * lowerExcess a + σ⁻¹ * upperExcess a) * defectSum a ^ 2) P) :
     let β := section53CoarseFluctuationBeta hP4
     let s := hP4.sLower + 2 * β
@@ -688,19 +688,19 @@ theorem integral_paired_mismatchTermSquares_special_le_rawHighContrastWeakNormSl
     let q_e :=
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-    let defectSum := fun a : Homogenization.CoeffField d =>
+    let defectSum := fun a : Homogenization.RegCoeffField d =>
       ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
         Real.rpow (3 : ℝ)
             (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
           Real.sqrt
             (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.responseDefectAverageAtScale
               (m : ℤ) n p_e q_e a)
-    let lowerExcess := fun a : Homogenization.CoeffField d =>
+    let lowerExcess := fun a : Homogenization.RegCoeffField d =>
       max
         ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
           (hP.barSigmaStarAtScale hStruct (k : ℤ))⁻¹)
         0
-    let upperExcess := fun a : Homogenization.CoeffField d =>
+    let upperExcess := fun a : Homogenization.RegCoeffField d =>
       max
         (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
           hP.barSigmaAtScale hStruct (k : ℤ))
@@ -732,38 +732,38 @@ theorem integral_paired_mismatchTermSquares_special_le_rawHighContrastWeakNormSl
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-  let D := fun a : Homogenization.CoeffField d =>
+  let D := fun a : Homogenization.RegCoeffField d =>
     ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
       Real.rpow (3 : ℝ)
           (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
         Real.sqrt
           (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.responseDefectAverageAtScale
             (m : ℤ) n p_e q_e a)
-  let lowerExcess := fun a : Homogenization.CoeffField d =>
+  let lowerExcess := fun a : Homogenization.RegCoeffField d =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
         (hP.barSigmaStarAtScale hStruct (k : ℤ))⁻¹)
       0
-  let upperExcess := fun a : Homogenization.CoeffField d =>
+  let upperExcess := fun a : Homogenization.RegCoeffField d =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
         hP.barSigmaAtScale hStruct (k : ℤ))
       0
-  let lowerEdge := fun a : Homogenization.CoeffField d =>
+  let lowerEdge := fun a : Homogenization.RegCoeffField d =>
     (σ * lowerExcess a + σ⁻¹ * upperExcess a) * D a ^ 2
   let c := localWeakNormScalarWeightAtScales hP hStruct k m
   let T_tau := weightedTauSumAtScales hP hStruct hP4 k m e
   let T_m : ℝ := 1 + contrastExcessAtScale hP hStruct m
   let S_m : ℝ := coarseFluctuationFullBlockSumAtScale hP hStruct hP4 k m
   let terminal : ℝ := T_m * S_m
-  let lhs := fun a : Homogenization.CoeffField d =>
+  let lhs := fun a : Homogenization.RegCoeffField d =>
     σ *
         (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.gradientMismatchTermAtScale
           (m : ℤ) (k : ℤ) s s' p_e q_e a) ^ 2 +
       σ⁻¹ *
         (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.fluxMismatchTermAtScale
           (m : ℤ) (k : ℤ) t t' p_e q_e a) ^ 2
-  let rhs := fun a : Homogenization.CoeffField d =>
+  let rhs := fun a : Homogenization.RegCoeffField d =>
     terminal + c * D a ^ 2 + lowerEdge a + T_m * 0
   have hDsq_int' : MeasureTheory.Integrable (fun a => D a ^ 2) P := by
     simpa [D, β, p_e, q_e] using
@@ -788,21 +788,21 @@ theorem integral_paired_mismatchTermSquares_special_le_rawHighContrastWeakNormSl
       (mul_nonneg hσ_nonneg (sq_nonneg _))
       (mul_nonneg hσ_inv_nonneg (sq_nonneg _))
   have hterminal_int :
-      MeasureTheory.Integrable (fun _ : Homogenization.CoeffField d => terminal) P :=
+      MeasureTheory.Integrable (fun _ : Homogenization.RegCoeffField d => terminal) P :=
     MeasureTheory.integrable_const terminal
   have hcD_int : MeasureTheory.Integrable (fun a => c * D a ^ 2) P :=
     hDsq_int'.const_mul c
   have hterminal_cD_int :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d => terminal + c * D a ^ 2) P :=
+        (fun a : Homogenization.RegCoeffField d => terminal + c * D a ^ 2) P :=
     hterminal_int.add hcD_int
   have hterminal_cD_lower_int :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           terminal + c * D a ^ 2 + lowerEdge a) P :=
     hterminal_cD_int.add hLowerEdge_int'
   have hTzero_int :
-      MeasureTheory.Integrable (fun _ : Homogenization.CoeffField d => T_m * 0) P :=
+      MeasureTheory.Integrable (fun _ : Homogenization.RegCoeffField d => T_m * 0) P :=
     MeasureTheory.integrable_const (T_m * 0)
   have hrhs_int : MeasureTheory.Integrable rhs P := by
     exact hterminal_cD_lower_int.add hTzero_int
@@ -817,7 +817,7 @@ theorem integral_paired_mismatchTermSquares_special_le_rawHighContrastWeakNormSl
     have h1 :
         ∫ a, rhs a ∂P =
           ∫ a, terminal + c * D a ^ 2 + lowerEdge a ∂P +
-            ∫ _a : Homogenization.CoeffField d, T_m * 0 ∂P := by
+            ∫ _a : Homogenization.RegCoeffField d, T_m * 0 ∂P := by
       dsimp [rhs]
       exact MeasureTheory.integral_add hterminal_cD_lower_int hTzero_int
     have h2 :
@@ -827,40 +827,40 @@ theorem integral_paired_mismatchTermSquares_special_le_rawHighContrastWeakNormSl
       exact MeasureTheory.integral_add hterminal_cD_int hLowerEdge_int'
     have h3 :
         ∫ a, terminal + c * D a ^ 2 ∂P =
-          ∫ _a : Homogenization.CoeffField d, terminal ∂P +
+          ∫ _a : Homogenization.RegCoeffField d, terminal ∂P +
             ∫ a, c * D a ^ 2 ∂P := by
       exact MeasureTheory.integral_add hterminal_int hcD_int
     have hconst :
-        ∫ _a : Homogenization.CoeffField d, terminal ∂P = terminal :=
+        ∫ _a : Homogenization.RegCoeffField d, terminal ∂P = terminal :=
       MeasureTheory.integral_eq_const (μ := P) (c := terminal)
         (Filter.Eventually.of_forall (fun _ => rfl))
     have hzero :
-        ∫ _a : Homogenization.CoeffField d, T_m * 0 ∂P = T_m * 0 :=
+        ∫ _a : Homogenization.RegCoeffField d, T_m * 0 ∂P = T_m * 0 :=
       MeasureTheory.integral_eq_const (μ := P) (c := T_m * 0)
         (Filter.Eventually.of_forall (fun _ => rfl))
     have hmul :
         ∫ a, c * D a ^ 2 ∂P =
           c * ∫ a, D a ^ 2 ∂P :=
       MeasureTheory.integral_const_mul c
-        (fun a : Homogenization.CoeffField d => D a ^ 2)
+        (fun a : Homogenization.RegCoeffField d => D a ^ 2)
     calc
       ∫ a, rhs a ∂P =
           ∫ a, terminal + c * D a ^ 2 + lowerEdge a ∂P +
-            ∫ _a : Homogenization.CoeffField d, T_m * 0 ∂P := h1
+            ∫ _a : Homogenization.RegCoeffField d, T_m * 0 ∂P := h1
       _ =
-          (∫ _a : Homogenization.CoeffField d, terminal ∂P +
+          (∫ _a : Homogenization.RegCoeffField d, terminal ∂P +
               ∫ a, c * D a ^ 2 ∂P) +
             ∫ a, lowerEdge a ∂P +
-            ∫ _a : Homogenization.CoeffField d, T_m * 0 ∂P := by
+            ∫ _a : Homogenization.RegCoeffField d, T_m * 0 ∂P := by
           rw [h2, h3]
       _ =
           (terminal + c * (∫ a, D a ^ 2 ∂P)) +
             ∫ a, lowerEdge a ∂P +
-            ∫ _a : Homogenization.CoeffField d, T_m * 0 ∂P := by
+            ∫ _a : Homogenization.RegCoeffField d, T_m * 0 ∂P := by
           exact congrArg
             (fun x =>
               x + ∫ a, lowerEdge a ∂P +
-                ∫ _a : Homogenization.CoeffField d, T_m * 0 ∂P)
+                ∫ _a : Homogenization.RegCoeffField d, T_m * 0 ∂P)
             (by rw [hconst, hmul])
       _ =
           terminal + c * (∫ a, D a ^ 2 ∂P) +
@@ -906,17 +906,17 @@ theorem integral_localPositiveExcess_defectSum_sq_special_le_terminalPositiveExc
       let q_e :=
         Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
       let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-      let lowerTerminal := fun a : Homogenization.CoeffField d =>
+      let lowerTerminal := fun a : Homogenization.RegCoeffField d =>
         max
           ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
             (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹)
           0
-      let upperTerminal := fun a : Homogenization.CoeffField d =>
+      let upperTerminal := fun a : Homogenization.RegCoeffField d =>
         max
           (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
             hP.barSigmaAtScale hStruct (m : ℤ))
           0
-      let defectSum := fun a : Homogenization.CoeffField d =>
+      let defectSum := fun a : Homogenization.RegCoeffField d =>
         ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
           Real.rpow (3 : ℝ)
               (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
@@ -924,7 +924,7 @@ theorem integral_localPositiveExcess_defectSum_sq_special_le_terminalPositiveExc
               (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.responseDefectAverageAtScale
                 (m : ℤ) n p_e q_e a)
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           (σ * lowerTerminal a + σ⁻¹ * upperTerminal a) *
             defectSum a ^ 2) P) :
     let β := section53CoarseFluctuationBeta hP4
@@ -936,27 +936,27 @@ theorem integral_localPositiveExcess_defectSum_sq_special_le_terminalPositiveExc
     let q_e :=
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-    let lowerLocal := fun a : Homogenization.CoeffField d =>
+    let lowerLocal := fun a : Homogenization.RegCoeffField d =>
       max
         ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
           (hP.barSigmaStarAtScale hStruct (k : ℤ))⁻¹)
         0
-    let upperLocal := fun a : Homogenization.CoeffField d =>
+    let upperLocal := fun a : Homogenization.RegCoeffField d =>
       max
         (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
           hP.barSigmaAtScale hStruct (k : ℤ))
         0
-    let lowerTerminal := fun a : Homogenization.CoeffField d =>
+    let lowerTerminal := fun a : Homogenization.RegCoeffField d =>
       max
         ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
           (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹)
         0
-    let upperTerminal := fun a : Homogenization.CoeffField d =>
+    let upperTerminal := fun a : Homogenization.RegCoeffField d =>
       max
         (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
           hP.barSigmaAtScale hStruct (m : ℤ))
         0
-    let defectSum := fun a : Homogenization.CoeffField d =>
+    let defectSum := fun a : Homogenization.RegCoeffField d =>
       ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
         Real.rpow (3 : ℝ)
             (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
@@ -976,36 +976,36 @@ theorem integral_localPositiveExcess_defectSum_sq_special_le_terminalPositiveExc
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-  let lowerLocal := fun a : Homogenization.CoeffField d =>
+  let lowerLocal := fun a : Homogenization.RegCoeffField d =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
         (hP.barSigmaStarAtScale hStruct (k : ℤ))⁻¹)
       0
-  let upperLocal := fun a : Homogenization.CoeffField d =>
+  let upperLocal := fun a : Homogenization.RegCoeffField d =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
         hP.barSigmaAtScale hStruct (k : ℤ))
       0
-  let lowerTerminal := fun a : Homogenization.CoeffField d =>
+  let lowerTerminal := fun a : Homogenization.RegCoeffField d =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
         (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹)
       0
-  let upperTerminal := fun a : Homogenization.CoeffField d =>
+  let upperTerminal := fun a : Homogenization.RegCoeffField d =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
         hP.barSigmaAtScale hStruct (m : ℤ))
       0
-  let D := fun a : Homogenization.CoeffField d =>
+  let D := fun a : Homogenization.RegCoeffField d =>
     ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
       Real.rpow (3 : ℝ)
           (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
         Real.sqrt
           (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.responseDefectAverageAtScale
             (m : ℤ) n p_e q_e a)
-  let localEdge := fun a : Homogenization.CoeffField d =>
+  let localEdge := fun a : Homogenization.RegCoeffField d =>
     (σ * lowerLocal a + σ⁻¹ * upperLocal a) * D a ^ 2
-  let terminalEdge := fun a : Homogenization.CoeffField d =>
+  let terminalEdge := fun a : Homogenization.RegCoeffField d =>
     (σ * lowerTerminal a + σ⁻¹ * upperTerminal a) * D a ^ 2
   have hTerminalEdge_int' : MeasureTheory.Integrable terminalEdge P := by
     simpa [terminalEdge, D, lowerTerminal, upperTerminal, β, s', t', Q,

@@ -81,7 +81,7 @@ theorem exists_final_scale_decay_of_main_buffer_and_rawEnergy_scalars_uniform
           (hNNstar : N ≤ Nstar) →
           HighCenteredMomentEstimate hm P N
             (intermediateCoarseBlockDeviation hP hStruct
-              (fun x : Homogenization.CoeffField d => x)) →
+              (fun x : Homogenization.RegCoeffField d => x)) →
             ∃ N0 : ℕ,
               (∀ n : ℕ,
                 Homogenization.Book.Ch05.thetaAtScale hP hStruct
@@ -371,7 +371,7 @@ theorem exists_final_scale_decay_of_main_buffer_and_rawEnergy_scalars_uniform
   -- measurability side condition (never the conclusion), so any choice works
   -- and the zero observable satisfies `SubthresholdPolynomialMomentEstimate`
   -- trivially (`∫⁻ ‖0‖ₑ^2 = 0 ≤ envelope`).  See the docstring note.
-  let M_sub : ℕ → Homogenization.CoeffField d → ℝ := fun _ _ => (0 : ℝ)
+  let M_sub : ℕ → Homogenization.RegCoeffField d → ℝ := fun _ _ => (0 : ℝ)
   have hsub :
       SubthresholdPolynomialMomentEstimate hc sub P
         (Homogenization.Book.Ch05.widetildeThetaAtScale P (0 : ℤ) hP4) N M_sub :=
@@ -379,7 +379,7 @@ theorem exists_final_scale_decay_of_main_buffer_and_rawEnergy_scalars_uniform
       moment_le := by
         intro m _
         have hpt :
-            (fun ω : Homogenization.CoeffField d => ‖M_sub m ω‖ₑ ^ (2 : ℝ))
+            (fun ω : Homogenization.RegCoeffField d => ‖M_sub m ω‖ₑ ^ (2 : ℝ))
               = fun _ => (0 : ENNReal) := by
           funext ω
           show ‖(0 : ℝ)‖ₑ ^ (2 : ℝ) = (0 : ENNReal)
@@ -671,7 +671,7 @@ theorem exists_final_scale_decay_of_main_buffer_and_rawEnergy_scalars_uniform
             (∫⁻ ω, ‖terminalCoarseBlockStochasticMax hP hStruct hc N
                 (memoryGridScale Nstar L j)
                 (Homogenization.originCube d ((memoryGridScale Nstar L j : ℕ) : ℤ))
-                (fun x : Homogenization.CoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
+                (fun x : Homogenization.RegCoeffField d => x) ω‖ₑ ^ (2 : ℝ) ∂P) +
               (∫⁻ ω, ‖M_sub (memoryGridScale Nstar L j) ω‖ₑ ^ (2 : ℝ) ∂P) ≤
             ENNReal.ofReal ((etaSrc / 2) ^ (hP4.xi : ℝ)) := by
           rw [hxi_cast]

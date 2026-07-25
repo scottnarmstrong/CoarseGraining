@@ -365,10 +365,10 @@ theorem exists_bufferExponent_lintegral_terminalCoarseBlockStochasticMax_add_sub
               (B * Real.logb 3
                 (2 + Homogenization.Book.Ch05.widetildeThetaAtScale P (0 : ℤ) hP4)) ≤
             memoryGridScale Nstar L i →
-          ∀ (M_sub : ℕ → Homogenization.CoeffField d → ℝ),
+          ∀ (M_sub : ℕ → Homogenization.RegCoeffField d → ℝ),
             HighCenteredMomentEstimate hm P N
               (intermediateCoarseBlockDeviation hP hStruct
-                (fun x : Homogenization.CoeffField d => x)) →
+                (fun x : Homogenization.RegCoeffField d => x)) →
             SubthresholdPolynomialMomentEstimate hc sub P
               (Homogenization.Book.Ch05.widetildeThetaAtScale P (0 : ℤ) hP4)
               N M_sub →
@@ -377,7 +377,7 @@ theorem exists_bufferExponent_lintegral_terminalCoarseBlockStochasticMax_add_sub
                       (memoryGridScale Nstar L i)
                       (Homogenization.originCube d
                         ((memoryGridScale Nstar L i : ℕ) : ℤ))
-                      (fun x : Homogenization.CoeffField d => x) ω‖ₑ ^
+                      (fun x : Homogenization.RegCoeffField d => x) ω‖ₑ ^
                     (2 : ℝ) ∂P +
                 ∫⁻ ω, ‖M_sub (memoryGridScale Nstar L i) ω‖ₑ ^
                   (2 : ℝ) ∂P ≤ ENNReal.ofReal etaSt := by
@@ -392,7 +392,7 @@ theorem exists_bufferExponent_lintegral_terminalCoarseBlockStochasticMax_add_sub
       (Homogenization.originCube d ((memoryGridScale Nstar L i : ℕ) : ℤ))
       (N := N) (m := memoryGridScale Nstar L i)
       (by rfl) hbuffer
-      (fun x : Homogenization.CoeffField d => x) M_sub
+      (fun x : Homogenization.RegCoeffField d => x) M_sub
       (aestronglyMeasurable_terminalCoarseBlockStochasticMax_origin
         hP hStruct hP4 hc N (memoryGridScale Nstar L i))
       hHM hsub

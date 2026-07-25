@@ -49,6 +49,13 @@ private theorem swap_mul_mul_swap_apply {d : ℕ} (i j r c : Fin d) (A : Mat d) 
         · simp [Matrix.swap_mul_of_ne hr_i hr_j, Matrix.mul_swap_of_ne hc_i hc_j,
             Equiv.swap_apply_of_ne_of_ne hr_i hr_j, Equiv.swap_apply_of_ne_of_ne hc_i hc_j]
 
+private theorem rotateReg_toFun {d : ℕ} (R : Mat d) (hR : IsSignedPermutationMatrix R)
+    (a : RegCoeffField d) :
+    (rotateReg R hR a).toFun = rotateCoeffField R a.toFun := rfl
+
+private theorem adjointReg_toFun {d : ℕ} (a : RegCoeffField d) :
+    (adjointReg a).toFun = adjointCoeffField a.toFun := rfl
+
 private theorem coarseBlockMatrix_lowerRight_signFlip_cubeSet_originCube_of_exists
     {d : ℕ} [NeZero d] {n : ℤ} {a : CoeffField d}
     (hex : ∃ Abar : BlockMat d, IsCoarseBlockMatrix (openCubeSet (originCube d n)) a Abar)
@@ -117,210 +124,207 @@ private theorem coarseBlockMatrix_neg_lowerLeft_adjoint_cubeSet_originCube_of_ex
     (coarseBlockMatrix_lowerLeft_adjointCoeffField_of_exists
       (U := openCubeSet (originCube d n)) (a := a) hex)
 
+/-- **Hoisted invariance core (sign flip).**  The block observable is an
+opaque function variable `F`; keeping the heavy `coarseBlockMatrix _ a.toFun`
+term out of this proof avoids the `isDefEq` blow-up that the concrete
+integrand triggers.  See the paper (Armstrong–Kuusi–Loher, in prep). -/
+private theorem matrix_signFlip_conj_integral_eq {d : ℕ} [NeZero d]
+    {P : CoeffLaw d} (hIso : IsotropicLaw P) (i : Fin d)
+    (F : RegCoeffField d → Mat d)
+    (hmeas : ∀ r c : Fin d, AEStronglyMeasurable (fun a => F a r c) P)
+    (hcov : ∀ᵐ a ∂P,
+      F (rotateReg (signFlipMatrix i) (isSignedPermutationMatrix_signFlipMatrix i) a) =
+        signFlipMatrix i * F a * signFlipMatrix i) :
+    signFlipMatrix i * (Matrix.of fun r c => ∫ a, F a r c ∂P) * signFlipMatrix i =
+      Matrix.of fun r c => ∫ a, F a r c ∂P := by
+  ext r c
+  set s : ℝ := (if r = i then (-1 : ℝ) else 1) * (if c = i then (-1 : ℝ) else 1) with hs
+  calc
+    (signFlipMatrix i * (Matrix.of fun r c => ∫ a, F a r c ∂P) * signFlipMatrix i) r c
+        = s * ∫ a, F a r c ∂P := by
+          rw [signFlipMatrix_mul_mul_signFlipMatrix_apply, Matrix.of_apply, hs]; ring
+    _ = ∫ a, s * F a r c ∂P := (MeasureTheory.integral_const_mul s _).symm
+    _ = ∫ a, F (rotateReg (signFlipMatrix i)
+          (isSignedPermutationMatrix_signFlipMatrix i) a) r c ∂P := by
+          apply MeasureTheory.integral_congr_ae
+          filter_upwards [hcov] with a ha
+          have hentry : F (rotateReg (signFlipMatrix i)
+              (isSignedPermutationMatrix_signFlipMatrix i) a) r c =
+              (signFlipMatrix i * F a * signFlipMatrix i) r c :=
+            congrArg (fun M => M r c) ha
+          rw [signFlipMatrix_mul_mul_signFlipMatrix_apply] at hentry
+          rw [hentry, hs]; ring
+    _ = ∫ a, F a r c ∂P :=
+          hIso.integral_comp_rotateReg (isSignedPermutationMatrix_signFlipMatrix i)
+            (fun a => F a r c) (hmeas r c)
+    _ = (Matrix.of fun r c => ∫ a, F a r c ∂P) r c := (Matrix.of_apply (fun r c => ∫ a, F a r c ∂P) r c).symm
+
+/-- **Hoisted invariance core (swap).**  Opaque block observable `F`, as in
+`matrix_signFlip_conj_integral_eq`. -/
+private theorem matrix_swap_conj_integral_eq {d : ℕ} [NeZero d]
+    {P : CoeffLaw d} (hIso : IsotropicLaw P) (i j : Fin d)
+    (F : RegCoeffField d → Mat d)
+    (hmeas : ∀ r c : Fin d, AEStronglyMeasurable (fun a => F a r c) P)
+    (hcov : ∀ᵐ a ∂P,
+      F (rotateReg (Matrix.swap ℝ i j) (isSignedPermutationMatrix_swap i j) a) =
+        Matrix.swap ℝ i j * F a * Matrix.swap ℝ i j) :
+    Matrix.swap ℝ i j * (Matrix.of fun r c => ∫ a, F a r c ∂P) * Matrix.swap ℝ i j =
+      Matrix.of fun r c => ∫ a, F a r c ∂P := by
+  ext r c
+  calc
+    (Matrix.swap ℝ i j * (Matrix.of fun r c => ∫ a, F a r c ∂P) * Matrix.swap ℝ i j) r c
+        = ∫ a, F a (Equiv.swap i j r) (Equiv.swap i j c) ∂P := by
+          rw [swap_mul_mul_swap_apply, Matrix.of_apply]
+    _ = ∫ a, F (rotateReg (Matrix.swap ℝ i j)
+          (isSignedPermutationMatrix_swap i j) a) r c ∂P := by
+          apply MeasureTheory.integral_congr_ae
+          filter_upwards [hcov] with a ha
+          have hentry : F (rotateReg (Matrix.swap ℝ i j)
+              (isSignedPermutationMatrix_swap i j) a) r c =
+              (Matrix.swap ℝ i j * F a * Matrix.swap ℝ i j) r c :=
+            congrArg (fun M => M r c) ha
+          rw [swap_mul_mul_swap_apply] at hentry
+          rw [hentry]
+    _ = ∫ a, F a r c ∂P :=
+          hIso.integral_comp_rotateReg (isSignedPermutationMatrix_swap i j)
+            (fun a => F a r c) (hmeas r c)
+    _ = (Matrix.of fun r c => ∫ a, F a r c ∂P) r c := (Matrix.of_apply (fun r c => ∫ a, F a r c ∂P) r c).symm
+
+/-- **Hoisted vanishing core (adjoint).**  Opaque block observable `G`. -/
+private theorem matrix_adjoint_neg_integral_eq_zero {d : ℕ} [NeZero d]
+    {P : CoeffLaw d} (hAdj : AdjointInvariantLaw P)
+    (G : RegCoeffField d → Mat d)
+    (hmeas : ∀ r c : Fin d, AEStronglyMeasurable (fun a => G a r c) P)
+    (hcov : ∀ᵐ a ∂P, G (adjointReg a) = -G a) :
+    (Matrix.of fun r c => ∫ a, G a r c ∂P) = 0 := by
+  ext r c
+  simp only [Matrix.of_apply, Matrix.zero_apply]
+  have hcomp : ∫ a, G (adjointReg a) r c ∂P = ∫ a, G a r c ∂P :=
+    hAdj.integral_comp_adjointReg (fun a => G a r c) (hmeas r c)
+  have hEq : (∫ a, G a r c ∂P) = -(∫ a, G a r c ∂P) := by
+    calc
+      (∫ a, G a r c ∂P) = ∫ a, G (adjointReg a) r c ∂P := hcomp.symm
+      _ = ∫ a, -(G a r c) ∂P := by
+            apply MeasureTheory.integral_congr_ae
+            filter_upwards [hcov] with a ha
+            have hentry : G (adjointReg a) r c = (-G a) r c := congrArg (fun M => M r c) ha
+            rw [hentry, Matrix.neg_apply]
+      _ = -(∫ a, G a r c ∂P) := MeasureTheory.integral_neg _
+  linarith
+
 private theorem annealedSigmaStarInvAtScale_isSignFlipInvariant_of_covariant_ae
     {d : ℕ} [NeZero d] (P : CoeffLaw d) (n : ℤ)
     (hIso : IsotropicLaw P)
     (hmeas : ∀ r c : Fin d,
       AEStronglyMeasurable
-        (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a).lowerRight r c) P)
+        (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight r c) P)
     (hcov : ∀ i : Fin d, ∀ᵐ a ∂P,
       (coarseBlockMatrix (cubeSet (originCube d n))
-          (rotateCoeffField (signFlipMatrix i) a)).lowerRight =
+          (rotateCoeffField (signFlipMatrix i) a.toFun)).lowerRight =
         signFlipMatrix i *
-          (coarseBlockMatrix (cubeSet (originCube d n)) a).lowerRight *
+          (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight *
             signFlipMatrix i) :
     IsSignFlipInvariant (annealedSigmaStarInvAtScale P n) := by
   intro i
-  ext r c
-  let U := cubeSet (originCube d n)
-  let s : ℝ := (if r = i then (-1 : ℝ) else 1) * (if c = i then (-1 : ℝ) else 1)
-  calc
-    (signFlipMatrix i * annealedSigmaStarInvAtScale P n * signFlipMatrix i) r c
-        = s * ∫ a, (coarseBlockMatrix U a).lowerRight r c ∂P := by
-          simp [annealedSigmaStarInvAtScale, annealedSigmaStarInv, annealedBlockMatrix,
-            U, s, signFlipMatrix_mul_mul_signFlipMatrix_apply]
-    _ = ∫ a, s * (coarseBlockMatrix U a).lowerRight r c ∂P := by
-          symm
-          simpa [s] using
-            (MeasureTheory.integral_const_mul s
-              (fun a => (coarseBlockMatrix U a).lowerRight r c))
-    _ = ∫ a, (coarseBlockMatrix U (rotateCoeffField (signFlipMatrix i) a)).lowerRight r c
-          ∂P := by
-          apply MeasureTheory.integral_congr_ae
-          filter_upwards [hcov i] with a ha
-          have hentry := congrArg (fun M => M r c) ha
-          simpa [U, s, signFlipMatrix_mul_mul_signFlipMatrix_apply] using hentry.symm
-    _ = ∫ a, (coarseBlockMatrix U a).lowerRight r c ∂P := by
-          simpa [U] using
-            integral_comp_rotateCoeffField_eq_of_isIsotropicInLaw (hP := hIso)
-              (hR := isSignedPermutationMatrix_signFlipMatrix i)
-              (f := fun a => (coarseBlockMatrix U a).lowerRight r c) (hf := hmeas r c)
-    _ = annealedSigmaStarInvAtScale P n r c := by
-          rfl
+  have hform : annealedSigmaStarInvAtScale P n =
+      Matrix.of fun r c =>
+        ∫ a, (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight r c ∂P := by
+    ext r c
+    simp only [annealedSigmaStarInvAtScale, annealedSigmaStarInv_apply, Matrix.of_apply]
+  rw [hform]
+  exact matrix_signFlip_conj_integral_eq hIso i
+    (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight) hmeas (hcov i)
 
 private theorem annealedSigmaStarInvAtScale_isSwapInvariant_of_covariant_ae
     {d : ℕ} [NeZero d] (P : CoeffLaw d) (n : ℤ)
     (hIso : IsotropicLaw P)
     (hmeas : ∀ r c : Fin d,
       AEStronglyMeasurable
-        (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a).lowerRight r c) P)
+        (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight r c) P)
     (hcov : ∀ i j : Fin d, ∀ᵐ a ∂P,
       (coarseBlockMatrix (cubeSet (originCube d n))
-          (rotateCoeffField (Matrix.swap ℝ i j) a)).lowerRight =
+          (rotateCoeffField (Matrix.swap ℝ i j) a.toFun)).lowerRight =
         Matrix.swap ℝ i j *
-          (coarseBlockMatrix (cubeSet (originCube d n)) a).lowerRight *
+          (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight *
             Matrix.swap ℝ i j) :
     IsSwapInvariant (annealedSigmaStarInvAtScale P n) := by
   intro i j
-  ext r c
-  let U := cubeSet (originCube d n)
-  calc
-    (Matrix.swap ℝ i j * annealedSigmaStarInvAtScale P n * Matrix.swap ℝ i j) r c
-        = ∫ a, (Matrix.swap ℝ i j *
-            (coarseBlockMatrix U a).lowerRight * Matrix.swap ℝ i j) r c ∂P := by
-          simp [annealedSigmaStarInvAtScale, annealedSigmaStarInv, annealedBlockMatrix,
-            U, swap_mul_mul_swap_apply]
-    _ = ∫ a, (coarseBlockMatrix U a).lowerRight
-          (Equiv.swap i j r) (Equiv.swap i j c) ∂P := by
-          apply MeasureTheory.integral_congr_ae
-          filter_upwards with a
-          simp [swap_mul_mul_swap_apply]
-    _ = ∫ a, (coarseBlockMatrix U (rotateCoeffField (Matrix.swap ℝ i j) a)).lowerRight r c
-          ∂P := by
-          apply MeasureTheory.integral_congr_ae
-          filter_upwards [hcov i j] with a ha
-          have hentry := congrArg (fun M => M r c) ha
-          simpa [U, swap_mul_mul_swap_apply] using hentry.symm
-    _ = ∫ a, (coarseBlockMatrix U a).lowerRight r c ∂P := by
-          simpa [U] using
-            integral_comp_rotateCoeffField_eq_of_isIsotropicInLaw (hP := hIso)
-              (hR := isSignedPermutationMatrix_swap i j)
-              (f := fun a => (coarseBlockMatrix U a).lowerRight r c) (hf := hmeas r c)
-    _ = annealedSigmaStarInvAtScale P n r c := by
-          rfl
+  have hform : annealedSigmaStarInvAtScale P n =
+      Matrix.of fun r c =>
+        ∫ a, (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight r c ∂P := by
+    ext r c
+    simp only [annealedSigmaStarInvAtScale, annealedSigmaStarInv_apply, Matrix.of_apply]
+  rw [hform]
+  exact matrix_swap_conj_integral_eq hIso i j
+    (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight) hmeas (hcov i j)
 
 private theorem annealedBAtScale_isSignFlipInvariant_of_covariant_ae
     {d : ℕ} [NeZero d] (P : CoeffLaw d) (n : ℤ)
     (hIso : IsotropicLaw P)
     (hmeas : ∀ r c : Fin d,
       AEStronglyMeasurable
-        (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a).upperLeft r c) P)
+        (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft r c) P)
     (hcov : ∀ i : Fin d, ∀ᵐ a ∂P,
       (coarseBlockMatrix (cubeSet (originCube d n))
-          (rotateCoeffField (signFlipMatrix i) a)).upperLeft =
+          (rotateCoeffField (signFlipMatrix i) a.toFun)).upperLeft =
         signFlipMatrix i *
-          (coarseBlockMatrix (cubeSet (originCube d n)) a).upperLeft *
+          (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft *
             signFlipMatrix i) :
     IsSignFlipInvariant (annealedBAtScale P n) := by
   intro i
-  ext r c
-  let U := cubeSet (originCube d n)
-  let s : ℝ := (if r = i then (-1 : ℝ) else 1) * (if c = i then (-1 : ℝ) else 1)
-  calc
-    (signFlipMatrix i * annealedBAtScale P n * signFlipMatrix i) r c
-        = s * ∫ a, (coarseBlockMatrix U a).upperLeft r c ∂P := by
-          simp [annealedBAtScale, annealedB, annealedBlockMatrix, U, s,
-            signFlipMatrix_mul_mul_signFlipMatrix_apply]
-    _ = ∫ a, s * (coarseBlockMatrix U a).upperLeft r c ∂P := by
-          symm
-          simpa [s] using
-            (MeasureTheory.integral_const_mul s
-              (fun a => (coarseBlockMatrix U a).upperLeft r c))
-    _ = ∫ a, (coarseBlockMatrix U (rotateCoeffField (signFlipMatrix i) a)).upperLeft r c
-          ∂P := by
-          apply MeasureTheory.integral_congr_ae
-          filter_upwards [hcov i] with a ha
-          have hentry := congrArg (fun M => M r c) ha
-          simpa [U, s, signFlipMatrix_mul_mul_signFlipMatrix_apply] using hentry.symm
-    _ = ∫ a, (coarseBlockMatrix U a).upperLeft r c ∂P := by
-          simpa [U] using
-            integral_comp_rotateCoeffField_eq_of_isIsotropicInLaw (hP := hIso)
-              (hR := isSignedPermutationMatrix_signFlipMatrix i)
-              (f := fun a => (coarseBlockMatrix U a).upperLeft r c) (hf := hmeas r c)
-    _ = annealedBAtScale P n r c := by
-          rfl
+  have hform : annealedBAtScale P n =
+      Matrix.of fun r c =>
+        ∫ a, (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft r c ∂P := by
+    ext r c
+    simp only [annealedBAtScale, annealedB_apply, Matrix.of_apply]
+  rw [hform]
+  exact matrix_signFlip_conj_integral_eq hIso i
+    (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft) hmeas (hcov i)
 
 private theorem annealedBAtScale_isSwapInvariant_of_covariant_ae
     {d : ℕ} [NeZero d] (P : CoeffLaw d) (n : ℤ)
     (hIso : IsotropicLaw P)
     (hmeas : ∀ r c : Fin d,
       AEStronglyMeasurable
-        (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a).upperLeft r c) P)
+        (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft r c) P)
     (hcov : ∀ i j : Fin d, ∀ᵐ a ∂P,
       (coarseBlockMatrix (cubeSet (originCube d n))
-          (rotateCoeffField (Matrix.swap ℝ i j) a)).upperLeft =
+          (rotateCoeffField (Matrix.swap ℝ i j) a.toFun)).upperLeft =
         Matrix.swap ℝ i j *
-          (coarseBlockMatrix (cubeSet (originCube d n)) a).upperLeft *
+          (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft *
             Matrix.swap ℝ i j) :
     IsSwapInvariant (annealedBAtScale P n) := by
   intro i j
-  ext r c
-  let U := cubeSet (originCube d n)
-  calc
-    (Matrix.swap ℝ i j * annealedBAtScale P n * Matrix.swap ℝ i j) r c
-        = ∫ a, (Matrix.swap ℝ i j *
-            (coarseBlockMatrix U a).upperLeft * Matrix.swap ℝ i j) r c ∂P := by
-          simp [annealedBAtScale, annealedB, annealedBlockMatrix, U, swap_mul_mul_swap_apply]
-    _ = ∫ a, (coarseBlockMatrix U a).upperLeft
-          (Equiv.swap i j r) (Equiv.swap i j c) ∂P := by
-          apply MeasureTheory.integral_congr_ae
-          filter_upwards with a
-          simp [swap_mul_mul_swap_apply]
-    _ = ∫ a, (coarseBlockMatrix U (rotateCoeffField (Matrix.swap ℝ i j) a)).upperLeft r c
-          ∂P := by
-          apply MeasureTheory.integral_congr_ae
-          filter_upwards [hcov i j] with a ha
-          have hentry := congrArg (fun M => M r c) ha
-          simpa [U, swap_mul_mul_swap_apply] using hentry.symm
-    _ = ∫ a, (coarseBlockMatrix U a).upperLeft r c ∂P := by
-          simpa [U] using
-            integral_comp_rotateCoeffField_eq_of_isIsotropicInLaw (hP := hIso)
-              (hR := isSignedPermutationMatrix_swap i j)
-              (f := fun a => (coarseBlockMatrix U a).upperLeft r c) (hf := hmeas r c)
-    _ = annealedBAtScale P n r c := by
-          rfl
+  have hform : annealedBAtScale P n =
+      Matrix.of fun r c =>
+        ∫ a, (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft r c ∂P := by
+    ext r c
+    simp only [annealedBAtScale, annealedB_apply, Matrix.of_apply]
+  rw [hform]
+  exact matrix_swap_conj_integral_eq hIso i j
+    (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft) hmeas (hcov i j)
 
 private theorem annealedSigmaStarInvKappaMeanAtScale_eq_zero_of_adjoint_covariant_ae
     {d : ℕ} [NeZero d] (P : CoeffLaw d) (n : ℤ)
     (hAdj : AdjointInvariantLaw P)
     (hmeas : ∀ r c : Fin d,
       AEStronglyMeasurable
-        (fun a => -((coarseBlockMatrix (cubeSet (originCube d n)) a).lowerLeft r c)) P)
+        (fun a => -((coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerLeft r c)) P)
     (hcov : ∀ᵐ a ∂P,
       -((coarseBlockMatrix (cubeSet (originCube d n))
-          (adjointCoeffField a)).lowerLeft) =
-        -(-((coarseBlockMatrix (cubeSet (originCube d n)) a).lowerLeft))) :
+          (adjointCoeffField a.toFun)).lowerLeft) =
+        -(-((coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerLeft))) :
     annealedSigmaStarInvKappaMeanAtScale P n = 0 := by
-  ext r c
-  change annealedSigmaStarInvKappaMeanAtScale P n r c = 0
-  let U := cubeSet (originCube d n)
-  have hcomp :=
-    integral_comp_adjointCoeffField_eq_of_isAdjointInvariantInLaw (hP := hAdj)
-      (f := fun a => -((coarseBlockMatrix U a).lowerLeft r c)) (hf := hmeas r c)
-  have hEq :
-      annealedSigmaStarInvKappaMeanAtScale P n r c =
-        -annealedSigmaStarInvKappaMeanAtScale P n r c := by
-    calc
-      annealedSigmaStarInvKappaMeanAtScale P n r c
-          = -(∫ a, (coarseBlockMatrix U a).lowerLeft r c ∂P) := by
-            simp [annealedSigmaStarInvKappaMeanAtScale, annealedSigmaStarInvKappaMean,
-              annealedBlockMatrix, U]
-      _ = ∫ a, -((coarseBlockMatrix U a).lowerLeft r c) ∂P := by
-            simpa using
-              (MeasureTheory.integral_neg
-                (f := fun a => (coarseBlockMatrix U a).lowerLeft r c)).symm
-      _ = ∫ a, -((coarseBlockMatrix U (adjointCoeffField a)).lowerLeft r c) ∂P := by
-            symm
-            simpa [U] using hcomp
-      _ = ∫ a, (coarseBlockMatrix U a).lowerLeft r c ∂P := by
-            apply MeasureTheory.integral_congr_ae
-            filter_upwards [hcov] with a ha
-            have hentry := congrArg (fun M => M r c) ha
-            simpa [U] using hentry
-      _ = -annealedSigmaStarInvKappaMeanAtScale P n r c := by
-            simp [annealedSigmaStarInvKappaMeanAtScale, annealedSigmaStarInvKappaMean,
-              annealedBlockMatrix, U]
-  linarith
+  have hform : annealedSigmaStarInvKappaMeanAtScale P n =
+      Matrix.of fun r c =>
+        ∫ a, (-(((coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerLeft))) r c ∂P := by
+    ext r c
+    simp only [annealedSigmaStarInvKappaMeanAtScale, annealedSigmaStarInvKappaMean_apply,
+      Matrix.of_apply, Matrix.neg_apply]
+    rw [MeasureTheory.integral_neg]
+  rw [hform]
+  exact matrix_adjoint_neg_integral_eq_zero hAdj
+    (fun a => -((coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerLeft)) hmeas hcov
 
 /--
 Isotropy and adjoint invariance scalarize the primitive annealed blocks at a
@@ -341,7 +345,7 @@ noncomputable def Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoi
       (fun i => by
         filter_upwards [hex] with a ha
         exact coarseBlockMatrix_lowerRight_signFlip_cubeSet_originCube_of_exists
-          (n := n) (a := a) ha i)
+          (n := n) (a := a.toFun) ha i)
   sigmaStarInvSwap :=
     annealedSigmaStarInvAtScale_isSwapInvariant_of_covariant_ae P n hIso
       (fun r c =>
@@ -350,7 +354,7 @@ noncomputable def Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoi
       (fun i j => by
         filter_upwards [hex] with a ha
         exact coarseBlockMatrix_lowerRight_swap_cubeSet_originCube_of_exists
-          (n := n) (a := a) ha i j)
+          (n := n) (a := a.toFun) ha i j)
   bFlip :=
     annealedBAtScale_isSignFlipInvariant_of_covariant_ae P n hIso
       (fun r c =>
@@ -359,7 +363,7 @@ noncomputable def Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoi
       (fun i => by
         filter_upwards [hex] with a ha
         exact coarseBlockMatrix_upperLeft_signFlip_cubeSet_originCube_of_exists
-          (n := n) (a := a) ha i)
+          (n := n) (a := a.toFun) ha i)
   bSwap :=
     annealedBAtScale_isSwapInvariant_of_covariant_ae P n hIso
       (fun r c =>
@@ -368,7 +372,7 @@ noncomputable def Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoi
       (fun i j => by
         filter_upwards [hex] with a ha
         exact coarseBlockMatrix_upperLeft_swap_cubeSet_originCube_of_exists
-          (n := n) (a := a) ha i j)
+          (n := n) (a := a.toFun) ha i j)
   sigmaStarInvKappaMean_eq_zero :=
     annealedSigmaStarInvKappaMeanAtScale_eq_zero_of_adjoint_covariant_ae P n hAdj
       (fun r c =>
@@ -377,7 +381,7 @@ noncomputable def Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoi
       (by
         filter_upwards [hex] with a ha
         exact coarseBlockMatrix_neg_lowerLeft_adjoint_cubeSet_originCube_of_exists
-          (n := n) (a := a) ha) }
+          (n := n) (a := a.toFun) ha) }
 
 /-- Structural-law version of
 `Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoint`. -/

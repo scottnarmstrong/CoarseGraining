@@ -1,18 +1,35 @@
-import Homogenization.Book.Ch04.Theorems.DilationLaw
-import Homogenization.Book.MainResults
+import Homogenization.Ambient.ScalarMatrix
+import Homogenization.Probability.RegCoeffField.EllipticSupport
+import Homogenization.Probability.RegCoeffField.Restriction
 import Homogenization.Geometry.ConvexDomain
 import Mathlib.Probability.Independence.InfinitePi
 import Mathlib.Probability.ProbabilityMassFunction.Constructions
 
 /-!
-# Bernoulli checkerboard examples
+# Bernoulli checkerboard: the honest carrier-valued sample map
 
-This file constructs the scalar Bernoulli checkerboard law on coefficient
-fields.  The random medium is indexed by `ℤ^d`; each open unit cube centered at
-an integer lattice point receives conductance `lam` or `Lam`, while cell walls
-are assigned the deterministic value `lam`.  The deterministic wall convention
-keeps stationarity and signed-permutation invariance exact for pointwise
-coefficient fields.
+This file constructs the scalar Bernoulli checkerboard as a *carrier-valued*
+random field.  The random medium is indexed by `ℤ^d`; each open unit cube
+centered at an integer lattice point receives conductance `lam` or `Lam`, while
+cell walls are assigned the deterministic value `lam`.  The deterministic wall
+convention keeps stationarity and signed-permutation invariance exact for
+pointwise coefficient fields.
+
+Following the carrier redesign, the sample map `checkerRegField lam Lam` lands
+in the honest-fields carrier `RegCoeffField d`: every realization is entrywise
+Borel measurable (piecewise-constant on the Borel cell decomposition) and
+locally integrable (bounded by `max |lam| |Lam|`).  The sample map is
+**genuinely measurable** for the canonical carrier σ-algebra
+`pointwiseSigmaR ⊔ entryTestSigmaR`: the pointwise lane is the coin evaluation
+at the cell of the point, and the entry-test lane is a *finite-cell
+decomposition* — the entry integral against a compactly supported probe is an
+affine function of the finitely many coins whose cells meet the probe's
+support.  The same decomposition, restricted through `restrictReg`, gives
+measurability into the restriction σ-algebra `RestrictionSigmaR U` from the
+coins of the cells meeting `U`, the input for unit-range dependence of the
+checkerboard law (`CarrierLaw.lean`).
+
+Reference: the paper (Armstrong–Kuusi–Loher, in prep).
 -/
 
 namespace Homogenization
@@ -62,6 +79,12 @@ theorem measurableSet_openUnitCell {d : ℕ} (z : Lattice d) :
 def cellsMeeting {d : ℕ} (U : Set (Vec d)) : Set (Lattice d) :=
   {z | ∃ x ∈ U, x ∈ openUnitCell z}
 
+/-- Monotonicity of `cellsMeeting` under set inclusion. -/
+theorem cellsMeeting_mono {d : ℕ} {U V : Set (Vec d)} (hUV : U ⊆ V) :
+    cellsMeeting U ⊆ cellsMeeting V := by
+  rintro z ⟨x, hxU, hxz⟩
+  exact ⟨x, hUV hxU, hxz⟩
+
 /-- A point belongs to at most one open unit cell. -/
 theorem openUnitCell_unique {d : ℕ} {x : Vec d} {z w : Lattice d}
     (hz : x ∈ openUnitCell z) (hw : x ∈ openUnitCell w) :
@@ -89,16 +112,6 @@ theorem openUnitCell_unique {d : ℕ} {x : Vec d} {z w : Lattice d}
       _ < (1 / 2 : ℝ) + (1 / 2 : ℝ) := add_lt_add hz_i hw_i
   norm_num at htriangle
   linarith
-
-/-- If a point lies in an open cell, the chosen cell used by `scalarAt` is that
-cell. -/
-theorem choose_openUnitCell_eq {d : ℕ} {x : Vec d} {z : Lattice d}
-    (hz : x ∈ openUnitCell z) :
-    Classical.choose (show ∃ w : Lattice d, x ∈ openUnitCell w from ⟨z, hz⟩) = z := by
-  classical
-  let h : ∃ w : Lattice d, x ∈ openUnitCell w := ⟨z, hz⟩
-  change Classical.choose h = z
-  exact openUnitCell_unique (Classical.choose_spec h) hz
 
 /-- Bounded observation sets meet only finitely many open checkerboard cells. -/
 theorem finite_cellsMeeting_of_isBounded {d : ℕ} {U : Set (Vec d)}
@@ -159,7 +172,7 @@ def scalarAt (lam Lam : ℝ) {d : ℕ} (ω : Sample d) (x : Vec d) : ℝ :=
       else
         lam
 
-/-- The scalar Bernoulli checkerboard coefficient field. -/
+/-- The scalar Bernoulli checkerboard coefficient field (raw sample). -/
 def coeffField (lam Lam : ℝ) {d : ℕ} (ω : Sample d) : CoeffField d :=
   fun x => scalarMatrix (d := d) (scalarAt lam Lam ω x)
 
@@ -243,6 +256,12 @@ theorem scalarAt_eq_lam_or_Lam {d : ℕ} {lam Lam : ℝ} (ω : Sample d) (x : Ve
   rw [scalarAt_eq_if_upperConductanceRegion]
   by_cases hx : x ∈ upperConductanceRegion ω <;> simp [hx]
 
+theorem abs_scalarAt_le {d : ℕ} {lam Lam : ℝ} (ω : Sample d) (x : Vec d) :
+    |scalarAt lam Lam ω x| ≤ max |lam| |Lam| := by
+  rcases scalarAt_eq_lam_or_Lam (lam := lam) (Lam := Lam) ω x with h | h
+  · rw [h]; exact le_max_left _ _
+  · rw [h]; exact le_max_right _ _
+
 theorem scalarMatrix_isEllipticMatrix_between {d : ℕ} {lam Lam sigma : ℝ}
     (hlam : 0 < lam) (hle : lam ≤ Lam) (hsigma : sigma = lam ∨ sigma = Lam) :
     IsEllipticMatrix lam Lam (scalarMatrix (d := d) sigma) := by
@@ -253,126 +272,7 @@ theorem scalarMatrix_isEllipticMatrix_between {d : ℕ} {lam Lam sigma : ℝ}
     have hLam : 0 < Lam := lt_of_lt_of_le hlam hle
     exact (isEllipticMatrix_scalarMatrix (d := d) hLam).mono hlam hle le_rfl
 
-theorem coeffField_aeeEllipticOn {d : ℕ} {lam Lam : ℝ} (ω : Sample d)
-    {U : Set (Vec d)} (hU : MeasurableSet U) (hlam : 0 < lam) (hle : lam ≤ Lam) :
-    Book.Ch04.AEEllipticOn lam Lam U (coeffField lam Lam ω) := by
-  refine ⟨hU, ?_, ?_⟩
-  · intro i j
-    have hentry :
-        Measurable fun x : Vec d => restrictCoeffField U (coeffField lam Lam ω) x i j := by
-      by_cases hij : i = j
-      · subst j
-        have hscalar := measurable_scalarAt_spatial (d := d) (lam := lam) (Lam := Lam) ω
-        have hpiece :
-            Measurable
-              (U.piecewise
-                (fun x : Vec d => scalarAt lam Lam ω x)
-                (fun _ : Vec d => 0)) :=
-          Measurable.piecewise hU hscalar measurable_const
-        convert hpiece using 1
-        funext x
-        by_cases hx : x ∈ U <;> simp [Set.piecewise, restrictCoeffField, coeffField,
-          scalarMatrix, hx]
-      · have hzero :
-            (fun x : Vec d => restrictCoeffField U (coeffField lam Lam ω) x i j) =
-              fun _ : Vec d => 0 := by
-          funext x
-          by_cases hx : x ∈ U <;> simp [restrictCoeffField, coeffField, scalarMatrix, hx, hij]
-        rw [hzero]
-        exact measurable_const
-    exact hentry.aestronglyMeasurable
-  · exact Filter.Eventually.of_forall fun x =>
-      scalarMatrix_isEllipticMatrix_between (d := d) hlam hle
-        (scalarAt_eq_lam_or_Lam (lam := lam) (Lam := Lam) ω x)
-
-/-- Triadic rescaling preserves the deterministic ellipticity bounds of each
-checkerboard sample. -/
-theorem rescaleCoeffField_coeffField_aeeEllipticOn {d : ℕ} {lam Lam : ℝ}
-    (k : ℕ) (ω : Sample d) {U : Set (Vec d)}
-    (hU : MeasurableSet U) (hlam : 0 < lam) (hle : lam ≤ Lam) :
-    Book.Ch04.AEEllipticOn lam Lam U (rescaleCoeffField k (coeffField lam Lam ω)) := by
-  refine ⟨hU, ?_, ?_⟩
-  · intro i j
-    have hentry :
-        Measurable fun x : Vec d =>
-          restrictCoeffField U (rescaleCoeffField k (coeffField lam Lam ω)) x i j := by
-      by_cases hij : i = j
-      · subst j
-        have hdil : Continuous (triadicDilateVec (d := d) k) := by
-          change Continuous fun x : Fin d → ℝ => fun i => (3 : ℝ) ^ k * x i
-          exact continuous_pi fun i => continuous_const.mul (continuous_apply i)
-        have hscalar :
-            Measurable fun x : Vec d => scalarAt lam Lam ω (triadicDilateVec k x) :=
-          (measurable_scalarAt_spatial (d := d) (lam := lam) (Lam := Lam) ω).comp
-            hdil.measurable
-        have hpiece :
-            Measurable
-              (U.piecewise
-                (fun x : Vec d => scalarAt lam Lam ω (triadicDilateVec k x))
-                (fun _ : Vec d => 0)) :=
-          Measurable.piecewise hU hscalar measurable_const
-        convert hpiece using 1
-        funext x
-        by_cases hx : x ∈ U <;> simp [Set.piecewise, restrictCoeffField,
-          rescaleCoeffField, coeffField, scalarMatrix, hx]
-      · have hzero :
-            (fun x : Vec d =>
-                restrictCoeffField U (rescaleCoeffField k (coeffField lam Lam ω)) x i j) =
-              fun _ : Vec d => 0 := by
-          funext x
-          by_cases hx : x ∈ U <;> simp [restrictCoeffField, rescaleCoeffField,
-            coeffField, scalarMatrix, hx, hij]
-        rw [hzero]
-        exact measurable_const
-    exact hentry.aestronglyMeasurable
-  · exact Filter.Eventually.of_forall fun x =>
-      by
-        simpa [rescaleCoeffField, coeffField] using
-          scalarMatrix_isEllipticMatrix_between (d := d) hlam hle
-            (scalarAt_eq_lam_or_Lam (lam := lam) (Lam := Lam) ω (triadicDilateVec k x))
-
-/-- Restrict a sample to a finite set of lattice coordinates. -/
-def sampleRestriction {d : ℕ} (F : Finset (Lattice d)) (ω : Sample d) :
-    F → Bool :=
-  fun z => ω z
-
-/-- Extend finite coordinate data to a sample, using `false` off the finite set. -/
-def sampleFromRestriction {d : ℕ} (F : Finset (Lattice d)) (η : F → Bool) :
-    Sample d :=
-  fun z => if h : z ∈ F then η ⟨z, h⟩ else false
-
-theorem sampleFromRestriction_sampleRestriction_eq_on {d : ℕ}
-    (F : Finset (Lattice d)) (ω : Sample d) :
-    ∀ z ∈ F, sampleFromRestriction F (sampleRestriction F ω) z = ω z := by
-  intro z hz
-  simp [sampleFromRestriction, sampleRestriction, hz]
-
-theorem coeffField_localAgreement_of_eq_on_cells {d : ℕ} {lam Lam : ℝ}
-    {U : Set (Vec d)} {F : Finset (Lattice d)} {ω ω' : Sample d}
-    (hF : cellsMeeting U ⊆ (F : Set (Lattice d)))
-    (hω : ∀ z ∈ F, ω z = ω' z) :
-    LocalAgreementOn U (coeffField lam Lam ω) (coeffField lam Lam ω') := by
-  classical
-  intro x hxU
-  by_cases hx : ∃ z : Lattice d, x ∈ openUnitCell z
-  · let z : Lattice d := Classical.choose hx
-    have hzcell : x ∈ openUnitCell z := Classical.choose_spec hx
-    have hzF : z ∈ F := hF ⟨x, hxU, hzcell⟩
-    simp [coeffField, scalarAt_of_mem_openUnitCell (lam := lam) (Lam := Lam)
-      (ω := ω) hzcell,
-      scalarAt_of_mem_openUnitCell (lam := lam) (Lam := Lam) (ω := ω') hzcell,
-      hω z hzF]
-  · simp [coeffField, scalarAt_of_not_mem_any_openUnitCell
-      (lam := lam) (Lam := Lam) (ω := ω) hx,
-      scalarAt_of_not_mem_any_openUnitCell
-        (lam := lam) (Lam := Lam) (ω := ω') hx]
-
-theorem measurable_sampleRestriction {d : ℕ} (F : Finset (Lattice d)) :
-    Measurable (sampleRestriction (d := d) F) := by
-  refine measurable_pi_iff.2 fun z => ?_
-  simpa [sampleRestriction] using
-    (measurable_pi_apply (z : Lattice d) :
-      Measurable fun ω : Sample d => ω (z : Lattice d))
+/-! ## The sample-side σ-algebras and the Bernoulli product law -/
 
 /-- The sigma-algebra generated by one lattice coin. -/
 def sampleCoordinateSigma {d : ℕ} (z : Lattice d) : MeasurableSpace (Sample d) :=
@@ -390,188 +290,11 @@ theorem measurable_eval_sampleCellsSigma {d : ℕ} {S : Set (Lattice d)}
   rw [measurable_iff_comap_le]
   exact le_iSup_of_le z (le_iSup_of_le hz le_rfl)
 
-theorem measurable_sampleRestriction_sampleCellsSigma {d : ℕ}
-    {S : Set (Lattice d)} (F : Finset (Lattice d)) (hF : (F : Set (Lattice d)) ⊆ S) :
-    @Measurable (Sample d) (F → Bool) (sampleCellsSigma S) inferInstance
-      (sampleRestriction (d := d) F) := by
-  letI : MeasurableSpace (Sample d) := sampleCellsSigma S
-  change Measurable (sampleRestriction (d := d) F)
-  refine measurable_pi_iff.2 fun z => ?_
-  simpa [sampleRestriction] using
-    measurable_eval_sampleCellsSigma (S := S) (z := (z : Lattice d)) (hF z.2)
-
-theorem cellsMeeting_inter_subset_left {d : ℕ} (U W : Set (Vec d)) :
-    cellsMeeting (U ∩ W) ⊆ cellsMeeting U := by
-  intro z hz
-  rcases hz with ⟨x, hx, hxz⟩
-  exact ⟨x, hx.1, hxz⟩
-
-theorem restrictCoeffField_coeffField_localAgreement_of_eq_on_cells {d : ℕ}
-    {lam Lam : ℝ} {U W : Set (Vec d)} {F : Finset (Lattice d)}
-    {ω ω' : Sample d}
-    (hF : cellsMeeting (U ∩ W) ⊆ (F : Set (Lattice d)))
-    (hω : ∀ z ∈ F, ω z = ω' z) :
-    LocalAgreementOn W
-      (restrictCoeffField U (coeffField lam Lam ω))
-      (restrictCoeffField U (coeffField lam Lam ω')) := by
-  intro x hxW
-  by_cases hxU : x ∈ U
-  · have hagree :
-      LocalAgreementOn (U ∩ W) (coeffField lam Lam ω) (coeffField lam Lam ω') :=
-      coeffField_localAgreement_of_eq_on_cells (lam := lam) (Lam := Lam)
-        (U := U ∩ W) (F := F) hF hω
-    simp [restrictCoeffField, hxU, hagree x ⟨hxU, hxW⟩]
-  · simp [restrictCoeffField, hxU]
-
-theorem measurable_restrictCoeffField_coeffField_localSigma_sampleCellsSigma {d : ℕ}
-    {lam Lam : ℝ} (U W : Set (Vec d)) (hW : Bornology.IsBounded W) :
-    @Measurable (Sample d) (CoeffField d) (sampleCellsSigma (cellsMeeting U)) (LocalSigma W)
-      (fun ω => restrictCoeffField U (coeffField lam Lam ω)) := by
-  classical
-  letI : MeasurableSpace (Sample d) := sampleCellsSigma (cellsMeeting U)
-  change @Measurable (Sample d) (CoeffField d) this (LocalSigma W)
-    (fun ω : Sample d => restrictCoeffField U (coeffField lam Lam ω))
-  refine measurable_generateFrom ?_
-  intro s hs
-  let hfinite := finite_cellsMeeting_of_isBounded (d := d) (U := U ∩ W)
-    (hW.subset Set.inter_subset_right)
-  let F : Finset (Lattice d) := hfinite.toFinset
-  have hF_local : cellsMeeting (U ∩ W) ⊆ (F : Set (Lattice d)) := by
-    intro z hz
-    exact hfinite.mem_toFinset.2 hz
-  have hF_cells : (F : Set (Lattice d)) ⊆ cellsMeeting U := by
-    intro z hz
-    exact cellsMeeting_inter_subset_left U W (hfinite.mem_toFinset.1 hz)
-  let target : Set (F → Bool) :=
-    {η | restrictCoeffField U (coeffField lam Lam (sampleFromRestriction F η)) ∈ s}
-  have htarget : MeasurableSet target := by
-    exact (Set.toFinite target).measurableSet
-  have hpre :
-      (fun ω : Sample d => restrictCoeffField U (coeffField lam Lam ω)) ⁻¹' s =
-        (sampleRestriction F) ⁻¹' target := by
-    ext ω
-    have hagree :
-        LocalAgreementOn W
-          (restrictCoeffField U
-            (coeffField lam Lam (sampleFromRestriction F (sampleRestriction F ω))))
-          (restrictCoeffField U (coeffField lam Lam ω)) := by
-      exact restrictCoeffField_coeffField_localAgreement_of_eq_on_cells
-        (lam := lam) (Lam := Lam) (U := U) (W := W) (F := F) hF_local
-        (sampleFromRestriction_sampleRestriction_eq_on F ω)
-    have hiff := hs hagree
-    simp [target, hiff]
-  rw [hpre]
-  exact (measurable_sampleRestriction_sampleCellsSigma (S := cellsMeeting U) F hF_cells) htarget
-
-theorem measurable_restrictCoeffField_coeffField_sampleCellsSigma {d : ℕ}
-    {lam Lam : ℝ} (U : Set (Vec d)) :
-    @Measurable (Sample d) (CoeffField d) (sampleCellsSigma (cellsMeeting U))
-      (instMeasurableSpaceCoeffField d)
-      (fun ω => restrictCoeffField U (coeffField lam Lam ω)) := by
-  classical
-  letI : MeasurableSpace (Sample d) := sampleCellsSigma (cellsMeeting U)
-  change Measurable (fun ω : Sample d => restrictCoeffField U (coeffField lam Lam ω))
-  refine measurable_to_coeffField_ambient
-    (d := d) (f := fun ω => restrictCoeffField U (coeffField lam Lam ω)) ?_ ?_
-  · refine measurable_pi_iff.2 fun x => measurable_pi_iff.2 fun i =>
-      measurable_pi_iff.2 fun j => ?_
-    by_cases hxU : x ∈ U
-    · by_cases hxcell : ∃ z : Lattice d, x ∈ openUnitCell z
-      · let z : Lattice d := Classical.choose hxcell
-        have hzcell : x ∈ openUnitCell z := Classical.choose_spec hxcell
-        have hz : z ∈ cellsMeeting U := ⟨x, hxU, hzcell⟩
-        have hcoin :
-            @Measurable (Sample d) ℝ (sampleCellsSigma (cellsMeeting U)) inferInstance
-              (fun ω => coinConductance lam Lam (ω z)) :=
-          (measurable_of_finite (coinConductance lam Lam)).comp
-            (measurable_eval_sampleCellsSigma (S := cellsMeeting U) hz)
-        by_cases hij : i = j
-        · subst j
-          convert hcoin using 1
-          funext ω
-          simp [restrictCoeffField, coeffField, scalarMatrix, hxU,
-            scalarAt_of_mem_openUnitCell (lam := lam) (Lam := Lam) (ω := ω) hzcell]
-        · simp [restrictCoeffField, coeffField, scalarMatrix, hxU, hij]
-      · by_cases hij : i = j
-        · subst j
-          have hconst :
-              (fun ω : Sample d =>
-                restrictCoeffField U (coeffField lam Lam ω) x i i) =
-                fun _ : Sample d => lam := by
-            funext ω
-            simp [restrictCoeffField, coeffField, scalarMatrix, hxU,
-              scalarAt_of_not_mem_any_openUnitCell (lam := lam) (Lam := Lam) (ω := ω) hxcell]
-          rw [hconst]
-          exact measurable_const
-        · simp [restrictCoeffField, coeffField, scalarMatrix, hxU, hij]
-    · simp [restrictCoeffField, hxU]
-  · intro W hW
-    exact measurable_restrictCoeffField_coeffField_localSigma_sampleCellsSigma
-      (d := d) (lam := lam) (Lam := Lam) U W hW
-
-theorem measurable_coeffField_restrictionSigma_sampleCellsSigma {d : ℕ}
-    {lam Lam : ℝ} (U : Set (Vec d)) :
-    @Measurable (Sample d) (CoeffField d) (sampleCellsSigma (cellsMeeting U))
-      (RestrictionSigma U) (coeffField lam Lam) := by
-  letI : MeasurableSpace (Sample d) := sampleCellsSigma (cellsMeeting U)
-  rw [measurable_iff_comap_le]
-  rw [RestrictionSigma, MeasurableSpace.comap_comp]
-  exact (measurable_restrictCoeffField_coeffField_sampleCellsSigma
-    (d := d) (lam := lam) (Lam := Lam) U).comap_le
-
-theorem measurable_coeffField_localSigma {d : ℕ} {lam Lam : ℝ}
-    (U : Set (Vec d)) (hU : Bornology.IsBounded U) :
-    @Measurable (Sample d) (CoeffField d) inferInstance (LocalSigma U)
-      (coeffField lam Lam) := by
-  classical
-  refine measurable_generateFrom ?_
-  intro s hs
-  let hfinite := finite_cellsMeeting_of_isBounded (d := d) (U := U) hU
-  let F : Finset (Lattice d) := hfinite.toFinset
-  have hF : cellsMeeting U ⊆ (F : Set (Lattice d)) := by
-    intro z hz
-    exact hfinite.mem_toFinset.2 hz
-  let target : Set (F → Bool) :=
-    {η | coeffField lam Lam (sampleFromRestriction F η) ∈ s}
-  have htarget : MeasurableSet target := by
-    exact (Set.toFinite target).measurableSet
-  have hpre :
-      (coeffField lam Lam : Sample d → CoeffField d) ⁻¹' s =
-        (sampleRestriction F) ⁻¹' target := by
-    ext ω
-    have hagree :
-        LocalAgreementOn U
-          (coeffField lam Lam (sampleFromRestriction F (sampleRestriction F ω)))
-          (coeffField lam Lam ω) := by
-      exact coeffField_localAgreement_of_eq_on_cells (lam := lam) (Lam := Lam)
-        (U := U) (F := F) hF
-        (sampleFromRestriction_sampleRestriction_eq_on F ω)
-    have hiff := hs hagree
-    simp [target, hiff]
-  rw [hpre]
-  exact measurable_sampleRestriction F htarget
-
-theorem measurable_coeffField {d : ℕ} {lam Lam : ℝ} :
-    @Measurable (Sample d) (CoeffField d) inferInstance
-      (instMeasurableSpaceCoeffField d) (coeffField (d := d) lam Lam) := by
-  classical
-  refine measurable_to_coeffField_ambient (d := d) (f := coeffField lam Lam) ?_ ?_
-  · refine measurable_pi_iff.2 fun x => measurable_pi_iff.2 fun i =>
-      measurable_pi_iff.2 fun j => ?_
-    by_cases hx : ∃ z : Lattice d, x ∈ openUnitCell z
-    · let z : Lattice d := Classical.choose hx
-      have hcoin : Measurable fun ω : Sample d => coinConductance lam Lam (ω z) :=
-        (measurable_of_finite (coinConductance lam Lam)).comp (measurable_pi_apply z)
-      by_cases hij : i = j
-      · subst j
-        simpa [coeffField, scalarAt, hx, scalarMatrix] using hcoin
-      · simp [coeffField, scalarAt, hx, scalarMatrix, hij]
-    · by_cases hij : i = j
-      · subst j
-        simp [coeffField, scalarAt, hx, scalarMatrix]
-      · simp [coeffField, scalarAt, hx, scalarMatrix, hij]
-  · intro U hU
-    exact measurable_coeffField_localSigma (d := d) (lam := lam) (Lam := Lam) U hU
+/-- Every cells σ-algebra is coarser than the ambient product σ-algebra. -/
+theorem sampleCellsSigma_le {d : ℕ} (S : Set (Lattice d)) :
+    sampleCellsSigma S ≤ (inferInstance : MeasurableSpace (Sample d)) := by
+  refine iSup_le fun z => iSup_le fun _ => ?_
+  exact (measurable_pi_apply z).comap_le
 
 /-- The Bernoulli measure on a single coin. -/
 def coinMeasure (p : ℝ≥0) (hp : p ≤ 1) : Measure Bool :=
@@ -590,56 +313,285 @@ instance instIsProbabilityMeasure_sampleMeasure (d : ℕ) (p : ℝ≥0) (hp : p 
   rw [sampleMeasure]
   infer_instance
 
-/-- The unscaled checkerboard coefficient-field law. -/
-def law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) : Book.Ch04.CoeffLaw d :=
-  Measure.map (coeffField lam Lam) (sampleMeasure d p hp)
+/-! ## The carrier-valued sample map -/
 
-theorem isProbabilityMeasure_law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) :
-    IsProbabilityMeasure (law d lam Lam p hp) := by
-  rw [law]
-  exact Measure.isProbabilityMeasure_map
-    (measurable_coeffField (d := d) (lam := lam) (Lam := Lam)).aemeasurable
+/-- **The checkerboard realization as a carrier element.**  Entrywise Borel
+measurability is the shipped spatial measurability of the piecewise-constant
+sample; local integrability holds because every entry is bounded by
+`max |lam| |Lam|` (`RegCoeffField.locallyIntegrable_of_bounded_measurable`).
+This discharges gate obligation (i) of the carrier design gate. -/
+def checkerRegField (lam Lam : ℝ) {d : ℕ} (ω : Sample d) : RegCoeffField d where
+  toFun := coeffField lam Lam ω
+  entry_measurable := fun i j => by
+    by_cases hij : i = j
+    · subst j
+      simpa [coeffField, scalarMatrix] using
+        measurable_scalarAt_spatial (lam := lam) (Lam := Lam) ω
+    · simp [coeffField, scalarMatrix, hij]
+  entry_locInt := fun i j => by
+    by_cases hij : i = j
+    · subst j
+      have hmeas : Measurable (fun x : Vec d => coeffField lam Lam ω x i i) := by
+        simpa [coeffField, scalarMatrix] using
+          measurable_scalarAt_spatial (lam := lam) (Lam := Lam) ω
+      refine RegCoeffField.locallyIntegrable_of_bounded_measurable hmeas
+        (C := max |lam| |Lam|) fun x => ?_
+      simpa [coeffField, scalarMatrix] using
+        abs_scalarAt_le (lam := lam) (Lam := Lam) ω x
+    · have hzero : (fun x : Vec d => coeffField lam Lam ω x i j)
+          = fun _ : Vec d => (0 : ℝ) := by
+        funext x
+        simp [coeffField, scalarMatrix, hij]
+      rw [hzero]
+      exact locallyIntegrable_const (0 : ℝ)
 
-theorem measurableSet_uniformEllipticitySupport {d : ℕ} {lam Lam : ℝ} :
-    MeasurableSet
-      {a : CoeffField d |
-        ∀ Q : TriadicCube d,
-          Book.Ch04.AEEllipticOn lam Lam (openCubeSet Q) a} := by
-  have hQ :
-      ∀ Q : TriadicCube d,
-        MeasurableSet
-          {a : CoeffField d | Book.Ch04.AEEllipticOn lam Lam (openCubeSet Q) a} := by
-    intro Q
-    exact localSigma_le_coeffField_of_isBounded (isBounded_openCubeSet Q) _
-      (IsAEEllipticFieldOn.measurableSet_localSigma lam Lam (openCubeSet Q))
-  simpa [Set.iInter_setOf] using
-    (MeasurableSet.iInter hQ :
-      MeasurableSet
-        (⋂ Q : TriadicCube d,
-          {a : CoeffField d | Book.Ch04.AEEllipticOn lam Lam (openCubeSet Q) a}))
+@[simp] theorem checkerRegField_toFun {d : ℕ} (lam Lam : ℝ) (ω : Sample d) :
+    (checkerRegField lam Lam ω).toFun = coeffField lam Lam ω := rfl
 
-theorem law_uniformEllipticityBounds {d : ℕ} {lam Lam : ℝ}
-    (hlam : 0 < lam) (hle : lam ≤ Lam) (p : ℝ≥0) (hp : p ≤ 1) :
-    Book.MainResults.UniformEllipticityBounds (law d lam Lam p hp) lam Lam where
-  lam_pos := hlam
-  lam_le_Lam := hle
-  aee_elliptic := by
-    rw [law]
-    exact
-      (ae_map_iff
-        (measurable_coeffField (d := d) (lam := lam) (Lam := Lam)).aemeasurable
-        (measurableSet_uniformEllipticitySupport (d := d) (lam := lam) (Lam := Lam))).2
-        (Filter.Eventually.of_forall fun ω Q =>
-          coeffField_aeeEllipticOn (d := d) (lam := lam) (Lam := Lam) ω
-            (measurableSet_openCubeSet Q) hlam hle)
+@[simp] theorem checkerRegField_apply {d : ℕ} (lam Lam : ℝ) (ω : Sample d) (x : Vec d) :
+    checkerRegField lam Lam ω x = coeffField lam Lam ω x := rfl
 
-theorem lawCarrier {d : ℕ} {lam Lam : ℝ}
-    (hlam : 0 < lam) (hle : lam ≤ Lam) (p : ℝ≥0) (hp : p ≤ 1) :
-    Book.Ch04.LawCarrier (law d lam Lam p hp) := by
-  letI : IsProbabilityMeasure (law d lam Lam p hp) :=
-    isProbabilityMeasure_law d lam Lam p hp
-  exact Book.Ch04.lawCarrier_of_aeLocallyUniformlyElliptic
-    (law_uniformEllipticityBounds (d := d) hlam hle p hp).toAELocallyUniformlyEllipticLaw
+/-- Every checkerboard realization is spatially a.e. (in fact everywhere)
+`(lam, Lam)`-elliptic on any measurable observation set — the regularity
+conjuncts are free by the carrier type. -/
+theorem checkerRegField_isAEEllipticFieldOn {d : ℕ} {lam Lam : ℝ}
+    {U : Set (Vec d)} (hU : MeasurableSet U) (hlam : 0 < lam) (hle : lam ≤ Lam)
+    (ω : Sample d) :
+    IsAEEllipticFieldOn lam Lam U (checkerRegField lam Lam ω).toFun := by
+  rw [isAEEllipticFieldOn_carrier_iff hU lam Lam]
+  exact Filter.Eventually.of_forall fun x =>
+    scalarMatrix_isEllipticMatrix_between (d := d) hlam hle
+      (scalarAt_eq_lam_or_Lam (lam := lam) (Lam := Lam) ω x)
+
+/-! ## Genuine measurability of the sample map (entry-test lane)
+
+The entry integral of a checkerboard sample against a compactly supported probe
+is an affine function of the finitely many coins whose cells meet the probe's
+support: the **finite-cell decomposition**.  This is the honest carrier
+replacement of the raw generator-trick route, and discharges gate obligation (ii)
+of the carrier design gate. -/
+
+/-- Probes are integrable (bounded, measurable, compactly supported). -/
+private theorem integrable_of_isProbeR {d : ℕ} {ψ : Vec d → ℝ} (hψ : IsProbeR ψ) :
+    Integrable ψ (volume : Measure (Vec d)) := by
+  set K := tsupport ψ with hK
+  have hKcpt : IsCompact K := hψ.hasCompactSupport
+  obtain ⟨C, hC⟩ := hψ.bounded
+  have hOn : IntegrableOn ψ K volume := by
+    refine Measure.integrableOn_of_bounded hKcpt.measure_lt_top.ne
+      hψ.measurable.aestronglyMeasurable (M := C) ?_
+    filter_upwards with x
+    simpa [Real.norm_eq_abs] using hC x
+  have hself : K.indicator ψ = ψ :=
+    Set.indicator_eq_self.2 (subset_tsupport ψ)
+  rw [← hself, integrable_indicator_iff hKcpt.measurableSet]
+  exact hOn
+
+/-- **The pointwise finite-cell decomposition** of the scalar sample against a
+probe: over any finset `F` containing all cells meeting the probe's support,
+`scalarAt ω · ψ = lam ψ + ∑_{z ∈ F} (coin(ω z) − lam) · 1_{cell z} ψ`. -/
+private theorem scalarAt_mul_probe_decomp {d : ℕ} (lam Lam : ℝ)
+    {ψ : Vec d → ℝ} {F : Finset (Lattice d)}
+    (hF : cellsMeeting (Function.support ψ) ⊆ (F : Set (Lattice d)))
+    (ω : Sample d) (x : Vec d) :
+    scalarAt lam Lam ω x * ψ x =
+      lam * ψ x + ∑ z ∈ F, (coinConductance lam Lam (ω z) - lam) *
+        Set.indicator (openUnitCell z) ψ x := by
+  classical
+  by_cases hψx : ψ x = 0
+  · simp [hψx, Set.indicator_apply]
+  · have hx : x ∈ Function.support ψ := hψx
+    by_cases hcell : ∃ z : Lattice d, x ∈ openUnitCell z
+    · obtain ⟨z0, hz0⟩ := hcell
+      have hz0F : z0 ∈ F := hF ⟨x, hx, hz0⟩
+      rw [scalarAt_of_mem_openUnitCell (lam := lam) (Lam := Lam) (ω := ω) hz0,
+        Finset.sum_eq_single z0]
+      · rw [Set.indicator_of_mem hz0]
+        ring
+      · intro z _ hzne
+        have hxz : x ∉ openUnitCell z := fun hxz =>
+          hzne (openUnitCell_unique hxz hz0)
+        rw [Set.indicator_of_notMem hxz, mul_zero]
+      · intro habs
+        exact absurd hz0F habs
+    · rw [scalarAt_of_not_mem_any_openUnitCell (lam := lam) (Lam := Lam)
+        (ω := ω) hcell, Finset.sum_eq_zero, add_zero]
+      intro z _
+      have hxz : x ∉ openUnitCell z := fun hxz => hcell ⟨z, hxz⟩
+      rw [Set.indicator_of_notMem hxz, mul_zero]
+
+/-- **The integrated finite-cell decomposition**: the diagonal entry test of a
+checkerboard sample is an affine function of the coins in any finset containing
+the cells meeting the probe's support. -/
+theorem entryTestR_checkerRegField_diag {d : ℕ} (lam Lam : ℝ) (i : Fin d)
+    {ψ : Vec d → ℝ} (hψ : IsProbeR ψ) {F : Finset (Lattice d)}
+    (hF : cellsMeeting (Function.support ψ) ⊆ (F : Set (Lattice d)))
+    (ω : Sample d) :
+    entryTestR i i ψ (checkerRegField lam Lam ω) =
+      lam * ∫ x, ψ x ∂volume +
+        ∑ z ∈ F, (coinConductance lam Lam (ω z) - lam) *
+          ∫ x, Set.indicator (openUnitCell z) ψ x ∂volume := by
+  classical
+  have hint_ψ : Integrable (fun x => lam * ψ x) volume :=
+    (integrable_of_isProbeR hψ).const_mul lam
+  have hint_z : ∀ z ∈ F, Integrable
+      (fun x => (coinConductance lam Lam (ω z) - lam) *
+        Set.indicator (openUnitCell z) ψ x) volume := fun z _ =>
+    (integrable_of_isProbeR (hψ.indicator (measurableSet_openUnitCell z))).const_mul _
+  have hint_sum : Integrable
+      (fun x => ∑ z ∈ F, (coinConductance lam Lam (ω z) - lam) *
+        Set.indicator (openUnitCell z) ψ x) volume :=
+    integrable_finset_sum F hint_z
+  calc
+    entryTestR i i ψ (checkerRegField lam Lam ω)
+        = ∫ x, scalarAt lam Lam ω x * ψ x ∂volume := by
+          unfold entryTestR
+          refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+          simp [coeffField, scalarMatrix]
+    _ = ∫ x, (lam * ψ x + ∑ z ∈ F, (coinConductance lam Lam (ω z) - lam) *
+          Set.indicator (openUnitCell z) ψ x) ∂volume := by
+          refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+          exact scalarAt_mul_probe_decomp lam Lam hF ω x
+    _ = lam * ∫ x, ψ x ∂volume +
+          ∑ z ∈ F, (coinConductance lam Lam (ω z) - lam) *
+            ∫ x, Set.indicator (openUnitCell z) ψ x ∂volume := by
+          rw [integral_add hint_ψ hint_sum, integral_const_mul,
+            integral_finset_sum F hint_z]
+          congr 1
+          exact Finset.sum_congr rfl fun z _ => integral_const_mul _ _
+
+/-- **Master entry-test measurability**: the entry test of the checkerboard
+sample map against a probe is measurable for any σ-algebra on the sample space
+that measures the coins of the cells meeting the probe's support. -/
+theorem measurable_entryTestR_checkerRegField {d : ℕ} (lam Lam : ℝ)
+    {m : MeasurableSpace (Sample d)} (i j : Fin d) {ψ : Vec d → ℝ}
+    (hψ : IsProbeR ψ)
+    (hcoin : ∀ z ∈ cellsMeeting (Function.support ψ),
+      @Measurable (Sample d) Bool m inferInstance (fun ω => ω z)) :
+    @Measurable (Sample d) ℝ m inferInstance
+      (fun ω => entryTestR i j ψ (checkerRegField lam Lam ω)) := by
+  classical
+  by_cases hij : i = j
+  · subst j
+    have hbdd : Bornology.IsBounded (Function.support ψ) :=
+      hψ.hasCompactSupport.isBounded.subset (subset_tsupport ψ)
+    have hfin := finite_cellsMeeting_of_isBounded (d := d) hbdd
+    set F : Finset (Lattice d) := hfin.toFinset with hFdef
+    have hF : cellsMeeting (Function.support ψ) ⊆ (F : Set (Lattice d)) :=
+      fun z hz => hfin.mem_toFinset.2 hz
+    have hEq : (fun ω : Sample d => entryTestR i i ψ (checkerRegField lam Lam ω))
+        = fun ω => lam * ∫ x, ψ x ∂volume +
+            ∑ z ∈ F, (coinConductance lam Lam (ω z) - lam) *
+              ∫ x, Set.indicator (openUnitCell z) ψ x ∂volume :=
+      funext fun ω => entryTestR_checkerRegField_diag lam Lam i hψ hF ω
+    rw [hEq]
+    refine Measurable.add measurable_const ?_
+    refine Finset.measurable_sum F fun z hz => ?_
+    have hzS : z ∈ cellsMeeting (Function.support ψ) := hfin.mem_toFinset.1 hz
+    have hcz : @Measurable (Sample d) ℝ m inferInstance
+        (fun ω => coinConductance lam Lam (ω z)) :=
+      (measurable_of_finite (coinConductance lam Lam)).comp (hcoin z hzS)
+    exact (hcz.sub measurable_const).mul_const _
+  · have hEq : (fun ω : Sample d => entryTestR i j ψ (checkerRegField lam Lam ω))
+        = fun _ => (0 : ℝ) := by
+      funext ω
+      unfold entryTestR
+      have hzero : ∀ x : Vec d, checkerRegField lam Lam ω x i j * ψ x = 0 := by
+        intro x
+        simp [coeffField, scalarMatrix, hij]
+      simp only [hzero, integral_zero]
+    rw [hEq]
+    exact measurable_const
+
+/-- **Master pointwise-lane measurability**: evaluation of the checkerboard
+sample map at a spatial point is measurable for any σ-algebra measuring the
+coin of the cell of that point (walls are deterministic). -/
+theorem measurable_apply_checkerRegField {d : ℕ} (lam Lam : ℝ)
+    {m : MeasurableSpace (Sample d)} (x : Vec d) (i j : Fin d)
+    (hcoin : ∀ z : Lattice d, x ∈ openUnitCell z →
+      @Measurable (Sample d) Bool m inferInstance (fun ω => ω z)) :
+    @Measurable (Sample d) ℝ m inferInstance
+      (fun ω => checkerRegField lam Lam ω x i j) := by
+  classical
+  by_cases hx : ∃ z : Lattice d, x ∈ openUnitCell z
+  · let z : Lattice d := Classical.choose hx
+    have hzcell : x ∈ openUnitCell z := Classical.choose_spec hx
+    have hcz : @Measurable (Sample d) ℝ m inferInstance
+        (fun ω => coinConductance lam Lam (ω z)) :=
+      (measurable_of_finite (coinConductance lam Lam)).comp (hcoin z hzcell)
+    by_cases hij : i = j
+    · subst j
+      simpa [coeffField, scalarAt, hx, scalarMatrix] using hcz
+    · simp [coeffField, scalarAt, hx, scalarMatrix, hij]
+  · by_cases hij : i = j
+    · subst j
+      simp [coeffField, scalarAt, hx, scalarMatrix]
+    · simp [coeffField, scalarAt, hx, scalarMatrix, hij]
+
+/-- **The checkerboard sample map is genuinely measurable into the carrier**
+(canonical σ-algebra, both lanes).  Gate obligation (ii) discharged: the entry-test
+lane is the finite-cell decomposition, the pointwise lane the coin evaluation. -/
+theorem measurable_checkerRegField {d : ℕ} (lam Lam : ℝ) :
+    Measurable (checkerRegField lam Lam (d := d)) := by
+  refine measurable_into_regCoeffField' ?_ ?_
+  · intro y i j
+    exact measurable_apply_checkerRegField lam Lam y i j
+      (fun z _ => measurable_pi_apply z)
+  · intro i j φ hφ
+    exact measurable_entryTestR_checkerRegField lam Lam i j hφ
+      (fun z _ => measurable_pi_apply z)
+
+/-- The `U`-restricted checkerboard sample map is measurable into the carrier
+from the σ-algebra of the coins whose cells meet `U`. -/
+theorem measurable_restrictReg_checkerRegField_sampleCellsSigma {d : ℕ}
+    (lam Lam : ℝ) (U : Set (Vec d)) (hU : MeasurableSet U) :
+    @Measurable (Sample d) (RegCoeffField d)
+      (sampleCellsSigma (cellsMeeting U)) inferInstance
+      (fun ω => restrictReg U hU (checkerRegField lam Lam ω)) := by
+  classical
+  letI : MeasurableSpace (Sample d) := sampleCellsSigma (cellsMeeting U)
+  change Measurable (fun ω : Sample d => restrictReg U hU (checkerRegField lam Lam ω))
+  refine measurable_into_regCoeffField' ?_ ?_
+  · intro y i j
+    have hEq : (fun ω : Sample d => restrictReg U hU (checkerRegField lam Lam ω) y i j)
+        = fun ω => Set.indicator U (fun y' => checkerRegField lam Lam ω y' i j) y :=
+      funext fun ω => restrictReg_apply_entry U hU (checkerRegField lam Lam ω) y i j
+    rw [hEq]
+    by_cases hyU : y ∈ U
+    · simp only [Set.indicator_of_mem hyU]
+      refine measurable_apply_checkerRegField lam Lam y i j fun z hz => ?_
+      exact measurable_eval_sampleCellsSigma (S := cellsMeeting U) ⟨y, hyU, hz⟩
+    · simp only [Set.indicator_of_notMem hyU]
+      exact measurable_const
+  · intro i j φ hφ
+    have hEq : (fun ω : Sample d =>
+          entryTestR i j φ (restrictReg U hU (checkerRegField lam Lam ω)))
+        = fun ω => entryTestR i j (Set.indicator U φ) (checkerRegField lam Lam ω) :=
+      funext fun ω => entryTestR_restrictReg i j φ U hU (checkerRegField lam Lam ω)
+    rw [hEq]
+    refine measurable_entryTestR_checkerRegField lam Lam i j (hφ.indicator hU)
+      fun z hz => ?_
+    have hsupp : Function.support (Set.indicator U φ) ⊆ U := by
+      intro x hxs
+      by_contra hxU
+      exact hxs (Set.indicator_of_notMem hxU φ)
+    exact measurable_eval_sampleCellsSigma (S := cellsMeeting U)
+      (cellsMeeting_mono hsupp hz)
+
+/-- The checkerboard sample map is measurable into the carrier restriction
+σ-algebra `RestrictionSigmaR U` from the coins whose cells meet `U` — the
+unit-range dependence input. -/
+theorem measurable_checkerRegField_restrictionSigmaR {d : ℕ}
+    (lam Lam : ℝ) (U : Set (Vec d)) (hU : MeasurableSet U) :
+    @Measurable (Sample d) (RegCoeffField d)
+      (sampleCellsSigma (cellsMeeting U)) (RestrictionSigmaR U hU)
+      (checkerRegField lam Lam) := by
+  letI : MeasurableSpace (Sample d) := sampleCellsSigma (cellsMeeting U)
+  rw [measurable_iff_comap_le, RestrictionSigmaR, MeasurableSpace.comap_comp]
+  exact (measurable_restrictReg_checkerRegField_sampleCellsSigma
+    lam Lam U hU).comap_le
+
+/-! ## Sample-space symmetries and carrier commutations -/
 
 /-- Translate lattice indices by an integer vector. -/
 def translateLattice {d : ℕ} (z : Lattice d) (w : Lattice d) : Lattice d :=
@@ -728,77 +680,23 @@ theorem scalarAt_translate_intVec {d : ℕ} {lam Lam : ℝ}
     simp [scalarAt_of_not_mem_any_openUnitCell (lam := lam) (Lam := Lam) (ω := ω) hxshift,
       scalarAt_of_not_mem_any_openUnitCell (lam := lam) (Lam := Lam) (ω := shiftSample z ω) hx]
 
-theorem translateByInt_coeffField {d : ℕ} {lam Lam : ℝ}
+/-- **Carrier commutation for translation**: the carrier translation
+endomorphism intertwines the sample map with the lattice shift. -/
+theorem translateReg_checkerRegField {d : ℕ} {lam Lam : ℝ}
     (z : Lattice d) (ω : Sample d) :
-    translateByInt z (coeffField lam Lam ω) = coeffField lam Lam (shiftSample z ω) := by
-  funext x i j
-  by_cases hij : i = j
-  · subst j
-    simp [translateByInt, translateCoeffField, coeffField, scalarMatrix, intVecToRealVec,
-      scalarAt_translate_intVec]
-  · simp [translateByInt, translateCoeffField, coeffField, scalarMatrix, hij]
+    translateReg (intVecToRealVec z) (checkerRegField lam Lam ω) =
+      checkerRegField lam Lam (shiftSample z ω) := by
+  apply RegCoeffField.ext
+  intro x
+  show coeffField lam Lam ω (x + intVecToRealVec z) =
+    coeffField lam Lam (shiftSample z ω) x
+  have h : scalarAt lam Lam ω (x + intVecToRealVec z) =
+      scalarAt lam Lam (shiftSample z ω) x := by
+    simpa [intVecToRealVec] using
+      scalarAt_translate_intVec (lam := lam) (Lam := Lam) z ω x
+  simp only [coeffField, h]
 
-theorem stationary_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
-    Book.Ch04.StationaryLaw (law d lam Lam p hp) := by
-  intro z
-  rw [law]
-  calc
-    Measure.map (translateByInt z) (Measure.map (coeffField lam Lam) (sampleMeasure d p hp))
-        =
-          Measure.map
-            (fun ω : Sample d => translateByInt z (coeffField lam Lam ω))
-            (sampleMeasure d p hp) := by
-          simpa [Function.comp] using
-            (Measure.map_map
-              (measurable_translateByInt (d := d) z)
-              (measurable_coeffField (d := d) (lam := lam) (Lam := Lam))
-              (μ := sampleMeasure d p hp))
-    _ =
-          Measure.map
-            (fun ω : Sample d => coeffField lam Lam (shiftSample z ω))
-            (sampleMeasure d p hp) := by
-          congr 1
-          funext ω
-          exact translateByInt_coeffField z ω
-    _ =
-          Measure.map (coeffField lam Lam)
-            (Measure.map (shiftSample z) (sampleMeasure d p hp)) := by
-          symm
-          simpa [Function.comp] using
-            (Measure.map_map
-              (measurable_coeffField (d := d) (lam := lam) (Lam := Lam))
-              (measurable_shiftSample z)
-              (μ := sampleMeasure d p hp))
-    _ = Measure.map (coeffField lam Lam) (sampleMeasure d p hp) := by
-          rw [sampleMeasure_map_shiftSample z p hp]
-
-theorem adjointCoeffField_coeffField {d : ℕ} {lam Lam : ℝ} (ω : Sample d) :
-    adjointCoeffField (coeffField lam Lam ω) = coeffField lam Lam ω := by
-  funext x i j
-  by_cases hij : i = j
-  · subst j
-    simp [adjointCoeffField, coeffField, matTranspose, scalarMatrix]
-  · have hji : j ≠ i := Ne.symm hij
-    simp [adjointCoeffField, coeffField, matTranspose, scalarMatrix, hij, hji]
-
-theorem adjointInvariant_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
-    Book.Ch04.AdjointInvariantLaw (law d lam Lam p hp) := by
-  rw [law]
-  calc
-    Measure.map adjointCoeffField (Measure.map (coeffField lam Lam) (sampleMeasure d p hp))
-        =
-          Measure.map
-            (fun ω : Sample d => adjointCoeffField (coeffField lam Lam ω))
-            (sampleMeasure d p hp) := by
-          simpa [Function.comp] using
-            (Measure.map_map
-              (measurable_adjointCoeffField (d := d))
-              (measurable_coeffField (d := d) (lam := lam) (Lam := Lam))
-              (μ := sampleMeasure d p hp))
-    _ = Measure.map (coeffField lam Lam) (sampleMeasure d p hp) := by
-          congr 1
-          funext ω
-          exact adjointCoeffField_coeffField ω
+/-! ## Unit-separation and coin independence -/
 
 theorem dist_lt_one_of_mem_same_openUnitCell {d : ℕ} {x y : Vec d} {z : Lattice d}
     (hx : x ∈ openUnitCell z) (hy : y ∈ openUnitCell z) :
@@ -860,46 +758,7 @@ theorem indep_sampleCellsSigma_of_disjoint {d : ℕ} {S T : Set (Lattice d)}
       (m := fun z : Lattice d => sampleCoordinateSigma z)
       (μ := sampleMeasure d p hp) hle hInd (S := S) (T := T) hST)
 
-theorem unitRangeDependent_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
-    Book.Ch04.UnitRangeDependentLaw (law d lam Lam p hp) := by
-  intro U V hUV
-  rw [law]
-  have hcells : Disjoint (cellsMeeting U) (cellsMeeting V) :=
-    disjoint_cellsMeeting_of_areUnitSeparated hUV
-  have hIndCells :
-      ProbabilityTheory.Indep
-        (sampleCellsSigma (cellsMeeting U))
-        (sampleCellsSigma (cellsMeeting V))
-        (sampleMeasure d p hp) :=
-    indep_sampleCellsSigma_of_disjoint hcells p hp
-  rw [ProbabilityTheory.Indep_iff]
-  intro s t hs ht
-  have hcoeff_meas := measurable_coeffField (d := d) (lam := lam) (Lam := Lam)
-  have hs_ambient : MeasurableSet s := restrictionSigma_le_coeffField U s hs
-  have ht_ambient : MeasurableSet t := restrictionSigma_le_coeffField V t ht
-  have hst_ambient : MeasurableSet (s ∩ t) := hs_ambient.inter ht_ambient
-  have hs_pre :
-      @MeasurableSet (Sample d) (sampleCellsSigma (cellsMeeting U))
-        ((coeffField lam Lam : Sample d → CoeffField d) ⁻¹' s) :=
-    (measurable_coeffField_restrictionSigma_sampleCellsSigma
-      (d := d) (lam := lam) (Lam := Lam) U) hs
-  have ht_pre :
-      @MeasurableSet (Sample d) (sampleCellsSigma (cellsMeeting V))
-        ((coeffField lam Lam : Sample d → CoeffField d) ⁻¹' t) :=
-    (measurable_coeffField_restrictionSigma_sampleCellsSigma
-      (d := d) (lam := lam) (Lam := Lam) V) ht
-  have hpre_ind :=
-    (ProbabilityTheory.Indep_iff
-      (sampleCellsSigma (cellsMeeting U))
-      (sampleCellsSigma (cellsMeeting V))
-      (sampleMeasure d p hp)).1 hIndCells
-      ((coeffField lam Lam : Sample d → CoeffField d) ⁻¹' s)
-      ((coeffField lam Lam : Sample d → CoeffField d) ⁻¹' t)
-      hs_pre ht_pre
-  rw [Measure.map_apply hcoeff_meas hst_ambient,
-    Measure.map_apply hcoeff_meas hs_ambient,
-    Measure.map_apply hcoeff_meas ht_ambient]
-  simpa [Set.preimage_inter] using hpre_ind
+/-! ## Signed-permutation symmetry -/
 
 def signInt (r : ℝ) : ℤ :=
   if r = 1 then 1 else -1
@@ -1066,165 +925,39 @@ theorem scalarAt_signedPermutation {d : ℕ} {lam Lam : ℝ} {R : Mat d}
       scalarAt_of_not_mem_any_openUnitCell (lam := lam) (Lam := Lam)
         (ω := reindexSample (signedLatticeEquiv σ s hs) ω) hx]
 
-theorem rotateCoeffField_coeffField {d : ℕ} {lam Lam : ℝ} {R : Mat d}
+/-- **Carrier commutation for rotation**: the carrier signed-permutation
+endomorphism intertwines the sample map with the lattice reindexing. -/
+theorem rotateReg_checkerRegField {d : ℕ} {lam Lam : ℝ} {R : Mat d}
     {σ : Equiv.Perm (Fin d)} {s : Fin d → ℝ}
     (hs : ∀ i, s i = 1 ∨ s i = -1)
     (hRdef : ∀ i j, R i j = if i = σ j then s j else 0)
-    (ω : Sample d) :
-    rotateCoeffField R (coeffField lam Lam ω) =
-      coeffField lam Lam (reindexSample (signedLatticeEquiv σ s hs) ω) := by
-  have hR : IsSignedPermutationMatrix R := ⟨σ, s, hs, hRdef⟩
-  funext x i j
+    (hR : IsSignedPermutationMatrix R) (ω : Sample d) :
+    rotateReg R hR (checkerRegField lam Lam ω) =
+      checkerRegField lam Lam (reindexSample (signedLatticeEquiv σ s hs) ω) := by
+  apply RegCoeffField.ext
+  intro x
+  show (matTranspose R) * (coeffField lam Lam ω (matVecMul R x)) * R =
+    coeffField lam Lam (reindexSample (signedLatticeEquiv σ s hs) ω) x
   have hscalar :
       scalarAt lam Lam ω (matVecMul R x) =
         scalarAt lam Lam (reindexSample (signedLatticeEquiv σ s hs) ω) x :=
     scalarAt_signedPermutation hs hRdef ω x
-  simp [rotateCoeffField, coeffField, scalarMatrix, hscalar, hR.transpose_mul_self]
+  simp [coeffField, scalarMatrix, hscalar, hR.transpose_mul_self]
 
-theorem isotropic_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
-    Book.Ch04.IsotropicLaw (law d lam Lam p hp) := by
-  intro R hR
-  rcases hR with ⟨σ, s, hs, hRdef⟩
-  rw [law]
-  let e : Lattice d ≃ Lattice d := signedLatticeEquiv σ s hs
-  calc
-    Measure.map (rotateCoeffField R) (Measure.map (coeffField lam Lam) (sampleMeasure d p hp))
-        =
-          Measure.map
-            (fun ω : Sample d => rotateCoeffField R (coeffField lam Lam ω))
-            (sampleMeasure d p hp) := by
-          simpa [Function.comp] using
-            (Measure.map_map
-              (measurable_rotateCoeffField (d := d) R ⟨σ, s, hs, hRdef⟩)
-              (measurable_coeffField (d := d) (lam := lam) (Lam := Lam))
-              (μ := sampleMeasure d p hp))
-    _ =
-          Measure.map
-            (fun ω : Sample d => coeffField lam Lam (reindexSample e ω))
-            (sampleMeasure d p hp) := by
-          congr 1
-          funext ω
-          exact rotateCoeffField_coeffField (lam := lam) (Lam := Lam)
-            (R := R) hs hRdef ω
-    _ =
-          Measure.map (coeffField lam Lam)
-            (Measure.map (reindexSample e) (sampleMeasure d p hp)) := by
-          symm
-          simpa [Function.comp, e] using
-            (Measure.map_map
-              (measurable_coeffField (d := d) (lam := lam) (Lam := Lam))
-              (measurable_reindexSample e)
-              (μ := sampleMeasure d p hp))
-    _ = Measure.map (coeffField lam Lam) (sampleMeasure d p hp) := by
-          rw [sampleMeasure_map_reindexSample e p hp]
-
-/-- The unscaled Bernoulli checkerboard law satisfies all structural
-assumptions used by the public main results. -/
-theorem structuralLaw {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
-    Book.Ch04.StructuralLaw (law d lam Lam p hp) where
-  stationary := stationary_law p hp
-  unit_range := unitRangeDependent_law p hp
-  isotropic := isotropic_law p hp
-  adjoint_invariant := adjointInvariant_law p hp
-
-/-- The scaled checkerboard law used by the public corollary. -/
-def scaledLaw (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) (k : ℕ) :
-    Book.Ch04.CoeffLaw d :=
-  Book.Ch04.scaleNormalizedLaw k (law d lam Lam p hp)
-
-/-- The reader-facing checkerboard scale.  A single triadic downscaling already
-makes the application visibly a scaled law while preserving all constants as
-dimension-only constants in the main theorem. -/
-def publicScale : ℕ := 1
-
-/-- The scaled checkerboard law has the Chapter 4 law carrier. -/
-theorem scaledLawCarrier {d : ℕ} {lam Lam : ℝ}
-    (hlam : 0 < lam) (hle : lam ≤ Lam) (p : ℝ≥0) (hp : p ≤ 1) (k : ℕ) :
-    Book.Ch04.LawCarrier (scaledLaw d lam Lam p hp k) := by
-  simpa [scaledLaw] using
-    (lawCarrier (d := d) (lam := lam) (Lam := Lam) hlam hle p hp).scaleNormalized k
-
-/-- The scaled checkerboard law remains uniformly elliptic with the same
-deterministic constants. -/
-theorem scaledUniformEllipticityBounds {d : ℕ} {lam Lam : ℝ}
-    (hlam : 0 < lam) (hle : lam ≤ Lam) (p : ℝ≥0) (hp : p ≤ 1) (k : ℕ) :
-    Book.MainResults.UniformEllipticityBounds (scaledLaw d lam Lam p hp k) lam Lam where
-  lam_pos := hlam
-  lam_le_Lam := hle
-  aee_elliptic := by
-    rw [scaledLaw, Book.Ch04.scaleNormalizedLaw_eq_rescaledLaw, rescaledLaw, law]
-    have hmap :
-        Measurable fun ω : Sample d => rescaleCoeffField k (coeffField lam Lam ω) :=
-      (measurable_rescaleCoeffField (d := d) k).comp
-        (measurable_coeffField (d := d) (lam := lam) (Lam := Lam))
-    rw [Measure.map_map (measurable_rescaleCoeffField (d := d) k)
-      (measurable_coeffField (d := d) (lam := lam) (Lam := Lam))]
-    exact
-      (ae_map_iff hmap.aemeasurable
-        (measurableSet_uniformEllipticitySupport (d := d) (lam := lam) (Lam := Lam))).2
-        (Filter.Eventually.of_forall fun ω Q =>
-          rescaleCoeffField_coeffField_aeeEllipticOn (d := d)
-            (lam := lam) (Lam := Lam) k ω
-            (measurableSet_openCubeSet Q) hlam hle)
-
-/-- The scaled checkerboard law satisfies the structural assumptions. -/
-theorem scaledStructuralLaw {d : ℕ} {lam Lam : ℝ}
-    (p : ℝ≥0) (hp : p ≤ 1) (k : ℕ) :
-    Book.Ch04.StructuralLaw (scaledLaw d lam Lam p hp k) := by
-  simpa [scaledLaw] using
-    (structuralLaw (d := d) (lam := lam) (Lam := Lam) p hp).scaleNormalized k
-
-/-- The main-result setup associated with the scaled Bernoulli checkerboard. -/
-def checkerboardSetup {d : ℕ} [NeZero d]
-    (two_le_dim : 2 ≤ d) (lam Lam : ℝ) (hlam : 0 < lam) (hle : lam ≤ Lam)
-    (p : ℝ≥0) (hp : p ≤ 1) : Book.MainResults.Setup d where
-  two_le_dim := two_le_dim
-  P := scaledLaw d lam Lam p hp publicScale
-  hP := scaledLawCarrier (d := d) (lam := lam) (Lam := Lam)
-    hlam hle p hp publicScale
-  hStruct := scaledStructuralLaw (d := d) (lam := lam) (Lam := Lam)
-    p hp publicScale
-  lam := lam
-  Lam := Lam
-  hUE := scaledUniformEllipticityBounds (d := d) (lam := lam) (Lam := Lam)
-    hlam hle p hp publicScale
-
-/-- **Quenched comparison for the Bernoulli checkerboard.**
-
-For the triadically scaled Bernoulli checkerboard with coin parameter `p` and
-conductances `lam`, `Lam`, all law assumptions in the public uniform-ellipticity
-comparison theorem are discharged by the construction.  The constants are chosen
-before `lam`, `Lam`, `p`, the realization, the cube, the forcing, and the
-solutions. -/
-theorem randomCheckerboard_quenchedComparison
-    {d : ℕ} [NeZero d] :
-    ∃ C α Cscale : ℝ,
-      0 < C ∧ 0 < α ∧ 0 < Cscale ∧
-      ∀ (two_le_dim : 2 ≤ d) (lam Lam : ℝ)
-        (hlam : 0 < lam) (hle : lam ≤ Lam)
-        (p : ℝ≥0) (hp : p ≤ 1),
-        let S : Book.MainResults.Setup d :=
-          checkerboardSetup two_le_dim lam Lam hlam hle p hp
-        ∃ sigmaBar : ℝ,
-          0 < sigmaBar ∧
-          ∃ X : CoeffField d → ℝ,
-            S.IsMinimalScale X Cscale ∧
-            ∀ᵐ aω ∂S.P,
-              ∀ (ha : Book.Ch04.AELocallyUniformlyEllipticField aω)
-                {m : ℕ} {g : Vec d → Vec d}
-                (pair : S.ComparisonPair aω ha m g),
-                X aω ≤ (3 : ℝ) ^ m →
-                Book.Ch03.ForceSobolevRegularity
-                  (Book.MainResults.originCube d m) Book.MainResults.fixedComparisonS g →
-                S.comparisonDefect Book.MainResults.fixedComparisonS pair ≤
-                  C * ((3 : ℝ) ^ m / X aω) ^ (-α) *
-                    S.comparisonData Book.MainResults.fixedComparisonS pair := by
-  classical
-  obtain ⟨C, α, Cscale, hC, hα, hCscale, hmain⟩ :=
-    Book.MainResults.homogenizationComparison_uniformEllipticity (d := d)
-  refine ⟨C, α, Cscale, hC, hα, hCscale, ?_⟩
-  intro two_le_dim lam Lam hlam hle p hp
-  exact hmain (checkerboardSetup two_le_dim lam Lam hlam hle p hp)
+/-- **Carrier commutation for the adjoint**: every checkerboard realization is
+symmetric (a scalar matrix field), so the carrier adjoint fixes it. -/
+theorem adjointReg_checkerRegField {d : ℕ} {lam Lam : ℝ} (ω : Sample d) :
+    adjointReg (checkerRegField lam Lam ω) = checkerRegField lam Lam ω := by
+  apply RegCoeffField.ext
+  intro x
+  show (coeffField lam Lam ω x).transpose = coeffField lam Lam ω x
+  funext i j
+  by_cases hij : i = j
+  · subst j
+    simp [coeffField, scalarMatrix]
+  · have hji : j ≠ i := Ne.symm hij
+    simp [coeffField, Matrix.transpose_apply, scalarMatrix,
+      Matrix.one_apply_ne hij, Matrix.one_apply_ne hji]
 
 end
 

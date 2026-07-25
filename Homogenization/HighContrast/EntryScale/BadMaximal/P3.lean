@@ -30,7 +30,7 @@ noncomputable def terminalFullBlockFluctuationNormAtScale
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) : ℝ :=
+    (a : Homogenization.RegCoeffField d) : ℝ :=
   fullBlockOperatorNorm
     (Homogenization.Book.Ch05.Section54.VarianceBoundGoodScale.fullBlockNormalizedFluctuationMatrix
       hP hStruct (m : ℤ) (Homogenization.cubeSet Q) a)
@@ -45,7 +45,7 @@ theorem terminalSpectralPositivePartAtScale_le_terminalFullBlockFluctuationNormA
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     terminalSpectralPositivePartAtScale hP hStruct m Q a ≤
       terminalFullBlockFluctuationNormAtScale hP hStruct m Q a := by
   exact
@@ -63,10 +63,10 @@ theorem terminalFullBlockFluctuationNormAtScale_le_centered_add_drift
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (j m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     terminalFullBlockFluctuationNormAtScale hP hStruct m Q a ≤
       (terminalCoarseBlockDeviation hP hStruct m
-          (fun x : Homogenization.CoeffField d => x) j Q a).toReal +
+          (fun x : Homogenization.RegCoeffField d => x) j Q a).toReal +
         terminalAnnealedFullBlockDriftAtScales hP hStruct j m := by
   let Dm := scalarFullBlockNormalizerMatrixAtScale hP hStruct m
   let A := Homogenization.Book.Ch04.coarseFullBlockMatrixAtCube Q a
@@ -100,7 +100,7 @@ theorem terminalFullBlockFluctuationNormAtScale_le_centered_add_drift
     exact fullBlockOperatorNorm_add_le C R
   have hcenter_toReal :
       (terminalCoarseBlockDeviation hP hStruct m
-          (fun x : Homogenization.CoeffField d => x) j Q a).toReal =
+          (fun x : Homogenization.RegCoeffField d => x) j Q a).toReal =
         fullBlockOperatorNorm C := by
     unfold terminalCoarseBlockDeviation terminalCenteredFullBlockDeviation
       coarseFullBlockMatrixAtCubeProcess scalarCenteredFullBlockMatrixAtScale
@@ -118,7 +118,7 @@ theorem terminalFullBlockFluctuationNormAtScale_le_centered_add_drift
     _ ≤ fullBlockOperatorNorm C + fullBlockOperatorNorm R := htriangle
     _ =
         (terminalCoarseBlockDeviation hP hStruct m
-          (fun x : Homogenization.CoeffField d => x) j Q a).toReal +
+          (fun x : Homogenization.RegCoeffField d => x) j Q a).toReal +
         terminalAnnealedFullBlockDriftAtScales hP hStruct j m := by
           rw [hcenter_toReal, hdrift]
 
@@ -136,7 +136,7 @@ theorem weighted_terminalCoarseBlockDeviation_toReal_le_terminalCoarseBlockStoch
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) {N m j : ℕ}
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) (ω : Ω)
+    (a : Ω → Homogenization.RegCoeffField d) (ω : Ω)
     {R : Homogenization.TriadicCube d}
     (hj : j ∈ Finset.Icc N m)
     (hR : R ∈ Homogenization.descendantsAtDepth Q (m - j)) :
@@ -200,7 +200,7 @@ theorem terminalSpectralPositivePartSourceMax_le_terminalBadMaximalSplitEnvelope
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) {N m : ℕ} (hNm : N ≤ m)
     (Q : Homogenization.TriadicCube d)
-    (a : Ω → Homogenization.CoeffField d) (M_sub : ℕ → Ω → ℝ) :
+    (a : Ω → Homogenization.RegCoeffField d) (M_sub : ℕ → Ω → ℝ) :
     ∀ ω,
       terminalSpectralPositivePartSourceMax hP hStruct hc N m Q a ω ≤
         terminalBadMaximalSplitEnvelope hP hStruct hc hNm Q a M_sub ω := by
@@ -299,21 +299,21 @@ theorem memLp_terminalSpectralPositivePartSourceMax_origin_highMoment
     (hHM :
       HighCenteredMomentEstimate hm P N
         (intermediateCoarseBlockDeviation hP hStruct
-          (fun x : Homogenization.CoeffField d => x))) :
+          (fun x : Homogenization.RegCoeffField d => x))) :
     MemLp
       (terminalSpectralPositivePartSourceMax hP hStruct hc N m
         (Homogenization.originCube d (m : ℤ))
-        (fun x : Homogenization.CoeffField d => x))
+        (fun x : Homogenization.RegCoeffField d => x))
       (ENNReal.ofReal hm.Q) P := by
   classical
   letI : IsProbabilityMeasure P := hP.isProbability
   let Q : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)
-  let source : Homogenization.CoeffField d → ℝ :=
+  let source : Homogenization.RegCoeffField d → ℝ :=
     terminalSpectralPositivePartSourceMax hP hStruct hc N m Q
-      (fun x : Homogenization.CoeffField d => x)
-  let stochastic : Homogenization.CoeffField d → ℝ :=
+      (fun x : Homogenization.RegCoeffField d => x)
+  let stochastic : Homogenization.RegCoeffField d → ℝ :=
     terminalCoarseBlockStochasticMax hP hStruct hc N m Q
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   let drift : ℝ := terminalBadMaximalDriftSup hP hStruct hc hNm
   have hstochastic :
       MemLp stochastic (ENNReal.ofReal hm.Q) P := by
@@ -321,11 +321,11 @@ theorem memLp_terminalSpectralPositivePartSourceMax_origin_highMoment
       memLp_terminalCoarseBlockStochasticMax_origin_highMoment
         hP hStruct hP4 hm hNm hHM
   have hdrift :
-      MemLp (fun _ : Homogenization.CoeffField d => drift)
+      MemLp (fun _ : Homogenization.RegCoeffField d => drift)
         (ENNReal.ofReal hm.Q) P :=
     MeasureTheory.memLp_const drift
   have henv :
-      MemLp (fun ω : Homogenization.CoeffField d => stochastic ω + drift)
+      MemLp (fun ω : Homogenization.RegCoeffField d => stochastic ω + drift)
         (ENNReal.ofReal hm.Q) P :=
     hstochastic.add hdrift
   have hsource_meas : AEStronglyMeasurable source P := by
@@ -336,11 +336,11 @@ theorem memLp_terminalSpectralPositivePartSourceMax_origin_highMoment
       have hsource_nonneg : 0 ≤ source ω := by
         simpa [source, Q] using
           terminalSpectralPositivePartSourceMax_nonneg hP hStruct hc N m Q
-            (fun x : Homogenization.CoeffField d => x) ω
+            (fun x : Homogenization.RegCoeffField d => x) ω
       have hstoch_nonneg : 0 ≤ stochastic ω := by
         simpa [stochastic, Q] using
           terminalCoarseBlockStochasticMax_nonneg hP hStruct hc N m Q
-            (fun x : Homogenization.CoeffField d => x) ω
+            (fun x : Homogenization.RegCoeffField d => x) ω
       have hdrift_nonneg : 0 ≤ drift := by
         simpa [drift] using terminalBadMaximalDriftSup_nonneg hP hStruct hc hNm
       have henv_nonneg : 0 ≤ stochastic ω + drift :=
@@ -348,13 +348,13 @@ theorem memLp_terminalSpectralPositivePartSourceMax_origin_highMoment
       have hsource_le : source ω ≤ stochastic ω + drift := by
         have hle :=
           terminalSpectralPositivePartSourceMax_le_terminalBadMaximalSplitEnvelope
-            hP hStruct hc hNm Q (fun x : Homogenization.CoeffField d => x)
+            hP hStruct hc hNm Q (fun x : Homogenization.RegCoeffField d => x)
             (fun _ _ => (0 : ℝ)) ω
         simpa [source, stochastic, drift, Q, terminalBadMaximalSplitEnvelope] using hle
       calc
         ‖terminalSpectralPositivePartSourceMax hP hStruct hc N m
             (Homogenization.originCube d (m : ℤ))
-            (fun x : Homogenization.CoeffField d => x) ω‖
+            (fun x : Homogenization.RegCoeffField d => x) ω‖
             = source ω := by
               rw [Real.norm_eq_abs]
               exact abs_of_nonneg hsource_nonneg

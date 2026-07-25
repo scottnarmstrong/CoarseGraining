@@ -6,7 +6,7 @@ import Homogenization.Probability.EfronStein.Transfer
 The landed `efronStein_transfer` requires a *genuinely measurable* bounded
 observable `G`.  The fixed-phase observable of Proposition 4.3, being a coarse
 quadratic, is only *a.e.-strongly-measurable* under the resampled product law
-`Π := Measure.pi (fun i => P.map (restrictCoeffField (C i)))`.  This file relaxes
+`Π := Measure.pi (fun i => P.map (restrictReg (C i) (hC i)))`.  This file relaxes
 the measurability hypothesis to `AEStronglyMeasurable G Π`, keeping the identical
 Efron–Stein conclusion.
 
@@ -76,44 +76,46 @@ theorem map_update_prod_pi {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /-- **Efron–Stein transfer (a.e. variant).**  Identical to `efronStein_transfer`,
 but the observable `G` need only be `AEStronglyMeasurable` under the
-resampled product law `Π := Measure.pi (fun i => P.map (restrictCoeffField (C i)))`,
+resampled product law `Π := Measure.pi (fun i => P.map (restrictReg (C i) (hC i)))`,
 not genuinely measurable.  This is the form consumed by the fixed-phase variance
 step, whose coarse observable is only a.e.-measurable under a `LawCarrier`. -/
 theorem efronStein_transfer_ae
     {ι : Type*} [Fintype ι] [DecidableEq ι]
-    {C : ι → Set (Vec d)}
+    {C : ι → Set (Vec d)} (hC : ∀ i, MeasurableSet (C i))
     (hsep : Pairwise fun i j => AreUnitSeparated (C i) (C j))
-    {P : Measure (CoeffField d)} [IsProbabilityMeasure P]
-    (hP : IsUnitRangeDependent P)
-    {G : (ι → CoeffField d) → ℝ}
-    (hG : AEStronglyMeasurable G (Measure.pi (fun i => P.map (restrictCoeffField (C i)))))
+    {P : Measure (RegCoeffField d)} [IsProbabilityMeasure P]
+    (hP : IsUnitRangeDependentR P)
+    {G : (ι → RegCoeffField d) → ℝ}
+    (hG : AEStronglyMeasurable G (Measure.pi (fun i => P.map (restrictReg (C i) (hC i)))))
     {M : ℝ} (hMG : ∀ x, |G x| ≤ M)
-    (R : CoeffField d → (ι → CoeffField d))
-    (hRdef : R = fun a i => restrictCoeffField (C i) a) :
+    (R : RegCoeffField d → (ι → RegCoeffField d))
+    (hRdef : R = fun a i => restrictReg (C i) (hC i) a) :
     Var[G ∘ R; P]
       ≤ (1 / 2) * ∑ i, ∫ a, ∫ a',
-          (G (Function.update (R a) i (restrictCoeffField (C i) a')) - G (R a)) ^ 2 ∂P ∂P := by
+          (G (Function.update (R a) i (restrictReg (C i) (hC i) a')) - G (R a)) ^ 2 ∂P ∂P := by
   classical
-  set μ : ι → Measure (CoeffField d) := fun i => P.map (restrictCoeffField (C i)) with hμ
+  set μ : ι → Measure (RegCoeffField d) := fun i => P.map (restrictReg (C i) (hC i)) with hμ
   haveI hμprob : ∀ i, IsProbabilityMeasure (μ i) := fun i =>
-    Measure.isProbabilityMeasure_map (measurable_restrictCoeffField (C i)).aemeasurable
+    Measure.isProbabilityMeasure_map (measurable_restrictReg (C i) (hC i)).aemeasurable
   have hRmeas : Measurable R := by
-    rw [hRdef]; exact measurable_pi_iff.2 (fun i => measurable_restrictCoeffField (C i))
-  -- Map identity `Measure.map R P = Measure.pi μ` (re-derived via the LIH bridge).
+    rw [hRdef]; exact measurable_pi_iff.2 (fun i => measurable_restrictReg (C i) (hC i))
+  -- Map identity `Measure.map R P = Measure.pi μ` (re-derived via the carrier bridge).
   have hmap : Measure.map R P = Measure.pi μ := by
-    set X : ∀ i, MeasurableLocalObservable d (C i) (CoeffField d) :=
-      fun i => restrictObservable (C i) with hX
-    have hf : ∀ i, AEMeasurable (fun a => X i a) P := fun i => (X i).measurable.aemeasurable
-    have hindep :
-        ProbabilityTheory.iIndepFun (fun i => (X i : CoeffField d → CoeffField d)) P :=
-      MeasurableLocalObservable.iIndepFun_of_isRestrictionUnitRangeDependent hP hsep X
+    set X : ι → RegCoeffField d → RegCoeffField d :=
+      fun i => restrictObservable (C i) (hC i) with hX
+    have hf : ∀ i, AEMeasurable (fun a => X i a) P := fun i =>
+      (measurable_restrictObservable (C i) (hC i)).aemeasurable
+    have hindep : ProbabilityTheory.iIndepFun X P :=
+      Book.Ch04.iIndepFun_of_unitRangeDependentLaw_of_pairwise_separated
+        (P := P) (U := C) (X := X) hC hP
+        (fun i => isLocalRandomVariable_restrictObservable (C i) (hC i)) hsep
     have h := (ProbabilityTheory.iIndepFun_iff_map_fun_eq_pi_map hf).1 hindep
     rw [hRdef]; exact h
   -- Clamp a measurable modification of `G` to `[-M, M]`.
-  have hM0 : (0 : ℝ) ≤ M := le_trans (abs_nonneg _) (hMG (fun _ => (0 : CoeffField d)))
+  have hM0 : (0 : ℝ) ≤ M := le_trans (abs_nonneg _) (hMG (fun _ => (0 : RegCoeffField d)))
   have hG'meas : Measurable (hG.mk G) := hG.stronglyMeasurable_mk.measurable
   have hGG' : G =ᵐ[Measure.pi μ] hG.mk G := hG.ae_eq_mk
-  set Gt : (ι → CoeffField d) → ℝ := fun x => max (-M) (min M (hG.mk G x)) with hGtdef
+  set Gt : (ι → RegCoeffField d) → ℝ := fun x => max (-M) (min M (hG.mk G x)) with hGtdef
   have hGtmeas : Measurable Gt :=
     measurable_const.max (measurable_const.min hG'meas)
   have hGtbound : ∀ x, |Gt x| ≤ M := by
@@ -126,7 +128,7 @@ theorem efronStein_transfer_ae
     dsimp only
     rw [← hx, min_eq_right (abs_le.1 (hMG x)).2, max_eq_right (abs_le.1 (hMG x)).1]
   -- Run the landed transfer on the measurable, bounded `Gt`.
-  have key := efronStein_transfer hsep hP hGtmeas hGtbound R hRdef
+  have key := efronStein_transfer hC hsep hP hGtmeas hGtbound R hRdef
   -- LHS: `Var[G ∘ R] = Var[Gt ∘ R]`.
   have hLHS : Var[G ∘ R; P] = Var[Gt ∘ R; P] := by
     refine variance_congr ?_
@@ -135,32 +137,32 @@ theorem efronStein_transfer_ae
   -- RHS: each resampling energy transfers back to `G`.
   have hRHS : ∀ i,
       (∫ a, ∫ a',
-        (Gt (Function.update (R a) i (restrictCoeffField (C i) a')) - Gt (R a)) ^ 2 ∂P ∂P)
+        (Gt (Function.update (R a) i (restrictReg (C i) (hC i) a')) - Gt (R a)) ^ 2 ∂P ∂P)
         = ∫ a, ∫ a',
-            (G (Function.update (R a) i (restrictCoeffField (C i) a')) - G (R a)) ^ 2 ∂P ∂P := by
+            (G (Function.update (R a) i (restrictReg (C i) (hC i) a')) - G (R a)) ^ 2 ∂P ∂P := by
     intro i
     -- Pushforward of the resampling map `p ↦ update (R p.1) i (restrict p.2)`.
     have hi_meas :
-        Measurable (fun p : CoeffField d × CoeffField d =>
-          Function.update (R p.1) i (restrictCoeffField (C i) p.2)) :=
+        Measurable (fun p : RegCoeffField d × RegCoeffField d =>
+          Function.update (R p.1) i (restrictReg (C i) (hC i) p.2)) :=
       (measurable_update' (a := i)).comp
         ((hRmeas.comp measurable_fst).prodMk
-          ((measurable_restrictCoeffField (C i)).comp measurable_snd))
-    have hpairmeas : Measurable (Prod.map R (restrictCoeffField (C i))) :=
-      hRmeas.prodMap (measurable_restrictCoeffField (C i))
+          ((measurable_restrictReg (C i) (hC i)).comp measurable_snd))
+    have hpairmeas : Measurable (Prod.map R (restrictReg (C i) (hC i))) :=
+      hRmeas.prodMap (measurable_restrictReg (C i) (hC i))
     have hmap_hi :
-        Measure.map (fun p : CoeffField d × CoeffField d =>
-          Function.update (R p.1) i (restrictCoeffField (C i) p.2)) (P.prod P)
+        Measure.map (fun p : RegCoeffField d × RegCoeffField d =>
+          Function.update (R p.1) i (restrictReg (C i) (hC i) p.2)) (P.prod P)
           = Measure.pi μ := by
       have hpair :
-          Measure.map (Prod.map R (restrictCoeffField (C i))) (P.prod P)
+          Measure.map (Prod.map R (restrictReg (C i) (hC i))) (P.prod P)
             = (Measure.pi μ).prod (μ i) := by
-        rw [← Measure.map_prod_map P P hRmeas (measurable_restrictCoeffField (C i)), hmap]
+        rw [← Measure.map_prod_map P P hRmeas (measurable_restrictReg (C i) (hC i)), hmap]
       have hcomp :
-          (fun p : CoeffField d × CoeffField d =>
-            Function.update (R p.1) i (restrictCoeffField (C i) p.2))
-            = (fun q : (ι → CoeffField d) × CoeffField d => Function.update q.1 i q.2)
-                ∘ (Prod.map R (restrictCoeffField (C i))) := rfl
+          (fun p : RegCoeffField d × RegCoeffField d =>
+            Function.update (R p.1) i (restrictReg (C i) (hC i) p.2))
+            = (fun q : (ι → RegCoeffField d) × RegCoeffField d => Function.update q.1 i q.2)
+                ∘ (Prod.map R (restrictReg (C i) (hC i))) := rfl
       rw [hcomp, ← Measure.map_map (measurable_update' (a := i)) hpairmeas,
         hpair, map_update_prod_pi μ i]
     -- Pushforward of the outer map `p ↦ R p.1`.
@@ -169,53 +171,53 @@ theorem efronStein_transfer_ae
         one_smul, hmap]
     -- a.e. equalities of the two evaluation points
     have hAe_hi : ∀ᵐ p ∂(P.prod P),
-        Gt (Function.update (R p.1) i (restrictCoeffField (C i) p.2))
-          = G (Function.update (R p.1) i (restrictCoeffField (C i) p.2)) :=
+        Gt (Function.update (R p.1) i (restrictReg (C i) (hC i) p.2))
+          = G (Function.update (R p.1) i (restrictReg (C i) (hC i) p.2)) :=
       ae_of_ae_map hi_meas.aemeasurable (by rw [hmap_hi]; exact hGtG)
     have hAe_R : ∀ᵐ p ∂(P.prod P), Gt (R p.1) = G (R p.1) :=
       ae_of_ae_map ((hRmeas.comp measurable_fst).aemeasurable) (by rw [hfst]; exact hGtG)
     -- integrand a.e. equal on the product
     have hInteg :
-        (fun p : CoeffField d × CoeffField d =>
-          (Gt (Function.update (R p.1) i (restrictCoeffField (C i) p.2)) - Gt (R p.1)) ^ 2)
+        (fun p : RegCoeffField d × RegCoeffField d =>
+          (Gt (Function.update (R p.1) i (restrictReg (C i) (hC i) p.2)) - Gt (R p.1)) ^ 2)
           =ᵐ[P.prod P]
-        (fun p : CoeffField d × CoeffField d =>
-          (G (Function.update (R p.1) i (restrictCoeffField (C i) p.2)) - G (R p.1)) ^ 2) := by
+        (fun p : RegCoeffField d × RegCoeffField d =>
+          (G (Function.update (R p.1) i (restrictReg (C i) (hC i) p.2)) - G (R p.1)) ^ 2) := by
       filter_upwards [hAe_hi, hAe_R] with p h1 h2
       rw [h1, h2]
     -- integrability of the (bounded, measurable) truncated integrand
     have hFt_meas :
-        Measurable (fun p : CoeffField d × CoeffField d =>
-          (Gt (Function.update (R p.1) i (restrictCoeffField (C i) p.2)) - Gt (R p.1)) ^ 2) :=
+        Measurable (fun p : RegCoeffField d × RegCoeffField d =>
+          (Gt (Function.update (R p.1) i (restrictReg (C i) (hC i) p.2)) - Gt (R p.1)) ^ 2) :=
       ((hGtmeas.comp hi_meas).sub (hGtmeas.comp (hRmeas.comp measurable_fst))).pow_const 2
     have hFt_int :
-        Integrable (fun p : CoeffField d × CoeffField d =>
-          (Gt (Function.update (R p.1) i (restrictCoeffField (C i) p.2)) - Gt (R p.1)) ^ 2)
+        Integrable (fun p : RegCoeffField d × RegCoeffField d =>
+          (Gt (Function.update (R p.1) i (restrictReg (C i) (hC i) p.2)) - Gt (R p.1)) ^ 2)
           (P.prod P) := by
       refine (integrable_const ((2 * M) ^ 2)).mono' hFt_meas.aestronglyMeasurable ?_
       filter_upwards with p
       rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]
-      have hb : |Gt (Function.update (R p.1) i (restrictCoeffField (C i) p.2)) - Gt (R p.1)|
+      have hb : |Gt (Function.update (R p.1) i (restrictReg (C i) (hC i) p.2)) - Gt (R p.1)|
           ≤ 2 * M := by
-        have h := abs_add_le (Gt (Function.update (R p.1) i (restrictCoeffField (C i) p.2)))
+        have h := abs_add_le (Gt (Function.update (R p.1) i (restrictReg (C i) (hC i) p.2)))
           (-(Gt (R p.1)))
         rw [← sub_eq_add_neg, abs_neg] at h
         have := h.trans (add_le_add (hGtbound _) (hGtbound _)); linarith
-      nlinarith [hb, abs_nonneg (Gt (Function.update (R p.1) i (restrictCoeffField (C i) p.2))
+      nlinarith [hb, abs_nonneg (Gt (Function.update (R p.1) i (restrictReg (C i) (hC i) p.2))
         - Gt (R p.1)),
-        sq_abs (Gt (Function.update (R p.1) i (restrictCoeffField (C i) p.2)) - Gt (R p.1))]
+        sq_abs (Gt (Function.update (R p.1) i (restrictReg (C i) (hC i) p.2)) - Gt (R p.1))]
     have hFg_int :
-        Integrable (fun p : CoeffField d × CoeffField d =>
-          (G (Function.update (R p.1) i (restrictCoeffField (C i) p.2)) - G (R p.1)) ^ 2)
+        Integrable (fun p : RegCoeffField d × RegCoeffField d =>
+          (G (Function.update (R p.1) i (restrictReg (C i) (hC i) p.2)) - G (R p.1)) ^ 2)
           (P.prod P) := hFt_int.congr hInteg
     calc (∫ a, ∫ a',
-            (Gt (Function.update (R a) i (restrictCoeffField (C i) a')) - Gt (R a)) ^ 2 ∂P ∂P)
-        = ∫ p, (Gt (Function.update (R p.1) i (restrictCoeffField (C i) p.2))
+            (Gt (Function.update (R a) i (restrictReg (C i) (hC i) a')) - Gt (R a)) ^ 2 ∂P ∂P)
+        = ∫ p, (Gt (Function.update (R p.1) i (restrictReg (C i) (hC i) p.2))
             - Gt (R p.1)) ^ 2 ∂(P.prod P) := (integral_prod _ hFt_int).symm
-      _ = ∫ p, (G (Function.update (R p.1) i (restrictCoeffField (C i) p.2))
+      _ = ∫ p, (G (Function.update (R p.1) i (restrictReg (C i) (hC i) p.2))
             - G (R p.1)) ^ 2 ∂(P.prod P) := integral_congr_ae hInteg
       _ = ∫ a, ∫ a',
-            (G (Function.update (R a) i (restrictCoeffField (C i) a')) - G (R a)) ^ 2 ∂P ∂P :=
+            (G (Function.update (R a) i (restrictReg (C i) (hC i) a')) - G (R a)) ^ 2 ∂P ∂P :=
           integral_prod _ hFg_int
   -- Assemble.
   rw [hLHS]

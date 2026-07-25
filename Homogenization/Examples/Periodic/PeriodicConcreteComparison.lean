@@ -37,15 +37,15 @@ theorem periodicConcrete_comparison {d : ℕ} [NeZero d] :
       ∀ (two_le_dim : 2 ≤ d),
         let Lam : ℝ := 2 * (d : ℝ) + 2
         let S : Book.MainResults.Setup d :=
-          periodicSetup two_le_dim (mFieldCoeff (d := d)) 2 Lam
+          periodicSetup two_le_dim (mFieldReg (d := d)) 2 Lam
             mFieldCoeff_periodic mFieldCoeff_isotropic mFieldCoeff_adjointInvariant
             (by norm_num)
             (by
               nlinarith [show 0 ≤ (d : ℝ) by exact_mod_cast Nat.zero_le d])
-            (fun Q => mFieldCoeff_aeeEllipticOn (measurableSet_openCubeSet Q))
+            (fun Q => mFieldReg_aeeEllipticOn (measurableSet_openCubeSet Q))
         ∃ sigmaBar : ℝ,
           0 < sigmaBar ∧
-          ∃ X : CoeffField d → ℝ,
+          ∃ X : RegCoeffField d → ℝ,
             S.IsMinimalScale X Cscale ∧
             ∀ᵐ aω ∂S.P,
               ∀ (ha : Book.Ch04.AELocallyUniformlyEllipticField aω)
@@ -61,12 +61,12 @@ theorem periodicConcrete_comparison {d : ℕ} [NeZero d] :
     periodicGeneral_comparison (d := d)
   refine ⟨C, alpha, Cscale, hC, halpha, hCscale, ?_⟩
   intro two_le_dim
-  exact hmain two_le_dim (mFieldCoeff (d := d)) 2 (2 * (d : ℝ) + 2)
+  exact hmain two_le_dim (mFieldReg (d := d)) 2 (2 * (d : ℝ) + 2)
     mFieldCoeff_periodic mFieldCoeff_isotropic mFieldCoeff_adjointInvariant
     (by norm_num)
     (by
       nlinarith [show 0 ≤ (d : ℝ) by exact_mod_cast Nat.zero_le d])
-    (fun Q => mFieldCoeff_aeeEllipticOn (measurableSet_openCubeSet Q))
+    (fun Q => mFieldReg_aeeEllipticOn (measurableSet_openCubeSet Q))
 
 end
 

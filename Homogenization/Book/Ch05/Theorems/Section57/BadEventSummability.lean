@@ -325,7 +325,7 @@ theorem measureReal_shiftedHigh_badPairEvent_quenchedProbeEnvelope_le_exp
       Real.rpow (3 : ℝ) (-a * (ℓ : ℝ))
   let discount : ℝ := (3 : ℝ) ^ (-t * ((m - n : ℕ) : ℝ))
   let R : ℝ := (3 : ℝ) ^ (-αbad * ((m - q : ℕ) : ℝ))
-  let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+  let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω => quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
   have htail :
       IsBigOWith P (gammaSigma (min σ 2))

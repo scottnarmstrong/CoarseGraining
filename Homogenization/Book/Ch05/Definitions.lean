@@ -114,11 +114,11 @@ structure QuantitativeCoarseGrainedEllipticity {d : ℕ} [NeZero d]
   dim_div_xi_lt_min : (d : ℝ) / (xi : ℝ) < min sUpper sLower
   upper_moment_integrable :
     MeasureTheory.Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         (Ch04.LambdaSqCoeffField (originCube d (0 : ℤ)) sUpper (.finite 1) a) ^ xi) P
   lower_inv_moment_integrable :
     MeasureTheory.Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ((Ch04.lambdaSqCoeffField (originCube d (0 : ℤ)) sLower (.finite 1) a)⁻¹) ^ xi) P
 
 namespace QuantitativeCoarseGrainedEllipticity
@@ -273,7 +273,7 @@ noncomputable def LambdaPositiveExcessMomentAtScale {d : ℕ} [NeZero d]
     (P : Ch04.CoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ)
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) : ℝ :=
   Ch04.annealedMomentRoot P ξ
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       max
         (Ch04.LambdaSqCoeffField (originCube d n) s (.finite 1) a -
           hP.barSigmaAtScale hStruct 0)
@@ -285,7 +285,7 @@ theorem LambdaPositiveExcessMomentAtScale_eq {d : ℕ} [NeZero d]
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) :
     LambdaPositiveExcessMomentAtScale P n s ξ hP hStruct =
       Ch04.annealedMomentRoot P ξ
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           max
             (Ch04.LambdaSqCoeffField (originCube d n) s (.finite 1) a -
               hP.barSigmaAtScale hStruct 0)
@@ -298,7 +298,7 @@ noncomputable def lambdaInvPositiveExcessMomentAtScale {d : ℕ} [NeZero d]
     (P : Ch04.CoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ)
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) : ℝ :=
   Ch04.annealedMomentRoot P ξ
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       max
         ((Ch04.lambdaSqCoeffField (originCube d n) s (.finite 1) a)⁻¹ -
           (hP.barSigmaStarAtScale hStruct 0)⁻¹)
@@ -310,7 +310,7 @@ theorem lambdaInvPositiveExcessMomentAtScale_eq {d : ℕ} [NeZero d]
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) :
     lambdaInvPositiveExcessMomentAtScale P n s ξ hP hStruct =
       Ch04.annealedMomentRoot P ξ
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           max
             ((Ch04.lambdaSqCoeffField (originCube d n) s (.finite 1) a)⁻¹ -
               (hP.barSigmaStarAtScale hStruct 0)⁻¹)
@@ -501,7 +501,7 @@ centering scale supplied separately. -/
 noncomputable def centeredResponseJObservableCubeSet {d : ℕ} [NeZero d]
     {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
-    (Q : TriadicCube d) (p q : Vec d) : CoeffField d → ℝ :=
+    (Q : TriadicCube d) (p q : Vec d) : RegCoeffField d → ℝ :=
   fun a =>
     Ch04.responseJObservableCubeSet Q p q a -
       scalarizedResponseCenteringTerm hP hStruct m p q
@@ -510,7 +510,7 @@ noncomputable def centeredResponseJObservableCubeSet {d : ℕ} [NeZero d]
 theorem centeredResponseJObservableCubeSet_apply {d : ℕ} [NeZero d]
     {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
-    (Q : TriadicCube d) (p q : Vec d) (a : CoeffField d) :
+    (Q : TriadicCube d) (p q : Vec d) (a : RegCoeffField d) :
     centeredResponseJObservableCubeSet hP hStruct m Q p q a =
       Ch04.responseJObservableCubeSet Q p q a -
         scalarizedResponseCenteringTerm hP hStruct m p q :=
@@ -520,18 +520,18 @@ theorem centeredResponseJObservableCubeSet_apply {d : ℕ} [NeZero d]
 noncomputable def centeredResponseJStarObservableCubeSet {d : ℕ} [NeZero d]
     {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
-    (Q : TriadicCube d) (p q : Vec d) : CoeffField d → ℝ :=
+    (Q : TriadicCube d) (p q : Vec d) : RegCoeffField d → ℝ :=
   fun a =>
-    Ch04.responseJObservableCubeSet Q p q (adjointCoeffField a) -
+    Ch04.responseJObservableCubeSet Q p q (adjointReg a) -
       scalarizedResponseCenteringTerm hP hStruct m p q
 
 @[simp]
 theorem centeredResponseJStarObservableCubeSet_apply {d : ℕ} [NeZero d]
     {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
-    (Q : TriadicCube d) (p q : Vec d) (a : CoeffField d) :
+    (Q : TriadicCube d) (p q : Vec d) (a : RegCoeffField d) :
     centeredResponseJStarObservableCubeSet hP hStruct m Q p q a =
-      Ch04.responseJObservableCubeSet Q p q (adjointCoeffField a) -
+      Ch04.responseJObservableCubeSet Q p q (adjointReg a) -
         scalarizedResponseCenteringTerm hP hStruct m p q :=
   rfl
 

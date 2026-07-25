@@ -49,12 +49,12 @@ theorem linearProductTerms_special_le_centering_add_componentIntegrals_with_loca
         let θ := Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ)
         let K :=
           Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.section53WeakNormMaximizerConst d
-        let gradWeak :=
+        let gradWeak := fun a : Homogenization.RegCoeffField d =>
           Homogenization.Book.Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-            Q s p_e q_e p0_e
-        let fluxWeak :=
+            Q s p_e q_e p0_e a.toFun
+        let fluxWeak := fun a : Homogenization.RegCoeffField d =>
           Homogenization.Book.Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-            Q t p_e q_e q0_e
+            Q t p_e q_e q0_e a.toFun
         let gradCoeff :=
           (Fintype.card (Fin d) : ℝ) *
             ((3 : ℝ) ^ ((d : ℝ) + s) *
@@ -95,17 +95,17 @@ theorem linearProductTerms_special_le_centering_add_componentIntegrals_with_loca
             σ⁻¹ *
               (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.fluxConstantTailAtScale
                 (m : ℤ) (k : ℤ) t q0_e) ^ 2
-        let lowerExcess := fun a : Homogenization.CoeffField d =>
+        let lowerExcess := fun a : Homogenization.RegCoeffField d =>
           max
             ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
               (hP.barSigmaStarAtScale hStruct (k : ℤ))⁻¹)
             0
-        let upperExcess := fun a : Homogenization.CoeffField d =>
+        let upperExcess := fun a : Homogenization.RegCoeffField d =>
           max
             (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
               hP.barSigmaAtScale hStruct (k : ℤ))
             0
-        let defectSum := fun a : Homogenization.CoeffField d =>
+        let defectSum := fun a : Homogenization.RegCoeffField d =>
           ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
             Real.rpow (3 : ℝ)
                 (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
@@ -151,12 +151,12 @@ theorem linearProductTerms_special_le_centering_add_componentIntegrals_with_loca
   let θ := Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ)
   let K :=
     Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.section53WeakNormMaximizerConst d
-  let gradWeak :=
+  let gradWeak := fun a : Homogenization.RegCoeffField d =>
     Homogenization.Book.Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-      Q s p_e q_e p0_e
-  let fluxWeak :=
+      Q s p_e q_e p0_e a.toFun
+  let fluxWeak := fun a : Homogenization.RegCoeffField d =>
     Homogenization.Book.Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-      Q t p_e q_e q0_e
+      Q t p_e q_e q0_e a.toFun
   let gradCoeff :=
     (Fintype.card (Fin d) : ℝ) *
       ((3 : ℝ) ^ ((d : ℝ) + s) *
@@ -198,17 +198,17 @@ theorem linearProductTerms_special_le_centering_add_componentIntegrals_with_loca
       σ⁻¹ *
         (Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.fluxConstantTailAtScale
           (m : ℤ) (k : ℤ) t q0_e) ^ 2
-  let lowerExcess := fun a : Homogenization.CoeffField d =>
+  let lowerExcess := fun a : Homogenization.RegCoeffField d =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
         (hP.barSigmaStarAtScale hStruct (k : ℤ))⁻¹)
       0
-  let upperExcess := fun a : Homogenization.CoeffField d =>
+  let upperExcess := fun a : Homogenization.RegCoeffField d =>
     max
       (Homogenization.Book.Ch04.LambdaSqCoeffField Q t' (.finite 1) a -
         hP.barSigmaAtScale hStruct (k : ℤ))
       0
-  let defectSum := fun a : Homogenization.CoeffField d =>
+  let defectSum := fun a : Homogenization.RegCoeffField d =>
     ∑ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
       Real.rpow (3 : ℝ)
           (-β * (Int.toNat ((m : ℤ) - n) : ℝ)) *
@@ -298,7 +298,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
     (hHM :
       HighCenteredMomentEstimate hm P N
         (intermediateCoarseBlockDeviation hP hStruct
-          (fun x : Homogenization.CoeffField d => x)))
+          (fun x : Homogenization.RegCoeffField d => x)))
     (e : Homogenization.Vec d) :
     let β := section53CoarseFluctuationBeta hP4
     let s' := hP4.sLower + β
@@ -310,12 +310,12 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
     let q_e :=
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-    let childAvg := fun a : Homogenization.CoeffField d =>
+    let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
         (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-    let response := fun a : Homogenization.CoeffField d =>
+    let response := fun a : Homogenization.RegCoeffField d =>
       (5 * β⁻¹) ^ 2 * childAvg a
-    let lowerSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+    let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
       let parents := Homogenization.descendantsAtScale Q n.1
       let hparents : parents.Nonempty :=
         Homogenization.descendantsAtScale_nonempty Q
@@ -330,7 +330,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
           0
       Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s' m n.1 *
         (σ * parents.sup' hparents lowerExcess) * response a
-    let upperSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+    let upperSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
       let parents := Homogenization.descendantsAtScale Q n.1
       let hparents : parents.Nonempty :=
         Homogenization.descendantsAtScale_nonempty Q
@@ -345,15 +345,15 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
           0
       Homogenization.Book.Ch05.Section52.section52LargeScaleWeight t' m n.1 *
         (σ⁻¹ * parents.sup' hparents upperExcess) * response a
-    let lowSum := fun a : Homogenization.CoeffField d =>
+    let lowSum := fun a : Homogenization.RegCoeffField d =>
       S.attach.sum fun n =>
         if k ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
-    let lowSumBelow := fun a : Homogenization.CoeffField d =>
+    let lowSumBelow := fun a : Homogenization.RegCoeffField d =>
       S.attach.sum fun n =>
         if N ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
     let sourceMax :=
       terminalSpectralPositivePartSourceMax hP hStruct hc N m Q
-        (fun x : Homogenization.CoeffField d => x)
+        (fun x : Homogenization.RegCoeffField d => x)
     let weightLossSup : {n : ℤ // n ∈ S} → ℝ := fun n =>
       let parents := Homogenization.descendantsAtScale Q n.1
       let hparents : parents.Nonempty :=
@@ -387,12 +387,12 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
-  let childAvg : Homogenization.CoeffField d → ℝ := fun a =>
+  let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
       (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
-  let response : Homogenization.CoeffField d → ℝ := fun a =>
+  let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
-  let lowerSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+  let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
     let parents := Homogenization.descendantsAtScale Q n.1
     let hparents : parents.Nonempty :=
       Homogenization.descendantsAtScale_nonempty Q
@@ -407,7 +407,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
         0
     Homogenization.Book.Ch05.Section52.section52LargeScaleWeight s' m n.1 *
       (σ * parents.sup' hparents lowerExcess) * response a
-  let upperSlot : Homogenization.CoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
+  let upperSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
     let parents := Homogenization.descendantsAtScale Q n.1
     let hparents : parents.Nonempty :=
       Homogenization.descendantsAtScale_nonempty Q
@@ -422,15 +422,15 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
         0
     Homogenization.Book.Ch05.Section52.section52LargeScaleWeight t' m n.1 *
       (σ⁻¹ * parents.sup' hparents upperExcess) * response a
-  let lowSum : Homogenization.CoeffField d → ℝ := fun a =>
+  let lowSum : Homogenization.RegCoeffField d → ℝ := fun a =>
     S.attach.sum fun n =>
       if k ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
-  let lowSumBelow : Homogenization.CoeffField d → ℝ := fun a =>
+  let lowSumBelow : Homogenization.RegCoeffField d → ℝ := fun a =>
     S.attach.sum fun n =>
       if N ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
-  let sourceMax : Homogenization.CoeffField d → ℝ :=
+  let sourceMax : Homogenization.RegCoeffField d → ℝ :=
     terminalSpectralPositivePartSourceMax hP hStruct hc N m Q
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   let weightLossSup : {n : ℤ // n ∈ S} → ℝ := fun n =>
     let parents := Homogenization.descendantsAtScale Q n.1
     let hparents : parents.Nonempty :=
@@ -470,7 +470,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
   have hresp_nonneg : ∀ a, 0 ≤ response a := fun a =>
     mul_nonneg (sq_nonneg _) (hchild_nonneg a)
   have hslot_nonneg :
-      ∀ (a : Homogenization.CoeffField d) (n : {n : ℤ // n ∈ S}),
+      ∀ (a : Homogenization.RegCoeffField d) (n : {n : ℤ // n ∈ S}),
         0 ≤ lowerSlot a n + upperSlot a n := by
     intro a n
     obtain ⟨R0, hR0⟩ :=
@@ -520,7 +520,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
         hP hstat hStruct hP4 N hkm e).1
   have hMinChildInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           min (sourceMax a) 1 * childAvg a) P := by
     simpa [β, Q, p_e, q_e, childAvg, sourceMax] using
       integrable_min_terminalSourceMax_start_one_mul_childResponseAverage_special
@@ -530,12 +530,12 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
       hP hstat hStruct hP4 hc hm hparams hNk hkm hHM e
   have hBadChildInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           badEventTruncation sourceMax a * childAvg a) P := by
     simpa [β, Q, p_e, q_e, childAvg, sourceMax] using hBadChildPair.1
   have hMinRespInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           min (sourceMax a) 1 * response a) P := by
     refine (hMinChildInt.const_mul ((5 * β⁻¹) ^ 2)).congr ?_
     filter_upwards with a
@@ -543,7 +543,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
     ring
   have hBadRespInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           badEventTruncation sourceMax a * response a) P := by
     refine (hBadChildInt.const_mul ((5 * β⁻¹) ^ 2)).congr ?_
     filter_upwards with a
@@ -551,7 +551,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
     ring
   have hRHSInt :
       MeasureTheory.Integrable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           lowSumBelow a +
             edgeWeightLoss *
               (2 * Real.sqrt (Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ)) *
@@ -578,7 +578,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
       section52LargeScale_terminalPositiveExcess_highSum_mul_le_edgeWeightLoss_mul_sqrt_thetaAtScale_sourceMax_min_one_add_badEventTruncation_mul_response
         (hP := hP) (hStruct := hStruct) (hP4 := hP4) (hc := hc)
         (N := N) (m := m) hs'_nonneg ht'_nonneg
-        (a := fun x : Homogenization.CoeffField d => x) (ω := a) ha
+        (a := fun x : Homogenization.RegCoeffField d => x) (ω := a) ha
         (J := response a) (hresp_nonneg a)
     have hhigh' :
         (S.attach.sum fun n =>
@@ -627,7 +627,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
               (∫ a, badEventTruncation sourceMax a * response a ∂P)) := by
         have hInt2 :
             MeasureTheory.Integrable
-              (fun a : Homogenization.CoeffField d =>
+              (fun a : Homogenization.RegCoeffField d =>
                 edgeWeightLoss *
                   (2 * Real.sqrt
                       (Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ)) *

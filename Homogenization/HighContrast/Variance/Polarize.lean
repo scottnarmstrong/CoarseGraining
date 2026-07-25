@@ -32,11 +32,11 @@ theorem integrable_blockMatEntry_coarse [NeZero d]
     {L : CoeffLaw d} {Θ : ℝ} (hΘ : 1 ≤ Θ) (hP : LawCarrier L)
     (hLaw : ThetaEllipticLaw Θ L) (m : ℤ) (α β : BlockCoord d) :
     Integrable
-      (fun a => blockMatEntry (coarseBlockMatrix (cubeSet (originCube d m)) a) α β) L := by
+      (fun a => blockMatEntry (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) α β) L := by
   haveI : IsProbabilityMeasure L := hP.isProbability
   have hΘ0 : (0 : ℝ) < Θ := lt_of_lt_of_le one_pos hΘ
   have hAEM : AEMeasurable
-      (fun a => blockMatEntry (coarseBlockMatrix (cubeSet (originCube d m)) a) α β) L := by
+      (fun a => blockMatEntry (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) α β) L := by
     cases α with
     | inl i => cases β with
       | inl j => exact hP.aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet (originCube d m) i j
@@ -65,9 +65,9 @@ theorem integrable_blockMatEntry_coarse [NeZero d]
       Homogenization.Book.Ch05.Section54.VarianceBoundGoodScale.isSymmetricBlockMat_coarseBlockMatrix_cubeSet_ae
         hP (originCube d m)]
     with a hsum hα hβ hsymm
-  have hQsum := blockBasis_sum_pairing (coarseBlockMatrix (cubeSet (originCube d m)) a) α β
-  have hQα := blockBasis_pairing (coarseBlockMatrix (cubeSet (originCube d m)) a) α α
-  have hQβ := blockBasis_pairing (coarseBlockMatrix (cubeSet (originCube d m)) a) β β
+  have hQsum := blockBasis_sum_pairing (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) α β
+  have hQα := blockBasis_pairing (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) α α
+  have hQβ := blockBasis_pairing (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) β β
   have hsymαβ := hsymm α β
   rw [Real.norm_eq_abs, abs_le]
   constructor
@@ -79,7 +79,7 @@ theorem mean_zero_coarse_blockQuadratic [NeZero d]
     {L : CoeffLaw d} {Θ : ℝ} (hΘ : 1 ≤ Θ) (hP : LawCarrier L)
     (hLaw : ThetaEllipticLaw Θ L) (m : ℤ) (w : BlockVec d) :
     (∫ a, blockVecDot w
-        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) w) ∂L)
+        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) w) ∂L)
       = blockVecDot w (blockMatVecMul (annealedBlockMatrixAtScale L m) w) := by
   rw [Homogenization.Book.Ch04.integral_blockVecDot_blockMatVecMul_eq_of_integrable_entries
     (fun α β => integrable_blockMatEntry_coarse hΘ hP hLaw m α β) w w]
@@ -91,10 +91,10 @@ from `scalar_block_variance`, uniform in all parameters. -/
 theorem centered_quadratic_second_moment [NeZero d] (hd : 3 ≤ d) :
     ∃ Cd : ℝ, 0 ≤ Cd ∧
       ∀ {m : ℤ} (_hm : 0 ≤ m) {Θ : ℝ} (_hΘ : 1 ≤ Θ) {L : CoeffLaw d}
-        [IsProbabilityMeasure L] (_hP : LawCarrier L) (_hURD : IsUnitRangeDependent L)
+        [IsProbabilityMeasure L] (_hP : LawCarrier L) (_hURD : IsUnitRangeDependentR L)
         (_hLaw : ThetaEllipticLaw Θ L) (w : BlockVec d),
       (∫ a, (blockVecDot w (blockMatVecMul (ofFullBlockMat
-            (toFullBlockMat (coarseBlockMatrix (cubeSet (originCube d m)) a)
+            (toFullBlockMat (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun)
               - toFullBlockMat (annealedBlockMatrixAtScale L m))) w)) ^ 2 ∂L)
         ≤ Cd * (Θ * vecNormSq w.1 + vecNormSq w.2) ^ 2
             * min 1 (Θ ^ 2 * ((3 : ℝ) ^ m) ^ (-((d : ℝ) - 2) / ((d : ℝ) - 1))) := by
@@ -104,25 +104,25 @@ theorem centered_quadratic_second_moment [NeZero d] (hd : 3 ≤ d) :
   set c : ℝ := blockVecDot w (blockMatVecMul (annealedBlockMatrixAtScale L m) w) with hcdef
   have hXaem : AEMeasurable
       (fun a => blockVecDot w
-        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) w)) L :=
+        (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) w)) L :=
     (aestronglyMeasurable_coarseBlockQuadratic_cubeSet hP m w).aemeasurable
   have hmean := mean_zero_coarse_blockQuadratic hΘ hP hLaw m w
   -- the integrand is `(X − c)²`
-  have hpt : ∀ a, (blockVecDot w (blockMatVecMul (ofFullBlockMat
-          (toFullBlockMat (coarseBlockMatrix (cubeSet (originCube d m)) a)
+  have hpt : ∀ a : RegCoeffField d, (blockVecDot w (blockMatVecMul (ofFullBlockMat
+          (toFullBlockMat (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun)
             - toFullBlockMat (annealedBlockMatrixAtScale L m))) w)) ^ 2
         = (blockVecDot w
-              (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) w) - c) ^ 2 := by
+              (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) w) - c) ^ 2 := by
     intro a
     rw [blockVecDot_blockMatVecMul_ofFullBlockMat_sub, hcdef]
   calc (∫ a, (blockVecDot w (blockMatVecMul (ofFullBlockMat
-          (toFullBlockMat (coarseBlockMatrix (cubeSet (originCube d m)) a)
+          (toFullBlockMat (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun)
             - toFullBlockMat (annealedBlockMatrixAtScale L m))) w)) ^ 2 ∂L)
       = ∫ a, (blockVecDot w
-            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) w) - c) ^ 2 ∂L := by
+            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) w) - c) ^ 2 ∂L := by
         exact integral_congr_ae (Filter.Eventually.of_forall hpt)
     _ = Var[fun a => blockVecDot w
-            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a) w); L] := by
+            (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) w); L] := by
         rw [variance_eq_integral hXaem, hmean]
     _ ≤ Cd * (Θ * vecNormSq w.1 + vecNormSq w.2) ^ 2
           * min 1 (Θ ^ 2 * ((3 : ℝ) ^ m) ^ (-((d : ℝ) - 2) / ((d : ℝ) - 1))) :=

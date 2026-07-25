@@ -21,8 +21,8 @@ claims, split or refactor per the rebuild contract.
 -/
 
 theorem integrable_abs_pow_of_map_eq_map
-    {d : ℕ} {P : MeasureTheory.Measure (CoeffField d)}
-    {f g : CoeffField d → ℝ} {p : ℕ}
+    {d : ℕ} {P : MeasureTheory.Measure (RegCoeffField d)}
+    {f g : RegCoeffField d → ℝ} {p : ℕ}
     (hf : Measurable f) (hg : Measurable g)
     (hmap : MeasureTheory.Measure.map f P = MeasureTheory.Measure.map g P)
     (hg_int : MeasureTheory.Integrable (fun a => |g a| ^ p) P) :
@@ -44,8 +44,8 @@ theorem integrable_abs_pow_of_map_eq_map
 
 /-- A.e.-measurable version of `integrable_abs_pow_of_map_eq_map`. -/
 theorem integrable_abs_pow_of_map_eq_map_aemeasurable
-    {d : ℕ} {P : MeasureTheory.Measure (CoeffField d)}
-    {f g : CoeffField d → ℝ} {p : ℕ}
+    {d : ℕ} {P : MeasureTheory.Measure (RegCoeffField d)}
+    {f g : RegCoeffField d → ℝ} {p : ℕ}
     (hf : AEMeasurable f P) (hg : AEMeasurable g P)
     (hmap : MeasureTheory.Measure.map f P = MeasureTheory.Measure.map g P)
     (hg_int : MeasureTheory.Integrable (fun a => |g a| ^ p) P) :
@@ -66,8 +66,8 @@ theorem integrable_abs_pow_of_map_eq_map_aemeasurable
     (by simpa [φ] using hφ_int_f)
 
 theorem integral_abs_pow_eq_of_map_eq_map
-    {d : ℕ} {P : MeasureTheory.Measure (CoeffField d)}
-    {f g : CoeffField d → ℝ} {p : ℕ}
+    {d : ℕ} {P : MeasureTheory.Measure (RegCoeffField d)}
+    {f g : RegCoeffField d → ℝ} {p : ℕ}
     (hf : Measurable f) (hg : Measurable g)
     (hmap : MeasureTheory.Measure.map f P = MeasureTheory.Measure.map g P) :
     ∫ a, |f a| ^ p ∂P = ∫ a, |g a| ^ p ∂P := by
@@ -90,8 +90,8 @@ theorem integral_abs_pow_eq_of_map_eq_map
 
 /-- A.e.-measurable version of `integral_abs_pow_eq_of_map_eq_map`. -/
 theorem integral_abs_pow_eq_of_map_eq_map_aemeasurable
-    {d : ℕ} {P : MeasureTheory.Measure (CoeffField d)}
-    {f g : CoeffField d → ℝ} {p : ℕ}
+    {d : ℕ} {P : MeasureTheory.Measure (RegCoeffField d)}
+    {f g : RegCoeffField d → ℝ} {p : ℕ}
     (hf : AEMeasurable f P) (hg : AEMeasurable g P)
     (hmap : MeasureTheory.Measure.map f P = MeasureTheory.Measure.map g P) :
     ∫ a, |f a| ^ p ∂P = ∫ a, |g a| ^ p ∂P := by
@@ -113,8 +113,8 @@ theorem integral_abs_pow_eq_of_map_eq_map_aemeasurable
       rw [MeasureTheory.integral_map hg hφ_aesm_g]
 
 theorem integral_abs_pow_rpow_inv_le_iff_of_map_eq_map
-    {d : ℕ} {P : MeasureTheory.Measure (CoeffField d)}
-    {f g : CoeffField d → ℝ} {p : ℕ} {K : ℝ}
+    {d : ℕ} {P : MeasureTheory.Measure (RegCoeffField d)}
+    {f g : RegCoeffField d → ℝ} {p : ℕ} {K : ℝ}
     (hf : Measurable f) (hg : Measurable g)
     (hmap : MeasureTheory.Measure.map f P = MeasureTheory.Measure.map g P) :
     ((∫ a, |f a| ^ p ∂P) ^ (1 / (p : ℝ)) ≤ K ↔

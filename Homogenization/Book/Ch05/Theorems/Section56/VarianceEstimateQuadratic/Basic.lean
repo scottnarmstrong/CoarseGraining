@@ -34,7 +34,7 @@ noncomputable def descendantsAverageFullBlockMat {d : ℕ}
 noncomputable def descendantsAverageNormalizedFluctuationMatrix
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) :
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     FullBlockMat d :=
   descendantsAverageFullBlockMat Q j
     (fun R =>
@@ -45,7 +45,7 @@ noncomputable def descendantsAverageNormalizedFluctuationMatrix
 noncomputable def descendantsAverageNormalizedFluctuationOperatorNormSq
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) : ℝ :=
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) : ℝ :=
   ‖Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ)
       (descendantsAverageNormalizedFluctuationMatrix hP hStruct center Q j a)‖ ^
     (2 : ℕ)
@@ -56,7 +56,7 @@ estimated by block `J`. -/
 noncomputable def normalizedCoarseAverageErrorMatrix
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) :
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     FullBlockMat d :=
   Section54.VarianceBoundGoodScale.fullBlockNormalizedFluctuationMatrix
       hP hStruct center (cubeSet Q) a -
@@ -68,7 +68,7 @@ subadditivity. Its squared operator norm is the same as
 noncomputable def normalizedCoarseAveragePositiveErrorMatrix
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) :
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     FullBlockMat d :=
   descendantsAverageNormalizedFluctuationMatrix hP hStruct center Q j a -
     Section54.VarianceBoundGoodScale.fullBlockNormalizedFluctuationMatrix
@@ -79,7 +79,7 @@ error. -/
 noncomputable def normalizedCoarseAverageErrorOperatorNormSq
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) : ℝ :=
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) : ℝ :=
   ‖Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ)
       (normalizedCoarseAverageErrorMatrix hP hStruct center Q j a)‖ ^
     (2 : ℕ)
@@ -92,7 +92,7 @@ noncomputable def fullBlockFluctuationMatrixWithNormalizer
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (U : Set (Vec d))
-    (a : CoeffField d) : FullBlockMat d :=
+    (a : RegCoeffField d) : FullBlockMat d :=
   let A := coarseBlockMatrix U a
   let Abar := Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct center
   Matrix.transpose S * (toFullBlockMat A - toFullBlockMat Abar) * S
@@ -102,7 +102,7 @@ noncomputable def fullBlockFluctuationOperatorNormSqWithNormalizer
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (U : Set (Vec d))
-    (a : CoeffField d) : ℝ :=
+    (a : RegCoeffField d) : ℝ :=
   ‖Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ)
       (fullBlockFluctuationMatrixWithNormalizer hP hStruct center S U a)‖ ^
     (2 : ℕ)
@@ -112,7 +112,7 @@ noncomputable def fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d)
-    (a : CoeffField d) : ℝ :=
+    (a : RegCoeffField d) : ℝ :=
   fullBlockFluctuationOperatorNormSqWithNormalizer
     hP hStruct center S (cubeSet Q) a
 
@@ -122,7 +122,7 @@ noncomputable def descendantsAverageFluctuationMatrixWithNormalizer
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
-    (a : CoeffField d) : FullBlockMat d :=
+    (a : RegCoeffField d) : FullBlockMat d :=
   descendantsAverageFullBlockMat Q j
     (fun R =>
       fullBlockFluctuationMatrixWithNormalizer hP hStruct center S
@@ -134,7 +134,7 @@ noncomputable def descendantsAverageFluctuationOperatorNormSqWithNormalizer
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
-    (a : CoeffField d) : ℝ :=
+    (a : RegCoeffField d) : ℝ :=
   ‖Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ)
       (descendantsAverageFluctuationMatrixWithNormalizer
         hP hStruct center S Q j a)‖ ^ (2 : ℕ)
@@ -144,7 +144,7 @@ noncomputable def coarseAverageErrorMatrixWithNormalizer
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
-    (a : CoeffField d) : FullBlockMat d :=
+    (a : RegCoeffField d) : FullBlockMat d :=
   fullBlockFluctuationMatrixWithNormalizer hP hStruct center S (cubeSet Q) a -
     descendantsAverageFluctuationMatrixWithNormalizer hP hStruct center S Q j a
 
@@ -154,7 +154,7 @@ noncomputable def coarseAveragePositiveErrorMatrixWithNormalizer
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
-    (a : CoeffField d) : FullBlockMat d :=
+    (a : RegCoeffField d) : FullBlockMat d :=
   descendantsAverageFluctuationMatrixWithNormalizer hP hStruct center S Q j a -
     fullBlockFluctuationMatrixWithNormalizer hP hStruct center S (cubeSet Q) a
 
@@ -164,7 +164,7 @@ noncomputable def coarseAverageErrorOperatorNormSqWithNormalizer
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
-    (a : CoeffField d) : ℝ :=
+    (a : RegCoeffField d) : ℝ :=
   ‖Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ)
       (coarseAverageErrorMatrixWithNormalizer hP hStruct center S Q j a)‖ ^
     (2 : ℕ)
@@ -174,7 +174,7 @@ noncomputable def coarseAverageErrorOperatorNormSqWithNormalizer
 `BlockJ (p,q) (qStar,pStar)` is stored as
 `blockJObservableCubeSet Q p pStar q qStar`. -/
 noncomputable def blockJObservableCubeSetBlockVec {d : ℕ}
-    (Q : TriadicCube d) (P Qv : BlockVec d) : CoeffField d → ℝ :=
+    (Q : TriadicCube d) (P Qv : BlockVec d) : RegCoeffField d → ℝ :=
   Ch04.blockJObservableCubeSet Q P.1 Qv.2 P.2 Qv.1
 
 /-- Coordinate probe associated with an arbitrary full-block matrix. -/
@@ -186,7 +186,7 @@ noncomputable def fullBlockMatrixProbe {d : ℕ}
 normalizers.  In the manuscript case, use `S = B^{-1/2}` and `T = B^{1/2}`. -/
 noncomputable def blockJTraceAverageWithNormalizers
     {d : ℕ} (S T : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
-    (a : CoeffField d) : ℝ :=
+    (a : RegCoeffField d) : ℝ :=
   descendantsAverage Q j
     (fun R =>
       ∑ α : BlockCoord d,
@@ -197,7 +197,7 @@ noncomputable def blockJTraceAverageWithNormalizers
 normalizers. -/
 noncomputable def blockJTraceAverageSqWithNormalizers
     {d : ℕ} (S T : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
-    (a : CoeffField d) : ℝ :=
+    (a : RegCoeffField d) : ℝ :=
   blockJTraceAverageWithNormalizers S T Q j a ^ (2 : ℕ)
 
 /-- Diagonal square-root multiplier dual to `Ch04.scalarFullBlockInvSqrtDiag`.
@@ -234,7 +234,7 @@ normalization used by the Section 5.4 fluctuation observable. -/
 noncomputable def normalizedBlockJTraceAverage
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) : ℝ :=
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) : ℝ :=
   descendantsAverage Q j
     (fun R =>
       ∑ α : BlockCoord d,
@@ -248,7 +248,7 @@ trace budget; the lower half is nonnegative and is added back below. -/
 noncomputable def normalizedUpperBlockJTraceAverage
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) : ℝ :=
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) : ℝ :=
   descendantsAverage Q j
     (fun R =>
       ∑ i : Fin d,
@@ -260,11 +260,11 @@ noncomputable def normalizedUpperBlockJTraceAverage
 noncomputable def normalizedBlockJTraceAverageSq
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) : ℝ :=
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) : ℝ :=
   normalizedBlockJTraceAverage hP hStruct center Q j a ^ (2 : ℕ)
 
 theorem blockJObservableCubeSetBlockVec_nonneg {d : ℕ}
-    (Q : TriadicCube d) (P Qv : BlockVec d) (a : CoeffField d) :
+    (Q : TriadicCube d) (P Qv : BlockVec d) (a : RegCoeffField d) :
     0 ≤ blockJObservableCubeSetBlockVec Q P Qv a := by
   rcases P with ⟨p, q⟩
   rcases Qv with ⟨qStar, pStar⟩
@@ -273,12 +273,12 @@ theorem blockJObservableCubeSetBlockVec_nonneg {d : ℕ}
       (Ch04.responseJObservableCubeSet_nonneg Q (p - pStar) (qStar - q) a))
     (mul_nonneg (by norm_num)
       (Ch04.responseJObservableCubeSet_nonneg Q (pStar + p) (qStar + q)
-        (adjointCoeffField a)))
+        (adjointReg a)))
 
 theorem normalizedBlockJTraceAverage_nonneg
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) :
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     0 ≤ normalizedBlockJTraceAverage hP hStruct center Q j a := by
   classical
   unfold normalizedBlockJTraceAverage
@@ -297,7 +297,7 @@ theorem normalizedBlockJTraceAverage_nonneg
 theorem normalizedUpperBlockJTraceAverage_le_normalizedBlockJTraceAverage
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) :
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     normalizedUpperBlockJTraceAverage hP hStruct center Q j a ≤
       normalizedBlockJTraceAverage hP hStruct center Q j a := by
   classical
@@ -314,18 +314,18 @@ theorem normalizedUpperBlockJTraceAverage_le_normalizedBlockJTraceAverage
 theorem normalizedBlockJTraceAverageSq_nonneg
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : CoeffField d) :
+    (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     0 ≤ normalizedBlockJTraceAverageSq hP hStruct center Q j a := by
   unfold normalizedBlockJTraceAverageSq
   exact sq_nonneg _
 
 theorem memLp_two_comp_adjointCoeffField
-    {d : ℕ} {P : Ch04.CoeffLaw d} {X : CoeffField d → ℝ}
+    {d : ℕ} {P : Ch04.CoeffLaw d} {X : RegCoeffField d → ℝ}
     (hAdj : Ch04.AdjointInvariantLaw P) (hX : MemLp X (2 : ENNReal) P) :
-    MemLp (fun a : CoeffField d => X (adjointCoeffField a)) (2 : ENNReal) P := by
-  have hmap : MemLp X (2 : ENNReal) (Measure.map adjointCoeffField P) := by
+    MemLp (fun a : RegCoeffField d => X (adjointReg a)) (2 : ENNReal) P := by
+  have hmap : MemLp X (2 : ENNReal) (Measure.map adjointReg P) := by
     exact hAdj.symm ▸ hX
-  exact hmap.comp_of_map measurable_adjointCoeffField.aemeasurable
+  exact hmap.comp_of_map measurable_adjointReg.aemeasurable
 
 theorem memLp_two_blockJObservableCubeSetBlockVec_from_P4_of_stationary
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
@@ -347,29 +347,29 @@ theorem memLp_two_blockJObservableCubeSetBlockVec_from_P4_of_stationary
         hP hStruct.stationary hStruct hP4 R hR_nonneg (pStar + p) (qStar + q)
   have hJ₂ :
       MemLp
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Ch04.responseJObservableCubeSet R (pStar + p) (qStar + q)
-            (adjointCoeffField a))
+            (adjointReg a))
         (2 : ENNReal) P :=
     memLp_two_comp_adjointCoeffField hStruct.adjoint_invariant hJ₂base
   have hsum :
       MemLp
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (1 / 2 : ℝ) *
               Ch04.responseJObservableCubeSet R (p - pStar) (qStar - q) a +
             (1 / 2 : ℝ) *
               Ch04.responseJObservableCubeSet R (pStar + p) (qStar + q)
-                (adjointCoeffField a))
+                (adjointReg a))
         (2 : ENNReal) P :=
     (hJ₁.const_mul (1 / 2 : ℝ)).add (hJ₂.const_mul (1 / 2 : ℝ))
   change
     MemLp
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         (1 / 2 : ℝ) *
             Ch04.responseJObservableCubeSet R (p - pStar) (qStar - q) a +
           (1 / 2 : ℝ) *
             Ch04.responseJObservableCubeSet R (pStar + p) (qStar + q)
-              (adjointCoeffField a))
+              (adjointReg a))
       (2 : ENNReal) P
   exact hsum
 
@@ -388,7 +388,7 @@ theorem memLp_two_normalizedBlockJTraceAverage_from_P4_of_stationary
   have hchild :
       ∀ R, R ∈ descendantsAtDepth Q j →
         MemLp
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             ∑ α : BlockCoord d,
               blockJObservableCubeSetBlockVec R
                 (normalizedInvSqrtBlockProbe hP hStruct (m : ℤ) α)
@@ -411,7 +411,7 @@ theorem memLp_two_normalizedBlockJTraceAverage_from_P4_of_stationary
           (normalizedSqrtBlockProbe hP hStruct (m : ℤ) α))
   change
     MemLp
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverage (originCube d (n : ℤ)) (n - k)
           (fun R =>
             ∑ α : BlockCoord d,
@@ -443,7 +443,7 @@ theorem integrable_normalizedBlockJTraceAverageSq_from_P4_of_stationary
     hmem.integrable_norm_pow (by norm_num : (2 : ℕ) ≠ 0)
 
 theorem doubledResponseJ_eq_blockJObservableCubeSetBlockVec_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : Ch04.AELocallyUniformlyEllipticField a) (Q : TriadicCube d)
     (P Qv : BlockVec d) :
     Ch02.doubledResponseJ (Ch02.cubeDomain Q)
@@ -461,27 +461,27 @@ theorem doubledResponseJ_eq_blockJObservableCubeSetBlockVec_of_aelocallyUniforml
     calc
       Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q)
           (p - pStar) (qStar - q)
-          = ResponseJ (openCubeSet Q) (p - pStar) (qStar - q) a := by
+          = ResponseJ (openCubeSet Q) (p - pStar) (qStar - q) a.toFun := by
               simpa [F, Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField,
                 Ch04.coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                 Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                   (Ch02.cubeDomain Q) (F.coeffOn Q) (p - pStar) (qStar - q)
       _ = Ch04.responseJObservableCubeSet Q (p - pStar) (qStar - q) a := by
             rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q
-              (p - pStar) (qStar - q) a]
+              (p - pStar) (qStar - q) a.toFun]
             rfl
   have hresp₂ :
       Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q).transpose
           (pStar + p) (qStar + q) =
         Ch04.responseJObservableCubeSet Q (pStar + p) (qStar + q)
-          (adjointCoeffField a) := by
+          (adjointReg a) := by
     calc
       Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q).transpose
           (pStar + p) (qStar + q)
           = ResponseJ (openCubeSet Q) (pStar + p) (qStar + q)
-              (adjointCoeffField a) := by
+              (adjointCoeffField a.toFun) := by
               have hAdj :
-                  ((F.coeffOn Q).transpose).toCoeffField = adjointCoeffField a := by
+                  ((F.coeffOn Q).transpose).toCoeffField = adjointCoeffField a.toFun := by
                 funext x
                 simp [F, Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField,
                   Ch04.coeffOnOfAEEllipticOn_toCoeffField, adjointCoeffField]
@@ -490,9 +490,9 @@ theorem doubledResponseJ_eq_blockJObservableCubeSetBlockVec_of_aelocallyUniforml
                   (Ch02.cubeDomain Q) (F.coeffOn Q).transpose
                   (pStar + p) (qStar + q)
       _ = Ch04.responseJObservableCubeSet Q (pStar + p) (qStar + q)
-            (adjointCoeffField a) := by
+            (adjointReg a) := by
             rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q
-              (pStar + p) (qStar + q) (adjointCoeffField a)]
+              (pStar + p) (qStar + q) (adjointCoeffField a.toFun)]
             rfl
   rw [Ch02.doubledResponseJ_eq_half_responseJ_adjoint_sum]
   simp [blockJObservableCubeSetBlockVec, F, hresp₁, hresp₂]

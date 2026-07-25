@@ -460,18 +460,18 @@ theorem linearProductTerms_special_le_centering_add_pairedWeakNormSquares
        let q_e := specialQAtScale hP hStruct (m : ℤ) e
        let p0_e := (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ • q_e - p_e
        Integrable
-         (fun a : CoeffField d =>
+         (fun a : RegCoeffField d =>
            (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-               (originCube d (m : ℤ)) s p_e q_e p0_e a) ^ 2) P) →
+               (originCube d (m : ℤ)) s p_e q_e p0_e a.toFun) ^ 2) P) →
       (let β := section53CoarseFluctuationBeta hP4
        let t := hP4.sUpper + 2 * β
        let p_e := specialPAtScale hP hStruct (m : ℤ) e
        let q_e := specialQAtScale hP hStruct (m : ℤ) e
        let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
        Integrable
-         (fun a : CoeffField d =>
+         (fun a : RegCoeffField d =>
            (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-               (originCube d (m : ℤ)) t p_e q_e q0_e a) ^ 2) P) →
+               (originCube d (m : ℤ)) t p_e q_e q0_e a.toFun) ^ 2) P) →
         let β := section53CoarseFluctuationBeta hP4
         let s := hP4.sLower + 2 * β
         let t := hP4.sUpper + 2 * β
@@ -482,10 +482,10 @@ theorem linearProductTerms_special_le_centering_add_pairedWeakNormSquares
         let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
         let σ := sigmaHatAtScale hP hStruct (m : ℤ)
         let θ := thetaAtScale hP hStruct (m : ℤ)
-        let gradWeak :=
-          Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e
-        let fluxWeak :=
-          Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e
+        let gradWeak : RegCoeffField d → ℝ := fun a =>
+          Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e a.toFun
+        let fluxWeak : RegCoeffField d → ℝ := fun a =>
+          Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e a.toFun
         let gradCoeff :=
           (Fintype.card (Fin d) : ℝ) *
             ((3 : ℝ) ^ ((d : ℝ) + s) *
@@ -540,10 +540,10 @@ theorem linearProductTerms_special_le_centering_add_pairedWeakNormSquares
   let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
   let θ := thetaAtScale hP hStruct (m : ℤ)
-  let gradWeak :=
-    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e
-  let fluxWeak :=
-    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e
+  let gradWeak : RegCoeffField d → ℝ := fun a =>
+    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e a.toFun
+  let fluxWeak : RegCoeffField d → ℝ := fun a =>
+    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e a.toFun
   let gradCoeff :=
     (Fintype.card (Fin d) : ℝ) *
       ((3 : ℝ) ^ ((d : ℝ) + s) *
@@ -590,9 +590,9 @@ theorem linearProductTerms_special_le_centering_add_pairedWeakNormSquares
     simpa [fluxWeak, Q, t, p_e, q_e, q0_e] using
       JUpperBoundWeakNorms.canonicalScalarResponseFluxWeakNormCubeSet_nonneg_ae
         hP Q ht_pos p_e q_e q0_e
-  have hGradSq' : Integrable (fun a : CoeffField d => (gradWeak a) ^ 2) P := by
+  have hGradSq' : Integrable (fun a : RegCoeffField d => (gradWeak a) ^ 2) P := by
     simpa [gradWeak, Q, s, p_e, q_e, p0_e, β] using hGradSq
-  have hFluxSq' : Integrable (fun a : CoeffField d => (fluxWeak a) ^ 2) P := by
+  have hFluxSq' : Integrable (fun a : RegCoeffField d => (fluxWeak a) ^ 2) P := by
     simpa [fluxWeak, Q, t, p_e, q_e, q0_e, β] using hFluxSq
   have hIntGrad_le : ∫ a, gradWeak a ∂P ≤ Real.sqrt G := by
     simpa [G] using
@@ -736,9 +736,9 @@ theorem ae_paired_weakNormSquares_special_le_four_rhsSquares
       let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
       let σ := sigmaHatAtScale hP hStruct (m : ℤ)
       let gradWeak :=
-        Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e a
+        Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e a.toFun
       let fluxWeak :=
-        Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e a
+        Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e a.toFun
       let gradRHS :=
         WeakNormsMaximizer.gradientRHSAtScale
           (WeakNormsMaximizer.section53WeakNormMaximizerConst d)
@@ -777,9 +777,9 @@ theorem ae_paired_weakNormSquares_special_le_four_rhsSquares
   let s' := hP4.sLower + β
   let t' := hP4.sUpper + β
   let gradWeak :=
-    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e a
+    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e a.toFun
   let fluxWeak :=
-    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e a
+    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e a.toFun
   let gradRHS :=
     WeakNormsMaximizer.gradientRHSAtScale
       (WeakNormsMaximizer.section53WeakNormMaximizerConst d)

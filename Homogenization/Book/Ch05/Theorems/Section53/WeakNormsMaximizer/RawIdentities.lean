@@ -21,10 +21,10 @@ open scoped ENNReal BigOperators
 noncomputable section
 
 theorem canonicalScalarResponseGradientWeakNormCubeSet_eq_raw
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (s : ℝ) (p q p0 : Vec d) :
-    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a =
+    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun =
       cubeBesovNegativeVectorSeminorm Q s
         (JUpperBoundWeakNorms.canonicalMaximizerGradientDefectOnCube Q
           ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
@@ -44,10 +44,10 @@ theorem canonicalScalarResponseGradientWeakNormCubeSet_eq_raw
         a ha Q s N p q p0).symm⟩
 
 theorem canonicalScalarResponseFluxWeakNormCubeSet_eq_raw
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (s : ℝ) (p q q0 : Vec d) :
-    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a =
+    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun =
       cubeBesovNegativeVectorSeminorm Q s
         (JUpperBoundWeakNorms.canonicalMaximizerFluxDefectOnCube Q
           ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)

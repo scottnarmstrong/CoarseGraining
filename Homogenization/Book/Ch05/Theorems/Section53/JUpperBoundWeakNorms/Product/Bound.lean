@@ -22,7 +22,7 @@ theorem abs_cutoffProductTermOnDependentFamily_le_scaledWeakNormProduct
     {d : ℕ} [NeZero d] (Q : TriadicCube d) {s t : ℝ}
     (hs_pos : 0 < s) (hs_lt_one : s < 1) (ht_pos : 0 < t)
     (hst : s + t ≤ 1)
-    (a : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
+    (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     {φ : Vec d → ℝ} (p q p0 q0 : Vec d) {B : ℝ}
     (hB : 0 ≤ B)
     (hφ : ContDiff ℝ (⊤ : ℕ∞) φ)
@@ -36,8 +36,8 @@ theorem abs_cutoffProductTermOnDependentFamily_le_scaledWeakNormProduct
     (hcutoffDeriv :
       ∀ i : Fin d, ∀ z ∈ cubeSet Q,
         ‖fderiv ℝ (fun x => scalarCutoffGradientField φ x i) z‖ ≤ B) :
-    let gradWeak := Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a
-    let fluxWeak := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a
+    let gradWeak := Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
+    let fluxWeak := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun
     let scaledGrad := cubeBesovScaleWeight (-s) Q * gradWeak
     let scaledFlux := cubeBesovScaleWeight (-t) Q * fluxWeak
     let gradCoeff :=
@@ -105,7 +105,7 @@ scalar-response flux weak norms, once `cutoffGradient` is identified as the
 gradient field of the scalar cutoff. -/
 theorem abs_cutoffProductTermOnDependentFamily_le_cutoffProductBridgeRHS
     {d : ℕ} [NeZero d] (Q : TriadicCube d) (s : ℝ)
-    (a : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
+    (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     {φ : Vec d → ℝ} (p q p0 q0 : Vec d)
     (dualField cutoffGradient : Vec d → Vec d)
     {cutoffCircOne cutoffCircS cutoffDerivative poincareConst cutoffConstant
@@ -169,9 +169,9 @@ theorem abs_cutoffProductTermOnDependentFamily_le_cutoffProductBridgeRHS
         ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
         φ p q p0 q0| ≤
       cutoffProductBridgeRHS Q s cutoffGradient
-        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a)
-        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a)
-        ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖
+        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
+        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun)
+        ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖
         cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant := by
   let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   let aQ : Ch02.CoeffOn (Ch02.cubeDomain Q) := F.coeffOn Q
@@ -199,9 +199,9 @@ theorem abs_cutoffProductTermOnDependentFamily_le_cutoffProductBridgeRHS
   have hbridge :
       |T| ≤
         cutoffProductBridgeRHS Q s cutoffGradient
-          (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a)
-          (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a)
-          ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖
+          (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
+          (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun)
+          ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖
           cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant := by
     simpa [T, F, aQ] using
       productTerm_le_cutoffProductBridge_of_dependentCanonicalMaximizer

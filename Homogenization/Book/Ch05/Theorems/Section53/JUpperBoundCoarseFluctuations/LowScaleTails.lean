@@ -48,7 +48,7 @@ theorem paired_lowScaleTailSquares_special_le_baseline_add_positiveExcess
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
-    {k m : ℕ} (hkm : k ≤ m) (e : Vec d) (a : CoeffField d) :
+    {k m : ℕ} (hkm : k ≤ m) (e : Vec d) (a : RegCoeffField d) :
     let β := section53CoarseFluctuationBeta hP4
     let s := hP4.sLower + 2 * β
     let s' := hP4.sLower + β

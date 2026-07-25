@@ -29,35 +29,45 @@ theorem IsAEEllipticFieldOn.adjointCoeffField {d : ℕ} {lam Lam : ℝ}
   · exact h.ae_isEllipticMatrix.mono fun x hx => by
       simpa [adjointCoeffField] using isEllipticMatrix_transpose hx
 
-theorem AELocallyUniformlyEllipticField.adjointCoeffField {d : ℕ}
-    {a : CoeffField d} (ha : AELocallyUniformlyEllipticField a) :
-    AELocallyUniformlyEllipticField (adjointCoeffField a) := by
+/-- The underlying field of the carrier adjoint is the raw field adjoint. -/
+theorem adjointReg_toFun {d : ℕ} (a : RegCoeffField d) :
+    (adjointReg a).toFun = adjointCoeffField a.toFun := rfl
+
+/-- Carrier a.e.-ellipticity transports under the carrier adjoint endomorphism:
+the transpose preserves the local uniform elliptic bounds. -/
+theorem AELocallyUniformlyEllipticField.adjointReg {d : ℕ}
+    {a : RegCoeffField d} (ha : AELocallyUniformlyEllipticField a) :
+    AELocallyUniformlyEllipticField (Homogenization.adjointReg a) := by
   intro Q
   rcases ha Q with ⟨lam, Lam, hlam, hle, hEll⟩
-  exact ⟨lam, Lam, hlam, hle, IsAEEllipticFieldOn.adjointCoeffField hEll⟩
+  refine ⟨lam, Lam, hlam, hle, ?_⟩
+  have hEll' : IsAEEllipticFieldOn lam Lam (openCubeSet Q) a.toFun := hEll
+  show IsAEEllipticFieldOn lam Lam (openCubeSet Q) (Homogenization.adjointReg a).toFun
+  rw [adjointReg_toFun]
+  exact IsAEEllipticFieldOn.adjointCoeffField hEll'
 
 private theorem isLocalRandomVariable_fullBlockMat_of_entries
-    {d : ℕ} {U : Set (Vec d)}
-    {X : CoeffField d → FullBlockMat d}
+    {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U)
+    {X : RegCoeffField d → FullBlockMat d}
     (hX :
       ∀ α β : BlockCoord d,
-        IsLocalRandomVariable U (fun a => X a α β)) :
-    IsLocalRandomVariable U X := by
-  change @Measurable (CoeffField d) (FullBlockMat d) (restrictionSigma U) _ X
-  rw [@measurable_pi_iff (CoeffField d) (BlockCoord d)
-    (fun _ => BlockCoord d → ℝ) (restrictionSigma U) (fun _ => inferInstance) X]
+        IsLocalRandomVariable U hU (fun a => X a α β)) :
+    IsLocalRandomVariable U hU X := by
+  change @Measurable (RegCoeffField d) (FullBlockMat d) (RestrictionSigmaR U hU) _ X
+  rw [@measurable_pi_iff (RegCoeffField d) (BlockCoord d)
+    (fun _ => BlockCoord d → ℝ) (RestrictionSigmaR U hU) (fun _ => inferInstance) X]
   intro α
-  rw [@measurable_pi_iff (CoeffField d) (BlockCoord d)
-    (fun _ => ℝ) (restrictionSigma U) (fun _ => inferInstance) (fun a => X a α)]
+  rw [@measurable_pi_iff (RegCoeffField d) (BlockCoord d)
+    (fun _ => ℝ) (RestrictionSigmaR U hU) (fun _ => inferInstance) (fun a => X a α)]
   intro β
   exact hX α β
 
 theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_upperRight_apply_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
-    ∃ Y : CoeffField d → ℝ,
-      IsLocalRandomVariable (cubeSet Q) Y ∧
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).upperRight i j)
+    ∃ Y : RegCoeffField d → ℝ,
+      IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight i j)
           =ᵐ[P] Y := by
   rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
       Q ((Pi.single i 1, 0) + (0, Pi.single j 1)) with
@@ -70,19 +80,19 @@ theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_upperRight_apply_cu
     (hYsum_local.sub hYi_local).sub hYj_local, ?_⟩
   filter_upwards [hYsum_eq, hYi_eq, hYj_eq] with a hsum hi hj
   calc
-    (coarseBlockMatrix (cubeSet Q) a).upperRight i j =
-        Mu (cubeSet Q) ((Pi.single i 1, 0) + (0, Pi.single j 1)) a -
-          Mu (cubeSet Q) (Pi.single i 1, 0) a -
-          Mu (cubeSet Q) (0, Pi.single j 1) a := by
+    (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight i j =
+        Mu (cubeSet Q) ((Pi.single i 1, 0) + (0, Pi.single j 1)) a.toFun -
+          Mu (cubeSet Q) (Pi.single i 1, 0) a.toFun -
+          Mu (cubeSet Q) (0, Pi.single j 1) a.toFun := by
           simp [coarseBlockMatrix_upperRight_apply]
     _ = Ysum a - Yi a - Yj a := by rw [hsum, hi, hj]
 
 theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerLeft_apply_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
-    ∃ Y : CoeffField d → ℝ,
-      IsLocalRandomVariable (cubeSet Q) Y ∧
-        (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).lowerLeft i j)
+    ∃ Y : RegCoeffField d → ℝ,
+      IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+        (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft i j)
           =ᵐ[P] Y := by
   rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
       Q ((0, Pi.single i 1) + (Pi.single j 1, 0)) with
@@ -95,26 +105,26 @@ theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerLeft_apply_cub
     (hYsum_local.sub hYi_local).sub hYj_local, ?_⟩
   filter_upwards [hYsum_eq, hYi_eq, hYj_eq] with a hsum hi hj
   calc
-    (coarseBlockMatrix (cubeSet Q) a).lowerLeft i j =
-        Mu (cubeSet Q) ((0, Pi.single i 1) + (Pi.single j 1, 0)) a -
-          Mu (cubeSet Q) (0, Pi.single i 1) a -
-          Mu (cubeSet Q) (Pi.single j 1, 0) a := by
+    (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft i j =
+        Mu (cubeSet Q) ((0, Pi.single i 1) + (Pi.single j 1, 0)) a.toFun -
+          Mu (cubeSet Q) (0, Pi.single i 1) a.toFun -
+          Mu (cubeSet Q) (Pi.single j 1, 0) a.toFun := by
           simp [coarseBlockMatrix_lowerLeft_apply]
     _ = Ysum a - Yi a - Yj a := by rw [hsum, hi, hj]
 
 theorem exists_isLocalRandomVariable_ae_eq_coarseFullBlockMatrix_cubeSet
     {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) :
-    ∃ Y : CoeffField d → FullBlockMat d,
-      IsLocalRandomVariable (cubeSet Q) Y ∧
-        (fun a : CoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a))
+    ∃ Y : RegCoeffField d → FullBlockMat d,
+      IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+        (fun a : RegCoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun))
           =ᵐ[P] Y := by
   classical
   let entry_exists : ∀ α β : BlockCoord d,
-      ∃ Y : CoeffField d → ℝ,
-        IsLocalRandomVariable (cubeSet Q) Y ∧
-          (fun a : CoeffField d =>
-            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) α β) =ᵐ[P] Y := by
+      ∃ Y : RegCoeffField d → ℝ,
+        IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+          (fun a : RegCoeffField d =>
+            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) α β) =ᵐ[P] Y := by
     intro α β
     cases α with
     | inl i =>
@@ -135,24 +145,24 @@ theorem exists_isLocalRandomVariable_ae_eq_coarseFullBlockMatrix_cubeSet
         | inr j =>
             simpa [toFullBlockMat] using
               hP.exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerRight_apply_cubeSet Q i j
-  let Yentry : BlockCoord d → BlockCoord d → CoeffField d → ℝ :=
+  let Yentry : BlockCoord d → BlockCoord d → RegCoeffField d → ℝ :=
     fun α β => Classical.choose (entry_exists α β)
-  let Y : CoeffField d → FullBlockMat d := fun a α β => Yentry α β a
+  let Y : RegCoeffField d → FullBlockMat d := fun a α β => Yentry α β a
   refine ⟨Y, ?_, ?_⟩
-  · refine isLocalRandomVariable_fullBlockMat_of_entries ?_
+  · refine isLocalRandomVariable_fullBlockMat_of_entries (measurableSet_cubeSet Q) ?_
     intro α β
     exact (Classical.choose_spec (entry_exists α β)).1
   · have hentry :
         ∀ α β : BlockCoord d,
-          (fun a : CoeffField d =>
-            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) α β) =ᵐ[P]
+          (fun a : RegCoeffField d =>
+            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) α β) =ᵐ[P]
               fun a => Y a α β := by
       intro α β
       exact (Classical.choose_spec (entry_exists α β)).2
     have hall :
         ∀ᵐ a ∂P,
           ∀ α β : BlockCoord d,
-            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a) α β = Y a α β := by
+            toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) α β = Y a α β := by
       rw [Filter.eventually_all]
       intro α
       rw [Filter.eventually_all]
@@ -163,25 +173,25 @@ theorem exists_isLocalRandomVariable_ae_eq_coarseFullBlockMatrix_cubeSet
     exact ha α β
 
 noncomputable def blockJObservableCubeSetBlockVec {d : ℕ}
-    (Q : TriadicCube d) (P Qv : BlockVec d) : CoeffField d → ℝ :=
+    (Q : TriadicCube d) (P Qv : BlockVec d) : RegCoeffField d → ℝ :=
   blockJObservableCubeSet Q P.1 Qv.2 P.2 Qv.1
 
 theorem blockJObservableCubeSetBlockVec_nonneg {d : ℕ}
-    (Q : TriadicCube d) (P Qv : BlockVec d) (a : CoeffField d) :
+    (Q : TriadicCube d) (P Qv : BlockVec d) (a : RegCoeffField d) :
     0 ≤ blockJObservableCubeSetBlockVec Q P Qv a := by
   rcases P with ⟨p, q⟩
   rcases Qv with ⟨qStar, pStar⟩
   dsimp [blockJObservableCubeSetBlockVec]
   have h1 := responseJObservableCubeSet_nonneg Q (p - pStar) (qStar - q) a
-  have h2 := responseJObservableCubeSet_nonneg Q (pStar + p) (qStar + q) (adjointCoeffField a)
+  have h2 := responseJObservableCubeSet_nonneg Q (pStar + p) (qStar + q) (adjointReg a)
   change 0 ≤
     (1 / 2 : ℝ) * responseJObservableCubeSet Q (p - pStar) (qStar - q) a +
       (1 / 2 : ℝ) *
-        responseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointCoeffField a)
+        responseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a)
   nlinarith
 
 theorem blockJObservableCubeSetBlockVec_le_descendantsAverage_cubeSet_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (Q : TriadicCube d) {k : ℤ}
     (hk : k ≤ Q.scale) (P Qv : BlockVec d) :
     blockJObservableCubeSetBlockVec Q P Qv a ≤
@@ -193,19 +203,19 @@ theorem blockJObservableCubeSetBlockVec_le_descendantsAverage_cubeSet_of_aelocal
   let R₁ : TriadicCube d → ℝ :=
     fun R => responseJObservableCubeSet R (p - pStar) (qStar - q) a
   let R₂ : TriadicCube d → ℝ :=
-    fun R => responseJObservableCubeSet R (pStar + p) (qStar + q) (adjointCoeffField a)
+    fun R => responseJObservableCubeSet R (pStar + p) (qStar + q) (adjointReg a)
   have h1 :=
     responseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUniformlyEllipticField
       (a := a) ha Q hk (p - pStar) (qStar - q)
   have h2 :=
     responseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUniformlyEllipticField
-      (a := adjointCoeffField a) ha.adjointCoeffField Q hk
+      (a := adjointReg a) ha.adjointReg Q hk
       (pStar + p) (qStar + q)
   have hhalf_nonneg : 0 ≤ (1 / 2 : ℝ) := by norm_num
   have hsum :
       (1 / 2 : ℝ) * responseJObservableCubeSet Q (p - pStar) (qStar - q) a +
         (1 / 2 : ℝ) *
-          responseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointCoeffField a) ≤
+          responseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a) ≤
       (1 / 2 : ℝ) * descendantsAverage Q j R₁ +
         (1 / 2 : ℝ) * descendantsAverage Q j R₂ := by
     exact add_le_add
@@ -244,7 +254,7 @@ theorem blockJObservableCubeSetBlockVec_le_descendantsAverage_cubeSet_of_aelocal
         =
       (1 / 2 : ℝ) * responseJObservableCubeSet Q (p - pStar) (qStar - q) a +
         (1 / 2 : ℝ) *
-          responseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointCoeffField a) := by
+          responseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a) := by
           rfl
     _ ≤ (1 / 2 : ℝ) * descendantsAverage Q j R₁ +
           (1 / 2 : ℝ) * descendantsAverage Q j R₂ := hsum
@@ -252,7 +262,7 @@ theorem blockJObservableCubeSetBlockVec_le_descendantsAverage_cubeSet_of_aelocal
           (fun R => blockJObservableCubeSetBlockVec R (p, q) (qStar, pStar) a) := havg.symm
 
 theorem doubledResponseJ_eq_blockJObservableCubeSetBlockVec_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (Q : TriadicCube d)
     (P Qv : BlockVec d) :
     Ch02.doubledResponseJ (Ch02.cubeDomain Q)
@@ -270,27 +280,27 @@ theorem doubledResponseJ_eq_blockJObservableCubeSetBlockVec_of_aelocallyUniforml
     calc
       Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q)
           (p - pStar) (qStar - q)
-          = ResponseJ (openCubeSet Q) (p - pStar) (qStar - q) a := by
+          = ResponseJ (openCubeSet Q) (p - pStar) (qStar - q) a.toFun := by
               simpa [F, triadicCoeffFamilyOfAELocallyUniformlyEllipticField,
                 coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                 Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                   (Ch02.cubeDomain Q) (F.coeffOn Q) (p - pStar) (qStar - q)
       _ = responseJObservableCubeSet Q (p - pStar) (qStar - q) a := by
             rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q
-              (p - pStar) (qStar - q) a]
+              (p - pStar) (qStar - q) a.toFun]
             rfl
   have hresp₂ :
       Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q).transpose
           (pStar + p) (qStar + q) =
         responseJObservableCubeSet Q (pStar + p) (qStar + q)
-          (adjointCoeffField a) := by
+          (adjointReg a) := by
     calc
       Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q).transpose
           (pStar + p) (qStar + q)
           = ResponseJ (openCubeSet Q) (pStar + p) (qStar + q)
-              (adjointCoeffField a) := by
+              (adjointCoeffField a.toFun) := by
               have hAdj :
-                  ((F.coeffOn Q).transpose).toCoeffField = adjointCoeffField a := by
+                  ((F.coeffOn Q).transpose).toCoeffField = adjointCoeffField a.toFun := by
                 funext x
                 simp [F, triadicCoeffFamilyOfAELocallyUniformlyEllipticField,
                   coeffOnOfAEEllipticOn_toCoeffField, adjointCoeffField]
@@ -299,9 +309,9 @@ theorem doubledResponseJ_eq_blockJObservableCubeSetBlockVec_of_aelocallyUniforml
                   (Ch02.cubeDomain Q) (F.coeffOn Q).transpose
                   (pStar + p) (qStar + q)
       _ = responseJObservableCubeSet Q (pStar + p) (qStar + q)
-            (adjointCoeffField a) := by
+            (adjointReg a) := by
             rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q
-              (pStar + p) (qStar + q) (adjointCoeffField a)]
+              (pStar + p) (qStar + q) (adjointCoeffField a.toFun)]
             rfl
   rw [Ch02.doubledResponseJ_eq_half_responseJ_adjoint_sum]
   simp [blockJObservableCubeSetBlockVec, F, hresp₁, hresp₂]
@@ -361,12 +371,12 @@ private theorem measurable_blockJQuadraticFullBlockMat {d : ℕ}
         (1 / 2 : ℝ))).sub measurable_const
 
 theorem blockJObservableCubeSetBlockVec_eq_blockJQuadraticFullBlockMat_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (P Qv : BlockVec d) :
     blockJObservableCubeSetBlockVec Q P Qv a =
       blockJQuadraticFullBlockMat
-        (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)) P Qv := by
+        (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P Qv := by
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hblock :=
@@ -375,7 +385,7 @@ theorem blockJObservableCubeSetBlockVec_eq_blockJQuadraticFullBlockMat_of_aeloca
   have hsplit :=
     (Ch02.blockCoarseMatrixTheory (Ch02.cubeDomain Q) (F.coeffOn Q)).doubled_response_splitting P Qv
   have hcoarse :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -398,7 +408,7 @@ theorem blockJObservableCubeSetBlockVec_eq_blockJQuadraticFullBlockMat_of_aeloca
           blockVecDot P Qv := hsplit
     _ =
         blockJQuadraticFullBlockMat
-          (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)) P Qv := by
+          (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P Qv := by
           rw [hcoarse, hstar]
           simp [blockJQuadraticFullBlockMat, fullBlockQuadraticCh04_toFullBlockMat]
 
@@ -406,9 +416,9 @@ theorem blockJObservableCubeSetBlockVec_ae_eq_blockJQuadraticFullBlockMat
     {d : ℕ} [NeZero d] {Pμ : CoeffLaw d} (hPμ : LawCarrier Pμ)
     (Q : TriadicCube d) (P Qv : BlockVec d) :
     blockJObservableCubeSetBlockVec Q P Qv =ᵐ[Pμ]
-      fun a : CoeffField d =>
+      fun a : RegCoeffField d =>
         blockJQuadraticFullBlockMat
-          (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a)) P Qv := by
+          (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P Qv := by
   filter_upwards [hPμ.ae_locallyUniformlyEllipticField] with a ha
   exact
     blockJObservableCubeSetBlockVec_eq_blockJQuadraticFullBlockMat_of_aelocallyUniformlyEllipticField
@@ -417,8 +427,8 @@ theorem blockJObservableCubeSetBlockVec_ae_eq_blockJQuadraticFullBlockMat
 theorem exists_isLocalRandomVariable_ae_eq_blockJObservableCubeSetBlockVec
     {d : ℕ} [NeZero d] {Pμ : CoeffLaw d} (hPμ : LawCarrier Pμ)
     (Q : TriadicCube d) (P Qv : BlockVec d) :
-    ∃ Y : CoeffField d → ℝ,
-      IsLocalRandomVariable (cubeSet Q) Y ∧
+    ∃ Y : RegCoeffField d → ℝ,
+      IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
         blockJObservableCubeSetBlockVec Q P Qv =ᵐ[Pμ] Y := by
   rcases exists_isLocalRandomVariable_ae_eq_coarseFullBlockMatrix_cubeSet hPμ Q with
     ⟨Ymat, hYmat_local, hYmat_eq⟩
@@ -434,11 +444,13 @@ noncomputable def blockJSetObservableBlockVec {d : ℕ}
     (P Qv : BlockVec d) : Set (Vec d) → CoeffField d → ℝ :=
   fun U => blockJHalfResponseAdjointSumSet U P.1 Qv.2 P.2 Qv.1
 
+/-- The raw set-observable, precomposed with the honest sample on a triadic
+cube, is the carrier block-response observable. -/
 @[simp]
 theorem blockJSetObservableBlockVec_cubeSet {d : ℕ}
-    (Q : TriadicCube d) (P Qv : BlockVec d) :
-    blockJSetObservableBlockVec P Qv (cubeSet Q) =
-      blockJObservableCubeSetBlockVec Q P Qv := by
+    (Q : TriadicCube d) (P Qv : BlockVec d) (a : RegCoeffField d) :
+    blockJSetObservableBlockVec P Qv (cubeSet Q) a.toFun =
+      blockJObservableCubeSetBlockVec Q P Qv a :=
   rfl
 
 theorem blockJSetObservableBlockVec_translation_covariant {d : ℕ}
@@ -448,19 +460,30 @@ theorem blockJSetObservableBlockVec_translation_covariant {d : ℕ}
     blockJHalfResponseAdjointSumSet_translation_covariant
       (d := d) P.1 Qv.2 P.2 Qv.1
 
+/-- Carrier translation covariance of the raw set-observable precomposed with the
+honest sample. -/
+theorem blockJSetObservableBlockVec_translation_covariantR {d : ℕ}
+    (P Qv : BlockVec d) :
+    IsTranslationCovariantR
+      (fun U a => blockJSetObservableBlockVec P Qv U a.toFun) :=
+  isTranslationCovariantR_comp_toFun (blockJSetObservableBlockVec_translation_covariant P Qv)
+
 theorem exists_isLocalRandomVariable_ae_eq_blockJSetObservableBlockVec_cubeSet
     {d : ℕ} [NeZero d] {Pμ : CoeffLaw d} (hPμ : LawCarrier Pμ)
     (Q : TriadicCube d) (P Qv : BlockVec d) :
-    ∃ Y : CoeffField d → ℝ,
-      IsLocalRandomVariable (cubeSet Q) Y ∧
-        blockJSetObservableBlockVec P Qv (cubeSet Q) =ᵐ[Pμ] Y := by
+    ∃ Y : RegCoeffField d → ℝ,
+      IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+        (fun a : RegCoeffField d => blockJSetObservableBlockVec P Qv (cubeSet Q) a.toFun)
+          =ᵐ[Pμ] Y := by
   simpa using
     exists_isLocalRandomVariable_ae_eq_blockJObservableCubeSetBlockVec hPμ Q P Qv
 
 theorem aemeasurable_blockJSetObservableBlockVec_cubeSet
     {d : ℕ} [NeZero d] {Pμ : CoeffLaw d} (hPμ : LawCarrier Pμ)
     (Q : TriadicCube d) (P Qv : BlockVec d) :
-    AEMeasurable (blockJSetObservableBlockVec P Qv (cubeSet Q)) Pμ := by
+    AEMeasurable
+      (fun a : RegCoeffField d => blockJSetObservableBlockVec P Qv (cubeSet Q) a.toFun)
+      Pμ := by
   rcases exists_isLocalRandomVariable_ae_eq_blockJSetObservableBlockVec_cubeSet
       hPμ Q P Qv with ⟨Y, hYloc, hYeq⟩
   exact (hPμ.aemeasurable_of_isLocalRandomVariable hYloc).congr hYeq.symm
@@ -482,17 +505,18 @@ theorem isBigO_gammaSigma_blockJObservableCubeSetBlockVec_originCube_of_scaleZer
       (blockJObservableCubeSetBlockVec (originCube d n) P Qv)
       (gammaTriangleConst σ * θ) := by
   classical
-  let X : Set (Vec d) → CoeffField d → ℝ := blockJSetObservableBlockVec P Qv
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fun U a => blockJSetObservableBlockVec P Qv U a.toFun
   let D : Finset (TriadicCube d) := descendantsAtScale (originCube d n) 0
-  let Avg : CoeffField d → ℝ :=
+  let Avg : RegCoeffField d → ℝ :=
     fun a => ((D.card : ℝ)⁻¹) *
       ∑ R ∈ D, blockJObservableCubeSetBlockVec R P Qv a
   have hn0 : (0 : ℤ) ≤ (originCube d n).scale := by
     simpa [originCube] using hn
   have hD_nonempty : D.Nonempty := by
     simpa [D] using descendantsAtScale_nonempty (originCube d n) hn0
-  have hX_cov : IsTranslationCovariant X := by
-    simpa [X] using blockJSetObservableBlockVec_translation_covariant P Qv
+  have hX_cov : IsTranslationCovariantR X := by
+    simpa [X] using blockJSetObservableBlockVec_translation_covariantR P Qv
   have hX0_aemeas :
       AEMeasurable (X (cubeSet (originCube d 0))) Pμ := by
     simpa [X] using
@@ -527,7 +551,7 @@ theorem isBigO_gammaSigma_blockJObservableCubeSetBlockVec_originCube_of_scaleZer
                   (cubeSet (originCube d 0)))) Pμ := by
               rw [hshift]
         _ = Measure.map (X (cubeSet (originCube d 0))) Pμ := by
-              exact map_eq_map_translateByInt_of_isTranslationCovariant_aemeasurable
+              exact map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
                 (P := Pμ) hstat (U := cubeSet (originCube d 0))
                 hX0_aemeas hX_cov (scaleTranslationShift 0 R)
     have htailX :
@@ -591,12 +615,13 @@ theorem isBigO_gammaSigma_centeredOrigin_blockJSetObservableBlockVec_of_scaleZer
         (blockJObservableCubeSetBlockVec (originCube d 0) P Qv) θ)
     {n : ℤ} (hn : 0 ≤ n) :
     IsBigO Pμ (gammaSigma σ)
-      (centeredOriginObservable Pμ n (blockJSetObservableBlockVec P Qv))
+      (centeredOriginObservable Pμ n
+        (fun U a => blockJSetObservableBlockVec P Qv U a.toFun))
       (gammaTriangleConst σ *
         (gammaTriangleConst σ * θ +
           gammaMomentConst σ * (gammaTriangleConst σ * θ))) := by
   let rawK : ℝ := gammaTriangleConst σ * θ
-  let Xn : CoeffField d → ℝ :=
+  let Xn : RegCoeffField d → ℝ :=
     blockJObservableCubeSetBlockVec (originCube d n) P Qv
   have hrawK_pos : 0 < rawK := by
     exact mul_pos gammaTriangleConst_pos' hθ
@@ -634,7 +659,7 @@ theorem isBigO_gammaSigma_centeredOrigin_blockJSetObservableBlockVec_of_scaleZer
       (M := gammaMomentConst σ * rawK)
       (c := ∫ a, Xn a ∂Pμ) (X := Xn)
       hσ hrawK_pos hM_pos hraw hXn_aemeas hmean_bound
-  simpa [centeredOriginObservable, blockJSetObservableBlockVec, Xn, rawK,
+  simpa [centeredOriginObservable, Xn, rawK,
     mul_assoc, mul_left_comm, mul_comm] using hcenter
 
 theorem isBigOWith_gammaSigma_blockJObservableCubeSetBlockVec_originCube_sub_integral
@@ -657,7 +682,8 @@ theorem isBigOWith_gammaSigma_blockJObservableCubeSetBlockVec_originCube_sub_int
           (gammaTriangleConst σ * θ +
             gammaMomentConst σ * (gammaTriangleConst σ * θ)))) := by
   classical
-  let X : Set (Vec d) → CoeffField d → ℝ := blockJSetObservableBlockVec P Qv
+  let X : Set (Vec d) → RegCoeffField d → ℝ :=
+    fun U a => blockJSetObservableBlockVec P Qv U a.toFun
   let Q : TriadicCube d := originCube d m
   let centerK : ℝ :=
     gammaTriangleConst σ *
@@ -681,12 +707,13 @@ theorem isBigOWith_gammaSigma_blockJObservableCubeSetBlockVec_originCube_sub_int
     simpa [X, centerK] using
       isBigO_gammaSigma_centeredOrigin_blockJSetObservableBlockVec_of_scaleZero
         hPμ hstat hσ₀ hθ P Qv h0 hn
-  have hX_cov : IsTranslationCovariant X := by
-    simpa [X] using blockJSetObservableBlockVec_translation_covariant P Qv
+  have hX_cov : IsTranslationCovariantR X := by
+    simpa [X] using blockJSetObservableBlockVec_translation_covariantR P Qv
   have hX_local :
       ∀ R ∈ descendantsAtScale Q n,
-        ∃ Y : CoeffField d → ℝ,
-          IsLocalRandomVariable (cubeSet R) Y ∧ X (cubeSet R) =ᵐ[Pμ] Y := by
+        ∃ Y : RegCoeffField d → ℝ,
+          IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧
+            X (cubeSet R) =ᵐ[Pμ] Y := by
     intro R _hR
     simpa [X] using
       exists_isLocalRandomVariable_ae_eq_blockJSetObservableBlockVec_cubeSet

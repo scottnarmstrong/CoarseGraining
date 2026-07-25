@@ -1,4 +1,5 @@
 import Homogenization.Book.Ch04.Definitions
+import Homogenization.Book.Ch04.MuLocalityGate
 import Homogenization.Book.Ch04.Theorems
 
 /-!

@@ -37,13 +37,13 @@ theorem ae_specialWeakNormsMaximizer_homogenizationScale
       let p0_e := (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ • q_e - p_e
       let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
       Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-          (originCube d (m : ℤ)) s p_e q_e p0_e a ≤
+          (originCube d (m : ℤ)) s p_e q_e p0_e a.toFun ≤
         2 *
           WeakNormsMaximizer.gradientRHSAtScale
             (WeakNormsMaximizer.section53WeakNormMaximizerConst d)
             (m : ℤ) (k : ℤ) s s' p_e q_e p0_e a ∧
       Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-          (originCube d (m : ℤ)) t p_e q_e q0_e a ≤
+          (originCube d (m : ℤ)) t p_e q_e q0_e a.toFun ≤
         2 *
           WeakNormsMaximizer.fluxRHSAtScale
             (WeakNormsMaximizer.section53WeakNormMaximizerConst d)

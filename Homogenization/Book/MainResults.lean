@@ -181,7 +181,7 @@ the heterogeneous equation `-∇·a∇u = ∇·g`, `v` solves the homogenized eq
 `-∇·ā∇v = ∇·g`, and `u - v ∈ H¹₀(□ₘ)`.  Wraps
 `Ch05.Section57.assemblyComparisonDatumOfScalar`; `pair.u` and `pair.v` are the
 two solutions. -/
-abbrev ComparisonPair (aω : CoeffField d)
+abbrev ComparisonPair (aω : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (m : ℕ) (g : Vec d → Vec d) : Type :=
   Ch05.Section57.assemblyComparisonDatumOfScalar
@@ -191,7 +191,7 @@ abbrev ComparisonPair (aω : CoeffField d)
 `3^{-sm} ( ‖ā(∇u - ∇v)‖_{H^{-s}(□ₘ)} + ‖a∇u - ā∇v‖_{H^{-s}(□ₘ)} )`.
 Wraps `Ch03.homogenizationComparisonNegativeSobolevLHS`. -/
 noncomputable def comparisonDefect (s : ℝ)
-    {aω : CoeffField d} {ha : Ch04.AELocallyUniformlyEllipticField aω}
+    {aω : RegCoeffField d} {ha : Ch04.AELocallyUniformlyEllipticField aω}
     {m : ℕ} {g : Vec d → Vec d}
     (pair : S.ComparisonPair aω ha m g) : ℝ :=
   Ch03.homogenizationComparisonNegativeSobolevLHS
@@ -205,7 +205,7 @@ seminorm is taken componentwise over `i = 1, …, d`.  Wraps
 `Ch03.h1EnergyNormOnCube` and
 `Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo`. -/
 noncomputable def comparisonData (s : ℝ)
-    {aω : CoeffField d} {ha : Ch04.AELocallyUniformlyEllipticField aω}
+    {aω : RegCoeffField d} {ha : Ch04.AELocallyUniformlyEllipticField aω}
     {m : ℕ} {g : Vec d → Vec d}
     (pair : S.ComparisonPair aω ha m g) : ℝ :=
   Real.sqrt (Ch05.Section57.barSigmaLimit S.hP S.hStruct) *
@@ -217,7 +217,7 @@ noncomputable def comparisonData (s : ℝ)
 /-- `𝒳` is a minimal scale: it is bounded below by `1` and has `Γ_d`
 (stretched-exponential, exponent `d`) upper tails of size
 `exp ( Cscale · log²(2 + θ̂) )`. -/
-def IsMinimalScale (𝒳 : CoeffField d → ℝ) (Cscale : ℝ) : Prop :=
+def IsMinimalScale (𝒳 : RegCoeffField d → ℝ) (Cscale : ℝ) : Prop :=
   (∀ aω, 1 ≤ 𝒳 aω) ∧
     Ch04.IsBigO S.P (gammaSigma ((d : ℕ) : ℝ)) 𝒳
       (Real.exp (Cscale * (Real.log (2 + S.thetaHat)) ^ (2 : ℕ)))
@@ -281,7 +281,7 @@ theorem homogenizationComparison_uniformEllipticity_variableExponents
     ∀ {t s : ℝ}, 0 < t → 4 * t < s → s < 1 →
       ∃ C α Cscale : ℝ,
         0 < C ∧ 0 < α ∧ 0 < Cscale ∧
-        ∃ 𝒳 : CoeffField d → ℝ,
+        ∃ 𝒳 : RegCoeffField d → ℝ,
           S.IsMinimalScale 𝒳 Cscale ∧
           ∀ᵐ aω ∂S.P,
             ∀ (ha : Ch04.AELocallyUniformlyEllipticField aω)
@@ -443,7 +443,7 @@ theorem homogenizationComparison_uniformEllipticity
       ∀ S : Setup d,
         ∃ sigmaBar : ℝ,
           0 < sigmaBar ∧
-          ∃ X : CoeffField d → ℝ,
+          ∃ X : RegCoeffField d → ℝ,
             S.IsMinimalScale X Cscale ∧
             ∀ᵐ aω ∂S.P,
               ∀ (ha : Ch04.AELocallyUniformlyEllipticField aω)

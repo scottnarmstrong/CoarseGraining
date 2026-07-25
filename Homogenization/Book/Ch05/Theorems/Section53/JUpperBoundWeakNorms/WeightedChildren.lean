@@ -81,7 +81,7 @@ theorem descendantsAverage_cutoffChildWeight_eq_zero_of_cubeAverage_eq_one
 /-- Cutoff-weighted child response average from the manuscript splitting. -/
 noncomputable def cutoffWeightedChildResponseJAtScale {d : ℕ}
     (m k : ℤ) (φ : Vec d → ℝ) (p q : Vec d) :
-    CoeffField d → ℝ :=
+    RegCoeffField d → ℝ :=
   fun a =>
     descendantsAverage (originCube d m) (Int.toNat (m - k))
       (fun R => cutoffChildWeight φ R *
@@ -98,7 +98,7 @@ theorem integrable_cutoffWeightedChildResponseJAtScale
   have hDepth :
       ∀ R, R ∈ descendantsAtDepth (originCube d m) (Int.toNat (m - k)) →
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             cutoffChildWeight φ R *
               Ch04.responseJObservableCubeSet R p q a) P := by
     intro R hR
@@ -135,14 +135,14 @@ theorem integral_cutoffWeightedChildResponseJAtScale_eq_zero_of_stationary
 
 /-- Parent centered response in the Section 5.3 notation. -/
 noncomputable def centeredResponseJAtScale {d : ℕ}
-    (m : ℤ) (p q p0 q0 : Vec d) : CoeffField d → ℝ :=
+    (m : ℤ) (p q p0 q0 : Vec d) : RegCoeffField d → ℝ :=
   Ch04.centeredResponseJObservableCubeSet (originCube d m) p q p0 q0
 
 /-- The centered parent response minus the cutoff-weighted child response
 average.  This is the stochastic side of the manuscript's centered splitting. -/
 noncomputable def centeredJMinusCutoffWeightedChildAtScale {d : ℕ}
     (m k : ℤ) (φ : Vec d → ℝ) (p q p0 q0 : Vec d) :
-    CoeffField d → ℝ :=
+    RegCoeffField d → ℝ :=
   fun a =>
     centeredResponseJAtScale m p q p0 q0 a -
       cutoffWeightedChildResponseJAtScale m k φ p q a
@@ -207,7 +207,7 @@ theorem integral_centeredJMinusCutoffWeightedChildAtScale_eq_expectedResponseJCu
 /-- Private additivity-defect observable from the manuscript proof:
 child-scale average of `J` minus parent-scale `J`. -/
 noncomputable def responseJAdditivityDefectAtScale {d : ℕ}
-    (m k : ℤ) (p q : Vec d) : CoeffField d → ℝ :=
+    (m k : ℤ) (p q : Vec d) : RegCoeffField d → ℝ :=
   fun a =>
     descendantsAverage (originCube d m) (Int.toNat (m - k))
       (fun R => Ch04.responseJObservableCubeSet R p q a) -
@@ -234,7 +234,7 @@ theorem integral_responseJAdditivityDefectAtScale_eq_tauAtScale
       simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR)
   have hAvgInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           descendantsAverage (originCube d m) (Int.toNat (m - k))
             (fun R => Ch04.responseJObservableCubeSet R p q a)) P :=
     Ch04.integrable_descendantsAverage_responseJObservableCubeSet hDescDepth
@@ -283,7 +283,7 @@ theorem integral_centeredJMinusCutoffWeightedChildAtScale_le_integral_of_ae_abs_
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
-    (φ : Vec d → ℝ) (p q p0 q0 : Vec d) (RHS : CoeffField d → ℝ)
+    (φ : Vec d → ℝ) (p q p0 q0 : Vec d) (RHS : RegCoeffField d → ℝ)
     (hφ_int : IntegrableOn φ (cubeSet (originCube d m)) volume)
     (hMean : cubeAverage (originCube d m) φ = 1)
     (hParent :
@@ -298,7 +298,7 @@ theorem integral_centeredJMinusCutoffWeightedChildAtScale_le_integral_of_ae_abs_
         (1 / 2 : ℝ) * vecDot p0 q0 ≤
       ∫ a, RHS a ∂P := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     centeredJMinusCutoffWeightedChildAtScale m k φ p q p0 q0
   have hWeightedInt :
       Integrable (cutoffWeightedChildResponseJAtScale m k φ p q) P :=

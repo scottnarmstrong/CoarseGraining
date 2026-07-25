@@ -109,12 +109,12 @@ theorem thetaEllipticLaw_implies_homogenizationScale_uniform
   -- the shifted-anchor variance estimate + dimensional moment estimate
   have hVar :
       VarianceBlockEstimate (vpParams d hd Θ) P T N2
-        (intermediateCoarseBlockDeviation hP hStruct (fun x : CoeffField d => x)) :=
+        (intermediateCoarseBlockDeviation hP hStruct (fun x : RegCoeffField d => x)) :=
     varianceBlockEstimate_of_thetaEllipticLaw hd hΘ hP hStruct hLaw hP4 N2
       (fun {j} _ {Q} hQ => hpath (j := j) (Q := Q) hQ)
   have hMom :
       HighCenteredMomentEstimate (hmDimFree hd hc params) P N
-        (intermediateCoarseBlockDeviation hP hStruct (fun x : CoeffField d => x)) :=
+        (intermediateCoarseBlockDeviation hP hStruct (fun x : RegCoeffField d => x)) :=
     highCenteredMomentEstimate_dimensional_of_varianceBlockEstimate
       hd hc params hΘ hT1 hN2def hNdef hVar
   -- run the (uniform) assembly at the per-law entry slope `q := pHmDim`

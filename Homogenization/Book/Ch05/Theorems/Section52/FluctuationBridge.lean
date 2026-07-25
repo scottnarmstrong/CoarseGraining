@@ -28,22 +28,22 @@ theorem finsetSupReal_eq_sup' {α : Type*}
     exact le_csSup hbdd ⟨x, hx, rfl⟩
 
 theorem maxDescendantBMatrixNormCoeffFieldAtScale_eq_sup_upperLeft_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {k : ℤ} (hk : k ≤ Q.scale) :
     Ch04.maxDescendantBMatrixNormCoeffFieldAtScale Q k a =
       (descendantsAtScale Q k).sup' (descendantsAtScale_nonempty Q hk)
-        (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft) := by
+        (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft) := by
   classical
   let F : Ch02.TriadicCoeffFamily d :=
     Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hterm :
       ∀ R ∈ descendantsAtScale Q k,
         Ch02.coarseBMatrixNorm R F =
-          Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft := by
+          Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft := by
     intro R _hR
     have hEq :
-        coarseBlockMatrix (cubeSet R) a =
+        coarseBlockMatrix (cubeSet R) a.toFun =
           Ch02.coarseBlockMatrix (Ch02.cubeDomain R) (F.coeffOn R) := by
       simpa [F] using
         Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -55,32 +55,32 @@ theorem maxDescendantBMatrixNormCoeffFieldAtScale_eq_sup_upperLeft_of_aelocallyU
           simp [Ch04.maxDescendantBMatrixNormCoeffFieldAtScale, ha, F]
     _ =
         Ch02.finsetSupReal (descendantsAtScale Q k)
-          (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft) := by
+          (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft) := by
           simpa [Ch02.maxDescendantBMatrixNormAtScale] using
             Ch02.finsetSupReal_congr (descendantsAtScale Q k) hterm
     _ =
         (descendantsAtScale Q k).sup' (descendantsAtScale_nonempty Q hk)
-          (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft) := by
+          (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft) := by
           exact finsetSupReal_eq_sup' (descendantsAtScale Q k)
             (descendantsAtScale_nonempty Q hk) _
 
 theorem maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_eq_sup_lowerRight_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {a : CoeffField d}
+    {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) {k : ℤ} (hk : k ≤ Q.scale) :
     Ch04.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale Q k a =
       (descendantsAtScale Q k).sup' (descendantsAtScale_nonempty Q hk)
-        (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight) := by
+        (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight) := by
   classical
   let F : Ch02.TriadicCoeffFamily d :=
     Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hterm :
       ∀ R ∈ descendantsAtScale Q k,
         Ch02.coarseSigmaStarInvMatrixNorm R F =
-          Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight := by
+          Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight := by
     intro R _hR
     have hEq :
-        coarseBlockMatrix (cubeSet R) a =
+        coarseBlockMatrix (cubeSet R) a.toFun =
           Ch02.coarseBlockMatrix (Ch02.cubeDomain R) (F.coeffOn R) := by
       simpa [F] using
         Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -92,12 +92,12 @@ theorem maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_eq_sup_lowerRight_o
           simp [Ch04.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale, ha, F]
     _ =
         Ch02.finsetSupReal (descendantsAtScale Q k)
-          (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight) := by
+          (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight) := by
           simpa [Ch02.maxDescendantSigmaStarInvMatrixNormAtScale] using
             Ch02.finsetSupReal_congr (descendantsAtScale Q k) hterm
     _ =
         (descendantsAtScale Q k).sup' (descendantsAtScale_nonempty Q hk)
-          (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight) := by
+          (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight) := by
           exact finsetSupReal_eq_sup' (descendantsAtScale Q k)
             (descendantsAtScale_nonempty Q hk) _
 
@@ -109,7 +109,7 @@ theorem matrixNorm_smul_one_eq_of_nonneg
 
 theorem upperLargeScaleRaw_sum_le_base_add_positiveExcess_sum
     {d : ℕ} [NeZero d] (m : ℕ) {s base : ℝ} (hs : 0 < s)
-    (hbase : 0 ≤ base) (a : CoeffField d) :
+    (hbase : 0 ≤ base) (a : RegCoeffField d) :
     (∑ n ∈ section52LargeScaleSet m,
       section52LargeScaleWeight s m n *
         Ch04.maxDescendantBMatrixNormCoeffFieldAtScale
@@ -124,7 +124,7 @@ theorem upperLargeScaleRaw_sum_le_base_add_positiveExcess_sum
              parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                     Ch02.matrixNorm (base • (1 : Mat d)))
                   0))) := by
   classical
@@ -139,7 +139,7 @@ theorem upperLargeScaleRaw_sum_le_base_add_positiveExcess_sum
       parents.sup' hparents
         (fun R =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft -
               Ch02.matrixNorm (base • (1 : Mat d)))
             0)
   have hweighted :=
@@ -164,7 +164,7 @@ theorem upperLargeScaleRaw_sum_le_base_add_positiveExcess_sum
       simpa [raw, excess, hcenter, hraw_eq] using
         max_sup'_sub_base_le_sup'_max_sub_base
           (descendantsAtScale_nonempty Qm hnle)
-          (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft)
+          (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft)
           base
     · have hraw_zero : raw n = 0 := by
         simp [raw, Ch04.maxDescendantBMatrixNormCoeffFieldAtScale, ha]
@@ -174,13 +174,13 @@ theorem upperLargeScaleRaw_sum_le_base_add_positiveExcess_sum
         let hparents : parents.Nonempty := descendantsAtScale_nonempty Qm hnle
         rcases hparents with ⟨R0, hR0⟩
         exact (le_max_right
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet R0) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet R0) a.toFun).upperLeft -
               Ch02.matrixNorm (base • (1 : Mat d))) 0).trans
           (Finset.le_sup'
             (s := parents)
             (f := fun R =>
               max
-                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).upperLeft -
+                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft -
                   Ch02.matrixNorm (base • (1 : Mat d)))
                 0) hR0)
       simpa [raw, hraw_zero, hbase] using hexcess_nonneg
@@ -227,14 +227,14 @@ theorem upperLargeScaleRaw_sum_le_base_add_positiveExcess_sum
              parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                     Ch02.matrixNorm (base • (1 : Mat d)))
                   0))) := by
           simp [excess, Qm]
 
 theorem upperPositiveExcess_pointwise_le_smallTail_add_largeScalePositiveExcess
     {d : ℕ} [NeZero d] (m : ℕ) {s base : ℝ} (hs : 0 < s)
-    (hbase : 0 ≤ base) (a : CoeffField d) :
+    (hbase : 0 ≤ base) (a : RegCoeffField d) :
     max
         (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) s (.finite 1) a - base)
         0 ≤
@@ -249,7 +249,7 @@ theorem upperPositiveExcess_pointwise_le_smallTail_add_largeScalePositiveExcess
              parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                     Ch02.matrixNorm (base • (1 : Mat d)))
                   0))) := by
   classical
@@ -271,7 +271,7 @@ theorem upperPositiveExcess_pointwise_le_smallTail_add_largeScalePositiveExcess
          parents.sup' hparents
           (fun Q =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                 Ch02.matrixNorm (base • (1 : Mat d)))
               0))
   have hsmall_nonneg : 0 ≤ small := by
@@ -289,13 +289,13 @@ theorem upperPositiveExcess_pointwise_le_smallTail_add_largeScalePositiveExcess
         (section52LargeScaleSet_mem_le_m n.2)
     rcases hparents with ⟨Q0, hQ0⟩
     exact (le_max_right
-        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q0) a).upperLeft -
+        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q0) a.toFun).upperLeft -
           Ch02.matrixNorm (base • (1 : Mat d))) 0).trans
       (Finset.le_sup'
         (s := parents)
         (f := fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm (base • (1 : Mat d)))
             0) hQ0)
   have hsplit :
@@ -318,7 +318,7 @@ theorem upperPositiveExcess_pointwise_le_smallTail_add_largeScalePositiveExcess
 
 theorem lowerLargeScaleRaw_sum_le_base_add_positiveExcess_sum
     {d : ℕ} [NeZero d] (m : ℕ) {s base : ℝ} (hs : 0 < s)
-    (hbase : 0 ≤ base) (a : CoeffField d) :
+    (hbase : 0 ≤ base) (a : RegCoeffField d) :
     (∑ n ∈ section52LargeScaleSet m,
       section52LargeScaleWeight s m n *
         Ch04.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
@@ -333,7 +333,7 @@ theorem lowerLargeScaleRaw_sum_le_base_add_positiveExcess_sum
              parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                     Ch02.matrixNorm (base • (1 : Mat d)))
                   0))) := by
   classical
@@ -348,7 +348,7 @@ theorem lowerLargeScaleRaw_sum_le_base_add_positiveExcess_sum
       parents.sup' hparents
         (fun R =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight -
               Ch02.matrixNorm (base • (1 : Mat d)))
             0)
   have hweighted :=
@@ -373,7 +373,7 @@ theorem lowerLargeScaleRaw_sum_le_base_add_positiveExcess_sum
       simpa [raw, excess, hcenter, hraw_eq] using
         max_sup'_sub_base_le_sup'_max_sub_base
           (descendantsAtScale_nonempty Qm hnle)
-          (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight)
+          (fun R => Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight)
           base
     · have hraw_zero : raw n = 0 := by
         simp [raw, Ch04.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale, ha]
@@ -383,13 +383,13 @@ theorem lowerLargeScaleRaw_sum_le_base_add_positiveExcess_sum
         let hparents : parents.Nonempty := descendantsAtScale_nonempty Qm hnle
         rcases hparents with ⟨R0, hR0⟩
         exact (le_max_right
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet R0) a).lowerRight -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet R0) a.toFun).lowerRight -
               Ch02.matrixNorm (base • (1 : Mat d))) 0).trans
           (Finset.le_sup'
             (s := parents)
             (f := fun R =>
               max
-                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a).lowerRight -
+                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight -
                   Ch02.matrixNorm (base • (1 : Mat d)))
                 0) hR0)
       simpa [raw, hraw_zero, hbase] using hexcess_nonneg
@@ -436,14 +436,14 @@ theorem lowerLargeScaleRaw_sum_le_base_add_positiveExcess_sum
              parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                     Ch02.matrixNorm (base • (1 : Mat d)))
                   0))) := by
           simp [excess, Qm]
 
 theorem lowerPositiveExcess_pointwise_le_smallTail_add_largeScalePositiveExcess
     {d : ℕ} [NeZero d] (m : ℕ) {s base : ℝ} (hs : 0 < s)
-    (hbase : 0 ≤ base) (a : CoeffField d) :
+    (hbase : 0 ≤ base) (a : RegCoeffField d) :
     max
         ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) s (.finite 1) a)⁻¹ - base)
         0 ≤
@@ -458,7 +458,7 @@ theorem lowerPositiveExcess_pointwise_le_smallTail_add_largeScalePositiveExcess
              parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                     Ch02.matrixNorm (base • (1 : Mat d)))
                   0))) := by
   classical
@@ -480,7 +480,7 @@ theorem lowerPositiveExcess_pointwise_le_smallTail_add_largeScalePositiveExcess
          parents.sup' hparents
           (fun Q =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                 Ch02.matrixNorm (base • (1 : Mat d)))
               0))
   have hsmall_nonneg : 0 ≤ small := by
@@ -498,13 +498,13 @@ theorem lowerPositiveExcess_pointwise_le_smallTail_add_largeScalePositiveExcess
         (section52LargeScaleSet_mem_le_m n.2)
     rcases hparents with ⟨Q0, hQ0⟩
     exact (le_max_right
-        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q0) a).lowerRight -
+        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q0) a.toFun).lowerRight -
           Ch02.matrixNorm (base • (1 : Mat d))) 0).trans
       (Finset.le_sup'
         (s := parents)
         (f := fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
               Ch02.matrixNorm (base • (1 : Mat d)))
             0) hQ0)
   have hsplit :
@@ -593,7 +593,7 @@ theorem upperLargeScaleFiniteParentFluctuation
         parents.sup' hparents
           (fun Q =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                 Ch02.matrixNorm
                   (hP.barSigmaAtScale hStruct 0 •
                     (1 : Mat d)))
@@ -674,7 +674,7 @@ theorem lowerLargeScaleFiniteParentFluctuation
         parents.sup' hparents
           (fun Q =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                 Ch02.matrixNorm
                   ((hP.barSigmaStarAtScale hStruct 0)⁻¹ •
                     (1 : Mat d)))

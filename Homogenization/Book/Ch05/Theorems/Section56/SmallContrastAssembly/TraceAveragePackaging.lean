@@ -14,7 +14,7 @@ namespace SmallContrastAssembly
 
 theorem blockJTraceAverageWithNormalizers_eq_sum_descendantsAverage
     {d : ℕ} (S T : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     blockJTraceAverageWithNormalizers S T Q j a =
       ∑ α : BlockCoord d,
         descendantsAverage Q j
@@ -83,7 +83,7 @@ theorem integral_blockJTraceAverageWithNormalizers_eq_sum_originCube_of_stationa
   have hdesc_int :
       ∀ α : BlockCoord d,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             descendantsAverage Q j
               (fun R =>
                 blockJObservableCubeSetBlockVec R

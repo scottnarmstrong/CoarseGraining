@@ -160,9 +160,9 @@ theorem expectedCenteredResponseJAtScale_le_specialWeakNormManuscriptRHSAtScale
       let q_e := specialQAtScale hP hStruct (m : ℤ) e
       let p0_e := (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ • q_e - p_e
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-              (originCube d (m : ℤ)) s p_e q_e p0_e a) ^ 2) P)
+              (originCube d (m : ℤ)) s p_e q_e p0_e a.toFun) ^ 2) P)
     (hFluxSq :
       let β := section53CoarseFluctuationBeta hP4
       let t := hP4.sUpper + 2 * β
@@ -170,9 +170,9 @@ theorem expectedCenteredResponseJAtScale_le_specialWeakNormManuscriptRHSAtScale
       let q_e := specialQAtScale hP hStruct (m : ℤ) e
       let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d (m : ℤ)) t p_e q_e q0_e a) ^ 2) P) :
+              (originCube d (m : ℤ)) t p_e q_e q0_e a.toFun) ^ 2) P) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
     let q_e := specialQAtScale hP hStruct (m : ℤ) e
     expectedCenteredResponseJAtScale hP hStruct (m : ℤ) p_e q_e ≤
@@ -345,7 +345,7 @@ theorem integral_weighted_descendantsAverage_fullBlockNormalizedFluctuationOpera
   have htermInt :
       ∀ n ∈ S,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             w n *
               descendantsAverage (originCube d (m : ℤ))
                 (Int.toNat ((m : ℤ) - n))
@@ -369,7 +369,7 @@ theorem integral_weighted_descendantsAverage_fullBlockNormalizedFluctuationOpera
       simpa [Int.toNat_of_nonneg hn_nonneg] using hnat
     have hdesc :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             descendantsAverage (originCube d (m : ℤ))
               (Int.toNat ((m : ℤ) - n))
               (fun R =>

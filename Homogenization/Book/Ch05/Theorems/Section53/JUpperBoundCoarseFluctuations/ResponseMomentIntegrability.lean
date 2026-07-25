@@ -23,13 +23,13 @@ theorem integrable_rpow_responseJObservableCubeSet_originCube_from_P4
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k : ℕ) (p q : Vec d) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         Real.rpow
           (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p q a)
           (section53CoarseFluctuationZeta hP4)) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let ζ := section53CoarseFluctuationZeta hP4
-  let J : CoeffField d → ℝ :=
+  let J : RegCoeffField d → ℝ :=
     Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p q
   have hζ_pos : 0 < ζ := by
     simpa [ζ] using section53CoarseFluctuationZeta_pos hP4
@@ -48,7 +48,7 @@ theorem integrable_rpow_responseJObservableCubeSet_originCube_from_P4
   have hζ_ne_top : ENNReal.ofReal ζ ≠ ⊤ := by
     simp
   have hint :
-      Integrable (fun a : CoeffField d => ‖J a‖ ^ (ENNReal.ofReal ζ).toReal) P :=
+      Integrable (fun a : RegCoeffField d => ‖J a‖ ^ (ENNReal.ofReal ζ).toReal) P :=
     hJ_memζ.integrable_norm_rpow hζ_ne_zero hζ_ne_top
   refine hint.congr ?_
   filter_upwards with a

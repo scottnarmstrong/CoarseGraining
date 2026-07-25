@@ -22,7 +22,7 @@ noncomputable section
 origin scales.  This is the a.e. ingredient that will be fed into the expectation
 assembly theorem. -/
 theorem abs_centeredJMinusCutoffWeightedChildAtScale_le_jUpperWeakNormPointwiseRHS
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m k : ℤ) (s t : ℝ) (φ : Vec d → ℝ) (p q p0 q0 : Vec d)
     (dualField cutoffGradient : Vec d → Vec d)
@@ -174,15 +174,15 @@ theorem abs_centeredJMinusCutoffWeightedChildAtScale_le_jUpperWeakNormPointwiseR
             ((1 / 2 : ℝ) * ‖q0‖ *
                 (((Fintype.card (Fin d) : ℝ) *
                   ((3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS)) *
-                    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a) +
+                    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun) +
               (1 / 2 : ℝ) * ‖p0‖ *
                 (((Fintype.card (Fin d) : ℝ) *
                   ((3 : ℝ) ^ ((d : ℝ) + t) * cubeBesovScaleWeight (-t) Q * BφT)) *
-                    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a)) +
+                    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun)) +
               cutoffProductBridgeRHS Q s cutoffGradient
-                (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a)
-                (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a)
-                ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖
+                (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
+                (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun)
+                ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖
                 cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant := by
     simpa [Q, j, F] using
       abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentFamily_le_additivityDefect_add_cutoffOscillationBound_add_linearWeakNorms_add_cutoffProductBridgeRHS

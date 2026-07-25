@@ -21,10 +21,10 @@ noncomputable section
 obtained by averaging each deterministic coarse matrix entry. -/
 noncomputable def annealedBlockMatrix {d : ℕ} (P : CoeffLaw d)
     (U : Set (Vec d)) : BlockMat d :=
-  { upperLeft := fun i j => ∫ a, (coarseBlockMatrix U a).upperLeft i j ∂P
-    upperRight := fun i j => ∫ a, (coarseBlockMatrix U a).upperRight i j ∂P
-    lowerLeft := fun i j => ∫ a, (coarseBlockMatrix U a).lowerLeft i j ∂P
-    lowerRight := fun i j => ∫ a, (coarseBlockMatrix U a).lowerRight i j ∂P }
+  { upperLeft := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).upperLeft i j ∂P
+    upperRight := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).upperRight i j ∂P
+    lowerLeft := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).lowerLeft i j ∂P
+    lowerRight := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).lowerRight i j ∂P }
 
 /-- The annealed starred block matrix
 `\overline{\mathbf A}_{*,n}^{-1}`. -/
@@ -69,43 +69,43 @@ noncomputable def annealedSigma {d : ℕ} (P : CoeffLaw d)
 @[simp] theorem annealedBlockMatrix_upperLeft_apply {d : ℕ}
     (P : CoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
     (annealedBlockMatrix P U).upperLeft i j =
-      ∫ a, (coarseBlockMatrix U a).upperLeft i j ∂P :=
+      ∫ a, (coarseBlockMatrix U a.toFun).upperLeft i j ∂P :=
   rfl
 
 @[simp] theorem annealedBlockMatrix_upperRight_apply {d : ℕ}
     (P : CoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
     (annealedBlockMatrix P U).upperRight i j =
-      ∫ a, (coarseBlockMatrix U a).upperRight i j ∂P :=
+      ∫ a, (coarseBlockMatrix U a.toFun).upperRight i j ∂P :=
   rfl
 
 @[simp] theorem annealedBlockMatrix_lowerLeft_apply {d : ℕ}
     (P : CoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
     (annealedBlockMatrix P U).lowerLeft i j =
-      ∫ a, (coarseBlockMatrix U a).lowerLeft i j ∂P :=
+      ∫ a, (coarseBlockMatrix U a.toFun).lowerLeft i j ∂P :=
   rfl
 
 @[simp] theorem annealedBlockMatrix_lowerRight_apply {d : ℕ}
     (P : CoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
     (annealedBlockMatrix P U).lowerRight i j =
-      ∫ a, (coarseBlockMatrix U a).lowerRight i j ∂P :=
+      ∫ a, (coarseBlockMatrix U a.toFun).lowerRight i j ∂P :=
   rfl
 
 @[simp] theorem annealedSigmaStarInv_apply {d : ℕ}
     (P : CoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
     annealedSigmaStarInv P U i j =
-      ∫ a, (coarseBlockMatrix U a).lowerRight i j ∂P :=
+      ∫ a, (coarseBlockMatrix U a.toFun).lowerRight i j ∂P :=
   rfl
 
 @[simp] theorem annealedSigmaStarInvKappaMean_apply {d : ℕ}
     (P : CoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
     annealedSigmaStarInvKappaMean P U i j =
-      -(∫ a, (coarseBlockMatrix U a).lowerLeft i j ∂P) := by
+      -(∫ a, (coarseBlockMatrix U a.toFun).lowerLeft i j ∂P) := by
   simp [annealedSigmaStarInvKappaMean]
 
 @[simp] theorem annealedB_apply {d : ℕ} (P : CoeffLaw d)
     (U : Set (Vec d)) (i j : Fin d) :
     annealedB P U i j =
-      ∫ a, (coarseBlockMatrix U a).upperLeft i j ∂P :=
+      ∫ a, (coarseBlockMatrix U a.toFun).upperLeft i j ∂P :=
   rfl
 
 /-- Annealed block matrix on the origin cube at scale `n`. -/
@@ -161,12 +161,12 @@ noncomputable def responseJOnCube {d : ℕ}
 /-- Annealed response functional on the origin cube at scale `n`. -/
 noncomputable def annealedResponseJAtScale {d : ℕ}
     (P : CoeffLaw d) (n : ℤ) (p q : Vec d) : ℝ :=
-  ∫ a, responseJAtScale n p q a ∂P
+  ∫ a, responseJAtScale n p q a.toFun ∂P
 
 /-- Full unfolded coarse block observable on a deterministic triadic cube. -/
 noncomputable def coarseFullBlockMatrixAtCube {d : ℕ}
-    (Q : TriadicCube d) : CoeffField d → FullBlockMat d :=
-  coarseFullBlockMatrixObservable (cubeSet Q)
+    (Q : TriadicCube d) : RegCoeffField d → FullBlockMat d :=
+  fun a => coarseFullBlockMatrixObservable (cubeSet Q) a.toFun
 
 end
 

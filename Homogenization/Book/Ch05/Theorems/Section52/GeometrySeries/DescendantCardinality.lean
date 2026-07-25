@@ -326,7 +326,7 @@ theorem inv_geometricDiscount_one_le_five_inv_of_pos_lt_one
     (s := s) (p := 1) hs hs_lt_one.le (by norm_num)
 
 theorem upper_unitCube_source_rpow_half_nonneg
-    {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 < s) (a : CoeffField d) :
+    {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 < s) (a : RegCoeffField d) :
     0 ≤
       Real.rpow
         ((descendantsAtScale (originCube d (m : ℤ)) 0).sup'
@@ -347,7 +347,7 @@ theorem upper_unitCube_source_rpow_half_nonneg
           (s := D) (f := fun U => Ch04.LambdaSqCoeffField U s (.finite 1) a) hU)) _
 
 theorem lower_unitCube_source_rpow_half_nonneg
-    {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 < s) (a : CoeffField d) :
+    {d : ℕ} [NeZero d] (m : ℕ) {s : ℝ} (hs : 0 < s) (a : RegCoeffField d) :
     0 ≤
       Real.rpow
         ((descendantsAtScale (originCube d (m : ℤ)) 0).sup'
@@ -384,22 +384,22 @@ theorem upper_unitDescendantSup_momentRoot_le_card_mul_origin
     {s : ℝ} {ξ m : ℕ} (hs : 0 < s) (hξ_one : 1 ≤ ξ)
     (hSourceInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.LambdaSqCoeffField (originCube d 0) s (.finite 1) a) ^ ξ) P) :
     let D := descendantsAtScale (originCube d (m : ℤ)) 0
     let hD : D.Nonempty :=
       descendantsAtScale_nonempty (originCube d (m : ℤ)) (by simp [originCube])
     Ch04.annealedMomentRoot P ξ
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         D.sup' hD (fun U => Ch04.LambdaSqCoeffField U s (.finite 1) a)) ≤
       (D.card : ℝ) ^ (1 / (ξ : ℝ)) *
         Ch04.LambdaMomentAtScale P 0 s ξ := by
   classical
   intro D hD
   letI : IsProbabilityMeasure P := hP.isProbability
-  let X : TriadicCube d → CoeffField d → ℝ :=
+  let X : TriadicCube d → RegCoeffField d → ℝ :=
     fun U a => Ch04.LambdaSqCoeffField U s (.finite 1) a
-  let X0 : CoeffField d → ℝ :=
+  let X0 : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d 0) s (.finite 1) a
   have hK_nonneg : 0 ≤ Ch04.LambdaMomentAtScale P 0 s ξ :=
     Ch04.LambdaMomentAtScale_nonneg P 0 ξ hs
@@ -412,21 +412,21 @@ theorem upper_unitDescendantSup_momentRoot_le_card_mul_origin
     exact hP.aemeasurable_LambdaSqCoeffField_finite_one U hs
   have hX0_aemeas : AEMeasurable X0 P := by
     exact hP.aemeasurable_LambdaSqCoeffField_finite_one (originCube d 0) hs
-  have hX0_abs_int : Integrable (fun a : CoeffField d => |X0 a| ^ ξ) P := by
+  have hX0_abs_int : Integrable (fun a : RegCoeffField d => |X0 a| ^ ξ) P := by
     refine hSourceInt.congr ?_
     filter_upwards with a
     rw [abs_of_nonneg]
     exact Ch04.LambdaSqCoeffField_finite_nonneg (originCube d 0) a hs
       (by norm_num : (1 : ℝ) ≤ 1)
-  have hX_int : ∀ U ∈ D, Integrable (fun a : CoeffField d => |X U a| ^ ξ) P := by
+  have hX_int : ∀ U ∈ D, Integrable (fun a : RegCoeffField d => |X U a| ^ ξ) P := by
     intro U hU
     have hscale : U.scale = 0 := scale_eq_of_mem_descendantsAtScale hU
     let z : Fin d → ℤ := Book.Ch04.scaleTranslationShift 0 U
     have hUeq : U = translateCube z (originCube d 0) := by
       simpa [z] using (translateCube_originCube_zero_eq_of_scale_zero U hscale).symm
     have hae :
-        (fun a : CoeffField d => X U a) =ᵐ[P]
-          fun a => X0 (translateByInt z a) := by
+        (fun a : RegCoeffField d => X U a) =ᵐ[P]
+          fun a => X0 (translateReg (intVecToRealVec z) a) := by
       have hcov :=
         Ch04.LambdaSqCoeffField_originCube_zero_translateByInt_ae
           hP hStruct.stationary z s (.finite 1)
@@ -435,13 +435,13 @@ theorem upper_unitDescendantSup_momentRoot_le_card_mul_origin
         Measure.map (X U) P = Measure.map X0 P := by
       calc
         Measure.map (X U) P =
-            Measure.map (fun a : CoeffField d => X0 (translateByInt z a)) P :=
+            Measure.map (fun a : RegCoeffField d => X0 (translateReg (intVecToRealVec z) a)) P :=
               Measure.map_congr hae
-        _ = Measure.map X0 (Measure.map (translateByInt z) P) := by
+        _ = Measure.map X0 (Measure.map (translateReg (intVecToRealVec z)) P) := by
               symm
               exact AEMeasurable.map_map_of_aemeasurable
                 (by simpa [hStruct.stationary z] using hX0_aemeas)
-                (measurable_translateByInt z).aemeasurable
+                (measurable_translateReg (intVecToRealVec z)).aemeasurable
         _ = Measure.map X0 P := by
               rw [hStruct.stationary z]
     exact integrable_abs_pow_of_map_eq_map_aemeasurable
@@ -456,8 +456,8 @@ theorem upper_unitDescendantSup_momentRoot_le_card_mul_origin
     have hUeq : U = translateCube z (originCube d 0) := by
       simpa [z] using (translateCube_originCube_zero_eq_of_scale_zero U hscale).symm
     have hae :
-        (fun a : CoeffField d => X U a) =ᵐ[P]
-          fun a => X0 (translateByInt z a) := by
+        (fun a : RegCoeffField d => X U a) =ᵐ[P]
+          fun a => X0 (translateReg (intVecToRealVec z) a) := by
       have hcov :=
         Ch04.LambdaSqCoeffField_originCube_zero_translateByInt_ae
           hP hStruct.stationary z s (.finite 1)
@@ -466,13 +466,13 @@ theorem upper_unitDescendantSup_momentRoot_le_card_mul_origin
         Measure.map (X U) P = Measure.map X0 P := by
       calc
         Measure.map (X U) P =
-            Measure.map (fun a : CoeffField d => X0 (translateByInt z a)) P :=
+            Measure.map (fun a : RegCoeffField d => X0 (translateReg (intVecToRealVec z) a)) P :=
               Measure.map_congr hae
-        _ = Measure.map X0 (Measure.map (translateByInt z) P) := by
+        _ = Measure.map X0 (Measure.map (translateReg (intVecToRealVec z)) P) := by
               symm
               exact AEMeasurable.map_map_of_aemeasurable
                 (by simpa [hStruct.stationary z] using hX0_aemeas)
-                (measurable_translateByInt z).aemeasurable
+                (measurable_translateReg (intVecToRealVec z)).aemeasurable
         _ = Measure.map X0 P := by
               rw [hStruct.stationary z]
     have hint :
@@ -495,7 +495,7 @@ theorem upper_unitDescendantSup_momentRoot_le_card_mul_origin
       hξ_one hK_nonneg X hX_aemeas hX_int hX_root
   calc
     Ch04.annealedMomentRoot P ξ
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           D.sup' hD (fun U => Ch04.LambdaSqCoeffField U s (.finite 1) a))
         =
       (∫ a, (D.sup' hD (fun U => |X U a|)) ^ ξ ∂P) ^
@@ -525,22 +525,22 @@ theorem lower_unitDescendantSup_momentRoot_le_card_mul_origin
     {s : ℝ} {ξ m : ℕ} (hs : 0 < s) (hξ_one : 1 ≤ ξ)
     (hSourceInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ((Ch04.lambdaSqCoeffField (originCube d 0) s (.finite 1) a)⁻¹) ^ ξ) P) :
     let D := descendantsAtScale (originCube d (m : ℤ)) 0
     let hD : D.Nonempty :=
       descendantsAtScale_nonempty (originCube d (m : ℤ)) (by simp [originCube])
     Ch04.annealedMomentRoot P ξ
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         D.sup' hD (fun U => (Ch04.lambdaSqCoeffField U s (.finite 1) a)⁻¹)) ≤
       (D.card : ℝ) ^ (1 / (ξ : ℝ)) *
         Ch04.lambdaInvMomentAtScale P 0 s ξ := by
   classical
   intro D hD
   letI : IsProbabilityMeasure P := hP.isProbability
-  let X : TriadicCube d → CoeffField d → ℝ :=
+  let X : TriadicCube d → RegCoeffField d → ℝ :=
     fun U a => (Ch04.lambdaSqCoeffField U s (.finite 1) a)⁻¹
-  let X0 : CoeffField d → ℝ :=
+  let X0 : RegCoeffField d → ℝ :=
     fun a => (Ch04.lambdaSqCoeffField (originCube d 0) s (.finite 1) a)⁻¹
   have hK_nonneg : 0 ≤ Ch04.lambdaInvMomentAtScale P 0 s ξ :=
     Ch04.lambdaInvMomentAtScale_nonneg P 0 ξ hs
@@ -554,22 +554,22 @@ theorem lower_unitDescendantSup_momentRoot_le_card_mul_origin
     exact hP.aemeasurable_lambdaSqCoeffField_finite_one_inv U hs
   have hX0_aemeas : AEMeasurable X0 P := by
     exact hP.aemeasurable_lambdaSqCoeffField_finite_one_inv (originCube d 0) hs
-  have hX0_abs_int : Integrable (fun a : CoeffField d => |X0 a| ^ ξ) P := by
+  have hX0_abs_int : Integrable (fun a : RegCoeffField d => |X0 a| ^ ξ) P := by
     refine hSourceInt.congr ?_
     filter_upwards with a
     rw [abs_of_nonneg]
     exact inv_nonneg.mpr
       (Ch04.lambdaSqCoeffField_finite_nonneg (originCube d 0) a hs
         (by norm_num : (1 : ℝ) ≤ 1))
-  have hX_int : ∀ U ∈ D, Integrable (fun a : CoeffField d => |X U a| ^ ξ) P := by
+  have hX_int : ∀ U ∈ D, Integrable (fun a : RegCoeffField d => |X U a| ^ ξ) P := by
     intro U hU
     have hscale : U.scale = 0 := scale_eq_of_mem_descendantsAtScale hU
     let z : Fin d → ℤ := Book.Ch04.scaleTranslationShift 0 U
     have hUeq : U = translateCube z (originCube d 0) := by
       simpa [z] using (translateCube_originCube_zero_eq_of_scale_zero U hscale).symm
     have hae :
-        (fun a : CoeffField d => X U a) =ᵐ[P]
-          fun a => X0 (translateByInt z a) := by
+        (fun a : RegCoeffField d => X U a) =ᵐ[P]
+          fun a => X0 (translateReg (intVecToRealVec z) a) := by
       have hcov :=
         Ch04.lambdaSqCoeffField_originCube_zero_translateByInt_ae
           hP hStruct.stationary z s (.finite 1)
@@ -579,13 +579,13 @@ theorem lower_unitDescendantSup_momentRoot_le_card_mul_origin
         Measure.map (X U) P = Measure.map X0 P := by
       calc
         Measure.map (X U) P =
-            Measure.map (fun a : CoeffField d => X0 (translateByInt z a)) P :=
+            Measure.map (fun a : RegCoeffField d => X0 (translateReg (intVecToRealVec z) a)) P :=
               Measure.map_congr hae
-        _ = Measure.map X0 (Measure.map (translateByInt z) P) := by
+        _ = Measure.map X0 (Measure.map (translateReg (intVecToRealVec z)) P) := by
               symm
               exact AEMeasurable.map_map_of_aemeasurable
                 (by simpa [hStruct.stationary z] using hX0_aemeas)
-                (measurable_translateByInt z).aemeasurable
+                (measurable_translateReg (intVecToRealVec z)).aemeasurable
         _ = Measure.map X0 P := by
               rw [hStruct.stationary z]
     exact integrable_abs_pow_of_map_eq_map_aemeasurable
@@ -600,8 +600,8 @@ theorem lower_unitDescendantSup_momentRoot_le_card_mul_origin
     have hUeq : U = translateCube z (originCube d 0) := by
       simpa [z] using (translateCube_originCube_zero_eq_of_scale_zero U hscale).symm
     have hae :
-        (fun a : CoeffField d => X U a) =ᵐ[P]
-          fun a => X0 (translateByInt z a) := by
+        (fun a : RegCoeffField d => X U a) =ᵐ[P]
+          fun a => X0 (translateReg (intVecToRealVec z) a) := by
       have hcov :=
         Ch04.lambdaSqCoeffField_originCube_zero_translateByInt_ae
           hP hStruct.stationary z s (.finite 1)
@@ -611,13 +611,13 @@ theorem lower_unitDescendantSup_momentRoot_le_card_mul_origin
         Measure.map (X U) P = Measure.map X0 P := by
       calc
         Measure.map (X U) P =
-            Measure.map (fun a : CoeffField d => X0 (translateByInt z a)) P :=
+            Measure.map (fun a : RegCoeffField d => X0 (translateReg (intVecToRealVec z) a)) P :=
               Measure.map_congr hae
-        _ = Measure.map X0 (Measure.map (translateByInt z) P) := by
+        _ = Measure.map X0 (Measure.map (translateReg (intVecToRealVec z)) P) := by
               symm
               exact AEMeasurable.map_map_of_aemeasurable
                 (by simpa [hStruct.stationary z] using hX0_aemeas)
-                (measurable_translateByInt z).aemeasurable
+                (measurable_translateReg (intVecToRealVec z)).aemeasurable
         _ = Measure.map X0 P := by
               rw [hStruct.stationary z]
     have hint :
@@ -641,7 +641,7 @@ theorem lower_unitDescendantSup_momentRoot_le_card_mul_origin
       hξ_one hK_nonneg X hX_aemeas hX_int hX_root
   calc
     Ch04.annealedMomentRoot P ξ
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           D.sup' hD (fun U => (Ch04.lambdaSqCoeffField U s (.finite 1) a)⁻¹))
         =
       (∫ a, (D.sup' hD (fun U => |X U a|)) ^ ξ ∂P) ^

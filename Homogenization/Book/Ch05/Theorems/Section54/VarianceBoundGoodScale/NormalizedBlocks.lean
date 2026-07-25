@@ -412,7 +412,7 @@ theorem normalizedAnnealedBlockMatrix_self_eq_one
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_nonneg
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (R : TriadicCube d) (a : CoeffField d) :
+    (center : ℤ) (R : TriadicCube d) (a : RegCoeffField d) :
     0 ≤
       Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct center R a := by
@@ -461,12 +461,12 @@ theorem fullBlockNormalizedFluctuationMatrix_isSymm_of_isSymmetricBlockMat
 theorem isSymmetricBlockMat_coarseBlockMatrix_cubeSet_ae
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (Q : TriadicCube d) :
-    ∀ᵐ a ∂P, IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a) := by
+    ∀ᵐ a ∂P, IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   let F : Ch02.TriadicCoeffFamily d :=
     Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hEq :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -481,7 +481,7 @@ theorem fullBlockNormalizedFluctuationMatrix_isSymm_ae
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) :
     ∀ᵐ a ∂P,
-      (fullBlockNormalizedFluctuationMatrix hP hStruct center (cubeSet Q) a).IsSymm := by
+      (fullBlockNormalizedFluctuationMatrix hP hStruct center (cubeSet Q) a.toFun).IsSymm := by
   filter_upwards [isSymmetricBlockMat_coarseBlockMatrix_cubeSet_ae hP Q] with a hA
   exact fullBlockNormalizedFluctuationMatrix_isSymm_of_isSymmetricBlockMat
     hP hStruct center hA
@@ -510,6 +510,16 @@ noncomputable def fullBlockNormalizedQuadraticObservable
   let D : FullBlockMat d :=
     Matrix.diagonal (Ch04.scalarFullBlockInvSqrtDiag b c)
   fullBlockQuadratic (D * toFullBlockMat (coarseBlockMatrix U a) * D) q
+
+/-- Carrier realization of the normalized quadratic probe observable, applied
+to the honest sample of a carrier field.  This is the form consumed by the
+Ch4 descendant-average machinery. -/
+noncomputable def fullBlockNormalizedQuadraticObservableR
+    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    (center : ℤ) (q : FullBlockVec d) (U : Set (Vec d))
+    (a : RegCoeffField d) : ℝ :=
+  fullBlockNormalizedQuadraticObservable hP hStruct center q U a.toFun
 
 /-- Centering a normalized quadratic probe at the center-scale annealed value
 is the quadratic form of the normalized fluctuation matrix. -/
@@ -562,7 +572,7 @@ theorem fullBlockNormalizedQuadraticObservable_nonneg_ae
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) (Q : TriadicCube d) :
     ∀ᵐ a ∂P,
-      0 ≤ fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a := by
+      0 ≤ fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a.toFun := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   let b := hP.barSigmaAtScale hStruct center
   let c := hP.barSigmaStarAtScale hStruct center
@@ -571,23 +581,23 @@ theorem fullBlockNormalizedQuadraticObservable_nonneg_ae
   let F : Ch02.TriadicCoeffFamily d :=
     Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hEq :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
-  have hPos : Ch02.BlockPosDef (coarseBlockMatrix (cubeSet Q) a) := by
+  have hPos : Ch02.BlockPosDef (coarseBlockMatrix (cubeSet Q) a.toFun) := by
     rw [hEq]
     exact
       (Ch02.blockCoarseMatrixTheory (Ch02.cubeDomain Q) (F.coeffOn Q)).block_matrix_posDef
   have hobs :
-      fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a =
-        blockVecDot X (blockMatVecMul (coarseBlockMatrix (cubeSet Q) a) X) := by
+      fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a.toFun =
+        blockVecDot X (blockMatVecMul (coarseBlockMatrix (cubeSet Q) a.toFun) X) := by
     dsimp [fullBlockNormalizedQuadraticObservable, fullBlockQuadratic, b, c, D, X]
     simpa [D] using
       fullBlockQuadratic_diagonal_toFullBlockMat_eq_blockVecDot
         (Ch04.scalarFullBlockInvSqrtDiag (d := d) b c)
-        (coarseBlockMatrix (cubeSet Q) a) q
+        (coarseBlockMatrix (cubeSet Q) a.toFun) q
   rw [hobs]
   exact blockPosDef_quadratic_nonneg hPos X
 

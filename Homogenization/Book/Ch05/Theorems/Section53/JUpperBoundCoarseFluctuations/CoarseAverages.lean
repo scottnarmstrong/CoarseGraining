@@ -20,12 +20,12 @@ formula from Chapter 2.
 noncomputable section
 
 private theorem canonicalScalarResponseGradientAverageCubeSet_self_eq_blockMatrix
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (p q : Vec d) :
-    Ch04.canonicalScalarResponseGradientAverageCubeSet Q Q p q a =
-      -p + matVecMul (coarseBlockMatrix (cubeSet Q) a).lowerRight q -
-        matVecMul (coarseBlockMatrix (cubeSet Q) a).lowerLeft p := by
+    Ch04.canonicalScalarResponseGradientAverageCubeSet Q Q p q a.toFun =
+      -p + matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight q -
+        matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft p := by
   let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   let aQ : Ch02.CoeffOn (Ch02.cubeDomain Q) := F.coeffOn Q
   let v :=
@@ -47,13 +47,13 @@ private theorem canonicalScalarResponseGradientAverageCubeSet_self_eq_blockMatri
     Ch02.averageGradient_canonicalMaximizer_eq_blockMatrix
       (Ch02.cubeDomain Q) aQ p q
   have hCoarse :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) aQ := by
     simpa [F, aQ] using
       Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   calc
-    Ch04.canonicalScalarResponseGradientAverageCubeSet Q Q p q a =
+    Ch04.canonicalScalarResponseGradientAverageCubeSet Q Q p q a.toFun =
         cubeAverageVec Q (fun x => v.toH1.grad x) := by
           simpa [F, aQ, v] using hAverage
     _ = Ch02.averageGradient (Ch02.cubeDomain Q) aQ v := hCubeAverage
@@ -62,17 +62,17 @@ private theorem canonicalScalarResponseGradientAverageCubeSet_self_eq_blockMatri
           matVecMul (Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) aQ).lowerLeft p := by
           simpa [aQ, v] using hCh02
     _ =
-        -p + matVecMul (coarseBlockMatrix (cubeSet Q) a).lowerRight q -
-          matVecMul (coarseBlockMatrix (cubeSet Q) a).lowerLeft p := by
+        -p + matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight q -
+          matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft p := by
           rw [hCoarse]
 
 private theorem canonicalScalarResponseFluxAverageCubeSet_self_eq_blockMatrix
-    {d : ℕ} [NeZero d] (a : CoeffField d)
+    {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (p q : Vec d) :
-    Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a =
-      q + matVecMul (coarseBlockMatrix (cubeSet Q) a).upperRight q -
-        matVecMul (coarseBlockMatrix (cubeSet Q) a).upperLeft p := by
+    Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun =
+      q + matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight q -
+        matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft p := by
   let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   let aQ : Ch02.CoeffOn (Ch02.cubeDomain Q) := F.coeffOn Q
   let v :=
@@ -94,13 +94,13 @@ private theorem canonicalScalarResponseFluxAverageCubeSet_self_eq_blockMatrix
     Ch02.averageFlux_canonicalMaximizer_eq_blockMatrix
       (Ch02.cubeDomain Q) aQ p q
   have hCoarse :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) aQ := by
     simpa [F, aQ] using
       Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   calc
-    Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a =
+    Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun =
         cubeAverageVec Q (fun x => matVecMul (aQ.toCoeffField x) (v.toH1.grad x)) := by
           simpa [F, aQ, v] using hAverage
     _ = Ch02.averageFlux (Ch02.cubeDomain Q) aQ v := hCubeAverage
@@ -109,8 +109,8 @@ private theorem canonicalScalarResponseFluxAverageCubeSet_self_eq_blockMatrix
           matVecMul (Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) aQ).upperLeft p := by
           simpa [aQ, v] using hCh02
     _ =
-        q + matVecMul (coarseBlockMatrix (cubeSet Q) a).upperRight q -
-          matVecMul (coarseBlockMatrix (cubeSet Q) a).upperLeft p := by
+        q + matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight q -
+          matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft p := by
           rw [hCoarse]
 
 private theorem matVecMul_smul_one {d : ℕ} (c : ℝ) (x : Vec d) :
@@ -135,17 +135,17 @@ private noncomputable def scalarAnnealedBlockMatrixAtScale
 private theorem special_average_mismatch_eq_reflected_block_fluctuation
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (a : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
+    (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m : ℕ) (R : TriadicCube d) (e : Vec d) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
     let q_e := specialQAtScale hP hStruct (m : ℤ) e
     let p0_e := (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ • q_e - p_e
     let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
-    let A := coarseBlockMatrix (cubeSet R) a
+    let A := coarseBlockMatrix (cubeSet R) a.toFun
     let Abar := scalarAnnealedBlockMatrixAtScale hP hStruct (m : ℤ)
     let P_e : BlockVec d := (-q_e, p_e)
-    (-(Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a - p0_e),
-      -(Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a - q0_e)) =
+    (-(Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a.toFun - p0_e),
+      -(Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a.toFun - q0_e)) =
         blockMatVecMul
           (ofFullBlockMat (toFullBlockMat (blockReflect A) - toFullBlockMat (blockReflect Abar)))
           P_e := by
@@ -154,7 +154,7 @@ private theorem special_average_mismatch_eq_reflected_block_fluctuation
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
   let p0_e := (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ • q_e - p_e
   let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
-  let A := coarseBlockMatrix (cubeSet R) a
+  let A := coarseBlockMatrix (cubeSet R) a.toFun
   let Abar := scalarAnnealedBlockMatrixAtScale hP hStruct (m : ℤ)
   let P_e : BlockVec d := (-q_e, p_e)
   have hgrad :=
@@ -189,8 +189,8 @@ private theorem vecNormSq_sub_comm {d : ℕ} (x y : Vec d) :
 private noncomputable def reflectedBlockFluctuationOperatorNormSqAtScale
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (m : ℤ) (R : TriadicCube d) (a : CoeffField d) : ℝ :=
-  let A := coarseBlockMatrix (cubeSet R) a
+    (m : ℤ) (R : TriadicCube d) (a : RegCoeffField d) : ℝ :=
+  let A := coarseBlockMatrix (cubeSet R) a.toFun
   let Abar := scalarAnnealedBlockMatrixAtScale hP hStruct m
   ‖Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ)
       (toFullBlockMat (blockReflect A) - toFullBlockMat (blockReflect Abar))‖ ^ 2
@@ -483,11 +483,11 @@ private theorem weighted_blockVec_norm_sq_eq_sigma_inv_star_mul_normalized_norm_
 private noncomputable def reflectedNormalizedBlockFluctuationOperatorNormSqAtScale
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (m : ℤ) (R : TriadicCube d) (a : CoeffField d) : ℝ :=
+    (m : ℤ) (R : TriadicCube d) (a : RegCoeffField d) : ℝ :=
   let b := hP.barSigmaAtScale hStruct m
   let c := hP.barSigmaStarAtScale hStruct m
   let D : FullBlockMat d := Matrix.diagonal (starInvSqrtDiag b c)
-  let A := coarseBlockMatrix (cubeSet R) a
+  let A := coarseBlockMatrix (cubeSet R) a.toFun
   let Abar := scalarAnnealedBlockMatrixAtScale hP hStruct m
   ‖Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ)
       (D * (toFullBlockMat (blockReflect A) - toFullBlockMat (blockReflect Abar)) * D)‖ ^ 2
@@ -499,19 +499,19 @@ without introducing a public Ch5 wrapper. -/
 noncomputable def fullBlockNormalizedFluctuationOperatorNormSqAtScale
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (m : ℤ) (R : TriadicCube d) (a : CoeffField d) : ℝ :=
+    (m : ℤ) (R : TriadicCube d) (a : RegCoeffField d) : ℝ :=
   Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct m R a
 
 private theorem reflectedNormalizedBlockFluctuationOperatorNormSqAtScale_eq_fullBlock
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (m : ℤ) (R : TriadicCube d) (a : CoeffField d) :
+    (m : ℤ) (R : TriadicCube d) (a : RegCoeffField d) :
     reflectedNormalizedBlockFluctuationOperatorNormSqAtScale hP hStruct m R a =
       fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct m R a := by
   let b := hP.barSigmaAtScale hStruct m
   let c := hP.barSigmaStarAtScale hStruct m
   let D : FullBlockMat d := Matrix.diagonal (fullBlockInvSqrtDiag b c)
-  let A := coarseBlockMatrix (cubeSet R) a
+  let A := coarseBlockMatrix (cubeSet R) a.toFun
   let Abar := scalarAnnealedBlockMatrixAtScale hP hStruct m
   let e := blockCoordSwapEquiv d
   have hmat :
@@ -546,7 +546,7 @@ private theorem reflectedNormalizedBlockFluctuationOperatorNormSqAtScale_eq_full
 private theorem weighted_special_average_mismatch_le_reflected_normalized_block_fluctuation
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (a : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
+    (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m : ℕ) (R : TriadicCube d) (e : Vec d)
     (hb : 0 < hP.barSigmaAtScale hStruct (m : ℤ))
     (hc : 0 < hP.barSigmaStarAtScale hStruct (m : ℤ)) :
@@ -555,9 +555,9 @@ private theorem weighted_special_average_mismatch_le_reflected_normalized_block_
     let p0_e := (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ • q_e - p_e
     let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
     sigmaHatAtScale hP hStruct (m : ℤ) *
-        vecNormSq (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a - p0_e) +
+        vecNormSq (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a.toFun - p0_e) +
       (sigmaHatAtScale hP hStruct (m : ℤ))⁻¹ *
-        vecNormSq (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a - q0_e) ≤
+        vecNormSq (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a.toFun - q0_e) ≤
       2 * thetaAtScale hP hStruct (m : ℤ) *
         reflectedNormalizedBlockFluctuationOperatorNormSqAtScale hP hStruct (m : ℤ) R a *
           vecNormSq e := by
@@ -570,13 +570,13 @@ private theorem weighted_special_average_mismatch_le_reflected_normalized_block_
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
   let p0_e := c⁻¹ • q_e - p_e
   let q0_e := q_e - b • p_e
-  let A := coarseBlockMatrix (cubeSet R) a
+  let A := coarseBlockMatrix (cubeSet R) a.toFun
   let Abar := scalarAnnealedBlockMatrixAtScale hP hStruct (m : ℤ)
   let M : FullBlockMat d := toFullBlockMat (blockReflect A) - toFullBlockMat (blockReflect Abar)
   let P_e : BlockVec d := (-q_e, p_e)
   let X : BlockVec d :=
-    (-(Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a - p0_e),
-      -(Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a - q0_e))
+    (-(Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a.toFun - p0_e),
+      -(Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a.toFun - q0_e))
   have hσ : σ = Real.sqrt (b * c) := by
     rfl
   have hθ : θ = b * c⁻¹ := by
@@ -654,15 +654,15 @@ private theorem weighted_special_average_mismatch_le_reflected_normalized_block_
             rw [hsq]
   calc
     σ *
-        vecNormSq (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a - p0_e) +
+        vecNormSq (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a.toFun - p0_e) +
       σ⁻¹ *
-        vecNormSq (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a - q0_e)
+        vecNormSq (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a.toFun - q0_e)
       = σ * vecNormSq X.1 + σ⁻¹ * vecNormSq X.2 := by
           simp [X]
           rw [vecNormSq_sub_comm
-              (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a) p0_e,
+              (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a.toFun) p0_e,
             vecNormSq_sub_comm
-              (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a) q0_e]
+              (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a.toFun) q0_e]
     _ = (σ * c⁻¹) *
         ‖(WithLp.toLp 2
           (Matrix.mulVec (Matrix.diagonal (starInvSqrtDiag (d := d) b c)) (toFullBlockVec X)) :
@@ -698,7 +698,7 @@ corollary below is the one currently consumed by the high-scale assembly. -/
 theorem weighted_special_average_mismatch_le_fullBlockNormalized_fluctuation_mul_vecNormSq
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (a : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
+    (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m : ℕ) (R : TriadicCube d) (e : Vec d)
     (hb : 0 < hP.barSigmaAtScale hStruct (m : ℤ))
     (hc : 0 < hP.barSigmaStarAtScale hStruct (m : ℤ)) :
@@ -707,9 +707,9 @@ theorem weighted_special_average_mismatch_le_fullBlockNormalized_fluctuation_mul
     let p0_e := (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ • q_e - p_e
     let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
     sigmaHatAtScale hP hStruct (m : ℤ) *
-        vecNormSq (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a - p0_e) +
+        vecNormSq (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a.toFun - p0_e) +
       (sigmaHatAtScale hP hStruct (m : ℤ))⁻¹ *
-        vecNormSq (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a - q0_e) ≤
+        vecNormSq (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a.toFun - q0_e) ≤
       2 * thetaAtScale hP hStruct (m : ℤ) *
         fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct (m : ℤ) R a *
           vecNormSq e := by
@@ -725,7 +725,7 @@ package. -/
 theorem weighted_special_average_mismatch_le_fullBlockNormalized_fluctuation
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (a : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
+    (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m : ℕ) (R : TriadicCube d) (e : Vec d)
     (hb : 0 < hP.barSigmaAtScale hStruct (m : ℤ))
     (hc : 0 < hP.barSigmaStarAtScale hStruct (m : ℤ))
@@ -735,9 +735,9 @@ theorem weighted_special_average_mismatch_le_fullBlockNormalized_fluctuation
     let p0_e := (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ • q_e - p_e
     let q0_e := q_e - hP.barSigmaAtScale hStruct (m : ℤ) • p_e
     sigmaHatAtScale hP hStruct (m : ℤ) *
-        vecNormSq (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a - p0_e) +
+        vecNormSq (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a.toFun - p0_e) +
       (sigmaHatAtScale hP hStruct (m : ℤ))⁻¹ *
-        vecNormSq (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a - q0_e) ≤
+        vecNormSq (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a.toFun - q0_e) ≤
       2 * thetaAtScale hP hStruct (m : ℤ) *
         fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct (m : ℤ) R a := by
   simpa [reflectedNormalizedBlockFluctuationOperatorNormSqAtScale_eq_fullBlock hP hStruct
@@ -751,7 +751,7 @@ size explicit. -/
 theorem descendantsAverage_weighted_special_average_mismatch_le_fullBlockNormalized_fluctuation_mul_vecNormSq
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (a : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
+    (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m : ℕ) (Q : TriadicCube d) (j : ℕ) (e : Vec d)
     (hb : 0 < hP.barSigmaAtScale hStruct (m : ℤ))
     (hc : 0 < hP.barSigmaStarAtScale hStruct (m : ℤ)) :
@@ -762,9 +762,9 @@ theorem descendantsAverage_weighted_special_average_mismatch_le_fullBlockNormali
     descendantsAverage Q j
         (fun R =>
           sigmaHatAtScale hP hStruct (m : ℤ) *
-              vecNormSq (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a - p0_e) +
+              vecNormSq (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a.toFun - p0_e) +
             (sigmaHatAtScale hP hStruct (m : ℤ))⁻¹ *
-              vecNormSq (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a - q0_e)) ≤
+              vecNormSq (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a.toFun - q0_e)) ≤
       descendantsAverage Q j
         (fun R =>
           2 * thetaAtScale hP hStruct (m : ℤ) *
@@ -782,7 +782,7 @@ manuscript normalized full-block fluctuation. -/
 theorem descendantsAverage_weighted_special_average_mismatch_le_fullBlockNormalized_fluctuation
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (a : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
+    (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m : ℕ) (Q : TriadicCube d) (j : ℕ) (e : Vec d)
     (hb : 0 < hP.barSigmaAtScale hStruct (m : ℤ))
     (hc : 0 < hP.barSigmaStarAtScale hStruct (m : ℤ))
@@ -794,9 +794,9 @@ theorem descendantsAverage_weighted_special_average_mismatch_le_fullBlockNormali
     descendantsAverage Q j
         (fun R =>
           sigmaHatAtScale hP hStruct (m : ℤ) *
-              vecNormSq (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a - p0_e) +
+              vecNormSq (Ch04.canonicalScalarResponseGradientAverageCubeSet R R p_e q_e a.toFun - p0_e) +
             (sigmaHatAtScale hP hStruct (m : ℤ))⁻¹ *
-              vecNormSq (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a - q0_e)) ≤
+              vecNormSq (Ch04.canonicalScalarResponseFluxAverageCubeSet R R p_e q_e a.toFun - q0_e)) ≤
       descendantsAverage Q j
         (fun R =>
           2 * thetaAtScale hP hStruct (m : ℤ) *

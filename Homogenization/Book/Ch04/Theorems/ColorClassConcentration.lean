@@ -25,10 +25,10 @@ theorem isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRan
     {P : CoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
     (hP : UnitRangeDependentLaw P)
     (hσ₀ : 0 < σ) (hσ₂ : σ ≤ 2) (hK : 0 < K)
-    (X : TriadicCube d → CoeffField d → ℝ)
+    (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c,
-        IsLocalRandomVariable (cubeSet R) (X R))
+        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_meas :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c, Measurable (X R))
     (hX :
@@ -42,7 +42,7 @@ theorem isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRan
         Real.sqrt ((descendantsAtScaleScaleColorClass Q k c).card : ℝ) * K) := by
   let S : Finset (TriadicCube d) := descendantsAtScaleScaleColorClass Q k c
   by_cases hS : S.Nonempty
-  · let Y : {R : TriadicCube d // R ∈ S} → CoeffField d → ℝ :=
+  · let Y : {R : TriadicCube d // R ∈ S} → RegCoeffField d → ℝ :=
       fun R => X R.1
     have h_indep : ProbabilityTheory.iIndepFun Y P := by
       exact iIndepFun_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw
@@ -75,7 +75,7 @@ theorem isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRan
     rw [isBigO_gammaSigma_iff]
     intro t ht
     have htail_empty :
-        absTailEvent (fun _ : CoeffField d => (0 : ℝ)) 0 = ∅ := by
+        absTailEvent (fun _ : RegCoeffField d => (0 : ℝ)) 0 = ∅ := by
       ext a
       simp [absTailEvent]
     simpa [S, hS_empty, htail_empty, absTailEvent, upperTailEvent] using
@@ -88,10 +88,10 @@ theorem isBigO_psiSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRange
     {P : CoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
     (hP : UnitRangeDependentLaw P)
     (hσ : 1 ≤ σ) (hK : 0 < K)
-    (X : TriadicCube d → CoeffField d → ℝ)
+    (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c,
-        IsLocalRandomVariable (cubeSet R) (X R))
+        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_meas :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c, Measurable (X R))
     (hX_int :
@@ -107,7 +107,7 @@ theorem isBigO_psiSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRange
         Real.sqrt ((descendantsAtScaleScaleColorClass Q k c).card : ℝ) * K) := by
   let S : Finset (TriadicCube d) := descendantsAtScaleScaleColorClass Q k c
   by_cases hS : S.Nonempty
-  · let Y : {R : TriadicCube d // R ∈ S} → CoeffField d → ℝ :=
+  · let Y : {R : TriadicCube d // R ∈ S} → RegCoeffField d → ℝ :=
       fun R => X R.1
     have h_indep : ProbabilityTheory.iIndepFun Y P := by
       exact iIndepFun_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw
@@ -143,7 +143,7 @@ theorem isBigO_psiSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRange
     rw [isBigO_psiSigma_iff]
     intro t ht
     have htail_empty :
-        absTailEvent (fun _ : CoeffField d => (0 : ℝ)) 0 = ∅ := by
+        absTailEvent (fun _ : RegCoeffField d => (0 : ℝ)) 0 = ∅ := by
       ext a
       simp [absTailEvent]
     simpa [S, hS_empty, htail_empty, absTailEvent, upperTailEvent] using

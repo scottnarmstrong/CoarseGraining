@@ -279,22 +279,23 @@ private theorem canonicalDoubledMuResponseUpperImageAverageCubeSet_eq_integral_o
 elliptic support it is the descendant-cube average of the raw Chapter 2
 canonical scalar-response maximizer gradient. -/
 theorem canonicalScalarResponseGradientAverageCubeSet_eq_cubeAverageVec_canonicalMaximizer
-    {d : ℕ} [NeZero d] (a : CoeffField d)
-    (ha : AELocallyUniformlyEllipticField a)
+    {d : ℕ} [NeZero d] (aR : RegCoeffField d)
+    (ha : AELocallyUniformlyEllipticField aR)
     {Q R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
-    canonicalScalarResponseGradientAverageCubeSet Q R p q a =
+    canonicalScalarResponseGradientAverageCubeSet Q R p q aR.toFun =
       cubeAverageVec R
         (fun x =>
           (Ch02.canonicalMaximizer
             (Ch02.responseExistenceTheory (Ch02.cubeDomain Q)
-              ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q))
+              ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField aR ha).coeffOn Q))
             p q).toSolution.toH1.grad x) := by
   classical
-  let F := triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
+  set a : CoeffField d := aR.toFun with hadef
+  let F := triadicCoeffFamilyOfAELocallyUniformlyEllipticField aR ha
   let aQ : Ch02.CoeffOn (Ch02.cubeDomain Q) := F.coeffOn Q
   have haQ : aQ.toCoeffField = a := by
-    simp [aQ, F]
+    simp [aQ, F, hadef]
   have hSlice : ∃ k : ℕ, AEEQuantitativeEllipticSlice (cubeSet Q) k a :=
     ha.exists_aeeQuantitativeEllipticSlice_cubeSet Q
   let k : ℕ := Nat.find hSlice
@@ -496,7 +497,7 @@ theorem canonicalScalarResponseGradientAverageCubeSet_eq_cubeAverageVec_canonica
         (fun x =>
           (Ch02.canonicalMaximizer
             (Ch02.responseExistenceTheory (Ch02.cubeDomain Q)
-              ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q))
+              ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField aR ha).coeffOn Q))
             p q).toSolution.toH1.grad x) i := by
           rfl
 
@@ -504,24 +505,25 @@ theorem canonicalScalarResponseGradientAverageCubeSet_eq_cubeAverageVec_canonica
 support it is the descendant-cube average of the raw Chapter 2 canonical
 scalar-response maximizer flux. -/
 theorem canonicalScalarResponseFluxAverageCubeSet_eq_cubeAverageVec_canonicalMaximizerFlux
-    {d : ℕ} [NeZero d] (a : CoeffField d)
-    (ha : AELocallyUniformlyEllipticField a)
+    {d : ℕ} [NeZero d] (aR : RegCoeffField d)
+    (ha : AELocallyUniformlyEllipticField aR)
     {Q R : TriadicCube d} {j : ℕ}
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
-    canonicalScalarResponseFluxAverageCubeSet Q R p q a =
+    canonicalScalarResponseFluxAverageCubeSet Q R p q aR.toFun =
       cubeAverageVec R
         (fun x =>
           matVecMul
-            (((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q).toCoeffField x)
+            (((triadicCoeffFamilyOfAELocallyUniformlyEllipticField aR ha).coeffOn Q).toCoeffField x)
             ((Ch02.canonicalMaximizer
               (Ch02.responseExistenceTheory (Ch02.cubeDomain Q)
-                ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q))
+                ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField aR ha).coeffOn Q))
               p q).toSolution.toH1.grad x)) := by
   classical
-  let F := triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
+  set a : CoeffField d := aR.toFun with hadef
+  let F := triadicCoeffFamilyOfAELocallyUniformlyEllipticField aR ha
   let aQ : Ch02.CoeffOn (Ch02.cubeDomain Q) := F.coeffOn Q
   have haQ : aQ.toCoeffField = a := by
-    simp [aQ, F]
+    simp [aQ, F, hadef]
   have hSlice : ∃ k : ℕ, AEEQuantitativeEllipticSlice (cubeSet Q) k a :=
     ha.exists_aeeQuantitativeEllipticSlice_cubeSet Q
   let k : ℕ := Nat.find hSlice
@@ -729,10 +731,10 @@ theorem canonicalScalarResponseFluxAverageCubeSet_eq_cubeAverageVec_canonicalMax
     _ = cubeAverageVec R
         (fun x =>
           matVecMul
-            (((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q).toCoeffField x)
+            (((triadicCoeffFamilyOfAELocallyUniformlyEllipticField aR ha).coeffOn Q).toCoeffField x)
             ((Ch02.canonicalMaximizer
               (Ch02.responseExistenceTheory (Ch02.cubeDomain Q)
-                ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q))
+                ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField aR ha).coeffOn Q))
               p q).toSolution.toH1.grad x)) i := by
           rfl
 

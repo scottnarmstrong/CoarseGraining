@@ -20,8 +20,8 @@ coarse-graining RHS.
 noncomputable section
 
 noncomputable def assemblyLowerEllipticityEnvelopeOfScalar {d : ℕ} [NeZero d]
-    (σ0 : ℝ) (α τ r : ℝ) (X : CoeffField d → ℝ)
-    (aω : CoeffField d) (m : ℕ) : ℝ :=
+    (σ0 : ℝ) (α τ r : ℝ) (X : RegCoeffField d → ℝ)
+    (aω : RegCoeffField d) (m : ℕ) : ℝ :=
   Real.sqrt
     (σ0⁻¹ * assemblyEllipticityEnvelope (d := d) α τ r X aω m)
 
@@ -29,7 +29,7 @@ noncomputable def assemblyLowerEllipticityEnvelope {d : ℕ} [NeZero d]
     {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
     (hStruct : Ch04.StructuralLaw P)
     (_hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    (α τ r : ℝ) (X : CoeffField d → ℝ) (aω : CoeffField d)
+    (α τ r : ℝ) (X : RegCoeffField d → ℝ) (aω : RegCoeffField d)
     (m : ℕ) : ℝ :=
   assemblyLowerEllipticityEnvelopeOfScalar
     (barSigmaLimit hP hStruct) α τ r X aω m
@@ -40,8 +40,8 @@ bounds.  The local coefficient/ellipticity factors are controlled at exponent
 depth weight from the repaired Ch3 estimate. -/
 noncomputable def assemblyCompressedTwoExponentRHSOfScalar {d : ℕ} [NeZero d]
     (σ0 : ℝ) (hσ0 : 0 < σ0)
-    (Ccg α τ s r r₂ : ℝ) (X : CoeffField d → ℝ)
-    (aω : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
+    (Ccg α τ s r r₂ : ℝ) (X : RegCoeffField d → ℝ)
+    (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (m j : ℕ) (g : Vec d → Vec d)
     (w : assemblyComparisonDatumOfScalar σ0 hσ0 aω ha m g) : ℝ :=
   let Q : TriadicCube d := assemblyOriginCube d m
@@ -76,8 +76,8 @@ noncomputable def assemblyCompressedTwoExponentRHS {d : ℕ} [NeZero d]
     {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
     (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    (Ccg α τ s r r₂ : ℝ) (X : CoeffField d → ℝ)
-    (aω : CoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
+    (Ccg α τ s r r₂ : ℝ) (X : RegCoeffField d → ℝ)
+    (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (m j : ℕ) (g : Vec d → Vec d)
     (w : assemblyComparisonDatum hP hStruct hΓ aω ha m g) : ℝ :=
   assemblyCompressedTwoExponentRHSOfScalar
@@ -126,7 +126,7 @@ theorem coarseGrainingHomogenizationErrorAtDepth_nonneg
 
 theorem assemblyLowerEllipticityFactor_le_ofScalar
     {d : ℕ} [NeZero d] {σ0 : ℝ} (hσ0 : 0 < σ0)
-    {α τ r : ℝ} {X : CoeffField d → ℝ} {aω : CoeffField d}
+    {α τ r : ℝ} {X : RegCoeffField d → ℝ} {aω : RegCoeffField d}
     {m : ℕ} (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (hr : 0 < r)
     (hlambda :
@@ -165,7 +165,7 @@ theorem assemblyLowerEllipticityFactor_le
     {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
     (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {α τ r : ℝ} {X : CoeffField d → ℝ} {aω : CoeffField d}
+    {α τ r : ℝ} {X : RegCoeffField d → ℝ} {aω : RegCoeffField d}
     {m : ℕ} (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (hr : 0 < r)
     (hlambda :
@@ -186,8 +186,8 @@ theorem assemblyLowerEllipticityFactor_le
 deterministic RHS. -/
 theorem assemblyControlledFactors_lhs_le_compressedTwoExponentRHS_ofScalar
     {d : ℕ} [NeZero d] {σ0 : ℝ} (hσ0 : 0 < σ0)
-    {Ccg α τ s r r₂ : ℝ} {X : CoeffField d → ℝ}
-    {aω : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField aω)
+    {Ccg α τ s r r₂ : ℝ} {X : RegCoeffField d → ℝ}
+    {aω : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField aω)
     {m j : ℕ} {g : Vec d → Vec d}
     (w : assemblyComparisonDatumOfScalar σ0 hσ0 aω ha m g)
     (hCcg : 0 < Ccg) (hs : 0 < s) (hr : 0 < r)
@@ -421,8 +421,8 @@ theorem assemblyControlledFactors_lhs_le_compressedTwoExponentRHS
     {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
     (hStruct : Ch04.StructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
-    {Ccg α τ s r r₂ : ℝ} {X : CoeffField d → ℝ}
-    {aω : CoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField aω)
+    {Ccg α τ s r r₂ : ℝ} {X : RegCoeffField d → ℝ}
+    {aω : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField aω)
     {m j : ℕ} {g : Vec d → Vec d}
     (w : assemblyComparisonDatum hP hStruct hΓ aω ha m g)
     (hCcg : 0 < Ccg) (hs : 0 < s) (hr : 0 < r)
@@ -448,7 +448,7 @@ theorem assemblyControlledFactors_lhs_le_compressedTwoExponentRHS
 theorem ae_homogenizationComparison_compressedTwoExponentRHSOfScalar_of_ae_controlledFactors
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     {σ0 : ℝ} (hσ0 : 0 < σ0)
-    {Ccg α τ s r r₂ : ℝ} {X : CoeffField d → ℝ}
+    {Ccg α τ s r r₂ : ℝ} {X : RegCoeffField d → ℝ}
     (hCcg : 0 < Ccg) (hs : 0 < s) (hr : 0 < r)
     (hrs : r < s / 2) (hs_lt_one : s < 1)
     (hctrl :
@@ -506,7 +506,7 @@ theorem exists_homogenizationComparison_compressedTwoExponentRHS_interpolated_ex
             (hStruct : Ch04.StructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hΓ.thetaHat)) ^ (2 : ℕ))) ∧

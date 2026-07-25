@@ -58,7 +58,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
         parents.sup' hparents
           (fun Q =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
                 Ch02.matrixNorm center)
               0)) ≤
       ((Fintype.card (Fin d) : ℝ) * (Fintype.card (Fin d) : ℝ)) *
@@ -66,15 +66,15 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
   classical
   letI : IsProbabilityMeasure P := hP.isProbability
   let C : ℝ := (parents.card : ℝ) ^ (1 / (ξ : ℝ)) * B
-  let excess : CoeffField d → ℝ :=
+  let excess : RegCoeffField d → ℝ :=
     fun a =>
       parents.sup' hparents
         (fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
               Ch02.matrixNorm center)
             0)
-  let entry : Fin d → Fin d → CoeffField d → ℝ :=
+  let entry : Fin d → Fin d → RegCoeffField d → ℝ :=
     fun i j a =>
       parents.sup' hparents
         (fun Q =>
@@ -88,7 +88,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
       (Finset.le_sup'
         (f := fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).lowerRight -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight -
               Ch02.matrixNorm center)
             0) hQ0)
   have hentry_nonneg : ∀ i j a, 0 ≤ entry i j a := by
@@ -111,7 +111,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
     intro i j
     have hint :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (parents.sup' hparents
               (fun Q =>
                 |centeredDescendantAverageOnCube P Q n
@@ -122,7 +122,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
         (fun U a => (coarseBlockMatrix U a).lowerRight i j)
         (by
           simpa [blockMatEntry] using
-            coarseBlockMatrix_entry_translation_covariant (Sum.inr i) (Sum.inr j))
+            isTranslationCovariantR_comp_toFun (coarseBlockMatrix_entry_translation_covariant (Sum.inr i) (Sum.inr j)))
         (hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet (originCube d n) i j)
         (fun Q hQ R hR =>
           hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet R i j)
@@ -144,7 +144,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
           hP.exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerRight_apply_cubeSet R i j)
         (by
           simpa [blockMatEntry] using
-            coarseBlockMatrix_entry_translation_covariant (Sum.inr i) (Sum.inr j))
+            isTranslationCovariantR_comp_toFun (coarseBlockMatrix_entry_translation_covariant (Sum.inr i) (Sum.inr j)))
         (hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet (originCube d n) i j)
         (fun Q hQ R hR =>
           hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet R i j)
@@ -171,13 +171,13 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
 private theorem upperLeft_abs_entry_le_LambdaSqCoeffField_ae_aux
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) (i j : Fin d) :
-    (fun a : CoeffField d => |(coarseBlockMatrix (cubeSet Q) a).upperLeft i j|) ≤ᵐ[P]
+    (fun a : RegCoeffField d => |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j|) ≤ᵐ[P]
       fun a => LambdaSqCoeffField Q s (.finite 1) a := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hEq :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -189,7 +189,7 @@ private theorem upperLeft_abs_entry_le_LambdaSqCoeffField_ae_aux
       Ch02.abs_entry_le_matrixOperatorNorm
         ((Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q)).upperLeft) i j
   calc
-    |(coarseBlockMatrix (cubeSet Q) a).upperLeft i j|
+    |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j|
         = |(Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q)).upperLeft i j| := by
       rw [hEq]
     _ ≤ Ch02.coarseBMatrixNorm Q F := hEntry
@@ -201,13 +201,13 @@ private theorem upperLeft_abs_entry_le_LambdaSqCoeffField_ae_aux
 private theorem lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae_aux
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) (i j : Fin d) :
-    (fun a : CoeffField d => |(coarseBlockMatrix (cubeSet Q) a).lowerRight i j|) ≤ᵐ[P]
+    (fun a : RegCoeffField d => |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j|) ≤ᵐ[P]
       fun a => (lambdaSqCoeffField Q s (.finite 1) a)⁻¹ := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   have hEq :
-      coarseBlockMatrix (cubeSet Q) a =
+      coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
       LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
@@ -219,7 +219,7 @@ private theorem lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae_aux
       Ch02.abs_entry_le_matrixOperatorNorm
         ((Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q)).lowerRight) i j
   calc
-    |(coarseBlockMatrix (cubeSet Q) a).lowerRight i j|
+    |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j|
         = |(Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q)).lowerRight i j| := by
       rw [hEq]
     _ ≤ Ch02.coarseSigmaStarInvMatrixNorm Q F := hEntry
@@ -233,36 +233,36 @@ private theorem lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae_aux
 theorem upperLeft_entry_le_LambdaSqCoeffField_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
-    (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).upperLeft 0 0) ≤ᵐ[P]
+    (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft 0 0) ≤ᵐ[P]
       fun a => LambdaSqCoeffField Q s (.finite 1) a := by
   filter_upwards [upperLeft_abs_entry_le_LambdaSqCoeffField_ae_aux hP Q hs 0 0] with a hle
-  exact (le_abs_self ((coarseBlockMatrix (cubeSet Q) a).upperLeft 0 0)).trans hle
+  exact (le_abs_self ((coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft 0 0)).trans hle
 
 theorem lowerRight_entry_le_lambdaSqCoeffField_inv_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
-    (fun a : CoeffField d => (coarseBlockMatrix (cubeSet Q) a).lowerRight 0 0) ≤ᵐ[P]
+    (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight 0 0) ≤ᵐ[P]
       fun a => (lambdaSqCoeffField Q s (.finite 1) a)⁻¹ := by
   filter_upwards [lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae_aux hP Q hs 0 0] with a hle
-  exact (le_abs_self ((coarseBlockMatrix (cubeSet Q) a).lowerRight 0 0)).trans hle
+  exact (le_abs_self ((coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight 0 0)).trans hle
 
 theorem upperLeft_abs_entry_le_LambdaSqCoeffField_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) (i j : Fin d) :
-    (fun a : CoeffField d => |(coarseBlockMatrix (cubeSet Q) a).upperLeft i j|) ≤ᵐ[P]
+    (fun a : RegCoeffField d => |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j|) ≤ᵐ[P]
       fun a => LambdaSqCoeffField Q s (.finite 1) a := by
   exact upperLeft_abs_entry_le_LambdaSqCoeffField_ae_aux hP Q hs i j
 
 theorem lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae
     {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) (i j : Fin d) :
-    (fun a : CoeffField d => |(coarseBlockMatrix (cubeSet Q) a).lowerRight i j|) ≤ᵐ[P]
+    (fun a : RegCoeffField d => |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j|) ≤ᵐ[P]
       fun a => (lambdaSqCoeffField Q s (.finite 1) a)⁻¹ := by
   exact lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae_aux hP Q hs i j
 
 theorem integrable_abs_pow_of_ae_abs_le_nonneg
     {d : ℕ} {P : CoeffLaw d} {ξ : ℕ}
-    {X Y : CoeffField d → ℝ}
+    {X Y : RegCoeffField d → ℝ}
     (hX_meas : AEMeasurable X P)
     (hY_nonneg : ∀ᵐ a ∂P, 0 ≤ Y a)
     (hXY : (fun a => |X a|) ≤ᵐ[P] Y)
@@ -287,7 +287,7 @@ theorem integrable_abs_pow_of_ae_abs_le_nonneg
 
 private theorem annealedMomentRoot_abs_le_of_ae_abs_le_nonneg
     {d : ℕ} {P : CoeffLaw d} {ξ : ℕ}
-    {X Y : CoeffField d → ℝ}
+    {X Y : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
     (_hY_nonneg : ∀ a, 0 ≤ Y a)
     (hXY : (fun a => |X a|) ≤ᵐ[P] Y)
@@ -309,7 +309,7 @@ private theorem annealedMomentRoot_abs_le_of_ae_abs_le_nonneg
 
 private theorem annealedMomentRoot_abs_sub_integral_le_two_mul
     {d : ℕ} {P : CoeffLaw d} [IsProbabilityMeasure P]
-    {ξ : ℕ} {X : CoeffField d → ℝ}
+    {ξ : ℕ} {X : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ) (hX_meas : AEMeasurable X P)
     (hX_abs_pow_int : Integrable (fun a => |X a| ^ ξ) P) :
     annealedMomentRoot P ξ
@@ -325,7 +325,7 @@ private theorem annealedMomentRoot_abs_sub_integral_le_two_mul
   have hX_int : Integrable X P := by
     rwa [MeasureTheory.memLp_one_iff_integrable] at hmem_one
   let c : ℝ := ∫ b, X b ∂P
-  have hconst_mem : MemLp (fun _ : CoeffField d => c) (ξ : ENNReal) P :=
+  have hconst_mem : MemLp (fun _ : RegCoeffField d => c) (ξ : ENNReal) P :=
     memLp_const c
   have hcenter_mem : MemLp (fun a => X a - c) (ξ : ENNReal) P :=
     hmem_p.sub hconst_mem
@@ -371,24 +371,24 @@ private theorem annealedMomentRoot_abs_sub_integral_le_two_mul
         (by simpa using hX_abs_pow_int)
     exact (abs_integral_le_integral_abs (f := X) (μ := P)).trans hInt_le_root
   have hconst_toReal :
-      ENNReal.toReal (eLpNorm (fun _ : CoeffField d => c) (ξ : ENNReal) P) = |c| := by
-    have hμ_ne_zero : (P : Measure (CoeffField d)) ≠ 0 :=
+      ENNReal.toReal (eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P) = |c| := by
+    have hμ_ne_zero : (P : Measure (RegCoeffField d)) ≠ 0 :=
       IsProbabilityMeasure.ne_zero P
     have hξ_enn_ne_zero : (ξ : ENNReal) ≠ 0 := by exact_mod_cast hξ_ne
     rw [MeasureTheory.eLpNorm_const (μ := P) (c := c) (p := (ξ : ENNReal))
       hξ_enn_ne_zero hμ_ne_zero]
     simp [IsProbabilityMeasure.measure_univ, Real.norm_eq_abs]
   have hconst_ne_top :
-      eLpNorm (fun _ : CoeffField d => c) (ξ : ENNReal) P ≠ ⊤ :=
+      eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P ≠ ⊤ :=
     hconst_mem.2.ne
   have hsum_ne_top :
       eLpNorm X (ξ : ENNReal) P +
-          eLpNorm (fun _ : CoeffField d => c) (ξ : ENNReal) P ≠ ⊤ :=
+          eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P ≠ ⊤ :=
     ENNReal.add_ne_top.mpr ⟨hmem_p.2.ne, hconst_ne_top⟩
   have hsub_le :
       eLpNorm (fun a => X a - c) (ξ : ENNReal) P ≤
         eLpNorm X (ξ : ENNReal) P +
-          eLpNorm (fun _ : CoeffField d => c) (ξ : ENNReal) P := by
+          eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P := by
     simpa [c, Pi.sub_apply] using
       eLpNorm_sub_le hX_meas.aestronglyMeasurable
         (aestronglyMeasurable_const (μ := P) (b := c))
@@ -399,7 +399,7 @@ private theorem annealedMomentRoot_abs_sub_integral_le_two_mul
           simp [hcenter_toReal, c]
     _ ≤ ENNReal.toReal
           (eLpNorm X (ξ : ENNReal) P +
-            eLpNorm (fun _ : CoeffField d => c) (ξ : ENNReal) P) :=
+            eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P) :=
           ENNReal.toReal_mono hsum_ne_top hsub_le
     _ = annealedMomentRoot P ξ (fun a => |X a|) + |c| := by
           rw [ENNReal.toReal_add hmem_p.2.ne hconst_ne_top,
@@ -411,7 +411,7 @@ private theorem annealedMomentRoot_abs_sub_integral_le_two_mul
 
 private theorem centered_abs_sub_integrable_and_momentRoot_le_two_of_abs_le_nonneg
     {d : ℕ} {P : CoeffLaw d} [IsProbabilityMeasure P] {ξ : ℕ}
-    {X Y : CoeffField d → ℝ}
+    {X Y : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ) (hX_meas : AEMeasurable X P)
     (hY_nonneg : ∀ᵐ a ∂P, 0 ≤ Y a) (hY_nonneg_forall : ∀ a, 0 ≤ Y a)
     (hXY : (fun a => |X a|) ≤ᵐ[P] Y)
@@ -459,7 +459,7 @@ theorem centeredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentA
     {s : ℝ} {ξ : ℕ} (hs : 0 < s) (hξ : 1 ≤ ξ)
     (hUpperPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (LambdaSqCoeffField (originCube d 0) s (.finite 1) a) ^ ξ) P)
     (i j : Fin d) :
     Integrable
@@ -472,9 +472,9 @@ theorem centeredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentA
           (1 / (ξ : ℝ)) ≤
         2 * LambdaMomentAtScale P 0 s ξ := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a => (coarseBlockMatrix (cubeSet (originCube d 0)) a).upperLeft i j
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     fun a => LambdaSqCoeffField (originCube d 0) s (.finite 1) a
   have hX_meas : AEMeasurable X P := by
     simpa [X] using hP.aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet
@@ -502,7 +502,7 @@ theorem centeredOriginObservable_lowerRight_entry_momentRoot_le_two_lambdaInvMom
     {s : ℝ} {ξ : ℕ} (hs : 0 < s) (hξ : 1 ≤ ξ)
     (hLowerPowInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ((lambdaSqCoeffField (originCube d 0) s (.finite 1) a)⁻¹) ^ ξ) P)
     (i j : Fin d) :
     Integrable
@@ -515,9 +515,9 @@ theorem centeredOriginObservable_lowerRight_entry_momentRoot_le_two_lambdaInvMom
           (1 / (ξ : ℝ)) ≤
         2 * lambdaInvMomentAtScale P 0 s ξ := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a => (coarseBlockMatrix (cubeSet (originCube d 0)) a).lowerRight i j
-  let Y : CoeffField d → ℝ :=
+  let Y : RegCoeffField d → ℝ :=
     fun a => (lambdaSqCoeffField (originCube d 0) s (.finite 1) a)⁻¹
   have hX_meas : AEMeasurable X P := by
     simpa [X] using hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet

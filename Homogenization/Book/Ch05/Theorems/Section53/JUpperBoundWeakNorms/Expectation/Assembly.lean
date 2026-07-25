@@ -77,22 +77,22 @@ theorem integrable_jUpperWeakNormPointwiseRHSAtScale
       Integrable (Ch04.responseJObservableCubeSet R p q) P)
     (hGradWeak :
       Integrable
-        (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-          (originCube d m) s p q p0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet
+          (originCube d m) s p q p0 a.toFun) P)
     (hFluxWeak :
       Integrable
-        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-          (originCube d m) t p q q0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseFluxWeakNormCubeSet
+          (originCube d m) t p q q0 a.toFun) P)
     (hProduct :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           cutoffProductBridgeRHS (originCube d m) s cutoffGradient
             (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) 1 p q q0 a)
+              (originCube d m) 1 p q q0 a.toFun)
             (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) s p q q0 a)
+              (originCube d m) s p q q0 a.toFun)
             ‖Ch04.canonicalScalarResponseFluxAverageCubeSet
-              (originCube d m) (originCube d m) p q a - q0‖
+              (originCube d m) (originCube d m) p q a.toFun - q0‖
             cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant) P) :
     Integrable
       (jUpperWeakNormPointwiseRHSAtScale m k s t cutoffGradient
@@ -101,37 +101,37 @@ theorem integrable_jUpperWeakNormPointwiseRHSAtScale
   letI : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d m
   let j : ℕ := Int.toNat (m - k)
-  let childAverage : CoeffField d → ℝ :=
+  let childAverage : RegCoeffField d → ℝ :=
     fun a => descendantsAverage Q j (fun R => Ch04.responseJObservableCubeSet R p q a)
-  let gradWeak : CoeffField d → ℝ :=
-    Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0
-  let fluxWeak : CoeffField d → ℝ :=
-    Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0
+  let gradWeak : RegCoeffField d → ℝ :=
+    fun a => Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
+  let fluxWeak : RegCoeffField d → ℝ :=
+    fun a => Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun
   let gradCoeff : ℝ :=
     (3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS
   let fluxCoeff : ℝ :=
     (3 : ℝ) ^ ((d : ℝ) + t) * cubeBesovScaleWeight (-t) Q * BφT
-  let addPoint : CoeffField d → ℝ :=
+  let addPoint : RegCoeffField d → ℝ :=
     fun a =>
       (2 * C) *
         (Real.sqrt (responseJAdditivityDefectAtScale m k p q a) *
           Real.sqrt (childAverage a))
-  let oscPoint : CoeffField d → ℝ :=
+  let oscPoint : RegCoeffField d → ℝ :=
     fun a => Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a
-  let gradPoint : CoeffField d → ℝ :=
+  let gradPoint : RegCoeffField d → ℝ :=
     fun a =>
       (1 / 2 : ℝ) * ‖q0‖ *
         (((Fintype.card (Fin d) : ℝ) * gradCoeff) * gradWeak a)
-  let fluxPoint : CoeffField d → ℝ :=
+  let fluxPoint : RegCoeffField d → ℝ :=
     fun a =>
       (1 / 2 : ℝ) * ‖p0‖ *
         (((Fintype.card (Fin d) : ℝ) * fluxCoeff) * fluxWeak a)
-  let productPoint : CoeffField d → ℝ :=
+  let productPoint : RegCoeffField d → ℝ :=
     fun a =>
       cutoffProductBridgeRHS Q s cutoffGradient
-        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a)
-        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a)
-        ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖
+        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
+        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun)
+        ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖
         cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant
   have hDescDepth :
       ∀ R, R ∈ descendantsAtDepth Q j →
@@ -155,7 +155,7 @@ theorem integrable_jUpperWeakNormPointwiseRHSAtScale
       descendantsAverage_responseJObservableCubeSet_nonneg Q j p q a
   have hSqrtProdInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           Real.sqrt (responseJAdditivityDefectAtScale m k p q a) *
             Real.sqrt (childAverage a)) P :=
     integrable_sqrt_mul_sqrt_of_integrable_of_ae_nonneg
@@ -181,7 +181,7 @@ theorem integrable_jUpperWeakNormPointwiseRHSAtScale
     simpa [productPoint, Q] using hProduct
   have hSumInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (addPoint a + oscPoint a) + ((gradPoint a + fluxPoint a) + productPoint a)) P :=
     (hAddInt.add hOscInt).add ((hGradInt.add hFluxInt).add hProductInt)
   refine hSumInt.congr ?_
@@ -209,22 +209,22 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormExpectedRHSAtScal
       Integrable (Ch04.responseJObservableCubeSet R p q) P)
     (hGradWeak :
       Integrable
-        (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-          (originCube d m) s p q p0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet
+          (originCube d m) s p q p0 a.toFun) P)
     (hFluxWeak :
       Integrable
-        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-          (originCube d m) t p q q0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseFluxWeakNormCubeSet
+          (originCube d m) t p q q0 a.toFun) P)
     (hProduct :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           cutoffProductBridgeRHS (originCube d m) s cutoffGradient
             (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) 1 p q q0 a)
+              (originCube d m) 1 p q q0 a.toFun)
             (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) s p q q0 a)
+              (originCube d m) s p q q0 a.toFun)
             ‖Ch04.canonicalScalarResponseFluxAverageCubeSet
-              (originCube d m) (originCube d m) p q a - q0‖
+              (originCube d m) (originCube d m) p q a.toFun - q0‖
             cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant) P)
     (hBound :
       ∀ᵐ a ∂P,
@@ -288,41 +288,41 @@ theorem jUpperWeakNormExpectedRHSAtScale_le_manuscriptExpectedRHSAtScale
     (hCprod : 0 ≤ Cprod)
     (hGradSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-            (originCube d m) s p q p0 a) ^ 2) P)
+            (originCube d m) s p q p0 a.toFun) ^ 2) P)
     (hFluxSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-            (originCube d m) t p q q0 a) ^ 2) P)
+            (originCube d m) t p q q0 a.toFun) ^ 2) P)
     (hProductInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           cutoffProductBridgeRHS (originCube d m) s cutoffGradient
             (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) 1 p q q0 a)
+              (originCube d m) 1 p q q0 a.toFun)
             (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) s p q q0 a)
+              (originCube d m) s p q q0 a.toFun)
             ‖Ch04.canonicalScalarResponseFluxAverageCubeSet
-              (originCube d m) (originCube d m) p q a - q0‖
+              (originCube d m) (originCube d m) p q a.toFun - q0‖
             cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant) P)
     (hProductPoint :
       ∀ᵐ a ∂P,
         cutoffProductBridgeRHS (originCube d m) s cutoffGradient
             (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) 1 p q q0 a)
+              (originCube d m) 1 p q q0 a.toFun)
             (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) s p q q0 a)
+              (originCube d m) s p q q0 a.toFun)
             ‖Ch04.canonicalScalarResponseFluxAverageCubeSet
-              (originCube d m) (originCube d m) p q a - q0‖
+              (originCube d m) (originCube d m) p q a.toFun - q0‖
             cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant
           ≤
         Cprod *
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-              (originCube d m) s p q p0 a *
+              (originCube d m) s p q p0 a.toFun *
             Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) t p q q0 a)) :
+              (originCube d m) t p q q0 a.toFun)) :
     jUpperWeakNormExpectedRHSAtScale P m k s t cutoffGradient
         C Cosc scaleSep BφS BφT cutoffCircOne poincareConst cutoffConstant
         centeredCutoffConstant p q p0 q0
@@ -333,18 +333,18 @@ theorem jUpperWeakNormExpectedRHSAtScale_le_manuscriptExpectedRHSAtScale
   have hprod :
       ∫ a,
           cutoffProductBridgeRHS Q s cutoffGradient
-            (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a)
-            (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a)
-            ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a - q0‖
+            (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
+            (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q s p q q0 a.toFun)
+            ‖Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun - q0‖
             cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant ∂P
         ≤
           Cprod *
             (Real.sqrt
                 (∫ a,
-                  (Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a) ^ 2 ∂P) *
+                  (Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun) ^ 2 ∂P) *
               Real.sqrt
                 (∫ a,
-                  (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a) ^ 2 ∂P)) := by
+                  (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun) ^ 2 ∂P)) := by
     simpa [Q] using
       integral_cutoffProductBridgeRHS_le_weakNormSquareProduct
         (P := P) hP Q hs ht cutoffGradient cutoffCircOne poincareConst
@@ -360,11 +360,11 @@ theorem jUpperWeakNormExpectedRHSAtScale_le_manuscriptExpectedRHSAtScale
           ((1 / 2 : ℝ) * ‖q0‖ *
               ((((Fintype.card (Fin d) : ℝ) *
                 ((3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS)) *
-                  ∫ a, Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a ∂P)) +
+                  ∫ a, Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun ∂P)) +
             (1 / 2 : ℝ) * ‖p0‖ *
               ((((Fintype.card (Fin d) : ℝ) *
                 ((3 : ℝ) ^ ((d : ℝ) + t) * cubeBesovScaleWeight (-t) Q * BφT)) *
-                  ∫ a, Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a ∂P))))
+                  ∫ a, Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun ∂P))))
 
 /-- Composed private assembly landing on the manuscript-facing expected RHS.
 The only remaining non-manuscript input is the private deterministic product
@@ -388,49 +388,49 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpecte
       Integrable (Ch04.responseJObservableCubeSet R p q) P)
     (hGradWeak :
       Integrable
-        (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-          (originCube d m) s p q p0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet
+          (originCube d m) s p q p0 a.toFun) P)
     (hFluxWeak :
       Integrable
-        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-          (originCube d m) t p q q0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseFluxWeakNormCubeSet
+          (originCube d m) t p q q0 a.toFun) P)
     (hGradSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-            (originCube d m) s p q p0 a) ^ 2) P)
+            (originCube d m) s p q p0 a.toFun) ^ 2) P)
     (hFluxSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-            (originCube d m) t p q q0 a) ^ 2) P)
+            (originCube d m) t p q q0 a.toFun) ^ 2) P)
     (hProduct :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           cutoffProductBridgeRHS (originCube d m) s cutoffGradient
             (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) 1 p q q0 a)
+              (originCube d m) 1 p q q0 a.toFun)
             (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) s p q q0 a)
+              (originCube d m) s p q q0 a.toFun)
             ‖Ch04.canonicalScalarResponseFluxAverageCubeSet
-              (originCube d m) (originCube d m) p q a - q0‖
+              (originCube d m) (originCube d m) p q a.toFun - q0‖
             cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant) P)
     (hProductPoint :
       ∀ᵐ a ∂P,
         cutoffProductBridgeRHS (originCube d m) s cutoffGradient
             (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) 1 p q q0 a)
+              (originCube d m) 1 p q q0 a.toFun)
             (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) s p q q0 a)
+              (originCube d m) s p q q0 a.toFun)
             ‖Ch04.canonicalScalarResponseFluxAverageCubeSet
-              (originCube d m) (originCube d m) p q a - q0‖
+              (originCube d m) (originCube d m) p q a.toFun - q0‖
             cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant
           ≤
         Cprod *
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-              (originCube d m) s p q p0 a *
+              (originCube d m) s p q p0 a.toFun *
             Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-              (originCube d m) t p q q0 a))
+              (originCube d m) t p q q0 a.toFun))
     (hBound :
       ∀ᵐ a ∂P,
         |centeredJMinusCutoffWeightedChildAtScale m k φ p q p0 q0 a| ≤
@@ -483,22 +483,22 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpecte
       Integrable (Ch04.responseJObservableCubeSet R p q) P)
     (hGradWeak :
       Integrable
-        (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-          (originCube d m) s p q p0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet
+          (originCube d m) s p q p0 a.toFun) P)
     (hFluxWeak :
       Integrable
-        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-          (originCube d m) t p q q0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseFluxWeakNormCubeSet
+          (originCube d m) t p q q0 a.toFun) P)
     (hGradSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-            (originCube d m) s p q p0 a) ^ 2) P)
+            (originCube d m) s p q p0 a.toFun) ^ 2) P)
     (hFluxSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-            (originCube d m) t p q q0 a) ^ 2) P)
+            (originCube d m) t p q q0 a.toFun) ^ 2) P)
     (hBound :
       ∀ᵐ a ∂P,
         |centeredJMinusCutoffWeightedChildAtScale m k φ p q p0 q0 a| ≤
@@ -593,22 +593,22 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpecte
       Integrable (Ch04.responseJObservableCubeSet R p q) P)
     (hGradWeak :
       Integrable
-        (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-          (originCube d m) s p q p0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet
+          (originCube d m) s p q p0 a.toFun) P)
     (hFluxWeak :
       Integrable
-        (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-          (originCube d m) t p q q0) P)
+        (fun a : RegCoeffField d => Ch04.canonicalScalarResponseFluxWeakNormCubeSet
+          (originCube d m) t p q q0 a.toFun) P)
     (hGradSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseGradientWeakNormCubeSet
-            (originCube d m) s p q p0 a) ^ 2) P)
+            (originCube d m) s p q p0 a.toFun) ^ 2) P)
     (hFluxSq :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.canonicalScalarResponseFluxWeakNormCubeSet
-            (originCube d m) t p q q0 a) ^ 2) P) :
+            (originCube d m) t p q q0 a.toFun) ^ 2) P) :
     Ch04.expectedResponseJCubeSet P (originCube d m) p q -
         (1 / 2 : ℝ) * vecDot p0 q0 ≤
       jUpperWeakNormManuscriptExpectedRHSAtScale P m k s t

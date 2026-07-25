@@ -18,7 +18,7 @@ open Section54.VarianceBoundGoodScale
 theorem fullBlockFluctuationMatrixWithNormalizer_isSymm_of_isSymmetricBlockMat
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
-    (center : ℤ) (S : FullBlockMat d) {U : Set (Vec d)} {a : CoeffField d}
+    (center : ℤ) (S : FullBlockMat d) {U : Set (Vec d)} {a : RegCoeffField d}
     (hA : IsSymmetricBlockMat (coarseBlockMatrix U a)) :
     (fullBlockFluctuationMatrixWithNormalizer hP hStruct center S U a).IsSymm := by
   let A := coarseBlockMatrix U a
@@ -93,11 +93,11 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_le_probeSqBudg
     {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ) :
-    (fun a : CoeffField d =>
+    (fun a : RegCoeffField d =>
       descendantsAverageFluctuationOperatorNormSqWithNormalizer
         hP hStruct center S Q j a)
       ≤ᵐ[P]
-    fun a : CoeffField d =>
+    fun a : RegCoeffField d =>
       ((Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ)) *
         Section54.VarianceBoundGoodScale.fullBlockProbeSqBudget
           (descendantsAverageFluctuationMatrixWithNormalizer
@@ -118,7 +118,7 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
     (hcoord_int :
       ∀ α : BlockCoord d,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (fullBlockQuadratic
               (descendantsAverageFluctuationMatrixWithNormalizer
                 hP hStruct (m : ℤ) S (originCube d (n : ℤ)) (n - k) a)
@@ -126,7 +126,7 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
     (hplus_int :
       ∀ α β : BlockCoord d,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (fullBlockQuadratic
               (descendantsAverageFluctuationMatrixWithNormalizer
                 hP hStruct (m : ℤ) S (originCube d (n : ℤ)) (n - k) a)
@@ -134,7 +134,7 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
     (hminus_int :
       ∀ α β : BlockCoord d,
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (fullBlockQuadratic
               (descendantsAverageFluctuationMatrixWithNormalizer
                 hP hStruct (m : ℤ) S (originCube d (n : ℤ)) (n - k) a)
@@ -174,7 +174,7 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
                 3 * (Ccoord α + Cplus α β + Cminus α β)) := by
   let Q : TriadicCube d := originCube d (n : ℤ)
   let j : ℕ := n - k
-  let M : CoeffField d → FullBlockMat d :=
+  let M : RegCoeffField d → FullBlockMat d :=
     fun a =>
       descendantsAverageFluctuationMatrixWithNormalizer
         hP hStruct (m : ℤ) S Q j a
@@ -187,7 +187,7 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
         hP hStruct hP4 m n k hk S
   have hterm_int : ∀ α β : BlockCoord d,
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           3 *
             ((fullBlockQuadratic (M a)
                 (Section54.VarianceBoundGoodScale.fullBlockCoordinateProbe α)) ^ (2 : ℕ) +
@@ -198,7 +198,7 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
     intro α β
     have hsum :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             (fullBlockQuadratic (M a)
                 (Section54.VarianceBoundGoodScale.fullBlockCoordinateProbe α)) ^ (2 : ℕ) +
               (fullBlockQuadratic (M a)
@@ -207,21 +207,21 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
                 (Section54.VarianceBoundGoodScale.fullBlockMinusProbe α β)) ^ (2 : ℕ)) P := by
       have hci :
           Integrable
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               (fullBlockQuadratic (M a)
                 (Section54.VarianceBoundGoodScale.fullBlockCoordinateProbe α)) ^
                   (2 : ℕ)) P := by
         simpa [M, Q, j] using hcoord_int α
       have hpi :
           Integrable
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               (fullBlockQuadratic (M a)
                 (Section54.VarianceBoundGoodScale.fullBlockPlusProbe α β)) ^
                   (2 : ℕ)) P := by
         simpa [M, Q, j] using hplus_int α β
       have hmi :
           Integrable
-            (fun a : CoeffField d =>
+            (fun a : RegCoeffField d =>
               (fullBlockQuadratic (M a)
                 (Section54.VarianceBoundGoodScale.fullBlockMinusProbe α β)) ^
                   (2 : ℕ)) P := by
@@ -230,7 +230,7 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
     exact hsum.const_mul 3
   have hbudget_int :
         Integrable
-          (fun a : CoeffField d =>
+          (fun a : RegCoeffField d =>
             Section54.VarianceBoundGoodScale.fullBlockProbeSqBudget (M a)) P := by
     unfold Section54.VarianceBoundGoodScale.fullBlockProbeSqBudget
     refine (MeasureTheory.integrable_finset_sum _ ?_).const_mul _
@@ -239,11 +239,11 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
     intro β _hβ
     simpa [M] using hterm_int α β
   have hpoint :
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         descendantsAverageFluctuationOperatorNormSqWithNormalizer
           hP hStruct (m : ℤ) S Q j a)
       ≤ᵐ[P]
-        fun a : CoeffField d =>
+        fun a : RegCoeffField d =>
           ((Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ)) *
             Section54.VarianceBoundGoodScale.fullBlockProbeSqBudget (M a) := by
     simpa [M, Q, j] using
@@ -287,17 +287,17 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
       rw [integral_finset_sum]
       · congr
         ext β
-        let f : CoeffField d → ℝ :=
+        let f : RegCoeffField d → ℝ :=
           fun a =>
             (fullBlockQuadratic (M a)
               (Section54.VarianceBoundGoodScale.fullBlockCoordinateProbe α)) ^
                 (2 : ℕ)
-        let g : CoeffField d → ℝ :=
+        let g : RegCoeffField d → ℝ :=
           fun a =>
             (fullBlockQuadratic (M a)
               (Section54.VarianceBoundGoodScale.fullBlockPlusProbe α β)) ^
                 (2 : ℕ)
-        let h : CoeffField d → ℝ :=
+        let h : RegCoeffField d → ℝ :=
           fun a =>
             (fullBlockQuadratic (M a)
               (Section54.VarianceBoundGoodScale.fullBlockMinusProbe α β)) ^
@@ -315,7 +315,7 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
         change
           3 * ∫ a, (fun a => f a + g a) a + h a ∂P =
             3 * (∫ a, f a ∂P + ∫ a, g a ∂P + ∫ a, h a ∂P)
-        have hfg_fun : (fun a : CoeffField d => f a + g a) = f + g := by
+        have hfg_fun : (fun a : RegCoeffField d => f a + g a) = f + g := by
           ext a
           rfl
         rw [hfg_fun]

@@ -17,7 +17,7 @@ Upper large-scale positive-excess estimates.
 
 theorem section52_annealedMomentRoot_const_mul_of_nonneg
     {d : ℕ} {P : Ch04.CoeffLaw d} {ξ : ℕ} {c : ℝ}
-    {X : CoeffField d → ℝ}
+    {X : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ) (hc : 0 ≤ c) (hX_nonneg : ∀ a, 0 ≤ X a) :
     Ch04.annealedMomentRoot P ξ (fun a => c * X a) =
       c * Ch04.annealedMomentRoot P ξ X := by
@@ -75,7 +75,7 @@ theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff
           parents.sup' hparents
             (fun Q =>
               max
-                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                   Ch02.matrixNorm
                     (hP.barSigmaAtScale hStruct 0 •
                       (1 : Mat d)))
@@ -91,12 +91,12 @@ theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff
     (fun Q => section52UnitDescendantRosenthalBudget Q hP4.xi K)
   let parentFactor : ℝ := ((parents.card : ℝ) ^ (1 / (hP4.xi : ℝ)))
   let entryFactor : ℝ := (Fintype.card (Fin d) : ℝ) * (Fintype.card (Fin d) : ℝ)
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a =>
       parents.sup' hparents
         (fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm
                 (hP.barSigmaAtScale hStruct 0 •
                   (1 : Mat d)))
@@ -127,7 +127,7 @@ theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff
       (Finset.le_sup'
         (f := fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm
                 (hP.barSigmaAtScale hStruct 0 •
                   (1 : Mat d)))
@@ -190,7 +190,7 @@ theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff
             parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                     Ch02.matrixNorm
                       (hP.barSigmaAtScale hStruct 0 •
                         (1 : Mat d)))
@@ -220,12 +220,12 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow
       descendantsAtScale_nonempty (originCube d (m : ℤ))
         (section52LargeScaleSet_mem_le_m hn)
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ‖(section52LargeScaleWeight hP4.sUpper m n *
             parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                     Ch02.matrixNorm
                       (hP.barSigmaAtScale hStruct 0 •
                         (1 : Mat d)))
@@ -254,11 +254,11 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow
         hP4.upper_moment_integrable i j).1
   have hBase :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ‖(parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                     Ch02.matrixNorm
                       (hP.barSigmaAtScale hStruct 0 •
                         (1 : Mat d)))
@@ -273,12 +273,12 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow
         hP4.two_le_xi hOrigin
   have hconst :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ‖section52LargeScaleWeight hP4.sUpper m n‖ ^ hP4.xi *
             ‖(parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                     Ch02.matrixNorm
                       (hP.barSigmaAtScale hStruct 0 •
                         (1 : Mat d)))
@@ -295,7 +295,7 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow_source
     (hsSource : 0 < sSource) (hξ_one : 1 ≤ ξ) (hξ_two : 2 ≤ ξ)
     (hUpperSourceInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.LambdaSqCoeffField (originCube d 0) sSource (.finite 1) a) ^ ξ) P)
     {m : ℕ} {n : ℤ} (hn : n ∈ section52LargeScaleSet m) :
     let parents := descendantsAtScale (originCube d (m : ℤ)) n
@@ -303,12 +303,12 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow_source
       descendantsAtScale_nonempty (originCube d (m : ℤ))
         (section52LargeScaleSet_mem_le_m hn)
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         ‖(section52LargeScaleWeight r m n *
             parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                     Ch02.matrixNorm
                       (hP.barSigmaAtScale hStruct 0 •
                         (1 : Mat d)))
@@ -335,11 +335,11 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow_source
         hP hsSource hξ_one hUpperSourceInt i j).1
   have hBase :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ‖(parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                     Ch02.matrixNorm
                       (hP.barSigmaAtScale hStruct 0 •
                         (1 : Mat d)))
@@ -354,12 +354,12 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow_source
         hξ_two hOrigin
   have hconst :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ‖section52LargeScaleWeight r m n‖ ^ ξ *
             ‖(parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                     Ch02.matrixNorm
                       (hP.barSigmaAtScale hStruct 0 •
                         (1 : Mat d)))
@@ -379,12 +379,12 @@ theorem upperLargeScalePositiveExcess_aemeasurable
       descendantsAtScale_nonempty (originCube d (m : ℤ))
         (section52LargeScaleSet_mem_le_m hn)
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         section52LargeScaleWeight hP4.sUpper m n *
           parents.sup' hparents
             (fun Q =>
               max
-                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                   Ch02.matrixNorm
                     (hP.barSigmaAtScale hStruct 0 •
                       (1 : Mat d)))
@@ -405,12 +405,12 @@ theorem upperLargeScalePositiveExcess_aemeasurable_source
       descendantsAtScale_nonempty (originCube d (m : ℤ))
         (section52LargeScaleSet_mem_le_m hn)
     AEMeasurable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         section52LargeScaleWeight r m n *
           parents.sup' hparents
             (fun Q =>
               max
-                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                   Ch02.matrixNorm
                     (hP.barSigmaAtScale hStruct 0 •
                       (1 : Mat d)))
@@ -427,7 +427,7 @@ theorem upperLargeScalePositiveExcess_nonneg
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {m : ℕ} {n : ℤ} (hn : n ∈ section52LargeScaleSet m)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     let parents := descendantsAtScale (originCube d (m : ℤ)) n
     let hparents : parents.Nonempty :=
       descendantsAtScale_nonempty (originCube d (m : ℤ))
@@ -437,7 +437,7 @@ theorem upperLargeScalePositiveExcess_nonneg
         parents.sup' hparents
           (fun Q =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                 Ch02.matrixNorm
                   (hP.barSigmaAtScale hStruct 0 •
                     (1 : Mat d)))
@@ -449,14 +449,14 @@ theorem upperLargeScalePositiveExcess_nonneg
       parents.sup' hparents
         (fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm
                 (hP.barSigmaAtScale hStruct 0 •
                   (1 : Mat d)))
             0) := by
     rcases hparents with ⟨Q0, hQ0⟩
     exact (le_max_right
-        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q0) a).upperLeft -
+        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q0) a.toFun).upperLeft -
           Ch02.matrixNorm
             (hP.barSigmaAtScale hStruct 0 •
               (1 : Mat d)))
@@ -464,7 +464,7 @@ theorem upperLargeScalePositiveExcess_nonneg
       (Finset.le_sup'
         (f := fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm
                 (hP.barSigmaAtScale hStruct 0 •
                   (1 : Mat d)))
@@ -476,7 +476,7 @@ theorem upperLargeScalePositiveExcess_nonneg_source
     (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
     {r : ℝ} (hr_nonneg : 0 ≤ r)
     {m : ℕ} {n : ℤ} (hn : n ∈ section52LargeScaleSet m)
-    (a : CoeffField d) :
+    (a : RegCoeffField d) :
     let parents := descendantsAtScale (originCube d (m : ℤ)) n
     let hparents : parents.Nonempty :=
       descendantsAtScale_nonempty (originCube d (m : ℤ))
@@ -486,7 +486,7 @@ theorem upperLargeScalePositiveExcess_nonneg_source
         parents.sup' hparents
           (fun Q =>
             max
-              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+              (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                 Ch02.matrixNorm
                   (hP.barSigmaAtScale hStruct 0 •
                     (1 : Mat d)))
@@ -498,14 +498,14 @@ theorem upperLargeScalePositiveExcess_nonneg_source
       parents.sup' hparents
         (fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm
                 (hP.barSigmaAtScale hStruct 0 •
                   (1 : Mat d)))
             0) := by
     rcases hparents with ⟨Q0, hQ0⟩
     exact (le_max_right
-        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q0) a).upperLeft -
+        (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q0) a.toFun).upperLeft -
           Ch02.matrixNorm
             (hP.barSigmaAtScale hStruct 0 •
               (1 : Mat d)))
@@ -513,7 +513,7 @@ theorem upperLargeScalePositiveExcess_nonneg_source
       (Finset.le_sup'
         (f := fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm
                 (hP.barSigmaAtScale hStruct 0 •
                   (1 : Mat d)))
@@ -528,7 +528,7 @@ theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff_source
     (hξ_one : 1 ≤ ξ) (hξ_two : 2 ≤ ξ)
     (hUpperSourceInt :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           (Ch04.LambdaSqCoeffField (originCube d 0) sSource (.finite 1) a) ^ ξ) P)
     {m : ℕ} {n : ℤ} (hn : n ∈ section52LargeScaleSet m) :
     let parents := descendantsAtScale (originCube d (m : ℤ)) n
@@ -541,7 +541,7 @@ theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff_source
           parents.sup' hparents
             (fun Q =>
               max
-                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                   Ch02.matrixNorm
                     (hP.barSigmaAtScale hStruct 0 •
                       (1 : Mat d)))
@@ -558,12 +558,12 @@ theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff_source
     (fun Q => section52UnitDescendantRosenthalBudget Q ξ K)
   let parentFactor : ℝ := ((parents.card : ℝ) ^ (1 / (ξ : ℝ)))
   let entryFactor : ℝ := (Fintype.card (Fin d) : ℝ) * (Fintype.card (Fin d) : ℝ)
-  let X : CoeffField d → ℝ :=
+  let X : RegCoeffField d → ℝ :=
     fun a =>
       parents.sup' hparents
         (fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm
                 (hP.barSigmaAtScale hStruct 0 •
                   (1 : Mat d)))
@@ -626,7 +626,7 @@ theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff_source
       (Finset.le_sup'
         (f := fun Q =>
           max
-            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+            (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
               Ch02.matrixNorm
                 (hP.barSigmaAtScale hStruct 0 •
                   (1 : Mat d)))
@@ -699,7 +699,7 @@ theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff_source
             parents.sup' hparents
               (fun Q =>
                 max
-                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a).upperLeft -
+                  (Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft -
                     Ch02.matrixNorm
                       (hP.barSigmaAtScale hStruct 0 •
                         (1 : Mat d)))

@@ -99,11 +99,11 @@ theorem coordinateProbe_centeredDescendantAverage_abs_and_sq_le_refined
     let K := coordinateProbeRefinedDescendantAverageK hP4 delta j
     (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockCoordinateProbe α)) a| ∂P ≤ K) ∧
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockCoordinateProbe α)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) := by
   dsimp only
   let K0 := 2 * ((1 + delta) * widetildeThetaAtScale P 0 hP4)
@@ -114,7 +114,7 @@ theorem coordinateProbe_centeredDescendantAverage_abs_and_sq_le_refined
   have hroot :
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockCoordinateProbe α)) a| ^
           hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤ K := by
@@ -150,22 +150,22 @@ private theorem pairProbe_centeredDescendantAverage_abs_and_sq_le_refined_aux
       Integrable
           (fun a =>
             |Ch04.centeredOriginObservable P 0
-              (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+              (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 probe) a| ^ hP4.xi) P ∧
         Ch04.annealedMomentRoot P hP4.xi
             (fun a =>
               |Ch04.centeredOriginObservable P 0
-                (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+                (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                   probe) a|)
           ≤
             8 * ((1 + delta) * widetildeThetaAtScale P 0 hP4)) :
     let K := pairProbeRefinedDescendantAverageK hP4 delta j
     (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) probe) a| ∂P ≤ K) ∧
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ) probe) a| ∂P ≤ K) ∧
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) probe) a| ^
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ) probe) a| ^
             (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) := by
   dsimp only
   let K0 := 8 * ((1 + delta) * widetildeThetaAtScale P 0 hP4)
@@ -173,7 +173,7 @@ private theorem pairProbe_centeredDescendantAverage_abs_and_sq_le_refined_aux
   have hroot :
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) probe) a| ^
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ) probe) a| ^
           hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤ K := by
     have hraw :=
@@ -208,11 +208,11 @@ theorem plusProbe_centeredDescendantAverage_abs_and_sq_le_refined
     let K := pairProbeRefinedDescendantAverageK hP4 delta j
     (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockPlusProbe α β)) a| ∂P ≤ K) ∧
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockPlusProbe α β)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) :=
   pairProbe_centeredDescendantAverage_abs_and_sq_le_refined_aux
     hP hStruct hP4 hdelta_nonneg m j hgood_upper hgood_lower hαβ
@@ -238,11 +238,11 @@ theorem minusProbe_centeredDescendantAverage_abs_and_sq_le_refined
     let K := pairProbeRefinedDescendantAverageK hP4 delta j
     (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockMinusProbe α β)) a| ∂P ≤ K) ∧
       (∫ a,
         |Ch04.centeredDescendantAverage P 0 (j : ℤ)
-          (fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
+          (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockMinusProbe α β)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) :=
   pairProbe_centeredDescendantAverage_abs_and_sq_le_refined_aux
     hP hStruct hP4 hdelta_nonneg m j hgood_upper hgood_lower hαβ

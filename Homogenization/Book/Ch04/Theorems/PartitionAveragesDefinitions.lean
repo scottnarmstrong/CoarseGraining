@@ -22,14 +22,14 @@ noncomputable section
 
 /-- The origin observable centered by its expectation. -/
 noncomputable def centeredOriginObservable {d : ℕ} (P : CoeffLaw d)
-    (n : ℤ) (X : Set (Vec d) → CoeffField d → ℝ) : CoeffField d → ℝ :=
+    (n : ℤ) (X : Set (Vec d) → RegCoeffField d → ℝ) : RegCoeffField d → ℝ :=
   fun a => X (cubeSet (originCube d n)) a -
     ∫ b, X (cubeSet (originCube d n)) b ∂P
 
 /-- The uncentered descendant partition average over the scale-`n` descendants
 of the origin cube at scale `m`. -/
 noncomputable def descendantAverage {d : ℕ}
-    (n m : ℤ) (X : Set (Vec d) → CoeffField d → ℝ) : CoeffField d → ℝ :=
+    (n m : ℤ) (X : Set (Vec d) → RegCoeffField d → ℝ) : RegCoeffField d → ℝ :=
   fun a =>
     ((descendantsAtScale (originCube d m) n).card : ℝ)⁻¹ *
       ∑ R ∈ descendantsAtScale (originCube d m) n, X (cubeSet R) a
@@ -37,7 +37,7 @@ noncomputable def descendantAverage {d : ℕ}
 /-- The centered descendant partition average over the scale-`n` descendants of
 the origin cube at scale `m`. -/
 noncomputable def centeredDescendantAverage {d : ℕ} (P : CoeffLaw d)
-    (n m : ℤ) (X : Set (Vec d) → CoeffField d → ℝ) : CoeffField d → ℝ :=
+    (n m : ℤ) (X : Set (Vec d) → RegCoeffField d → ℝ) : RegCoeffField d → ℝ :=
   fun a =>
     ((descendantsAtScale (originCube d m) n).card : ℝ)⁻¹ *
       ∑ R ∈ descendantsAtScale (originCube d m) n,
@@ -46,8 +46,8 @@ noncomputable def centeredDescendantAverage {d : ℕ} (P : CoeffLaw d)
 /-- The uncentered descendant partition average over the scale-`n` descendants
 of an arbitrary parent cube. -/
 noncomputable def descendantAverageOnCube {d : ℕ}
-    (Q : TriadicCube d) (n : ℤ) (X : Set (Vec d) → CoeffField d → ℝ) :
-    CoeffField d → ℝ :=
+    (Q : TriadicCube d) (n : ℤ) (X : Set (Vec d) → RegCoeffField d → ℝ) :
+    RegCoeffField d → ℝ :=
   fun a =>
     ((descendantsAtScale Q n).card : ℝ)⁻¹ *
       ∑ R ∈ descendantsAtScale Q n, X (cubeSet R) a
@@ -55,8 +55,8 @@ noncomputable def descendantAverageOnCube {d : ℕ}
 /-- The centered descendant partition average over the scale-`n` descendants
 of an arbitrary parent cube, centered by the origin scale-`n` expectation. -/
 noncomputable def centeredDescendantAverageOnCube {d : ℕ} (P : CoeffLaw d)
-    (Q : TriadicCube d) (n : ℤ) (X : Set (Vec d) → CoeffField d → ℝ) :
-    CoeffField d → ℝ :=
+    (Q : TriadicCube d) (n : ℤ) (X : Set (Vec d) → RegCoeffField d → ℝ) :
+    RegCoeffField d → ℝ :=
   fun a =>
     ((descendantsAtScale Q n).card : ℝ)⁻¹ *
       ∑ R ∈ descendantsAtScale Q n,
@@ -64,7 +64,7 @@ noncomputable def centeredDescendantAverageOnCube {d : ℕ} (P : CoeffLaw d)
 
 /-- A.e.-equal observables have the same centered origin observable. -/
 theorem centeredOriginObservable_ae_eq_of_ae_eq {d : ℕ} {P : CoeffLaw d}
-    {n : ℤ} {X Y : Set (Vec d) → CoeffField d → ℝ}
+    {n : ℤ} {X Y : Set (Vec d) → RegCoeffField d → ℝ}
     (hXY :
       X (cubeSet (originCube d n)) =ᵐ[P] Y (cubeSet (originCube d n))) :
     centeredOriginObservable P n X =ᵐ[P] centeredOriginObservable P n Y := by
@@ -78,7 +78,7 @@ theorem centeredOriginObservable_ae_eq_of_ae_eq {d : ℕ} {P : CoeffLaw d}
 /-- A.e.-equal descendant observables have the same uncentered descendant
 average on a fixed parent cube. -/
 theorem descendantAverageOnCube_ae_eq_of_ae_eq {d : ℕ} {P : CoeffLaw d}
-    {Q : TriadicCube d} {n : ℤ} {X Y : Set (Vec d) → CoeffField d → ℝ}
+    {Q : TriadicCube d} {n : ℤ} {X Y : Set (Vec d) → RegCoeffField d → ℝ}
     (hXY :
       ∀ R, R ∈ descendantsAtScale Q n →
         X (cubeSet R) =ᵐ[P] Y (cubeSet R)) :
@@ -97,7 +97,7 @@ theorem descendantAverageOnCube_ae_eq_of_ae_eq {d : ℕ} {P : CoeffLaw d}
 for the centering constant, have the same centered descendant average on a
 fixed parent cube. -/
 theorem centeredDescendantAverageOnCube_ae_eq_of_ae_eq {d : ℕ} {P : CoeffLaw d}
-    {Q : TriadicCube d} {n : ℤ} {X Y : Set (Vec d) → CoeffField d → ℝ}
+    {Q : TriadicCube d} {n : ℤ} {X Y : Set (Vec d) → RegCoeffField d → ℝ}
     (hOrigin :
       X (cubeSet (originCube d n)) =ᵐ[P] Y (cubeSet (originCube d n)))
     (hDesc :
@@ -124,7 +124,7 @@ theorem centeredDescendantAverageOnCube_ae_eq_of_ae_eq {d : ℕ} {P : CoeffLaw d
 uncentered descendant average minus the origin-cube centering constant. -/
 theorem centeredDescendantAverageOnCube_eq_descendantAverageOnCube_sub
     {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {n : ℤ}
-    (hnQ : n ≤ Q.scale) (X : Set (Vec d) → CoeffField d → ℝ) :
+    (hnQ : n ≤ Q.scale) (X : Set (Vec d) → RegCoeffField d → ℝ) :
     centeredDescendantAverageOnCube P Q n X =
       fun a =>
         descendantAverageOnCube Q n X a -
@@ -147,24 +147,24 @@ theorem centeredDescendantAverageOnCube_eq_descendantAverageOnCube_sub
 /-- The response observable `U ↦ J(U,p,q;·)` used in the special partition
 average corollary. -/
 noncomputable abbrev responseJCubeObservable {d : ℕ} (p q : Vec d) :
-    Set (Vec d) → CoeffField d → ℝ :=
-  fun U a => ResponseJ U p q a
+    Set (Vec d) → RegCoeffField d → ℝ :=
+  fun U a => ResponseJ U p q a.toFun
 
 /-- The response observable on the origin cube, centered by its expectation. -/
 noncomputable abbrev centeredResponseJOriginObservable {d : ℕ} (P : CoeffLaw d)
-    (n : ℤ) (p q : Vec d) : CoeffField d → ℝ :=
+    (n : ℤ) (p q : Vec d) : RegCoeffField d → ℝ :=
   centeredOriginObservable P n (responseJCubeObservable p q)
 
 /-- The uncentered partition average of the response functional over scale-`n`
 descendants of the origin cube at scale `m`. -/
 noncomputable abbrev responseJDescendantAverage {d : ℕ}
-    (n m : ℤ) (p q : Vec d) : CoeffField d → ℝ :=
+    (n m : ℤ) (p q : Vec d) : RegCoeffField d → ℝ :=
   descendantAverage n m (responseJCubeObservable p q)
 
 /-- The centered partition average of the response functional over scale-`n`
 descendants of the origin cube at scale `m`. -/
 noncomputable abbrev centeredResponseJDescendantAverage {d : ℕ} (P : CoeffLaw d)
-    (n m : ℤ) (p q : Vec d) : CoeffField d → ℝ :=
+    (n m : ℤ) (p q : Vec d) : RegCoeffField d → ℝ :=
   centeredDescendantAverage P n m (responseJCubeObservable p q)
 
 /-- Cardinal square-root fluctuation scale of a triadic partition. -/

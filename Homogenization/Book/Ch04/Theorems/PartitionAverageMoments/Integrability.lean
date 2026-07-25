@@ -21,8 +21,8 @@ theorem integrable_abs_pow_centeredDescendantAverage_of_stationary_of_isTranslat
     {p : ℕ}
     (hn : 0 ≤ n) (hnm : n ≤ m)
     (hPstat : StationaryLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
-    (hX_cov : IsTranslationCovariant X)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
+    (hX_cov : IsTranslationCovariantR X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ R ∈ descendantsAtScale (originCube d m) n, AEMeasurable (X (cubeSet R)) P)
@@ -33,8 +33,8 @@ theorem integrable_abs_pow_centeredDescendantAverage_of_stationary_of_isTranslat
   have hp_nat_ne_zero : p ≠ 0 := by
     exact Nat.pos_iff_ne_zero.mp (lt_of_lt_of_le zero_lt_one hp)
   let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
-  let Y : Set (Vec d) → CoeffField d → ℝ := fun U a => X U a - μ0
-  have hY_cov : IsTranslationCovariant Y := by
+  let Y : Set (Vec d) → RegCoeffField d → ℝ := fun U a => X U a - μ0
+  have hY_cov : IsTranslationCovariantR Y := by
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_aemeas : AEMeasurable (Y (cubeSet (originCube d n))) P := by
@@ -42,7 +42,7 @@ theorem integrable_abs_pow_centeredDescendantAverage_of_stationary_of_isTranslat
   have hY0Lp_int :
       Integrable (fun a => |Y (cubeSet (originCube d n)) a| ^ p) P := by
     simpa [Y, μ0, centeredOriginObservable] using hX0Lp_int
-  let Z : TriadicCube d → CoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
+  let Z : TriadicCube d → RegCoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
   have hZ_aemeas :
       ∀ R ∈ descendantsAtScale (originCube d m) n, AEMeasurable (Z R) P := by
     intro R hR
@@ -88,14 +88,14 @@ theorem integrable_abs_pow_centeredDescendantAverage_of_stationary_of_isTranslat
                   (cubeSet (originCube d n)))) P := by
               rw [hshift]
         _ = Measure.map (Y (cubeSet (originCube d n))) P := by
-              exact map_eq_map_translateByInt_of_isTranslationCovariant_aemeasurable
+              exact map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
                 (P := P) hPstat (U := cubeSet (originCube d n)) hY0_aemeas hY_cov
                 (scaleTranslationShift n R)
     have hYR_int :
         Integrable (fun a => |Y (cubeSet R) a| ^ p) P := by
       exact integrable_abs_pow_of_map_eq_map_aemeasurable hYR_aemeas hY0_aemeas hmap hY0Lp_int
     simpa [Z, Y] using hYR_int
-  let S : CoeffField d → ℝ :=
+  let S : RegCoeffField d → ℝ :=
     fun a => ∑ R ∈ descendantsAtScale (originCube d m) n, Z R a
   have hS_memLp : MemLp S (p : ENNReal) P := by
     dsimp [S]
@@ -105,7 +105,7 @@ theorem integrable_abs_pow_centeredDescendantAverage_of_stationary_of_isTranslat
       (hZ_aemeas R hR).aestronglyMeasurable
       (by exact_mod_cast hp_nat_ne_zero) (by simp)).1 ?_
     simpa [Real.norm_eq_abs] using hZ_int R hR
-  let Aavg : CoeffField d → ℝ :=
+  let Aavg : RegCoeffField d → ℝ :=
     ((descendantsAtScale (originCube d m) n).card : ℝ)⁻¹ • S
   have hAavg_eq : Aavg = centeredDescendantAverage P n m X := by
     funext a
@@ -121,8 +121,8 @@ theorem integrable_abs_pow_centeredDescendantAverage_of_stationary
     {p : ℕ}
     (hn : 0 ≤ n) (hnm : n ≤ m)
     (hPstat : StationaryLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
-    (hX_cov : IsTranslationCovariant X)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
+    (hX_cov : IsTranslationCovariantR X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ R ∈ descendantsAtScale (originCube d m) n, AEMeasurable (X (cubeSet R)) P)
@@ -142,8 +142,8 @@ theorem integrable_abs_pow_centeredDescendantAverageOnCube_of_stationary_of_isTr
     {p : ℕ}
     (hn : 0 ≤ n) (hnQ : n ≤ Q.scale)
     (hPstat : StationaryLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
-    (hX_cov : IsTranslationCovariant X)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
+    (hX_cov : IsTranslationCovariantR X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ R ∈ descendantsAtScale Q n, AEMeasurable (X (cubeSet R)) P)
@@ -154,8 +154,8 @@ theorem integrable_abs_pow_centeredDescendantAverageOnCube_of_stationary_of_isTr
   have hp_nat_ne_zero : p ≠ 0 := by
     exact Nat.pos_iff_ne_zero.mp (lt_of_lt_of_le zero_lt_one hp)
   let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
-  let Y : Set (Vec d) → CoeffField d → ℝ := fun U a => X U a - μ0
-  have hY_cov : IsTranslationCovariant Y := by
+  let Y : Set (Vec d) → RegCoeffField d → ℝ := fun U a => X U a - μ0
+  have hY_cov : IsTranslationCovariantR Y := by
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_aemeas : AEMeasurable (Y (cubeSet (originCube d n))) P := by
@@ -163,7 +163,7 @@ theorem integrable_abs_pow_centeredDescendantAverageOnCube_of_stationary_of_isTr
   have hY0Lp_int :
       Integrable (fun a => |Y (cubeSet (originCube d n)) a| ^ p) P := by
     simpa [Y, μ0, centeredOriginObservable] using hX0Lp_int
-  let Z : TriadicCube d → CoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
+  let Z : TriadicCube d → RegCoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
   have hZ_aemeas :
       ∀ R ∈ descendantsAtScale Q n, AEMeasurable (Z R) P := by
     intro R hR
@@ -207,14 +207,14 @@ theorem integrable_abs_pow_centeredDescendantAverageOnCube_of_stationary_of_isTr
                   (cubeSet (originCube d n)))) P := by
               rw [hshift]
         _ = Measure.map (Y (cubeSet (originCube d n))) P := by
-              exact map_eq_map_translateByInt_of_isTranslationCovariant_aemeasurable
+              exact map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
                 (P := P) hPstat (U := cubeSet (originCube d n)) hY0_aemeas hY_cov
                 (scaleTranslationShift n R)
     have hYR_int :
         Integrable (fun a => |Y (cubeSet R) a| ^ p) P := by
       exact integrable_abs_pow_of_map_eq_map_aemeasurable hYR_aemeas hY0_aemeas hmap hY0Lp_int
     simpa [Z, Y] using hYR_int
-  let S : CoeffField d → ℝ :=
+  let S : RegCoeffField d → ℝ :=
     fun a => ∑ R ∈ descendantsAtScale Q n, Z R a
   have hS_memLp : MemLp S (p : ENNReal) P := by
     dsimp [S]
@@ -224,7 +224,7 @@ theorem integrable_abs_pow_centeredDescendantAverageOnCube_of_stationary_of_isTr
       (hZ_aemeas R hR).aestronglyMeasurable
       (by exact_mod_cast hp_nat_ne_zero) (by simp)).1 ?_
     simpa [Real.norm_eq_abs] using hZ_int R hR
-  let Aavg : CoeffField d → ℝ :=
+  let Aavg : RegCoeffField d → ℝ :=
     ((descendantsAtScale Q n).card : ℝ)⁻¹ • S
   have hAavg_eq : Aavg = centeredDescendantAverageOnCube P Q n X := by
     funext a
@@ -241,8 +241,8 @@ theorem integrable_abs_pow_centeredDescendantAverageOnCube_of_stationary
     {p : ℕ}
     (hn : 0 ≤ n) (hnQ : n ≤ Q.scale)
     (hPstat : StationaryLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
-    (hX_cov : IsTranslationCovariant X)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
+    (hX_cov : IsTranslationCovariantR X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ R ∈ descendantsAtScale Q n, AEMeasurable (X (cubeSet R)) P)
@@ -266,8 +266,8 @@ theorem integrable_finsetSup_abs_centeredDescendantAverageOnCube_pow_of_stationa
     (hn : 0 ≤ n)
     (hparent_scale : ∀ Q ∈ parents, n ≤ Q.scale)
     (hPstat : StationaryLaw P)
-    (X : Set (Vec d) → CoeffField d → ℝ)
-    (hX_cov : IsTranslationCovariant X)
+    (X : Set (Vec d) → RegCoeffField d → ℝ)
+    (hX_cov : IsTranslationCovariantR X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ Q ∈ parents, ∀ R ∈ descendantsAtScale Q n, AEMeasurable (X (cubeSet R)) P)
@@ -275,12 +275,12 @@ theorem integrable_finsetSup_abs_centeredDescendantAverageOnCube_pow_of_stationa
     (hX0Lp_int :
       Integrable (fun a => |centeredOriginObservable P n X a| ^ p) P) :
     Integrable
-      (fun a : CoeffField d =>
+      (fun a : RegCoeffField d =>
         (parents.sup' hparents
           (fun Q => |centeredDescendantAverageOnCube P Q n X a|)) ^ p) P := by
   have hsum_int :
       Integrable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           ∑ Q ∈ parents, |centeredDescendantAverageOnCube P Q n X a| ^ p) P :=
     MeasureTheory.integrable_finset_sum parents fun Q hQ =>
       integrable_abs_pow_centeredDescendantAverageOnCube_of_stationary
@@ -289,13 +289,13 @@ theorem integrable_finsetSup_abs_centeredDescendantAverageOnCube_pow_of_stationa
         (hX_desc_aemeas Q hQ) hp hX0Lp_int
   have hsup_aemeas :
       AEMeasurable
-        (fun a : CoeffField d =>
+        (fun a : RegCoeffField d =>
           parents.sup' hparents
             (fun Q => |centeredDescendantAverageOnCube P Q n X a|)) P := by
     have h :
         AEMeasurable
           (parents.sup' hparents
-            (fun Q (a : CoeffField d) =>
+            (fun Q (a : RegCoeffField d) =>
               |centeredDescendantAverageOnCube P Q n X a|)) P := by
       refine Finset.sup'_induction (s := parents) (H := hparents)
         (f := fun Q a => |centeredDescendantAverageOnCube P Q n X a|)
@@ -325,8 +325,8 @@ theorem integrable_finsetSup_abs_centeredDescendantAverageOnCube_pow_of_stationa
         simpa [Real.norm_eq_abs] using havg.norm
     convert h using 1
     ext a
-    exact (Finset.sup'_apply (C := fun _ : CoeffField d => ℝ) hparents
-      (fun Q (a : CoeffField d) =>
+    exact (Finset.sup'_apply (C := fun _ : RegCoeffField d => ℝ) hparents
+      (fun Q (a : RegCoeffField d) =>
         |centeredDescendantAverageOnCube P Q n X a|) a).symm
   refine Integrable.mono' hsum_int (hsup_aemeas.pow_const p).aestronglyMeasurable ?_
   refine Filter.Eventually.of_forall ?_

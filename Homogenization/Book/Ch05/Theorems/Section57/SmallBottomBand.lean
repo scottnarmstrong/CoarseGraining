@@ -59,7 +59,7 @@ theorem measureReal_smallBottomPairEvent_quenchedProbeEnvelope_le_weighted_row
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {Nentry q r n : ℕ},
         let K : ℝ := quenchedProbeEnvelopeConst d
-        let H : ℕ → ℕ → CoeffField d → ℝ :=
+        let H : ℕ → ℕ → RegCoeffField d → ℝ :=
           quenchedProbeEnvelope hP hStruct
         let S : Finset (NormalizedProbeIndex d) := Finset.univ
         let w : ℝ := ((3 ^ d : ℕ) : ℝ)
@@ -85,7 +85,7 @@ theorem measureReal_smallBottomPairEvent_quenchedProbeEnvelope_le_weighted_row
   classical
   letI : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
-  let H : ℕ → ℕ → CoeffField d → ℝ := quenchedProbeEnvelope hP hStruct
+  let H : ℕ → ℕ → RegCoeffField d → ℝ := quenchedProbeEnvelope hP hStruct
   let S : Finset (NormalizedProbeIndex d) := Finset.univ
   let w : ℝ := ((3 ^ d : ℕ) : ℝ)
   let scale : ℝ := K * (Ccrude * hΓ.thetaHat ^ (2 : ℕ))
@@ -248,7 +248,7 @@ theorem measureReal_smallBottomBadScaleEvent_quenchedProbeEnvelope_le_weighted_k
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {Nentry q : ℕ},
         let K : ℝ := quenchedProbeEnvelopeConst d
-        let H : ℕ → ℕ → CoeffField d → ℝ :=
+        let H : ℕ → ℕ → RegCoeffField d → ℝ :=
           quenchedProbeEnvelope hP hStruct
         let S : Finset (NormalizedProbeIndex d) := Finset.univ
         let w : ℝ := ((3 ^ d : ℕ) : ℝ)
@@ -273,7 +273,7 @@ theorem measureReal_smallBottomBadScaleEvent_quenchedProbeEnvelope_le_weighted_k
   classical
   letI : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
-  let H : ℕ → ℕ → CoeffField d → ℝ := quenchedProbeEnvelope hP hStruct
+  let H : ℕ → ℕ → RegCoeffField d → ℝ := quenchedProbeEnvelope hP hStruct
   let S : Finset (NormalizedProbeIndex d) := Finset.univ
   let w : ℝ := ((3 ^ d : ℕ) : ℝ)
   let scale : ℝ := K * (Ccrude * hΓ.thetaHat ^ (2 : ℕ))
@@ -281,7 +281,7 @@ theorem measureReal_smallBottomBadScaleEvent_quenchedProbeEnvelope_le_weighted_k
   let ρ : ℝ := (3 : ℝ) ^ (t - α)
   let N : ℕ := Nentry + q
   let C : ℝ := (S.card : ℝ) * w ^ Nentry * w ^ q
-  let E : ℕ → Fin Nentry → Set (CoeffField d) :=
+  let E : ℕ → Fin Nentry → Set (RegCoeffField d) :=
     fun r j => badPairEvent H t α N (N + r) j.val
   have hC_nonneg : 0 ≤ C := by dsimp [C]; positivity
   have hw_pos : 0 < w := by

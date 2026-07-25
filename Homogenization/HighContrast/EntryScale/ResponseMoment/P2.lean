@@ -26,7 +26,7 @@ theorem coarseFluctuationResponseMomentAtScale_le_two_sqrtTheta_terminalUncenter
     (he : Homogenization.Book.Ch02.vecNorm e = 1)
     (hTerminal_mem :
       MeasureTheory.MemLp
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           terminalUncenteredCoarseBlockNorm hP hStruct m
             (Homogenization.originCube d (k : ℤ)) a)
         (2 : ENNReal) P) :
@@ -34,7 +34,7 @@ theorem coarseFluctuationResponseMomentAtScale_le_two_sqrtTheta_terminalUncenter
       2 * Real.sqrt
           (Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ)) *
         Homogenization.Book.Ch04.annealedMomentRoot P 2
-          (fun a : Homogenization.CoeffField d =>
+          (fun a : Homogenization.RegCoeffField d =>
             terminalUncenteredCoarseBlockNorm hP hStruct m
               (Homogenization.originCube d (k : ℤ)) a) := by
   letI : MeasureTheory.IsProbabilityMeasure P := hP.isProbability
@@ -44,11 +44,11 @@ theorem coarseFluctuationResponseMomentAtScale_le_two_sqrtTheta_terminalUncenter
   let ζ := section53CoarseFluctuationZeta hP4
   let θ := Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ)
   let c := 2 * Real.sqrt θ
-  let T : Homogenization.CoeffField d → ℝ :=
+  let T : Homogenization.RegCoeffField d → ℝ :=
     fun a => terminalUncenteredCoarseBlockNorm hP hStruct m Q a
-  let X : Homogenization.CoeffField d → ℝ :=
+  let X : Homogenization.RegCoeffField d → ℝ :=
     fun a => Homogenization.Book.Ch04.responseJObservableCubeSet Q p_e q_e a
-  let Y : Homogenization.CoeffField d → ℝ := fun a => c * T a
+  let Y : Homogenization.RegCoeffField d → ℝ := fun a => c * T a
   have hζ_pos : 0 < ζ := by
     simpa [ζ] using section53CoarseFluctuationZeta_pos hP4
   have hζ_le_two : ζ ≤ (2 : ℝ) := by
@@ -96,7 +96,7 @@ theorem coarseFluctuationResponseMomentAtScale_le_two_sqrtTheta_terminalUncenter
         2 * Real.sqrt
             (Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ)) *
           Homogenization.Book.Ch04.annealedMomentRoot P 2
-            (fun a : Homogenization.CoeffField d =>
+            (fun a : Homogenization.RegCoeffField d =>
               terminalUncenteredCoarseBlockNorm hP hStruct m
                 (Homogenization.originCube d (k : ℤ)) a) := by
           rfl
@@ -227,7 +227,7 @@ theorem terminalUncenteredCoarseBlockNorm_le_centered_add_drift_add_one
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     terminalUncenteredCoarseBlockNorm hP hStruct m Q a ≤
       (terminalCoarseBlockDeviation hP hStruct m (fun x => x) k Q a).toReal +
         terminalAnnealedFullBlockDriftAtScales hP hStruct k m + 1 := by
@@ -304,15 +304,15 @@ theorem terminalCoarseBlockDeviation_origin_toReal_le_inv_weight_mul_stochasticM
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) {N k m : ℕ}
     (hNk : N ≤ k) (hkm : k ≤ m)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     (terminalCoarseBlockDeviation hP hStruct m
-        (fun x : Homogenization.CoeffField d => x) k
+        (fun x : Homogenization.RegCoeffField d => x) k
         (Homogenization.originCube d (k : ℤ)) a).toReal ≤
       ((terminalStochasticWeakWeight (d := d) hc m k
           (Homogenization.originCube d (k : ℤ)))⁻¹).toReal *
         terminalCoarseBlockStochasticMax hP hStruct hc N m
           (Homogenization.originCube d (m : ℤ))
-          (fun x : Homogenization.CoeffField d => x) a := by
+          (fun x : Homogenization.RegCoeffField d => x) a := by
   classical
   let Qm : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)
   let Rk : Homogenization.TriadicCube d := Homogenization.originCube d (k : ℤ)
@@ -320,10 +320,10 @@ theorem terminalCoarseBlockDeviation_origin_toReal_le_inv_weight_mul_stochasticM
     terminalStochasticWeakWeight (d := d) hc m
   let dev :=
     terminalCoarseBlockDeviation hP hStruct m
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   let env :=
     terminalCoarseBlockStochasticEnvelope hP hStruct N m Qm weak
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   have hkIcc : k ∈ Finset.Icc N m := Finset.mem_Icc.mpr ⟨hNk, hkm⟩
   have hRk : Rk ∈ Homogenization.descendantsAtDepth Qm (m - k) := by
     simpa only [Qm, Rk] using
@@ -374,7 +374,7 @@ theorem terminalCoarseBlockDeviation_origin_toReal_le_inv_weight_mul_stochasticM
     simpa [env, weak, Qm] using
       terminalCoarseBlockStochasticEnvelope_ne_top_of_weak_le_terminal
         hP hStruct N m Qm weak
-        (fun x : Homogenization.CoeffField d => x) hweak_bound a
+        (fun x : Homogenization.RegCoeffField d => x) hweak_bound a
   have hprod_ne_top : (weak k Rk)⁻¹ * env a ≠ ⊤ :=
     ENNReal.mul_ne_top (ENNReal.inv_ne_top.mpr hweak_ne_zero) henv_ne_top
   have htoReal :
@@ -382,7 +382,7 @@ theorem terminalCoarseBlockDeviation_origin_toReal_le_inv_weight_mul_stochasticM
     ENNReal.toReal_mono hprod_ne_top hdev_le
   calc
     (terminalCoarseBlockDeviation hP hStruct m
-        (fun x : Homogenization.CoeffField d => x) k
+        (fun x : Homogenization.RegCoeffField d => x) k
         (Homogenization.originCube d (k : ℤ)) a).toReal =
         (dev k Rk a).toReal := by rfl
     _ ≤ ((weak k Rk)⁻¹ * env a).toReal := htoReal
@@ -391,7 +391,7 @@ theorem terminalCoarseBlockDeviation_origin_toReal_le_inv_weight_mul_stochasticM
           (Homogenization.originCube d (k : ℤ)))⁻¹).toReal *
           terminalCoarseBlockStochasticMax hP hStruct hc N m
             (Homogenization.originCube d (m : ℤ))
-            (fun x : Homogenization.CoeffField d => x) a := by
+            (fun x : Homogenization.RegCoeffField d => x) a := by
           simp [terminalCoarseBlockStochasticMax,
             terminalCoarseBlockStochasticMaxOfWeak, ENNReal.toReal_mul,
             weak, env, Qm, Rk]
@@ -413,14 +413,14 @@ theorem terminalUncenteredCoarseBlockNorm_origin_le_stochasticMax_add_noDrop_dri
       noDropWindow rho
         (contrastExcessAtScale hP hStruct k)
         (contrastExcessAtScale hP hStruct m))
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     terminalUncenteredCoarseBlockNorm hP hStruct m
         (Homogenization.originCube d (k : ℤ)) a ≤
       ((terminalStochasticWeakWeight (d := d) hc m k
           (Homogenization.originCube d (k : ℤ)))⁻¹).toReal *
         terminalCoarseBlockStochasticMax hP hStruct hc N m
           (Homogenization.originCube d (m : ℤ))
-          (fun x : Homogenization.CoeffField d => x) a +
+          (fun x : Homogenization.RegCoeffField d => x) a +
         rho * contrastExcessAtScale hP hStruct m /
           (1 + contrastExcessAtScale hP hStruct m) + 1 := by
   have hsplit :=
@@ -436,7 +436,7 @@ theorem terminalUncenteredCoarseBlockNorm_origin_le_stochasticMax_add_noDrop_dri
     terminalUncenteredCoarseBlockNorm hP hStruct m
         (Homogenization.originCube d (k : ℤ)) a ≤
         (terminalCoarseBlockDeviation hP hStruct m
-          (fun x : Homogenization.CoeffField d => x) k
+          (fun x : Homogenization.RegCoeffField d => x) k
           (Homogenization.originCube d (k : ℤ)) a).toReal +
           terminalAnnealedFullBlockDriftAtScales hP hStruct k m + 1 := hsplit
     _ ≤
@@ -444,7 +444,7 @@ theorem terminalUncenteredCoarseBlockNorm_origin_le_stochasticMax_add_noDrop_dri
           (Homogenization.originCube d (k : ℤ)))⁻¹).toReal *
           terminalCoarseBlockStochasticMax hP hStruct hc N m
             (Homogenization.originCube d (m : ℤ))
-            (fun x : Homogenization.CoeffField d => x) a +
+            (fun x : Homogenization.RegCoeffField d => x) a +
           rho * contrastExcessAtScale hP hStruct m /
             (1 + contrastExcessAtScale hP hStruct m) + 1 := by
           nlinarith
@@ -470,22 +470,22 @@ theorem terminalUncenteredCoarseBlockNorm_origin_memLp_two_of_stochasticMax
       MeasureTheory.MemLp
         (terminalCoarseBlockStochasticMax hP hStruct hc N m
           (Homogenization.originCube d (m : ℤ))
-          (fun x : Homogenization.CoeffField d => x))
+          (fun x : Homogenization.RegCoeffField d => x))
         (2 : ENNReal) P) :
     MeasureTheory.MemLp
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         terminalUncenteredCoarseBlockNorm hP hStruct m
           (Homogenization.originCube d (k : ℤ)) a)
       (2 : ENNReal) P := by
   letI : MeasureTheory.IsProbabilityMeasure P := hP.isProbability
-  let T : Homogenization.CoeffField d → ℝ :=
+  let T : Homogenization.RegCoeffField d → ℝ :=
     fun a =>
       terminalUncenteredCoarseBlockNorm hP hStruct m
         (Homogenization.originCube d (k : ℤ)) a
-  let M : Homogenization.CoeffField d → ℝ :=
+  let M : Homogenization.RegCoeffField d → ℝ :=
     terminalCoarseBlockStochasticMax hP hStruct hc N m
       (Homogenization.originCube d (m : ℤ))
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   let c : ℝ :=
     ((terminalStochasticWeakWeight (d := d) hc m k
       (Homogenization.originCube d (k : ℤ)))⁻¹).toReal
@@ -499,7 +499,7 @@ theorem terminalUncenteredCoarseBlockNorm_origin_memLp_two_of_stochasticMax
   have hR_mem : MeasureTheory.MemLp (fun a => c * M a + A) (2 : ENNReal) P := by
     have hcM_mem : MeasureTheory.MemLp (fun a => c * M a) (2 : ENNReal) P := by
       simpa [M, c] using hM_mem.const_mul c
-    have hA_mem : MeasureTheory.MemLp (fun _ : Homogenization.CoeffField d => A)
+    have hA_mem : MeasureTheory.MemLp (fun _ : Homogenization.RegCoeffField d => A)
         (2 : ENNReal) P :=
       MeasureTheory.memLp_const A
     simpa [Pi.add_apply] using hcM_mem.add hA_mem
@@ -542,10 +542,10 @@ theorem terminalUncenteredCoarseBlockNorm_origin_annealedMomentRoot_two_le_stoch
       MeasureTheory.MemLp
         (terminalCoarseBlockStochasticMax hP hStruct hc N m
           (Homogenization.originCube d (m : ℤ))
-          (fun x : Homogenization.CoeffField d => x))
+          (fun x : Homogenization.RegCoeffField d => x))
         (2 : ENNReal) P) :
     Homogenization.Book.Ch04.annealedMomentRoot P 2
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           terminalUncenteredCoarseBlockNorm hP hStruct m
             (Homogenization.originCube d (k : ℤ)) a) ≤
       rho * contrastExcessAtScale hP hStruct m /
@@ -555,23 +555,23 @@ theorem terminalUncenteredCoarseBlockNorm_origin_annealedMomentRoot_two_le_stoch
           Homogenization.Book.Ch04.annealedMomentRoot P 2
             (terminalCoarseBlockStochasticMax hP hStruct hc N m
               (Homogenization.originCube d (m : ℤ))
-              (fun x : Homogenization.CoeffField d => x)) := by
+              (fun x : Homogenization.RegCoeffField d => x)) := by
   letI : MeasureTheory.IsProbabilityMeasure P := hP.isProbability
-  let T : Homogenization.CoeffField d → ℝ :=
+  let T : Homogenization.RegCoeffField d → ℝ :=
     fun a =>
       terminalUncenteredCoarseBlockNorm hP hStruct m
         (Homogenization.originCube d (k : ℤ)) a
-  let M : Homogenization.CoeffField d → ℝ :=
+  let M : Homogenization.RegCoeffField d → ℝ :=
     terminalCoarseBlockStochasticMax hP hStruct hc N m
       (Homogenization.originCube d (m : ℤ))
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   let c : ℝ :=
     ((terminalStochasticWeakWeight (d := d) hc m k
       (Homogenization.originCube d (k : ℤ)))⁻¹).toReal
   let A : ℝ :=
     rho * contrastExcessAtScale hP hStruct m /
       (1 + contrastExcessAtScale hP hStruct m) + 1
-  let E : Homogenization.CoeffField d → ℝ := fun a => c * M a
+  let E : Homogenization.RegCoeffField d → ℝ := fun a => c * M a
   have hF_nonneg : 0 ≤ contrastExcessAtScale hP hStruct m :=
     contrastExcessAtScale_nonneg_of_P4 hP hStruct hP4 m
   have hden_pos : 0 < 1 + contrastExcessAtScale hP hStruct m := by linarith
@@ -648,7 +648,7 @@ theorem terminalUncenteredCoarseBlockNorm_origin_annealedMomentRoot_two_le_stoch
             Homogenization.Book.Ch04.annealedMomentRoot P 2
               (terminalCoarseBlockStochasticMax hP hStruct hc N m
                 (Homogenization.originCube d (m : ℤ))
-                (fun x : Homogenization.CoeffField d => x)) := by
+                (fun x : Homogenization.RegCoeffField d => x)) := by
           rfl
 
 /--
@@ -722,22 +722,22 @@ theorem terminalUncenteredCoarseBlockNorm_origin_annealedMomentRoot_two_le_windo
       MeasureTheory.MemLp
         (terminalCoarseBlockStochasticMax hP hStruct hc N m
           (Homogenization.originCube d (m : ℤ))
-          (fun x : Homogenization.CoeffField d => x))
+          (fun x : Homogenization.RegCoeffField d => x))
         (2 : ENNReal) P) :
     Homogenization.Book.Ch04.annealedMomentRoot P 2
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           terminalUncenteredCoarseBlockNorm hP hStruct m
             (Homogenization.originCube d (k : ℤ)) a) ≤
       (3 : ℝ) ^ (hc.rhoM * (L : ℝ)) *
           Homogenization.Book.Ch04.annealedMomentRoot P 2
             (terminalCoarseBlockStochasticMax hP hStruct hc N m
               (Homogenization.originCube d (m : ℤ))
-              (fun x : Homogenization.CoeffField d => x)) + 2 := by
+              (fun x : Homogenization.RegCoeffField d => x)) + 2 := by
   letI : MeasureTheory.IsProbabilityMeasure P := hP.isProbability
-  let M : Homogenization.CoeffField d → ℝ :=
+  let M : Homogenization.RegCoeffField d → ℝ :=
     terminalCoarseBlockStochasticMax hP hStruct hc N m
       (Homogenization.originCube d (m : ℤ))
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   let c : ℝ :=
     ((terminalStochasticWeakWeight (d := d) hc m k
       (Homogenization.originCube d (k : ℤ)))⁻¹).toReal
@@ -775,7 +775,7 @@ theorem terminalUncenteredCoarseBlockNorm_origin_annealedMomentRoot_two_le_windo
       hP hStruct hP4 hc hrho_nonneg hNk hkm hno hM_mem
   calc
     Homogenization.Book.Ch04.annealedMomentRoot P 2
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           terminalUncenteredCoarseBlockNorm hP hStruct m
             (Homogenization.originCube d (k : ℤ)) a)
         ≤ A + c * Homogenization.Book.Ch04.annealedMomentRoot P 2 M := by
@@ -788,7 +788,7 @@ theorem terminalUncenteredCoarseBlockNorm_origin_annealedMomentRoot_two_le_windo
             Homogenization.Book.Ch04.annealedMomentRoot P 2
               (terminalCoarseBlockStochasticMax hP hStruct hc N m
                 (Homogenization.originCube d (m : ℤ))
-                (fun x : Homogenization.CoeffField d => x)) + 2 := by
+                (fun x : Homogenization.RegCoeffField d => x)) + 2 := by
           rw [add_comm]
 
 /--
@@ -799,7 +799,7 @@ response estimate.
 theorem memLp_two_and_annealedMomentRoot_two_le_of_lintegral_enorm_sq_le
     {d : ℕ} {P : Homogenization.Book.Ch04.CoeffLaw d}
     [MeasureTheory.IsProbabilityMeasure P]
-    {X : Homogenization.CoeffField d → ℝ} {η : ℝ}
+    {X : Homogenization.RegCoeffField d → ℝ} {η : ℝ}
     (hX_meas : MeasureTheory.AEStronglyMeasurable X P)
     (hX_nonneg : ∀ a, 0 ≤ X a) (hη_nonneg : 0 ≤ η)
     (hlin :
@@ -872,16 +872,16 @@ theorem exists_bufferExponent_terminalCoarseBlockStochasticMax_annealedMomentRoo
             m →
           HighCenteredMomentEstimate hm P N
             (intermediateCoarseBlockDeviation hP hStruct
-              (fun x : Homogenization.CoeffField d => x)) →
+              (fun x : Homogenization.RegCoeffField d => x)) →
           MeasureTheory.MemLp
             (terminalCoarseBlockStochasticMax hP hStruct hc N m
               (Homogenization.originCube d (m : ℤ))
-              (fun x : Homogenization.CoeffField d => x))
+              (fun x : Homogenization.RegCoeffField d => x))
             (2 : ENNReal) P ∧
           Homogenization.Book.Ch04.annealedMomentRoot P 2
             (terminalCoarseBlockStochasticMax hP hStruct hc N m
               (Homogenization.originCube d (m : ℤ))
-              (fun x : Homogenization.CoeffField d => x)) ≤ η_M := by
+              (fun x : Homogenization.RegCoeffField d => x)) ≤ η_M := by
   let η_sq : ℝ := η_M ^ 2
   let η_total : ℝ := 2 * η_sq
   let η_terminal : ℝ := η_sq ^ (hm.Q / 2)
@@ -900,10 +900,10 @@ theorem exists_bufferExponent_terminalCoarseBlockStochasticMax_annealedMomentRoo
   refine ⟨B, hB_one, ?_⟩
   intro P hP hStruct hP4 N m hNstar hHM
   letI : MeasureTheory.IsProbabilityMeasure P := hP.isProbability
-  let M : Homogenization.CoeffField d → ℝ :=
+  let M : Homogenization.RegCoeffField d → ℝ :=
     terminalCoarseBlockStochasticMax hP hStruct hc N m
       (Homogenization.originCube d (m : ℤ))
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   have hQscale : (Homogenization.originCube d (m : ℤ)).scale = (m : ℤ) := by
     simp [Homogenization.originCube]
   have hM_meas :
@@ -913,7 +913,7 @@ theorem exists_bufferExponent_terminalCoarseBlockStochasticMax_annealedMomentRoo
         hP hStruct hP4 hc N m
   have hlin_raw :=
     hB hP hStruct hP4 P (Homogenization.originCube d (m : ℤ))
-      hQscale hNstar (fun x : Homogenization.CoeffField d => x) hM_meas hHM
+      hQscale hNstar (fun x : Homogenization.RegCoeffField d => x) hM_meas hHM
   have hbudget :
       (ENNReal.ofReal η_terminal) ^ ((2 : ℝ) / hm.Q) =
         ENNReal.ofReal η_sq := by

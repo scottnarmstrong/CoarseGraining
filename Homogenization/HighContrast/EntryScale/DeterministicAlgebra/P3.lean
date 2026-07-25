@@ -133,7 +133,7 @@ Source label `a.HM`: LIH full-block coarse matrix process on a triadic cube.
 The scale parameter is present only to match the high-moment observable shape.
 -/
 noncomputable def coarseFullBlockMatrixAtCubeProcess
-    {Ω : Type*} {d : ℕ} (a : Ω → Homogenization.CoeffField d) :
+    {Ω : Type*} {d : ℕ} (a : Ω → Homogenization.RegCoeffField d) :
     ℕ → Homogenization.TriadicCube d → Ω → Homogenization.FullBlockMat d :=
   fun _j Q ω => Homogenization.Book.Ch04.coarseFullBlockMatrixAtCube Q (a ω)
 
@@ -147,7 +147,7 @@ noncomputable def intermediateCoarseBlockDeviation
     {P : Homogenization.Book.Ch04.CoeffLaw d}
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
-    (a : Ω → Homogenization.CoeffField d) :
+    (a : Ω → Homogenization.RegCoeffField d) :
     ℕ → Homogenization.TriadicCube d → Ω → ENNReal :=
   intermediateCenteredFullBlockDeviation hP hStruct
     (coarseFullBlockMatrixAtCubeProcess a)
@@ -161,7 +161,7 @@ noncomputable def terminalCoarseBlockDeviation
     {P : Homogenization.Book.Ch04.CoeffLaw d}
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
-    (m : ℕ) (a : Ω → Homogenization.CoeffField d) :
+    (m : ℕ) (a : Ω → Homogenization.RegCoeffField d) :
     ℕ → Homogenization.TriadicCube d → Ω → ENNReal :=
   terminalCenteredFullBlockDeviation hP hStruct m
     (coarseFullBlockMatrixAtCubeProcess a)
@@ -176,7 +176,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_eq_terminal_norm_sq
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     Homogenization.Book.Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct (m : ℤ) Q a =
       fullBlockOperatorNorm
@@ -201,7 +201,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_stochastic_ad
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (j m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     Homogenization.Book.Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct (m : ℤ) Q a ≤
       2 *

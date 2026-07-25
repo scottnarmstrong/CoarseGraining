@@ -46,10 +46,13 @@ theorem integrable_centeredResponseJStarObservableCubeSet
     Integrable (centeredResponseJStarObservableCubeSet hP hStruct m Q p q) P := by
   have hJAdj :
       Integrable
-        (fun a : CoeffField d =>
-          Ch04.responseJObservableCubeSet Q p q (adjointCoeffField a)) P :=
-    integrable_comp_adjointCoeffField_of_isAdjointInvariantInLaw hAdj
-      (Ch04.responseJObservableCubeSet Q p q) hJ
+        (fun a : RegCoeffField d =>
+          Ch04.responseJObservableCubeSet Q p q (adjointReg a)) P :=
+    by
+      have hFmap : Integrable (Ch04.responseJObservableCubeSet Q p q)
+          (Measure.map (adjointReg (d := d)) P) := by rwa [hAdj]
+      simpa [Function.comp_def] using
+        hFmap.comp_measurable (measurable_adjointReg (d := d))
   simpa [centeredResponseJStarObservableCubeSet] using
     hJAdj.sub (integrable_const _)
 
@@ -63,7 +66,7 @@ theorem integral_centeredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_
         scalarizedResponseCenteringTerm hP hStruct m p q := by
   have hConst :
       Integrable
-        (fun _ : CoeffField d =>
+        (fun _ : RegCoeffField d =>
           scalarizedResponseCenteringTerm hP hStruct m p q) P :=
     integrable_const _
   calc
@@ -75,7 +78,7 @@ theorem integral_centeredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_
           rfl
     _ =
       ∫ a, Ch04.responseJObservableCubeSet Q p q a ∂P -
-        ∫ _a : CoeffField d,
+        ∫ _a : RegCoeffField d,
           scalarizedResponseCenteringTerm hP hStruct m p q ∂P := by
           rw [integral_sub hJ hConst]
     _ =
@@ -96,32 +99,34 @@ theorem integral_centeredResponseJStarObservableCubeSet_eq_expectedResponseJCube
         scalarizedResponseCenteringTerm hP hStruct m p q := by
   have hJAdj :
       Integrable
-        (fun a : CoeffField d =>
-          Ch04.responseJObservableCubeSet Q p q (adjointCoeffField a)) P :=
-    integrable_comp_adjointCoeffField_of_isAdjointInvariantInLaw hAdj
-      (Ch04.responseJObservableCubeSet Q p q) hJ
+        (fun a : RegCoeffField d =>
+          Ch04.responseJObservableCubeSet Q p q (adjointReg a)) P :=
+    by
+      have hFmap : Integrable (Ch04.responseJObservableCubeSet Q p q)
+          (Measure.map (adjointReg (d := d)) P) := by rwa [hAdj]
+      simpa [Function.comp_def] using
+        hFmap.comp_measurable (measurable_adjointReg (d := d))
   have hConst :
       Integrable
-        (fun _ : CoeffField d =>
+        (fun _ : RegCoeffField d =>
           scalarizedResponseCenteringTerm hP hStruct m p q) P :=
     integrable_const _
   calc
     ∫ a, centeredResponseJStarObservableCubeSet hP hStruct m Q p q a ∂P
         =
       ∫ a,
-        Ch04.responseJObservableCubeSet Q p q (adjointCoeffField a) -
+        Ch04.responseJObservableCubeSet Q p q (adjointReg a) -
           scalarizedResponseCenteringTerm hP hStruct m p q ∂P := by
           rfl
     _ =
-      ∫ a, Ch04.responseJObservableCubeSet Q p q (adjointCoeffField a) ∂P -
-        ∫ _a : CoeffField d,
+      ∫ a, Ch04.responseJObservableCubeSet Q p q (adjointReg a) ∂P -
+        ∫ _a : RegCoeffField d,
           scalarizedResponseCenteringTerm hP hStruct m p q ∂P := by
           rw [integral_sub hJAdj hConst]
     _ =
       ∫ a, Ch04.responseJObservableCubeSet Q p q a ∂P -
         scalarizedResponseCenteringTerm hP hStruct m p q := by
-          rw [integral_comp_adjointCoeffField_eq_of_isAdjointInvariantInLaw hAdj
-            (Ch04.responseJObservableCubeSet Q p q) hJ.aestronglyMeasurable]
+          rw [hAdj.integral_comp_adjointReg (Ch04.responseJObservableCubeSet Q p q) hJ.aestronglyMeasurable]
           rw [integral_const]
           simp [Measure.real, IsProbabilityMeasure.measure_univ]
     _ =

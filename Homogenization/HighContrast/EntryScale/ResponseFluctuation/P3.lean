@@ -72,12 +72,12 @@ theorem lintegral_ofReal_terminalCenteredFullBlockFluctuationSqAtScale_sum_le_wi
     (hHM :
       HighCenteredMomentEstimate hm P N
         (intermediateCoarseBlockDeviation hP hStruct
-          (fun x : Homogenization.CoeffField d => x)))
+          (fun x : Homogenization.RegCoeffField d => x)))
     (hM :
       MeasureTheory.AEStronglyMeasurable
         (terminalCoarseBlockStochasticMax hP hStruct hc N m
           (Homogenization.originCube d (m : ℤ))
-          (fun x : Homogenization.CoeffField d => x)) P) :
+          (fun x : Homogenization.RegCoeffField d => x)) P) :
     ∑ j ∈ Finset.Icc (k + 1) m,
         ENNReal.ofReal (section53CoarseFluctuationScaleWeight hP4 m j) *
           ∫⁻ a,
@@ -99,7 +99,7 @@ theorem lintegral_ofReal_terminalCenteredFullBlockFluctuationSqAtScale_sum_le_wi
     ∫⁻ a,
       (terminalCoarseBlockStochasticEnvelope hP hStruct N m Qm
         (terminalStochasticWeakWeight (d := d) hc m)
-        (fun x : Homogenization.CoeffField d => x) a) ^ 2 ∂P
+        (fun x : Homogenization.RegCoeffField d => x) a) ^ 2 ∂P
   let weightLoss : ENNReal :=
     ∑ j ∈ Finset.Icc (k + 1) m,
       ENNReal.ofReal (section53CoarseFluctuationScaleWeight hP4 m j) *
@@ -136,7 +136,7 @@ theorem lintegral_ofReal_terminalCenteredFullBlockFluctuationSqAtScale_sum_le_wi
     simpa [envIntegral, Qm] using
       lintegral_terminalCoarseBlockStochasticEnvelope_sq_terminalWeak_le_polynomial_convolution_of_highMoment
         hP hStruct hP4 hm P Qm hNm hQm_scale
-        (fun x : Homogenization.CoeffField d => x) hHM hM
+        (fun x : Homogenization.RegCoeffField d => x) hHM hM
   calc
     ∑ j ∈ Finset.Icc (k + 1) m,
         ENNReal.ofReal (section53CoarseFluctuationScaleWeight hP4 m j) *
@@ -180,7 +180,7 @@ theorem exists_bufferExponent_lintegral_ofReal_terminalCenteredFullBlockFluctuat
             m →
           HighCenteredMomentEstimate hm P N
             (intermediateCoarseBlockDeviation hP hStruct
-              (fun x : Homogenization.CoeffField d => x)) →
+              (fun x : Homogenization.RegCoeffField d => x)) →
           ∑ j ∈ Finset.Icc (k + 1) m,
               ENNReal.ofReal (section53CoarseFluctuationScaleWeight hP4 m j) *
                 ∫⁻ a,
@@ -294,7 +294,7 @@ theorem exists_bufferExponent_terminalCenteredFullBlockFluctuationSqAtScale_inte
             m →
           HighCenteredMomentEstimate hm P N
             (intermediateCoarseBlockDeviation hP hStruct
-              (fun x : Homogenization.CoeffField d => x)) →
+              (fun x : Homogenization.RegCoeffField d => x)) →
           ∑ j ∈ Finset.Icc (k + 1) m,
               section53CoarseFluctuationScaleWeight hP4 m j *
                 ∫ a,
@@ -333,7 +333,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_terminalCente
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (j m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     Homogenization.Book.Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct (m : ℤ) Q a ≤
       2 * terminalCenteredFullBlockFluctuationSqAtScale hP hStruct j m Q a +
@@ -367,11 +367,11 @@ theorem coarseFluctuationFullBlockSumAtScale_le_two_terminalCentered_integral_su
   letI : MeasureTheory.IsProbabilityMeasure P := hP.isProbability
   let S := Finset.Icc (k + 1) m
   let w : ℕ → ℝ := section53CoarseFluctuationScaleWeight hP4 m
-  let fluct : ℕ → Homogenization.CoeffField d → ℝ :=
+  let fluct : ℕ → Homogenization.RegCoeffField d → ℝ :=
     fun j a =>
       Homogenization.Book.Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct (m : ℤ) (Homogenization.originCube d (j : ℤ)) a
-  let centered : ℕ → Homogenization.CoeffField d → ℝ :=
+  let centered : ℕ → Homogenization.RegCoeffField d → ℝ :=
     fun j a =>
       terminalCenteredFullBlockFluctuationSqAtScale hP hStruct j m
         (Homogenization.originCube d (j : ℤ)) a
@@ -396,12 +396,12 @@ theorem coarseFluctuationFullBlockSumAtScale_le_two_terminalCentered_integral_su
           hP hStruct hP4 j m
     have hrhs_int :
         MeasureTheory.Integrable
-          (fun a : Homogenization.CoeffField d =>
+          (fun a : Homogenization.RegCoeffField d =>
             2 * centered j a + 2 * drift j) P :=
       (hcentered_int.const_mul 2).add (MeasureTheory.integrable_const (2 * drift j))
     have hpoint :
         fluct j ≤ᵐ[P]
-          fun a : Homogenization.CoeffField d => 2 * centered j a + 2 * drift j := by
+          fun a : Homogenization.RegCoeffField d => 2 * centered j a + 2 * drift j := by
       refine Filter.Eventually.of_forall ?_
       intro a
       exact
@@ -412,13 +412,13 @@ theorem coarseFluctuationFullBlockSumAtScale_le_two_terminalCentered_integral_su
           ∫ a, 2 * centered j a + 2 * drift j ∂P :=
         MeasureTheory.integral_mono_of_nonneg hfluct_nonneg hrhs_int hpoint
       _ = ∫ a, 2 * centered j a ∂P +
-          ∫ _ : Homogenization.CoeffField d, 2 * drift j ∂P := by
+          ∫ _ : Homogenization.RegCoeffField d, 2 * drift j ∂P := by
         rw [MeasureTheory.integral_add
           (hcentered_int.const_mul 2) (MeasureTheory.integrable_const (2 * drift j))]
       _ = 2 * (∫ a, centered j a ∂P) + 2 * drift j := by
         rw [MeasureTheory.integral_const_mul]
         rw [MeasureTheory.integral_eq_const
-          (μ := P) (Filter.Eventually.of_forall (fun _ : Homogenization.CoeffField d => rfl))]
+          (μ := P) (Filter.Eventually.of_forall (fun _ : Homogenization.RegCoeffField d => rfl))]
   have hsum :
       ∑ j ∈ S, w j * (∫ a, fluct j a ∂P) ≤
         ∑ j ∈ S, w j *
@@ -688,7 +688,7 @@ theorem exists_bufferExponent_terminal_weight_mul_coarseFluctuationFullBlockSumA
             m →
           HighCenteredMomentEstimate hm P N
             (intermediateCoarseBlockDeviation hP hStruct
-              (fun x : Homogenization.CoeffField d => x)) →
+              (fun x : Homogenization.RegCoeffField d => x)) →
           0 < delta →
           delta ≤ contrastExcessAtScale hP hStruct m →
           T_m =

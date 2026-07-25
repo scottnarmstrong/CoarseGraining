@@ -175,7 +175,7 @@ theorem exists_shifted_quenchedLocalizedEstimate_uniformEndpoint_expLogSq
               annealedAlgebraicEntryScale P
                 hInf.toQuantitativeCoarseGrainedEllipticity Centry
             let η : ℝ := ((d : ℕ) : ℝ)
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hInf.thetaHat)) ^ (2 : ℕ))) ∧
@@ -233,7 +233,7 @@ theorem exists_shifted_quenchedLocalizedEstimate_uniformEndpoint_expLogSq
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hInf.toQuantitativeCoarseGrainedEllipticity Centry
-  let Hshift : ℕ → ℕ → CoeffField d → ℝ :=
+  let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>
       quenchedProbeEnvelope hP hStruct (N0 + M) (N0 + N) aω
   let Dhigh : ℝ := 2 * K * Cfluct * hInf.thetaHat ^ (2 : ℕ)
@@ -253,8 +253,8 @@ theorem exists_shifted_quenchedLocalizedEstimate_uniformEndpoint_expLogSq
         (t * Real.log (3 : ℝ)))
   let Qcut : ℕ := Nat.ceil ((L + 1) / (1 - αbad / a) + 1)
   let Q : ℕ := max Qpref (max Qlead (max Qcrude Qcut))
-  let Bad : ℕ → Set (CoeffField d) := badScaleEvent Hshift t αbad
-  let X : CoeffField d → ℝ := quenchedMinimalScale Q Bad
+  let Bad : ℕ → Set (RegCoeffField d) := badScaleEvent Hshift t αbad
+  let X : RegCoeffField d → ℝ := quenchedMinimalScale Q Bad
   have hpack :=
     hminR hP hStruct hInf hparams
   dsimp only at hpack
@@ -296,7 +296,7 @@ theorem exists_shifted_quenchedLocalizedEstimate_uniformEndpoint_expLogSq_parame
               annealedAlgebraicEntryScale P
                 hInf.toQuantitativeCoarseGrainedEllipticity Centry
             let η : ℝ := ((d : ℕ) : ℝ)
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hInf.thetaHat)) ^ (2 : ℕ))) ∧
@@ -356,7 +356,7 @@ theorem exists_aboveEntry_quenchedLocalizedEstimate_uniformEndpoint_expLogSq_par
               annealedAlgebraicEntryScale P
                 hInf.toQuantitativeCoarseGrainedEllipticity Centry
             let η : ℝ := ((d : ℕ) : ℝ)
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hInf.thetaHat)) ^ (2 : ℕ))) ∧
@@ -393,7 +393,7 @@ theorem exists_aboveEntry_quenchedLocalizedEstimate_uniformEndpoint_expLogSq_par
   let η : ℝ := ((d : ℕ) : ℝ)
   obtain ⟨Xshift, hOshift, hXshift_one, hpoint_shift⟩ :=
     hlaw hP hStruct hInf hparams
-  let Xabs : CoeffField d → ℝ := fun aω => (3 : ℝ) ^ N0 * Xshift aω
+  let Xabs : RegCoeffField d → ℝ := fun aω => (3 : ℝ) ^ N0 * Xshift aω
   have hentry_bound :
       (3 : ℝ) ^ N0 ≤
         Real.exp
@@ -497,7 +497,7 @@ theorem exists_quenchedLocalizedEstimate_uniformEndpoint_expLogSq_parameterAlpha
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
             let η : ℝ := ((d : ℕ) : ℝ)
-            ∃ X : CoeffField d → ℝ,
+            ∃ X : RegCoeffField d → ℝ,
               IsBigO P (gammaSigma η) X
                 (Real.exp
                   (Cscale * (Real.log (2 + hInf.thetaHat)) ^ (2 : ℕ))) ∧
@@ -562,7 +562,7 @@ theorem exists_quenchedLocalizedEstimate_uniformEndpoint_expLogSq_parameterAlpha
   let Jscale : ℝ := Kdet * θ ^ (2 : ℕ)
   let Dsmall : ℝ := (max 1 Jscale) ^ α⁻¹
   let G : ℝ := (3 : ℝ) ^ N0 * Dsmall
-  let X : CoeffField d → ℝ := fun aω => G * Xabove aω
+  let X : RegCoeffField d → ℝ := fun aω => G * Xabove aω
   have hentry_bound :
       (3 : ℝ) ^ N0 ≤
         Real.exp

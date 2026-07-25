@@ -123,7 +123,7 @@ theorem defectSum_sq_special_le_childResponseAverage
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d)
-    {a : Homogenization.CoeffField d}
+    {a : Homogenization.RegCoeffField d}
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a) :
     let β := section53CoarseFluctuationBeta hP4
     let p_e :=
@@ -366,7 +366,7 @@ noncomputable def terminalCenteredFullBlockFluctuationSqAtScale
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (j m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) : ℝ :=
+    (a : Homogenization.RegCoeffField d) : ℝ :=
   fullBlockOperatorNorm
     (scalarFullBlockNormalizerMatrixAtScale hP hStruct m *
       scalarCenteredFullBlockMatrixAtScale hP hStruct j
@@ -384,7 +384,7 @@ theorem terminalCenteredFullBlockFluctuationSqAtScale_le_two_fullBlockFluctuatio
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (j m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     terminalCenteredFullBlockFluctuationSqAtScale hP hStruct j m Q a ≤
       2 *
         Homogenization.Book.Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
@@ -482,7 +482,7 @@ theorem integrable_terminalCenteredFullBlockFluctuationSqAtScale_origin_of_P4
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (j m : ℕ) :
     MeasureTheory.Integrable
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         terminalCenteredFullBlockFluctuationSqAtScale hP hStruct j m
           (Homogenization.originCube d (j : ℤ)) a) P := by
   letI : MeasureTheory.IsProbabilityMeasure P := hP.isProbability
@@ -494,7 +494,7 @@ theorem integrable_terminalCenteredFullBlockFluctuationSqAtScale_origin_of_P4
       hP hStruct hP4 j
   have hcentered_ae :
       MeasureTheory.AEStronglyMeasurable
-        (fun a : Homogenization.CoeffField d =>
+        (fun a : Homogenization.RegCoeffField d =>
           terminalCenteredFullBlockFluctuationSqAtScale hP hStruct j m
             (Homogenization.originCube d (j : ℤ)) a) P := by
     have hcomp :=
@@ -511,7 +511,7 @@ theorem integrable_terminalCenteredFullBlockFluctuationSqAtScale_origin_of_P4
             (Homogenization.Book.Ch04.scalarAnnealedBlockMatrixAtScale
               hP hStruct (j : ℤ))) *
         scalarFullBlockNormalizerMatrixAtScale hP hStruct m) ^ 2
-  let rhs : Homogenization.CoeffField d → ℝ :=
+  let rhs : Homogenization.RegCoeffField d → ℝ :=
     fun a =>
       2 *
         Homogenization.Book.Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
@@ -550,11 +550,11 @@ theorem ofReal_terminalCenteredFullBlockFluctuationSqAtScale_eq_terminalCoarseBl
     (hP : Homogenization.Book.Ch04.LawCarrier P)
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (j m : ℕ) (Q : Homogenization.TriadicCube d)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     ENNReal.ofReal
         (terminalCenteredFullBlockFluctuationSqAtScale hP hStruct j m Q a) =
       terminalCoarseBlockDeviation hP hStruct m
-          (fun x : Homogenization.CoeffField d => x) j Q a ^ 2 := by
+          (fun x : Homogenization.RegCoeffField d => x) j Q a ^ 2 := by
   unfold terminalCenteredFullBlockFluctuationSqAtScale
   unfold terminalCoarseBlockDeviation
   unfold terminalCenteredFullBlockDeviation
@@ -573,7 +573,7 @@ theorem ofReal_terminalCenteredFullBlockFluctuationSqAtScale_le_inv_weight_mul_t
     (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
     (hc : HighContrastExponents d) {N j m : ℕ}
     (hNj : N ≤ j) (hjm : j ≤ m)
-    (a : Homogenization.CoeffField d) :
+    (a : Homogenization.RegCoeffField d) :
     ENNReal.ofReal
         (terminalCenteredFullBlockFluctuationSqAtScale hP hStruct j m
           (Homogenization.originCube d (j : ℤ)) a) ≤
@@ -582,7 +582,7 @@ theorem ofReal_terminalCenteredFullBlockFluctuationSqAtScale_le_inv_weight_mul_t
         terminalCoarseBlockStochasticEnvelope hP hStruct N m
           (Homogenization.originCube d (m : ℤ))
           (terminalStochasticWeakWeight (d := d) hc m)
-          (fun x : Homogenization.CoeffField d => x) a) ^ 2 := by
+          (fun x : Homogenization.RegCoeffField d => x) a) ^ 2 := by
   classical
   let Qm := Homogenization.originCube d (m : ℤ)
   let Rj := Homogenization.originCube d (j : ℤ)
@@ -590,10 +590,10 @@ theorem ofReal_terminalCenteredFullBlockFluctuationSqAtScale_le_inv_weight_mul_t
     terminalStochasticWeakWeight (d := d) hc m
   let dev :=
     terminalCoarseBlockDeviation hP hStruct m
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   let env :=
     terminalCoarseBlockStochasticEnvelope hP hStruct N m Qm weak
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   have hjIcc : j ∈ Finset.Icc N m := Finset.mem_Icc.mpr ⟨hNj, hjm⟩
   have hRj : Rj ∈ Homogenization.descendantsAtDepth Qm (m - j) := by
     simpa only [Qm, Rj] using
@@ -665,16 +665,16 @@ theorem lintegral_ofReal_terminalCenteredFullBlockFluctuationSqAtScale_le_inv_we
           (terminalCoarseBlockStochasticEnvelope hP hStruct N m
             (Homogenization.originCube d (m : ℤ))
             (terminalStochasticWeakWeight (d := d) hc m)
-            (fun x : Homogenization.CoeffField d => x) a) ^ 2 ∂P := by
+            (fun x : Homogenization.RegCoeffField d => x) a) ^ 2 ∂P := by
   classical
   let c : ENNReal :=
     terminalStochasticWeakWeight (d := d) hc m j
       (Homogenization.originCube d (j : ℤ))
-  let env : Homogenization.CoeffField d → ENNReal :=
+  let env : Homogenization.RegCoeffField d → ENNReal :=
     terminalCoarseBlockStochasticEnvelope hP hStruct N m
       (Homogenization.originCube d (m : ℤ))
       (terminalStochasticWeakWeight (d := d) hc m)
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   have hc_ne_zero : c ≠ 0 := by
     dsimp [c, terminalStochasticWeakWeight]
     exact ENNReal.ofReal_ne_zero_iff.mpr
@@ -683,11 +683,11 @@ theorem lintegral_ofReal_terminalCenteredFullBlockFluctuationSqAtScale_le_inv_we
   have hconst_ne_top : c⁻¹ ^ 2 ≠ ⊤ := by
     exact ENNReal.pow_ne_top (ENNReal.inv_ne_top.mpr hc_ne_zero)
   have hpoint :
-      (fun a : Homogenization.CoeffField d =>
+      (fun a : Homogenization.RegCoeffField d =>
         ENNReal.ofReal
           (terminalCenteredFullBlockFluctuationSqAtScale hP hStruct j m
             (Homogenization.originCube d (j : ℤ)) a)) ≤
-        fun a : Homogenization.CoeffField d => (c⁻¹ * env a) ^ 2 := by
+        fun a : Homogenization.RegCoeffField d => (c⁻¹ * env a) ^ 2 := by
     intro a
     simpa only [c, env] using
       ofReal_terminalCenteredFullBlockFluctuationSqAtScale_le_inv_weight_mul_terminalCoarseBlockStochasticEnvelope_sq
@@ -704,7 +704,7 @@ theorem lintegral_ofReal_terminalCenteredFullBlockFluctuationSqAtScale_le_inv_we
           rw [mul_pow]
     _ = c⁻¹ ^ 2 * ∫⁻ a, env a ^ 2 ∂P := by
           rw [MeasureTheory.lintegral_const_mul' (c⁻¹ ^ 2)
-            (fun a : Homogenization.CoeffField d => env a ^ 2) hconst_ne_top]
+            (fun a : Homogenization.RegCoeffField d => env a ^ 2) hconst_ne_top]
 
 /--
 Source labels `a.HM`, `M_m^st`, and `l.S.and.J`: finite-window integrated
@@ -732,7 +732,7 @@ theorem lintegral_ofReal_terminalCenteredFullBlockFluctuationSqAtScale_sum_le_we
           (terminalCoarseBlockStochasticEnvelope hP hStruct N m
             (Homogenization.originCube d (m : ℤ))
             (terminalStochasticWeakWeight (d := d) hc m)
-            (fun x : Homogenization.CoeffField d => x) a) ^ 2 ∂P := by
+            (fun x : Homogenization.RegCoeffField d => x) a) ^ 2 ∂P := by
   classical
   let S := Finset.Icc (k + 1) m
   let weight : ℕ → ENNReal :=
@@ -741,11 +741,11 @@ theorem lintegral_ofReal_terminalCenteredFullBlockFluctuationSqAtScale_sum_le_we
     fun j =>
       (terminalStochasticWeakWeight (d := d) hc m j
           (Homogenization.originCube d (j : ℤ)))⁻¹ ^ 2
-  let env : Homogenization.CoeffField d → ENNReal :=
+  let env : Homogenization.RegCoeffField d → ENNReal :=
     terminalCoarseBlockStochasticEnvelope hP hStruct N m
       (Homogenization.originCube d (m : ℤ))
       (terminalStochasticWeakWeight (d := d) hc m)
-      (fun x : Homogenization.CoeffField d => x)
+      (fun x : Homogenization.RegCoeffField d => x)
   let I : ENNReal := ∫⁻ a, env a ^ 2 ∂P
   have hterm :
       ∀ j ∈ S,
@@ -800,7 +800,7 @@ theorem lintegral_ofReal_terminalCenteredFullBlockFluctuationSqAtScale_sum_le_we
           (terminalCoarseBlockStochasticEnvelope hP hStruct N m
             (Homogenization.originCube d (m : ℤ))
             (terminalStochasticWeakWeight (d := d) hc m)
-            (fun x : Homogenization.CoeffField d => x) a) ^ 2 ∂P := rfl
+            (fun x : Homogenization.RegCoeffField d => x) a) ^ 2 ∂P := rfl
 
 /--
 Source labels `a.HM`, `M_m^st`, and `l.S.and.J`: convert the stochastic
@@ -863,7 +863,7 @@ theorem terminalCenteredFullBlockFluctuationSqAtScale_integral_sum_le_of_lintegr
       integrable_terminalCenteredFullBlockFluctuationSqAtScale_origin_of_P4
         hP hStruct hP4 j m
     have hf_nonneg :
-        0 ≤ᵐ[P] fun a : Homogenization.CoeffField d =>
+        0 ≤ᵐ[P] fun a : Homogenization.RegCoeffField d =>
           terminalCenteredFullBlockFluctuationSqAtScale hP hStruct j m
             (Homogenization.originCube d (j : ℤ)) a := by
       exact Filter.Eventually.of_forall fun a => by
