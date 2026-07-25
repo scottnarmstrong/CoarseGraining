@@ -32,11 +32,18 @@ status:
     A Lean 4 / Mathlib formalization of the coarse-graining approach to
     quantitative stochastic homogenization of divergence-form elliptic equations:
     function-space, deterministic, probabilistic, and homogenization-scale theory
-    up to the quenched minimal-scale theorem (Chapter 5). Every theorem stated in
+    up to the quenched minimal-scale theorem (Chapter 5), together with the
+    high-contrast development: block-variance decay and the polynomial
+    homogenization length scale (dimension d > 2, uniform ellipticity;
+    Armstrong-Kuusi-Loher, in preparation). Every theorem stated in
     the manuscript is formalized; narrower or extra-hypothesis cases are flagged
     in manuscript footnotes. The two main results are exposed publicly in
-    Homogenization/Book/MainResults.lean, and the fixed-exponent quenched
-    comparison corollary is additionally checked by the Lean comparator (Audit/).
+    Homogenization/Book/MainResults.lean and the polynomial-scale theorem in
+    Homogenization/HighContrast/Scale/Final.lean; seven statements are
+    additionally checked by the Lean comparator (Audit/): the fixed-exponent
+    quenched comparison and four specializations, and the polynomial
+    homogenization scale in general form and instantiated on the Bernoulli
+    checkerboard law.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms:
@@ -57,10 +64,28 @@ status:
       comparator_config: "Audit/comparator.json"
       literature_dependencies: []
     - declaration: "Homogenization.StatementAudit.homogenizationComparison_uniformEllipticity"
-      file: "Audit/Solution.lean"
+      file: "Audit/QuenchedComparison/Solution.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/comparator.json"
+      comparator_config: "Audit/QuenchedComparison/comparator.json"
+      literature_dependencies: []
+    - declaration: "Homogenization.homogenizationScale_polynomial_of_unitRange"
+      file: "Homogenization/HighContrast/Scale/Final.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/PolynomialScale/comparator.json"
+      literature_dependencies: []
+    - declaration: "Homogenization.StatementAudit.PolynomialScale.homogenizationScale_polynomial_of_unitRange"
+      file: "Audit/PolynomialScale/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/PolynomialScale/comparator.json"
+      literature_dependencies: []
+    - declaration: "Homogenization.StatementAudit.CheckerboardScale.randomCheckerboard_homogenizationScale"
+      file: "Audit/CheckerboardScale/Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "Audit/CheckerboardScale/comparator.json"
       literature_dependencies: []
 
 automation:
@@ -70,6 +95,7 @@ automation:
         - "claude-opus-4-6"
         - "claude-opus-4-7"
         - "claude-opus-4-8"
+        - "claude-fable-5"
         - "gpt-5.5"
       framework: "Claude Code (Anthropic) and Codex (OpenAI) agentic coding harnesses"
       tool_setup: >-
@@ -91,10 +117,11 @@ automation:
     All Lean code in this repository was written by the listed models under the
     close supervision of the authors. Every proof is checked by the Lean kernel
     and Mathlib; the verified library contains no sorry and no custom axiom. The
-    Mathlib-only comparator challenge file Audit/Challenge.lean contains exactly
-    one intentional statement-level sorry (the theorem body), which is filled by
-    Audit/Solution.lean and confirmed by leanprover/comparator ("Lean default
-    kernel accepts the solution" / "Your solution is okay!").
+    Mathlib-only comparator challenge files (Audit/*/Challenge.lean) each
+    contain exactly one intentional statement-level sorry (the theorem body),
+    which is filled by the corresponding Audit/*/Solution.lean and confirmed by
+    leanprover/comparator ("Lean default kernel accepts the solution" / "Your
+    solution is okay!").
 
 fidelity:
   divergences: >-

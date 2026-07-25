@@ -2,7 +2,9 @@
 
 This directory contains Mathlib-only comparator challenges for the public-facing
 quenched homogenization comparison theorem and four corollaries of it — three
-deterministic periodic specializations and one random Bernoulli checkerboard.
+deterministic periodic specializations and one random Bernoulli checkerboard —
+together with the polynomial homogenization-scale capstone and its
+Bernoulli-checkerboard instantiation.
 Each comparator lives in its own subdirectory:
 
 | Directory | Checked theorem |
@@ -12,6 +14,41 @@ Each comparator lives in its own subdirectory:
 | `PeriodicConcrete/` | `Homogenization.StatementAudit.PeriodicConcrete.periodicConcrete_comparison` |
 | `PeriodicSmooth/` | `Homogenization.StatementAudit.PeriodicSmooth.periodicSmooth_comparison` |
 | `RandomCheckerboard/` | `Homogenization.StatementAudit.RandomCheckerboard.randomCheckerboard_quenchedComparison` |
+| `PolynomialScale/` | `Homogenization.StatementAudit.PolynomialScale.homogenizationScale_polynomial_of_unitRange` |
+| `CheckerboardScale/` | `Homogenization.StatementAudit.CheckerboardScale.randomCheckerboard_homogenizationScale` |
+
+The first five comparators check the quenched comparison estimate described
+below.  `PolynomialScale/` checks the unconditional homogenization-scale
+capstone: under the explicit dimension restriction `d > 2` (the hypothesis
+`hd : 3 ≤ d`), every `Θ`-elliptic (`Θ ≥ 1`, in the quadratic-form ellipticity
+class `IsEllipticMatrix 1 Θ`: coercivity `∀ ξ, |ξ|² ≤ ξ · a ξ` together with
+the inverse quadratic-form bound `∀ ξ, Θ⁻¹ |ξ|² ≤ ξ · a⁻¹ ξ`; the fields are
+general non-symmetric matrices) stationary, unit-range, isotropic,
+adjoint-invariant probability law has geometrically decaying scalar contrast,
+`θ_{N₀+n} - 1 ≤ 3^{-alpha·n}`, from an entry scale `N₀ ≤ Cscale · log(2 + Θ)`
+with `3^{N₀} ≤ (2 + Θ)^{Ctriadic}`, where `Cscale, Ctriadic, alpha > 0` are
+dimensional constants chosen before the law.  The scalar contrast
+`thetaAtScale P n` is mirrored as the `(0, 0)`-entry ratio of the annealed
+coarse matrices built by polarization from the variational quantity `Mu`.
+
+`CheckerboardScale/` checks the Bernoulli-checkerboard instantiation of the
+same capstone: under the explicit dimension restriction `d > 2` (the
+hypothesis `hd : 3 ≤ d`), for every `1 ≤ lam ≤ Lam` and every coin parameter
+`p ≤ 1`, the Bernoulli checkerboard law with conductances `lam`, `Lam` — a
+genuinely random stationary law whose realizations lie pointwise in the
+quadratic-form ellipticity class `IsEllipticMatrix 1 Lam` (coercivity
+`∀ ξ, |ξ|² ≤ ξ · a ξ` together with the inverse quadratic-form bound
+`∀ ξ, Lam⁻¹ |ξ|² ≤ ξ · a⁻¹ ξ`; the class is stated for general non-symmetric
+matrices) — satisfies the same contrast decay
+`θ_{N₀+n} - 1 ≤ 3^{-alpha·n}` from an entry scale
+`N₀ ≤ Cscale · log(2 + Lam)` with `3^{N₀} ≤ (2 + Lam)^{Ctriadic}`.  The
+capstone's ellipticity parameter is instantiated at `Θ = Lam`, and all of its
+law hypotheses — the probability instance, the law carrier, the structural
+law, and the `Θ`-ellipticity class membership — are discharged by the
+checkerboard construction, so none of them appears in the statement: the
+triadic bound `3^{N₀} ≤ (2 + Lam)^{Ctriadic}` exhibits the physical entry
+scale as an explicit algebraic (polynomial) function of the contrast `Lam`,
+concretely instantiated on a random law.
 
 Each `Challenge.lean` imports only `Mathlib` and ends with one `sorry`, the
 theorem proof being checked.  Each `Solution.lean` imports the repository theorem
@@ -28,9 +65,9 @@ and set `enable_nanoda: false`.
 
 ## What Is Checked
 
-All five comparators check the same *quenched homogenization comparison
-estimate*, each for a different coefficient law.  In every case the theorem has
-the shape
+The five comparison-estimate comparators check the same *quenched
+homogenization comparison estimate*, each for a different coefficient law.  In
+every case the theorem has the shape
 
 ```lean
 ∃ C alpha Cscale : ℝ, 0 < C ∧ 0 < alpha ∧ 0 < Cscale ∧
@@ -73,8 +110,8 @@ solutions agree at an algebraic rate in (cube sidelength `3 ^ m`) / (minimal
 scale `X a`).  An auxiliary exponent `t = 1 / 8` (`4 t < s < 1`) is used
 internally and appears in no statement.
 
-The five comparators differ only in the law and in how the solution pair is
-presented:
+The five comparison-estimate comparators differ only in the law and in how the
+solution pair is presented:
 
 | Comparator | Coefficient law | Solution data |
 | --- | --- | --- |
@@ -123,6 +160,9 @@ definitions needed to state the theorem surfaces.
 | weak solution pairs and comparison quantities | `Homogenization/Book/MainResults.lean` and `Homogenization/Book/Ch05/Theorems/Section57/*` |
 | positive Sobolev force regularity | `Homogenization/Book/Ch03/Theorems/SobolevPublic.lean` |
 | negative Sobolev/dual norm representative | `Homogenization/Besov/Negative.lean` and `Homogenization/Book/Ch03/Theorems/SobolevPublic.lean` |
+| block formalism and the variational quantity `Mu` | `Homogenization/Ambient/{Basic,BlockMatrix}.lean`, `Homogenization/CoarseGraining/BlockFormalism/{Structures,Properties}.lean`, and `Homogenization/CoarseGraining/Definitions.lean` |
+| annealed coarse matrices and the scalar contrast | `Homogenization/Book/Ch04/AnnealedDefinitions.lean` and `Homogenization/Book/Ch05/Definitions.lean` |
+| the homogenization-scale theorem surface | `Homogenization/HighContrast/Scale/Final.lean` |
 | periodic Dirac bridge and examples | `Homogenization/Examples/Periodic/*` |
 | random Bernoulli checkerboard law and setup | `Homogenization/Examples/RandomCheckerboard/Basic.lean` and `Homogenization/Examples/RandomCheckerboard/CarrierLaw.lean` |
 
@@ -140,10 +180,12 @@ lake build \
   Audit.PeriodicGeneral.Challenge Audit.PeriodicGeneral.Solution \
   Audit.PeriodicConcrete.Challenge Audit.PeriodicConcrete.Solution \
   Audit.PeriodicSmooth.Challenge Audit.PeriodicSmooth.Solution \
-  Audit.RandomCheckerboard.Challenge Audit.RandomCheckerboard.Solution
+  Audit.RandomCheckerboard.Challenge Audit.RandomCheckerboard.Solution \
+  Audit.PolynomialScale.Challenge Audit.PolynomialScale.Solution \
+  Audit.CheckerboardScale.Challenge Audit.CheckerboardScale.Solution
 ```
 
-Run the five comparators:
+Run the seven comparators:
 
 ```bash
 lake env comparator Audit/QuenchedComparison/comparator.json
@@ -151,6 +193,8 @@ lake env comparator Audit/PeriodicGeneral/comparator.json
 lake env comparator Audit/PeriodicConcrete/comparator.json
 lake env comparator Audit/PeriodicSmooth/comparator.json
 lake env comparator Audit/RandomCheckerboard/comparator.json
+lake env comparator Audit/PolynomialScale/comparator.json
+lake env comparator Audit/CheckerboardScale/comparator.json
 ```
 
 Expected final output for each run:

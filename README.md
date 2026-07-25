@@ -16,10 +16,15 @@ Chapter 5. Its main result formalizes a central theorem of Scott Armstrong and
 Tuomo Kuusi, *Renormalization Group and Elliptic Homogenization in High Contrast*,
 Inventiones Mathematicae **242** (2025), 895–1086,
 [doi:10.1007/s00222-025-01370-9](https://doi.org/10.1007/s00222-025-01370-9);
-carrying out that formalization was the principal aim of the project.
+carrying out that formalization was the principal aim of the project. The
+library has since been extended with the high-contrast development —
+block-variance decay and the polynomial homogenization length scale
+(Armstrong–Kuusi–Loher, in preparation) — described below.
 
-- **1,200 Lean source files, ~449,000 lines.**
-- **No `sorry`** anywhere in the development.
+- **1,413 Lean source files, ~537,000 lines.**
+- **No `sorry`** anywhere in the library. (Each Mathlib-only comparator
+  challenge in `Audit/` contains its single intentional statement-level
+  `sorry`, filled by the corresponding solution file.)
 - **No custom `axiom`.** The public theorems reduce to `mathlib`'s three
   standard foundational axioms — `propext`, `Classical.choice`, `Quot.sound` —
   verified by [`Homogenization/Meta/AxiomsAudit.lean`](Homogenization/Meta/AxiomsAudit.lean).
@@ -48,12 +53,16 @@ three standard foundations). The Lean development assumes the coefficient law is
 **isotropic**, a hypothesis not required in the published paper cited above.
 
 Throughout, the coefficient field is a stationary, unit-range, isotropic random
-field that is uniformly elliptic: almost surely `λI ≤ a ≤ ΛI`.
+field, uniformly elliptic in the quadratic-form sense: almost surely, at almost
+every point the (in general non-symmetric) matrix `a` satisfies the coercivity
+bound `λ|ξ|² ≤ ξ·aξ` for every direction `ξ`, together with the inverse-side
+bound `Λ⁻¹|ξ|² ≤ ξ·a⁻¹ξ` (equivalently, `|aη|² ≤ Λ·(η·aη)` for every `η`).
 
 **Quenched homogenization above the minimal scale** —
 `homogenizationComparison_uniformEllipticity`. There exist constants `C, α > 0`,
 depending only on the dimension `d`, and a random minimal scale `𝒳 ≥ 1` — with
-stretched-exponential (`Γ_d`) tails of size `exp(C·log²(2+θ̂))` — such that, almost
+stretched-exponential (`Γ_d`) tails of size `exp(C·log²(2+θ̂))`, where `θ̂` is the
+coarse-grained ellipticity constant of the law (see the next paragraph) — such that, almost
 surely, on every triadic cube `□ₘ` with `𝒳 ≤ 3ᵐ`, the heterogeneous solution `u` of
 `−∇·a∇u = ∇·g` and the homogenized solution `v` of `−∇·ā∇v = ∇·g` (same force `∇·g`,
 shared boundary data, `u − v ∈ H¹₀`) satisfy, for every force `g ∈ H^{3/4}`,
@@ -64,24 +73,75 @@ shared boundary data, `u − v ∈ H¹₀`) satisfy, for every force `g ∈ H^{3
 (Here `Hˢ = B^s_{2,2}` is the fractional Sobolev space, and the positive seminorm
 `[g]_{H^{3/4}}` is taken componentwise.)
 
-This specializes the general (non-uniform) theorems
+This specializes the general theorems
 `homogenization_quenched_minimal_scale` and
 `homogenization_quenched_homogenization_comparison` in
-[`Homogenization/Book/Ch05/Theorems/Public.lean`](Homogenization/Book/Ch05/Theorems/Public.lean).
+[`Homogenization/Book/Ch05/Theorems/Public.lean`](Homogenization/Book/Ch05/Theorems/Public.lean),
+which require **no uniform ellipticity at all**. There, the law is assumed only
+to be **coarse-grained elliptic**: the unit-scale coarse ellipticity observable
+— the coarse-grained upper bound plus the reciprocal of the coarse-grained
+lower bound, both defined through quadratic forms of the coarse-grained
+matrices — has a stretched-exponential (`Γ_σ`) tail of size `θ̂` (the
+manuscript's `Θ̂₀`; hypothesis `(P5)`). Under this assumption alone the random
+minimal scale `𝒳` exists and satisfies the same stretched-exponential tail
+bound with constant `exp(Cscale·log²(2+θ̂))`, with all constants chosen before
+the law.
+
+## Polynomial homogenization length scale
+
+In dimension `d > 2`, the development also proves that homogenization sets in
+at a length scale which is **polynomial in the ellipticity contrast**. This
+formalizes the main result of Armstrong–Kuusi–Loher (in preparation).
+
+**`homogenizationScale_polynomial_of_unitRange`**
+([`Homogenization/HighContrast/Scale/Final.lean`](Homogenization/HighContrast/Scale/Final.lean)).
+For every dimension `d > 2` (the hypothesis `3 ≤ d` is explicit in the
+statement) there exist constants `Cscale, Ctriadic, α > 0`, depending only on
+`d` and quantified **before** the law, with the following property. Let `P` be
+any stationary, unit-range, isotropic probability law on coefficient fields
+which is `Θ`-elliptic in the quadratic-form sense above (with `λ = 1`,
+`Λ = Θ`; the field need not be symmetric). Then there is an entry scale
+`N₀` satisfying
+
+> `N₀ ≤ Cscale·log(2+Θ)`,  equivalently  `3^{N₀} ≤ (2+Θ)^{Ctriadic}`,
+
+so that the waiting length scale `3^{N₀}` is polynomial in the contrast, and
+beyond it the coarse-grained ellipticity contrast decays exponentially fast:
+
+> `θ(□_{N₀+n}) − 1 ≤ 3^{−αn}`  for every `n ≥ 0`,
+
+where `θ(□_m)` (`thetaAtScale`) is the contrast of the annealed coarse-grained
+matrices on the triadic cube `□_m`. This complements the minimal-scale theorem
+above: there, under coarse-grained ellipticity alone, the scale is random with
+stretched-exponential tails of size `exp(C·log²(2+θ̂))`; here, at the price of
+uniform ellipticity and `d > 2`, the entry scale is deterministic and
+polynomial in the contrast. The theorem is independently comparator-verified,
+both in general form and instantiated on the Bernoulli checkerboard law (see
+below).
 
 ## Verified against a Mathlib-only statement
 
-So that the central claim can be checked without trusting the ~449k-line
-development, the quenched comparison theorem is **independently verified by
-[`leanprover/comparator`](https://github.com/leanprover/comparator)**. It is
-restated using **only Mathlib** — no project definitions — in
-[`Audit/Challenge.lean`](Audit/Challenge.lean), and
-[`Audit/Solution.lean`](Audit/Solution.lean) proves that exact statement from the
-library. The comparator confirms the two have identical elaborated types and that
-the proof reduces to the three standard axioms; running it prints
+So that the central claims can be checked without trusting the ~537k-line
+development, they are **independently verified by
+[`leanprover/comparator`](https://github.com/leanprover/comparator)**. Each is
+restated using **only Mathlib** — no project definitions — in a
+`Challenge.lean`, and a `Solution.lean` proves that exact statement from the
+library; the comparator confirms the two have identical elaborated types and
+that the proof reduces to the three standard axioms, printing
 `Your solution is okay!` (see [`Audit/README.md`](Audit/README.md)).
 
-The verified statement is `Homogenization.StatementAudit.homogenizationComparison_uniformEllipticity`,
+Seven comparators are checked: five for the quenched comparison estimate — the
+general statement in
+[`Audit/QuenchedComparison/`](Audit/QuenchedComparison/) and four
+specializations (three periodic laws and the random checkerboard) — and two
+for the polynomial homogenization length scale: the general theorem in
+[`Audit/PolynomialScale/`](Audit/PolynomialScale/) and its concrete
+instantiation on the Bernoulli checkerboard law in
+[`Audit/CheckerboardScale/`](Audit/CheckerboardScale/), where the bound reads
+`3^{N₀} ≤ (2+Λ)^{Ctriadic}` for the checkerboard with values of contrast `Λ`.
+
+The general quenched-comparison statement, as verified, is
+`Homogenization.StatementAudit.homogenizationComparison_uniformEllipticity`,
 with the Sobolev exponent fixed to `s = 3/4`. The constants `C, α, Cscale` are
 chosen **before** the law and depend only on the dimension:
 
@@ -93,7 +153,7 @@ theorem homogenizationComparison_uniformEllipticity
       ∀ S : Setup d,
         ∃ sigmaBar : ℝ,
           0 < sigmaBar ∧
-          ∃ X : CoeffField d → ℝ,
+          ∃ X : RegCoeffField d → ℝ,
             S.IsMinimalScale X Cscale ∧
             ∀ᵐ a ∂S.P,
               ∀ (ha : AELocallyUniformlyEllipticField a)
@@ -130,7 +190,9 @@ lake build           # compile the project
 which pins the exact dependency revisions.
 
 On an 8-core / 32 GB machine, with Mathlib supplied by `lake exe cache get`, the
-project itself elaborates in about 26 minutes (4,120 build jobs). Continuous
+project itself elaborates in roughly half an hour (4,450 build jobs for the
+default `Homogenization` target; `lake build Audit` additionally elaborates the
+comparator surface). Continuous
 integration rebuilds the entire tree on every push; the live pass/fail status and
 GitHub's own measured build time for each run are shown in the
 [Actions tab](https://github.com/scottnarmstrong/CoarseGraining/actions) and in the
@@ -150,20 +212,26 @@ Homogenization/
   Besov/           Besov spaces, duality, Poincaré inequalities
   Sobolev/         H¹ / W^{1,p} theory, Hodge decomposition
   PDE/             weak solutions, Dirichlet problems
-  Probability/     stationary fields, concentration, independence
+  Probability/     regular coefficient fields, stationarity, concentration, independence
   Deterministic/   coarse Caccioppoli / Poincaré, deterministic homogenization
   CoarseGraining/  block formalism, response identities, μ-operators
-  Multiscale/, Renormalization/, ...
+  HighContrast/    block-variance decay and the polynomial homogenization scale
+  Renormalization/ renormalization-group iteration
+  Internal/        internal support material
   Book/            chapter-by-chapter theorem surfaces (Ch02–Ch05)
   Meta/            AxiomsAudit.lean
+  Examples/        instantiated laws (random checkerboard, periodic media)
 Homogenization.lean   the root module (imports the whole library)
+Audit/                Mathlib-only comparator challenges and solutions
 doc/coarse-graining.pdf
 ```
 
 ## How this was built
 
-The Lean code in this repository was written entirely by GPT-5.5 and Claude
-Opus 4.6–4.8, under the close supervision of the authors. The models, tooling,
+The original Lean code in this repository was written by GPT-5.5 and Claude
+Opus 4.6–4.8, under the close supervision of the authors. Subsequent updates —
+the polynomial scale high contrast development — were written by Claude
+Fable 5, under the same supervision. The models, tooling,
 cost, and review status are disclosed in full in
 [`formalization.yaml`](formalization.yaml), following the
 [mathlib-initiative](https://github.com/mathlib-initiative/formalization.yaml)
@@ -171,7 +239,7 @@ standard.
 
 ## Authors and citation
 
-The manuscript is by **Scott Armstrong** and **Tuomo Kuusi**. If you use this
+The Lean development is by **Scott Armstrong** and **Tuomo Kuusi**. If you use this
 formalization, please cite it using the metadata in [`CITATION.cff`](CITATION.cff).
 
 ## Acknowledgements

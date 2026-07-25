@@ -1,0 +1,9 @@
+{
+  "challenge_module": "Audit.PolynomialScale.Challenge",
+  "solution_module": "Audit.PolynomialScale.Solution",
+  "theorem_names": [
+    "Homogenization.StatementAudit.PolynomialScale.homogenizationScale_polynomial_of_unitRange"
+  ],
+  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"],
+  "enable_nanoda": false
+}
