@@ -6,9 +6,9 @@ namespace Book
 namespace Ch04
 
 /-!
-# Completed-local Gamma partition fluctuations
+# Restriction-local Gamma partition fluctuations
 
-This is the a.e.-local counterpart of the public Gamma partition fluctuation
+This is the a.e.-restriction-local counterpart of the Gamma partition fluctuation
 estimate.  It is designed for totalized Ch4 observables which are only
 a.e.-equal to local representatives on each descendant cube.
 -/
@@ -18,24 +18,24 @@ open scoped BigOperators
 
 noncomputable section
 
-theorem isBigO_gammaSigma_centeredDescendantAverageOnCube_of_unitRangeDependentLaw_of_ae_eq_local
-    {d : ℕ} {Q : TriadicCube d} {n : ℤ} {P : CoeffLaw d} [IsProbabilityMeasure P]
+theorem isBigO_gammaSigma_restrictionCenteredDescendantAverageOnCube_of_restrictionUnitRangeDependentLaw_of_ae_eq_local
+    {d : ℕ} {Q : TriadicCube d} {n : ℤ} {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {σ K : ℝ}
-    (hP : LawCarrier P)
+    (hP : RestrictionLawCarrier P)
     (hn : 0 ≤ n) (hnQ : n ≤ Q.scale)
-    (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
+    (hPstat : RestrictionStationaryLaw P) (hPdep : RestrictionUnitRangeDependentLaw P)
     (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_localRep :
       ∀ R ∈ descendantsAtScale Q n,
         ∃ Y : RegCoeffField d → ℝ,
-          IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y)
-    (hX_cov : IsTranslationCovariantR X)
+          IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y)
+    (hX_cov : IsRestrictionTranslationCovariant X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ R ∈ descendantsAtScale Q n, AEMeasurable (X (cubeSet R)) P)
     (hσ₀ : 0 < σ) (hσ₂ : σ ≤ 2) (hK : 0 < K)
-    (hX0 : IsBigO P (gammaSigma σ) (centeredOriginObservable P n X) K) :
-    IsBigO P (gammaSigma σ) (centeredDescendantAverageOnCube P Q n X)
+    (hX0 : IsBigO P (gammaSigma σ) (restrictionCenteredOriginObservable P n X) K) :
+    IsBigO P (gammaSigma σ) (restrictionCenteredDescendantAverageOnCube P Q n X)
       (gammaSigmaDescendantsAtScaleConst d n σ *
         (Real.sqrt ((descendantsAtScale Q n).card : ℝ) /
           ((descendantsAtScale Q n).card : ℝ)) * K) := by
@@ -49,13 +49,13 @@ theorem isBigO_gammaSigma_centeredDescendantAverageOnCube_of_unitRangeDependentL
       else fun _a => 0
   let Zraw : TriadicCube d → RegCoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
   let Z : TriadicCube d → RegCoeffField d → ℝ := fun R a => Yrep R a - μ0
-  have hY_cov : IsTranslationCovariantR Y := by
+  have hY_cov : IsRestrictionTranslationCovariant Y := by
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_aemeas : AEMeasurable (Y (cubeSet (originCube d n))) P := by
     simpa [Y] using hX0_aemeas.sub measurable_const.aemeasurable
   have hYrep_local :
-      ∀ R ∈ D, IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Yrep R) := by
+      ∀ R ∈ D, IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Yrep R) := by
     intro R hR
     dsimp [Yrep]
     rw [dif_pos hR]
@@ -72,7 +72,7 @@ theorem isBigO_gammaSigma_centeredDescendantAverageOnCube_of_unitRangeDependentL
     filter_upwards [hX_eq_Yrep R hR] with a ha
     simp [Zraw, Z, ha]
   have hZ_local :
-      ∀ R ∈ D, IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Z R) := by
+      ∀ R ∈ D, IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Z R) := by
     intro R hR
     simpa [Z] using (hYrep_local R hR).sub measurable_const
   have hZ_aemeas :
@@ -118,14 +118,14 @@ theorem isBigO_gammaSigma_centeredDescendantAverageOnCube_of_unitRangeDependentL
                   (cubeSet (originCube d n)))) P := by
               rw [hshift]
         _ = Measure.map (Y (cubeSet (originCube d n))) P := by
-              exact map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
+              exact map_eq_map_translateReg_of_isRestrictionTranslationCovariant_aemeasurable
                 (P := P) hPstat (U := cubeSet (originCube d n)) hY0_aemeas hY_cov
                 (scaleTranslationShift n R)
     have hraw :
         IsBigO P (gammaSigma σ) (Zraw R) K := by
       have horigin :
           IsBigO P (gammaSigma σ) (Y (cubeSet (originCube d n))) K := by
-        simpa [Y, μ0, centeredOriginObservable] using hX0
+        simpa [Y, μ0, restrictionCenteredOriginObservable] using hX0
       have htail :=
         (isBigO_gammaSigma_iff_of_map_eq_map_aemeasurable
           (μ := P) (σ := σ) (A := K)
@@ -136,7 +136,7 @@ theorem isBigO_gammaSigma_centeredDescendantAverageOnCube_of_unitRangeDependentL
   have hY0_int : Integrable (Y (cubeSet (originCube d n))) P := by
     have hY0_tail :
         IsBigO P (gammaSigma σ) (Y (cubeSet (originCube d n))) K := by
-      simpa [Y, μ0, centeredOriginObservable] using hX0
+      simpa [Y, μ0, restrictionCenteredOriginObservable] using hX0
     have hY0_mom :=
       hasGammaMomentGrowthWith_of_isBigO_gammaSigma
         (μ := P) (X := Y (cubeSet (originCube d n))) (K := K) (σ := σ)
@@ -200,7 +200,7 @@ theorem isBigO_gammaSigma_centeredDescendantAverageOnCube_of_unitRangeDependentL
                   (cubeSet (originCube d n))) a ∂P := by
               rw [hshift]
         _ = ∫ a, Y (cubeSet (originCube d n)) a ∂P := by
-              exact integral_eq_of_isTranslationCovariantR_of_stationary_aestronglyMeasurable
+              exact integral_eq_of_isRestrictionTranslationCovariant_of_stationary_aestronglyMeasurable
                 (P := P) hPstat (U := cubeSet (originCube d n))
                 hY0_aemeas.aestronglyMeasurable hY_cov (scaleTranslationShift n R)
     simpa [Zraw, Y] using hint.trans hY0_mean
@@ -212,14 +212,14 @@ theorem isBigO_gammaSigma_centeredDescendantAverageOnCube_of_unitRangeDependentL
         integral_congr_ae (hZraw_eq_Z R hR).symm
       _ = 0 := hZraw_mean R hR
   have havg :=
-    isBigO_gammaSigma_descendantAverage_of_unitRangeDependentLaw_aemeasurable
+    isBigO_gammaSigma_restrictionDescendantAverage_of_restrictionUnitRangeDependentLaw_aemeasurable
       (Q := Q) (k := n) (P := P) hnQ hPdep hσ₀ hσ₂ hK Z
       (by intro R hR; exact hZ_local R (by simpa [D] using hR))
       (by intro R hR; exact hZ_aemeas R (by simpa [D] using hR))
       (by intro R hR; exact hZ_tail R (by simpa [D] using hR))
       (by intro R hR; exact hZ_mean R (by simpa [D] using hR))
   have hcenter_eq :
-      centeredDescendantAverageOnCube P Q n X =ᵐ[P]
+      restrictionCenteredDescendantAverageOnCube P Q n X =ᵐ[P]
         fun a => ((descendantsAtScale Q n).card : ℝ)⁻¹ *
           ∑ R ∈ descendantsAtScale Q n, Z R a := by
     have hAll : ∀ᵐ a ∂P, ∀ R ∈ D, Zraw R a = Z R a := by

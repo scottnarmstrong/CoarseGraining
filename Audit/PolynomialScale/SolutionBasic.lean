@@ -1,14 +1,9 @@
 import Mathlib
-import Homogenization.HighContrast.Scale.Final
-
-attribute [-instance] Homogenization.instMeasurableSpaceVec
-attribute [-instance] Homogenization.instMeasurableSpaceMat
-attribute [-instance] Homogenization.instMeasurableSpaceCoeffField
 
 /-!
 # Statement-level audit vocabulary for the polynomial homogenization-scale capstone
 
-This file holds the Mathlib-shaped statement vocabulary shared by the
+This Mathlib-only file holds the statement vocabulary shared by the
 comparator solution: the local mirrors of the ambient fields, the
 regular-fields carrier and its σ-algebra, the carrier endomorphisms, cubes,
 law hypotheses, Sobolev objects, the block formalism with the coarse-graining
@@ -135,8 +130,8 @@ instance instMeasurableSpaceRegCoeffField (d : ℕ) :
     MeasurableSpace (RegCoeffField d) :=
   pointwiseSigmaR d ⊔ entryTestSigmaR d
 
-/-- A coefficient law on the carrier (mirrors `Book.Ch04.CoeffLaw`). -/
-abbrev CoeffLaw (d : ℕ) := Measure (RegCoeffField d)
+/-- A coefficient law on the carrier (mirrors `Book.Ch04.RestrictionCoeffLaw`). -/
+abbrev RestrictionCoeffLaw (d : ℕ) := Measure (RegCoeffField d)
 
 /-! ## Signed permutations and carrier endomorphisms
 
@@ -419,9 +414,9 @@ noncomputable def restrictReg {d : ℕ} (U : Set (Vec d)) (hU : MeasurableSet U)
     intro K hK
     exact ((a.entry_locInt i j).integrableOn_isCompact hK).indicator hU
 
-/-- The restriction σ-algebra on the carrier (mirrors `RestrictionSigmaR`):
-the comap of the canonical carrier σ-algebra along `restrictReg U hU`. -/
-def RestrictionSigmaR {d : ℕ} (U : Set (Vec d)) (hU : MeasurableSet U) :
+/-- The pointwise-restriction σ-algebra used by this copied sup-metric law
+lane: the comap of the canonical carrier σ-algebra along `restrictReg U hU`. -/
+def restrictionSigma {d : ℕ} (U : Set (Vec d)) (hU : MeasurableSet U) :
     MeasurableSpace (RegCoeffField d) :=
   MeasurableSpace.comap (restrictReg U hU) inferInstance
 
@@ -496,32 +491,31 @@ noncomputable def cubeFluctuation {d : ℕ} (Q : TriadicCube d)
 
 /-! ## Law assumptions -/
 
-/-- Stationarity of a carrier law: invariance under every integer translation
-(mirrors `IsStationaryR`). -/
-def IsStationary {d : ℕ} (P : CoeffLaw d) : Prop :=
+/-- Stationarity in the pointwise-restriction/sup-metric law lane: invariance
+under every integer translation. -/
+def RestrictionStationaryLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
   ∀ z : Fin d → ℤ, Measure.map (translateReg (intVecToRealVec z)) P = P
 
-def AreUnitSeparated {d : ℕ} (U V : Set (Vec d)) : Prop :=
+def RestrictionUnitSeparated {d : ℕ} (U V : Set (Vec d)) : Prop :=
   ∀ ⦃x y : Vec d⦄, x ∈ U → y ∈ V → 1 ≤ dist x y
 
-/-- Unit-range dependence of a carrier law: independence of the restriction
-σ-algebras of unit-separated measurable sets (mirrors
-`IsUnitRangeDependentR`; the `MeasurableSet` side-conditions make
-`RestrictionSigmaR` well defined). -/
-def IsUnitRangeDependent {d : ℕ} (P : CoeffLaw d) : Prop :=
+/-- Unit-range dependence in the pointwise-restriction/sup-metric law lane:
+independence of the restriction σ-algebras of unit-separated measurable sets;
+the `MeasurableSet` side-conditions make `restrictionSigma` well defined. -/
+def RestrictionUnitRangeDependentLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
   ∀ (U V : Set (Vec d)) (hU : MeasurableSet U) (hV : MeasurableSet V),
-    AreUnitSeparated U V →
-      ProbabilityTheory.Indep (RestrictionSigmaR U hU) (RestrictionSigmaR V hV) P
+    RestrictionUnitSeparated U V →
+      ProbabilityTheory.Indep (restrictionSigma U hU) (restrictionSigma V hV) P
 
 /-- Isotropy of a carrier law: invariance under every signed-permutation
 rotation (mirrors `IsIsotropicInLawR`). -/
-def IsIsotropicInLaw {d : ℕ} (P : CoeffLaw d) : Prop :=
+def IsIsotropicInLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
   ∀ (R : Mat d) (hR : IsSignedPermutationMatrix R),
     Measure.map (rotateReg R hR) P = P
 
 /-- Adjoint invariance of a carrier law (mirrors
 `IsAdjointInvariantInLawR`). -/
-def IsAdjointInvariantInLaw {d : ℕ} (P : CoeffLaw d) : Prop :=
+def IsAdjointInvariantInLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
   Measure.map adjointReg P = P
 
 def IsAEEllipticFieldOn {d : ℕ} (lam Lam : ℝ) (U : Set (Vec d))
@@ -544,25 +538,25 @@ def AELocallyUniformlyEllipticField {d : ℕ} (a : RegCoeffField d) : Prop :=
       0 < lam ∧ lam ≤ Lam ∧
         AEEllipticOn lam Lam (openCubeSet Q) a
 
-def AELocallyUniformlyEllipticLaw {d : ℕ} (P : CoeffLaw d) : Prop :=
+def AELocallyUniformlyEllipticLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
   ∀ᵐ a ∂P, AELocallyUniformlyEllipticField a
 
-/-- The Chapter 4 law carrier (mirrors `Book.Ch04.LawCarrier`).  On the
+/-- The Chapter 4 law carrier (mirrors `Book.Ch04.RestrictionLawCarrier`).  On the
 honest-fields carrier the former measurability fields are law-independent free
 theorems, so the carrier consists of the probability instance and the a.s.
 local uniform ellipticity support alone. -/
-structure LawCarrier {d : ℕ} (P : CoeffLaw d) : Prop where
+structure RestrictionLawCarrier {d : ℕ} (P : RestrictionCoeffLaw d) : Prop where
   isProbability : IsProbabilityMeasure P
   ae_locally_uniformly_elliptic : AELocallyUniformlyEllipticLaw P
 
-structure StructuralLaw {d : ℕ} (P : CoeffLaw d) : Prop where
-  stationary : IsStationary P
-  unit_range : IsUnitRangeDependent P
+structure RestrictionStructuralLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop where
+  stationary : RestrictionStationaryLaw P
+  unit_range : RestrictionUnitRangeDependentLaw P
   isotropic : IsIsotropicInLaw P
   adjoint_invariant : IsAdjointInvariantInLaw P
 
 structure UniformEllipticityBounds {d : ℕ}
-    (P : CoeffLaw d) (lam Lam : ℝ) : Prop where
+    (P : RestrictionCoeffLaw d) (lam Lam : ℝ) : Prop where
   lam_pos : 0 < lam
   lam_le_Lam : lam ≤ Lam
   aee_elliptic :
@@ -741,44 +735,44 @@ noncomputable def coarseBlockMatrix {d : ℕ} (U : Set (Vec d)) (a : CoeffField 
 
 /-! ### Annealed coarse matrices at scale -/
 
-noncomputable def annealedBlockMatrix {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedBlockMatrix {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : BlockMat d :=
   { upperLeft := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).upperLeft i j ∂P
     upperRight := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).upperRight i j ∂P
     lowerLeft := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).lowerLeft i j ∂P
     lowerRight := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).lowerRight i j ∂P }
 
-noncomputable def annealedSigmaStarInv {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedSigmaStarInv {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   (annealedBlockMatrix P U).lowerRight
 
-noncomputable def annealedSigmaStar {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedSigmaStar {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   (annealedSigmaStarInv P U)⁻¹
 
 noncomputable def annealedSigmaStarInvKappaMean {d : ℕ}
-    (P : CoeffLaw d) (U : Set (Vec d)) : Mat d :=
+    (P : RestrictionCoeffLaw d) (U : Set (Vec d)) : Mat d :=
   -((annealedBlockMatrix P U).lowerLeft)
 
-noncomputable def annealedKappa {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedKappa {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   annealedSigmaStar P U * annealedSigmaStarInvKappaMean P U
 
-noncomputable def annealedB {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedB {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   (annealedBlockMatrix P U).upperLeft
 
-noncomputable def annealedSigma {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedSigma {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   annealedB P U
     - matTranspose (annealedKappa P U) * annealedSigmaStarInv P U * annealedKappa P U
 
 noncomputable def annealedSigmaAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) : Mat d :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) : Mat d :=
   annealedSigma P (cubeSet (triadicOriginCube d n))
 
 noncomputable def annealedSigmaStarAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) : Mat d :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) : Mat d :=
   annealedSigmaStar P (cubeSet (triadicOriginCube d n))
 
 /-! ### The total scalar contrast selector
@@ -795,12 +789,12 @@ determined by their `(0,0)` entry (`NeZero d`), the Mathlib-only mirror is the
 *total* function below; under the structural hypotheses the Solution bridges it
 to the repository selector. -/
 
-noncomputable def thetaAtScale {d : ℕ} [NeZero d] (P : CoeffLaw d) (n : ℤ) : ℝ :=
+noncomputable def thetaAtScale {d : ℕ} [NeZero d] (P : RestrictionCoeffLaw d) (n : ℤ) : ℝ :=
   annealedSigmaAtScale P n 0 0 * (annealedSigmaStarAtScale P n 0 0)⁻¹
 
 /-! ### The `Θ`-ellipticity class (quadratic-form form ONLY, per directive) -/
 
-def ThetaEllipticLaw {d : ℕ} (Θ : ℝ) (P : CoeffLaw d) : Prop :=
+def ThetaEllipticLaw {d : ℕ} (Θ : ℝ) (P : RestrictionCoeffLaw d) : Prop :=
   ∀ᵐ a ∂P, ∀ᵐ x ∂(MeasureTheory.volume : Measure (Vec d)),
     IsEllipticMatrix 1 Θ (a.toFun x)
 

@@ -18,7 +18,7 @@ term in the third Section 5.3 lemma.
 noncomputable section
 
 private theorem two_mul_beta_le_one
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     2 * section53CoarseFluctuationBeta hP4 ≤ 1 := by
   have hsum := sUpper_add_sLower_add_four_beta_le_one hP4
@@ -28,7 +28,7 @@ private theorem two_mul_beta_le_one
   nlinarith
 
 private theorem cutoff_decay_le_low_tail_decay
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (N : ℕ) :
     ((3 : ℝ) ^ N)⁻¹ ≤
       Real.rpow (3 : ℝ)
@@ -56,7 +56,7 @@ private theorem cutoff_decay_le_low_tail_decay
   exact hrpow
 
 private theorem cutoffCoeff_le_uniform_low_tail_coeff
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) {k m : ℕ} (hkm : k < m)
     {ε : ℝ} (hε : 0 < ε) (hε_le : ε ≤ 1) :
     let β := section53CoarseFluctuationBeta hP4
@@ -165,19 +165,19 @@ private theorem cutoffCoeff_le_uniform_low_tail_coeff
                   Real.rpow (3 : ℝ) (-2 * β * (((m - k : ℕ) : ℝ))) := by ring
 
 private theorem expectedResponseJCubeSet_nonneg
-    {d : ℕ} (P : Ch04.CoeffLaw d) (Q : TriadicCube d) (p q : Vec d) :
+    {d : ℕ} (P : Ch04.RestrictionCoeffLaw d) (Q : TriadicCube d) (p q : Vec d) :
     0 ≤ Ch04.expectedResponseJCubeSet P Q p q := by
   dsimp [Ch04.expectedResponseJCubeSet]
   exact integral_nonneg fun a => by
-    exact Ch04.responseJObservableCubeSet_nonneg Q p q a
+    exact Ch04.restrictionResponseJObservableCubeSet_nonneg Q p q a
 
 /-- Uniform cutoff-oscillation absorption.  The constant is chosen before the
 law, scales, vector, and `ε`. -/
 theorem cutoffOscillation_special_expectedResponse_le_lowScaleTail_uniform
     {d : ℕ} [NeZero d] :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
         (hP4 : QuantitativeCoarseGrainedEllipticity P)
         {k m : ℕ}, k < m →
         ∀ e : Vec d, vecNormSq e = 1 →

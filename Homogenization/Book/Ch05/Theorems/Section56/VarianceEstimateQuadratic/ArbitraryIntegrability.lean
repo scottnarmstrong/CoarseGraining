@@ -13,10 +13,10 @@ noncomputable section
 /-- Translation covariance of the arbitrary-normalizer full-block fluctuation
 observable. -/
 theorem fullBlockFluctuationOperatorNormSqWithNormalizer_translation_covariant
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) :
-    Ch04.IsTranslationCovariantR
+    Ch04.IsRestrictionTranslationCovariant
       (fun U : Set (Vec d) => fun a : RegCoeffField d =>
         fullBlockFluctuationOperatorNormSqWithNormalizer hP hStruct center S U a) := by
   have hraw : IsTranslationCovariant
@@ -29,7 +29,7 @@ theorem fullBlockFluctuationOperatorNormSqWithNormalizer_translation_covariant
               S)‖ ^ (2 : ℕ)) := by
     intro U z b
     simp [translateByInt, coarseBlockMatrix_translateSet_eq_translateCoeffField]
-  exact Ch04.isTranslationCovariantR_comp_toFun hraw
+  exact Ch04.isRestrictionTranslationCovariant_comp_toFun hraw
 
 theorem section56_norm_toEuclideanCLM_le_sum_abs_entries
     {ι : Type*} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℝ) :
@@ -90,7 +90,7 @@ theorem section56_norm_toEuclideanCLM_le_sum_abs_entries
     (mul_nonneg (mul_nonneg (Nat.cast_nonneg _) hS_nonneg) (norm_nonneg x))).mp hnorm_sq
 
 theorem section56_norm_toEuclideanCLM_sq_integrable_of_entry_memLp_two
-    {d : ℕ} {P : Ch04.CoeffLaw d} {Z : RegCoeffField d → FullBlockMat d}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {Z : RegCoeffField d → FullBlockMat d}
     (hZ_aemeas : AEMeasurable Z P)
     (hZ_entry : ∀ α β : BlockCoord d, MemLp (fun a => Z a α β) (2 : ENNReal) P) :
     Integrable
@@ -135,8 +135,8 @@ theorem section56_norm_toEuclideanCLM_sq_integrable_of_entry_memLp_two
     simpa [S, C, Real.norm_eq_abs] using hpow
 
 theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (center : ℤ) (S : FullBlockMat d) (n : ℕ) :
     Integrable
@@ -214,8 +214,8 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_f
   exact section56_norm_toEuclideanCLM_sq_integrable_of_entry_memLp_two hZ_aemeas hZ_entry
 
 theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_from_P4_of_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (center : ℤ) (S : FullBlockMat d) (n : ℤ) (hn : 0 ≤ n) :
     Integrable
@@ -228,8 +228,8 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_f
   simpa [Int.toNat_of_nonneg hn] using hnat
 
 theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_from_P4_of_nonneg_scale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (center : ℤ) (S : FullBlockMat d) (R : TriadicCube d)
     (hR_nonneg : 0 ≤ R.scale) :
@@ -279,8 +279,8 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_from_P4_of_n
   exact hcomp.congr hae.symm
 
 theorem integrable_descendantsAverage_fullBlockFluctuationOperatorNormSqWithNormalizer_from_P4_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m n k : ℕ) (_hk : k ≤ n) (S : FullBlockMat d) :
     Integrable
@@ -307,8 +307,8 @@ theorem integrable_descendantsAverage_fullBlockFluctuationOperatorNormSqWithNorm
       hP hStruct hP4 (m : ℤ) S R hR_nonneg
 
 theorem aemeasurable_fullBlockFluctuationMatrixWithNormalizer_cubeSet
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -330,8 +330,8 @@ theorem aemeasurable_fullBlockFluctuationMatrixWithNormalizer_cubeSet
   simpa [fullBlockFluctuationMatrixWithNormalizer, Abar, g] using hg.comp_aemeasurable hM
 
 theorem aemeasurable_descendantsAverageFluctuationMatrixWithNormalizer
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -364,8 +364,8 @@ theorem aemeasurable_descendantsAverageFluctuationMatrixWithNormalizer
     descendantsAverageFullBlockMat_eq_smul_sum]
 
 theorem aemeasurable_descendantsAverageFluctuationOperatorNormSqWithNormalizer
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -394,8 +394,8 @@ theorem aemeasurable_descendantsAverageFluctuationOperatorNormSqWithNormalizer
         hP hStruct center S Q j)
 
 theorem integrable_descendantsAverageFluctuationOperatorNormSqWithNormalizer_from_P4_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m n k : ℕ) (hk : k ≤ n) (S : FullBlockMat d) :
     Integrable
@@ -429,8 +429,8 @@ theorem integrable_descendantsAverageFluctuationOperatorNormSqWithNormalizer_fro
   simpa [Q, j] using hle
 
 theorem memLp_two_blockJTraceAverageWithNormalizers_from_P4_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (_m n k : ℕ) (_hk : k ≤ n) (S T : FullBlockMat d) :
     MemLp
@@ -480,8 +480,8 @@ theorem memLp_two_blockJTraceAverageWithNormalizers_from_P4_of_stationary
       hchild
 
 theorem integrable_blockJTraceAverageSqWithNormalizers_from_P4_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m n k : ℕ) (hk : k ≤ n) (S T : FullBlockMat d) :
     Integrable
@@ -497,8 +497,8 @@ theorem integrable_blockJTraceAverageSqWithNormalizers_from_P4_of_stationary
 arbitrary deterministic normalizers.  The manuscript specialization is
 `S = B^{-1/2}` and `T = B^{1/2}`. -/
 theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_integral_le_two_descendantsAverageWithNormalizer_add_eight_blockJTraceAverageSqWithNormalizers
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m n k : ℕ) (hk : k ≤ n) (S T : FullBlockMat d) :
     ∫ a,

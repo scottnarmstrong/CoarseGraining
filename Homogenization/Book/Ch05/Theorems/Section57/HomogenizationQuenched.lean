@@ -36,9 +36,9 @@ theorem exists_shifted_quenchedLocalizedEstimate_interpolated_expLogSq
         αbad * (1 + b / a) < b →
         αbad < a →
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
             let N0 : ℕ :=
@@ -175,9 +175,9 @@ theorem exists_shifted_quenchedLocalizedEstimate_interpolated_expLogSq_parameter
       ∀ {t : ℝ}, max params.sUpper params.sLower < t →
         t ≤ (d : ℝ) / 2 →
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
             let N0 : ℕ :=
@@ -242,9 +242,9 @@ theorem exists_aboveEntry_quenchedLocalizedEstimate_interpolated_expLogSq_parame
       ∀ {t : ℝ}, max params.sUpper params.sLower < t →
         t ≤ (d : ℝ) / 2 →
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
             let N0 : ℕ :=
@@ -382,9 +382,9 @@ theorem exists_quenchedLocalizedEstimate_interpolated_expLogSq_parameterAlpha
     ∃ α : ℝ, 0 < α ∧
       ∀ {t : ℝ}, max params.sUpper params.sLower < t → t ≤ 1 →
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
             let η : ℝ := finiteQuenchedTailExponent d σ t
@@ -571,9 +571,9 @@ theorem exists_quenchedLocalizedEstimate_interpolated_expLogSq_uniformAnnealedEx
       ∀ {σ : ℝ}, 0 < σ →
       ∀ {t : ℝ}, max params.sUpper params.sLower < t → t ≤ 1 →
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
             let η : ℝ := finiteQuenchedTailExponent d σ t

@@ -19,7 +19,7 @@ noncomputable section
 
 /-- The annealed doubled coarse-grained matrix `\overline{\mathbf A}(U)`,
 obtained by averaging each deterministic coarse matrix entry. -/
-noncomputable def annealedBlockMatrix {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedBlockMatrix {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : BlockMat d :=
   { upperLeft := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).upperLeft i j ∂P
     upperRight := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).upperRight i j ∂P
@@ -29,80 +29,80 @@ noncomputable def annealedBlockMatrix {d : ℕ} (P : CoeffLaw d)
 /-- The annealed starred block matrix
 `\overline{\mathbf A}_{*,n}^{-1}`. -/
 noncomputable def annealedStarredBlockMatrixInv {d : ℕ}
-    (P : CoeffLaw d) (U : Set (Vec d)) : BlockMat d :=
+    (P : RestrictionCoeffLaw d) (U : Set (Vec d)) : BlockMat d :=
   blockReflect (annealedBlockMatrix P U)
 
 /-- The annealed inverse-star matrix `\overline\sigma_*^{-1}(U)`. -/
-noncomputable def annealedSigmaStarInv {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedSigmaStarInv {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   (annealedBlockMatrix P U).lowerRight
 
 /-- The annealed starred matrix `\overline\sigma_*(U)`. -/
-noncomputable def annealedSigmaStar {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedSigmaStar {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   (annealedSigmaStarInv P U)⁻¹
 
 /-- The annealed mixed block
 `E[\sigma_*^{-1}(U; a)\kappa(U; a)]`. -/
 noncomputable def annealedSigmaStarInvKappaMean {d : ℕ}
-    (P : CoeffLaw d) (U : Set (Vec d)) : Mat d :=
+    (P : RestrictionCoeffLaw d) (U : Set (Vec d)) : Mat d :=
   -((annealedBlockMatrix P U).lowerLeft)
 
 /-- The annealed coupling matrix `\overline\kappa(U)`. -/
-noncomputable def annealedKappa {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedKappa {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   annealedSigmaStar P U * annealedSigmaStarInvKappaMean P U
 
 /-- The annealed upper-left block `\overline b(U)`. -/
-noncomputable def annealedB {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedB {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   (annealedBlockMatrix P U).upperLeft
 
 /-- The annealed conductivity matrix
 `\overline\sigma = \overline b - \overline\kappa^t
 \overline\sigma_*^{-1}\overline\kappa`. -/
-noncomputable def annealedSigma {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedSigma {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   annealedB P U
     - matTranspose (annealedKappa P U) * annealedSigmaStarInv P U * annealedKappa P U
 
 @[simp] theorem annealedBlockMatrix_upperLeft_apply {d : ℕ}
-    (P : CoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
+    (P : RestrictionCoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
     (annealedBlockMatrix P U).upperLeft i j =
       ∫ a, (coarseBlockMatrix U a.toFun).upperLeft i j ∂P :=
   rfl
 
 @[simp] theorem annealedBlockMatrix_upperRight_apply {d : ℕ}
-    (P : CoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
+    (P : RestrictionCoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
     (annealedBlockMatrix P U).upperRight i j =
       ∫ a, (coarseBlockMatrix U a.toFun).upperRight i j ∂P :=
   rfl
 
 @[simp] theorem annealedBlockMatrix_lowerLeft_apply {d : ℕ}
-    (P : CoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
+    (P : RestrictionCoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
     (annealedBlockMatrix P U).lowerLeft i j =
       ∫ a, (coarseBlockMatrix U a.toFun).lowerLeft i j ∂P :=
   rfl
 
 @[simp] theorem annealedBlockMatrix_lowerRight_apply {d : ℕ}
-    (P : CoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
+    (P : RestrictionCoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
     (annealedBlockMatrix P U).lowerRight i j =
       ∫ a, (coarseBlockMatrix U a.toFun).lowerRight i j ∂P :=
   rfl
 
 @[simp] theorem annealedSigmaStarInv_apply {d : ℕ}
-    (P : CoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
+    (P : RestrictionCoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
     annealedSigmaStarInv P U i j =
       ∫ a, (coarseBlockMatrix U a.toFun).lowerRight i j ∂P :=
   rfl
 
 @[simp] theorem annealedSigmaStarInvKappaMean_apply {d : ℕ}
-    (P : CoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
+    (P : RestrictionCoeffLaw d) (U : Set (Vec d)) (i j : Fin d) :
     annealedSigmaStarInvKappaMean P U i j =
       -(∫ a, (coarseBlockMatrix U a.toFun).lowerLeft i j ∂P) := by
   simp [annealedSigmaStarInvKappaMean]
 
-@[simp] theorem annealedB_apply {d : ℕ} (P : CoeffLaw d)
+@[simp] theorem annealedB_apply {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) (i j : Fin d) :
     annealedB P U i j =
       ∫ a, (coarseBlockMatrix U a.toFun).upperLeft i j ∂P :=
@@ -110,42 +110,42 @@ noncomputable def annealedSigma {d : ℕ} (P : CoeffLaw d)
 
 /-- Annealed block matrix on the origin cube at scale `n`. -/
 noncomputable def annealedBlockMatrixAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) : BlockMat d :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) : BlockMat d :=
   annealedBlockMatrix P (cubeSet (originCube d n))
 
 /-- Annealed starred block matrix on the origin cube at scale `n`. -/
 noncomputable def annealedStarredBlockMatrixInvAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) : BlockMat d :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) : BlockMat d :=
   annealedStarredBlockMatrixInv P (cubeSet (originCube d n))
 
 /-- Annealed inverse-star matrix on the origin cube at scale `n`. -/
 noncomputable def annealedSigmaStarInvAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) : Mat d :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) : Mat d :=
   annealedSigmaStarInv P (cubeSet (originCube d n))
 
 /-- Annealed starred matrix on the origin cube at scale `n`. -/
 noncomputable def annealedSigmaStarAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) : Mat d :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) : Mat d :=
   annealedSigmaStar P (cubeSet (originCube d n))
 
 /-- Annealed mixed block on the origin cube at scale `n`. -/
 noncomputable def annealedSigmaStarInvKappaMeanAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) : Mat d :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) : Mat d :=
   annealedSigmaStarInvKappaMean P (cubeSet (originCube d n))
 
 /-- Annealed coupling matrix on the origin cube at scale `n`. -/
 noncomputable def annealedKappaAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) : Mat d :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) : Mat d :=
   annealedKappa P (cubeSet (originCube d n))
 
 /-- Annealed upper-left block on the origin cube at scale `n`. -/
 noncomputable def annealedBAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) : Mat d :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) : Mat d :=
   annealedB P (cubeSet (originCube d n))
 
 /-- Annealed conductivity matrix on the origin cube at scale `n`. -/
 noncomputable def annealedSigmaAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) : Mat d :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) : Mat d :=
   annealedSigma P (cubeSet (originCube d n))
 
 /-- Response functional on the origin cube at scale `n`. -/
@@ -160,7 +160,7 @@ noncomputable def responseJOnCube {d : ℕ}
 
 /-- Annealed response functional on the origin cube at scale `n`. -/
 noncomputable def annealedResponseJAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) (p q : Vec d) : ℝ :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) (p q : Vec d) : ℝ :=
   ∫ a, responseJAtScale n p q a.toFun ∂P
 
 /-- Full unfolded coarse block observable on a deterministic triadic cube. -/

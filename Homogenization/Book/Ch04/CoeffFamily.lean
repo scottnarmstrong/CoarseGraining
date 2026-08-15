@@ -112,11 +112,11 @@ theorem coeffOnOfAELocallyUniformlyEllipticField_aeeq_of_ae_eq_on_openCubeSet
   change a.toFun =ᵐ[volumeMeasureOn (Ch02.cubeDomain Q : Set (Vec d))] b.toFun
   simpa [Ch02.cubeDomain_coe] using hab
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 /-- A Chapter 4 law carrier supplies, almost surely, the dependent Chapter 2
 triadic coefficient family associated to the sampled coefficient field. -/
-theorem ae_coeffFamily_exists {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P) :
+theorem ae_coeffFamily_exists {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P) :
     ∀ᵐ a ∂P,
       ∃ h : AELocallyUniformlyEllipticField a,
         ∃ F : Ch02.TriadicCoeffFamily d,
@@ -124,7 +124,7 @@ theorem ae_coeffFamily_exists {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P) :
   filter_upwards [hP.ae_locally_uniformly_elliptic] with a ha
   exact ⟨ha, triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha, rfl⟩
 
-end LawCarrier
+end RestrictionLawCarrier
 
 end Ch04
 end Book

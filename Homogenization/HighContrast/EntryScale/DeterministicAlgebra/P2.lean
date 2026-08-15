@@ -191,9 +191,9 @@ Source label `l.union.bound`: concrete diagonal entries of
 `Ahom_m^{-1/2} Ahom_j^{1/2}` in the scalar-block coordinates.
 -/
 noncomputable def terminalNormalizerChangeDiagAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (j m : ℕ) :
     Homogenization.BlockCoord d → ℝ :=
   terminalNormalizerChangeDiag
@@ -208,20 +208,20 @@ Source label `l.union.bound`: concrete full-block diagonal matrix for
 `Ahom_m^{-1/2} Ahom_j^{1/2}`.
 -/
 noncomputable def terminalNormalizerChangeMatrixAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (j m : ℕ) : Homogenization.FullBlockMat d :=
   Matrix.diagonal (terminalNormalizerChangeDiagAtScales hP hStruct j m)
 
 /--
-Source label `l.union.bound`: LIH scalar full-block normalizer at one scale,
+Source label `l.union.bound`: the library's scalar full-block normalizer at one scale,
 as the diagonal matrix `Ahom_n^{-1/2}`.
 -/
 noncomputable def scalarFullBlockNormalizerMatrixAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (n : ℕ) : Homogenization.FullBlockMat d :=
   Matrix.diagonal
     (Homogenization.Book.Ch04.scalarFullBlockInvSqrtDiag
@@ -234,9 +234,9 @@ Source label `l.union.bound`: full-block matrix centered by the scalar
 annealed block at scale `center`.
 -/
 noncomputable def scalarCenteredFullBlockMatrixAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (center : ℕ) (Y : Homogenization.FullBlockMat d) :
     Homogenization.FullBlockMat d :=
   Y - Homogenization.toFullBlockMat
@@ -248,9 +248,9 @@ Source label `e.drift.general`: diagonal entries of the terminal-normalized
 annealed drift `Ahom_m^{-1/2} (Ahom_j - Ahom_m) Ahom_m^{-1/2}`.
 -/
 noncomputable def terminalAnnealedFullBlockDriftDiagAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (j m : ℕ) :
     Homogenization.BlockCoord d → ℝ
   | Sum.inl _ =>
@@ -265,9 +265,9 @@ Source label `e.drift.general`: the deterministic annealed-drift matrix is
 exactly diagonal after terminal scalar normalization.
 -/
 theorem terminalAnnealedFullBlockDriftMatrix_eq_diagonal
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (j m : ℕ) :
     scalarFullBlockNormalizerMatrixAtScale hP hStruct m *
@@ -375,9 +375,9 @@ Source label `e.drift.general`: deterministic annealed-drift norm
 `D_{j,m}` from the source proof.
 -/
 noncomputable def terminalAnnealedFullBlockDriftAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (j m : ℕ) : ℝ :=
   fullBlockOperatorNorm
     (scalarFullBlockNormalizerMatrixAtScale hP hStruct m *
@@ -391,9 +391,9 @@ noncomputable def terminalAnnealedFullBlockDriftAtScales
 
 /-- Source label `e.drift.general`: `D_{j,m}` is nonnegative. -/
 theorem terminalAnnealedFullBlockDriftAtScales_nonneg
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (j m : ℕ) :
     0 ≤ terminalAnnealedFullBlockDriftAtScales hP hStruct j m :=
   fullBlockOperatorNorm_nonneg _
@@ -403,9 +403,9 @@ Source label `e.drift.general`: bound `D_{j,m}` by uniform bounds on the two
 scalar diagonal entries.
 -/
 theorem terminalAnnealedFullBlockDriftAtScales_le_of_diag_bounds
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (j m : ℕ) {R : ℝ}
     (hR : 0 ≤ R)
@@ -421,9 +421,9 @@ Source label `e.drift.general`: source-facing scalar-ratio form of the
 pointwise deterministic drift bound.
 -/
 theorem terminalAnnealedFullBlockDriftAtScales_le_of_scalar_ratio_bounds
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (j m : ℕ) {R : ℝ}
     (hR : 0 ≤ R)
@@ -448,9 +448,9 @@ Source label `e.drift.general`: the pointwise deterministic drift is bounded
 by the product excess of the two scalar terminal ratios.
 -/
 theorem terminalAnnealedFullBlockDriftAtScales_le_scalar_ratio_product_sub_one
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (j m : ℕ)
     (hupper_one :
@@ -494,9 +494,9 @@ Source label `e.drift.general`: under `(P4)` and `j <= m`, the scalar-chain
 monotonicity supplies the hypotheses for the product-excess drift bound.
 -/
 theorem terminalAnnealedFullBlockDriftAtScales_le_scalar_ratio_product_sub_one_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {j m : ℕ} (hjm : j ≤ m) :
     terminalAnnealedFullBlockDriftAtScales hP hStruct j m ≤
@@ -531,13 +531,13 @@ theorem terminalAnnealedFullBlockDriftAtScales_le_scalar_ratio_product_sub_one_o
       hP hStruct hP4 j m hupper_one hlower_one
 
 /--
-Source label `e.drift.general`: LIH-facing pointwise drift bound in the
+Source label `e.drift.general`: library-facing pointwise drift bound in the
 paper's scalar excess notation `F_n = Theta_n - 1`.
 -/
 theorem terminalAnnealedFullBlockDriftAtScales_le_contrastExcess_drop_div_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {j m : ℕ} (hjm : j ≤ m) :
     terminalAnnealedFullBlockDriftAtScales hP hStruct j m ≤
@@ -598,9 +598,9 @@ Source label `e.tau.sum.absorb`: on a no-drop window `[k,m]`, every
 intermediate contrast drop is bounded by the endpoint no-drop budget.
 -/
 theorem contrastExcess_drop_le_noDrop_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {rho : ℝ} {k j m : ℕ}
     (hno :
@@ -634,9 +634,9 @@ Source label `e.drift.general`: on a no-drop window, the pointwise drift
 bound becomes the paper's no-drop form with `F_m = Theta_m - 1`.
 -/
 theorem terminalAnnealedFullBlockDriftAtScales_le_noDrop_contrastExcess_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {rho : ℝ} {k j m : ℕ}
     (hno :
@@ -699,9 +699,9 @@ private theorem sqrt_inv_mul_mul_sqrt_eq_sqrt {a b : ℝ}
   field_simp [hsa]
 
 theorem terminalNormalizerChangeMatrixAtScales_mul_scalarFullBlockNormalizerMatrixAtScale_eq
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (j m : ℕ) :
     terminalNormalizerChangeMatrixAtScales hP hStruct j m *
@@ -741,9 +741,9 @@ theorem terminalNormalizerChangeMatrixAtScales_mul_scalarFullBlockNormalizerMatr
   · simp [Matrix.diagonal, hαβ]
 
 theorem scalarFullBlockNormalizerMatrixAtScale_mul_terminalNormalizerChangeMatrixAtScales_eq
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (j m : ℕ) :
     scalarFullBlockNormalizerMatrixAtScale hP hStruct j *
@@ -810,9 +810,9 @@ normalization-change matrix has full-block operator norm at most
 `sqrt widetildeTheta_0`.
 -/
 theorem fullBlockOperatorNorm_terminalNormalizerChangeMatrixAtScales_le_sqrt_initialWidetildeTheta_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {j m : ℕ} (hjm : j ≤ m) :
     fullBlockOperatorNorm
@@ -834,9 +834,9 @@ from intermediate scale `j` to terminal scale `m` costs at most the corrected
 initial contrast budget `T = widetildeTheta_0`.
 -/
 theorem fullBlockOperatorNorm_terminalNormalizerChange_two_sided_le_initialWidetildeTheta_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {j m : ℕ} (hjm : j ≤ m) (X : Homogenization.FullBlockMat d) :
     fullBlockOperatorNorm
@@ -876,9 +876,9 @@ scale `j` costs at most `T = widetildeTheta_0` times the same centered block
 with its intermediate-scale normalization.
 -/
 theorem fullBlockOperatorNorm_terminalNormalizedCenteredFullBlock_le_initialWidetildeTheta_mul_intermediate_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {j m : ℕ} (hjm : j ≤ m) (Y : Homogenization.FullBlockMat d) :
     fullBlockOperatorNorm

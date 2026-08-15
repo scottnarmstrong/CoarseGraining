@@ -18,7 +18,7 @@ separation into the decay needed after the refined variance-budget summation.
 /-- A separation constant large enough to turn the logarithmic scale condition
 into fourth-power decay of the scale-zero moment parameter. -/
 noncomputable def varianceScaleSeparationConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   8 * (section54VarianceBeta hP4 * Real.log 3)⁻¹
 
@@ -134,7 +134,7 @@ private theorem rpow_neg_four_mul_add_sq_le_two_delta
 
 /-- Scale separation absorbs the remaining `\widetilde\Theta_0` budget. -/
 theorem scaleSeparation_absorbs_widetildeThetaBudget
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {C delta : ℝ} {m : ℕ}
     (hC : varianceScaleSeparationConst hP4 ≤ C)

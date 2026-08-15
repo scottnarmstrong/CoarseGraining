@@ -23,8 +23,8 @@ Section 5.3 lemma.  This is still private: later steps prove the a.e. bound and
 integrability from the deterministic cutoff construction and Ch4 law-facing
 surfaces. -/
 theorem expectedResponseJCubeSet_sub_half_dot_le_integral_jUpperWeakNormPointwiseRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     (s t : ℝ) (φ : Vec d → ℝ) (cutoffGradient : Vec d → Vec d)
     (C Cosc scaleSep BφS BφT cutoffCircOne poincareConst cutoffConstant
@@ -33,9 +33,9 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_integral_jUpperWeakNormPointwis
     (hφ_int : IntegrableOn φ (cubeSet (originCube d m)) volume)
     (hMean : cubeAverage (originCube d m) φ = 1)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hJ : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P)
     (hRHS :
       Integrable
         (jUpperWeakNormPointwiseRHSAtScale m k s t cutoffGradient
@@ -64,17 +64,17 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_integral_jUpperWeakNormPointwis
 /-- Integrability of the Ch4-facing pointwise RHS from integrability of its
 remaining scalar-response weak-norm and cutoff-product components. -/
 theorem integrable_jUpperWeakNormPointwiseRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P)
     {k m : ℤ} (hkm : k ≤ m)
     (s t : ℝ) (cutoffGradient : Vec d → Vec d)
     (C Cosc scaleSep BφS BφT cutoffCircOne poincareConst cutoffConstant
       centeredCutoffConstant : ℝ)
     (p q p0 q0 : Vec d)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hDesc : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P)
     (hGradWeak :
       Integrable
         (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet
@@ -102,7 +102,7 @@ theorem integrable_jUpperWeakNormPointwiseRHSAtScale
   let Q : TriadicCube d := originCube d m
   let j : ℕ := Int.toNat (m - k)
   let childAverage : RegCoeffField d → ℝ :=
-    fun a => descendantsAverage Q j (fun R => Ch04.responseJObservableCubeSet R p q a)
+    fun a => descendantsAverage Q j (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)
   let gradWeak : RegCoeffField d → ℝ :=
     fun a => Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
   let fluxWeak : RegCoeffField d → ℝ :=
@@ -117,7 +117,7 @@ theorem integrable_jUpperWeakNormPointwiseRHSAtScale
         (Real.sqrt (responseJAdditivityDefectAtScale m k p q a) *
           Real.sqrt (childAverage a))
   let oscPoint : RegCoeffField d → ℝ :=
-    fun a => Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a
+    fun a => Cosc * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a
   let gradPoint : RegCoeffField d → ℝ :=
     fun a =>
       (1 / 2 : ℝ) * ‖q0‖ *
@@ -135,14 +135,14 @@ theorem integrable_jUpperWeakNormPointwiseRHSAtScale
         cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant
   have hDescDepth :
       ∀ R, R ∈ descendantsAtDepth Q j →
-        Integrable (Ch04.responseJObservableCubeSet R p q) P := by
+        Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P := by
     intro R hR
     exact hDesc R (by
       simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm]
         using hR)
   have hChildInt : Integrable childAverage P := by
     simpa [childAverage, Q, j] using
-      Ch04.integrable_descendantsAverage_responseJObservableCubeSet hDescDepth
+      Ch04.integrable_descendantsAverage_restrictionResponseJObservableCubeSet hDescDepth
   have hDefectInt :
       Integrable (responseJAdditivityDefectAtScale m k p q) P :=
     integrable_responseJAdditivityDefectAtScale hkm p q hParent hDesc
@@ -152,7 +152,7 @@ theorem integrable_jUpperWeakNormPointwiseRHSAtScale
   have hChildNonneg : 0 ≤ᵐ[P] childAverage := by
     filter_upwards with a
     simpa [childAverage, Q, j] using
-      descendantsAverage_responseJObservableCubeSet_nonneg Q j p q a
+      descendantsAverage_restrictionResponseJObservableCubeSet_nonneg Q j p q a
   have hSqrtProdInt :
       Integrable
         (fun a : RegCoeffField d =>
@@ -193,8 +193,8 @@ theorem integrable_jUpperWeakNormPointwiseRHSAtScale
 /-- Composed expectation assembly for the first Section 5.3 lemma: the
 centered parent response is bounded directly by the expected manuscript RHS. -/
 theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormExpectedRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     (s t : ℝ) (φ : Vec d → ℝ) (cutoffGradient : Vec d → Vec d)
     (C Cosc scaleSep BφS BφT cutoffCircOne poincareConst cutoffConstant
@@ -204,9 +204,9 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormExpectedRHSAtScal
     (hφ_int : IntegrableOn φ (cubeSet (originCube d m)) volume)
     (hMean : cubeAverage (originCube d m) φ = 1)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hJ : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P)
     (hGradWeak :
       Integrable
         (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet
@@ -278,8 +278,8 @@ square expectations.  The pointwise product replacement is kept private here; it
 is the next deterministic source theorem, not part of the public Section 5.3
 statement. -/
 theorem jUpperWeakNormExpectedRHSAtScale_le_manuscriptExpectedRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (m k : ℤ) {s t : ℝ}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (m k : ℤ) {s t : ℝ}
     (hs : 0 < s) (ht : 0 < t)
     (cutoffGradient : Vec d → Vec d)
     (C Cosc scaleSep BφS BφT cutoffCircOne poincareConst cutoffConstant
@@ -371,8 +371,8 @@ The only remaining non-manuscript input is the private deterministic product
 replacement `hProductPoint`, which must be discharged by the next deterministic
 cutoff-product theorem rather than exposed publicly. -/
 theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpectedRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     {s t : ℝ} (hs : 0 < s) (ht : 0 < t)
     (φ : Vec d → ℝ) (cutoffGradient : Vec d → Vec d)
@@ -383,9 +383,9 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpecte
     (hφ_int : IntegrableOn φ (cubeSet (originCube d m)) volume)
     (hMean : cubeAverage (originCube d m) φ = 1)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hJ : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P)
     (hGradWeak :
       Integrable
         (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet
@@ -467,8 +467,8 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpecte
 /-- Composed expectation assembly through the manuscript pointwise RHS.  This
 route has no cutoff-product bridge expectation and no `hProductPoint` input. -/
 theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpectedRHSAtScale_of_manuscriptPointwise
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     {s t : ℝ} (hs : 0 < s) (ht : 0 < t)
     (φ : Vec d → ℝ)
@@ -478,9 +478,9 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpecte
     (hφ_int : IntegrableOn φ (cubeSet (originCube d m)) volume)
     (hMean : cubeAverage (originCube d m) φ = 1)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hJ : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P)
     (hGradWeak :
       Integrable
         (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet
@@ -543,8 +543,8 @@ deterministic cutoff controls.  The remaining inputs are law-facing
 integrability/moment facts for the Ch4 observables, not fixed-coefficient proof
 packages. -/
 theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpectedRHSAtScale_of_cutoffControls
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     {s t : ℝ} (hs : 0 < s) (hs_lt_one : s < 1) (ht : 0 < t)
     (hst : s + t ≤ 1)
@@ -588,9 +588,9 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpecte
           cubeBesovScaleWeight (-s) (originCube d m) *
           cubeBesovScaleWeight (-t) (originCube d m) ≤ Cprod)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hJ : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P)
     (hGradWeak :
       Integrable
         (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet

@@ -26,10 +26,10 @@ remainder.  The stochastic part is then paid by Holder against the same
 `coarseFluctuationResponseMomentAtScale` as the small-tail estimate.
 -/
 theorem integrable_section52LowTail_childResponseAverage_special_and_integral_le_responseMoment
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -44,7 +44,7 @@ theorem integrable_section52LowTail_childResponseAverage_special_and_integral_le
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
-        (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
     let response := fun a : Homogenization.RegCoeffField d =>
       (5 * β⁻¹) ^ 2 * childAvg a
     let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
@@ -126,7 +126,7 @@ theorem integrable_section52LowTail_childResponseAverage_special_and_integral_le
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
   let coeffResponse : ℝ := (5 * β⁻¹) ^ 2
@@ -293,13 +293,13 @@ theorem integrable_section52LowTail_childResponseAverage_special_and_integral_le
     intro a
     dsimp [childAvg]
     exact Homogenization.descendantsAverage_nonneg Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       (fun R _hR =>
-        Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg R p_e q_e a)
+        Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg R p_e q_e a)
   have hchild_nonneg : 0 ≤ᵐ[P] childAvg :=
     Filter.Eventually.of_forall hchild_nonneg_all
   have hdesc :=
-    integrable_terminalDescendantsAverage_responseJObservableCubeSet_and_integral_le
+    integrable_terminalDescendantsAverage_restrictionResponseJObservableCubeSet_and_integral_le
       hP hstat hStruct hP4 hkm.le e
   have hChildInt : MeasureTheory.Integrable childAvg P := by
     simpa only [childAvg, Q, p_e, q_e] using hdesc.1
@@ -309,8 +309,8 @@ theorem integrable_section52LowTail_childResponseAverage_special_and_integral_le
   have hChildMem :
       MeasureTheory.MemLp childAvg
         (ENNReal.ofReal (section53CoarseFluctuationZeta hP4)) P := by
-    simpa only [Book.Ch05.specialPAtScale_eq, Book.Ch05.sigmaHatAtScale_eq, one_div, Real.rpow_eq_pow, Book.Ch05.specialQAtScale_eq, Book.Ch04.responseJObservableCubeSet_apply, Int.toNat_sub', Int.toNat_natCast] using
-      memLp_zeta_descendantsAverage_responseJObservableCubeSet_originCube_from_P4_of_stationary
+    simpa only [Book.Ch05.specialPAtScale_eq, Book.Ch05.sigmaHatAtScale_eq, one_div, Real.rpow_eq_pow, Book.Ch05.specialQAtScale_eq, Book.Ch04.restrictionResponseJObservableCubeSet_apply, Int.toNat_sub', Int.toNat_natCast] using
+      memLp_zeta_descendantsAverage_restrictionResponseJObservableCubeSet_originCube_from_P4_of_stationary
         hP hstat hStruct hP4 hk_nonneg hkm_int p_e q_e
   have hChildMomentRoot_le :
       (∫ a, childAvg a ^ ζ ∂P) ^ (1 / ζ) ≤ responseMoment := by
@@ -868,7 +868,7 @@ theorem integrable_section52LowTail_childResponseAverage_special_and_integral_le
                     ((hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ •
                       (1 : Homogenization.Mat d)))
                 0)) P :=
-      Homogenization.Book.Ch04.LawCarrier.aemeasurable_lowerRight_matrixNorm_positiveExcess_finsetSup
+      Homogenization.Book.Ch04.RestrictionLawCarrier.aemeasurable_lowerRight_matrixNorm_positiveExcess_finsetSup
           hP hparents
           ((hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ •
             (1 : Homogenization.Mat d))
@@ -913,7 +913,7 @@ theorem integrable_section52LowTail_childResponseAverage_special_and_integral_le
                     (hP.barSigmaAtScale hStruct (m : ℤ) •
                       (1 : Homogenization.Mat d)))
                 0)) P :=
-      Homogenization.Book.Ch04.LawCarrier.aemeasurable_upperLeft_matrixNorm_positiveExcess_finsetSup
+      Homogenization.Book.Ch04.RestrictionLawCarrier.aemeasurable_upperLeft_matrixNorm_positiveExcess_finsetSup
           hP hparents
           (hP.barSigmaAtScale hStruct (m : ℤ) •
             (1 : Homogenization.Mat d))

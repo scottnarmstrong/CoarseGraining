@@ -435,9 +435,9 @@ Source label `l.det.memory`: the full source-weighted contrast-drop supremum
 for the concrete contrast excess sequence is paid by the memory variable.
 -/
 theorem contrastExcessAtScale_weighted_sup_le_inv_mul_memory_of_P4
-    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {N Nstar L i : ℕ}
     (hi : 1 ≤ i)
@@ -539,9 +539,9 @@ actual deterministic drift `D_{j,m}` and contrast excesses in the entry-scale
 development.
 -/
 theorem terminalAnnealedFullBlockDrift_weightedSup_le_memory_of_contrastDrop_sup
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {N m : ℕ} (hNm : N ≤ m) {rhoM C_H H : ℝ}
     (hdrop :
@@ -585,9 +585,9 @@ Source label `e.det.memory`: concrete weighted deterministic-drift supremum
 paid by the memory variable at the grid endpoint `m_i`.
 -/
 theorem terminalAnnealedFullBlockDrift_weightedSup_le_memory_of_P4
-    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {N Nstar L i : ℕ}
     (hi : 1 ≤ i)

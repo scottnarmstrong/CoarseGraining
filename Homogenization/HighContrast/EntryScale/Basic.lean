@@ -17,7 +17,7 @@ deriving DecidableEq, Repr
 
 namespace SourceLabel
 
-/-- A label from the high-moment paper (Armstrong–Kuusi–Loher, in preparation). -/
+/-- A label from the high-moment paper (Armstrong–Kuusi–Loher, to appear). -/
 def highMomentPaper (label : String) (line : Nat) : SourceLabel :=
   { file := "high-moment-paper", label, line }
 end SourceLabel

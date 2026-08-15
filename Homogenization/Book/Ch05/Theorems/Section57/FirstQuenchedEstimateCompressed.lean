@@ -34,9 +34,9 @@ theorem firstQuenchedEstimate_limitNormalized_logSqEntry_noXi
     ∃ a : ℝ, 0 < a ∧
       ∀ {σ : ℝ}, 0 < σ →
         ∃ CentryScale Cfluct : ℝ, 0 < CentryScale ∧ 0 < Cfluct ∧
-          ∀ {Pμ : Ch04.CoeffLaw d}
-            (hPμ : Ch04.LawCarrier Pμ)
-            (hStruct : Ch04.StructuralLaw Pμ)
+          ∀ {Pμ : Ch04.RestrictionCoeffLaw d}
+            (hPμ : Ch04.RestrictionLawCarrier Pμ)
+            (hStruct : Ch04.RestrictionStructuralLaw Pμ)
             (hΓ : GammaSigmaCoarseGrainedEllipticityNoXi Pμ hPμ hStruct),
             hΓ.sigma = σ → hΓ.params = params →
           ∀ (e : FullBlockVec d), dotProduct e e ≤ 1 →
@@ -157,9 +157,9 @@ theorem firstQuenchedEstimate_limitNormalized_logSqEntry_noXi_infinity
     (params : GammaCoarseGrainedEllipticityParams d) :
     ∃ a : ℝ, 0 < a ∧
       ∃ CentryScale Cfluct : ℝ, 0 < CentryScale ∧ 0 < Cfluct ∧
-        ∀ {Pμ : Ch04.CoeffLaw d}
-          (hPμ : Ch04.LawCarrier Pμ)
-          (hStruct : Ch04.StructuralLaw Pμ)
+        ∀ {Pμ : Ch04.RestrictionCoeffLaw d}
+          (hPμ : Ch04.RestrictionLawCarrier Pμ)
+          (hStruct : Ch04.RestrictionStructuralLaw Pμ)
           (hInf : GammaInfinityCoarseGrainedEllipticityNoXi Pμ hPμ hStruct),
           hInf.params = params →
         ∀ (e : FullBlockVec d), dotProduct e e ≤ 1 →

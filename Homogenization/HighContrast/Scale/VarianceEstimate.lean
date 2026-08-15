@@ -36,7 +36,7 @@ the variance bridge `integral_fullBlockNormalizedFluctuation_le`.
 
 open MeasureTheory
 open Homogenization
-open Homogenization.Book.Ch04 (CoeffLaw LawCarrier StructuralLaw)
+open Homogenization.Book.Ch04 (RestrictionCoeffLaw RestrictionLawCarrier RestrictionStructuralLaw)
 open Homogenization.Book.Ch05 (QuantitativeCoarseGrainedEllipticity)
 open Homogenization.Book.Ch05.Section54.VarianceBoundGoodScale
   (integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_from_P4_of_nonneg_scale
@@ -51,8 +51,8 @@ variable {d : ℕ}
 
 /-- Shorthand: the manuscript normalized full-block fluctuation observable at
 centre scale `j` on the cube `Q`. -/
-private noncomputable def obs [NeZero d] {P : CoeffLaw d}
-    (hP : LawCarrier P) (hStruct : StructuralLaw P) (j : ℕ) (Q : TriadicCube d) :
+private noncomputable def obs [NeZero d] {P : RestrictionCoeffLaw d}
+    (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P) (j : ℕ) (Q : TriadicCube d) :
     RegCoeffField d → ℝ :=
   fun a => Homogenization.Book.Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
     hP hStruct (j : ℤ) Q a
@@ -60,7 +60,7 @@ private noncomputable def obs [NeZero d] {P : CoeffLaw d}
 /-- The intermediate centered coarse-block deviation of the identity process is
 `ENNReal.ofReal` of the square root of the manuscript observable. -/
 theorem intermediateCoarseBlockDeviation_id_eq_ofReal_sqrt [NeZero d]
-    {P : CoeffLaw d} (hP : LawCarrier P) (hStruct : StructuralLaw P)
+    {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P)
     (j : ℕ) (Q : TriadicCube d) (a : RegCoeffField d) :
     intermediateCoarseBlockDeviation hP hStruct (fun x : RegCoeffField d => x) j Q a =
       ENNReal.ofReal (Real.sqrt (obs hP hStruct j Q a)) := by
@@ -75,7 +75,7 @@ theorem intermediateCoarseBlockDeviation_id_eq_ofReal_sqrt [NeZero d]
 
 /-- The `ℝ`-square of the deviation is `ENNReal.ofReal` of the observable. -/
 theorem intermediateCoarseBlockDeviation_id_rpow_two [NeZero d]
-    {P : CoeffLaw d} (hP : LawCarrier P) (hStruct : StructuralLaw P)
+    {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P)
     (j : ℕ) (Q : TriadicCube d) (a : RegCoeffField d) :
     intermediateCoarseBlockDeviation hP hStruct (fun x : RegCoeffField d => x) j Q a
         ^ (2 : ℝ) =
@@ -139,8 +139,8 @@ entered at any scale `N2`, with `T = widetildeThetaAtScale P 0 hP4`.
 The pathwise (C1′) a.e. operator-norm bound is supplied as the hypothesis
 `hPathwise`; every other field is discharged from landed machinery. -/
 theorem varianceBlockEstimate_of_thetaEllipticLaw [NeZero d] (hd : 3 ≤ d)
-    {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffLaw d} [IsProbabilityMeasure P]
-    (hP : LawCarrier P) (hStruct : StructuralLaw P)
+    {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+    (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P)
     (hLaw : Homogenization.ThetaEllipticLaw Θ P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (N2 : ℕ)
     (hPathwise : ∀ {j : ℕ}, N2 ≤ j → ∀ {Q : TriadicCube d}, Q.scale = (j : ℤ) →

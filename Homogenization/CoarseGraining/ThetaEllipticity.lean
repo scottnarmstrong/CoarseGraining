@@ -17,7 +17,7 @@ All matrix work is on `Vec d = Fin d → ℝ` / `Mat d`; no `EuclideanSpace`.
 -/
 
 open Homogenization.Book.Ch02
-open Homogenization.Book.Ch04 (CoeffLaw)
+open Homogenization.Book.Ch04 (RestrictionCoeffLaw)
 
 variable {d : ℕ}
 
@@ -76,7 +76,7 @@ of its scalar entries is Borel measurable (`RegCoeffField.entry_measurable`), so
 the a.e.-modification bridge (`CoarseBounds/AeBridge.lean`) recovers the
 pointwise-elliptic representative from `a.entry_measurable` rather than a bundled
 conjunct.  The statement is therefore the paper's clean `Ω_Θ` membership. -/
-def ThetaEllipticLaw (Θ : ℝ) (P : CoeffLaw d) : Prop :=
+def ThetaEllipticLaw (Θ : ℝ) (P : RestrictionCoeffLaw d) : Prop :=
   ∀ᵐ a ∂P, ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (a x)
 
 /-! ## The key nonsymmetric flux inequality `(★)`

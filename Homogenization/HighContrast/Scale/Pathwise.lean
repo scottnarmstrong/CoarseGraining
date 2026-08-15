@@ -51,7 +51,7 @@ for every `j : ℕ` and every triadic cube `Q` of scale `j`.  This is exactly th
 open MeasureTheory
 open Homogenization
 open Homogenization.Book.Ch04
-  (CoeffLaw LawCarrier StructuralLaw annealedBlockMatrixAtScale scalarFullBlockInvSqrtDiag
+  (RestrictionCoeffLaw RestrictionLawCarrier RestrictionStructuralLaw annealedBlockMatrixAtScale scalarFullBlockInvSqrtDiag
     fullBlockNormalizedFluctuationOperatorNormSqAtScale
     fullBlockNormalizedFluctuationOperatorNormSq
     fullBlockNormalizedFluctuationOperatorNormSq_translation_covariant
@@ -186,8 +186,8 @@ theorem fullBlockProbeSqBudget_le (M : FullBlockMat d) (K : ℝ) (_hK : 0 ≤ K)
 /-- Each quadratic probe of the normalized fluctuation matrix
 `H = D·(A − Ā)·D` on the origin cube at scale `m` is a.e. bounded in absolute
 value by `16Θ`, for any probe vector `q` with `⟪q,q⟫ ≤ 4`. -/
-theorem probe_abs_le_ae [NeZero d] {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffLaw d}
-    [IsProbabilityMeasure P] (hP : LawCarrier P) (hStruct : StructuralLaw P)
+theorem probe_abs_le_ae [NeZero d] {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : RestrictionCoeffLaw d}
+    [IsProbabilityMeasure P] (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P)
     (hLaw : ThetaEllipticLaw Θ P) (m : ℤ) (q : FullBlockVec d) (hq : dotProduct q q ≤ 4) :
     ∀ᵐ (a : RegCoeffField d) ∂P, |fullBlockQuadratic
         (fullBlockNormalizedFluctuationMatrix hP hStruct m (cubeSet (originCube d m)) a) q|
@@ -244,8 +244,8 @@ theorem probe_abs_le_ae [NeZero d] {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffLaw d}
 
 /-- **Step 1 — origin cube.**  The normalized fluctuation observable at the
 origin cube of scale `m` satisfies the scale-uniform pathwise budget a.e. -/
-theorem origin_pathwise_bound [NeZero d] {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffLaw d}
-    [IsProbabilityMeasure P] (hP : LawCarrier P) (hStruct : StructuralLaw P)
+theorem origin_pathwise_bound [NeZero d] {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : RestrictionCoeffLaw d}
+    [IsProbabilityMeasure P] (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P)
     (hLaw : ThetaEllipticLaw Θ P) (m : ℤ) :
     ∀ᵐ a ∂P, Real.sqrt
         (fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct m (originCube d m) a)
@@ -322,8 +322,8 @@ theorem origin_pathwise_bound [NeZero d] {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffL
 /-- **Step 2 — stationary transfer.**  A pathwise a.e. bound at the origin cube
 of scale `Q.scale` transfers to any nonnegative-scale triadic cube `Q`, using
 translation covariance of the observable and stationarity of `P`. -/
-theorem pathwise_transfer [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (center : ℤ) (Q : TriadicCube d)
+theorem pathwise_transfer [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (center : ℤ) (Q : TriadicCube d)
     (hQ_nonneg : 0 ≤ Q.scale) (C : ℝ)
     (horigin : ∀ᵐ b ∂P, Real.sqrt
         (fullBlockNormalizedFluctuationOperatorNormSqAtScale
@@ -361,8 +361,8 @@ full-block fluctuation observable satisfies
 `√(observable) ≤ pathwiseBudgetConstant d · Θ⁶` almost surely.  This is exactly
 the `hpath` hypothesis of `thetaEllipticLaw_implies_homogenizationScale` and the
 `hPathwise` hypothesis of `varianceBlockEstimate_of_thetaEllipticLaw`. -/
-theorem pathwise_fluctuation_bound [NeZero d] {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffLaw d}
-    [IsProbabilityMeasure P] (hP : LawCarrier P) (hStruct : StructuralLaw P)
+theorem pathwise_fluctuation_bound [NeZero d] {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : RestrictionCoeffLaw d}
+    [IsProbabilityMeasure P] (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P)
     (hLaw : ThetaEllipticLaw Θ P) {j : ℕ} {Q : TriadicCube d} (hQ : Q.scale = (j : ℤ)) :
     ∀ᵐ a ∂P, Real.sqrt
         (fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct (j : ℤ) Q a)
@@ -383,8 +383,8 @@ theorem pathwise_fluctuation_bound [NeZero d] {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : C
 `VarianceBlockEstimate` of `varianceBlockEstimate_of_thetaEllipticLaw` with its
 `hPathwise` hypothesis supplied by `pathwise_fluctuation_bound`. -/
 theorem varianceBlockEstimate_of_thetaEllipticLaw' [NeZero d] (hd : 3 ≤ d)
-    {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffLaw d} [IsProbabilityMeasure P]
-    (hP : LawCarrier P) (hStruct : StructuralLaw P)
+    {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+    (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P)
     (hLaw : Homogenization.ThetaEllipticLaw Θ P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (N2 : ℕ) :
     VarianceBlockEstimate (vpParams d hd Θ) P
@@ -402,8 +402,8 @@ theorem thetaEllipticLaw_implies_homogenizationScale' {d : ℕ} [NeZero d] (hd :
     (hc : HighContrastExponents d)
     (params : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticityParams d)
     (loc : LocalizationSmallContrastInput hc) (hcp : hc.params = params)
-    {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffLaw d} [IsProbabilityMeasure P]
-    (hP : LawCarrier P) (hStruct : StructuralLaw P)
+    {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+    (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P)
     (hLaw : Homogenization.ThetaEllipticLaw Θ P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hparams : hP4.params = params) :

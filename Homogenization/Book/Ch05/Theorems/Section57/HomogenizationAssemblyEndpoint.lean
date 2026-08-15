@@ -36,9 +36,9 @@ theorem exists_homogenizationComparison_controlledFactors_uniformEndpoint_expLog
         τ < r →
         let η : ℝ := ((d : ℕ) : ℝ)
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
             ∃ X : RegCoeffField d → ℝ,
@@ -328,9 +328,9 @@ theorem exists_homogenizationComparison_controlledFactors_twoExponent_uniformEnd
         r ≤ r₂ →
         let η : ℝ := ((d : ℕ) : ℝ)
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
             ∃ X : RegCoeffField d → ℝ,
@@ -420,9 +420,9 @@ theorem exists_homogenizationComparison_compressedTwoExponentRHS_uniformEndpoint
         r ≤ r₂ →
         let η : ℝ := ((d : ℕ) : ℝ)
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
             ∃ X : RegCoeffField d → ℝ,

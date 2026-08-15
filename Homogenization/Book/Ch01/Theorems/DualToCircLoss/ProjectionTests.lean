@@ -9,6 +9,7 @@ import Homogenization.Deterministic.WeakNormInterfacesQTwo
 namespace Homogenization
 namespace Book
 namespace Ch01
+namespace Legacy
 
 noncomputable section
 
@@ -16,6 +17,10 @@ open scoped BigOperators ENNReal
 
 /-!
 # Dual-to-circ projection tests
+
+Legacy finite-truncation projection-test scaffolding for the totalized-real,
+disjoint/componentwise compatibility lane.  This is distinct from the exact
+`ENNReal` overlap/dual/circ kernels.
 -/
 
 private theorem cubeBesovConjExponent_two_eq :
@@ -603,6 +608,7 @@ theorem cubeBesovCircDepthAverage_eq_sq_cubeLpNorm_projection_two {d : ℕ}
 
 end
 
+end Legacy
 end Ch01
 end Book
 end Homogenization

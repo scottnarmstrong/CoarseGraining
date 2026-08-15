@@ -166,9 +166,9 @@ theorem exists_shifted_quenchedLocalizedEstimate_uniformEndpoint_expLogSq
         αbad < a →
         t ≤ b →
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
             let N0 : ℕ :=
@@ -287,9 +287,9 @@ theorem exists_shifted_quenchedLocalizedEstimate_uniformEndpoint_expLogSq_parame
         max params.sUpper params.sLower < t →
         t ≤ (d : ℝ) / 2 →
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
             let N0 : ℕ :=
@@ -347,9 +347,9 @@ theorem exists_aboveEntry_quenchedLocalizedEstimate_uniformEndpoint_expLogSq_par
         max params.sUpper params.sLower < t →
         t ≤ (d : ℝ) / 2 →
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
             let N0 : ℕ :=
@@ -491,9 +491,9 @@ theorem exists_quenchedLocalizedEstimate_uniformEndpoint_expLogSq_parameterAlpha
         max params.sUpper params.sLower < t →
         t ≤ (d : ℝ) / 2 →
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
             let η : ℝ := ((d : ℕ) : ℝ)

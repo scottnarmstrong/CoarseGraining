@@ -57,10 +57,10 @@ theorem landedVarianceConstant_nonneg (d : ℕ) [NeZero d] (hd : 3 ≤ d) :
 /-- The full landed variance bound for the extracted constant.  This is the
 `choose_spec` of `landedVarianceConstant`, used by `VarianceEstimate.lean`. -/
 theorem landedVarianceConstant_spec (d : ℕ) [NeZero d] (hd : 3 ≤ d) :
-    ∀ {Θ : ℝ} (_hΘ : 1 ≤ Θ) {P : Homogenization.Book.Ch04.CoeffLaw d}
+    ∀ {Θ : ℝ} (_hΘ : 1 ≤ Θ) {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
       [MeasureTheory.IsProbabilityMeasure P]
-      (hP : Homogenization.Book.Ch04.LawCarrier P)
-      (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+      (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
       (_hLaw : Homogenization.ThetaEllipticLaw Θ P)
       {m : ℤ} (_hm : 0 ≤ m),
       ∫ a, Homogenization.Book.Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale

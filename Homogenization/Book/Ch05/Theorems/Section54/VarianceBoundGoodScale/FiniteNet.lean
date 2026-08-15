@@ -347,8 +347,8 @@ theorem fullBlock_operatorNorm_sq_le_probeSqBudget
 /-- Almost-sure finite-probe control of the Ch4 normalized full-block
 fluctuation observable on a cube. -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_probeSqBudget_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) :
     (fun a : RegCoeffField d =>
       Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct center Q a)

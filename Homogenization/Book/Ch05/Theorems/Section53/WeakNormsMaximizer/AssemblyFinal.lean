@@ -32,7 +32,7 @@ private theorem fluxScaleGeometricRHS_le_two_fluxRHSAtScale
               (Ch04.LambdaSqCoeffField (originCube d m) t' (.finite 1) a)) *
             (Real.rpow (3 : ℝ) (-(t - t') * (Int.toNat (m - k) : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-(t - t')))⁻¹) *
-              Real.sqrt (Ch04.responseJObservableCubeSet (originCube d m) p q a)) +
+              Real.sqrt (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q a)) +
           (Real.rpow (3 : ℝ) (-t * (Int.toNat (m - k) : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-t))⁻¹) *
             Real.sqrt (vecNormSq (-q0))) ≤
@@ -48,7 +48,7 @@ private theorem fluxScaleGeometricRHS_le_two_fluxRHSAtScale
   let lam : ℝ := Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a)
   let tailGap : ℝ := Real.rpow (3 : ℝ) (-(t - t') * (Int.toNat (m - k) : ℝ))
   let discGap : ℝ := (1 - Real.rpow (3 : ℝ) (-(t - t')))⁻¹
-  let sqrtJ : ℝ := Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)
+  let sqrtJ : ℝ := Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)
   let tailT : ℝ := Real.rpow (3 : ℝ) (-t * (Int.toNat (m - k) : ℝ))
   let discT : ℝ := (1 - Real.rpow (3 : ℝ) (-t))⁻¹
   let sqrtQ : ℝ := Real.sqrt (vecNormSq (-q0))

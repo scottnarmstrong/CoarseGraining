@@ -51,9 +51,9 @@ noncomputable def blockJObservableCubeSet {d : ℕ}
 theorem blockJObservableCubeSet_apply {d : ℕ}
     (Q : TriadicCube d) (p pStar q qStar : Vec d) (a : RegCoeffField d) :
     blockJObservableCubeSet Q p pStar q qStar a =
-      (1 / 2 : ℝ) * responseJObservableCubeSet Q (p - pStar) (qStar - q) a +
+      (1 / 2 : ℝ) * restrictionResponseJObservableCubeSet Q (p - pStar) (qStar - q) a +
         (1 / 2 : ℝ) *
-          responseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a) :=
+          restrictionResponseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a) :=
   rfl
 
 /-- The Ch4 block observable is definitionally the standard half-sum on the
@@ -68,27 +68,27 @@ theorem blockJObservableCubeSet_eq_half_responseJ_adjoint_sum {d : ℕ}
 /-- Carrier adjoint-composition integrability: for an adjoint-invariant law,
 integrability transfers under the carrier adjoint endomorphism. -/
 private theorem integrable_comp_adjointReg_of_adjointInvariantLaw
-    {d : ℕ} {P : CoeffLaw d} {F : RegCoeffField d → ℝ}
-    (hAdj : AdjointInvariantLaw P) (hF : Integrable F P) :
+    {d : ℕ} {P : RestrictionCoeffLaw d} {F : RegCoeffField d → ℝ}
+    (hAdj : RestrictionAdjointInvariantLaw P) (hF : Integrable F P) :
     Integrable (fun a : RegCoeffField d => F (adjointReg a)) P := by
   have hFmap : Integrable F (Measure.map (adjointReg (d := d)) P) := by rwa [hAdj]
   simpa [Function.comp_def] using hFmap.comp_measurable (measurable_adjointReg (d := d))
 
 /-- Annealed block response on a deterministic triadic cube. -/
 noncomputable def expectedBlockJCubeSet {d : ℕ}
-    (P : CoeffLaw d) (Q : TriadicCube d) (p pStar q qStar : Vec d) : ℝ :=
+    (P : RestrictionCoeffLaw d) (Q : TriadicCube d) (p pStar q qStar : Vec d) : ℝ :=
   ∫ a, blockJObservableCubeSet Q p pStar q qStar a ∂P
 
 /-- Annealed finite descendant average of block responses. -/
 noncomputable def expectedDescendantsAverageBlockJCubeSet {d : ℕ}
-    (P : CoeffLaw d) (Q : TriadicCube d) (j : ℕ)
+    (P : RestrictionCoeffLaw d) (Q : TriadicCube d) (j : ℕ)
     (p pStar q qStar : Vec d) : ℝ :=
   descendantsAverage Q j (fun R => expectedBlockJCubeSet P R p pStar q qStar)
 
 /-- Finite descendant averages of block responses are integrable if the child
 block responses are integrable. -/
 theorem integrable_descendantsAverage_blockJObservableCubeSet
-    {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {j : ℕ}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {Q : TriadicCube d} {j : ℕ}
     {p pStar q qStar : Vec d}
     (hB : ∀ R, R ∈ descendantsAtDepth Q j →
       Integrable (blockJObservableCubeSet R p pStar q qStar) P) :
@@ -102,7 +102,7 @@ theorem integrable_descendantsAverage_blockJObservableCubeSet
 /-- Finite descendant averages of block responses are in `L^r` if the child
 block responses are in `L^r`. -/
 theorem memLp_descendantsAverage_blockJObservableCubeSet
-    {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {j : ℕ} {r : ℝ≥0∞}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {Q : TriadicCube d} {j : ℕ} {r : ℝ≥0∞}
     {p pStar q qStar : Vec d}
     (hB : ∀ R, R ∈ descendantsAtDepth Q j →
       MemLp (blockJObservableCubeSet R p pStar q qStar) r P) :
@@ -116,7 +116,7 @@ theorem memLp_descendantsAverage_blockJObservableCubeSet
 /-- Finite descendant block-response averages commute with expectation,
 assuming childwise integrability. -/
 theorem integral_descendantsAverage_blockJObservableCubeSet_eq_expectedDescendantsAverageBlockJCubeSet
-    {d : ℕ} {P : CoeffLaw d}
+    {d : ℕ} {P : RestrictionCoeffLaw d}
     (Q : TriadicCube d) (j : ℕ) (p pStar q qStar : Vec d)
     (hB : ∀ R, R ∈ descendantsAtDepth Q j →
       Integrable (blockJObservableCubeSet R p pStar q qStar) P) :
@@ -150,17 +150,17 @@ theorem integral_descendantsAverage_blockJObservableCubeSet_eq_expectedDescendan
 responses in its half-sum representation are integrable.  The second scalar
 response is composed with the carrier adjoint using adjoint-invariance. -/
 theorem integrable_blockJObservableCubeSet_of_integrable
-    {d : ℕ} {P : CoeffLaw d} (hAdj : AdjointInvariantLaw P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hAdj : RestrictionAdjointInvariantLaw P)
     (Q : TriadicCube d) (p pStar q qStar : Vec d)
     (hJ :
-      Integrable (responseJObservableCubeSet Q (p - pStar) (qStar - q)) P)
+      Integrable (restrictionResponseJObservableCubeSet Q (p - pStar) (qStar - q)) P)
     (hJAdjBase :
-      Integrable (responseJObservableCubeSet Q (pStar + p) (qStar + q)) P) :
+      Integrable (restrictionResponseJObservableCubeSet Q (pStar + p) (qStar + q)) P) :
     Integrable (blockJObservableCubeSet Q p pStar q qStar) P := by
   have hJAdj :
       Integrable
         (fun a : RegCoeffField d =>
-          responseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a)) P :=
+          restrictionResponseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a)) P :=
     integrable_comp_adjointReg_of_adjointInvariantLaw hAdj hJAdjBase
   refine ((hJ.const_mul (1 / 2 : ℝ)).add (hJAdj.const_mul (1 / 2 : ℝ))).congr ?_
   filter_upwards with a
@@ -169,44 +169,44 @@ theorem integrable_blockJObservableCubeSet_of_integrable
 /-- The Ch4 block-response expectation is the half-sum of ordinary response
 expectations under adjoint-invariance. -/
 theorem integral_blockJObservableCubeSet_eq_half_expectedResponseJCubeSet_add
-    {d : ℕ} {P : CoeffLaw d} (hAdj : AdjointInvariantLaw P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hAdj : RestrictionAdjointInvariantLaw P)
     (Q : TriadicCube d) (p pStar q qStar : Vec d)
     (hJ :
-      Integrable (responseJObservableCubeSet Q (p - pStar) (qStar - q)) P)
+      Integrable (restrictionResponseJObservableCubeSet Q (p - pStar) (qStar - q)) P)
     (hJAdjBase :
-      Integrable (responseJObservableCubeSet Q (pStar + p) (qStar + q)) P) :
+      Integrable (restrictionResponseJObservableCubeSet Q (pStar + p) (qStar + q)) P) :
     ∫ a, blockJObservableCubeSet Q p pStar q qStar a ∂P =
       (1 / 2 : ℝ) * expectedResponseJCubeSet P Q (p - pStar) (qStar - q) +
         (1 / 2 : ℝ) * expectedResponseJCubeSet P Q (pStar + p) (qStar + q) := by
   have hJAdj :
       Integrable
         (fun a : RegCoeffField d =>
-          responseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a)) P :=
+          restrictionResponseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a)) P :=
     integrable_comp_adjointReg_of_adjointInvariantLaw hAdj hJAdjBase
   calc
     ∫ a, blockJObservableCubeSet Q p pStar q qStar a ∂P
         =
       ∫ a,
-        (1 / 2 : ℝ) * responseJObservableCubeSet Q (p - pStar) (qStar - q) a +
+        (1 / 2 : ℝ) * restrictionResponseJObservableCubeSet Q (p - pStar) (qStar - q) a +
           (1 / 2 : ℝ) *
-            responseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a) ∂P := by
+            restrictionResponseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a) ∂P := by
           simp only [blockJObservableCubeSet_apply]
     _ =
-      ∫ a, (1 / 2 : ℝ) * responseJObservableCubeSet Q (p - pStar) (qStar - q) a ∂P +
+      ∫ a, (1 / 2 : ℝ) * restrictionResponseJObservableCubeSet Q (p - pStar) (qStar - q) a ∂P +
         ∫ a,
           (1 / 2 : ℝ) *
-            responseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a) ∂P := by
+            restrictionResponseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a) ∂P := by
           rw [integral_add (hJ.const_mul (1 / 2 : ℝ)) (hJAdj.const_mul (1 / 2 : ℝ))]
     _ =
-      (1 / 2 : ℝ) * ∫ a, responseJObservableCubeSet Q (p - pStar) (qStar - q) a ∂P +
+      (1 / 2 : ℝ) * ∫ a, restrictionResponseJObservableCubeSet Q (p - pStar) (qStar - q) a ∂P +
         (1 / 2 : ℝ) *
-          ∫ a, responseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a) ∂P := by
+          ∫ a, restrictionResponseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a) ∂P := by
           rw [integral_const_mul, integral_const_mul]
     _ =
       (1 / 2 : ℝ) * expectedResponseJCubeSet P Q (p - pStar) (qStar - q) +
         (1 / 2 : ℝ) * expectedResponseJCubeSet P Q (pStar + p) (qStar + q) := by
           rw [hAdj.integral_comp_adjointReg
-            (responseJObservableCubeSet Q (pStar + p) (qStar + q))
+            (restrictionResponseJObservableCubeSet Q (pStar + p) (qStar + q))
             hJAdjBase.aestronglyMeasurable]
           rfl
 
@@ -225,33 +225,33 @@ theorem blockJHalfResponseAdjointSumSet_translation_covariant {d : ℕ}
   simp [blockJHalfResponseAdjointSumSet, translateByInt, hCoeff,
     ResponseJ_translateSet_eq_translateCoeffField]
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 /-- The Ch4 block response observable is a.e.-measurable under a law carrier
 and adjoint-invariant law. -/
 theorem aemeasurable_blockJObservableCubeSet
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hAdj : AdjointInvariantLaw P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hAdj : RestrictionAdjointInvariantLaw P)
     (Q : TriadicCube d) (p pStar q qStar : Vec d) :
     AEMeasurable (blockJObservableCubeSet Q p pStar q qStar) P := by
   have hJ :
-      AEMeasurable (responseJObservableCubeSet Q (p - pStar) (qStar - q)) P :=
-    hP.aemeasurable_responseJObservableCubeSet Q (p - pStar) (qStar - q)
+      AEMeasurable (restrictionResponseJObservableCubeSet Q (p - pStar) (qStar - q)) P :=
+    hP.aemeasurable_restrictionResponseJObservableCubeSet Q (p - pStar) (qStar - q)
   have hJAdj :
       AEMeasurable
         (fun a : RegCoeffField d =>
-          responseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a)) P :=
+          restrictionResponseJObservableCubeSet Q (pStar + p) (qStar + q) (adjointReg a)) P :=
     aemeasurable_comp_adjointCoeffField_of_adjointInvariantLaw hAdj
-      (hP.aemeasurable_responseJObservableCubeSet Q (pStar + p) (qStar + q))
+      (hP.aemeasurable_restrictionResponseJObservableCubeSet Q (pStar + p) (qStar + q))
   refine ((hJ.const_mul (1 / 2 : ℝ)).add (hJAdj.const_mul (1 / 2 : ℝ))).congr ?_
   filter_upwards with a
-  simp only [Pi.add_apply, blockJObservableCubeSet_apply]
+  simp only [blockJObservableCubeSet_apply]
 
 /-- The Ch4 block response observable is a.e.-strongly-measurable under a law
 carrier and adjoint-invariant law. -/
 theorem aestronglyMeasurable_blockJObservableCubeSet
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hAdj : AdjointInvariantLaw P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hAdj : RestrictionAdjointInvariantLaw P)
     (Q : TriadicCube d) (p pStar q qStar : Vec d) :
     AEStronglyMeasurable (blockJObservableCubeSet Q p pStar q qStar) P :=
   (hP.aemeasurable_blockJObservableCubeSet hAdj Q p pStar q qStar).aestronglyMeasurable
@@ -259,8 +259,8 @@ theorem aestronglyMeasurable_blockJObservableCubeSet
 /-- Under stationarity, the annealed block response on a nonnegative-scale cube
 is the annealed block response on the origin cube at the same scale. -/
 theorem expectedBlockJCubeSet_eq_originCube_of_stationary
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hstat : StationaryLaw P) (hAdj : AdjointInvariantLaw P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hstat : RestrictionStationaryLaw P) (hAdj : RestrictionAdjointInvariantLaw P)
     (R : TriadicCube d) (hR_nonneg : 0 ≤ R.scale) (p pStar q qStar : Vec d) :
     expectedBlockJCubeSet P R p pStar q qStar =
       expectedBlockJCubeSet P (originCube d R.scale) p pStar q qStar := by
@@ -280,7 +280,7 @@ theorem expectedBlockJCubeSet_eq_originCube_of_stationary
         ∫ a,
           blockJHalfResponseAdjointSumSet (cubeSet (originCube d R.scale))
             p pStar q qStar a.toFun ∂P :=
-          integral_comp_toFun_translation_transfer (P := P) hstat
+          integral_comp_toFun_translation_transfer_of_restrictionStationaryLaw (P := P) hstat
             (X := fun U a => blockJHalfResponseAdjointSumSet U p pStar q qStar a)
             (U := cubeSet (originCube d R.scale))
             (by
@@ -294,8 +294,8 @@ theorem expectedBlockJCubeSet_eq_originCube_of_stationary
 /-- Under stationarity, a child cube of an origin cube has the same annealed
 block response as the origin cube at the child scale. -/
 theorem expectedBlockJCubeSet_eq_originCube_of_mem_descendantsAtScale_originCube
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hstat : StationaryLaw P) (hAdj : AdjointInvariantLaw P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hstat : RestrictionStationaryLaw P) (hAdj : RestrictionAdjointInvariantLaw P)
     {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
     {R : TriadicCube d} (hR : R ∈ descendantsAtScale (originCube d m) n)
     (p pStar q qStar : Vec d) :
@@ -318,7 +318,7 @@ theorem expectedBlockJCubeSet_eq_originCube_of_mem_descendantsAtScale_originCube
         ∫ a,
           blockJHalfResponseAdjointSumSet (cubeSet (originCube d n))
             p pStar q qStar a.toFun ∂P :=
-          integral_comp_toFun_translation_transfer (P := P) hstat
+          integral_comp_toFun_translation_transfer_of_restrictionStationaryLaw (P := P) hstat
             (X := fun U a => blockJHalfResponseAdjointSumSet U p pStar q qStar a)
             (U := cubeSet (originCube d n))
             (by
@@ -333,8 +333,8 @@ theorem expectedBlockJCubeSet_eq_originCube_of_mem_descendantsAtScale_originCube
 /-- Under stationarity, the finite average of child annealed block responses
 equals the annealed block response on the origin cube at the child scale. -/
 theorem expectedDescendantsAverageBlockJCubeSet_eq_originCube_of_stationary
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hstat : StationaryLaw P) (hAdj : AdjointInvariantLaw P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hstat : RestrictionStationaryLaw P) (hAdj : RestrictionAdjointInvariantLaw P)
     {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m) (p pStar q qStar : Vec d) :
     expectedDescendantsAverageBlockJCubeSet P (originCube d m)
         (Int.toNat (m - n)) p pStar q qStar =
@@ -372,8 +372,8 @@ theorem expectedDescendantsAverageBlockJCubeSet_eq_originCube_of_stationary
 descendant-average block response observable is the annealed block response on
 the origin cube at the child scale. -/
 theorem integral_descendantsAverage_blockJObservableCubeSet_eq_originCube_of_stationary
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hstat : StationaryLaw P) (hAdj : AdjointInvariantLaw P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hstat : RestrictionStationaryLaw P) (hAdj : RestrictionAdjointInvariantLaw P)
     {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m) (p pStar q qStar : Vec d)
     (hB : ∀ R, R ∈ descendantsAtScale (originCube d m) n →
       Integrable (blockJObservableCubeSet R p pStar q qStar) P) :
@@ -401,7 +401,7 @@ theorem integral_descendantsAverage_blockJObservableCubeSet_eq_originCube_of_sta
         hP.expectedDescendantsAverageBlockJCubeSet_eq_originCube_of_stationary
           hstat hAdj hn hnm p pStar q qStar
 
-end LawCarrier
+end RestrictionLawCarrier
 
 end
 

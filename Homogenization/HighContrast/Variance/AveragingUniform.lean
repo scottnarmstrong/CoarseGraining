@@ -12,7 +12,7 @@ outside the field quantifiers, giving `∃ Cd, ∀ params`.
 namespace Homogenization
 
 open Homogenization MeasureTheory ProbabilityTheory
-open Homogenization.Book.Ch04 (CoeffLaw LawCarrier)
+open Homogenization.Book.Ch04 (RestrictionCoeffLaw RestrictionLawCarrier)
 
 variable {d : ℕ}
 
@@ -20,7 +20,7 @@ variable {d : ℕ}
 independent of `Θ, L, m, ℓ, N, P`. -/
 theorem exists_gridPhase_meanSq_le_uniform [NeZero d] :
     ∃ Cd : ℝ, 0 ≤ Cd ∧
-      ∀ {Θ : ℝ} (_hΘ : 1 ≤ Θ) {L : CoeffLaw d} (_hP : LawCarrier L)
+      ∀ {Θ : ℝ} (_hΘ : 1 ≤ Θ) {L : RestrictionCoeffLaw d} (_hP : RestrictionLawCarrier L)
         (_hell : ThetaEllipticLaw Θ L) {m : ℤ} {ℓ : ℝ} (_hℓ : 4 ≤ ℓ) {N : ℕ}
         (_hN : (ℓ : ℝ) ≤ (N : ℝ)) (P : BlockVec d),
         ∃ σ ∈ (Finset.univ : Finset (Fin d → Fin N)),

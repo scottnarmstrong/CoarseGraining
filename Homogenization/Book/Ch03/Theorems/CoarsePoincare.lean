@@ -29,12 +29,16 @@ noncomputable section
 
 open scoped BigOperators
 
-/-- Gradient part of the note-facing coarse-grained Poincare theorem. -/
+/-- Gradient part of the note-facing coarse-grained Poincare theorem.
+
+The proved API is uniform for every `s > 0`, and therefore strengthens the
+ABK26/source range `0 < s ≤ 1`; it is not presented as a literal identity of
+ranges.  In particular, admissible `q` includes the endpoint `s = 1`, `q = 2`.
+-/
 theorem coarsePoincareGradient_negativeBesov_le {d : ℕ} [NeZero d]
     (Q : TriadicCube d) (a : CoeffFamily d)
     {s : ℝ} {q : Ch02.MultiscaleExponent} (u : CubeSolution Q a)
-    (hs : 0 < s) (_hsle : s ≤ 1) (hq : q.IsAdmissible)
-    (_hendpoint : s = 1 → q = .finite 1) :
+    (hs : 0 < s) (hq : q.IsAdmissible) :
     scaleNormalizedNegativeBesovVectorNorm Q s q
         (solutionGradientField u) ≤
       coarsePoincareGradientRHS Q a s q u := by
@@ -207,12 +211,16 @@ theorem coarsePoincareGradient_negativeBesov_le {d : ℕ} [NeZero d]
         _ = coarsePoincareGradientRHS Q a s .infinity u := by
           simp [coarsePoincareGradientRHS, solutionEnergyNorm, henergy_eq]
 
-/-- Flux part of the note-facing coarse-grained Poincare theorem. -/
+/-- Flux part of the note-facing coarse-grained Poincare theorem.
+
+The proved API is uniform for every `s > 0`, and therefore strengthens the
+ABK26/source range `0 < s ≤ 1`; it is not presented as a literal identity of
+ranges.  In particular, admissible `q` includes the endpoint `s = 1`, `q = 2`.
+-/
 theorem coarsePoincareFlux_negativeBesov_le {d : ℕ} [NeZero d]
     (Q : TriadicCube d) (a : CoeffFamily d)
     {s : ℝ} {q : Ch02.MultiscaleExponent} (u : CubeSolution Q a)
-    (hs : 0 < s) (_hsle : s ≤ 1) (hq : q.IsAdmissible)
-    (_hendpoint : s = 1 → q = .finite 1) :
+    (hs : 0 < s) (hq : q.IsAdmissible) :
     scaleNormalizedNegativeBesovVectorNorm Q s q
         (solutionFluxField Q a u) ≤
       coarsePoincareFluxRHS Q a s q u := by
@@ -396,18 +404,23 @@ theorem coarsePoincareFlux_negativeBesov_le {d : ℕ} [NeZero d]
           simp [coarsePoincareFluxRHS, solutionEnergyNorm, henergy_eq]
 
 /-- Public theorem package for the gradient and flux coarse-grained Poincare
-inequalities. -/
+inequalities.
+
+Its proved API is uniform for every `s > 0`, hence strengthens the ABK26/source
+range `0 < s ≤ 1` without claiming literal identity of ranges.  Admissible `q`
+includes the endpoint `s = 1`, `q = 2`.
+-/
 structure CoarsePoincareTheory {d : ℕ} [NeZero d]
     (Q : TriadicCube d) (a : CoeffFamily d) : Prop where
   gradient_negativeBesov_le :
     ∀ {s : ℝ} {q : Ch02.MultiscaleExponent} (u : CubeSolution Q a),
-      0 < s → s ≤ 1 → q.IsAdmissible → (s = 1 → q = .finite 1) →
+      0 < s → q.IsAdmissible →
         scaleNormalizedNegativeBesovVectorNorm Q s q
             (solutionGradientField u) ≤
           coarsePoincareGradientRHS Q a s q u
   flux_negativeBesov_le :
     ∀ {s : ℝ} {q : Ch02.MultiscaleExponent} (u : CubeSolution Q a),
-      0 < s → s ≤ 1 → q.IsAdmissible → (s = 1 → q = .finite 1) →
+      0 < s → q.IsAdmissible →
         scaleNormalizedNegativeBesovVectorNorm Q s q
             (solutionFluxField Q a u) ≤
           coarsePoincareFluxRHS Q a s q u
@@ -417,12 +430,12 @@ theorem coarsePoincareTheory {d : ℕ} [NeZero d]
     (Q : TriadicCube d) (a : CoeffFamily d) :
     CoarsePoincareTheory Q a := by
   refine ⟨?_, ?_⟩
-  · intro s q u hs hsle hq hendpoint
+  · intro s q u hs hq
     exact coarsePoincareGradient_negativeBesov_le (Q := Q) (a := a) (u := u)
-      hs hsle hq hendpoint
-  · intro s q u hs hsle hq hendpoint
+      hs hq
+  · intro s q u hs hq
     exact coarsePoincareFlux_negativeBesov_le (Q := Q) (a := a) (u := u)
-      hs hsle hq hendpoint
+      hs hq
 
 end
 

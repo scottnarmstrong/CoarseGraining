@@ -18,8 +18,8 @@ improvement into the main annealed convergence theorem.
 -/
 
 private theorem thetaAtScale_mono_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {n m : ℕ} (hnm : n ≤ m) :
     thetaAtScale hP hStruct (m : ℤ) ≤
@@ -28,8 +28,8 @@ private theorem thetaAtScale_mono_of_P4
     hP hStruct hP4 n m n hnm le_rfl 0 0).2.1
 
 private theorem thetaAtScale_zero_le_widetildeThetaAtScale_zero
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     thetaAtScale hP hStruct (0 : ℤ) ≤
       widetildeThetaAtScale P (0 : ℤ) hP4 :=
@@ -37,7 +37,7 @@ private theorem thetaAtScale_zero_le_widetildeThetaAtScale_zero
     hP hStruct hP4 0 0 0 le_rfl le_rfl 0 0).2.2.1
 
 private theorem widetildeThetaAtScale_nonneg
-    {d : ℕ} [NeZero d] (P : Ch04.CoeffLaw d)
+    {d : ℕ} [NeZero d] (P : Ch04.RestrictionCoeffLaw d)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℤ) :
     0 ≤ widetildeThetaAtScale P m hP4 := by
   unfold widetildeThetaAtScale Ch04.widetildeThetaAtScale
@@ -481,8 +481,8 @@ theorem annealedPerturbativeEntry_homogenizationScale
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ sigma : ℝ, 0 < sigma → sigma ≤ (1 / 2 : ℝ) →

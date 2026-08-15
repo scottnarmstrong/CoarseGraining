@@ -16,19 +16,19 @@ noncomputable section
 
 /--
 Source labels `p.HC.CR`, `e.W.first.sum`, and `e.tau.sum.absorb`:
-LIH's linear weak-norm terms and cutoff-product Cauchy term, after the
+the library's linear weak-norm terms and cutoff-product Cauchy term, after the
 special-vector absorption step, are bounded by the centering square plus the
-local component slots.  This is the bridge from LIH's
+local component slots.  This is the bridge from the library's
 `linearProductTerms_special_le_centering_add_pairedWeakNormSquares` to the
 local component theorem above; the four component terms remain explicit.
 -/
 theorem linearProductTerms_special_le_centering_add_componentIntegrals_with_local_mismatch_slots
     {d : ℕ} [NeZero d] :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (_hstat : Homogenization.Book.Ch04.StationaryLaw P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (_hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {k m : ℕ}, k < m → ∀ e : Homogenization.Vec d,
         Homogenization.vecNormSq e = 1 →
@@ -286,10 +286,10 @@ budget for the `[N, k)` scales by source content payable through the resized
 budget's stochastic/polynomial/drift roots.
 -/
 theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add_sourceMaxStart_minBad
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d)
     (hm : HighCenteredMomentParameters d hc)
@@ -312,7 +312,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
-        (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
     let response := fun a : Homogenization.RegCoeffField d =>
       (5 * β⁻¹) ^ 2 * childAvg a
     let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
@@ -389,7 +389,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
   let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
@@ -464,9 +464,9 @@ theorem integral_section52LowTail_childResponseAverage_special_le_belowStart_add
     intro a
     dsimp [childAvg]
     exact Homogenization.descendantsAverage_nonneg Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       (fun R _hR =>
-        Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg R p_e q_e a)
+        Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg R p_e q_e a)
   have hresp_nonneg : ∀ a, 0 ≤ response a := fun a =>
     mul_nonneg (sq_nonneg _) (hchild_nonneg a)
   have hslot_nonneg :

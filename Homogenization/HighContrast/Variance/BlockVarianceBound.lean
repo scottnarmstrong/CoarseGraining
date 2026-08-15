@@ -20,7 +20,7 @@ normalized fluctuation matrix `H = D·(A_n − Ā_n)·D`
 probe's second moment is the centered second moment
 (`probe_sq_integral_le`), uniformly `≤ 64·Cd·Θ⁶·(3^n)^{-β}`.  Summing the
 `(2d)`-dimensional finite probe net absorbs the dimensional counting into the
-constant `Cd`.  Observable integrability is *not* required: the pointwise budget
+constant `Cd`.  RestrictionObservable integrability is *not* required: the pointwise budget
 bound is combined through `integral_mono_of_nonneg` since the observable is a
 square, hence nonnegative.
 
@@ -33,7 +33,7 @@ namespace Homogenization
 
 open Homogenization MeasureTheory
 open Homogenization.Book.Ch04
-  (CoeffLaw LawCarrier StructuralLaw fullBlockNormalizedFluctuationOperatorNormSqAtScale)
+  (RestrictionCoeffLaw RestrictionLawCarrier RestrictionStructuralLaw fullBlockNormalizedFluctuationOperatorNormSqAtScale)
 open Homogenization.Book.Ch05.Section54.VarianceBoundGoodScale
   (fullBlockNormalizedFluctuationMatrix fullBlockQuadratic fullBlockProbeSqBudget
     fullBlockCoordinateProbe fullBlockPlusProbe fullBlockMinusProbe
@@ -46,7 +46,7 @@ variable {d : ℕ}
 
 /-- Integrability of the finite probe square budget, generic in the matrix
 family. -/
-theorem integrable_fullBlockProbeSqBudget {P : CoeffLaw d} [IsProbabilityMeasure P]
+theorem integrable_fullBlockProbeSqBudget {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {M : RegCoeffField d → FullBlockMat d}
     (hint : ∀ q : FullBlockVec d,
       Integrable (fun a => (fullBlockQuadratic (M a) q) ^ 2) P) :
@@ -60,7 +60,7 @@ theorem integrable_fullBlockProbeSqBudget {P : CoeffLaw d} [IsProbabilityMeasure
 
 /-- The finite probe square budget integrates to a finite sum of per-probe
 second moments, generic in the matrix family. -/
-theorem integral_fullBlockProbeSqBudget_eq {P : CoeffLaw d} [IsProbabilityMeasure P]
+theorem integral_fullBlockProbeSqBudget_eq {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {M : RegCoeffField d → FullBlockMat d}
     (hint : ∀ q : FullBlockVec d,
       Integrable (fun a => (fullBlockQuadratic (M a) q) ^ 2) P) :
@@ -111,7 +111,7 @@ theorem integral_fullBlockProbeSqBudget_eq {P : CoeffLaw d} [IsProbabilityMeasur
 
 /-- The finite probe square budget integral is bounded by a uniform per-probe
 bound `K` (valid on probes of Euclidean square norm `≤ 4`), generic in `M`. -/
-theorem integral_fullBlockProbeSqBudget_le {P : CoeffLaw d} [IsProbabilityMeasure P]
+theorem integral_fullBlockProbeSqBudget_le {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {M : RegCoeffField d → FullBlockMat d} (K : ℝ)
     (hint : ∀ q : FullBlockVec d,
       Integrable (fun a => (fullBlockQuadratic (M a) q) ^ 2) P)
@@ -137,8 +137,8 @@ theorem integral_fullBlockProbeSqBudget_le {P : CoeffLaw d} [IsProbabilityMeasur
 /-- **Finite-probe assembly for the fluctuation observable.**  The observable is
 nonnegative and a.s. dominated by the probe square budget, so
 `integral_mono_of_nonneg` gives the bound without observable integrability. -/
-theorem integral_observable_le_of_probeBounds [NeZero d] {P : CoeffLaw d}
-    [IsProbabilityMeasure P] (hP : LawCarrier P) (hStruct : StructuralLaw P)
+theorem integral_observable_le_of_probeBounds [NeZero d] {P : RestrictionCoeffLaw d}
+    [IsProbabilityMeasure P] (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P)
     (m : ℤ) (K : ℝ)
     (hint : ∀ q : FullBlockVec d,
       Integrable (fun a : RegCoeffField d => (fullBlockQuadratic
@@ -191,10 +191,10 @@ the dimension `d`.
 This is the variance input consumed by the entry-scale assembly
 (`Homogenization.HighContrast.EntryScale`), which integrates the same observable
 at the same origin-cube scale.  See the high-moment paper (Armstrong–Kuusi–Loher,
-in preparation). -/
+to appear). -/
 theorem integral_fullBlockNormalizedFluctuation_le [NeZero d] (hd : 3 ≤ d) :
-    ∃ Cd : ℝ, 0 ≤ Cd ∧ ∀ {Θ : ℝ} (_hΘ : 1 ≤ Θ) {P : CoeffLaw d} [IsProbabilityMeasure P]
-      (hP : LawCarrier P) (hStruct : StructuralLaw P) (_hLaw : ThetaEllipticLaw Θ P)
+    ∃ Cd : ℝ, 0 ≤ Cd ∧ ∀ {Θ : ℝ} (_hΘ : 1 ≤ Θ) {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+      (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P) (_hLaw : ThetaEllipticLaw Θ P)
       {m : ℤ} (_hm : 0 ≤ m),
       ∫ a, fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct m (originCube d m) a ∂P
         ≤ Cd * Θ ^ 6 * ((3 : ℝ) ^ m) ^ (-((d : ℝ) - 2) / ((d : ℝ) - 1)) := by

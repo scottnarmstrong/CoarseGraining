@@ -47,8 +47,8 @@ noncomputable def responseDefectAverageAtScale {d : ℕ}
     (m n : ℤ) (p q : Vec d) (a : RegCoeffField d) : ℝ :=
   let Q : TriadicCube d := originCube d m
   descendantsAverage Q (Int.toNat (m - n))
-      (fun R => Ch04.responseJObservableCubeSet R p q a) -
-    Ch04.responseJObservableCubeSet Q p q a
+      (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) -
+    Ch04.restrictionResponseJObservableCubeSet Q p q a
 
 /-- The high-scale gradient mismatch term controlled by the lower ellipticity
 quantity on the parent cube.  The dimensional constant is inserted by the final
@@ -79,7 +79,7 @@ noncomputable def gradientLowScaleTailAtScale {d : ℕ} [NeZero d]
   (s - s')⁻¹ *
     Real.rpow (3 : ℝ) (-(s - s') * (Int.toNat (m - k) : ℝ)) *
       Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹) *
-        Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)
+        Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)
 
 /-- The low-scale flux tail in the weak-norm maximizer estimate. -/
 noncomputable def fluxLowScaleTailAtScale {d : ℕ} [NeZero d]
@@ -88,7 +88,7 @@ noncomputable def fluxLowScaleTailAtScale {d : ℕ} [NeZero d]
   (t - t')⁻¹ *
     Real.rpow (3 : ℝ) (-(t - t') * (Int.toNat (m - k) : ℝ)) *
       Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a) *
-        Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)
+        Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)
 
 /-- The affine-gradient constant tail in the gradient weak-norm estimate. -/
 noncomputable def gradientConstantTailAtScale {d : ℕ}

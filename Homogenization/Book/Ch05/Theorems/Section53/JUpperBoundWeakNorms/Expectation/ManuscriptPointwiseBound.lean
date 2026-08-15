@@ -152,7 +152,7 @@ theorem abs_centeredJMinusCutoffWeightedChildAtScale_le_jUpperWeakNormManuscript
         (2 * C) *
             (Real.sqrt (responseJPartitionDefectOnFamilyAtDepth F Q j p q) *
               Real.sqrt (childResponseJAverageOnFamilyAtDepth F Q j p q)) +
-          Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a +
+          Cosc * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a +
             ((1 / 2 : ℝ) * ‖q0‖ *
                 (((Fintype.card (Fin d) : ℝ) *
                   ((3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS)) *
@@ -213,7 +213,7 @@ theorem abs_centeredJMinusCutoffWeightedChildAtScale_le_jUpperWeakNormManuscript
         a ha m k p q
   have hchild :
       childResponseJAverageOnFamilyAtDepth F Q j p q =
-        descendantsAverage Q j (fun R => Ch04.responseJObservableCubeSet R p q a) := by
+        descendantsAverage Q j (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) := by
     simpa [Q, j, F] using
       childResponseJAverageOnDependentFamilyAtScale_eq_ch04 a ha m k p q
   have hdet' :
@@ -222,7 +222,7 @@ theorem abs_centeredJMinusCutoffWeightedChildAtScale_le_jUpperWeakNormManuscript
         (2 * C) *
             (Real.sqrt (responseJPartitionDefectOnFamilyAtDepth F Q j p q) *
               Real.sqrt (childResponseJAverageOnFamilyAtDepth F Q j p q)) +
-          Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a +
+          Cosc * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a +
             ((1 / 2 : ℝ) * ‖q0‖ *
                 (((Fintype.card (Fin d) : ℝ) *
                   ((3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS)) *

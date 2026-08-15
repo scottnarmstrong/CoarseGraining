@@ -1,6 +1,7 @@
 import Homogenization.Besov.Poincare.HarmonicGradient
 import Homogenization.Sobolev.H1.BasicLemmas
 import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ
+import Homogenization.Sobolev.Foundations.CubeBesovPoincare.W12Embedding
 
 namespace Homogenization
 
@@ -113,14 +114,14 @@ theorem cubeNeumannPoissonGradientBesovEstimate
 test-norm core estimate. -/
 noncomputable def cubePoissonGradientDualTestNormL2CoreConstant
     {d : ℕ} [NeZero d] (_Q : TriadicCube d) : ℝ :=
-  cubeNeumannW22CalderonZygmundConstant d
+  Legacy.cubeNeumannW22CalderonZygmundConstant d
 
 /-- Direct `L²` positive dual test-norm core estimate for Poisson gradients. -/
 theorem cubePoissonGradientDualTestNormL2CoreEstimate
     {d : ℕ} [NeZero d] (Q : TriadicCube d) :
     CubePoissonGradientDualTestNormL2CoreEstimate Q
       (cubePoissonGradientDualTestNormL2CoreConstant Q) :=
-  cubeNeumannW22CalderonZygmundRegularity Q
+  Legacy.cubeNeumannW22CalderonZygmundRegularity Q
 
 /-- Chosen constant for the direct `L²` Poisson-gradient positive dual
 test-norm estimate. The factor `d` is the cost of converting a componentwise
@@ -183,7 +184,7 @@ theorem cubeFullVectorPoincareAnalyticConstant_eq_fullL2EndpointDualityConstant
 theorem cubeFullVectorPoincareAnalyticConstant_eq_dimensionConstant
     {d : ℕ} [NeZero d] (Q : TriadicCube d) :
     cubeFullVectorPoincareAnalyticConstant Q =
-      (d : ℝ) * cubeNeumannW22CalderonZygmundConstant d := by
+      (d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d := by
   simp [cubeFullVectorPoincareAnalyticConstant,
     cubePoissonGradientFullL2EndpointDualityConstant,
     cubePoissonGradientDualTestNormL2Constant,
@@ -272,9 +273,9 @@ theorem exists_cubeFullVectorPoincareUniformAnalyticConstant
     ∃ C : ℝ, 0 ≤ C ∧
       ∀ j : ℕ, ∀ R ∈ descendantsAtDepth Q j,
         cubeFullVectorPoincareAnalyticConstant R ≤ C := by
-  refine ⟨(d : ℝ) * cubeNeumannW22CalderonZygmundConstant d, ?_, ?_⟩
+  refine ⟨(d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d, ?_, ?_⟩
   · exact mul_nonneg (Nat.cast_nonneg d)
-      (cubeNeumannW22CalderonZygmundConstant_nonneg d)
+      (Legacy.cubeNeumannW22CalderonZygmundConstant_nonneg d)
   · intro j R hR
     simp [cubeFullVectorPoincareAnalyticConstant,
       cubePoissonGradientFullL2EndpointDualityConstant,
@@ -285,14 +286,14 @@ theorem exists_cubeFullVectorPoincareUniformAnalyticConstant
 corrected full-dual analytic constants on all descendants of the parent. -/
 noncomputable def cubeFullVectorPoincareUniformAnalyticConstant
     {d : ℕ} [NeZero d] (_Q : TriadicCube d) : ℝ :=
-  (d : ℝ) * cubeNeumannW22CalderonZygmundConstant d
+  (d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d
 
 theorem cubeFullVectorPoincareUniformAnalyticConstant_nonneg
     {d : ℕ} [NeZero d] (Q : TriadicCube d) :
     0 ≤ cubeFullVectorPoincareUniformAnalyticConstant Q := by
   simpa [cubeFullVectorPoincareUniformAnalyticConstant] using
     mul_nonneg (Nat.cast_nonneg d)
-      (cubeNeumannW22CalderonZygmundConstant_nonneg d)
+      (Legacy.cubeNeumannW22CalderonZygmundConstant_nonneg d)
 
 theorem cubeFullVectorPoincareAnalyticConstant_le_uniformAnalyticConstant
     {d : ℕ} [NeZero d] (Q : TriadicCube d) (j : ℕ)
@@ -336,7 +337,7 @@ theorem fullVectorPoincareCubeConstant_nonneg
 theorem fullVectorPoincareCubeConstant_eq_dimensionConstant
     {d : ℕ} [NeZero d] (Q : TriadicCube d) :
     fullVectorPoincareCubeConstant Q =
-      (d : ℝ) * cubeNeumannW22CalderonZygmundConstant d := by
+      (d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d := by
   rfl
 
 theorem cubeFullVectorPoincareAnalyticConstant_le_fullVectorPoincareCubeConstant

@@ -83,9 +83,9 @@ theorem normalizedProbeVec_abs_apply_le_one
 
 /-- Localized maximum over the normalized finite probe family. -/
 noncomputable def localizedNormalizedProbeJMax
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (m n : ℕ) : RegCoeffField d → ℝ :=
   fun a =>
     let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -97,8 +97,8 @@ noncomputable def localizedNormalizedProbeJMax
       localizedLimitNormalizedJMax hP hStruct m n (normalizedProbeVec i) a)
 
 theorem localizedLimitNormalizedJNormalizedProbeSumMax_le_probeJMax
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {m n : ℕ} (hnm : n ≤ m) (a : RegCoeffField d) :
     localizedLimitNormalizedJNormalizedProbeSumMax hP hStruct m n a ≤
       (Fintype.card (NormalizedProbeIndex d) : ℝ) *
@@ -195,8 +195,8 @@ theorem localizedLimitNormalizedJNormalizedProbeSumMax_le_probeJMax
   exact Finset.sup'_le hD _ hsum_le
 
 theorem localizedLimitNormalizedJMax_le_normalizedProbeJMax_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {m n : ℕ} (hnm : n ≤ m)
     (e : FullBlockVec d) (he : dotProduct e e ≤ 1) :
@@ -227,8 +227,8 @@ theorem localizedLimitNormalizedJMax_le_normalizedProbeJMax_ae
         ring
 
 theorem localizedNormalizedProbeJMax_sub_const_le_sup_sub
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {m n : ℕ} (c : ℝ) (a : RegCoeffField d) :
     let S : Finset (NormalizedProbeIndex d) := Finset.univ
     ∀ hS : S.Nonempty,
@@ -283,9 +283,9 @@ theorem localizedFirstQuenchedEstimate_normalizedProbeJMax
     (hσ_pos : 0 < σ)
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ Cfluct Centry α : ℝ, 0 < Cfluct ∧ 0 < Centry ∧ 0 < α ∧
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {ℓ n m : ℕ}, ℓ < n → n < m →
@@ -381,9 +381,9 @@ theorem localizedFirstQuenchedEstimate_normalizedProbeJMax_uniformAnnealedExpone
     ∃ Centry a : ℝ, 0 < Centry ∧ 0 < a ∧
       ∀ {σ : ℝ}, 0 < σ →
         ∃ Cfluct : ℝ, 0 < Cfluct ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
           ∀ {ℓ n m : ℕ}, ℓ < n → n < m →
@@ -482,9 +482,9 @@ theorem isBigO_localizedNormalizedProbeJMax
     (hσ_pos : 0 < σ)
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {m n : ℕ}, n < m →

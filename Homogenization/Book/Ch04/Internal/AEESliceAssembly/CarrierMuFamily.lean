@@ -17,7 +17,7 @@ carrier `RegCoeffField d`.  The raw spine (`AEESliceAssembly/MuFamily.lean`,
 `BlockEnergyAverage.lean`, `FixedCompetitorEnergyMeasurability/**`) proves
 measurability of the coarse-grained energy `Mu` on the raw slice subtype for the
 **fine** local σ-algebra `AEEQuantitativeEllipticSlice.localMeasurableSpace`,
-which is a `comap` of the powerset-fine `LocalSigma`.  The carrier redesign needs
+which is a `comap` of the powerset-fine `PointwiseLocalSigma`.  The carrier redesign needs
 `Mu` measurable for the honest **entry-test** local σ-algebra `LocalSigmaR`
 (P4b), and the carrier's `toFun` does **not** reflect fine local events into
 `LocalSigmaR` (pointwise evaluations are not entry-test measurable — the Rao
@@ -41,19 +41,12 @@ The honest route re-derived here:
 The result `measurable_Mu_comp_aeeSlice_of_measurable_entryTest` is the generic
 engine consumed by `Theorems/Mu.lean`.
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 noncomputable section
 
 variable {Ω : Type*} {mΩ : MeasurableSpace Ω} {d : ℕ} {U : Set (Vec d)} {k : ℕ}
-
-/-- `Function.support (Set.indicator U φ) ⊆ U`. -/
-private theorem support_indicator_subset (U : Set (Vec d)) (φ : Vec d → ℝ) :
-    Function.support (Set.indicator U φ) ⊆ U := by
-  intro x hx
-  by_contra h
-  exact hx (Set.indicator_of_notMem h φ)
 
 /-- The raw AEE-slice element attached to a carrier source. -/
 private def rawSlice (A : Ω → RegCoeffField d)
@@ -67,7 +60,8 @@ variable [IsFiniteMeasure (volumeMeasureOn U)]
   {A : Ω → RegCoeffField d}
   {hSlice : ∀ ω, AEEQuantitativeEllipticSlice U k (A ω).toFun}
   (hU : MeasurableSet U)
-  (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, IsProbeR φ → Function.support φ ⊆ U →
+  (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, ContDiff ℝ (⊤ : ℕ∞) φ →
+    HasCompactSupport φ → tsupport φ ⊆ U →
     @Measurable Ω ℝ mΩ _ (fun ω => entryTestR i j φ (A ω)))
 
 include hU hEntry
@@ -91,7 +85,7 @@ theorem measurable_inner_toScalarL2_hilbertMatrixL2Entry_carrier
         inner ℝ (toScalarL2 hφL2)
           (QuantitativeEllipticSlice.hilbertMatrixL2Entry (U := U) i j
             (AEEQuantitativeEllipticSlice.toHilbertMatrixL2 (rawSlice A hSlice ω))))
-        = fun ω => entryTestR i j (Set.indicator U φ) (A ω) := by
+        = fun ω => entryTestR i j φ (A ω) := by
     funext ω
     have hInner :
         inner ℝ (toScalarL2 hφL2)
@@ -120,14 +114,15 @@ theorem measurable_inner_toScalarL2_hilbertMatrixL2Entry_carrier
           filter_upwards [MeasureTheory.ae_restrict_mem (rawSlice A hSlice ω).2.measurableSet]
             with x hxU
           simp [restrictCoeffField, hxU, rawSlice]
-    rw [hInner, entryTestR_eq_setIntegral_of_support hU i j
-      (support_indicator_subset U φ) (A ω)]
-    refine MeasureTheory.setIntegral_congr_ae hU ?_
-    filter_upwards with x hxU
-    simp [Set.indicator_of_mem hxU]
+    calc
+      inner ℝ (toScalarL2 hφL2)
+          (QuantitativeEllipticSlice.hilbertMatrixL2Entry (U := U) i j
+            (AEEQuantitativeEllipticSlice.toHilbertMatrixL2 (rawSlice A hSlice ω))) =
+          ∫ x in U, φ x * (A ω).toFun x i j ∂MeasureTheory.volume := hInner
+      _ = entryTestR i j φ (A ω) :=
+        (entryTestR_eq_setIntegral_of_support hU i j hsuppφ (A ω)).symm
   rw [hEq]
-  exact hEntry i j (IsProbeR.indicator (IsProbeR.of_smooth hφ_cont hφ_compact) hU)
-    (support_indicator_subset U φ)
+  exact hEntry i j hφ_cont hφ_compact hφ_support
 
 /-- Smooth `HilbertMat`-valued probe inner product of the carrier `L²`
 realization is `mΩ`-measurable: it decomposes into a finite sum of localized
@@ -420,7 +415,8 @@ include hSlice
 cube is not open, so density of smooth probes is imported from the open core (the
 two restricted volume measures agree). -/
 theorem measurable_toHilbertMatrixL2_carrier_cubeSet
-    (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, IsProbeR φ → Function.support φ ⊆ cubeSet Q →
+    (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, ContDiff ℝ (⊤ : ℕ∞) φ →
+      HasCompactSupport φ → tsupport φ ⊆ cubeSet Q →
       @Measurable Ω ℝ mΩ _ (fun ω => entryTestR i j φ (A ω))) :
     @Measurable Ω (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn (cubeSet Q))) mΩ (borel _)
       (fun ω =>
@@ -445,7 +441,8 @@ whose localized entry-test generators are `mΩ`-measurable, the coarse-grained
 energy `ω ↦ Mu (cubeSet Q) P (A ω).toFun` is `mΩ`-measurable.  This is the P5
 carrier re-aim of the raw `Mu`-slice measurability spine. -/
 theorem measurable_Mu_comp_aeeSlice_of_measurable_entryTest
-    (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, IsProbeR φ → Function.support φ ⊆ cubeSet Q →
+    (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, ContDiff ℝ (⊤ : ℕ∞) φ →
+      HasCompactSupport φ → tsupport φ ⊆ cubeSet Q →
       @Measurable Ω ℝ mΩ _ (fun ω => entryTestR i j φ (A ω)))
     (P : BlockVec d) :
     @Measurable Ω ℝ mΩ _ (fun ω => Mu (cubeSet Q) P (A ω).toFun) := by

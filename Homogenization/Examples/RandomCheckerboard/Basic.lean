@@ -29,7 +29,7 @@ measurability into the restriction σ-algebra `RestrictionSigmaR U` from the
 coins of the cells meeting `U`, the input for unit-range dependence of the
 checkerboard law (`CarrierLaw.lean`).
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 namespace Homogenization

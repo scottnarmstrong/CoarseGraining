@@ -17,9 +17,9 @@ exact scalar edge-weight-loss coefficient.
 -/
 theorem section52LargeScale_terminalPositiveExcess_highSum_mul_le_edgeWeightLoss_mul_sqrt_thetaAtScale_sourceMax_min_one_add_badEventTruncation_mul_response
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N m : ℕ} {sLower sUpper : ℝ}
     (hsLower : 0 ≤ sLower) (hsUpper : 0 ≤ sUpper)
@@ -194,9 +194,9 @@ first-power `min(sourceMax,1) + badEventTruncation(sourceMax)` source factor.
 -/
 theorem section52LargeScale_terminalPositiveExcess_allSum_mul_le_lowSum_add_edgeWeightLoss_mul_sqrt_thetaAtScale_sourceMax_min_one_add_badEventTruncation_mul_response
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N m : ℕ} {sLower sUpper : ℝ}
     (hsLower : 0 < sLower) (hsUpper : 0 < sUpper)

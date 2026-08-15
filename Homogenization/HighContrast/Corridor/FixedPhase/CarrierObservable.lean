@@ -7,7 +7,7 @@ import Homogenization.Probability.RegCoeffField.SliceMeasurability
 
 The shipped fixed-phase Efron–Stein chain exhibited a product-measurable
 observable on the **raw** tuple space `(↥K → CoeffField d)` via the fine
-`LocalSigma` generator trick (`measurable_coreLocalEnergy`).  On the honest
+`PointwiseLocalSigma` generator trick (`measurable_coreLocalEnergy`).  On the honest
 carrier that trick is unavailable (fine local events are not carrier events),
 and the truncated per-core energy is a genuinely nonlinear functional of the
 field, so its entry-test lane is not a transported generator.
@@ -35,7 +35,7 @@ construction**:
   reproduces the fixed-phase observable exactly (via the shipped raw five-link
   identity).
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 open Homogenization
@@ -55,7 +55,7 @@ def coreBoxIoo (ℓ : ℝ) (σ : Vec d) (k : Fin d → ℤ) : Set (Vec d) :=
 
 theorem coreBoxIoo_subset_coreBox {ℓ : ℝ} {σ : Vec d} {k : Fin d → ℤ} :
     coreBoxIoo ℓ σ k ⊆ coreBox ℓ σ k :=
-  Set.pi_mono (fun i _ => Set.Ioo_subset_Icc_self)
+  Set.pi_mono (fun _ _ => Set.Ioo_subset_Icc_self)
 
 theorem isOpen_coreBoxIoo (ℓ : ℝ) (σ : Vec d) (k : Fin d → ℤ) :
     IsOpen (coreBoxIoo ℓ σ k) :=
@@ -152,7 +152,7 @@ noncomputable def thetaSliceLevel (Θ : ℝ) : ℕ := ⌈Θ⌉₊
 /-- On the good event, the field lies in the AEE quantitative slice of the open
 core window at level `⌈Θ⌉₊`. -/
 theorem aeeSlice_coreWindow_of_mem_coreGoodSet {ℓ : ℝ} {σ : Vec d} {Θ : ℝ}
-    (hΘ : 1 ≤ Θ) {k : Fin d → ℤ} {m : ℤ} {b : RegCoeffField d}
+    {k : Fin d → ℤ} {m : ℤ} {b : RegCoeffField d}
     (hb : b ∈ coreGoodSet ℓ σ Θ k m) :
     AEEQuantitativeEllipticSlice (coreWindow ℓ σ k m) (thetaSliceLevel Θ) b.toFun := by
   rw [aeeQuantitativeEllipticSlice_carrier_iff _ (measurableSet_coreWindow ℓ σ k m)]
@@ -333,7 +333,7 @@ theorem coreLocalEnergy_eq_corridorPiece_add_sum {ℓ : ℝ} {σ : Vec d} {Θ : 
       rw [Set.indicator_of_notMem hx, zero_mul]
   -- slice membership and integrability of the weighted entries on the window
   have hSliceb : AEEQuantitativeEllipticSlice V (thetaSliceLevel Θ) b.toFun :=
-    aeeSlice_coreWindow_of_mem_coreGoodSet hΘ hb
+    aeeSlice_coreWindow_of_mem_coreGoodSet hb
   have hInt_αβ : ∀ α β : BlockCoord d,
       Integrable
         (fun x => Set.indicator T (blockEnergyEntryWeight X α β) x
@@ -382,14 +382,20 @@ theorem measurable_coreLocalEnergyR {ℓ : ℝ} {σ : Vec d} {Θ : ℝ} (hΘ : 1
   have hGmeas : MeasurableSet G := measurableSet_coreGoodSet ℓ σ Θ k m
   have hSlice : ∀ ω : ↥G,
       AEEQuantitativeEllipticSlice V (thetaSliceLevel Θ) ((ω : RegCoeffField d)).toFun :=
-    fun ω => aeeSlice_coreWindow_of_mem_coreGoodSet hΘ ω.2
+    fun ω => aeeSlice_coreWindow_of_mem_coreGoodSet ω.2
   have hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, IsProbeR φ →
       Function.support φ ⊆ V →
       Measurable (fun ω : ↥G => entryTestR i j φ (ω : RegCoeffField d)) :=
     fun i j φ hφ _ => (measurable_entryTestR i j hφ).comp measurable_subtype_coe
+  have hEntrySmooth : ∀ (i j : Fin d) {φ : Vec d → ℝ},
+      ContDiff ℝ (⊤ : ℕ∞) φ → HasCompactSupport φ → tsupport φ ⊆ V →
+      Measurable (fun ω : ↥G => entryTestR i j φ (ω : RegCoeffField d)) := by
+    intro i j φ hcont hcompact htsupport
+    exact hEntry i j (IsProbeR.of_smooth hcont hcompact)
+      ((Function.support_subset_iff.2 (fun x hx => subset_tsupport φ hx)).trans htsupport)
   have hF := measurable_toHilbertMatrixL2_carrier
     (A := fun ω : ↥G => (ω : RegCoeffField d)) (hSlice := hSlice)
-    (measurableSet_coreWindow ℓ σ k m) hEntry (isOpen_coreWindow ℓ σ k m)
+    (measurableSet_coreWindow ℓ σ k m) hEntrySmooth (isOpen_coreWindow ℓ σ k m)
     (by
       have := isFiniteMeasure_volumeMeasureOn_coreWindow ℓ σ k m
       have hlt : volume V < ⊤ :=
@@ -428,8 +434,8 @@ theorem measurable_coreLocalEnergyR {ℓ : ℝ} {σ : Vec d} {Θ : ℝ} (hΘ : 1
           else (fun _ : ↥(Gᶜ) => (0 : ℝ)) ⟨b, h⟩ := by
     funext b
     by_cases hb : b ∈ G
-    · simp [coreLocalEnergyR, hGdef, hb]
-    · simp [coreLocalEnergyR, hGdef, hb]
+    · simp [coreLocalEnergyR, hGdef]
+    · simp [coreLocalEnergyR, hGdef]
   rw [hrwR]
   exact Measurable.dite hbranch measurable_const hGmeas
 

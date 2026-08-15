@@ -26,6 +26,16 @@ sources:
     license: ""
     author_contacted: "n/a"
     prior_work: ""
+  - title: "Homogenization at a polynomial scale in high contrast"
+    authors:
+      - "Scott Armstrong"
+      - "Tuomo Kuusi"
+      - "Amélie Loher"
+    id: ""
+    type: "article"
+    license: ""
+    author_contacted: "n/a"
+    prior_work: "to appear"
 
 status:
   scope: >-
@@ -34,8 +44,11 @@ status:
     function-space, deterministic, probabilistic, and homogenization-scale theory
     up to the quenched minimal-scale theorem (Chapter 5), together with the
     high-contrast development: block-variance decay and the polynomial
-    homogenization length scale (dimension d > 2, uniform ellipticity;
-    Armstrong-Kuusi-Loher, in preparation). Every theorem stated in
+    homogenization length scale (dimension d > 2, uniform ellipticity), from
+    Armstrong-Kuusi-Loher, Homogenization at a polynomial scale in high
+    contrast (to appear). The supporting library also includes finite-exponent
+    cube Calderón-Zygmund, Sobolev, fractional-Sobolev, and local
+    coarse-graining theory. Every theorem stated in
     the manuscript is formalized; narrower or extra-hypothesis cases are flagged
     in manuscript footnotes. The two main results are exposed publicly in
     Homogenization/Book/MainResults.lean and the polynomial-scale theorem in
@@ -61,7 +74,7 @@ status:
       file: "Homogenization/Book/MainResults.lean"
       sorry_count: 0
       axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/comparator.json"
+      comparator_config: "Audit/QuenchedComparison/comparator.json"
       literature_dependencies: []
     - declaration: "Homogenization.StatementAudit.homogenizationComparison_uniformEllipticity"
       file: "Audit/QuenchedComparison/Solution.lean"
@@ -105,7 +118,9 @@ automation:
         3e1cdfe206ec3f54bae4a548d814ce9b2c1bb43d, landrun 0.1.15). Multiple
         read-only subagents were used for internal audit of theorem dependency
         order, definition faithfulness, challenge/solution alignment, and release
-        documentation.
+        documentation. Release preparation additionally enforced a tracked-file
+        allowlist, private-name and pathname gates, and warning-free production
+        builds.
       cost:
         wall_time: "not separately tracked"
         spend_usd: "≈ $1000 (ChatGPT Pro and Claude Max subscriptions)"
@@ -163,7 +178,7 @@ alignment:
       lean: "Homogenization.Book.MainResults.homogenizationComparison_uniformEllipticity"
       module: "Homogenization.Book.MainResults"
       status: "proved"
-      note: "Comparator-audited via Audit/Challenge.lean and Audit/Solution.lean."
+      note: "Comparator-audited via Audit/QuenchedComparison/{Challenge,Solution}.lean."
     - source: "Mathlib-only challenge for the fixed-exponent quenched corollary"
       lean: "Homogenization.StatementAudit.homogenizationComparison_uniformEllipticity"
       module: "Audit.Challenge / Audit.Solution"

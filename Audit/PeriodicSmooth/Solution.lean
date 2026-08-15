@@ -842,10 +842,10 @@ private theorem cubeBesovDualFullNorm_toRepo {d : ℕ}
 
 private theorem scaleNormalizedNegativeSobolevVectorNormTwo_toRepo
     {d : ℕ} (Q : TriadicCube d) (s : ℝ) (F : Vec d → Vec d) :
-    _root_.Homogenization.Book.Ch03.scaleNormalizedNegativeSobolevVectorNormTwo
+    _root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedNegativeSobolevVectorNormTwo
         (toRepoTriadicCube Q) s F =
       scaleNormalizedNegativeSobolevVectorNormTwo Q s F := by
-  unfold _root_.Homogenization.Book.Ch03.scaleNormalizedNegativeSobolevVectorNormTwo
+  unfold _root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedNegativeSobolevVectorNormTwo
     _root_.Homogenization.Book.Ch03.scaleNormalizedDualNegativeBesovVectorNormTwo
     scaleNormalizedNegativeSobolevVectorNormTwo
   rw [show ((toRepoTriadicCube Q).scale : ℤ) = Q.scale by rfl]
@@ -876,12 +876,12 @@ private theorem gagliardoKernel_toRepo {d : ℕ} {E : Type*}
 
 private theorem scaleNormalizedPositiveSobolevVectorSeminormTwo_toRepo
     {d : ℕ} [NeZero d] (m : ℕ) (s : ℝ) (g : Vec d → Vec d) :
-    _root_.Homogenization.Book.Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo
+    _root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo
         (_root_.Homogenization.Book.MainResults.originCube d m) s g =
       scaleNormalizedPositiveSobolevVectorSeminormTwo (originCube d m) s g := by
-  simp [_root_.Homogenization.Book.Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo,
+  simp [_root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo,
     scaleNormalizedPositiveSobolevVectorSeminormTwo,
-    _root_.Homogenization.Book.Ch01.fractionalSobolevSeminorm,
+    _root_.Homogenization.Book.Ch01.Legacy.fractionalSobolevSeminorm,
     fractionalSobolevSeminorm,
     _root_.Homogenization.Gagliardo.cubeGagliardoSeminorm,
     Gagliardo.cubeGagliardoSeminorm,
@@ -1050,13 +1050,13 @@ private theorem toRepo_AELocallyUniformlyEllipticField {d : ℕ}
 private theorem toRepo_ForceSobolevRegularity {d : ℕ} [NeZero d]
     {m : ℕ} {s : ℝ} {g : Vec d → Vec d}
     (hg : ForceSobolevRegularity (originCube d m) s g) :
-    _root_.Homogenization.Book.Ch03.ForceSobolevRegularity
+    _root_.Homogenization.Book.Ch03.Legacy.ForceSobolevRegularity
       (_root_.Homogenization.Book.MainResults.originCube d m) s g := by
-  simpa [_root_.Homogenization.Book.Ch03.ForceSobolevRegularity,
+  simpa [_root_.Homogenization.Book.Ch03.Legacy.ForceSobolevRegularity,
     ForceSobolevRegularity,
-    _root_.Homogenization.Book.Ch01.MemFractionalSobolev,
+    _root_.Homogenization.Book.Ch01.Legacy.MemFractionalSobolev,
     MemFractionalSobolev,
-    _root_.Homogenization.Book.Ch01.fractionalSobolevSeminorm,
+    _root_.Homogenization.Book.Ch01.Legacy.fractionalSobolevSeminorm,
     fractionalSobolevSeminorm,
     _root_.Homogenization.Gagliardo.MemWsp, Gagliardo.MemWsp,
     _root_.Homogenization.Gagliardo.gagliardoKernel, Gagliardo.gagliardoKernel,
@@ -1195,7 +1195,7 @@ theorem periodicSmooth_comparison
                     (_root_.Homogenization.euclideanGradient v y)) x =
                 _root_.Homogenization.Examples.Periodic.euclideanDivergence g x),
             X b ≤ (3 : ℝ) ^ m →
-            _root_.Homogenization.Book.Ch03.ForceSobolevRegularity
+            _root_.Homogenization.Book.Ch03.Legacy.ForceSobolevRegularity
               (_root_.Homogenization.Book.MainResults.originCube d m)
               _root_.Homogenization.Book.MainResults.fixedComparisonS g →
             _root_.Homogenization.Examples.Periodic.classicalComparisonDefect
@@ -1216,7 +1216,7 @@ theorem periodicSmooth_comparison
         _root_.Homogenization.Book.Ch04.AELocallyUniformlyEllipticField b :=
       toRepo_AELocallyUniformlyEllipticField ha
     have hgRepo :
-        _root_.Homogenization.Book.Ch03.ForceSobolevRegularity
+        _root_.Homogenization.Book.Ch03.Legacy.ForceSobolevRegularity
           (_root_.Homogenization.Book.MainResults.originCube d m)
           _root_.Homogenization.Book.MainResults.fixedComparisonS g := by
       simpa [fixedComparisonS,
@@ -1334,12 +1334,12 @@ theorem periodicSmooth_comparison
       scaleNormalizedPositiveSobolevVectorSeminormTwo_toRepo,
       cubeBesovDualFullNorm_toRepo,
       gagliardoKernel_toRepo,
-      _root_.Homogenization.Book.Ch03.scaleNormalizedNegativeSobolevVectorNormTwo,
+      _root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedNegativeSobolevVectorNormTwo,
       _root_.Homogenization.Book.Ch03.scaleNormalizedDualNegativeBesovVectorNormTwo,
       scaleNormalizedNegativeSobolevVectorNormTwo,
-      _root_.Homogenization.Book.Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo,
+      _root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo,
       scaleNormalizedPositiveSobolevVectorSeminormTwo,
-      _root_.Homogenization.Book.Ch01.fractionalSobolevSeminorm,
+      _root_.Homogenization.Book.Ch01.Legacy.fractionalSobolevSeminorm,
       fractionalSobolevSeminorm,
       _root_.Homogenization.Gagliardo.gagliardoKernel,
       Gagliardo.gagliardoKernel,

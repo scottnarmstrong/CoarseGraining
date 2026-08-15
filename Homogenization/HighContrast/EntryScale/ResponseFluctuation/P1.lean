@@ -12,8 +12,8 @@ open Homogenization.Book.Ch05.Section54.OneStepContraction
 /-!
 # Section 5.3 response and fluctuation bridges
 
-Concrete LeanIntoHomogenization-facing bridges for the `l.S.and.J` phase of
-the high-moment paper (Armstrong–Kuusi–Loher, in preparation).  These lemmas
+Concrete library-facing bridges for the `l.S.and.J` phase of
+the high-moment paper (Armstrong–Kuusi–Loher, to appear).  These lemmas
 keep the Section 5.3 response exponent explicit and do not replace the terminal
 fluctuation or response-moment estimates by wrapper assumptions.
 -/
@@ -82,13 +82,13 @@ theorem positivePart_sub_le_positivePart_sub_of_base_le
 
 /--
 Source label `p.HC.CR`: lower inverse ellipticity positive-excess with the
-local scale-`k` baseline is bounded by LIH's scale-zero positive-excess plus
+local scale-`k` baseline is bounded by the library's scale-zero positive-excess plus
 the deterministic inverse-star baseline gap.
 -/
 theorem localLowerPositiveExcess_le_zeroBaseline_add_gap_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (rLower : ℝ) (a : Homogenization.RegCoeffField d) :
     max
@@ -110,13 +110,13 @@ theorem localLowerPositiveExcess_le_zeroBaseline_add_gap_of_P4
 
 /--
 Source label `p.HC.CR`: upper ellipticity positive-excess with the local
-scale-`k` baseline is bounded by LIH's scale-zero positive-excess plus the
+scale-`k` baseline is bounded by the library's scale-zero positive-excess plus the
 deterministic upper baseline gap.
 -/
 theorem localUpperPositiveExcess_le_zeroBaseline_add_gap_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (rUpper : ℝ) (a : Homogenization.RegCoeffField d) :
     max
@@ -141,9 +141,9 @@ local scale-`k` baseline is bounded by the terminal scale-`m` positive-excess.
 This is the algebraic replacement for the scale-zero baseline comparison.
 -/
 theorem localLowerPositiveExcess_le_terminalBaseline_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (rLower : ℝ)
     (a : Homogenization.RegCoeffField d) :
@@ -167,9 +167,9 @@ Source label `p.HC.CR`: upper ellipticity positive-excess with the local
 scale-`k` baseline is bounded by the terminal scale-`m` positive-excess.
 -/
 theorem localUpperPositiveExcess_le_terminalBaseline_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (rUpper : ℝ)
     (a : Homogenization.RegCoeffField d) :
@@ -190,12 +190,12 @@ theorem localUpperPositiveExcess_le_terminalBaseline_of_P4
 
 /--
 Source label `p.HC.CR`: deterministic scalar gap paid when the local
-scale-`k` positive-excess baseline is compared with LIH's scale-zero baseline.
+scale-`k` positive-excess baseline is compared with the library's scale-zero baseline.
 -/
 noncomputable def localPositiveExcessBaselineGapAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P) (k m : ℕ) : ℝ :=
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P) (k m : ℕ) : ℝ :=
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   σ *
       ((hP.barSigmaStarAtScale hStruct 0)⁻¹ -
@@ -209,9 +209,9 @@ Source label `p.HC.CR`: the deterministic local-to-zero positive-excess
 baseline gap is nonnegative under the P4 scalar chain.
 -/
 theorem localPositiveExcessBaselineGapAtScales_nonneg_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) :
     0 ≤ localPositiveExcessBaselineGapAtScales hP hStruct k m := by
@@ -242,14 +242,14 @@ theorem localPositiveExcessBaselineGapAtScales_nonneg_of_P4
 
 /--
 Source label `p.HC.CR`: the weighted local positive-excess contribution is
-bounded by LIH's scale-zero positive-excess contribution plus the deterministic
+bounded by the library's scale-zero positive-excess contribution plus the deterministic
 baseline-gap scalar.  This is the pointwise algebra needed before lifting the
 local paired-square split to expectations.
 -/
 theorem localPositiveExcessWeight_le_zeroBaseline_add_gap_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (rLower rUpper : ℝ) (a : Homogenization.RegCoeffField d) :
     let Q : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)
@@ -335,9 +335,9 @@ bounded by the terminal scale-`m` positive-excess contribution.  This is the
 faithful algebraic entry point for the good/bad positive-part maximal split.
 -/
 theorem localPositiveExcessWeight_le_terminalBaseline_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (rLower rUpper : ℝ)
     (a : Homogenization.RegCoeffField d) :
@@ -423,7 +423,7 @@ private theorem originCube_pred_mem_childCubes_originCube {d : ℕ} (s : ℤ) :
     norm_num
 
 /--
-LIH geometry bridge: the smaller origin cube is the origin descendant at the
+Library geometry bridge: the smaller origin cube is the origin descendant at the
 prescribed depth of the larger origin cube.
 -/
 theorem originCube_mem_descendantsAtDepth_originCube_add
@@ -447,7 +447,7 @@ theorem originCube_mem_descendantsAtDepth_originCube_add
           originCube_pred_mem_childCubes_originCube (d := d) (((j + 1 : ℕ) : ℤ))
 
 /--
-LIH geometry bridge: if `j <= m`, the scale-`j` origin cube is a descendant at
+Library geometry bridge: if `j <= m`, the scale-`j` origin cube is a descendant at
 depth `m - j` of the scale-`m` origin cube.
 -/
 theorem originCube_mem_descendantsAtDepth_originCube_of_le
@@ -460,9 +460,9 @@ theorem originCube_mem_descendantsAtDepth_originCube_of_le
     originCube_mem_descendantsAtDepth_originCube_add (d := d) j (m - j)
 
 theorem paired_mismatchTermSquares_special_le_localBaseline_add_positiveExcess
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d) (a : Homogenization.RegCoeffField d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -619,9 +619,9 @@ explicit.
 This is a concrete weak-norm component, not a new feed or wrapper assumption.
 -/
 theorem paired_mismatchTermSquares_special_le_rawHighContrastWeakNormContribution_local
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d) (a : Homogenization.RegCoeffField d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -742,7 +742,7 @@ Source label `l.S.and.J`: natural-scale version of the Section 5.3 geometric
 weight in `coarseFluctuationFullBlockSumAtScale`.
 -/
 noncomputable def section53CoarseFluctuationScaleWeight
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m j : ℕ) : ℝ :=
   Real.rpow (3 : ℝ)
@@ -753,7 +753,7 @@ Source label `e.drift.nodrop`: geometric-summability constant for the
 Section 5.3 fluctuation weights.
 -/
 noncomputable def section53CoarseFluctuationWeightSumConstant
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P) :
     ℝ :=
   (1 - Real.rpow (3 : ℝ) (-(section53CoarseFluctuationBeta hP4)))⁻¹
@@ -883,7 +883,7 @@ theorem exists_section53CoarseFluctuationBeta_twoBlockDecay_le_of_params
       Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticityParams d)
     {x : ℝ} (hx_pos : 0 < x) :
     ∃ L : ℕ, 0 < L ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P),
         hP4.params = params →
           Real.rpow (3 : ℝ)
@@ -901,7 +901,7 @@ theorem exists_section53CoarseFluctuationBeta_twoBlockDecay_le_of_params
   simpa [hβ] using hL
 
 theorem section53CoarseFluctuationScaleWeight_eq_base_pow
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m j : ℕ) :
     section53CoarseFluctuationScaleWeight hP4 m j =
@@ -918,7 +918,7 @@ one.  This is the finite-window substitute for the geometric summability used
 in the manuscript.
 -/
 theorem section53CoarseFluctuationScaleWeight_le_one
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m j : ℕ) :
     section53CoarseFluctuationScaleWeight hP4 m j ≤ 1 := by

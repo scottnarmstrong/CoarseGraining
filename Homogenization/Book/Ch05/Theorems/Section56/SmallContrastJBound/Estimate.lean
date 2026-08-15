@@ -13,9 +13,9 @@ noncomputable section
 open Section53.JUpperBoundCoarseFluctuations
 
 theorem expectedResponseJCubeSet_special_le_two_smallContrastReducedRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     (C0 η : ℝ) (hC0_nonneg : 0 ≤ C0)
@@ -76,7 +76,7 @@ theorem expectedResponseJCubeSet_special_le_two_smallContrastReducedRHSAtScale
   have hJ_nonneg : 0 ≤ J := by
     dsimp [J, Ch04.expectedResponseJCubeSet]
     exact integral_nonneg fun a =>
-      Ch04.responseJObservableCubeSet_nonneg (originCube d (m : ℤ)) p_e q_e a
+      Ch04.restrictionResponseJObservableCubeSet_nonneg (originCube d (m : ℤ)) p_e q_e a
   have htau_nonneg : 0 ≤ tau := by
     have hk_nonneg : (0 : ℤ) ≤ (k : ℤ) := by exact_mod_cast Nat.zero_le k
     have hkm_int : (k : ℤ) ≤ (m : ℤ) := by exact_mod_cast hkm_le
@@ -329,9 +329,9 @@ theorem expectedResponseJCubeSet_special_le_two_smallContrastReducedRHSAtScale
   exact hJ_le_reduced
 
 theorem two_smallContrastReducedRHSAtScale_le_smallContrastFinalRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (C0 η C : ℝ) {k m : ℕ} (hkm : k ≤ m) (e : Vec d)
     (hKfluct :
@@ -419,9 +419,9 @@ theorem smallContrastJBound_homogenizationScale
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (_hstat : Ch04.StationaryLaw P)
-      (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (_hstat : Ch04.RestrictionStationaryLaw P)
+      (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2 →

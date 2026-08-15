@@ -53,7 +53,7 @@ active memory-grid step.
 -/
 noncomputable def finalAssemblySourceStepBound
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (C_lin C_high : ℝ) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -73,7 +73,7 @@ large enough for the half-threshold and geometric-weight absorptions.
 -/
 noncomputable def finalAssemblyFluctuationBound
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (delta_sc : ℝ) : ℝ :=
   max (2 * (1 + (delta_sc / 2)⁻¹) ^ 2)
@@ -142,7 +142,7 @@ noncomputable def finalAssemblyDeltaBudgetBoundParams
 
 theorem finalAssemblySourceStepBound_eq_params
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {params :
       Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticityParams d}
@@ -158,7 +158,7 @@ theorem finalAssemblySourceStepBound_eq_params
 
 private theorem section53CoarseFluctuationWeightSumConstant_eq_params
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {params :
       Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticityParams d}
@@ -175,7 +175,7 @@ private theorem section53CoarseFluctuationWeightSumConstant_eq_params
 
 theorem finalAssemblyFluctuationBound_eq_params
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {params :
       Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticityParams d}
@@ -196,7 +196,7 @@ inequalities from explicit budget bounds.
 -/
 theorem final_assembly_source_step_scalars
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {delta_sc C_delta C_memory C_resp C_lin C_high : ℝ}
     (hmemory_budget :

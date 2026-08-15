@@ -36,21 +36,21 @@ noncomputable def normalizedMatrixAverageGeometricConstParams {d : ℕ}
 
 @[simp]
 theorem refinedVarianceBasicBudgetSmallContrastConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     refinedVarianceBasicBudgetSmallContrastConstParams hP4.params =
       refinedVarianceBasicBudgetSmallContrastConst hP4 := rfl
 
 @[simp]
 theorem normalizedQuadraticProbeAverageUniformRootSqConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     normalizedQuadraticProbeAverageUniformRootSqConstParams hP4.params =
       normalizedQuadraticProbeAverageUniformRootSqConst hP4 := rfl
 
 @[simp]
 theorem normalizedMatrixAverageGeometricConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     normalizedMatrixAverageGeometricConstParams hP4.params =
       normalizedMatrixAverageGeometricConst hP4 := rfl
@@ -85,8 +85,8 @@ theorem descendantsAtScale_originCube_nat_card_inv_eq_rpow
       ((d : ℝ) * ((parent - child : ℕ) : ℝ))).symm
 
 theorem descendantsAverageNormalizedFluctuationOperatorNormSq_integral_le_geometric_of_smallContrast
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     {child parent : ℕ} (hchild_parent : child ≤ parent) :
@@ -127,8 +127,8 @@ theorem descendantsAverageNormalizedFluctuationOperatorNormSq_homogenizationScal
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2 →

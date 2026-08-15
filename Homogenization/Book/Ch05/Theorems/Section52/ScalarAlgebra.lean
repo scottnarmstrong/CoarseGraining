@@ -21,13 +21,13 @@ Scalar identities, positive-excess algebra, and product estimates.
 /-- The `1 <= Theta_n` part of the scalar preliminary lemma, with the
 inverse-star positivity proved in Chapter 4. -/
 theorem one_le_thetaAtScale_of_integrable_coarseFullBlockMatrixAtCube
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (n : ℤ)
     (hBlock : Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d n)) P) :
     1 ≤ thetaAtScale hP hStruct n := by
   simpa [thetaAtScale, Ch04.Internal.thetaAtScale_eq_scalarization_contrast] using
-    Ch04.LawCarrier.Internal.one_le_scalar_contrast_of_primitive_of_integrable_coarseFullBlockMatrixAtCube hP
+    Ch04.RestrictionLawCarrier.Internal.one_le_scalar_contrast_of_primitive_of_integrable_coarseFullBlockMatrixAtCube hP
       (Ch04.Internal.annealedScalarizationTheory_of_structuralLaw hP hStruct)
       (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct n)
       hBlock
@@ -35,8 +35,8 @@ theorem one_le_thetaAtScale_of_integrable_coarseFullBlockMatrixAtCube
 /-- The `Theta_n <= widetildeTheta_n` part of the scalar preliminary lemma,
 using the direct Chapter 4 moment-factor endpoint. -/
 theorem thetaAtScale_le_widetildeThetaAtScale_of_integrable_factor_observables
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hBlock :
       ∀ l : ℕ,
@@ -68,9 +68,9 @@ theorem thetaAtScale_le_widetildeThetaAtScale_of_integrable_factor_observables
 
 /-- The upper positive-excess moment is nonnegative. -/
 theorem LambdaPositiveExcessMomentAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (s : ℝ) (ξ : ℕ)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ) :
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ) :
     0 ≤ LambdaPositiveExcessMomentAtScale P m s ξ hP hStruct := by
   simpa [LambdaPositiveExcessMomentAtScale] using
     Ch04.annealedMomentRoot_nonneg_of_nonneg P ξ
@@ -82,9 +82,9 @@ theorem LambdaPositiveExcessMomentAtScale_nonneg
 
 /-- The lower inverse positive-excess moment is nonnegative. -/
 theorem lambdaInvPositiveExcessMomentAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (s : ℝ) (ξ : ℕ)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ) :
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ) :
     0 ≤ lambdaInvPositiveExcessMomentAtScale P m s ξ hP hStruct := by
   simpa [lambdaInvPositiveExcessMomentAtScale] using
     Ch04.annealedMomentRoot_nonneg_of_nonneg P ξ
@@ -320,9 +320,9 @@ theorem section52_sq_finset_sum_weighted_rpow_half_le_weight_sum_mul_finset_sum_
 /-- Root decomposition for the upper ellipticity factor:
 `||Λ_m||_ξ <= \barσ_0 + ||(Λ_m-\barσ_0)_+||_ξ`. -/
 theorem LambdaMomentAtScale_le_barSigma_zero_add_positiveExcessMomentAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {m : ℤ} {s : ℝ} {ξ : ℕ}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hξ : 1 ≤ ξ) (hs : 0 < s)
     (hBarSigma0_nonneg : 0 ≤ hP.barSigmaAtScale hStruct 0)
     (hUpperMeas :
@@ -381,9 +381,9 @@ theorem LambdaMomentAtScale_le_barSigma_zero_add_positiveExcessMomentAtScale
 `||λ_m^{-1}||_ξ <= \barσ_{*,0}^{-1} +
 ||(λ_m^{-1}-\barσ_{*,0}^{-1})_+||_ξ`. -/
 theorem lambdaInvMomentAtScale_le_barSigmaStar_zero_inv_add_positiveExcessMomentAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {m : ℤ} {s : ℝ} {ξ : ℕ}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hξ : 1 ≤ ξ) (hs : 0 < s)
     (hBarSigmaStar0_inv_nonneg : 0 ≤ (hP.barSigmaStarAtScale hStruct 0)⁻¹)
     (hLowerMeas :
@@ -448,8 +448,8 @@ ellipticity moment lemma.
 Once the two component positive-excess estimates are known, this theorem is
 the Ch5 algebra turning them into a bound for `widetildeTheta_m`. -/
 theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_positiveExcess_products
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℤ)
     (hUpper :
       Ch04.LambdaMomentAtScale P m hP4.sUpper hP4.xi ≤
@@ -524,7 +524,7 @@ theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_positiveExcess_products
     _ =
         thetaAtScale hP hStruct 0 +
           UE * l0 + LE * L0 + UE * LE := by
-        simp [thetaAtScale, Ch04.LawCarrier.thetaAtScale, b0, s0]
+        simp [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, b0, s0]
     _ =
         thetaAtScale hP hStruct 0 +
           LambdaPositiveExcessMomentAtScale P m hP4.sUpper hP4.xi hP hStruct *
@@ -539,8 +539,8 @@ theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_positiveExcess_products
 unit-scale moment roots. This is the final algebraic step in the Section 5.2
 moment lemma. -/
 theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_error_of_positiveExcess_bounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℤ)
     {coeffUpper coeffLower finalCoeff : ℝ}
     (hUpper :
@@ -644,8 +644,8 @@ theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_error_of_positiveExcess_b
 bound. This is useful when the scalar root decomposition has already been
 proved upstream. -/
 theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_error_of_positiveExcess_product_bound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℤ)
     {coeffUpper coeffLower finalCoeff : ℝ}
     (hProduct :

@@ -93,8 +93,8 @@ theorem descendantsAverageFullBlockMat_operatorNormSq_le_descendantsAverage_oper
 /-- Jensen/convexity bound for the squared operator norm of the normalized
 descendant-average fluctuation. -/
 theorem descendantsAverageNormalizedFluctuationOperatorNormSq_le_descendantsAverage
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     descendantsAverageNormalizedFluctuationOperatorNormSq hP hStruct center Q j a ≤
       descendantsAverage Q j
@@ -112,8 +112,8 @@ theorem descendantsAverageNormalizedFluctuationOperatorNormSq_le_descendantsAver
             hP hStruct center (cubeSet R) a)
 
 theorem aemeasurable_fullBlockNormalizedFluctuationMatrix_cubeSet
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -139,8 +139,8 @@ theorem aemeasurable_fullBlockNormalizedFluctuationMatrix_cubeSet
     b, c, D, Abar, g] using hg.comp_aemeasurable hM
 
 theorem aemeasurable_descendantsAverageNormalizedFluctuationMatrix
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (j : ℕ) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -172,8 +172,8 @@ theorem aemeasurable_descendantsAverageNormalizedFluctuationMatrix
     descendantsAverageFullBlockMat_eq_smul_sum]
 
 theorem aemeasurable_descendantsAverageNormalizedFluctuationOperatorNormSq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (j : ℕ) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -194,8 +194,8 @@ theorem aemeasurable_descendantsAverageNormalizedFluctuationOperatorNormSq
         hP hStruct center Q j)
 
 theorem integrable_descendantsAverageNormalizedFluctuationOperatorNormSq_from_P4_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m n k : ℕ) (_hk : k ≤ n) :
     Integrable
@@ -254,8 +254,8 @@ theorem integrable_descendantsAverageNormalizedFluctuationOperatorNormSq_from_P4
 /-- Jensen/convexity bound for the squared operator norm of the
 arbitrary-normalizer descendant-average fluctuation. -/
 theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_le_descendantsAverage
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
     (a : RegCoeffField d) :
     descendantsAverageFluctuationOperatorNormSqWithNormalizer
@@ -276,8 +276,8 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_le_descendants
 
 /-- Pointwise variance triangle for an arbitrary deterministic normalizer. -/
 theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_le_two_descendantsAverageWithNormalizer_add_two_error
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
     (a : RegCoeffField d) :
     fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer
@@ -323,8 +323,8 @@ theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_le_two_descendan
 /-- A version whose first term is the descendant average of the
 arbitrary-normalizer fluctuation observable. -/
 theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_le_two_descendantsAverage_add_two_error
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
     (a : RegCoeffField d) :
     fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer
@@ -347,8 +347,8 @@ theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_le_two_descendan
 deterministic normalizers.  The manuscript specialization is
 `S = B^{-1/2}` and `T = B^{1/2}`. -/
 theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_le_two_descendantsAverageWithNormalizer_add_eight_blockJTraceAverageSqWithNormalizers_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S T : FullBlockMat d) (Q : TriadicCube d) (j : ℕ) :
     (fun a : RegCoeffField d =>
       fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer
@@ -368,8 +368,8 @@ theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_le_two_descendan
 
 /-- Jensen-relaxed version of the arbitrary-normalizer variance estimate. -/
 theorem fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer_le_two_descendantsAverage_add_eight_blockJTraceAverageSqWithNormalizers_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S T : FullBlockMat d) (Q : TriadicCube d) (j : ℕ) :
     (fun a : RegCoeffField d =>
       fullBlockFluctuationOperatorNormSqAtScaleWithNormalizer

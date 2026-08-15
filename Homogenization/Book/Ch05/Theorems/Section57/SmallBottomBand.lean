@@ -52,9 +52,9 @@ theorem measureReal_smallBottomPairEvent_quenchedProbeEnvelope_le_weighted_row
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ Ccrude : ℝ, 0 < Ccrude ∧
       ∀ {t α : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {Nentry q r n : ℕ},
@@ -241,9 +241,9 @@ theorem measureReal_smallBottomBadScaleEvent_quenchedProbeEnvelope_le_weighted_k
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ Ccrude : ℝ, 0 < Ccrude ∧
       ∀ {t α : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {Nentry q : ℕ},

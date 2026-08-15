@@ -22,9 +22,9 @@ noncomputable section
 /-- The finite maximum of the limiting-normalized block response over all
 scale-`n` descendants of the scale-`m` origin cube. -/
 noncomputable def localizedLimitNormalizedJMax
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier Pμ)
-    (hStruct : Ch04.StructuralLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier Pμ)
+    (hStruct : Ch04.RestrictionStructuralLaw Pμ)
     (m n : ℕ) (e : FullBlockVec d) : RegCoeffField d → ℝ :=
   fun a =>
     let D : Finset (TriadicCube d) :=
@@ -43,8 +43,8 @@ theorem descendantsAtScale_originCube_nat_nonempty
     descendantsAtScale_nonempty (originCube d ((m : ℕ) : ℤ)) hnm_int
 
 theorem limitNormalizedBlockJObservable_le_localizedLimitNormalizedJMax
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier Pμ) (hStruct : Ch04.RestrictionStructuralLaw Pμ)
     {m n : ℕ} (e : FullBlockVec d) {R : TriadicCube d}
     (hR : R ∈ descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ))
     (a : RegCoeffField d) :
@@ -62,17 +62,17 @@ theorem limitNormalizedBlockJObservable_le_localizedLimitNormalizedJMax
 
 /-- Discounted localized response, the left side of the bad-event predicate. -/
 noncomputable def discountedLocalizedLimitNormalizedJMax
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier Pμ)
-    (hStruct : Ch04.StructuralLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier Pμ)
+    (hStruct : Ch04.RestrictionStructuralLaw Pμ)
     (t : ℝ) (m n : ℕ) (e : FullBlockVec d) : RegCoeffField d → ℝ :=
   fun a =>
       (3 : ℝ) ^ (-t * ((m - n : ℕ) : ℝ)) *
       localizedLimitNormalizedJMax hP hStruct m n e a
 
 theorem aemeasurable_limitNormalizedBlockJObservable
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier Pμ) (hStruct : Ch04.RestrictionStructuralLaw Pμ)
     (Q : TriadicCube d) (e : FullBlockVec d) :
     AEMeasurable (limitNormalizedBlockJObservable hP hStruct Q e) Pμ := by
   simpa [limitNormalizedBlockJObservable] using
@@ -81,9 +81,9 @@ theorem aemeasurable_limitNormalizedBlockJObservable
       (scalarLimitSqrtBlockVec hP hStruct e)
 
 theorem map_limitNormalizedBlockJObservable_eq_origin_of_mem_descendantsAtScale
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
-    (hstat : Ch04.StationaryLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier Pμ) (hStruct : Ch04.RestrictionStructuralLaw Pμ)
+    (hstat : Ch04.RestrictionStationaryLaw Pμ)
     {m n : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
     {R : TriadicCube d}
     (hR : R ∈ descendantsAtScale (originCube d m) n)
@@ -100,8 +100,8 @@ theorem map_limitNormalizedBlockJObservable_eq_origin_of_mem_descendantsAtScale
           (cubeSet (originCube d n)) := by
     exact Ch04.cubeSet_eq_translateSet_originCube_of_mem_descendantsAtScale_originCube
       (d := d) (n := n) (m := m) (R := R) hn hnm hR
-  have hX_cov : Ch04.IsTranslationCovariantR X :=
-    Ch04.blockJSetObservableBlockVec_translation_covariantR Pvec Qvec
+  have hX_cov : Ch04.IsRestrictionTranslationCovariant X :=
+    Ch04.blockJSetObservableBlockVec_restrictionTranslationCovariant Pvec Qvec
   have hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) Pμ := by
     simpa [X] using
       Ch04.aemeasurable_blockJSetObservableBlockVec_cubeSet hP
@@ -117,7 +117,7 @@ theorem map_limitNormalizedBlockJObservable_eq_origin_of_mem_descendantsAtScale
               (cubeSet (originCube d n)))) Pμ := by
           rw [hshift]
     _ = Measure.map (X (cubeSet (originCube d n))) Pμ := by
-          exact Ch04.map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
+          exact Ch04.map_eq_map_translateReg_of_isRestrictionTranslationCovariant_aemeasurable
             (P := Pμ) hstat (U := cubeSet (originCube d n))
             hX0_aemeas hX_cov (Ch04.scaleTranslationShift n R)
     _ = Measure.map
@@ -125,9 +125,9 @@ theorem map_limitNormalizedBlockJObservable_eq_origin_of_mem_descendantsAtScale
           rfl
 
 theorem isBigOWith_limitNormalizedBlockJObservable_sub_const_of_mem_descendantsAtScale
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
-    (hstat : Ch04.StationaryLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier Pμ) (hStruct : Ch04.RestrictionStructuralLaw Pμ)
+    (hstat : Ch04.RestrictionStationaryLaw Pμ)
     {σ A c : ℝ}
     {m n : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
     {R : TriadicCube d}
@@ -149,9 +149,9 @@ theorem isBigOWith_limitNormalizedBlockJObservable_sub_const_of_mem_descendantsA
           (cubeSet (originCube d n)) := by
     exact Ch04.cubeSet_eq_translateSet_originCube_of_mem_descendantsAtScale_originCube
       (d := d) (n := n) (m := m) (R := R) hn hnm hR
-  have hX_cov : Ch04.IsTranslationCovariantR X := by
+  have hX_cov : Ch04.IsRestrictionTranslationCovariant X := by
     intro U z a
-    simp [X, Ch04.blockJSetObservableBlockVec_translation_covariantR Pvec Qvec U z a]
+    simp [X, Ch04.blockJSetObservableBlockVec_restrictionTranslationCovariant Pvec Qvec U z a]
   have hXR_aemeas : AEMeasurable (X (cubeSet R)) Pμ := by
     exact (Ch04.aemeasurable_blockJSetObservableBlockVec_cubeSet hP R Pvec Qvec).sub
       aemeasurable_const
@@ -170,7 +170,7 @@ theorem isBigOWith_limitNormalizedBlockJObservable_sub_const_of_mem_descendantsA
                 (cubeSet (originCube d n)))) Pμ := by
             rw [hshift]
       _ = Measure.map (X (cubeSet (originCube d n))) Pμ := by
-            exact Ch04.map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
+            exact Ch04.map_eq_map_translateReg_of_isRestrictionTranslationCovariant_aemeasurable
               (P := Pμ) hstat (U := cubeSet (originCube d n))
               hX0_aemeas hX_cov (Ch04.scaleTranslationShift n R)
   have htransfer :=
@@ -180,9 +180,9 @@ theorem isBigOWith_limitNormalizedBlockJObservable_sub_const_of_mem_descendantsA
   exact htransfer.2 (by simpa [X, limitNormalizedBlockJObservable, Pvec, Qvec] using hOrigin)
 
 theorem isBigO_limitNormalizedBlockJObservable_of_mem_descendantsAtScale
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
-    (hstat : Ch04.StationaryLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier Pμ) (hStruct : Ch04.RestrictionStructuralLaw Pμ)
+    (hstat : Ch04.RestrictionStationaryLaw Pμ)
     {σ A : ℝ}
     {m n : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
     {R : TriadicCube d}
@@ -214,9 +214,9 @@ theorem isBigO_limitNormalizedBlockJObservable_originCube_of_scaleZero
     (_hσ_pos : 0 < σ)
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {Pμ : Ch04.CoeffLaw d}
-        (hPμ : Ch04.LawCarrier Pμ)
-        (hStruct : Ch04.StructuralLaw Pμ)
+      ∀ {Pμ : Ch04.RestrictionCoeffLaw d}
+        (hPμ : Ch04.RestrictionLawCarrier Pμ)
+        (hStruct : Ch04.RestrictionStructuralLaw Pμ)
         (hΓ : GammaSigmaCoarseGrainedEllipticity Pμ hPμ hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ (e : FullBlockVec d),
@@ -327,8 +327,8 @@ theorem isBigO_limitNormalizedBlockJObservable_originCube_of_scaleZero
   simpa [limitNormalizedBlockJObservable, Pvec, Qvec, hσ_eq] using hmono
 
 theorem localizedLimitNormalizedJMax_sub_const_le_sup_sub
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier Pμ) (hStruct : Ch04.RestrictionStructuralLaw Pμ)
     {m n : ℕ} (e : FullBlockVec d) (c : ℝ)
     (a : RegCoeffField d) :
     let D : Finset (TriadicCube d) :=
@@ -402,9 +402,9 @@ theorem isBigO_localizedLimitNormalizedJMax
     (hσ_pos : 0 < σ)
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {Pμ : Ch04.CoeffLaw d}
-        (hPμ : Ch04.LawCarrier Pμ)
-        (hStruct : Ch04.StructuralLaw Pμ)
+      ∀ {Pμ : Ch04.RestrictionCoeffLaw d}
+        (hPμ : Ch04.RestrictionLawCarrier Pμ)
+        (hStruct : Ch04.RestrictionStructuralLaw Pμ)
         (hΓ : GammaSigmaCoarseGrainedEllipticity Pμ hPμ hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ (e : FullBlockVec d), dotProduct e e ≤ 1 →
@@ -483,9 +483,9 @@ theorem isBigO_localizedLimitNormalizedJMax
   rw [heq]
 
 theorem isBigOWith_localizedLimitNormalizedJMax_sub_const
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
-    (hstat : Ch04.StationaryLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier Pμ) (hStruct : Ch04.RestrictionStructuralLaw Pμ)
+    (hstat : Ch04.RestrictionStationaryLaw Pμ)
     {σ A c : ℝ} (hσ : 0 < σ)
     {m n : ℕ} (hnm : n < m)
     (e : FullBlockVec d)
@@ -545,9 +545,9 @@ theorem localizedFirstQuenchedEstimate_limitNormalized
     (hσ_pos : 0 < σ)
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ Cfluct Centry α : ℝ, 0 < Cfluct ∧ 0 < Centry ∧ 0 < α ∧
-      ∀ {Pμ : Ch04.CoeffLaw d}
-        (hPμ : Ch04.LawCarrier Pμ)
-        (hStruct : Ch04.StructuralLaw Pμ)
+      ∀ {Pμ : Ch04.RestrictionCoeffLaw d}
+        (hPμ : Ch04.RestrictionLawCarrier Pμ)
+        (hStruct : Ch04.RestrictionStructuralLaw Pμ)
         (hΓ : GammaSigmaCoarseGrainedEllipticity Pμ hPμ hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ (e : FullBlockVec d), dotProduct e e ≤ 1 →
@@ -617,9 +617,9 @@ theorem localizedFirstQuenchedEstimate_limitNormalized_uniformAnnealedExponent
     ∃ Centry a : ℝ, 0 < Centry ∧ 0 < a ∧
       ∀ {σ : ℝ}, 0 < σ →
         ∃ Cfluct : ℝ, 0 < Cfluct ∧
-          ∀ {Pμ : Ch04.CoeffLaw d}
-            (hPμ : Ch04.LawCarrier Pμ)
-            (hStruct : Ch04.StructuralLaw Pμ)
+          ∀ {Pμ : Ch04.RestrictionCoeffLaw d}
+            (hPμ : Ch04.RestrictionLawCarrier Pμ)
+            (hStruct : Ch04.RestrictionStructuralLaw Pμ)
             (hΓ : GammaSigmaCoarseGrainedEllipticity Pμ hPμ hStruct),
             hΓ.sigma = σ → hΓ.params = params →
           ∀ (e : FullBlockVec d), dotProduct e e ≤ 1 →

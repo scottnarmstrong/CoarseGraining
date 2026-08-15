@@ -13,8 +13,8 @@ noncomputable section
 /-- Pointwise form of the variance triangle after interpreting variance as the
 Section 5.4 squared operator-norm fluctuation. -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_descendantsAverageNormalized_add_two_error
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct center Q a ≤
@@ -62,8 +62,8 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_descendantsAv
 /-- A version whose first term is the descendant average of the existing
 Section 5.4 fluctuation observable. -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_descendantsAverage_add_two_error
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct center Q a ≤
@@ -86,8 +86,8 @@ descendant-average fluctuation term.  This is the pointwise form of the
 manuscript variance splitting before the Jensen relaxation to the average of
 child variances. -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_descendantsAverageNormalized_add_eight_JTraceAverageSq_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : TriadicCube d) (j : ℕ) :
     (fun a : RegCoeffField d =>
@@ -111,8 +111,8 @@ the Section 5.4 squared operator-norm fluctuation observable for the variance
 terms.  The integrability needed to pass from the a.e. estimate to expectation
 is supplied by `(P4)`. -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_two_descendantsAverageNormalized_add_eight_JTraceAverageSq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m n k : ℕ) (hk : k ≤ n) :
     ∫ a,
@@ -192,8 +192,8 @@ the Section 5.4 squared operator-norm fluctuation observable.  This is the
 a.s. pointwise inequality whose expectation gives the manuscript display
 `e.var.a.star` for the scalar block normalization used in Section 5.4. -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_descendantsAverage_add_eight_JTraceAverageSq_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : TriadicCube d) (j : ℕ) :
     (fun a : RegCoeffField d =>

@@ -11,8 +11,8 @@ open MeasureTheory
 noncomputable section
 
 theorem normalizedInvSqrtBlockProbe_inl_eq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (i : Fin d) :
     normalizedInvSqrtBlockProbe hP hStruct center (Sum.inl i) =
       ((Real.sqrt (hP.barSigmaAtScale hStruct center))⁻¹ • Pi.single i 1, 0) := by
@@ -27,8 +27,8 @@ theorem normalizedInvSqrtBlockProbe_inl_eq
       ofFullBlockVec, Pi.single]
 
 theorem normalizedSqrtBlockProbe_inl_eq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (i : Fin d) :
     normalizedSqrtBlockProbe hP hStruct center (Sum.inl i) =
       (Real.sqrt (hP.barSigmaAtScale hStruct center) • Pi.single i 1, 0) := by
@@ -285,8 +285,8 @@ theorem descendantsAverageFullBlockMat_transpose_sub_const_mul
           simp [L, transposeCongrLinearMap, descendantsAverageFullBlockMat_const]
 
 theorem normalizedCoarseAveragePositiveErrorMatrix_eq_diagonal_blockSub
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     let b := hP.barSigmaAtScale hStruct center
     let c := hP.barSigmaStarAtScale hStruct center
@@ -336,8 +336,8 @@ theorem normalizedCoarseAveragePositiveErrorMatrix_eq_diagonal_blockSub
           rw [toFullBlockMat_descendantsAverageBlockMat]
 
 theorem coarseAveragePositiveErrorMatrixWithNormalizer_eq_transpose_blockSub
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
     (a : RegCoeffField d) :
     coarseAveragePositiveErrorMatrixWithNormalizer hP hStruct center S Q j a =

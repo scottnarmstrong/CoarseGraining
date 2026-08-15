@@ -467,8 +467,8 @@ theorem abs_sqrtConj_reflect_toFullBlockMat_entry_le_weighted
 
 namespace GammaSigmaCoarseGrainedEllipticity
 
-variable {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-variable {hP : Ch04.LawCarrier P} {hStruct : Ch04.StructuralLaw P}
+variable {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+variable {hP : Ch04.RestrictionLawCarrier P} {hStruct : Ch04.RestrictionStructuralLaw P}
 
 private theorem limitWeightedUnitEllipticityObservable_nonneg
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
@@ -521,7 +521,7 @@ private theorem abs_limitInvSqrt_quadratic_le_card_sq_mul_weighted_ae
       [Ch04.ae_forall_mem_finset_nested (P := P) Finset.univ
         (fun _ : Fin d => Finset.univ)
         (fun i _hi j _hj =>
-          Ch04.LawCarrier.upperLeft_abs_entry_le_LambdaSqCoeffField_ae
+          Ch04.RestrictionLawCarrier.upperLeft_abs_entry_le_LambdaSqCoeffField_ae
             hP (originCube d 0) hΓ.sUpper_pos i j)] with a h i j
     exact h i (by simp) j (by simp)
   have hLR_ae :
@@ -533,7 +533,7 @@ private theorem abs_limitInvSqrt_quadratic_le_card_sq_mul_weighted_ae
       [Ch04.ae_forall_mem_finset_nested (P := P) Finset.univ
         (fun _ : Fin d => Finset.univ)
         (fun i _hi j _hj =>
-          Ch04.LawCarrier.lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae
+          Ch04.RestrictionLawCarrier.lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae
             hP (originCube d 0) hΓ.sLower_pos i j)] with a h i j
     exact h i (by simp) j (by simp)
   filter_upwards [hP.ae_locallyUniformlyEllipticField, hUL_ae, hLR_ae]
@@ -559,7 +559,7 @@ private theorem abs_limitInvSqrt_quadratic_le_card_sq_mul_weighted_ae
         ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn
           (originCube d 0)) := by
     simpa [A] using
-      Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha (originCube d 0)
   have hSymm : IsSymmetricBlockMat A := by
     rw [hEq]
@@ -637,7 +637,7 @@ private theorem abs_limitSqrt_reflect_quadratic_le_card_sq_mul_weighted_ae
       [Ch04.ae_forall_mem_finset_nested (P := P) Finset.univ
         (fun _ : Fin d => Finset.univ)
         (fun i _hi j _hj =>
-          Ch04.LawCarrier.upperLeft_abs_entry_le_LambdaSqCoeffField_ae
+          Ch04.RestrictionLawCarrier.upperLeft_abs_entry_le_LambdaSqCoeffField_ae
             hP (originCube d 0) hΓ.sUpper_pos i j)] with a h i j
     exact h i (by simp) j (by simp)
   have hLR_ae :
@@ -649,7 +649,7 @@ private theorem abs_limitSqrt_reflect_quadratic_le_card_sq_mul_weighted_ae
       [Ch04.ae_forall_mem_finset_nested (P := P) Finset.univ
         (fun _ : Fin d => Finset.univ)
         (fun i _hi j _hj =>
-          Ch04.LawCarrier.lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae
+          Ch04.RestrictionLawCarrier.lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae
             hP (originCube d 0) hΓ.sLower_pos i j)] with a h i j
     exact h i (by simp) j (by simp)
   filter_upwards [hP.ae_locallyUniformlyEllipticField, hUL_ae, hLR_ae]
@@ -675,7 +675,7 @@ private theorem abs_limitSqrt_reflect_quadratic_le_card_sq_mul_weighted_ae
         ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn
           (originCube d 0)) := by
     simpa [A] using
-      Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha (originCube d 0)
   have hSymm : IsSymmetricBlockMat A := by
     rw [hEq]

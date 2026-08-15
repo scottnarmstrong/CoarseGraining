@@ -73,7 +73,7 @@ theorem isEllipticFieldOn_patchCore {Θ : ℝ} {m : ℤ} {ℓ : ℝ} {σ : Vec d
 /-! ## The total energy of the cores -/
 
 /-- The summed core energy is bounded by the whole-cube energy `≤ 2 M² · (3^m)^d`. -/
-theorem sum_coreEnergy_le [NeZero d] {Θ : ℝ} {m : ℤ} (hΘ : 1 ≤ Θ) {ℓ : ℝ} (hℓ : 0 ≤ ℓ)
+theorem sum_coreEnergy_le [NeZero d] {Θ : ℝ} {m : ℤ} {ℓ : ℝ} (hℓ : 0 ≤ ℓ)
     (σ : Vec d)
     (P : BlockVec d) {c : CoeffField d}
     (hEll : IsEllipticFieldOn 1 Θ (cubeSet (originCube d m)) c)
@@ -199,7 +199,7 @@ theorem summed_sq_le_of_ellipticFieldOn [NeZero d] (hd : 3 ≤ d) {m : ℤ} {Θ 
       (by positivity)) (by positivity)) hMsq0
   -- total energy
   have htotal : ∑ k : {k // k ∈ K}, E k ≤ 2 * Msq * volReal :=
-    sum_coreEnergy_le hΘ hℓ0.le σ P hEllc hZadm hZeng K
+    sum_coreEnergy_le hℓ0.le σ P hEllc hZadm hZeng K
   -- per-core sensitivity
   have hsens : ∀ k : {k // k ∈ K},
       |phaseObservable ℓ σ m P (patchCore ℓ σ k.val a a') - phaseObservable ℓ σ m P a|
@@ -318,7 +318,7 @@ theorem summed_sq_le_of_ellipticFieldOn_uniform [NeZero d] (hd : 3 ≤ d) :
     exact mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hCdPC0 hΘ0.le)
       (by positivity)) (by positivity)) hMsq0
   have htotal : ∑ k : {k // k ∈ K}, E k ≤ 2 * Msq * volReal :=
-    sum_coreEnergy_le hΘ hℓ0.le σ P hEllc hZadm hZeng K
+    sum_coreEnergy_le hℓ0.le σ P hEllc hZadm hZeng K
   have hsens : ∀ k : {k // k ∈ K},
       |phaseObservable ℓ σ m P (patchCore ℓ σ k.val a a') - phaseObservable ℓ σ m P a|
         ≤ 48 * Θ * nrm * E k := by

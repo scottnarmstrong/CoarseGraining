@@ -75,9 +75,9 @@ theorem exists_final_scale_decay_of_main_buffer_and_variance_scalars
       0 ≤ C_osc ∧ 0 ≤ C_lin ∧
       0 ≤ C_high ∧
       0 < C_final ∧ 0 < alpha ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {N2 N Nstar I : ℕ},
           hP4.params = params →

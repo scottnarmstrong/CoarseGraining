@@ -11,7 +11,7 @@ open Homogenization.Book.Ch05.Section54.OneStepContraction
 /-!
 # Local tail transport
 
-Lemmas for transporting LIH scale-zero low-tail coefficients for the law
+Lemmas for transporting the library's scale-zero low-tail coefficients for the law
 normalized at the left endpoint back to the original local window `(k,m)`.
 
 The point of this file is to keep the transported coefficient tied to the
@@ -82,22 +82,22 @@ theorem LambdaSqCoeffField_originCube_dilateCoeffField_neg_nat_of_le
 
 /-- Origin-cube response observable transport from normalized window
 coordinates back to the original terminal scale. -/
-theorem responseJObservableCubeSet_originCube_dilateCoeffField_neg_nat_of_le
+theorem restrictionResponseJObservableCubeSet_originCube_dilateCoeffField_neg_nat_of_le
     {d : ℕ} [NeZero d] {a : Homogenization.RegCoeffField d}
     (ha : Homogenization.Book.Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℕ} (hkm : k ≤ m) (p q : Homogenization.Vec d) :
-    Homogenization.Book.Ch04.responseJObservableCubeSet
+    Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet
         (Homogenization.originCube d ((m - k : ℕ) : ℤ)) p q
         (Homogenization.dilateReg (-(k : ℤ)) a) =
-      Homogenization.Book.Ch04.responseJObservableCubeSet
+      Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet
         (Homogenization.originCube d (m : ℤ)) p q a := by
   have hshift :=
-    Homogenization.Book.Ch04.responseJObservableCubeSet_originCube_dilateCoeffField_neg_nat_of_aelocallyUniformlyElliptic
+    Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_originCube_dilateCoeffField_neg_nat_of_aelocallyUniformlyElliptic
       ha k (m - k) p q
   have hsum : k + (m - k) = m := Nat.add_sub_of_le hkm
-  simpa only [Book.Ch04.responseJObservableCubeSet_apply, hsum] using hshift
+  simpa only [Book.Ch04.restrictionResponseJObservableCubeSet_apply, hsum] using hshift
 
-/-- LIH's gradient low-scale tail transports from normalized coordinates
+/-- the library's gradient low-scale tail transports from normalized coordinates
 `(0,m-k)` back to the original local window `(k,m)`. -/
 theorem gradientLowScaleTailAtScale_dilateCoeffField_neg_nat_of_le
     {d : ℕ} [NeZero d] {a : Homogenization.RegCoeffField d}
@@ -117,7 +117,7 @@ theorem gradientLowScaleTailAtScale_dilateCoeffField_neg_nat_of_le
     lambdaSqCoeffField_originCube_dilateCoeffField_neg_nat_of_le
       (d := d) ha hkm s' (.finite 1)
   have hresponse :=
-    responseJObservableCubeSet_originCube_dilateCoeffField_neg_nat_of_le
+    restrictionResponseJObservableCubeSet_originCube_dilateCoeffField_neg_nat_of_le
       (d := d) ha hkm p q
   have hresponse' :
       Homogenization.ResponseJ
@@ -127,11 +127,11 @@ theorem gradientLowScaleTailAtScale_dilateCoeffField_neg_nat_of_le
         Homogenization.ResponseJ
           (Homogenization.cubeSet
             (Homogenization.originCube d (m : ℤ))) p q a := by
-    simpa only [Book.Ch04.responseJObservableCubeSet] using hresponse
+    simpa only [Book.Ch04.restrictionResponseJObservableCubeSet] using hresponse
   dsimp [Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.gradientLowScaleTailAtScale]
   rw [hdiff, hlambda, hresponse']
 
-/-- LIH's flux low-scale tail transports from normalized coordinates
+/-- the library's flux low-scale tail transports from normalized coordinates
 `(0,m-k)` back to the original local window `(k,m)`. -/
 theorem fluxLowScaleTailAtScale_dilateCoeffField_neg_nat_of_le
     {d : ℕ} [NeZero d] {a : Homogenization.RegCoeffField d}
@@ -151,7 +151,7 @@ theorem fluxLowScaleTailAtScale_dilateCoeffField_neg_nat_of_le
     LambdaSqCoeffField_originCube_dilateCoeffField_neg_nat_of_le
       (d := d) ha hkm t' (.finite 1)
   have hresponse :=
-    responseJObservableCubeSet_originCube_dilateCoeffField_neg_nat_of_le
+    restrictionResponseJObservableCubeSet_originCube_dilateCoeffField_neg_nat_of_le
       (d := d) ha hkm p q
   have hresponse' :
       Homogenization.ResponseJ
@@ -161,13 +161,13 @@ theorem fluxLowScaleTailAtScale_dilateCoeffField_neg_nat_of_le
         Homogenization.ResponseJ
           (Homogenization.cubeSet
             (Homogenization.originCube d (m : ℤ))) p q a := by
-    simpa only [Book.Ch04.responseJObservableCubeSet] using hresponse
+    simpa only [Book.Ch04.restrictionResponseJObservableCubeSet] using hresponse
   dsimp [Homogenization.Book.Ch05.Section53.WeakNormsMaximizer.fluxLowScaleTailAtScale]
   rw [hdiff, hLambda, hresponse']
 
 
 private theorem childResponseScale_ge_one_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P) :
     1 ≤ (5 * (section53CoarseFluctuationBeta hP4)⁻¹) ^ 2 := by
   let β := section53CoarseFluctuationBeta hP4
@@ -199,10 +199,10 @@ original terminal positive-excess child average, so the existing source-max
 lower-edge package can be used without transporting the source maximum.
 -/
 private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBaseline_add_terminalPositiveExcess_childAverage
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m)
     (e : Homogenization.Vec d) :
@@ -219,7 +219,7 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
-        (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
     let lowerTerminal := fun a : Homogenization.RegCoeffField d =>
       max
         ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
@@ -262,7 +262,7 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let lowerTerminal : Homogenization.RegCoeffField d → ℝ := fun a =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
@@ -309,7 +309,7 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
       (hP.scaleNormalized k) (hStruct.scaleNormalized k) (M : ℤ)
   let childAvgK : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Qk M
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_ek q_ek a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_ek q_ek a)
   let lowerZeroK : Homogenization.RegCoeffField d → ℝ := fun a =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Qk sk' (.finite 1) a)⁻¹ -
@@ -350,9 +350,9 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
       (hP.scaleNormalized k) (hStruct.scaleNormalized k) hP4k 0 M e
   let positiveK : ℝ :=
     σk * (∫ a, lowerZeroK a * childAvgK a
-        ∂Homogenization.Book.Ch04.scaleNormalizedLaw k P) +
+        ∂Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P) +
       σk⁻¹ * (∫ a, upperZeroK a * childAvgK a
-        ∂Homogenization.Book.Ch04.scaleNormalizedLaw k P)
+        ∂Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P)
   have hM_pos : 0 < M := by
     simpa only [M] using Nat.sub_pos_of_lt hkm
   have hraw_norm :=
@@ -372,38 +372,38 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
   have htk' : tk' = t' := by
     simp only [Book.Ch05.QuantitativeCoarseGrainedEllipticity.scaleNormalized, hβk, tk', hP4k, βk, β, t']
   have hp_ek : p_ek = p_e := by
-    simpa only [p_ek, p_e, M] using specialPAtScale_scaleNormalizedLaw_of_le
+    simpa only [p_ek, p_e, M] using specialPAtScale_restrictionScaleNormalizedLaw_of_le
       (hP := hP) (hStruct := hStruct) hkm.le e
   have hq_ek : q_ek = q_e := by
-    simpa only [q_ek, q_e, M] using specialQAtScale_scaleNormalizedLaw_of_le
+    simpa only [q_ek, q_e, M] using specialQAtScale_restrictionScaleNormalizedLaw_of_le
       (hP := hP) (hStruct := hStruct) hkm.le e
   have hσk : σk = σ := by
-    simpa only [Book.Ch05.sigmaHatAtScale_eq] using sigmaHatAtScale_scaleNormalizedLaw_of_le
+    simpa only [Book.Ch05.sigmaHatAtScale_eq] using sigmaHatAtScale_restrictionScaleNormalizedLaw_of_le
       (hP := hP) (hStruct := hStruct) hkm.le
   have hscalarK :
       coarseFluctuationScalarWeightAtScale
           (hP.scaleNormalized k) (hStruct.scaleNormalized k) M =
         localWeakNormScalarWeightAtScales hP hStruct k m := by
     simpa only using
-      coarseFluctuationScalarWeightAtScale_scaleNormalizedLaw_of_le
+      coarseFluctuationScalarWeightAtScale_restrictionScaleNormalizedLaw_of_le
         (hP := hP) (hStruct := hStruct) hkm.le
   have hresponseTermK :
       responseTermK = responseTerm := by
     simpa only using
-      coarseFluctuationResponseMomentAtScale_scaleNormalizedLaw_of_le
+      coarseFluctuationResponseMomentAtScale_restrictionScaleNormalizedLaw_of_le
         hP hStruct hP4 hkm.le e
   have htailFactorK : tailFactorK = tailFactor := by
     dsimp [tailFactorK, tailFactor, M]
     rw [hβk]
   have hX_meas :
       MeasureTheory.AEStronglyMeasurable X
-        (Homogenization.Book.Ch04.scaleNormalizedLaw k P) := by
+        (Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P) := by
     simpa only [X, βk, sk, sk', tk, tk', M, Qk, p_ek, q_ek, σk] using
       hraw_norm.1.aestronglyMeasurable
   have hlow_integral :
-      ∫ a, X a ∂Homogenization.Book.Ch04.scaleNormalizedLaw k P =
+      ∫ a, X a ∂Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P =
         lowScaleTail := by
-    rw [Homogenization.Book.Ch04.integral_scaleNormalizedLaw k X hX_meas]
+    rw [Homogenization.Book.Ch04.integral_restrictionScaleNormalizedLaw k X hX_meas]
     apply MeasureTheory.integral_congr_ae
     filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
     have hgrad :=
@@ -414,12 +414,12 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
         (d := d) ha hkm.le t t' p_e q_e
     simp only [hσk, hsk, hsk', hp_ek, hq_ek, htk, htk', hgrad, hflux, X, M]
   have hraw_bound :
-      ∫ a, X a ∂Homogenization.Book.Ch04.scaleNormalizedLaw k P ≤
+      ∫ a, X a ∂Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P ≤
         tailFactorK *
           (coarseFluctuationScalarWeightAtScale
               (hP.scaleNormalized k) (hStruct.scaleNormalized k) M *
             Homogenization.Book.Ch04.expectedResponseJCubeSet
-              (Homogenization.Book.Ch04.scaleNormalizedLaw k P) Qk p_ek q_ek +
+              (Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P) Qk p_ek q_ek +
             positiveK) := by
     simpa only [X, positiveK, tailFactorK, βk, sk, sk', tk, tk', M, Qk,
       p_ek, q_ek, σk, childAvgK, lowerZeroK, upperZeroK] using hraw_norm.2
@@ -435,7 +435,7 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
       (hP.scaleNormalized k) (hStruct.scaleNormalized k) hP4k M
   have hresponse_le :
       Homogenization.Book.Ch04.expectedResponseJCubeSet
-          (Homogenization.Book.Ch04.scaleNormalizedLaw k P) Qk p_ek q_ek
+          (Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P) Qk p_ek q_ek
         ≤ responseTermK := by
     simpa only [Qk, p_ek, q_ek, responseTermK, M] using
       expectedResponseJCubeSet_terminal_le_coarseFluctuationResponseMomentAtScale
@@ -446,14 +446,14 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
           (coarseFluctuationScalarWeightAtScale
               (hP.scaleNormalized k) (hStruct.scaleNormalized k) M *
             Homogenization.Book.Ch04.expectedResponseJCubeSet
-              (Homogenization.Book.Ch04.scaleNormalizedLaw k P) Qk p_ek q_ek)
+              (Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P) Qk p_ek q_ek)
         ≤ responseBaselineCoeff * responseTerm := by
     calc
       tailFactorK *
           (coarseFluctuationScalarWeightAtScale
               (hP.scaleNormalized k) (hStruct.scaleNormalized k) M *
             Homogenization.Book.Ch04.expectedResponseJCubeSet
-              (Homogenization.Book.Ch04.scaleNormalizedLaw k P) Qk p_ek q_ek)
+              (Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P) Qk p_ek q_ek)
           ≤
         tailFactorK *
           (coarseFluctuationScalarWeightAtScale
@@ -466,15 +466,15 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
           rw [htailFactorK, hscalarK, hresponseTermK]
           ring
   have hchildK_nonneg :
-      0 ≤ᵐ[Homogenization.Book.Ch04.scaleNormalizedLaw k P] childAvgK := by
+      0 ≤ᵐ[Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P] childAvgK := by
     filter_upwards with a
     dsimp [childAvgK]
     exact Homogenization.descendantsAverage_nonneg Qk M
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_ek q_ek a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_ek q_ek a)
       (fun R _hR =>
-        Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg R p_ek q_ek a)
+        Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg R p_ek q_ek a)
   have hTerminalKInt : MeasureTheory.Integrable terminalChildK
-      (Homogenization.Book.Ch04.scaleNormalizedLaw k P) := by
+      (Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P) := by
     simpa only [terminalChildK, βk, sk', tk', M, Qk, p_ek, q_ek, σk,
       childAvgK, lowerTerminalK, upperTerminalK] using
       integrable_terminalPositiveExcess_childAverage_special_of_P4
@@ -483,9 +483,9 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
   have hzero_to_terminalK :
       ∫ a,
           (σk * lowerZeroK a + σk⁻¹ * upperZeroK a) * childAvgK a
-          ∂Homogenization.Book.Ch04.scaleNormalizedLaw k P
+          ∂Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P
         ≤ ∫ a, terminalChildK a
-          ∂Homogenization.Book.Ch04.scaleNormalizedLaw k P := by
+          ∂Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P := by
     simpa only [Book.Ch05.sigmaHatAtScale_eq] using
       integral_zeroBaselinePositiveExcessWeight_mul_le_terminalPositiveExcessWeight_mul
         (hP.scaleNormalized k) (hStruct.scaleNormalized k) hP4k
@@ -494,7 +494,7 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
   have hsplitK :
       ∫ a,
           (σk * lowerZeroK a + σk⁻¹ * upperZeroK a) * childAvgK a
-          ∂Homogenization.Book.Ch04.scaleNormalizedLaw k P
+          ∂Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P
         = positiveK := by
     simpa only [positiveK, βk, sk', tk', M, Qk, p_ek, q_ek, σk,
       childAvgK, lowerZeroK, upperZeroK] using
@@ -502,9 +502,9 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
         (hP.scaleNormalized k) (hstat.scaleNormalized k)
         (hStruct.scaleNormalized k) hP4k (k := 0) (m := M) hM_pos e
   have hterminal_transport :
-      ∫ a, terminalChildK a ∂Homogenization.Book.Ch04.scaleNormalizedLaw k P =
+      ∫ a, terminalChildK a ∂Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P =
         ∫ a, terminalChild a ∂P := by
-    rw [Homogenization.Book.Ch04.integral_scaleNormalizedLaw
+    rw [Homogenization.Book.Ch04.integral_restrictionScaleNormalizedLaw
       k terminalChildK hTerminalKInt.aestronglyMeasurable]
     apply MeasureTheory.integral_congr_ae
     filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
@@ -512,14 +512,14 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
         (hP.scaleNormalized k).barSigmaStarAtScale
             (hStruct.scaleNormalized k) (M : ℤ) =
           hP.barSigmaStarAtScale hStruct (m : ℤ) := by
-      have h := hP.barSigmaStarAtScale_scaleNormalizedLaw hStruct k M
+      have h := hP.barSigmaStarAtScale_restrictionScaleNormalizedLaw hStruct k M
       have hsum : k + M = m := by simpa only using Nat.add_sub_of_le hkm.le
       simpa only [hsum] using h
     have hupperBase :
         (hP.scaleNormalized k).barSigmaAtScale
             (hStruct.scaleNormalized k) (M : ℤ) =
           hP.barSigmaAtScale hStruct (m : ℤ) := by
-      have h := hP.barSigmaAtScale_scaleNormalizedLaw hStruct k M
+      have h := hP.barSigmaAtScale_restrictionScaleNormalizedLaw hStruct k M
       have hsum : k + M = m := by simpa only using Nat.add_sub_of_le hkm.le
       simpa only [hsum] using h
     have hlambda :
@@ -551,20 +551,20 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
           childAvg a := by
       have hfun :
           (fun R : Homogenization.TriadicCube d =>
-              Homogenization.Book.Ch04.responseJObservableCubeSet R p_ek q_ek
+              Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_ek q_ek
                 (Homogenization.dilateReg (-(k : ℤ)) a))
             =
           (fun R : Homogenization.TriadicCube d =>
-              Homogenization.Book.Ch04.responseJObservableCubeSet
+              Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet
                 (Homogenization.Book.Ch02.dilateCube (k : ℤ) R) p_e q_e a) := by
         funext R
         have hresp :=
-          Homogenization.Book.Ch04.responseJObservableCubeSet_dilateCoeffField_neg_nat_of_aelocallyUniformlyElliptic
+          Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_dilateCoeffField_neg_nat_of_aelocallyUniformlyElliptic
             ha k R p_e q_e
-        simpa only [hp_ek, hq_ek, Book.Ch04.responseJObservableCubeSet_apply] using hresp
+        simpa only [hp_ek, hq_ek, Book.Ch04.restrictionResponseJObservableCubeSet_apply] using hresp
       have hdesc :=
         descendantsAverage_dilateCube (d := d) (k := (k : ℤ)) Qk M
-          (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+          (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       have hcube :
           Homogenization.Book.Ch02.dilateCube (k : ℤ) Qk = Q := by
         have h := Homogenization.Book.Ch04.dilateCube_originCube_nat
@@ -576,27 +576,27 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
             =
           Homogenization.descendantsAverage Qk M
             (fun R : Homogenization.TriadicCube d =>
-              Homogenization.Book.Ch04.responseJObservableCubeSet
+              Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet
                 (Homogenization.Book.Ch02.dilateCube (k : ℤ) R) p_e q_e a) := by
-              simpa only [Book.Ch04.responseJObservableCubeSet_apply, childAvgK] using
+              simpa only [Book.Ch04.restrictionResponseJObservableCubeSet_apply, childAvgK] using
                 congrArg (Homogenization.descendantsAverage Qk M) hfun
         _ =
           Homogenization.descendantsAverage
             (Homogenization.Book.Ch02.dilateCube (k : ℤ) Qk) M
             (fun R : Homogenization.TriadicCube d =>
-              Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a) := by
-              simpa only [Book.Ch04.responseJObservableCubeSet_apply] using hdesc.symm
+              Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a) := by
+              simpa only [Book.Ch04.restrictionResponseJObservableCubeSet_apply] using hdesc.symm
         _ = childAvg a := by
-              simp only [hcube, Book.Ch04.responseJObservableCubeSet_apply, Q, M, childAvg]
+              simp only [hcube, Book.Ch04.restrictionResponseJObservableCubeSet_apply, Q, M, childAvg]
     simp only [hσk, hlower, hupper, hchild, terminalChildK, terminalChild]
   have hpositive_le :
       positiveK ≤ ∫ a, terminalChild a ∂P := by
     calc
       positiveK =
           ∫ a, (σk * lowerZeroK a + σk⁻¹ * upperZeroK a) * childAvgK a
-            ∂Homogenization.Book.Ch04.scaleNormalizedLaw k P := hsplitK.symm
+            ∂Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P := hsplitK.symm
       _ ≤ ∫ a, terminalChildK a
-            ∂Homogenization.Book.Ch04.scaleNormalizedLaw k P := hzero_to_terminalK
+            ∂Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P := hzero_to_terminalK
       _ = ∫ a, terminalChild a ∂P := hterminal_transport
   have hpositive_tail_le :
       tailFactorK * positiveK ≤ tailFactor * ∫ a, terminalChild a ∂P := by
@@ -607,20 +607,20 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
           tailFactor * ∫ a, terminalChild a ∂P := by
     calc
       lowScaleTail =
-          ∫ a, X a ∂Homogenization.Book.Ch04.scaleNormalizedLaw k P :=
+          ∫ a, X a ∂Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P :=
             hlow_integral.symm
       _ ≤ tailFactorK *
           (coarseFluctuationScalarWeightAtScale
               (hP.scaleNormalized k) (hStruct.scaleNormalized k) M *
             Homogenization.Book.Ch04.expectedResponseJCubeSet
-              (Homogenization.Book.Ch04.scaleNormalizedLaw k P) Qk p_ek q_ek +
+              (Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P) Qk p_ek q_ek +
             positiveK) := hraw_bound
       _ =
           tailFactorK *
             (coarseFluctuationScalarWeightAtScale
                 (hP.scaleNormalized k) (hStruct.scaleNormalized k) M *
               Homogenization.Book.Ch04.expectedResponseJCubeSet
-                (Homogenization.Book.Ch04.scaleNormalizedLaw k P) Qk p_ek q_ek) +
+                (Homogenization.Book.Ch04.restrictionScaleNormalizedLaw k P) Qk p_ek q_ek) +
           tailFactorK * positiveK := by ring
       _ ≤ responseBaselineCoeff * responseTerm +
           tailFactor * ∫ a, terminalChild a ∂P :=
@@ -631,16 +631,16 @@ private theorem integral_paired_lowScaleTailSquares_special_le_localResponseBase
 
 /--
 Source labels `p.HC.CR`, `e.W.first.sum`, `e.J.moment.bound`, and `a.HM`:
-raw LIH low-tail expectation conversion with the zero-baseline child-response
+the library's raw low-tail expectation conversion with the zero-baseline child-response
 branch routed through the SHARP summed-weight first-power source split
 (`min(sourceMax,1) + badEventTruncation` against the response, with the
 `2 * sqrt(theta_m)` normalizer), replacing the mis-sized Holder package.
 -/
 theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sourceMax_minBad_childResponseAverage_terms
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d)
     (hm : HighCenteredMomentParameters d hc)
@@ -663,7 +663,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
       let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
       let childAvg := fun a : Homogenization.RegCoeffField d =>
         Homogenization.descendantsAverage Q (m - k)
-          (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+          (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       let response := fun a : Homogenization.RegCoeffField d =>
         (5 * β⁻¹) ^ 2 * childAvg a
       let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -690,7 +690,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
       let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
       let childAvg := fun a : Homogenization.RegCoeffField d =>
         Homogenization.descendantsAverage Q (m - k)
-          (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+          (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       let response := fun a : Homogenization.RegCoeffField d =>
         (5 * β⁻¹) ^ 2 * childAvg a
       let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
@@ -741,7 +741,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
-        (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
     let response := fun a : Homogenization.RegCoeffField d =>
       (5 * β⁻¹) ^ 2 * childAvg a
     let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -846,7 +846,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
   let lowerZero : Homogenization.RegCoeffField d → ℝ := fun a =>
@@ -975,9 +975,9 @@ theorem integral_paired_lowScaleTailSquares_special_le_responseBaseline_add_sour
     filter_upwards with a
     dsimp [childAvg]
     exact Homogenization.descendantsAverage_nonneg Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       (fun R _hR =>
-        Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg R p_e q_e a)
+        Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg R p_e q_e a)
   have hTerminalChildInt : MeasureTheory.Integrable terminalChild P := by
     simpa only [terminalChild, β, s', t', Q, p_e, q_e, σ, childAvg,
       lowerTerminal, upperTerminal] using

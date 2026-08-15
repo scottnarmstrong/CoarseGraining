@@ -1,4 +1,4 @@
-import Homogenization.Book.Ch04.Observable
+import Homogenization.Book.Ch04.RestrictionObservable
 import Homogenization.Probability.RegCoeffField.RestrictionBridge
 
 namespace Homogenization
@@ -8,12 +8,12 @@ namespace Ch04
 open MeasureTheory
 
 /-!
-# The `LocalSigmaR` → `IsLocalRandomVariable` gate (Packet P4b, P5 input)
+# The `LocalSigmaR` → `IsRestrictionLocalRandomVariable` gate (Packet P4b, P5 input)
 
 This file exposes the σ-algebra bridge `localSigmaR_le_restrictionSigmaR` at the
 Chapter 4 observable interface: a carrier observable that is measurable for the
 local entry-test σ-algebra `LocalSigmaR U` is a genuine restriction-local random
-variable `IsLocalRandomVariable U hU`.
+variable `IsRestrictionLocalRandomVariable U hU`.
 
 This is the P5 gate for carrier `Mu` locality.  The plan's route for the coarse
 observable `Mu` is:
@@ -23,18 +23,18 @@ observable `Mu` is:
    products, which are set integrals `∫_U w · a(·)_{ij}` — the entry-test
    generators, via `entryTestR_eq_setIntegral_of_support`) so that
    `a ↦ Mu (cubeSet Q) P0 a.toFun` is `LocalSigmaR (cubeSet Q)`-measurable;
-2. apply `IsLocalRandomVariable.of_measurable_localSigmaR` (below) to conclude
-   `IsLocalRandomVariable (cubeSet Q) hQ (fun a => Mu (cubeSet Q) P0 a.toFun)`.
+2. apply `IsRestrictionLocalRandomVariable.of_measurable_localSigmaR` (below) to conclude
+   `IsRestrictionLocalRandomVariable (cubeSet Q) hQ (fun a => Mu (cubeSet Q) P0 a.toFun)`.
 
 Step 2 is provided here, law-independently.  Step 1 (the carrier re-aim of the raw
 subtype/slice `L²` machinery) is the remaining P5 work; the honest, genuinely
 measurable slice sets it needs are now available
 (`Homogenization.measurableSet_localSigmaR_aeeSlice`).
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
-namespace IsLocalRandomVariable
+namespace IsRestrictionLocalRandomVariable
 
 /-- **The `LocalSigmaR` → restriction-local gate.**  A carrier observable
 measurable for the local entry-test σ-algebra `LocalSigmaR U` is a restriction-local
@@ -42,10 +42,10 @@ random variable on the measurable observation set `U`. -/
 theorem of_measurable_localSigmaR {β : Type*} [MeasurableSpace β] {d : ℕ}
     {U : Set (Vec d)} (hU : MeasurableSet U) {X : RegCoeffField d → β}
     (hX : @Measurable (RegCoeffField d) β (LocalSigmaR U) _ X) :
-    IsLocalRandomVariable U hU X :=
+    IsRestrictionLocalRandomVariable U hU X :=
   Homogenization.measurable_restrictionSigmaR_of_measurable_localSigmaR hU hX
 
-end IsLocalRandomVariable
+end IsRestrictionLocalRandomVariable
 
 end Ch04
 end Book

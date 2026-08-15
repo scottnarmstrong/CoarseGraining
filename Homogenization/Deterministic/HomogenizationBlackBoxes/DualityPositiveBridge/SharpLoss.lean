@@ -266,7 +266,7 @@ theorem besovExponentLossGap_le_note {s t : ℝ}
 sharp-loss bridge. -/
 theorem exists_coordinateDirichletSolution_overlappingPositiveNorm_le_sharpLoss
     {d : ℕ} [NeZero d] {Cdir Cbridge : ℝ}
-    (hdir : ConstantCoefficientDirichletBesovFunctionSpacesUniform d Cdir)
+    (hdir : DiscreteConstantCoefficientDirichletBesovFunctionSpacesUniform d Cdir)
     (hbridge : UnitFullDualCoordinateOverlappingBridgeSharpLoss d Cbridge)
     (Q : TriadicCube d) {s : ℝ} (i : Fin d) (g : Vec d → ℝ)
     (hs : 0 < s) (hs_lt_half : s < 1 / 2)
@@ -428,7 +428,7 @@ sharp-boundary loss displayed.
 -/
 theorem scalarSolutionComparisonGenuineDualityEstimateSharpLoss_of_dirichletBesov_of_coordinateBridgeSharpLoss_of_localizedPairing
     {d : ℕ} [NeZero d] {Cdir Cbridge Cpairing : ℝ}
-    (hdir : ConstantCoefficientDirichletBesovFunctionSpacesUniform d Cdir)
+    (hdir : DiscreteConstantCoefficientDirichletBesovFunctionSpacesUniform d Cdir)
     (hbridge : UnitFullDualCoordinateOverlappingBridgeSharpLoss d Cbridge)
     (hpair : LocalizedFluxDefectPositivePairingEstimate d Cpairing) :
     ScalarSolutionComparisonGenuineDualityEstimateSharpLoss d

@@ -25,12 +25,12 @@ noncomputable section
 /-- For the Ch4 dependent coefficient family, the descendant average of Ch4
 response observables minus the parent response is the raw deterministic
 partition defect. -/
-theorem descendantsAverage_responseJObservableCubeSet_sub_eq_responseJPartitionDefectOnDependentFamily
+theorem descendantsAverage_restrictionResponseJObservableCubeSet_sub_eq_responseJPartitionDefectOnDependentFamily
     {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
-    descendantsAverage Q j (fun R => Ch04.responseJObservableCubeSet R p q a) -
-        Ch04.responseJObservableCubeSet Q p q a =
+    descendantsAverage Q j (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) -
+        Ch04.restrictionResponseJObservableCubeSet Q p q a =
       JUpperBoundWeakNorms.responseJPartitionDefectOnFamilyAtDepth
         (Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha)
         Q j p q := by
@@ -41,10 +41,10 @@ theorem descendantsAverage_responseJObservableCubeSet_sub_eq_responseJPartitionD
       (by
         intro R _hR
         exact
-          (JUpperBoundWeakNorms.responseJOnDependentFamily_eq_responseJObservableCubeSet
+          (JUpperBoundWeakNorms.responseJOnDependentFamily_eq_restrictionResponseJObservableCubeSet
             a ha R p q).symm)
   · exact
-      (JUpperBoundWeakNorms.responseJOnDependentFamily_eq_responseJObservableCubeSet
+      (JUpperBoundWeakNorms.responseJOnDependentFamily_eq_restrictionResponseJObservableCubeSet
         a ha Q p q).symm
 
 /-- The scale-indexed defect in the weak-norm maximizer RHS is the deterministic
@@ -58,7 +58,7 @@ theorem responseDefectAverageAtScale_eq_responseJPartitionDefectOnDependentFamil
         (Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha)
         (originCube d m) (Int.toNat (m - n)) p q := by
   simpa [responseDefectAverageAtScale] using
-    descendantsAverage_responseJObservableCubeSet_sub_eq_responseJPartitionDefectOnDependentFamily
+    descendantsAverage_restrictionResponseJObservableCubeSet_sub_eq_responseJPartitionDefectOnDependentFamily
       a ha (originCube d m) (Int.toNat (m - n)) p q
 
 /-- Deterministic nonnegativity of the raw response partition defect. -/

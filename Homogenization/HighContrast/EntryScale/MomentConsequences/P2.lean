@@ -89,7 +89,7 @@ theorem lintegral_finset_sup_le_sum_of_lintegral_le
 /--
 Source label `l.union.bound`: weighted real-exponent finite-maximum bound.
 This is the local real-`Q` replacement for the integer-moment finite-sup
-pattern available in LIH, with the weights kept explicit for the paper's
+pattern available in the library, with the weights kept explicit for the paper's
 `3^{-\rho_M(m-j)}` factors.
 -/
 theorem lintegral_finset_sup_weighted_rpow_le_sum
@@ -126,7 +126,7 @@ theorem lintegral_finset_sup_weighted_rpow_le_sum
 
 /--
 Source label `l.union.bound`: weighted real-exponent finite-maximum bound
-over LIH triadic descendants.  The factor `((3 ^ d) ^ n)` is exactly the
+over the library's triadic descendants.  The factor `((3 ^ d) ^ n)` is exactly the
 descendant count from `Homogenization.descendantsAtDepth_card`.
 -/
 theorem lintegral_sup_descendantsAtDepth_weighted_rpow_le_three_pow_mul
@@ -253,7 +253,7 @@ theorem lintegral_sup_Icc_descendantsAtDepth_weighted_highCenteredMoment_le_sum
       hm μ Q (m - j) (w j) (X j) (hX j hj) (hB j hj) (hw j hj)
 
 /--
-LIH triadic geometry bridge used by `l.union.bound`: a descendant at depth
+the library's triadic geometry bridge used by `l.union.bound`: a descendant at depth
 `m - j` of a terminal scale-`m` cube is a scale-`j` cube.
 -/
 theorem scale_eq_of_mem_descendantsAtDepth_terminal
@@ -380,9 +380,9 @@ factor `T = widetildeTheta_0`.
 -/
 theorem lintegral_sup_Icc_descendantsAtDepth_weak_terminalCenteredFullBlockDeviation_le_convolution_of_highMoment
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
@@ -507,16 +507,16 @@ theorem lintegral_sup_Icc_descendantsAtDepth_weak_terminalCenteredFullBlockDevia
           rfl
 
 /--
-Source labels `a.HM` and `l.union.bound`: LIH coarse-block specialization of
+Source labels `a.HM` and `l.union.bound`: the library's coarse-block specialization of
 the terminal-normalized stochastic maximal union bound.  The high-moment
 hypothesis is imposed on the concrete intermediate-normalized coarse-block
 deviation from `a.HM`.
 -/
 theorem lintegral_sup_Icc_descendantsAtDepth_weak_terminalCoarseBlockDeviation_le_convolution_of_highMoment
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
@@ -555,9 +555,9 @@ the manuscript polynomial exponent `A = 1`.
 -/
 theorem lintegral_sup_Icc_descendantsAtDepth_weak_terminalCoarseBlockDeviation_le_polynomial_convolution_of_highMoment
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
@@ -688,13 +688,13 @@ theorem terminalStochasticWeakWeight_inv_sq_eq
 
 /--
 Source label `M_m^st`: the unpowered ENNReal finite maximum over scales
-`N <= j <= m` and LIH descendants of the terminal cube.
+`N <= j <= m` and the library's descendants of the terminal cube.
 -/
 noncomputable def terminalCoarseBlockStochasticEnvelope
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (N m : ℕ) (Q : Homogenization.TriadicCube d)
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
     (a : Ω → Homogenization.RegCoeffField d) : Ω → ENNReal :=
@@ -708,13 +708,13 @@ noncomputable def terminalCoarseBlockStochasticEnvelope
 Source label `M_m^st`: real-valued version of the terminal stochastic maximum
 with a supplied weak-norm weight.  For the source weight
 `terminalStochasticWeakWeight`, this is the finite maximum in the note written
-with LIH descendants in place of `3^j Lat ∩ cu_m`.
+with the library's descendants in place of `3^j Lat ∩ cu_m`.
 -/
 noncomputable def terminalCoarseBlockStochasticMaxOfWeak
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (N m : ℕ) (Q : Homogenization.TriadicCube d)
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
     (a : Ω → Homogenization.RegCoeffField d) : Ω → ℝ :=
@@ -727,9 +727,9 @@ using the source weak weight `3^{-rho_M(m-j)}`.
 -/
 noncomputable def terminalCoarseBlockStochasticMax
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (a : Ω → Homogenization.RegCoeffField d) : Ω → ℝ :=
@@ -742,9 +742,9 @@ coarse-block union bound, with the `Q`-th power already inside the finite max.
 -/
 noncomputable def terminalCoarseBlockStochasticQEnvelope
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
@@ -757,9 +757,9 @@ noncomputable def terminalCoarseBlockStochasticQEnvelope
           terminalCoarseBlockDeviation hP hStruct m a j R ω) ^ hm.Q))
 
 private theorem measurable_terminalDeviationFunctional
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P) (j m : ℕ) :
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P) (j m : ℕ) :
     Measurable fun Y : Homogenization.FullBlockMat d =>
       ENNReal.ofReal
         (fullBlockOperatorNorm
@@ -801,9 +801,9 @@ a.e. measurability of each terminal-normalized concrete coarse-block deviation
 over descendants of the terminal origin cube.
 -/
 theorem aemeasurable_terminalCoarseBlockDeviation_origin_descendant
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {N j m : ℕ} (hj : j ∈ Finset.Icc N m)
     {R : Homogenization.TriadicCube d}
@@ -851,9 +851,9 @@ stochastic envelope over the origin terminal cube is a.e. measurable under the
 coefficient law.
 -/
 theorem aemeasurable_terminalCoarseBlockStochasticEnvelope_origin
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) (N m : ℕ) :
     AEMeasurable
@@ -880,9 +880,9 @@ measurability surface needed for the Lyapunov step in the stochastic window
 estimate.
 -/
 theorem aestronglyMeasurable_terminalCoarseBlockStochasticMax_origin
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) (N m : ℕ) :
     MeasureTheory.AEStronglyMeasurable

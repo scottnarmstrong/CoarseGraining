@@ -76,9 +76,9 @@ theorem exists_quantitative_threshold_absoluteBadTail_quenchedProbeEnvelope_le_i
         α * (1 + b / a) < b →
         α < a →
         ∃ Rshift Rsmall Runion : ℕ,
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
             let N0 : ℕ :=
@@ -434,9 +434,9 @@ theorem exists_quantitative_threshold_absoluteBadTail_quenchedProbeEnvelope_le_i
             α * (1 + b / a) < b →
             α < a →
             ∃ Rshift Rsmall Runion : ℕ,
-              ∀ {P : Ch04.CoeffLaw d}
-                (hP : Ch04.LawCarrier P)
-                (hStruct : Ch04.StructuralLaw P)
+              ∀ {P : Ch04.RestrictionCoeffLaw d}
+                (hP : Ch04.RestrictionLawCarrier P)
+                (hStruct : Ch04.RestrictionStructuralLaw P)
                 (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
                 hΓ.sigma = σ → hΓ.params = params →
                 let N0 : ℕ :=

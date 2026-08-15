@@ -69,9 +69,9 @@ theorem exists_final_scale_decay_of_main_buffer_and_rawEnergy_scalars
       0 ≤ C_osc ∧ 0 ≤ C_lin ∧
       0 ≤ C_high ∧
       0 < C_final ∧ 0 < alpha ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {N Nstar I : ℕ},
           hP4.params = params →
@@ -699,7 +699,8 @@ theorem exists_final_scale_decay_of_main_buffer_and_rawEnergy_scalars
           exact hunion_j
         obtain ⟨hfin_j, hstochRoot_j⟩ :=
           stochRoot_of_lintegral_le_ofReal_pow hxi_one hetaSrc_pos hunion_j'
-        have hpolyRoot_j := henvroot hP hStruct hP4 hNstar_env
+        have hpolyRoot_j := henvroot hP4
+          (one_le_initialWidetildeTheta_of_P4 hP hStruct hP4) hNstar_env
         have heps_inv_one : (1 : ℝ) ≤ eps⁻¹ :=
           (one_le_inv₀ heps_pos).mpr heps_le_one
         have hdecay_le : decay ≤ (1 / 4 : ℝ) := by
@@ -1084,7 +1085,7 @@ theorem exists_final_scale_decay_of_main_buffer_and_rawEnergy_scalars
               rw [hlowerEB_def, htailXB_def, hchildTB_def]
               refine le_trans
                 (sharp_lowerEdge_budget_payment hF_pos hdelta_sc_pos
-                  hdecay_pos hdecay_le heps_pos hC_resp_nonneg hc_fold_pos
+                  hdecay_pos hdecay_le heps_pos hC_resp_nonneg
                   hpair_j hone_le_P hP_km_nonneg hRM_nonneg hRMstar_nonneg
                   hWN_eq htailFactor_le htailFactor_nonneg hdelta hsmall_le
                   hcrude hlow_split hsrc_le hMT_nonneg hKfold_le hKFS_nonneg

@@ -1,7 +1,9 @@
 import Homogenization.Ambient.Basic
 import Homogenization.Ambient.HilbertFinite
+import Homogenization.Ambient.Euclidean
 import Homogenization.Ambient.CoefficientField
 import Homogenization.Geometry.Domain
+import Homogenization.Geometry.BoundedMeasurableDomain
 import Homogenization.Geometry.TriadicCube
 import Homogenization.Geometry.TriadicCubeTranslation
 import Homogenization.Geometry.TriadicPartition
@@ -12,6 +14,7 @@ import Homogenization.Geometry.OriginCubeBoundaryPush
 import Homogenization.Geometry.ConvexDomain
 import Homogenization.Geometry.CubeColoring
 import Homogenization.Multiscale.CubeAverage
+import Homogenization.Multiscale.FiniteAverage
 import Homogenization.Multiscale.Projection
 import Homogenization.Multiscale.NormalizedNorms
 import Homogenization.Multiscale.ProjectionLp
@@ -45,6 +48,7 @@ import Homogenization.Sobolev.Foundations.Cutoff.OpenSet
 import Homogenization.Sobolev.Foundations.Cutoff.Box
 import Homogenization.Sobolev.Truncation.MatchedTrace
 import Homogenization.Sobolev.CubeEmbedding
+import Homogenization.Sobolev.Foundations.CubeCalderonZygmund
 import Homogenization.Sobolev.MatchedPair
 import Homogenization.Sobolev.PotentialSolenoidalOriginCubeSymmetry
 import Homogenization.Sobolev.PotentialSolenoidalL2
@@ -81,6 +85,7 @@ import Homogenization.Probability.RegCoeffField.Laws
 import Homogenization.Probability.RegCoeffField.Differentiation
 import Homogenization.Probability.RegCoeffField.SliceMeasurability
 import Homogenization.Probability.RegCoeffField.EllipticSupport
+import Homogenization.Probability.Source.Coarse.Semantics
 import Homogenization.Probability.SeparableHilbertMeasurability
 import Homogenization.Probability.LocalEllipticitySlices
 import Homogenization.Probability.RandomFieldMeasurability
@@ -146,6 +151,8 @@ import Homogenization.Examples.Periodic.PeriodicGeneralComparison
 import Homogenization.Examples.Periodic.PeriodicSmoothComparison
 import Homogenization.Examples.RandomCheckerboard.Basic
 import Homogenization.Examples.RandomCheckerboard.CarrierLaw
+import Homogenization.Examples.RandomCheckerboard.SourceLaw
+import Homogenization.Examples.RandomCheckerboard.AKLLaw
 import Homogenization.Internal
 import Homogenization.Internal.Ch02
 import Homogenization.Sobolev.Fractional.AssemblyPieces

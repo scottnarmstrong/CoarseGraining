@@ -111,6 +111,7 @@ local notation "U" => openCubeSet (originCube d m)
 
 /-! ## The bulk estimate -/
 
+omit [NeZero d] in
 /-- **Bulk density bound.**  For `x ∈ U`,
 `bulk x ≤ 5M²·η²(x) + ⅛·(energy density)(x)`. -/
 theorem bulkIntegrand_le {a : CoeffField d} {Θ : ℝ} {v vstar : H1Function U}
@@ -175,12 +176,13 @@ theorem bulkIntegrand_le {a : CoeffField d} {Θ : ℝ} {v vstar : H1Function U}
 
 /-! ## The cutoff estimate -/
 
+omit [NeZero d] in
 /-- **Cutoff density bound** (a.e.).  For `x ∈ U` with `|u|, |u*| ≤ K∞`,
+requiring no range condition on the cutoff,
 `cutoff x ≤ ⅟₁₆·(energy density)(x) + 2M²·η²(x) + 67Θ·K∞²·|∇η(x)|²`. -/
 theorem cutoffIntegrand_le {a : CoeffField d} {Θ : ℝ} {v vstar : H1Function U}
     {P : BlockVec d} {η : Vec d → ℝ} {c Kinf : ℝ}
     (hEllO : IsEllipticFieldOn 1 Θ U a) (hη : ContDiff ℝ (⊤ : ℕ∞) η)
-    (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1)
     {x : Vec d} (hx : x ∈ U)
     (hKv : |(centeredPotential m v P.1 c).toFun x| ≤ Kinf)
     (hKvs : |(centeredPotential m vstar P.1 (-c)).toFun x| ≤ Kinf) :

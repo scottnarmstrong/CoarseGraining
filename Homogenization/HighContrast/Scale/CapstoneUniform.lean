@@ -25,7 +25,7 @@ estimate, and the affine bound `N0 ≤ (pHmDim + Cdim)·log₃(2+T)` converts to
 
 open MeasureTheory
 open Homogenization
-open Homogenization.Book.Ch04 (CoeffLaw LawCarrier StructuralLaw)
+open Homogenization.Book.Ch04 (RestrictionCoeffLaw RestrictionLawCarrier RestrictionStructuralLaw)
 open Homogenization.Book.Ch05 (QuantitativeCoarseGrainedEllipticity)
 
 namespace Homogenization
@@ -47,9 +47,9 @@ theorem thetaEllipticLaw_implies_homogenizationScale_uniform
     (params : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticityParams d)
     (loc : LocalizationSmallContrastInput hc) (hcp : hc.params = params) :
     ∃ Cscale Ctriadic alpha : ℝ, 0 < Cscale ∧ 0 < Ctriadic ∧ 0 < alpha ∧
-      ∀ {Θ : ℝ} (_hΘ : 1 ≤ Θ) {P : CoeffLaw d} [IsProbabilityMeasure P]
-        (hP : LawCarrier P) (hStruct : StructuralLaw P)
-        (hLaw : Homogenization.ThetaEllipticLaw Θ P)
+      ∀ {Θ : ℝ} (_hΘ : 1 ≤ Θ) {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+        (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P)
+        (_hLaw : Homogenization.ThetaEllipticLaw Θ P)
         (hP4 : QuantitativeCoarseGrainedEllipticity P)
         (_hparams : hP4.params = params)
         (_hpath : ∀ {j : ℕ} {Q : TriadicCube d}, Q.scale = (j : ℤ) →

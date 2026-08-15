@@ -63,7 +63,7 @@ almost everywhere on `U = openCubeSet (originCube d m)`,
 theorem coupled_stampacchia (hd : 3 ≤ d) {m : ℤ} {Θ : ℝ} {a : CoeffField d}
     (hEll : IsEllipticFieldOn 1 Θ (cubeSet (originCube d m)) a) {p q : Vec d}
     {v vstar : H1Function (openCubeSet (originCube d m))}
-    (hCWF : CoupledWeakForm a (openCubeSet (originCube d m)) p q v vstar)
+    (hCWF : CoupledWeakForm a (openCubeSet (originCube d m)) q v vstar)
     (htrace : MemH10 (openCubeSet (originCube d m))
       (fun x => v.toFun x + vstar.toFun x - vecDot p x)) :
     ∃ (Cd c : ℝ), 0 ≤ Cd ∧
@@ -99,7 +99,7 @@ theorem coupled_stampacchia (hd : 3 ≤ d) {m : ℤ} {Θ : ℝ} {a : CoeffField 
   obtain ⟨w₁, w₂, hw1meas, hw2meas, hw1ae, hw2ae, hmatch, hlevel⟩ :=
     coupled_levelEnergy hUbcd hΘ hEllO hCWF htrace
   -- Part C for the negated problem `(−v, −v*, −p, −q)`
-  have hCWF' : CoupledWeakForm a (openCubeSet (originCube d m)) (-p) (-q) (-v) (-vstar) :=
+  have hCWF' : CoupledWeakForm a (openCubeSet (originCube d m)) (-q) (-v) (-vstar) :=
     coupledWeakForm_neg hCWF
   have htrace' : MemH10 (openCubeSet (originCube d m))
       (fun x => (-v).toFun x + (-vstar).toFun x - vecDot (-p) x) := by
@@ -245,7 +245,7 @@ theorem coupled_stampacchia_uniform (hd : 3 ≤ d) :
       ∀ {m : ℤ} {Θ : ℝ} {a : CoeffField d}
         (_hEll : IsEllipticFieldOn 1 Θ (cubeSet (originCube d m)) a) {p q : Vec d}
         {v vstar : H1Function (openCubeSet (originCube d m))}
-        (_hCWF : CoupledWeakForm a (openCubeSet (originCube d m)) p q v vstar)
+        (_hCWF : CoupledWeakForm a (openCubeSet (originCube d m)) q v vstar)
         (_htrace : MemH10 (openCubeSet (originCube d m))
           (fun x => v.toFun x + vstar.toFun x - vecDot p x)),
       ∃ c : ℝ,
@@ -281,7 +281,7 @@ theorem coupled_stampacchia_uniform (hd : 3 ≤ d) :
   have hE₀ : 0 ≤ E₀ := by rw [hE0_def]; positivity
   obtain ⟨w₁, w₂, hw1meas, hw2meas, hw1ae, hw2ae, hmatch, hlevel⟩ :=
     coupled_levelEnergy hUbcd hΘ hEllO hCWF htrace
-  have hCWF' : CoupledWeakForm a (openCubeSet (originCube d m)) (-p) (-q) (-v) (-vstar) :=
+  have hCWF' : CoupledWeakForm a (openCubeSet (originCube d m)) (-q) (-v) (-vstar) :=
     coupledWeakForm_neg hCWF
   have htrace' : MemH10 (openCubeSet (originCube d m))
       (fun x => (-v).toFun x + (-vstar).toFun x - vecDot (-p) x) := by

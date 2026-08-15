@@ -9,7 +9,7 @@ import Homogenization.HighContrast.EntryScale.Inputs
 This file constructs concrete inhabitants of the entry-scale assembly's
 external-input records at *canonical* quantitative coarse-grained ellipticity
 parameters,
-discharging them against the Chapter 5 formalization in `LeanIntoHomogenization`:
+discharging them against the Chapter 5 formalization in `Homogenization`:
 
 * `canonicalParams d` — the explicit `(P4)` parameter record `s₁ = s₂ = 1/3`,
   `ξ = 3d + 1`;
@@ -25,7 +25,7 @@ discharging them against the Chapter 5 formalization in `LeanIntoHomogenization`
 
 open MeasureTheory
 open Homogenization
-open Homogenization.Book.Ch04 (CoeffLaw LawCarrier StructuralLaw)
+open Homogenization.Book.Ch04 (RestrictionCoeffLaw RestrictionLawCarrier RestrictionStructuralLaw)
 open Homogenization.Book.Ch05
 open Homogenization.Book.Ch05.Section53.JUpperBoundCoarseFluctuations
 open Homogenization.Book.Ch05.Section51
@@ -193,9 +193,9 @@ noncomputable def locOfParams {d : ℕ} [NeZero d]
       rw [hcOfParams_beta, hβ] at this
       exact this
     -- transport to the scale-normalized law at anchor `N`
-    set PN : CoeffLaw d := Homogenization.Book.Ch04.scaleNormalizedLaw N P with hPNdef
-    set hPN : LawCarrier PN := hP.scaleNormalized N with hPNcarr
-    set hStructN : StructuralLaw PN := hStruct.scaleNormalized N with hStructNdef
+    set PN : RestrictionCoeffLaw d := Homogenization.Book.Ch04.restrictionScaleNormalizedLaw N P with hPNdef
+    set hPN : RestrictionLawCarrier PN := hP.scaleNormalized N with hPNcarr
+    set hStructN : RestrictionStructuralLaw PN := hStruct.scaleNormalized N with hStructNdef
     set hP4N : QuantitativeCoarseGrainedEllipticity PN :=
       hP4.scaleNormalized hP hStruct N with hP4Ndef
     set hP4S : QuantitativeCoarseGrainedEllipticity PN :=
@@ -269,13 +269,13 @@ noncomputable def locOfParams {d : ℕ} [NeZero d]
         thetaAtScale hPN hStructN (n : ℤ) =
           thetaAtScale hP hStruct ((N + n : ℕ) : ℤ) := by
       simp only [thetaAtScale]
-      exact hP.thetaAtScale_scaleNormalizedLaw hStruct N n
+      exact hP.thetaAtScale_restrictionScaleNormalizedLaw hStruct N n
     rw [← hscale]
     simpa only [one_mul, neg_mul] using htheta_sub_unit_decay
 
 /-- Integrability of a bounded nonnegative power on a probability measure. -/
 private theorem integrable_pow_of_ae_bound {d : ℕ}
-    {P : CoeffLaw d} [IsProbabilityMeasure P]
+    {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {f : RegCoeffField d → ℝ} {C : ℝ} (hf : AEMeasurable f P)
     (hnonneg : ∀ᵐ a ∂P, 0 ≤ f a) (hbound : ∀ᵐ a ∂P, f a ≤ C) (ξ : ℕ) :
     Integrable (fun a => f a ^ ξ) P := by
@@ -289,8 +289,8 @@ canonical parameters, constructed from a `Θ`-elliptic law.  Its integrability
 fields are discharged from the a.e. multiscale ellipticity bounds
 (`≤ 2Θ`, inverse `≤ 2`) on the probability measure. -/
 noncomputable def qcgeOfThetaEllipticLaw {d : ℕ} [NeZero d] (hd : 2 ≤ d)
-    {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffLaw d} [IsProbabilityMeasure P]
-    (hP : LawCarrier P) (hLaw : ThetaEllipticLaw Θ P) :
+    {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+    (hP : RestrictionLawCarrier P) (hLaw : ThetaEllipticLaw Θ P) :
     QuantitativeCoarseGrainedEllipticity P where
   sUpper := 1 / 3
   sLower := 1 / 3
@@ -329,8 +329,8 @@ noncomputable def qcgeOfThetaEllipticLaw {d : ℕ} [NeZero d] (hd : 2 ≤ d)
       exact lambdaSqCoeffField_originCube_zero_inv_le_of_ae hΘ (by norm_num) ha
 
 @[simp] theorem qcgeOfThetaEllipticLaw_params {d : ℕ} [NeZero d] (hd : 2 ≤ d)
-    {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffLaw d} [IsProbabilityMeasure P]
-    (hP : LawCarrier P) (hLaw : ThetaEllipticLaw Θ P) :
+    {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+    (hP : RestrictionLawCarrier P) (hLaw : ThetaEllipticLaw Θ P) :
     (qcgeOfThetaEllipticLaw hd hΘ hP hLaw).params = canonicalParams d hd := rfl
 
 end Homogenization

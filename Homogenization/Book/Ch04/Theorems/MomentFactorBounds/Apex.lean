@@ -15,7 +15,7 @@ open scoped Matrix.Norms.Elementwise Matrix.Norms.L2Operator BigOperators
 
 noncomputable section
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 /-- A full coarse block is integrable as soon as the two factor observables on
 the same cube have finite `ξ` moments.
@@ -23,7 +23,7 @@ the same cube have finite `ξ` moments.
 This is the Ch4 source theorem that prevents Ch5 from carrying a separate
 full-block integrability hypothesis once it has the factor moments. -/
 theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_factor_observables
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d)
     {sUpper sLower : ℝ} {ξ : ℕ}
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower) (hξ : 1 ≤ ξ)
@@ -196,7 +196,7 @@ theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_factor_observables
 /-- The unit full coarse block is integrable as soon as the two unit factor
 observables in `(P4)` have finite `ξ` moments. -/
 theorem integrable_coarseFullBlockMatrixAtCube_origin_of_integrable_factor_observables
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     {sUpper sLower : ℝ} {ξ : ℕ}
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower) (hξ : 1 ≤ ξ)
     (hUpperPowInt :
@@ -218,7 +218,7 @@ This theorem owns the deterministic one-cube ellipticity domination, the
 passage from scalar annealed blocks to coefficient-field ellipticity
 observables, and the `L^ξ` mean-to-root comparison. -/
 private theorem annealedPrimitiveMomentFactorBounds_of_integrable_factor_observables
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     {sUpper sLower : ℝ} {ξ : ℕ}
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower) (hξ : 1 ≤ ξ)
     (hBlock :
@@ -328,8 +328,8 @@ private theorem annealedPrimitiveMomentFactorBounds_of_integrable_factor_observa
 /-- Structural-law upper scalar factor bound from integrable moment
 observables. -/
 theorem barSigmaAtScale_le_LambdaMomentAtScale_of_integrable_factor_observables
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P)
     {sUpper sLower : ℝ} {ξ : ℕ}
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower) (hξ : 1 ≤ ξ)
     (hBlock :
@@ -370,8 +370,8 @@ theorem barSigmaAtScale_le_LambdaMomentAtScale_of_integrable_factor_observables
 /-- Structural-law lower inverse-star scalar factor bound from integrable
 moment observables. -/
 theorem barSigmaStarAtScale_inv_le_lambdaInvMomentAtScale_of_integrable_factor_observables
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P)
     {sUpper sLower : ℝ} {ξ : ℕ}
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower) (hξ : 1 ≤ ξ)
     (hBlock :
@@ -412,8 +412,8 @@ theorem barSigmaStarAtScale_inv_le_lambdaInvMomentAtScale_of_integrable_factor_o
 /-- Direct structural-law comparison `Theta_n <= widetildeTheta_n` from
 integrable moment observables. -/
 theorem thetaAtScale_le_widetildeThetaAtScale_of_integrable_factor_observables
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P)
     {sUpper sLower : ℝ} {ξ : ℕ}
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower) (hξ : 1 ≤ ξ)
     (hBlock :
@@ -468,7 +468,7 @@ theorem thetaAtScale_le_widetildeThetaAtScale_of_integrable_factor_observables
   simpa [thetaAtScale, widetildeThetaAtScale] using
     mul_le_mul hUpper hLower hStarInv_nonneg hUpperMoment_nonneg
 
-end LawCarrier
+end RestrictionLawCarrier
 
 end
 

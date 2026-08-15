@@ -140,8 +140,8 @@ theorem unitEllipticity_tail_parameter_le_threshold_div
 /-- Bad scale for the localized limiting-normalized unit ellipticity supremum:
 above the base scale `N`, the supremum exceeds the collapsed envelope. -/
 def unitEllipticityBadScaleEvent
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (params : QuantitativeCoarseGrainedEllipticityParams d)
     (t α : ℝ) (N : ℕ) : Set (RegCoeffField d) :=
   {a | ∃ m : ℕ, N ≤ m ∧
@@ -149,8 +149,8 @@ def unitEllipticityBadScaleEvent
       localizedLimitWeightedUnitEllipticitySup hP hStruct params m a}
 
 theorem unitEllipticityBadScaleEvent_antitone
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (params : QuantitativeCoarseGrainedEllipticityParams d)
     {t α : ℝ} (hα : 0 ≤ α) {N K : ℕ} (hNK : N ≤ K) :
     unitEllipticityBadScaleEvent hP hStruct params t α K ⊆
@@ -235,8 +235,8 @@ theorem unitEllipticityBadScaleEvent_antitone
   exact lt_of_le_of_lt hthreshold_le hbad
 
 theorem badTailEvent_unitEllipticityBadScaleEvent_subset
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (params : QuantitativeCoarseGrainedEllipticityParams d)
     {t α : ℝ} (hα : 0 ≤ α) {N : ℕ} :
     badTailEvent (unitEllipticityBadScaleEvent hP hStruct params t α) N ⊆
@@ -247,8 +247,8 @@ theorem badTailEvent_unitEllipticityBadScaleEvent_subset
     hP hStruct params hα hNK hK
 
 theorem unitEllipticityBadScaleEvent_subset_rows
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (params : QuantitativeCoarseGrainedEllipticityParams d)
     {t α : ℝ} {N : ℕ} :
     unitEllipticityBadScaleEvent hP hStruct params t α N ⊆
@@ -267,8 +267,8 @@ theorem unitEllipticityBadScaleEvent_subset_rows
     using hbad
 
 theorem measureReal_unitEllipticityBadScaleRow_le_weighted
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {t α : ℝ} {N r : ℕ} :
     let scale : ℝ := thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat
@@ -381,8 +381,8 @@ theorem measureReal_unitEllipticityBadScaleRow_le_weighted
           ring
 
 theorem measureReal_unitEllipticityBadScaleEvent_le_weighted_kernel
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {t α : ℝ} {N : ℕ} :
     let scale : ℝ := thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat
@@ -448,8 +448,8 @@ theorem measureReal_unitEllipticityBadScaleEvent_le_weighted_kernel
           ring
 
 theorem measureReal_badTailEvent_unitEllipticityBadScaleEvent_le_weighted_kernel
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {t α : ℝ} {N : ℕ} :
     let scale : ℝ := thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat
@@ -501,9 +501,9 @@ theorem exists_quantitative_threshold_unitEllipticityBadTail_le_interpolated_tai
         (∀ q : ℕ, R ≤ q →
           C₀ * (q : ℝ) ≤
             Real.exp ((Real.log ρgap / 2) * (q : ℝ))) ∧
-        ∀ {P : Ch04.CoeffLaw d}
-          (hP : Ch04.LawCarrier P)
-          (hStruct : Ch04.StructuralLaw P)
+        ∀ {P : Ch04.RestrictionCoeffLaw d}
+          (hP : Ch04.RestrictionLawCarrier P)
+          (hStruct : Ch04.RestrictionStructuralLaw P)
           (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
           hΓ.sigma = σ →
           let scale : ℝ := thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat
@@ -750,8 +750,8 @@ theorem exists_quantitative_threshold_unitEllipticityBadTail_le_interpolated_tai
           ring_nf
 
 theorem localizedLimitWeightedUnitEllipticitySup_le_of_not_mem_unitEllipticityBadScaleEvent
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (params : QuantitativeCoarseGrainedEllipticityParams d)
     {t α : ℝ} {N m : ℕ} {a : RegCoeffField d}
     (hnot : a ∉ unitEllipticityBadScaleEvent hP hStruct params t α N)
@@ -763,8 +763,8 @@ theorem localizedLimitWeightedUnitEllipticitySup_le_of_not_mem_unitEllipticityBa
 /-- Above the constructed stopping scale, absence of unit-ellipticity bad
 scales gives exactly the collapsed envelope with the random scale `X`. -/
 theorem localizedLimitWeightedUnitEllipticitySup_le_above_quenchedMinimalScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (params : QuantitativeCoarseGrainedEllipticityParams d)
     {N0 m : ℕ} {t α : ℝ} {a : RegCoeffField d}
     (hgood :
@@ -801,8 +801,8 @@ theorem localizedLimitWeightedUnitEllipticitySup_le_above_quenchedMinimalScale
 
 theorem exists_unitEllipticityMinimalScale_interpolated
     {d : ℕ} [NeZero d] {σ : ℝ} (hσ_pos : 0 < σ)
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (hσ_eq : hΓ.sigma = σ)
     {t α : ℝ} :

@@ -19,11 +19,12 @@ open scoped BigOperators ENNReal Pointwise
 
 
 /-!
-# Constant-coefficient Dirichlet Besov regularity
+# Discrete constant-coefficient Dirichlet Besov compatibility kernel
 
-This file records the exact Lean contract for
-`l.constant.coefficient.Dirichlet.Besov.function.spaces` from
-`coarsegraining/chapters/ch1_function_spaces.tex`.
+This file records the discrete compatibility kernel used by the legacy
+K-functional/overlap route.  It is not the exact Lean contract for
+`l.constant.coefficient.Dirichlet.Besov.function.spaces` pending the continuum
+`K`/`H^s` gate.
 -/
 
 /-- Normalized cube `L²` data also gives vector `L²` data on the open cube.

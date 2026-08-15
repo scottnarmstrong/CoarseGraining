@@ -100,14 +100,14 @@ theorem exists_noDrop_lyapunov_scalar_setup_linear_sharp
 
 /--
 Source labels `p.nodrop.CR` and `e.sqrt.tau.absorb`: on a memory-grid
-no-drop branch, the deterministic tau-drop estimate and LIH lower-scale
+no-drop branch, the deterministic tau-drop estimate and the library's lower-scale
 response bound give the square-root product feed used by the no-drop response
 assembly.
 -/
 theorem tauAtMemoryGrid_mul_expectedResponseJCubeSet_special_le_sqrt_budget_sq_of_noDrop_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {Nstar L i : ℕ} (e : Homogenization.Vec d)
     {rho delta C_sqrt : ℝ}
@@ -243,9 +243,9 @@ through the linear no-drop RHS and the linear Lyapunov capstone
 theorem lyapunov_step_of_memoryGrid_noDropResponse_lower_memory_no_bad_packaged_fluctuation_tau_and_sqrt_linear
     {ι : Type*} (s : Finset ι)
     {d : ℕ} [NeZero d] (hc : HighContrastExponents d)
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {N Nstar L i : ℕ} (e : Homogenization.Vec d)
     {A K lambda rho C C_delta C_memory C_edgeMem C_S C_fluct C_sqrt eps etaS

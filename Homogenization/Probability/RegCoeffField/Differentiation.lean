@@ -34,7 +34,7 @@ spatial a.e. ellipticity in terms of rational-ball averages:
   the differentiation basis of closed metric balls on `Vec d = Fin d → ℝ`,
   whose Lebesgue `volume` is a doubling additive Haar measure).
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 namespace Homogenization

@@ -21,7 +21,7 @@ scale-separation hypothesis.
 -/
 
 private theorem widetildeThetaAtScale_zero_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ widetildeThetaAtScale P 0 hP4 := by
   simp [widetildeThetaAtScale, Ch04.widetildeThetaAtScale]
@@ -90,7 +90,7 @@ theorem sum_Icc_varianceWeight_mul_rpow_decay_le
 /-- The pair-probe descendant-average budget has the expected two geometric
 decay components. -/
 theorem pairProbeRefinedDescendantAverageK_eq_geometric
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (delta : ℝ) (j : ℕ) :
     pairProbeRefinedDescendantAverageK hP4 delta j =
       8 * ((1 + delta) *
@@ -166,7 +166,7 @@ theorem pairProbeRefinedDescendantAverageK_eq_geometric
 
 /-- The `L^ξ` geometric decay exponent in the refined pair budget. -/
 noncomputable def lpVarianceDecay
-    (d : ℕ) [NeZero d] {P : Ch04.CoeffLaw d}
+    (d : ℕ) [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   (d : ℝ) - (d : ℝ) / (hP4.xi : ℝ)
 
@@ -175,7 +175,7 @@ noncomputable def sqrtVarianceDecay (d : ℕ) : ℝ :=
   (d : ℝ) / 2
 
 private theorem lpVarianceDecay_gap_pos
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < lpVarianceDecay d hP4 - section54VarianceBeta hP4 := by
   have hbeta := section54VarianceBeta_lt_dim_div_two hP4
@@ -188,13 +188,13 @@ private theorem lpVarianceDecay_gap_pos
   linarith
 
 private theorem sqrtVarianceDecay_gap_pos
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < sqrtVarianceDecay d - section54VarianceBeta hP4 := by
   simpa [sqrtVarianceDecay] using section54VarianceBeta_lt_dim_div_two hP4
 
 private theorem lpVarianceDecay_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ lpVarianceDecay d hP4 := by
   have hgap := lpVarianceDecay_gap_pos hP4
@@ -202,7 +202,7 @@ private theorem lpVarianceDecay_nonneg
   linarith
 
 private theorem sqrtVarianceDecay_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ sqrtVarianceDecay d := by
   have hgap := sqrtVarianceDecay_gap_pos hP4
@@ -211,7 +211,7 @@ private theorem sqrtVarianceDecay_nonneg
 
 /-- Linear constant for the weighted refined pair budgets. -/
 noncomputable def pairLinearBudgetConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   16 *
     (Ch04.rosenthalDescendantsAtScaleLpConst d 0 hP4.xi *
@@ -222,14 +222,14 @@ noncomputable def pairLinearBudgetConst
 /-- Pointwise constant for the refined pair budget before the extra
 top-scale decay is summed. -/
 noncomputable def pairPointwiseBudgetConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   16 *
     (Ch04.rosenthalDescendantsAtScaleLpConst d 0 hP4.xi +
       Ch04.rosenthalDescendantsAtScaleSqrtConst d 0 hP4.xi)
 
 private theorem pairLinearBudgetConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ pairLinearBudgetConst hP4 := by
   unfold pairLinearBudgetConst
@@ -253,7 +253,7 @@ private theorem pairLinearBudgetConst_nonneg
   positivity
 
 private theorem pairPointwiseBudgetConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ pairPointwiseBudgetConst hP4 := by
   unfold pairPointwiseBudgetConst
@@ -269,7 +269,7 @@ private theorem pairPointwiseBudgetConst_nonneg
 /-- Pointwise refined pair budgets are controlled by the two geometric
 decays with the scale-zero moment factor. -/
 theorem pairProbeRefinedDescendantAverageK_le_geometric
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_le_half : delta ≤ 1 / 2)
     (j : ℕ) :
@@ -325,7 +325,7 @@ theorem pairProbeRefinedDescendantAverageK_le_geometric
 
 /-- A scale-uniform pointwise bound for refined pair budgets. -/
 theorem pairProbeRefinedDescendantAverageK_le_pointwiseConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_le_half : delta ≤ 1 / 2)
     (j : ℕ) :
@@ -383,7 +383,7 @@ theorem pairProbeRefinedDescendantAverageK_le_pointwiseConst
 
 /-- The compressed scalar budget is controlled by the pair budget. -/
 theorem refinedVarianceBasicBudget_le_pairBudget
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (j : ℕ) :
     refinedVarianceBasicBudget hP4 delta j ≤
@@ -414,14 +414,14 @@ theorem refinedVarianceBasicBudget_le_pairBudget
 /-- Constant controlling the beta-weighted refined scalar budget before the
 scale-separation absorption. -/
 noncomputable def weightedRefinedBudgetConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   (geometricDiscount (section54VarianceBeta hP4) 1)⁻¹ +
     2 * pairLinearBudgetConst hP4 +
       2 * pairPointwiseBudgetConst hP4 * pairLinearBudgetConst hP4
 
 theorem weightedRefinedBudgetConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ weightedRefinedBudgetConst hP4 := by
   unfold weightedRefinedBudgetConst
@@ -437,7 +437,7 @@ theorem weightedRefinedBudgetConst_nonneg
 
 /-- Weighted sum of the refined pair budgets. -/
 theorem sum_Icc_varianceWeight_mul_pairProbeRefinedK_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_le_half : delta ≤ 1 / 2)
     (m : ℕ) :
@@ -563,7 +563,7 @@ theorem sum_Icc_varianceWeight_mul_pairProbeRefinedK_le
 
 /-- Weighted sum of the squares of the refined pair budgets. -/
 theorem sum_Icc_varianceWeight_mul_pairProbeRefinedK_sq_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (hdelta_le_half : delta ≤ 1 / 2)
     (m : ℕ) :
@@ -635,7 +635,7 @@ theorem sum_Icc_varianceWeight_mul_pairProbeRefinedK_sq_le
 /-- The full weighted refined scalar budget has only the manuscript-size
 terms `δ` and `3^{-βm}(\widetilde\Theta_0+\widetilde\Theta_0^2)`. -/
 theorem sum_Icc_varianceWeight_mul_refinedVarianceBasicBudget_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le_half : delta ≤ 1 / 2)
     (m : ℕ) :

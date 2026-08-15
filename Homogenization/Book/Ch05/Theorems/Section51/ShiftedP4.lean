@@ -105,8 +105,8 @@ def twoBetaShiftedParams {d : ℕ}
       linarith [params.dim_div_xi_lt_sLower]
 
 /-- Law-specific `(P4)` data with both exponents shifted by `2β`. -/
-def twoBetaShiftedP4 {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+def twoBetaShiftedP4 {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     QuantitativeCoarseGrainedEllipticity P where
   sUpper := hP4.sUpper + 2 * section53CoarseFluctuationBeta hP4
@@ -145,15 +145,15 @@ def twoBetaShiftedP4 {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     Section55.lowerTwoBetaFactorPowerIntegrableAtScale_from_P4 hP hStruct hP4 0
 
 @[simp]
-theorem twoBetaShiftedP4_params {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem twoBetaShiftedP4_params {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     (twoBetaShiftedP4 hP hStruct hP4).params =
       twoBetaShiftedParams hP4.params := rfl
 
 theorem widetildeThetaAtScale_twoBetaShiftedP4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (n : ℤ) :
     widetildeThetaAtScale P n (twoBetaShiftedP4 hP hStruct hP4) =
       Section55.shiftedWidetildeThetaAtScale P n hP4
@@ -161,10 +161,10 @@ theorem widetildeThetaAtScale_twoBetaShiftedP4
   rfl
 
 theorem widetildeThetaAtScale_zero_scaleNormalized_twoBetaShiftedP4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (k : ℕ) :
-    widetildeThetaAtScale (Ch04.scaleNormalizedLaw k P) (0 : ℤ)
+    widetildeThetaAtScale (Ch04.restrictionScaleNormalizedLaw k P) (0 : ℤ)
         (twoBetaShiftedP4 (hP.scaleNormalized k) (hStruct.scaleNormalized k)
           (hP4.scaleNormalized hP hStruct k)) =
       Section55.shiftedWidetildeThetaAtScale P (k : ℤ) hP4
@@ -173,7 +173,7 @@ theorem widetildeThetaAtScale_zero_scaleNormalized_twoBetaShiftedP4
       section53CoarseFluctuationBeta (hP4.scaleNormalized hP hStruct k) =
         section53CoarseFluctuationBeta hP4 := rfl
   have hshift :=
-    Section55.shiftedWidetildeThetaAtScale_scaleNormalizedLaw
+    Section55.shiftedWidetildeThetaAtScale_restrictionScaleNormalizedLaw
       hP hStruct hP4
       (η := 2 * section53CoarseFluctuationBeta hP4)
       (by

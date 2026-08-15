@@ -10,6 +10,11 @@ lake exe cache get   # prebuilt mathlib oleans
 lake build           # build the project
 ```
 
+The production build is required to emit no Lean or linter warnings. The seven
+Mathlib-only files under `Audit/*/Challenge.lean` are the sole exception: each
+contains one documented statement-level `sorry`, checked against its completed
+solution by `leanprover/comparator`.
+
 A few practical notes for working with a development of this size:
 
 - **Never run `lake clean`.** It wipes the `mathlib` oleans and forces a

@@ -100,7 +100,7 @@ The fields `sUpper`, `sLower`, and `xi` are the manuscript parameters
 `s_1`, `s_2`, and `\xi`.  The last two fields encode finiteness of the unit-cube
 moments in `(P4)` as integrability of the corresponding powers. -/
 structure QuantitativeCoarseGrainedEllipticity {d : ℕ} [NeZero d]
-    (P : Ch04.CoeffLaw d) : Type where
+    (P : Ch04.RestrictionCoeffLaw d) : Type where
   sUpper : ℝ
   sLower : ℝ
   xi : ℕ
@@ -125,7 +125,7 @@ namespace QuantitativeCoarseGrainedEllipticity
 
 /-- Forget the law-specific integrability part of `(P4)`, retaining only the
 manuscript parameters and inequalities. -/
-def params {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+def params {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     QuantitativeCoarseGrainedEllipticityParams d where
   sUpper := hP4.sUpper
@@ -141,22 +141,22 @@ def params {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
   dim_div_xi_lt_min := hP4.dim_div_xi_lt_min
 
 @[simp]
-theorem params_sUpper {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+theorem params_sUpper {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.params.sUpper = hP4.sUpper := rfl
 
 @[simp]
-theorem params_sLower {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+theorem params_sLower {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.params.sLower = hP4.sLower := rfl
 
 @[simp]
-theorem params_xi {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+theorem params_xi {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.params.xi = hP4.xi := rfl
 
 /-- The exponent `xi` in `(P4)` is positive. -/
-theorem xi_pos {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+theorem xi_pos {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < hP4.xi := by
   have hd_nonneg : (0 : ℝ) ≤ (d : ℝ) := by exact_mod_cast Nat.zero_le d
@@ -165,7 +165,7 @@ theorem xi_pos {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
   exact_mod_cast hxi_pos_real
 
 /-- The exponent `xi` in `(P4)` is at least two. -/
-theorem two_le_xi {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+theorem two_le_xi {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     2 ≤ hP4.xi := by
   have hd_one : (1 : ℝ) ≤ (d : ℝ) := by
@@ -177,7 +177,7 @@ theorem two_le_xi {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
   exact_mod_cast htwo_lt_xi.le
 
 /-- The upper regularity exponent in `(P4)` is positive. -/
-theorem sUpper_pos {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+theorem sUpper_pos {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < hP4.sUpper := by
   have hd_pos_nat : 0 < d := lt_of_lt_of_le (by norm_num : 0 < 2) hP4.two_le_dim
@@ -189,7 +189,7 @@ theorem sUpper_pos {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (lt_of_lt_of_le hP4.dim_div_xi_lt_min (min_le_left _ _))
 
 /-- The lower regularity exponent in `(P4)` is positive. -/
-theorem sLower_pos {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+theorem sLower_pos {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < hP4.sLower := by
   have hd_pos_nat : 0 < d := lt_of_lt_of_le (by norm_num : 0 < 2) hP4.two_le_dim
@@ -201,20 +201,20 @@ theorem sLower_pos {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
     (lt_of_lt_of_le hP4.dim_div_xi_lt_min (min_le_right _ _))
 
 /-- The P4 lower endpoint gives `d / xi < sUpper`. -/
-theorem dim_div_xi_lt_sUpper {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+theorem dim_div_xi_lt_sUpper {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     (d : ℝ) / (hP4.xi : ℝ) < hP4.sUpper :=
   lt_of_lt_of_le hP4.dim_div_xi_lt_min (min_le_left _ _)
 
 /-- The P4 lower endpoint gives `d / xi < sLower`. -/
-theorem dim_div_xi_lt_sLower {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+theorem dim_div_xi_lt_sLower {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     (d : ℝ) / (hP4.xi : ℝ) < hP4.sLower :=
   lt_of_lt_of_le hP4.dim_div_xi_lt_min (min_le_right _ _)
 
 /-- The upper geometric-series denominator in the Section 5.2 moment lemma is
 positive under `(P4)`. -/
-theorem upperMomentDenom_pos {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+theorem upperMomentDenom_pos {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < ((d : ℝ) / 2) + (d : ℝ) / (hP4.xi : ℝ) - hP4.sUpper := by
   have hd_two : (2 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hP4.two_le_dim
@@ -227,7 +227,7 @@ theorem upperMomentDenom_pos {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
 
 /-- The lower geometric-series denominator in the Section 5.2 moment lemma is
 positive under `(P4)`. -/
-theorem lowerMomentDenom_pos {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+theorem lowerMomentDenom_pos {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < ((d : ℝ) / 2) + (d : ℝ) / (hP4.xi : ℝ) - hP4.sLower := by
   have hd_two : (2 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hP4.two_le_dim
@@ -242,26 +242,26 @@ end QuantitativeCoarseGrainedEllipticity
 
 /-- The scalar contrast `Theta_n = \bar\sigma_n \bar\sigma_{*,n}^{-1}`,
 read from the Chapter 4 structural-law scalar surface. -/
-noncomputable def thetaAtScale {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (n : ℤ) : ℝ :=
+noncomputable def thetaAtScale {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (n : ℤ) : ℝ :=
   hP.thetaAtScale hStruct n
 
 @[simp]
-theorem thetaAtScale_eq {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (n : ℤ) :
+theorem thetaAtScale_eq {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (n : ℤ) :
     thetaAtScale hP hStruct n = hP.thetaAtScale hStruct n :=
   rfl
 
 /-- The high-moment contrast `widetildeTheta_n` with the parameters supplied by
 the Chapter 5 quantitative ellipticity input. -/
 noncomputable def widetildeThetaAtScale {d : ℕ} [NeZero d]
-    (P : Ch04.CoeffLaw d) (n : ℤ)
+    (P : Ch04.RestrictionCoeffLaw d) (n : ℤ)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   Ch04.widetildeThetaAtScale P n hP4.sUpper hP4.sLower hP4.xi
 
 @[simp]
 theorem widetildeThetaAtScale_eq {d : ℕ} [NeZero d]
-    (P : Ch04.CoeffLaw d) (n : ℤ)
+    (P : Ch04.RestrictionCoeffLaw d) (n : ℤ)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     widetildeThetaAtScale P n hP4 =
       Ch04.widetildeThetaAtScale P n hP4.sUpper hP4.sLower hP4.xi :=
@@ -270,8 +270,8 @@ theorem widetildeThetaAtScale_eq {d : ℕ} [NeZero d]
 /-- The positive excess of the upper ellipticity moment over the unit-scale
 structural-law scalar upper coefficient. -/
 noncomputable def LambdaPositiveExcessMomentAtScale {d : ℕ} [NeZero d]
-    (P : Ch04.CoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) : ℝ :=
+    (P : Ch04.RestrictionCoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) : ℝ :=
   Ch04.annealedMomentRoot P ξ
     (fun a : RegCoeffField d =>
       max
@@ -281,8 +281,8 @@ noncomputable def LambdaPositiveExcessMomentAtScale {d : ℕ} [NeZero d]
 
 @[simp]
 theorem LambdaPositiveExcessMomentAtScale_eq {d : ℕ} [NeZero d]
-    (P : Ch04.CoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) :
+    (P : Ch04.RestrictionCoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) :
     LambdaPositiveExcessMomentAtScale P n s ξ hP hStruct =
       Ch04.annealedMomentRoot P ξ
         (fun a : RegCoeffField d =>
@@ -295,8 +295,8 @@ theorem LambdaPositiveExcessMomentAtScale_eq {d : ℕ} [NeZero d]
 /-- The positive excess of the lower inverse ellipticity moment over the
 unit-scale structural-law inverse-star coefficient. -/
 noncomputable def lambdaInvPositiveExcessMomentAtScale {d : ℕ} [NeZero d]
-    (P : Ch04.CoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) : ℝ :=
+    (P : Ch04.RestrictionCoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) : ℝ :=
   Ch04.annealedMomentRoot P ξ
     (fun a : RegCoeffField d =>
       max
@@ -306,8 +306,8 @@ noncomputable def lambdaInvPositiveExcessMomentAtScale {d : ℕ} [NeZero d]
 
 @[simp]
 theorem lambdaInvPositiveExcessMomentAtScale_eq {d : ℕ} [NeZero d]
-    (P : Ch04.CoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) :
+    (P : Ch04.RestrictionCoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) :
     lambdaInvPositiveExcessMomentAtScale P n s ξ hP hStruct =
       Ch04.annealedMomentRoot P ξ
         (fun a : RegCoeffField d =>
@@ -359,13 +359,13 @@ noncomputable def section52WidetildeThetaCombinedCoeff
 /-- The annealed additivity defect
 `tau_{n,k}(p,q) = E[J(cu_k,p,q)] - E[J(cu_n,p,q)]`. -/
 noncomputable def tauAtScale {d : ℕ}
-    (P : Ch04.CoeffLaw d) (n k : ℤ) (p q : Vec d) : ℝ :=
+    (P : Ch04.RestrictionCoeffLaw d) (n k : ℤ) (p q : Vec d) : ℝ :=
   Ch04.annealedResponseJAtScale P k p q -
     Ch04.annealedResponseJAtScale P n p q
 
 @[simp]
 theorem tauAtScale_eq {d : ℕ}
-    (P : Ch04.CoeffLaw d) (n k : ℤ) (p q : Vec d) :
+    (P : Ch04.RestrictionCoeffLaw d) (n k : ℤ) (p q : Vec d) :
     tauAtScale P n k p q =
       Ch04.annealedResponseJAtScale P k p q -
         Ch04.annealedResponseJAtScale P n p q :=
@@ -373,40 +373,40 @@ theorem tauAtScale_eq {d : ℕ}
 
 /-- The scalar geometric mean
 `\widehat\sigma_m = (\bar\sigma_m \bar\sigma_{*,m})^{1/2}`. -/
-noncomputable def sigmaHatAtScale {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ) : ℝ :=
+noncomputable def sigmaHatAtScale {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ) : ℝ :=
   Real.sqrt (hP.barSigmaAtScale hStruct m * hP.barSigmaStarAtScale hStruct m)
 
 @[simp]
-theorem sigmaHatAtScale_eq {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ) :
+theorem sigmaHatAtScale_eq {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ) :
     sigmaHatAtScale hP hStruct m =
       Real.sqrt (hP.barSigmaAtScale hStruct m * hP.barSigmaStarAtScale hStruct m) :=
   rfl
 
 /-- The special vector `p_e = \widehat\sigma_m^{-1/2} e`. -/
-noncomputable def specialPAtScale {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+noncomputable def specialPAtScale {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (e : Vec d) : Vec d :=
   Real.rpow (sigmaHatAtScale hP hStruct m) (-(1 / 2 : ℝ)) • e
 
 @[simp]
-theorem specialPAtScale_eq {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+theorem specialPAtScale_eq {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (e : Vec d) :
     specialPAtScale hP hStruct m e =
       Real.rpow (sigmaHatAtScale hP hStruct m) (-(1 / 2 : ℝ)) • e :=
   rfl
 
 /-- The special vector `q_e = \widehat\sigma_m^{1/2} e`. -/
-noncomputable def specialQAtScale {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+noncomputable def specialQAtScale {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (e : Vec d) : Vec d :=
   Real.rpow (sigmaHatAtScale hP hStruct m) (1 / 2 : ℝ) • e
 
 @[simp]
-theorem specialQAtScale_eq {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+theorem specialQAtScale_eq {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (e : Vec d) :
     specialQAtScale hP hStruct m e =
       Real.rpow (sigmaHatAtScale hP hStruct m) (1 / 2 : ℝ) • e :=
@@ -415,8 +415,8 @@ theorem specialQAtScale_eq {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
 /-- The scalar centering term
 `1/2 * (\bar\sigma_{*,m}^{-1} q - p) · (q - \bar\sigma_m p)`. -/
 noncomputable def scalarizedResponseCenteringTerm {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (p q : Vec d) : ℝ :=
   (1 / 2 : ℝ) *
     vecDot (((hP.barSigmaStarAtScale hStruct m)⁻¹ • q) - p)
@@ -424,8 +424,8 @@ noncomputable def scalarizedResponseCenteringTerm {d : ℕ} [NeZero d]
 
 @[simp]
 theorem scalarizedResponseCenteringTerm_eq {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (p q : Vec d) :
     scalarizedResponseCenteringTerm hP hStruct m p q =
       (1 / 2 : ℝ) *
@@ -436,8 +436,8 @@ theorem scalarizedResponseCenteringTerm_eq {d : ℕ} [NeZero d]
 /-- The scalarized expectation formula for the annealed response:
 `1/2 q · \bar\sigma_*^{-1} q - p · q + 1/2 p · \bar\sigma p`. -/
 noncomputable def expectedJScalarFormula {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (p q : Vec d) : ℝ :=
   (1 / 2 : ℝ) * vecDot q ((hP.barSigmaStarAtScale hStruct m)⁻¹ • q) -
     vecDot p q +
@@ -445,8 +445,8 @@ noncomputable def expectedJScalarFormula {d : ℕ} [NeZero d]
 
 @[simp]
 theorem expectedJScalarFormula_eq {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (p q : Vec d) :
     expectedJScalarFormula hP hStruct m p q =
       (1 / 2 : ℝ) * vecDot q ((hP.barSigmaStarAtScale hStruct m)⁻¹ • q) -
@@ -457,8 +457,8 @@ theorem expectedJScalarFormula_eq {d : ℕ} [NeZero d]
 /-- The scalarized formula for
 `tau_{n,k}(p,q) = E[J(cu_k,p,q)] - E[J(cu_n,p,q)]`. -/
 noncomputable def tauScalarFormula {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (n k : ℤ)
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (n k : ℤ)
     (p q : Vec d) : ℝ :=
   (1 / 2 : ℝ) *
       vecDot p ((hP.barSigmaAtScale hStruct k - hP.barSigmaAtScale hStruct n) • p) +
@@ -468,8 +468,8 @@ noncomputable def tauScalarFormula {d : ℕ} [NeZero d]
 
 @[simp]
 theorem tauScalarFormula_eq {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (n k : ℤ)
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (n k : ℤ)
     (p q : Vec d) :
     tauScalarFormula hP hStruct n k p q =
       (1 / 2 : ℝ) *
@@ -482,15 +482,15 @@ theorem tauScalarFormula_eq {d : ℕ} [NeZero d]
 /-- The scalarized expectation of the centered response:
 `1/2 p · ((Theta_m - 1) q)`. -/
 noncomputable def centeredResponseExpectationFormula {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (p q : Vec d) : ℝ :=
   (1 / 2 : ℝ) * vecDot p ((thetaAtScale hP hStruct m - 1) • q)
 
 @[simp]
 theorem centeredResponseExpectationFormula_eq {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (p q : Vec d) :
     centeredResponseExpectationFormula hP hStruct m p q =
       (1 / 2 : ℝ) * vecDot p ((thetaAtScale hP hStruct m - 1) • q) :=
@@ -498,69 +498,69 @@ theorem centeredResponseExpectationFormula_eq {d : ℕ} [NeZero d]
 
 /-- The centered scalar response observable on a deterministic cube, with the
 centering scale supplied separately. -/
-noncomputable def centeredResponseJObservableCubeSet {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+noncomputable def restrictionCenteredResponseJObservableCubeSet {d : ℕ} [NeZero d]
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (Q : TriadicCube d) (p q : Vec d) : RegCoeffField d → ℝ :=
   fun a =>
-    Ch04.responseJObservableCubeSet Q p q a -
+    Ch04.restrictionResponseJObservableCubeSet Q p q a -
       scalarizedResponseCenteringTerm hP hStruct m p q
 
 @[simp]
-theorem centeredResponseJObservableCubeSet_apply {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+theorem restrictionCenteredResponseJObservableCubeSet_apply {d : ℕ} [NeZero d]
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (Q : TriadicCube d) (p q : Vec d) (a : RegCoeffField d) :
-    centeredResponseJObservableCubeSet hP hStruct m Q p q a =
-      Ch04.responseJObservableCubeSet Q p q a -
+    restrictionCenteredResponseJObservableCubeSet hP hStruct m Q p q a =
+      Ch04.restrictionResponseJObservableCubeSet Q p q a -
         scalarizedResponseCenteringTerm hP hStruct m p q :=
   rfl
 
 /-- The centered adjoint scalar response observable on a deterministic cube. -/
-noncomputable def centeredResponseJStarObservableCubeSet {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+noncomputable def restrictionCenteredResponseJStarObservableCubeSet {d : ℕ} [NeZero d]
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (Q : TriadicCube d) (p q : Vec d) : RegCoeffField d → ℝ :=
   fun a =>
-    Ch04.responseJObservableCubeSet Q p q (adjointReg a) -
+    Ch04.restrictionResponseJObservableCubeSet Q p q (adjointReg a) -
       scalarizedResponseCenteringTerm hP hStruct m p q
 
 @[simp]
-theorem centeredResponseJStarObservableCubeSet_apply {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+theorem restrictionCenteredResponseJStarObservableCubeSet_apply {d : ℕ} [NeZero d]
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (Q : TriadicCube d) (p q : Vec d) (a : RegCoeffField d) :
-    centeredResponseJStarObservableCubeSet hP hStruct m Q p q a =
-      Ch04.responseJObservableCubeSet Q p q (adjointReg a) -
+    restrictionCenteredResponseJStarObservableCubeSet hP hStruct m Q p q a =
+      Ch04.restrictionResponseJObservableCubeSet Q p q (adjointReg a) -
         scalarizedResponseCenteringTerm hP hStruct m p q :=
   rfl
 
 /-- The expected centered scalar response on the origin cube at scale `m`. -/
 noncomputable def expectedCenteredResponseJAtScale {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (p q : Vec d) : ℝ :=
-  ∫ a, centeredResponseJObservableCubeSet hP hStruct m (originCube d m) p q a ∂P
+  ∫ a, restrictionCenteredResponseJObservableCubeSet hP hStruct m (originCube d m) p q a ∂P
 
 /-- The expected centered adjoint scalar response on the origin cube at scale
 `m`. -/
 noncomputable def expectedCenteredResponseJStarAtScale {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (p q : Vec d) : ℝ :=
-  ∫ a, centeredResponseJStarObservableCubeSet hP hStruct m (originCube d m) p q a ∂P
+  ∫ a, restrictionCenteredResponseJStarObservableCubeSet hP hStruct m (originCube d m) p q a ∂P
 
 /-- The first ceiling contribution in the annealed entry scale, depending on
 the unit-scale value of `widetildeTheta`. -/
 noncomputable def annealedConvergenceEntryScaleBound {d : ℕ} [NeZero d]
-    (P : Ch04.CoeffLaw d)
+    (P : Ch04.RestrictionCoeffLaw d)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (C : ℝ) : ℕ :=
   Nat.ceil (C * (Real.log (2 + widetildeThetaAtScale P (0 : ℤ) hP4)) ^ 2)
 
 /-- The second ceiling contribution in the annealed entry scale, depending on
 the target perturbative accuracy `sigma`. -/
 noncomputable def annealedConvergenceSigmaTailScale
-    {d : ℕ} [NeZero d] (P : Ch04.CoeffLaw d)
+    {d : ℕ} [NeZero d] (P : Ch04.RestrictionCoeffLaw d)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (C sigma : ℝ) : ℕ :=
   Nat.ceil (C * (hP4.xi : ℝ) * (sigma⁻¹ ^ (4 : ℕ)) * |Real.log sigma| *
     Real.log (2 + sigma⁻¹ ^ (4 : ℕ) * (hP4.xi : ℝ) *
@@ -568,7 +568,7 @@ noncomputable def annealedConvergenceSigmaTailScale
 
 /-- The entry scale `N_sigma` from the main annealed convergence theorem. -/
 noncomputable def annealedEntryScale {d : ℕ} [NeZero d]
-    (P : Ch04.CoeffLaw d)
+    (P : Ch04.RestrictionCoeffLaw d)
   (hP4 : QuantitativeCoarseGrainedEllipticity P)
   (C sigma : ℝ) : ℕ :=
   annealedConvergenceEntryScaleBound P hP4 C +
@@ -581,7 +581,7 @@ This is the two-ceiling scale used after the perturbative entry scale has been
 dilated to unit scale and the small-contrast algebraic iteration has been
 applied. -/
 noncomputable def annealedAlgebraicEntryScale {d : ℕ} [NeZero d]
-    (P : Ch04.CoeffLaw d)
+    (P : Ch04.RestrictionCoeffLaw d)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (C : ℝ) : ℕ :=
   Nat.ceil (C * (Real.log (2 + widetildeThetaAtScale P (0 : ℤ) hP4)) ^ 2) +
     Nat.ceil (C * (hP4.xi : ℝ) *

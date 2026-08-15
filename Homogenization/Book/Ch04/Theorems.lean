@@ -28,8 +28,8 @@ import Homogenization.Book.Ch04.Theorems.MomentFactorBounds
 
 This aggregate imports the curated public theorem endpoints for Chapter 4.
 
-The public policy is direct theorem statements over `LawCarrier`,
-`StructuralLaw`, local observables, and ordinary analytic hypotheses.  Callers
+The public policy is direct theorem statements over `RestrictionLawCarrier`,
+`RestrictionStructuralLaw`, local observables, and ordinary analytic hypotheses.  Callers
 should not need route-specific wrapper structures.  Scalarization witnesses,
 primitive route data, and proof-only bound packages remain in `Internal`
 namespaces or private declarations.

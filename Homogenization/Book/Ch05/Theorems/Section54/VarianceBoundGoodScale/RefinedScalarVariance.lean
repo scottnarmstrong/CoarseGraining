@@ -22,7 +22,7 @@ The resulting descendant-average budgets are expressed in terms of
 -/
 
 private theorem widetildeThetaAtScale_zero_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ widetildeThetaAtScale P 0 hP4 := by
   simp [widetildeThetaAtScale, Ch04.widetildeThetaAtScale]
@@ -31,7 +31,7 @@ private theorem widetildeThetaAtScale_zero_nonneg
     (Ch04.lambdaInvMomentAtScale_nonneg P 0 hP4.xi hP4.sLower_pos)
 
 private theorem coordinateProbeOriginMomentBudget_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) :
     0 ≤ 2 * ((1 + delta) * widetildeThetaAtScale P 0 hP4) := by
@@ -40,7 +40,7 @@ private theorem coordinateProbeOriginMomentBudget_nonneg
     (mul_nonneg hfactor (widetildeThetaAtScale_zero_nonneg hP4))
 
 private theorem pairProbeOriginMomentBudget_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) :
     0 ≤ 8 * ((1 + delta) * widetildeThetaAtScale P 0 hP4) := by
@@ -50,7 +50,7 @@ private theorem pairProbeOriginMomentBudget_nonneg
 
 /-- Refined descendant-average budget for coordinate probes. -/
 noncomputable def coordinateProbeRefinedDescendantAverageK
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (delta : ℝ) (j : ℕ) : ℝ :=
   let K0 := 2 * ((1 + delta) * widetildeThetaAtScale P 0 hP4)
@@ -63,7 +63,7 @@ noncomputable def coordinateProbeRefinedDescendantAverageK
 
 /-- Refined descendant-average budget for plus/minus pair probes. -/
 noncomputable def pairProbeRefinedDescendantAverageK
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (delta : ℝ) (j : ℕ) : ℝ :=
   let K0 := 8 * ((1 + delta) * widetildeThetaAtScale P 0 hP4)
@@ -83,9 +83,9 @@ noncomputable def refinedScalarProbeVarianceBound
 
 /-- L1/L2 descendant-average bounds for coordinate probes with the refined
 good-scale moment budget. -/
-theorem coordinateProbe_centeredDescendantAverage_abs_and_sq_le_refined
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem coordinateProbe_restrictionCenteredDescendantAverage_abs_and_sq_le_refined
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta)
     (m j : ℕ)
@@ -98,11 +98,11 @@ theorem coordinateProbe_centeredDescendantAverage_abs_and_sq_le_refined
     (α : BlockCoord d) :
     let K := coordinateProbeRefinedDescendantAverageK hP4 delta j
     (∫ a,
-        |Ch04.centeredDescendantAverage P 0 (j : ℤ)
+        |Ch04.restrictionCenteredDescendantAverage P 0 (j : ℤ)
           (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockCoordinateProbe α)) a| ∂P ≤ K) ∧
       (∫ a,
-        |Ch04.centeredDescendantAverage P 0 (j : ℤ)
+        |Ch04.restrictionCenteredDescendantAverage P 0 (j : ℤ)
           (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockCoordinateProbe α)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) := by
   dsimp only
@@ -113,13 +113,13 @@ theorem coordinateProbe_centeredDescendantAverage_abs_and_sq_le_refined
       hP hStruct hP4 hdelta_nonneg m hgood_upper hgood_lower α
   have hroot :
       (∫ a,
-        |Ch04.centeredDescendantAverage P 0 (j : ℤ)
+        |Ch04.restrictionCenteredDescendantAverage P 0 (j : ℤ)
           (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockCoordinateProbe α)) a| ^
           hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤ K := by
     have hraw :=
-      fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_pow_rpow_inv_le
+      fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_pow_rpow_inv_le
         hP hStruct hP4 (q := fullBlockCoordinateProbe α)
         (center := (m : ℤ)) (n := 0) (m := (j : ℤ)) (K := K0)
         (by norm_num) (by exact_mod_cast Nat.zero_le j)
@@ -128,14 +128,14 @@ theorem coordinateProbe_centeredDescendantAverage_abs_and_sq_le_refined
         hOrigin.1 (by simpa [K0, Ch04.annealedMomentRoot, one_div] using hOrigin.2)
     simpa [K, coordinateProbeRefinedDescendantAverageK, K0] using hraw
   exact
-    fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and_sq_le_of_root
+    fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_abs_and_sq_le_of_root
       hP hStruct hP4 (q := fullBlockCoordinateProbe α)
       (center := (m : ℤ)) (n := 0) (m := (j : ℤ))
       (by norm_num) (by exact_mod_cast Nat.zero_le j) hOrigin.1 hroot
 
-private theorem pairProbe_centeredDescendantAverage_abs_and_sq_le_refined_aux
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+private theorem pairProbe_restrictionCenteredDescendantAverage_abs_and_sq_le_refined_aux
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta)
     (m j : ℕ)
@@ -149,22 +149,22 @@ private theorem pairProbe_centeredDescendantAverage_abs_and_sq_le_refined_aux
     (hOrigin :
       Integrable
           (fun a =>
-            |Ch04.centeredOriginObservable P 0
+            |Ch04.restrictionCenteredOriginObservable P 0
               (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 probe) a| ^ hP4.xi) P ∧
         Ch04.annealedMomentRoot P hP4.xi
             (fun a =>
-              |Ch04.centeredOriginObservable P 0
+              |Ch04.restrictionCenteredOriginObservable P 0
                 (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                   probe) a|)
           ≤
             8 * ((1 + delta) * widetildeThetaAtScale P 0 hP4)) :
     let K := pairProbeRefinedDescendantAverageK hP4 delta j
     (∫ a,
-        |Ch04.centeredDescendantAverage P 0 (j : ℤ)
+        |Ch04.restrictionCenteredDescendantAverage P 0 (j : ℤ)
           (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ) probe) a| ∂P ≤ K) ∧
       (∫ a,
-        |Ch04.centeredDescendantAverage P 0 (j : ℤ)
+        |Ch04.restrictionCenteredDescendantAverage P 0 (j : ℤ)
           (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ) probe) a| ^
             (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) := by
   dsimp only
@@ -172,12 +172,12 @@ private theorem pairProbe_centeredDescendantAverage_abs_and_sq_le_refined_aux
   let K := pairProbeRefinedDescendantAverageK hP4 delta j
   have hroot :
       (∫ a,
-        |Ch04.centeredDescendantAverage P 0 (j : ℤ)
+        |Ch04.restrictionCenteredDescendantAverage P 0 (j : ℤ)
           (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ) probe) a| ^
           hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤ K := by
     have hraw :=
-      fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_pow_rpow_inv_le
+      fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_pow_rpow_inv_le
         hP hStruct hP4 (q := probe)
         (center := (m : ℤ)) (n := 0) (m := (j : ℤ)) (K := K0)
         (by norm_num) (by exact_mod_cast Nat.zero_le j)
@@ -185,16 +185,16 @@ private theorem pairProbe_centeredDescendantAverage_abs_and_sq_le_refined_aux
         hOrigin.1 (by simpa [K0, Ch04.annealedMomentRoot, one_div] using hOrigin.2)
     simpa [K, pairProbeRefinedDescendantAverageK, K0] using hraw
   exact
-    fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and_sq_le_of_root
+    fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_abs_and_sq_le_of_root
       hP hStruct hP4 (q := probe)
       (center := (m : ℤ)) (n := 0) (m := (j : ℤ))
       (by norm_num) (by exact_mod_cast Nat.zero_le j) hOrigin.1 hroot
 
 /-- L1/L2 descendant-average bounds for plus probes with the refined
 good-scale moment budget. -/
-theorem plusProbe_centeredDescendantAverage_abs_and_sq_le_refined
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem plusProbe_restrictionCenteredDescendantAverage_abs_and_sq_le_refined
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta)
     (m j : ℕ)
@@ -207,14 +207,14 @@ theorem plusProbe_centeredDescendantAverage_abs_and_sq_le_refined
     {α β : BlockCoord d} (hαβ : α ≠ β) :
     let K := pairProbeRefinedDescendantAverageK hP4 delta j
     (∫ a,
-        |Ch04.centeredDescendantAverage P 0 (j : ℤ)
+        |Ch04.restrictionCenteredDescendantAverage P 0 (j : ℤ)
           (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockPlusProbe α β)) a| ∂P ≤ K) ∧
       (∫ a,
-        |Ch04.centeredDescendantAverage P 0 (j : ℤ)
+        |Ch04.restrictionCenteredDescendantAverage P 0 (j : ℤ)
           (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockPlusProbe α β)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) :=
-  pairProbe_centeredDescendantAverage_abs_and_sq_le_refined_aux
+  pairProbe_restrictionCenteredDescendantAverage_abs_and_sq_le_refined_aux
     hP hStruct hP4 hdelta_nonneg m j hgood_upper hgood_lower hαβ
     (fullBlockPlusProbe α β)
     (plusProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
@@ -222,9 +222,9 @@ theorem plusProbe_centeredDescendantAverage_abs_and_sq_le_refined
 
 /-- L1/L2 descendant-average bounds for minus probes with the refined
 good-scale moment budget. -/
-theorem minusProbe_centeredDescendantAverage_abs_and_sq_le_refined
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem minusProbe_restrictionCenteredDescendantAverage_abs_and_sq_le_refined
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta)
     (m j : ℕ)
@@ -237,14 +237,14 @@ theorem minusProbe_centeredDescendantAverage_abs_and_sq_le_refined
     {α β : BlockCoord d} (hαβ : α ≠ β) :
     let K := pairProbeRefinedDescendantAverageK hP4 delta j
     (∫ a,
-        |Ch04.centeredDescendantAverage P 0 (j : ℤ)
+        |Ch04.restrictionCenteredDescendantAverage P 0 (j : ℤ)
           (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockMinusProbe α β)) a| ∂P ≤ K) ∧
       (∫ a,
-        |Ch04.centeredDescendantAverage P 0 (j : ℤ)
+        |Ch04.restrictionCenteredDescendantAverage P 0 (j : ℤ)
           (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
             (fullBlockMinusProbe α β)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) :=
-  pairProbe_centeredDescendantAverage_abs_and_sq_le_refined_aux
+  pairProbe_restrictionCenteredDescendantAverage_abs_and_sq_le_refined_aux
     hP hStruct hP4 hdelta_nonneg m j hgood_upper hgood_lower hαβ
     (fullBlockMinusProbe α β)
     (minusProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
@@ -253,8 +253,8 @@ theorem minusProbe_centeredDescendantAverage_abs_and_sq_le_refined
 /-- Coordinate-probe scalar variance estimate using the refined descendant
 average budget. -/
 theorem coordinateProbe_scalarVariance_good_origin_le_refined
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta)
     (m j : ℕ) (hj : j ≤ m)
@@ -278,12 +278,12 @@ theorem coordinateProbe_scalarVariance_good_origin_le_refined
     coordinateProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
       hP hStruct hP4 hdelta_nonneg m hgood_upper hgood_lower α
   have hZ_int :=
-    fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and_sq_integrable
+    fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_abs_and_sq_integrable
       hP hStruct hP4 (q := fullBlockCoordinateProbe α)
       (center := (m : ℤ)) (n := 0) (m := (j : ℤ))
       (by norm_num) (by exact_mod_cast Nat.zero_le j) hOrigin.1
   have hZ_le :=
-    coordinateProbe_centeredDescendantAverage_abs_and_sq_le_refined
+    coordinateProbe_restrictionCenteredDescendantAverage_abs_and_sq_le_refined
       hP hStruct hP4 hdelta_nonneg m j hgood_upper hgood_lower α
   simpa [K, refinedScalarProbeVarianceBound] using
     fullBlockNormalizedQuadraticObservable_scalarVariance_good_origin_le
@@ -293,8 +293,8 @@ theorem coordinateProbe_scalarVariance_good_origin_le_refined
 /-- Plus-probe scalar variance estimate using the refined descendant-average
 budget. -/
 theorem plusProbe_scalarVariance_good_origin_le_refined
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta)
     (m j : ℕ) (hj : j ≤ m)
@@ -318,12 +318,12 @@ theorem plusProbe_scalarVariance_good_origin_le_refined
     plusProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
       hP hStruct hP4 hdelta_nonneg m hgood_upper hgood_lower hαβ
   have hZ_int :=
-    fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and_sq_integrable
+    fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_abs_and_sq_integrable
       hP hStruct hP4 (q := fullBlockPlusProbe α β)
       (center := (m : ℤ)) (n := 0) (m := (j : ℤ))
       (by norm_num) (by exact_mod_cast Nat.zero_le j) hOrigin.1
   have hZ_le :=
-    plusProbe_centeredDescendantAverage_abs_and_sq_le_refined
+    plusProbe_restrictionCenteredDescendantAverage_abs_and_sq_le_refined
       hP hStruct hP4 hdelta_nonneg m j hgood_upper hgood_lower hαβ
   simpa [K, refinedScalarProbeVarianceBound] using
     fullBlockNormalizedQuadraticObservable_scalarVariance_good_origin_le
@@ -333,8 +333,8 @@ theorem plusProbe_scalarVariance_good_origin_le_refined
 /-- Minus-probe scalar variance estimate using the refined descendant-average
 budget. -/
 theorem minusProbe_scalarVariance_good_origin_le_refined
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta)
     (m j : ℕ) (hj : j ≤ m)
@@ -358,12 +358,12 @@ theorem minusProbe_scalarVariance_good_origin_le_refined
     minusProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
       hP hStruct hP4 hdelta_nonneg m hgood_upper hgood_lower hαβ
   have hZ_int :=
-    fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and_sq_integrable
+    fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_abs_and_sq_integrable
       hP hStruct hP4 (q := fullBlockMinusProbe α β)
       (center := (m : ℤ)) (n := 0) (m := (j : ℤ))
       (by norm_num) (by exact_mod_cast Nat.zero_le j) hOrigin.1
   have hZ_le :=
-    minusProbe_centeredDescendantAverage_abs_and_sq_le_refined
+    minusProbe_restrictionCenteredDescendantAverage_abs_and_sq_le_refined
       hP hStruct hP4 hdelta_nonneg m j hgood_upper hgood_lower hαβ
   simpa [K, refinedScalarProbeVarianceBound] using
     fullBlockNormalizedQuadraticObservable_scalarVariance_good_origin_le

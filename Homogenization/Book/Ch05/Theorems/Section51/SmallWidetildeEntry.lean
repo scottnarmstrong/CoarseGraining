@@ -115,8 +115,8 @@ theorem shiftedSmallContrastEntry_homogenizationScale
     (params : QuantitativeCoarseGrainedEllipticityParams d)
     {delta : ℝ} (hdelta_pos : 0 < delta) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (_hP : Ch04.LawCarrier P) (_hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (_hP : Ch04.RestrictionLawCarrier P) (_hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
         let N := annealedAlgebraicEntryScale P hP4 C

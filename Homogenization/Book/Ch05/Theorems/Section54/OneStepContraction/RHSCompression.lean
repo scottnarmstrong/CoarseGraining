@@ -25,15 +25,15 @@ quantity `(\epsilon + \epsilon^{-1}\sqrt\delta) \Theta_0`.
 open Section53.JUpperBoundCoarseFluctuations
 
 private theorem expectedResponseJCubeSet_nonneg
-    {d : ℕ} (P : Ch04.CoeffLaw d) (Q : TriadicCube d) (p q : Vec d) :
+    {d : ℕ} (P : Ch04.RestrictionCoeffLaw d) (Q : TriadicCube d) (p q : Vec d) :
     0 ≤ Ch04.expectedResponseJCubeSet P Q p q := by
   dsimp [Ch04.expectedResponseJCubeSet]
   exact integral_nonneg fun a => by
-    exact Ch04.responseJObservableCubeSet_nonneg Q p q a
+    exact Ch04.restrictionResponseJObservableCubeSet_nonneg Q p q a
 
 theorem thetaAtScale_zero_le_widetildeThetaAtScale_zero_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     thetaAtScale hP hStruct (0 : ℤ) ≤
       widetildeThetaAtScale P (0 : ℤ) hP4 := by
@@ -47,8 +47,8 @@ theorem thetaAtScale_zero_le_widetildeThetaAtScale_zero_of_P4
       0
 
 private theorem sigmaHatAtScale_le_LambdaMomentAtScale_zero_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     sigmaHatAtScale hP hStruct (m : ℤ) ≤
       Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi := by
@@ -94,8 +94,8 @@ private theorem sigmaHatAtScale_le_LambdaMomentAtScale_zero_of_P4
   exact hσ_le_bm.trans (hbm_le_b0.trans hb0_le_L0)
 
 private theorem inv_sigmaHatAtScale_le_lambdaInvMomentAtScale_zero_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     (sigmaHatAtScale hP hStruct (m : ℤ))⁻¹ ≤
       Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi := by
@@ -150,8 +150,8 @@ private theorem inv_sigmaHatAtScale_le_lambdaInvMomentAtScale_zero_of_P4
   exact hσ_inv_le_cm_inv.trans (hcm_inv_le_c0_inv.trans hc0_inv_le_l0)
 
 theorem coarseFluctuationUnitMomentWeightAtScale_le_two_widetildeTheta_zero
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     coarseFluctuationUnitMomentWeightAtScale hP hStruct hP4 m ≤
       2 * widetildeThetaAtScale P (0 : ℤ) hP4 := by
@@ -181,7 +181,7 @@ theorem coarseFluctuationUnitMomentWeightAtScale_le_two_widetildeTheta_zero
         ring
 
 theorem oneStepScaleSeparation_m_pos
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {C delta : ℝ} {m : ℕ}
     (hC : oneStepScaleSeparationConst hP4 ≤ C)
@@ -272,8 +272,8 @@ private theorem sqrt_mul_sqrt_le_two_sqrt_delta_mul_theta
   exact le_of_sq_le_sq hsq hright_nonneg
 
 private theorem centerTerm_le_theta_zero
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     (Real.sqrt (thetaAtScale hP hStruct (m : ℤ)) - 1) ^ (2 : ℕ) ≤
       thetaAtScale hP hStruct (0 : ℤ) := by
@@ -311,8 +311,8 @@ private theorem centerTerm_le_theta_zero
   exact hsquare
 
 private theorem thetaAtScale_m_le_thetaAtScale_zero_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     thetaAtScale hP hStruct (m : ℤ) ≤ thetaAtScale hP hStruct (0 : ℤ) := by
   simpa using
@@ -320,8 +320,8 @@ private theorem thetaAtScale_m_le_thetaAtScale_zero_of_P4
       (n := 0) (m := m) (Nat.zero_le m)
 
 private theorem thetaAtScale_m_sub_one_le_thetaAtScale_zero_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     thetaAtScale hP hStruct (m : ℤ) - 1 ≤
       thetaAtScale hP hStruct (0 : ℤ) := by
@@ -329,8 +329,8 @@ private theorem thetaAtScale_m_sub_one_le_thetaAtScale_zero_of_P4
   linarith
 
 private theorem sqrt_thetaAtScale_zero_le_widetildeThetaAtScale_zero_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     Real.sqrt (thetaAtScale hP hStruct (0 : ℤ)) ≤
       widetildeThetaAtScale P (0 : ℤ) hP4 :=
@@ -338,8 +338,8 @@ private theorem sqrt_thetaAtScale_zero_le_widetildeThetaAtScale_zero_of_P4
     (thetaAtScale_zero_le_widetildeThetaAtScale_zero_of_P4 hP hStruct hP4)
 
 private theorem tauAtScale_zero_nonneg_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ)
     (p q : Vec d) :
     0 ≤ tauAtScale P (m : ℤ) (0 : ℤ) p q := by
@@ -358,8 +358,8 @@ private theorem tauAtScale_zero_nonneg_of_P4
       (by exact_mod_cast Nat.zero_le m) hR hOrigin0
 
 private theorem firstCoarseRhsTerm_le_two_sqrt_delta_theta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le : delta ≤ 1 / 2)
     {m : ℕ}
@@ -407,8 +407,8 @@ private theorem firstCoarseRhsTerm_le_two_sqrt_delta_theta
       hdelta_pos hdelta_le htheta_one htau_nonneg hJ_nonneg htau_le hJ_le
 
 private theorem responseMomentTail_le_four_sqrt_delta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {C delta : ℝ} {m : ℕ}
     (hC : oneStepScaleSeparationConst hP4 ≤ C)
@@ -463,8 +463,8 @@ private theorem responseMomentTail_le_four_sqrt_delta
         mul_le_mul_of_nonneg_left htail (by norm_num)
 
 private theorem lowScaleTail_le_three_sqrt_delta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {C delta : ℝ} {m : ℕ}
     (hC : oneStepScaleSeparationConst hP4 ≤ C)
@@ -622,8 +622,8 @@ private theorem epsilon_inv_mul_sqrt_delta_le_compressionTarget_of_one_le_theta
           hdelta_nonneg hepsilon_pos htheta_nonneg
 
 private theorem coarseFluctuationManuscriptRHSAtScale_zero_eq_decomp
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (C ε : ℝ) (m : ℕ) (e : Vec d) :
     coarseFluctuationManuscriptRHSAtScale hP hStruct hP4 C ε 0 m e =
@@ -655,8 +655,8 @@ private theorem coarseFluctuationManuscriptRHSAtScale_zero_eq_decomp
   ring_nf
 
 theorem coarseFluctuationManuscriptRHSAtScale_zero_le_compressed
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {C0 Csep delta epsilon : ℝ} {m : ℕ}
     (hC0_nonneg : 0 ≤ C0)

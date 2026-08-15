@@ -154,7 +154,7 @@ theorem LambdaSqCoeffField_originCube_finite_one_le_two_upperSmallSqrtTail_sq_ad
       Summable (fun l : ℕ =>
         geometricWeight s 1 l * F ((m : ℤ) - (l : ℤ))) := by
     simpa [F, Q, originCube, Ch02.geometricWeight_eq_old] using
-      Ch04.LawCarrier.summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale
+      Ch04.RestrictionLawCarrier.summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale
         (Q := Q) a hs
   have hsplit : S = L + T := by
     simpa [S, L, T] using
@@ -163,7 +163,7 @@ theorem LambdaSqCoeffField_originCube_finite_one_le_two_upperSmallSqrtTail_sq_ad
   have hLambda_eq :
       Ch04.LambdaSqCoeffField Q s (.finite 1) a = S ^ 2 := by
     simpa [S, F, Q, originCube, Ch02.geometricWeight_eq_old] using
-      Ch04.LawCarrier.LambdaSqCoeffField_finite_one_eq_tsum_sq Q a s
+      Ch04.RestrictionLawCarrier.LambdaSqCoeffField_finite_one_eq_tsum_sq Q a s
   have hLsq :
       L ^ 2 ≤
         ∑ n ∈ section52LargeScaleSet m,
@@ -263,7 +263,7 @@ theorem LambdaSqCoeffField_originCube_finite_one_le_upperSmallSqrtTail_sq_div_ad
       Summable (fun l : ℕ =>
         geometricWeight s 1 l * F ((m : ℤ) - (l : ℤ))) := by
     simpa [F, Q, originCube, Ch02.geometricWeight_eq_old] using
-      Ch04.LawCarrier.summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale
+      Ch04.RestrictionLawCarrier.summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale
         (Q := Q) a hs
   have hsplit : S = L + T := by
     simpa [S, L, T] using
@@ -272,7 +272,7 @@ theorem LambdaSqCoeffField_originCube_finite_one_le_upperSmallSqrtTail_sq_div_ad
   have hLambda_eq :
       Ch04.LambdaSqCoeffField Q s (.finite 1) a = S ^ 2 := by
     simpa [S, F, Q, originCube, Ch02.geometricWeight_eq_old] using
-      Ch04.LawCarrier.LambdaSqCoeffField_finite_one_eq_tsum_sq Q a s
+      Ch04.RestrictionLawCarrier.LambdaSqCoeffField_finite_one_eq_tsum_sq Q a s
   have hLsq :
       L ^ 2 ≤ W * A := by
     let H : ℤ → ℝ := fun n =>
@@ -422,7 +422,7 @@ theorem lambdaSqCoeffField_originCube_finite_one_inv_le_two_lowerSmallSqrtTail_s
       Summable (fun l : ℕ =>
         geometricWeight s 1 l * F ((m : ℤ) - (l : ℤ))) := by
     simpa [F, Q, originCube, Ch02.geometricWeight_eq_old] using
-      Ch04.LawCarrier.summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
+      Ch04.RestrictionLawCarrier.summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
         (Q := Q) a hs
   have hsplit : S = L + T := by
     simpa [S, L, T] using
@@ -431,7 +431,7 @@ theorem lambdaSqCoeffField_originCube_finite_one_inv_le_two_lowerSmallSqrtTail_s
   have hlambdaInv_eq :
       (Ch04.lambdaSqCoeffField Q s (.finite 1) a)⁻¹ = S ^ 2 := by
     have h :=
-      Ch04.LawCarrier.lambdaSqCoeffField_finite_one_eq_tsum_sq_inv Q a hs
+      Ch04.RestrictionLawCarrier.lambdaSqCoeffField_finite_one_eq_tsum_sq_inv Q a hs
     simpa [S, F, Q, originCube, Ch02.geometricWeight_eq_old] using congrArg Inv.inv h
   have hLsq :
       L ^ 2 ≤
@@ -535,7 +535,7 @@ theorem lambdaSqCoeffField_originCube_finite_one_inv_le_lowerSmallSqrtTail_sq_di
       Summable (fun l : ℕ =>
         geometricWeight s 1 l * F ((m : ℤ) - (l : ℤ))) := by
     simpa [F, Q, originCube, Ch02.geometricWeight_eq_old] using
-      Ch04.LawCarrier.summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
+      Ch04.RestrictionLawCarrier.summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
         (Q := Q) a hs
   have hsplit : S = L + T := by
     simpa [S, L, T] using
@@ -544,7 +544,7 @@ theorem lambdaSqCoeffField_originCube_finite_one_inv_le_lowerSmallSqrtTail_sq_di
   have hlambdaInv_eq :
       (Ch04.lambdaSqCoeffField Q s (.finite 1) a)⁻¹ = S ^ 2 := by
     have h :=
-      Ch04.LawCarrier.lambdaSqCoeffField_finite_one_eq_tsum_sq_inv Q a hs
+      Ch04.RestrictionLawCarrier.lambdaSqCoeffField_finite_one_eq_tsum_sq_inv Q a hs
     simpa [S, F, Q, originCube, Ch02.geometricWeight_eq_old] using congrArg Inv.inv h
   have hLsq :
       L ^ 2 ≤ W * A := by

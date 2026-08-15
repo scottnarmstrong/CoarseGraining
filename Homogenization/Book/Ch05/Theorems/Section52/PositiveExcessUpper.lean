@@ -16,7 +16,7 @@ Upper large-scale positive-excess estimates.
 -/
 
 theorem section52_annealedMomentRoot_const_mul_of_nonneg
-    {d : ℕ} {P : Ch04.CoeffLaw d} {ξ : ℕ} {c : ℝ}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {ξ : ℕ} {c : ℝ}
     {X : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ) (hc : 0 ≤ c) (hX_nonneg : ∀ a, 0 ≤ X a) :
     Ch04.annealedMomentRoot P ξ (fun a => c * X a) =
@@ -61,8 +61,8 @@ theorem section52UnitDescendantRosenthalBudget_eq_originCube_of_scale_eq
     section52_descendantsAtScale_originCube_int_zero_card d hn]
 
 theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {m : ℕ} {n : ℤ} (hn : n ∈ section52LargeScaleSet m) :
     let parents := descendantsAtScale (originCube d (m : ℤ)) n
@@ -211,8 +211,8 @@ theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff
           initial := hcoeff_eq
 
 theorem upperLargeScalePositiveExcess_integrable_abs_pow
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {m : ℕ} {n : ℤ} (hn : n ∈ section52LargeScaleSet m) :
     let parents := descendantsAtScale (originCube d (m : ℤ)) n
@@ -244,12 +244,12 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow
       ∀ i j : Fin d,
         Integrable
           (fun a =>
-            |Ch04.centeredOriginObservable P 0
+            |Ch04.restrictionCenteredOriginObservable P 0
               (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| ^
               hP4.xi) P := by
     intro i j
     exact
-      (Ch04.LawCarrier.centeredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentAtScale
+      (Ch04.RestrictionLawCarrier.restrictionCenteredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentAtScale
         hP hP4.sUpper_pos (Nat.succ_le_of_lt hP4.xi_pos)
         hP4.upper_moment_integrable i j).1
   have hBase :
@@ -264,7 +264,7 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow
                         (1 : Mat d)))
                   0))‖ ^ hP4.xi) P := by
     exact
-      Ch04.LawCarrier.upperLeft_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_stationary
+      Ch04.RestrictionLawCarrier.upperLeft_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_stationary
         hP hparents (n := (0 : ℤ)) (ξ := hP4.xi)
         le_rfl hparent_scale hStruct.stationary
         (hP.barSigmaAtScale hStruct 0 •
@@ -289,8 +289,8 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow
   rw [← mul_pow, ← norm_mul]
 
 theorem upperLargeScalePositiveExcess_integrable_abs_pow_source
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {sSource r : ℝ} {ξ : ℕ}
     (hsSource : 0 < sSource) (hξ_one : 1 ≤ ξ) (hξ_two : 2 ≤ ξ)
     (hUpperSourceInt :
@@ -326,12 +326,12 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow_source
       ∀ i j : Fin d,
         Integrable
           (fun a =>
-            |Ch04.centeredOriginObservable P 0
+            |Ch04.restrictionCenteredOriginObservable P 0
               (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| ^
               ξ) P := by
     intro i j
     exact
-      (Ch04.LawCarrier.centeredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentAtScale
+      (Ch04.RestrictionLawCarrier.restrictionCenteredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentAtScale
         hP hsSource hξ_one hUpperSourceInt i j).1
   have hBase :
       Integrable
@@ -345,7 +345,7 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow_source
                         (1 : Mat d)))
                   0))‖ ^ ξ) P := by
     exact
-      Ch04.LawCarrier.upperLeft_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_stationary
+      Ch04.RestrictionLawCarrier.upperLeft_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_stationary
         hP hparents (n := (0 : ℤ)) (ξ := ξ)
         le_rfl hparent_scale hStruct.stationary
         (hP.barSigmaAtScale hStruct 0 •
@@ -370,8 +370,8 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow_source
   rw [← mul_pow, ← norm_mul]
 
 theorem upperLargeScalePositiveExcess_aemeasurable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {m : ℕ} {n : ℤ} (hn : n ∈ section52LargeScaleSet m) :
     let parents := descendantsAtScale (originCube d (m : ℤ)) n
@@ -391,14 +391,14 @@ theorem upperLargeScalePositiveExcess_aemeasurable
                 0)) P := by
   intro parents hparents
   exact aemeasurable_const.mul
-    (Ch04.LawCarrier.aemeasurable_upperLeft_matrixNorm_positiveExcess_finsetSup
+    (Ch04.RestrictionLawCarrier.aemeasurable_upperLeft_matrixNorm_positiveExcess_finsetSup
       hP hparents
       (hP.barSigmaAtScale hStruct 0 •
         (1 : Mat d)))
 
 theorem upperLargeScalePositiveExcess_aemeasurable_source
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {r : ℝ} {m : ℕ} {n : ℤ} (hn : n ∈ section52LargeScaleSet m) :
     let parents := descendantsAtScale (originCube d (m : ℤ)) n
     let hparents : parents.Nonempty :=
@@ -417,14 +417,14 @@ theorem upperLargeScalePositiveExcess_aemeasurable_source
                 0)) P := by
   intro parents hparents
   exact aemeasurable_const.mul
-    (Ch04.LawCarrier.aemeasurable_upperLeft_matrixNorm_positiveExcess_finsetSup
+    (Ch04.RestrictionLawCarrier.aemeasurable_upperLeft_matrixNorm_positiveExcess_finsetSup
       hP hparents
       (hP.barSigmaAtScale hStruct 0 •
         (1 : Mat d)))
 
 theorem upperLargeScalePositiveExcess_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {m : ℕ} {n : ℤ} (hn : n ∈ section52LargeScaleSet m)
     (a : RegCoeffField d) :
@@ -472,8 +472,8 @@ theorem upperLargeScalePositiveExcess_nonneg
   exact mul_nonneg hweight hsup
 
 theorem upperLargeScalePositiveExcess_nonneg_source
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {r : ℝ} (hr_nonneg : 0 ≤ r)
     {m : ℕ} {n : ℤ} (hn : n ∈ section52LargeScaleSet m)
     (a : RegCoeffField d) :
@@ -521,8 +521,8 @@ theorem upperLargeScalePositiveExcess_nonneg_source
   exact mul_nonneg hweight hsup
 
 theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff_source
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {sSource r : ℝ} {ξ : ℕ}
     (hsSource : 0 < sSource) (hr_nonneg : 0 ≤ r)
     (hξ_one : 1 ≤ ξ) (hξ_two : 2 ≤ ξ)
@@ -606,17 +606,17 @@ theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff_source
       ∀ i j : Fin d,
         Integrable
             (fun a =>
-              |Ch04.centeredOriginObservable P 0
+              |Ch04.restrictionCenteredOriginObservable P 0
                 (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| ^
                 ξ) P ∧
           (∫ a,
-              |Ch04.centeredOriginObservable P 0
+              |Ch04.restrictionCenteredOriginObservable P 0
                 (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| ^
                 ξ ∂P) ^
               (1 / (ξ : ℝ)) ≤ K := by
     intro i j
     have h :=
-      Ch04.LawCarrier.centeredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentAtScale
+      Ch04.RestrictionLawCarrier.restrictionCenteredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentAtScale
         hP hsSource hξ_one hUpperSourceInt i j
     simpa [K, initial] using h
   have hX_nonneg : ∀ a, 0 ≤ X a := by
@@ -634,7 +634,7 @@ theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff_source
   have hfluct :
       Ch04.annealedMomentRoot P ξ X ≤ entryFactor * (parentFactor * B) := by
     exact
-      Ch04.LawCarrier.upperLeft_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRangeDependentLaw
+      Ch04.RestrictionLawCarrier.upperLeft_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_restrictionUnitRangeDependentLaw
         hP hparents le_rfl hparent_scale hStruct.stationary hStruct.unit_range
         (hP.barSigmaAtScale hStruct 0 •
           (1 : Mat d))

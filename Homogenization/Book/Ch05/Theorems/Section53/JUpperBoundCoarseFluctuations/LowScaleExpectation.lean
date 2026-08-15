@@ -48,9 +48,9 @@ private theorem lowScaleTailFactor_le_beta_inv_cube {β n : ℝ}
 bounded by the parent-response baseline plus the shifted positive-excess terms
 with the child-response average. -/
 theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Vec d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -65,7 +65,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
     let σ := sigmaHatAtScale hP hStruct (m : ℤ)
     let childAvg : RegCoeffField d → ℝ :=
       fun a => descendantsAverage Q j
-        (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
     let lowerExcess : RegCoeffField d → ℝ :=
       fun a =>
         max
@@ -114,10 +114,10 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
   let Jm : RegCoeffField d → ℝ :=
-    fun a => Ch04.responseJObservableCubeSet Q p_e q_e a
+    fun a => Ch04.restrictionResponseJObservableCubeSet Q p_e q_e a
   let childAvg : RegCoeffField d → ℝ :=
     fun a => descendantsAverage Q j
-      (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let lowerExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
@@ -162,7 +162,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
       simpa [Q] using
         Section52.originBlockIntegrableAtScale_from_P4 hP hStruct hP4 m
     simpa [Jm] using
-      hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+      hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
         Q p_e q_e hBlock
   have hs'_pos : 0 < s' := by
     dsimp [s', β]
@@ -179,7 +179,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
         Ch04.LambdaSqCoeffField Q t' (.finite 1) a) P :=
     hP.aemeasurable_LambdaSqCoeffField_finite_one Q ht'_pos
   have hJAE : AEMeasurable Jm P := by
-    simpa [Jm] using hP.aemeasurable_responseJObservableCubeSet Q p_e q_e
+    simpa [Jm] using hP.aemeasurable_restrictionResponseJObservableCubeSet Q p_e q_e
   have hGradAE :
       AEMeasurable
         (fun a : RegCoeffField d =>
@@ -250,7 +250,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
     have hk_nonneg : (0 : ℤ) ≤ (k : ℤ) := by exact_mod_cast Nat.zero_le k
     have hkm_int : (k : ℤ) ≤ (m : ℤ) := by exact_mod_cast hkm.le
     simpa [childAvg, Q, j, ζ, p_e, q_e] using
-      memLp_zeta_descendantsAverage_responseJObservableCubeSet_originCube_from_P4_of_stationary
+      memLp_zeta_descendantsAverage_restrictionResponseJObservableCubeSet_originCube_from_P4_of_stationary
         hP hstat hStruct hP4 hk_nonneg hkm_int p_e q_e
   have hHolderReal : ζ.HolderConjugate (hP4.xi : ℝ) := by
     simpa [ζ] using
@@ -289,7 +289,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
   have hParent_le_child : Jm ≤ᵐ[P] childAvg := by
     have hkm_int : (k : ℤ) ≤ (m : ℤ) := by exact_mod_cast hkm.le
     simpa [Jm, childAvg, Q, j] using
-      hP.responseJObservableCubeSet_le_descendantsAverage_ae
+      hP.restrictionResponseJObservableCubeSet_le_descendantsAverage_ae
         (n := (k : ℤ)) (m := (m : ℤ)) hkm_int p_e q_e
   have hPointXY : X ≤ᵐ[P] Y := by
     filter_upwards [hParent_le_child] with a hsub
@@ -391,9 +391,9 @@ theorem integral_paired_lowScaleTailSquares_special_le_coarseFluctuationTerms_un
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (_hstat : Ch04.StationaryLaw P)
-      (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (_hstat : Ch04.RestrictionStationaryLaw P)
+      (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ {k m : ℕ}, k < m → ∀ e : Vec d, vecNormSq e = 1 →
@@ -442,7 +442,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_coarseFluctuationTerms_un
   let θ := thetaAtScale hP hStruct (m : ℤ)
   let childAvg : RegCoeffField d → ℝ :=
     fun a => descendantsAverage Q j
-      (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let lowerExcess : RegCoeffField d → ℝ :=
     fun a =>
       max

@@ -41,8 +41,8 @@ theorem vecNormSq_eq_one_of_vecNorm_eq_one {d : ℕ} {e : Vec d}
 
 /-- Under `(P4)`, `\widehat\sigma_m` is strictly positive. -/
 theorem sigmaHatAtScale_pos_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 < sigmaHatAtScale hP hStruct (m : ℤ) := by
   have hb := Pigeonhole.barSigmaAtScale_pos_of_P4 hP hStruct hP4 m
@@ -52,8 +52,8 @@ theorem sigmaHatAtScale_pos_of_P4
 
 /-- Under `(P4)`, the contrast is monotone along nonnegative scales. -/
 theorem thetaAtScale_mono_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {n m : ℕ} (hnm : n ≤ m) :
     thetaAtScale hP hStruct (m : ℤ) ≤
@@ -79,8 +79,8 @@ theorem thetaAtScale_mono_of_P4
 
 /-- Under `(P4)`, the scalar contrast is at least one. -/
 theorem one_le_thetaAtScale_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     1 ≤ thetaAtScale hP hStruct (m : ℤ) := by
   have hBlock :
@@ -92,8 +92,8 @@ theorem one_le_thetaAtScale_of_P4
 
 /-- The scaled `p_e` centering has the manuscript norm. -/
 theorem scaled_specialP_centering_vecNorm_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d)
     (he : Ch02.vecNorm e = 1) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
@@ -137,8 +137,8 @@ theorem scaled_specialP_centering_vecNorm_eq_of_P4
 
 /-- The scaled `q_e` centering has the manuscript norm. -/
 theorem scaled_specialQ_centering_vecNorm_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d)
     (he : Ch02.vecNorm e = 1) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
@@ -182,8 +182,8 @@ theorem scaled_specialQ_centering_vecNorm_eq_of_P4
 
 /-- The special-vector scalar formula for the expected response. -/
 theorem expectedJScalarFormula_special_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m k : ℕ) (e : Vec d)
     (he : vecNormSq e = 1) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
@@ -238,8 +238,8 @@ theorem expectedJScalarFormula_special_eq_of_P4
 
 /-- The special-vector scalar formula for the additivity defect. -/
 theorem tauScalarFormula_special_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m k : ℕ) (e : Vec d)
     (he : vecNormSq e = 1) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e

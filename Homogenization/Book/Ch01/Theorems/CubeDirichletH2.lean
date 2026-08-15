@@ -2,23 +2,26 @@ import Homogenization.Book.Ch01.Definitions
 import Homogenization.Deterministic.ConstantCoefficientDirichletBesov
 import Homogenization.Sobolev.Foundations.CubeDirichletH2
 
+/-!
+# Legacy Chapter 1 Dirichlet compatibility facade
+
+This module is deliberately quarantined in
+`Homogenization.Book.Ch01.Legacy`.  It exposes translated, coordinate-`L¹`,
+and discrete-`K` compatibility machinery from the earlier Chapter 1 route.
+Its former final fractional facade has not passed the continuum `K`/`Hˢ` gate,
+so none of these declarations is a source-facing formulation of the
+manuscript's classical-input statements.
+-/
+
 namespace Homogenization
 namespace Book
 namespace Ch01
 
-open scoped ENNReal Pointwise BigOperators
-
 noncomputable section
 
-/-!
-# Ch1 public Dirichlet `H²` regularity surface
+namespace Legacy
 
-This file exposes the scalar cube Dirichlet `H²` regularity contract that will
-feed the Chapter 1 Hodge projection proof.  The current theorem uses the
-scale-indexed constant produced by odd reflection, the existing interior
-weak-Hessian estimate, and the scale-sharp zero-trace Poincare constant
-obtained by dilating the unit centered cube estimate.
--/
+open scoped ENNReal Pointwise BigOperators
 
 /-- Public alias for the scalar weak Dirichlet Poisson problem on a cube. -/
 abbrev CubeDirichletWeakPoissonProblem {d : ℕ} (Q : Cube d)
@@ -135,7 +138,8 @@ noncomputable abbrev cubeBesovOverlappingPositiveVectorSeminormTwo {d : ℕ}
   Homogenization.cubeBesovOverlappingPositiveVectorSeminormTwo Q s F
 
 /-- Public alias for the corrected overlapping positive vector `B^s_{2,2}`
-norm used in `l.constant.coefficient.Dirichlet.Besov.function.spaces`. -/
+norm used by the legacy discrete compatibility route, not the source theorem
+pending the continuum `K`/`H^s` gate. -/
 noncomputable abbrev cubeBesovOverlappingPositiveVectorNormTwo {d : ℕ}
     (Q : Cube d) (s : ℝ) (F : Vec d → Vec d) : ℝ :=
   Homogenization.cubeBesovOverlappingPositiveVectorNormTwo Q s F
@@ -152,15 +156,15 @@ abbrev CubeDirichletDivergenceProblem {d : ℕ}
     (h : Vec d → Vec d) : Prop :=
   Homogenization.CubeDirichletDivergenceProblem Q w h
 
-/-- Public alias for
-`l.constant.coefficient.Dirichlet.Besov.function.spaces`. -/
+/-- Legacy-local alias for the discrete compatibility statement, not the source
+theorem pending the continuum `K`/`H^s` gate. -/
 abbrev ConstantCoefficientDirichletBesovFunctionSpaces
     (d : ℕ) [NeZero d] : Prop :=
-  Homogenization.ConstantCoefficientDirichletBesovFunctionSpaces d
+  Homogenization.DiscreteConstantCoefficientDirichletBesovFunctionSpaces d
 
-/-- Public alias for the K-functional Besov norm model used in the revised
-formalization route for
-`l.constant.coefficient.Dirichlet.Besov.function.spaces`. -/
+/-- Public alias for the K-functional Besov norm model used by the discrete
+compatibility route, not the source theorem pending the continuum `K`/`H^s`
+gate. -/
 abbrev CubeKBesovNormModel (d : ℕ) : Type :=
   Homogenization.CubeKBesovNormModel d
 
@@ -312,11 +316,11 @@ abbrev CubeKBesovCanonicalOverlappingTheoryCore
     (d : ℕ) [NeZero d] : Prop :=
   Homogenization.CubeKBesovCanonicalOverlappingTheoryCore d
 
-/-- Public alias for the revised K-functional route to the constant-coefficient
-Dirichlet Besov theorem. -/
+/-- Legacy-local alias for the discrete compatibility K-functional route, not
+the source theorem pending the continuum `K`/`H^s` gate. -/
 abbrev ConstantCoefficientDirichletBesovKFunctionalRoute
     (d : ℕ) [NeZero d] : Prop :=
-  Homogenization.ConstantCoefficientDirichletBesovKFunctionalRoute d
+  Homogenization.DiscreteConstantCoefficientDirichletBesovKFunctionalRoute d
 
 /-- Public alias for the unit centered-cube zero-trace Poincare constant used
 inside the Dirichlet solver-energy estimate. -/
@@ -1121,12 +1125,14 @@ theorem cubeKBesovDirichletRegularity
     CubeKBesovDirichletRegularity (cubeKBesovNormModel d) :=
   Homogenization.cubeKBesovDirichletRegularity d
 
-/-- Public Chapter 1 contract for
-`l.constant.coefficient.Dirichlet.Besov.function.spaces`. -/
+/-- Legacy-local name for the discrete compatibility theorem; it is not the
+source theorem pending the continuum `K`/`H^s` gate. -/
 theorem constantCoefficientDirichletBesovFunctionSpaces
     (d : ℕ) [NeZero d] :
     ConstantCoefficientDirichletBesovFunctionSpaces d :=
-  Homogenization.constantCoefficientDirichletBesovFunctionSpaces d
+  Homogenization.discreteConstantCoefficientDirichletBesovFunctionSpaces d
+
+end Legacy
 
 end
 

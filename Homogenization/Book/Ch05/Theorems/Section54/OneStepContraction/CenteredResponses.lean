@@ -16,8 +16,8 @@ centered-response identities to the scalar contrast `Theta_m - 1`.
 -/
 
 private theorem vecDot_specialP_specialQ_eq_vecNormSq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d) :
     vecDot (specialPAtScale hP hStruct (m : ℤ) e)
         (specialQAtScale hP hStruct (m : ℤ) e) =
@@ -36,8 +36,8 @@ private theorem vecDot_specialP_specialQ_eq_vecNormSq
       simp
 
 private theorem centeredResponseExpectationFormula_special_eq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d) :
     centeredResponseExpectationFormula hP hStruct (m : ℤ)
         (specialPAtScale hP hStruct (m : ℤ) e)
@@ -52,8 +52,8 @@ private theorem centeredResponseExpectationFormula_special_eq
 /-- Special-vector centered responses sum to `Theta_m - 1` for vectors with
 unit squared norm. -/
 theorem thetaAtScale_sub_one_eq_centeredResponses_special_of_vecNormSq_eq_one
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d)
     (he : vecNormSq e = 1) :
     thetaAtScale hP hStruct (m : ℤ) - 1 =
@@ -86,8 +86,8 @@ theorem thetaAtScale_sub_one_eq_centeredResponses_special_of_vecNormSq_eq_one
 /-- Special-vector centered responses sum to `Theta_m - 1` for unit vectors,
 in the same norm convention used by the good-scale theorem. -/
 theorem thetaAtScale_sub_one_eq_centeredResponses_special
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d)
     (he : Ch02.vecNorm e = 1) :
     thetaAtScale hP hStruct (m : ℤ) - 1 =
@@ -105,8 +105,8 @@ theorem thetaAtScale_sub_one_eq_centeredResponses_special
 primal response.  This is the Section 5.2 identity in a rewrite-friendly form
 for the one-step proof. -/
 theorem expectedCenteredResponseJStarAtScale_eq_expectedCenteredResponseJAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ)
     (p q : Vec d) :
     expectedCenteredResponseJStarAtScale hP hStruct (m : ℤ) p q =
@@ -118,8 +118,8 @@ theorem expectedCenteredResponseJStarAtScale_eq_expectedCenteredResponseJAtScale
 /-- Special-vector form of the one-step centered-response identity using only
 the primal centered response. -/
 theorem thetaAtScale_sub_one_eq_two_centeredResponse_special
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d)
     (he : Ch02.vecNorm e = 1) :
     thetaAtScale hP hStruct (m : ℤ) - 1 =

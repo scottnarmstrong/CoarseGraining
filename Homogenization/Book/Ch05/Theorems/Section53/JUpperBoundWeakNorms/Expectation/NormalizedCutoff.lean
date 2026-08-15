@@ -399,7 +399,7 @@ theorem section53CutoffProductCoeff_origin_le_dimensional
     section53CutoffProductCoeff (originCube d (m : ℤ)) s t ≤
       (((128 * quantitativeCubeCutoffHessianConst d +
               24 * quantitativeCubeCutoffGradientConst d) * (2 : ℝ) ^ d) *
-        (((d : ℝ) * cubeNeumannW22CalderonZygmundConstant d *
+        (((d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d *
               (3 : ℝ) ^ ((d : ℝ) + 1)) * (d : ℝ)) *
           ((d : ℝ) * (3 : ℝ) ^ ((d : ℝ) + 1))) := by
   let Q : TriadicCube d := originCube d (m : ℤ)
@@ -410,7 +410,7 @@ theorem section53CutoffProductCoeff_origin_le_dimensional
     (128 * quantitativeCubeCutoffHessianConst d +
       24 * quantitativeCubeCutoffGradientConst d) * (2 : ℝ) ^ d
   let Poinc : ℝ :=
-    (Ch01.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
+    (Ch01.Legacy.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
       (Fintype.card (Fin d) : ℝ)
   let Flux : ℝ :=
     (Fintype.card (Fin d) : ℝ) *
@@ -509,7 +509,7 @@ theorem section53CutoffProductCoeff_origin_le_dimensional
   have hPoinc_nonneg : 0 ≤ Poinc := by
     dsimp [Poinc]
     exact mul_nonneg
-      (mul_nonneg (Ch01.fullVectorPoincareConstant_nonneg Q) hpow_upper_nonneg)
+      (mul_nonneg (Ch01.Legacy.fullVectorPoincareConstant_nonneg Q) hpow_upper_nonneg)
       (Nat.cast_nonneg _)
   have hFlux_nonneg : 0 ≤ Flux := by
     dsimp [Flux]
@@ -558,10 +558,10 @@ theorem section53CutoffProductCoeff_origin_le_dimensional
           ((Fintype.card (Fin d) : ℝ) * (3 : ℝ) ^ ((d : ℝ) + 1)) =
         (((128 * quantitativeCubeCutoffHessianConst d +
                 24 * quantitativeCubeCutoffGradientConst d) * (2 : ℝ) ^ d) *
-          (((d : ℝ) * cubeNeumannW22CalderonZygmundConstant d *
+          (((d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d *
                 (3 : ℝ) ^ ((d : ℝ) + 1)) * (d : ℝ)) *
             ((d : ℝ) * (3 : ℝ) ^ ((d : ℝ) + 1))) := by
-    simp [Kcut, Poinc, Ch01.fullVectorPoincareConstant,
+    simp [Kcut, Poinc, Ch01.Legacy.fullVectorPoincareConstant,
       fullVectorPoincareCubeConstant_eq_dimensionConstant]
   have hW_s_nonneg : 0 ≤ cubeBesovScaleWeight (-s) Q :=
     cubeBesovScaleWeight_nonneg (-s) Q
@@ -659,7 +659,7 @@ theorem section53CutoffProductCoeff_origin_le_dimensional
           cubeBesovScaleWeight (-s) Q * cubeBesovScaleWeight (-t) Q ≤
         (((128 * quantitativeCubeCutoffHessianConst d +
                 24 * quantitativeCubeCutoffGradientConst d) * (2 : ℝ) ^ d) *
-          (((d : ℝ) * cubeNeumannW22CalderonZygmundConstant d *
+          (((d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d *
                 (3 : ℝ) ^ ((d : ℝ) + 1)) * (d : ℝ)) *
             ((d : ℝ) * (3 : ℝ) ^ ((d : ℝ) + 1))) := by
     calc
@@ -674,14 +674,14 @@ theorem section53CutoffProductCoeff_origin_le_dimensional
       _ =
         (((128 * quantitativeCubeCutoffHessianConst d +
                 24 * quantitativeCubeCutoffGradientConst d) * (2 : ℝ) ^ d) *
-          (((d : ℝ) * cubeNeumannW22CalderonZygmundConstant d *
+          (((d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d *
                 (3 : ℝ) ^ ((d : ℝ) + 1)) * (d : ℝ)) *
             ((d : ℝ) * (3 : ℝ) ^ ((d : ℝ) + 1))) := hdim
   have hRhs_nonneg :
       0 ≤
         (((128 * quantitativeCubeCutoffHessianConst d +
                 24 * quantitativeCubeCutoffGradientConst d) * (2 : ℝ) ^ d) *
-          (((d : ℝ) * cubeNeumannW22CalderonZygmundConstant d *
+          (((d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d *
                 (3 : ℝ) ^ ((d : ℝ) + 1)) * (d : ℝ)) *
             ((d : ℝ) * (3 : ℝ) ^ ((d : ℝ) + 1))) := by
     rw [← hdim]
@@ -693,16 +693,16 @@ theorem section53CutoffProductCoeff_origin_le_dimensional
 normalized quantitative cutoff.  The remaining hypotheses are law-facing
 integrability/moment facts for the Ch4 observables. -/
 theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpectedRHSAtScale_of_normalizedCutoff
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     {s t : ℝ} (hs : 0 < s) (hs_lt_one : s < 1) (ht : 0 < t)
     (hst : s + t ≤ 1)
     (p q p0 q0 : Vec d)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hJ : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P)
     (hGradSq :
       Integrable
         (fun a : RegCoeffField d =>
@@ -880,9 +880,9 @@ from the Section 5.2 `(P4)` integrability theorem and Ch4 stationarity.  The
 remaining inputs are exactly the two square-integrability facts for the scalar
 maximizer weak norms. -/
 theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpectedRHSAtScale_of_normalizedCutoff_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     {s t : ℝ} (hs : 0 < s) (hs_lt_one : s < 1) (ht : 0 < t)
@@ -921,8 +921,8 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpecte
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d m)) P := by
     simpa [Int.toNat_of_nonneg hm_nonneg] using hBlockM_nat
   have hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P :=
-    hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P :=
+    hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
       (originCube d m) p q hBlockM
   have hBlockK_nat :
       Integrable
@@ -933,14 +933,14 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpecte
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d k)) P := by
     simpa [Int.toNat_of_nonneg hk_nonneg] using hBlockK_nat
   have hJ : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P := by
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P := by
     intro R hR
     have hBlockR :
         Integrable (Ch04.coarseFullBlockMatrixAtCube R) P :=
       hP.integrable_coarseFullBlockMatrixAtCube_of_mem_descendantsAtScale_originCube
         hstat hk_nonneg hkm hR hBlockK
     exact
-      hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+      hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
         R p q hBlockR
   exact
     expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpectedRHSAtScale_of_normalizedCutoff

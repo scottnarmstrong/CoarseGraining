@@ -33,36 +33,36 @@ theorem rpow_three_neg_beta_nat_le_one {β : ℝ} (hβ : 0 ≤ β)
 
 /-- The shifted high-moment quantity in Section 5.5. -/
 noncomputable def shiftedWidetildeThetaAtScale {d : ℕ} [NeZero d]
-    (P : Ch04.CoeffLaw d) (n : ℤ)
+    (P : Ch04.RestrictionCoeffLaw d) (n : ℤ)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (η : ℝ) : ℝ :=
   Ch04.widetildeThetaAtScale P n (hP4.sUpper + η) (hP4.sLower + η) hP4.xi
 
 /-- The beta-specialized shifted high-moment quantity used internally in
 Section 5.5. -/
 noncomputable def betaShiftedWidetildeThetaAtScale {d : ℕ} [NeZero d]
-    (P : Ch04.CoeffLaw d) (n : ℤ)
+    (P : Ch04.RestrictionCoeffLaw d) (n : ℤ)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   shiftedWidetildeThetaAtScale P n hP4 (section53CoarseFluctuationBeta hP4)
 
 private theorem sUpper_add_beta_pos {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < hP4.sUpper + section53CoarseFluctuationBeta hP4 := by
   exact add_pos hP4.sUpper_pos (section53CoarseFluctuationBeta_pos hP4)
 
 private theorem sLower_add_beta_pos {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < hP4.sLower + section53CoarseFluctuationBeta hP4 := by
   exact add_pos hP4.sLower_pos (section53CoarseFluctuationBeta_pos hP4)
 
 private theorem sUpper_add_beta_lt_one {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sUpper + section53CoarseFluctuationBeta hP4 < 1 := by
   have hsum := sUpper_add_sLower_add_two_beta_le_one hP4
   have hlower_pos := sLower_add_beta_pos hP4
   nlinarith
 
 private theorem sLower_add_beta_lt_one {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sLower + section53CoarseFluctuationBeta hP4 < 1 := by
   have hsum := sUpper_add_sLower_add_two_beta_le_one hP4
   have hupper_pos := sUpper_add_beta_pos hP4
@@ -94,61 +94,61 @@ theorem section52TwoExponentMomentBoundCoeff_nonneg
 
 /-- The shifted high-moment quantity is compatible with Ch4 scale
 normalization. -/
-theorem betaShiftedWidetildeThetaAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem betaShiftedWidetildeThetaAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (k m : ℕ) :
-    betaShiftedWidetildeThetaAtScale (Ch04.scaleNormalizedLaw k P) (m : ℤ)
+    betaShiftedWidetildeThetaAtScale (Ch04.restrictionScaleNormalizedLaw k P) (m : ℤ)
         (hP4.scaleNormalized hP hStruct k) =
       betaShiftedWidetildeThetaAtScale P ((k + m : ℕ) : ℤ) hP4 := by
   have hβ :
       section53CoarseFluctuationBeta (hP4.scaleNormalized hP hStruct k) =
         section53CoarseFluctuationBeta hP4 := rfl
   have h :=
-    Ch04.widetildeThetaAtScale_scaleNormalizedLaw hP k m
+    Ch04.widetildeThetaAtScale_restrictionScaleNormalizedLaw hP k m
       (sUpper_add_beta_pos hP4) (sLower_add_beta_pos hP4) hP4.xi
   simpa [betaShiftedWidetildeThetaAtScale, hβ,
     QuantitativeCoarseGrainedEllipticity.scaleNormalized] using h
 
 /-- Scale normalization sends scale `0` to the original scale `k` for the
 unshifted manuscript `widetildeTheta`. -/
-theorem widetildeThetaAtScale_zero_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem widetildeThetaAtScale_zero_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (k : ℕ) :
-    widetildeThetaAtScale (Ch04.scaleNormalizedLaw k P) (0 : ℤ)
+    widetildeThetaAtScale (Ch04.restrictionScaleNormalizedLaw k P) (0 : ℤ)
         (hP4.scaleNormalized hP hStruct k) =
       widetildeThetaAtScale P (k : ℤ) hP4 := by
   have h :=
-    Ch04.widetildeThetaAtScale_scaleNormalizedLaw hP k 0
+    Ch04.widetildeThetaAtScale_restrictionScaleNormalizedLaw hP k 0
       hP4.sUpper_pos hP4.sLower_pos hP4.xi
   simpa [widetildeThetaAtScale,
     QuantitativeCoarseGrainedEllipticity.scaleNormalized] using h
 
 /-- Scale normalization sends scale `0` to the original scale `k` for the
 structural scalar contrast. -/
-theorem thetaAtScale_zero_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (k : ℕ) :
+theorem thetaAtScale_zero_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (k : ℕ) :
     (hP.scaleNormalized k).thetaAtScale (hStruct.scaleNormalized k) (0 : ℤ) =
       hP.thetaAtScale hStruct (k : ℤ) := by
-  simpa using hP.thetaAtScale_scaleNormalizedLaw hStruct k 0
+  simpa using hP.thetaAtScale_restrictionScaleNormalizedLaw hStruct k 0
 
 /-- Dilation rewrite for the shifted quantity on a window `[k,n]`. -/
-theorem betaShiftedWidetildeThetaAtScale_scaleNormalizedLaw_of_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem betaShiftedWidetildeThetaAtScale_restrictionScaleNormalizedLaw_of_le
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k n : ℕ} (hkn : k ≤ n) :
-    betaShiftedWidetildeThetaAtScale (Ch04.scaleNormalizedLaw k P)
+    betaShiftedWidetildeThetaAtScale (Ch04.restrictionScaleNormalizedLaw k P)
         ((n - k : ℕ) : ℤ) (hP4.scaleNormalized hP hStruct k) =
       betaShiftedWidetildeThetaAtScale P (n : ℤ) hP4 := by
   simpa [Nat.add_sub_of_le hkn] using
-    betaShiftedWidetildeThetaAtScale_scaleNormalizedLaw
+    betaShiftedWidetildeThetaAtScale_restrictionScaleNormalizedLaw
       hP hStruct hP4 k (n - k)
 
 private theorem annealedMomentRoot_le_const_add_of_nonneg_le_of_error_pow_integrable
-    {d : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {ξ : ℕ} {X E : RegCoeffField d → ℝ} {A : ℝ}
     (hξ : 1 ≤ ξ) (hA_nonneg : 0 ≤ A)
     (hX_nonneg : ∀ a, 0 ≤ X a)
@@ -190,8 +190,8 @@ private theorem annealedMomentRoot_le_const_add_of_nonneg_le_of_error_pow_integr
       hX_meas hE_meas hX_abs_pow_int hE_abs_pow_int
 
 private theorem LambdaMomentAtScale_le_barSigma_zero_add_positiveExcessMomentAtScale_of_excess_pow_integrable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {m : ℤ} {s : ℝ} {ξ : ℕ}
     (hξ : 1 ≤ ξ) (hs : 0 < s)
     (hBarSigma0_nonneg : 0 ≤ hP.barSigmaAtScale hStruct 0)
@@ -232,8 +232,8 @@ private theorem LambdaMomentAtScale_le_barSigma_zero_add_positiveExcessMomentAtS
       hX_meas hE_meas hE_pow_int
 
 private theorem lambdaInvMomentAtScale_le_barSigmaStar_zero_inv_add_positiveExcessMomentAtScale_of_excess_pow_integrable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {m : ℤ} {s : ℝ} {ξ : ℕ}
     (hξ : 1 ≤ ξ) (hs : 0 < s)
     (hBarSigmaStar0_inv_nonneg : 0 ≤ (hP.barSigmaStarAtScale hStruct 0)⁻¹)
@@ -275,8 +275,8 @@ private theorem lambdaInvMomentAtScale_le_barSigmaStar_zero_inv_add_positiveExce
       hX_meas hE_meas hE_pow_int
 
 private theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_positiveExcess_products
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {m : ℤ} {rUpper rLower : ℝ}
     (hrUpper_pos : 0 < rUpper) (hrLower_pos : 0 < rLower)
@@ -349,7 +349,7 @@ private theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_positiveEx
     _ ≤ b0 * s0 + UE * l0 + LE * L0 + UE * LE := hExpand
     _ =
         thetaAtScale hP hStruct 0 + UE * l0 + LE * L0 + UE * LE := by
-      simp [thetaAtScale, Ch04.LawCarrier.thetaAtScale, b0, s0]
+      simp [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, b0, s0]
     _ =
         thetaAtScale hP hStruct 0 +
           LambdaPositiveExcessMomentAtScale P m rUpper hP4.xi hP hStruct *
@@ -361,8 +361,8 @@ private theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_positiveEx
       simp [UE, LE, L0, l0]
 
 private theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_positiveExcess_products_of_integrable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hBlock :
       ∀ l : ℕ,
@@ -406,16 +406,16 @@ private theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_positiveEx
   letI : IsProbabilityMeasure P := hP.isProbability
   have hBarSigma0_nonneg : 0 ≤ hP.barSigmaAtScale hStruct 0 := by
     rw [hP.barSigmaAtScale_eq_barBAtScale hStruct (0 : ℤ)]
-    simpa [Ch04.LawCarrier.barBAtScale] using
-      Ch04.LawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
+    simpa [Ch04.RestrictionLawCarrier.barBAtScale] using
+      Ch04.RestrictionLawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
         (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct (0 : ℤ))
         (hBlock 0)
   have hBarSigmaStar0_inv_nonneg :
       0 ≤ (hP.barSigmaStarAtScale hStruct 0)⁻¹ := by
     have hstar := hP.barSigmaStarAtScale_eq_inv_barSigmaStarInvAtScale hStruct (0 : ℤ)
     rw [hstar, inv_inv]
-    simpa [Ch04.LawCarrier.barSigmaStarInvAtScale] using
-      (Ch04.LawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
+    simpa [Ch04.RestrictionLawCarrier.barSigmaStarInvAtScale] using
+      (Ch04.RestrictionLawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
         (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct (0 : ℤ))
         (hBlock 0)).le
   have hUpper0 :
@@ -463,8 +463,8 @@ private theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_positiveEx
       hBarSigma0_nonneg
 
 private theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_error_of_positiveExcess_bounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {m : ℤ} {rUpper rLower coeffUpper coeffLower finalCoeff : ℝ}
     (hProduct :
@@ -548,8 +548,8 @@ private theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_error_of_p
       simp [widetildeThetaAtScale, Ch04.widetildeThetaAtScale, L0, l0]
 
 private theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_error_of_integrable_positiveExcess_bounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hBlock :
       ∀ l : ℕ,
@@ -616,8 +616,8 @@ private theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_error_of_i
       hUpperExcess hLowerExcess hCoeff
 
 theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_error_of_P4_positiveExcess_bounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {rUpper rLower : ℝ}
     (hrUpper_gt : hP4.sUpper < rUpper) (hrUpper_lt_one : rUpper < 1)
@@ -657,8 +657,8 @@ theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_error_of_P4_positi
 theorem betaShiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_section52TwoExponent_error
     {d : ℕ} [NeZero d] :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
         (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ),
         betaShiftedWidetildeThetaAtScale P (m : ℤ) hP4 ≤
           thetaAtScale hP hStruct 0 +
@@ -719,7 +719,7 @@ theorem betaShiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_section52TwoEx
   simpa [betaShiftedWidetildeThetaAtScale, β, coeffUpper, coeffLower] using hShifted
 
 theorem section52TwoExponentMomentBoundCoeff_upper_beta_shift_le_loss_beta_decay
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d} {C : ℝ}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d} {C : ℝ}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (hC_nonneg : 0 ≤ C)
     (m : ℕ) :
     let β := section53CoarseFluctuationBeta hP4
@@ -744,7 +744,7 @@ theorem section52TwoExponentMomentBoundCoeff_upper_beta_shift_le_loss_beta_decay
     mul_le_mul_of_nonneg_left hdecay hpref_nonneg
 
 theorem section52TwoExponentMomentBoundCoeff_lower_beta_shift_le_loss_beta_decay
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d} {C : ℝ}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d} {C : ℝ}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (hC_nonneg : 0 ≤ C)
     (m : ℕ) :
     let β := section53CoarseFluctuationBeta hP4

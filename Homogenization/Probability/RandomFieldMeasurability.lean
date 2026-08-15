@@ -296,46 +296,56 @@ theorem localFiniteTestObservable_eq_of_ae_eq {d : ℕ} {ι : Type} {a b : Coeff
   filter_upwards [h] with x hx
   simp [hx]
 
-theorem mem_iff_of_measurableSet_localSigma_of_localAgreementOn {d : ℕ}
+theorem mem_iff_of_measurableSet_pointwiseLocalSigma_of_pointwiseAgreementOn {d : ℕ}
     {U : Set (Vec d)} {s : Set (CoeffField d)}
-    (hs : @MeasurableSet (CoeffField d) (LocalSigma U) s) {a b : CoeffField d}
-    (hab : LocalAgreementOn U a b) :
+    (hs : @MeasurableSet (CoeffField d) (PointwiseLocalSigma U) s) {a b : CoeffField d}
+    (hab : PointwiseAgreementOn U a b) :
     a ∈ s ↔ b ∈ s := by
   let C : Set (Set (CoeffField d)) :=
-    {s | IsLocalEvent U s}
+    {s | IsPointwiseLocalEvent U s}
   have hC : ∀ t ∈ C, a ∈ t ↔ b ∈ t := by
     intro t ht
     exact ht hab
   have hsC : @MeasurableSet (CoeffField d) (MeasurableSpace.generateFrom C) s := by
-    simpa [LocalSigma, C] using hs
+    simpa [PointwiseLocalSigma, C] using hs
   exact (MeasurableSpace.forall_generateFrom_mem_iff_mem_iff (S := C) (x := a) (y := b)).2
     hC s hsC
+
+theorem mem_iff_of_measurableSet_localSigma_of_localAgreementOn {d : ℕ}
+    {U : Set (Vec d)} {s : Set (CoeffField d)}
+    (hs : @MeasurableSet (CoeffField d) (LocalSigma U) s) {a b : CoeffField d}
+    (hab : LocalAgreementOn U a b) :
+    a ∈ s ↔ b ∈ s :=
+  mem_iff_of_measurableSet_pointwiseLocalSigma_of_pointwiseAgreementOn hs hab
+
+theorem mem_iff_of_measurableSet_pointwiseLocalSigma_of_eqOn {d : ℕ} {U : Set (Vec d)}
+    {s : Set (CoeffField d)} (hs : @MeasurableSet (CoeffField d) (PointwiseLocalSigma U) s)
+    {a b : CoeffField d} (h : ∀ x, x ∈ U → a x = b x) :
+    a ∈ s ↔ b ∈ s :=
+  mem_iff_of_measurableSet_pointwiseLocalSigma_of_pointwiseAgreementOn hs h
 
 theorem mem_iff_of_measurableSet_localSigma_of_eqOn {d : ℕ} {U : Set (Vec d)}
     {s : Set (CoeffField d)} (hs : @MeasurableSet (CoeffField d) (LocalSigma U) s)
     {a b : CoeffField d} (h : ∀ x, x ∈ U → a x = b x) :
     a ∈ s ↔ b ∈ s :=
-  mem_iff_of_measurableSet_localSigma_of_localAgreementOn hs h
+  mem_iff_of_measurableSet_pointwiseLocalSigma_of_eqOn hs h
 
-/-- A sample-space-valued coefficient field is locally measurable on `U` if it
-is measurable with codomain `LocalSigma U`. -/
-def IsLocalSigmaMeasurableOn {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
+/-- A sample-space-valued coefficient field is pointwise-locally measurable on
+`U` if it is measurable with codomain `PointwiseLocalSigma U`. -/
+def IsPointwiseLocalSigmaMeasurableOn {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
     (A : Ω → CoeffField d) (U : Set (Vec d)) : Prop :=
-  @Measurable Ω (CoeffField d) _ (LocalSigma U) A
+  @Measurable Ω (CoeffField d) _ (PointwiseLocalSigma U) A
+
+/-- Compatibility name for `IsPointwiseLocalSigmaMeasurableOn`. -/
+abbrev IsLocalSigmaMeasurableOn {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
+    (A : Ω → CoeffField d) (U : Set (Vec d)) : Prop :=
+  IsPointwiseLocalSigmaMeasurableOn A U
 
 /-- A sample-space-valued coefficient field is restriction-measurable on `U` if
 it is measurable with codomain `RestrictionSigma U`. -/
 def IsRestrictionSigmaMeasurableOn {Ω : Type*} [MeasurableSpace Ω] {d : ℕ}
     (A : Ω → CoeffField d) (U : Set (Vec d)) : Prop :=
   @Measurable Ω (CoeffField d) _ (RestrictionSigma U) A
-
-/-- Unit-range dependence formulated for the restriction sigma-algebras induced
-by `restrictCoeffField`. This is the dependence notion naturally matched to
-the current pointwise-local observable interface. -/
-def IsRestrictionUnitRangeDependent {d : ℕ}
-    (P : MeasureTheory.Measure (CoeffField d)) : Prop :=
-  ∀ U V : Set (Vec d), AreUnitSeparated U V →
-    ProbabilityTheory.Indep (RestrictionSigma U) (RestrictionSigma V) P
 
 theorem AreUnitSeparated.symm {d : ℕ} {U V : Set (Vec d)}
     (hUV : AreUnitSeparated U V) :
@@ -500,14 +510,24 @@ theorem iIndep_restrictionSigma_descendantsAtScaleScaleColorClass_of_isRestricti
     (iIndep_restrictionSigma_of_isRestrictionUnitRangeDependent
       (d := d) (ι := I) (U := U) hP hsep)
 
-theorem IsLocalSigmaMeasurableOn.measurable_localTestObservable
+theorem IsPointwiseLocalSigmaMeasurableOn.measurable_localTestObservable
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} {A : Ω → CoeffField d} {U : Set (Vec d)}
-    (hA : IsLocalSigmaMeasurableOn A U)
+    (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (e e' : Vec d) {φ : Vec d → ℝ} (hφ_cont : ContDiff ℝ (⊤ : ℕ∞) φ)
     (hφ_compact : HasCompactSupport φ) (hφ_support : tsupport φ ⊆ U) :
     Measurable fun ω => localTestObservable e e' φ (A ω) := by
   exact
     (measurable_localTestObservable_localSigma (U := U) e e' hφ_cont hφ_compact hφ_support).comp
       hA
+
+/-- Compatibility spelling for the pointwise-local measurability theorem. -/
+theorem IsLocalSigmaMeasurableOn.measurable_localTestObservable
+    {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} {A : Ω → CoeffField d} {U : Set (Vec d)}
+    (hA : IsLocalSigmaMeasurableOn A U)
+    (e e' : Vec d) {φ : Vec d → ℝ} (hφ_cont : ContDiff ℝ (⊤ : ℕ∞) φ)
+    (hφ_compact : HasCompactSupport φ) (hφ_support : tsupport φ ⊆ U) :
+    Measurable fun ω => localTestObservable e e' φ (A ω) :=
+  IsPointwiseLocalSigmaMeasurableOn.measurable_localTestObservable hA e e' hφ_cont
+    hφ_compact hφ_support
 
 end Homogenization

@@ -15,27 +15,27 @@ open scoped Matrix.Norms.Elementwise
 
 noncomputable section
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 /- Annealed response subadditivity from the a.e. deterministic comparison,
 finite descendant integrability, and stationarity. -/
 private theorem annealedResponseJAtScale_le_of_ae_descendantsAverage
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hstat : StationaryLaw P) {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hstat : RestrictionStationaryLaw P) {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
     (p q : Vec d)
-    (hParentInt : Integrable (responseJObservableCubeSet (originCube d m) p q) P)
+    (hParentInt : Integrable (restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hDescInt :
       ∀ R, R ∈ descendantsAtScale (originCube d m) n →
-        Integrable (responseJObservableCubeSet R p q) P)
+        Integrable (restrictionResponseJObservableCubeSet R p q) P)
     (hSub :
-      responseJObservableCubeSet (originCube d m) p q ≤ᵐ[P]
+      restrictionResponseJObservableCubeSet (originCube d m) p q ≤ᵐ[P]
         fun a : RegCoeffField d =>
           descendantsAverage (originCube d m) (Int.toNat (m - n))
-            (fun R => responseJObservableCubeSet R p q a)) :
+            (fun R => restrictionResponseJObservableCubeSet R p q a)) :
     annealedResponseJAtScale P m p q ≤ annealedResponseJAtScale P n p q := by
   have hDescIntDepth :
       ∀ R, R ∈ descendantsAtDepth (originCube d m) (Int.toNat (m - n)) →
-        Integrable (responseJObservableCubeSet R p q) P := by
+        Integrable (restrictionResponseJObservableCubeSet R p q) P := by
     intro R hR
     exact hDescInt R (by
       simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using hR)
@@ -43,17 +43,17 @@ private theorem annealedResponseJAtScale_le_of_ae_descendantsAverage
       Integrable
         (fun a : RegCoeffField d =>
           descendantsAverage (originCube d m) (Int.toNat (m - n))
-            (fun R => responseJObservableCubeSet R p q a)) P :=
-    integrable_descendantsAverage_responseJObservableCubeSet hDescIntDepth
+            (fun R => restrictionResponseJObservableCubeSet R p q a)) P :=
+    integrable_descendantsAverage_restrictionResponseJObservableCubeSet hDescIntDepth
   calc
     annealedResponseJAtScale P m p q
-        = ∫ a, responseJObservableCubeSet (originCube d m) p q a ∂P := rfl
+        = ∫ a, restrictionResponseJObservableCubeSet (originCube d m) p q a ∂P := rfl
     _ ≤ ∫ a,
           descendantsAverage (originCube d m) (Int.toNat (m - n))
-            (fun R => responseJObservableCubeSet R p q a) ∂P :=
+            (fun R => restrictionResponseJObservableCubeSet R p q a) ∂P :=
         integral_mono_ae hParentInt hAvgInt hSub
     _ = expectedResponseJCubeSet P (originCube d n) p q :=
-        hP.integral_descendantsAverage_responseJObservableCubeSet_eq_originCube_of_stationary
+        hP.integral_descendantsAverage_restrictionResponseJObservableCubeSet_eq_originCube_of_stationary
           hstat hn hnm p q hDescInt
     _ = annealedResponseJAtScale P n p q := rfl
 
@@ -61,23 +61,23 @@ private theorem annealedResponseJAtScale_le_of_ae_descendantsAverage
 a.e. descendant comparison; callers only provide the integrability and
 stationarity hypotheses used by the expectation step. -/
 theorem annealedResponseJAtScale_le
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hstat : StationaryLaw P) {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hstat : RestrictionStationaryLaw P) {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
     (p q : Vec d)
-    (hParentInt : Integrable (responseJObservableCubeSet (originCube d m) p q) P)
+    (hParentInt : Integrable (restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hDescInt :
       ∀ R, R ∈ descendantsAtScale (originCube d m) n →
-        Integrable (responseJObservableCubeSet R p q) P) :
+        Integrable (restrictionResponseJObservableCubeSet R p q) P) :
     annealedResponseJAtScale P m p q ≤ annealedResponseJAtScale P n p q :=
   hP.annealedResponseJAtScale_le_of_ae_descendantsAverage hstat hn hnm p q
     hParentInt hDescInt
-    (hP.responseJObservableCubeSet_le_descendantsAverage_ae hnm p q)
+    (hP.restrictionResponseJObservableCubeSet_le_descendantsAverage_ae hnm p q)
 
 /-- Entrywise expectation of the deterministic descendant-average coarse block
 matrix is the annealed origin-cube block matrix at the child scale. -/
 private theorem integral_descendantsAverageBlockMat_entry_eq_annealedBlockMatrixAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hstat : StationaryLaw P) {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hstat : RestrictionStationaryLaw P) {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
     (hDescInt :
       ∀ R, R ∈ descendantsAtScale (originCube d m) n →
         ∀ α β, Integrable
@@ -159,8 +159,8 @@ private theorem integral_descendantsAverageBlockMat_entry_eq_annealedBlockMatrix
 a.e. block comparison and the stationarity step; callers provide only the
 entrywise integrability needed to take expectations. -/
 theorem blockMatLoewnerLE_annealedBlockMatrixAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hstat : StationaryLaw P) {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hstat : RestrictionStationaryLaw P) {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
     (hParentInt :
       ∀ α β, Integrable
         (fun a : RegCoeffField d =>
@@ -282,12 +282,12 @@ theorem blockMatLoewnerLE_annealedBlockMatrixAtScale
     filter_upwards [hP.coarseBlockMatrix_le_descendantsAverageBlockMat_ae hnm] with a ha
     simpa [parentBlock, childAverageBlock, Q, j] using ha X
 
-end LawCarrier
+end RestrictionLawCarrier
 
 /-- The starred annealed block monotonicity follows from annealed block
 monotonicity by the built-in block reflection. -/
 theorem blockMatLoewnerLE_annealedStarredBlockMatrixInvAtScale_of_block
-    {d : ℕ} {P : CoeffLaw d} {n m : ℤ}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {n m : ℤ}
     (hBlock : BlockMatLoewnerLE (annealedBlockMatrixAtScale P m)
       (annealedBlockMatrixAtScale P n)) :
     BlockMatLoewnerLE (annealedStarredBlockMatrixInvAtScale P m)
@@ -297,7 +297,7 @@ theorem blockMatLoewnerLE_annealedStarredBlockMatrixInvAtScale_of_block
 
 /-- Matrix monotonicity of `σ_*⁻¹` follows from annealed block monotonicity. -/
 theorem matLoewnerLE_annealedSigmaStarInvAtScale_of_block
-    {d : ℕ} {P : CoeffLaw d} {n m : ℤ}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {n m : ℤ}
     (hBlock : BlockMatLoewnerLE (annealedBlockMatrixAtScale P m)
       (annealedBlockMatrixAtScale P n)) :
     MatLoewnerLE (annealedSigmaStarInvAtScale P m)
@@ -308,7 +308,7 @@ theorem matLoewnerLE_annealedSigmaStarInvAtScale_of_block
 
 /-- Matrix monotonicity of `b` follows from annealed block monotonicity. -/
 theorem matLoewnerLE_annealedBAtScale_of_block
-    {d : ℕ} {P : CoeffLaw d} {n m : ℤ}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {n m : ℤ}
     (hBlock : BlockMatLoewnerLE (annealedBlockMatrixAtScale P m)
       (annealedBlockMatrixAtScale P n)) :
     MatLoewnerLE (annealedBAtScale P m) (annealedBAtScale P n) := by
@@ -318,7 +318,7 @@ theorem matLoewnerLE_annealedBAtScale_of_block
 /-- Scalar monotonicity of the primitive inverse-star coefficient from matrix
 monotonicity. -/
 private theorem barSigmaStarInv_le_of_annealedSigmaStarInvAtScale_mono
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {n m : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n m : ℤ}
     (hm : Internal.AnnealedPrimitiveScalarizationData (d := d) P m)
     (hn : Internal.AnnealedPrimitiveScalarizationData (d := d) P n)
     (hMono : MatLoewnerLE (annealedSigmaStarInvAtScale P m)
@@ -329,7 +329,7 @@ private theorem barSigmaStarInv_le_of_annealedSigmaStarInvAtScale_mono
 /-- Scalar monotonicity of the primitive upper-left coefficient from matrix
 monotonicity. -/
 private theorem barB_le_of_annealedBAtScale_mono
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {n m : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n m : ℤ}
     (hm : Internal.AnnealedPrimitiveScalarizationData (d := d) P m)
     (hn : Internal.AnnealedPrimitiveScalarizationData (d := d) P n)
     (hMono : MatLoewnerLE (annealedBAtScale P m) (annealedBAtScale P n)) :
@@ -340,7 +340,7 @@ private theorem barB_le_of_annealedBAtScale_mono
 `\barσ_{*,n} ≤ \barσ_{*,m} ≤ \barσ_m ≤ \barσ_n` from primitive
 scalarization data and matrix monotonicity. -/
 private theorem scalar_chain_of_primitive_matrix_mono
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {n m : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n m : ℤ}
     (hScal : Internal.AnnealedScalarizationTheory (d := d) P)
     (hm : Internal.AnnealedPrimitiveScalarizationData (d := d) P m)
     (hn : Internal.AnnealedPrimitiveScalarizationData (d := d) P n)
@@ -372,7 +372,7 @@ private theorem scalar_chain_of_primitive_matrix_mono
 `\barσ_{*,n} ≤ \barσ_{*,m} ≤ \barσ_m ≤ \barσ_n` from primitive
 scalarization data and annealed block monotonicity. -/
 theorem scalar_chain_of_primitive_block_mono
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {n m : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n m : ℤ}
     (hScal : Internal.AnnealedScalarizationTheory (d := d) P)
     (hm : Internal.AnnealedPrimitiveScalarizationData (d := d) P m)
     (hn : Internal.AnnealedPrimitiveScalarizationData (d := d) P n)
@@ -391,7 +391,7 @@ theorem scalar_chain_of_primitive_block_mono
 /-- Primitive contrast monotonicity from primitive scalarization data and
 matrix monotonicity. -/
 private theorem primitive_contrast_le_of_matrix_mono
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {n m : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n m : ℤ}
     (hm : Internal.AnnealedPrimitiveScalarizationData (d := d) P m)
     (hn : Internal.AnnealedPrimitiveScalarizationData (d := d) P n)
     (hStarMono : MatLoewnerLE (annealedSigmaStarInvAtScale P m)
@@ -408,7 +408,7 @@ private theorem primitive_contrast_le_of_matrix_mono
 /-- Primitive contrast monotonicity from primitive scalarization data and
 annealed block monotonicity. -/
 theorem primitive_contrast_le_of_block_mono
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {n m : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n m : ℤ}
     (hm : Internal.AnnealedPrimitiveScalarizationData (d := d) P m)
     (hn : Internal.AnnealedPrimitiveScalarizationData (d := d) P n)
     (hBlock : BlockMatLoewnerLE (annealedBlockMatrixAtScale P m)
@@ -424,7 +424,7 @@ theorem primitive_contrast_le_of_block_mono
 /-- Scalar contrast monotonicity from primitive scalarization data and annealed
 block monotonicity, stated for the public scalarization theory. -/
 theorem scalar_contrast_le_of_primitive_block_mono
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {n m : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n m : ℤ}
     (hScal : Internal.AnnealedScalarizationTheory (d := d) P)
     (hm : Internal.AnnealedPrimitiveScalarizationData (d := d) P m)
     (hn : Internal.AnnealedPrimitiveScalarizationData (d := d) P n)

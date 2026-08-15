@@ -18,8 +18,8 @@ Scalar monotonicity, response identities, and tau nonnegativity.
 /-- Scalar contrast monotonicity in Ch5 notation.  The only inputs are the
 note-level integrability facts used to take expectations. -/
 theorem thetaAtScale_mono_of_integrable_diagonalBlockNorms
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {n m : ℤ} (hn_nonneg : 0 ≤ n) (hnm : n ≤ m)
     (hParentBInt :
       Integrable (fun a : RegCoeffField d => coarseBBlockNorm (originCube d m) a) P)
@@ -50,22 +50,22 @@ theorem thetaAtScale_mono_of_integrable_diagonalBlockNorms
   let hPrim_m := Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct m
   let hPrim_n := Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct n
   have hStar_m_nonneg : 0 ≤ hPrim_m.barSigmaStarInv :=
-    (Ch04.LawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
+    (Ch04.RestrictionLawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
       hPrim_m hParentInt).le
   have hB_n_nonneg : 0 ≤ hPrim_n.barB :=
-    Ch04.LawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
+    Ch04.RestrictionLawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
       hPrim_n hChildBlockInt
   simpa [thetaAtScale, scalarization, hPrim_m, hPrim_n,
     Ch04.Internal.thetaAtScale_eq_scalarization_contrast] using
-    Ch04.LawCarrier.Internal.scalar_contrast_le_of_primitive_of_integrable_coarseFullBlockMatrixAtCube hP
+    Ch04.RestrictionLawCarrier.Internal.scalar_contrast_le_of_primitive_of_integrable_coarseFullBlockMatrixAtCube hP
       hStruct.stationary hn_nonneg hnm scalarization hPrim_m hPrim_n
       hParentInt hDescInt hStar_m_nonneg hB_n_nonneg
 
 /-- Scalar contrast monotonicity in Ch5 notation, with full coarse-block
 integrability as the only analytic input. -/
 theorem thetaAtScale_mono_of_integrable_coarseFullBlockMatrixAtCube
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {n m : ℤ} (hn_nonneg : 0 ≤ n) (hnm : n ≤ m)
     (hParentBlockInt :
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d m)) P)
@@ -80,27 +80,27 @@ theorem thetaAtScale_mono_of_integrable_coarseFullBlockMatrixAtCube
   let hPrim_m := Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct m
   let hPrim_n := Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct n
   have hStar_m_nonneg : 0 ≤ hPrim_m.barSigmaStarInv :=
-    (Ch04.LawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
+    (Ch04.RestrictionLawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
       hPrim_m hParentBlockInt).le
   have hB_n_nonneg : 0 ≤ hPrim_n.barB :=
-    Ch04.LawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
+    Ch04.RestrictionLawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
       hPrim_n hChildBlockInt
   simpa [thetaAtScale, scalarization, hPrim_m, hPrim_n,
     Ch04.Internal.thetaAtScale_eq_scalarization_contrast] using
-    Ch04.LawCarrier.Internal.scalar_contrast_le_of_primitive_of_integrable_coarseFullBlockMatrixAtCube hP
+    Ch04.RestrictionLawCarrier.Internal.scalar_contrast_le_of_primitive_of_integrable_coarseFullBlockMatrixAtCube hP
       hStruct.stationary hn_nonneg hnm scalarization hPrim_m hPrim_n
       hParentBlockInt hDescBlockInt hStar_m_nonneg hB_n_nonneg
 
-theorem tauAtScale_nonneg_of_integrable_responseJObservableCubeSet
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+theorem tauAtScale_nonneg_of_integrable_restrictionResponseJObservableCubeSet
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k n : ℤ} (hk_nonneg : 0 ≤ k) (hkn : k ≤ n)
     (p q : Vec d)
     (hParentInt :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d n) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d n) p q) P)
     (hDescInt :
       ∀ R, R ∈ descendantsAtScale (originCube d n) k →
-        Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+        Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     0 ≤ tauAtScale P n k p q := by
   have hle :
       Ch04.annealedResponseJAtScale P n p q ≤
@@ -112,8 +112,8 @@ theorem tauAtScale_nonneg_of_integrable_responseJObservableCubeSet
 /-- Nonnegativity of the annealed additivity defect, with response
 integrability derived from full coarse-block integrability. -/
 theorem tauAtScale_nonneg_of_integrable_coarseFullBlockMatrixAtCube
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k n : ℤ} (hk_nonneg : 0 ≤ k) (hkn : k ≤ n)
     (p q : Vec d)
     (hParentBlockInt :
@@ -122,17 +122,17 @@ theorem tauAtScale_nonneg_of_integrable_coarseFullBlockMatrixAtCube
       ∀ R, R ∈ descendantsAtScale (originCube d n) k →
         Integrable (Ch04.coarseFullBlockMatrixAtCube R) P) :
     0 ≤ tauAtScale P n k p q := by
-  exact tauAtScale_nonneg_of_integrable_responseJObservableCubeSet hP hstat
+  exact tauAtScale_nonneg_of_integrable_restrictionResponseJObservableCubeSet hP hstat
     hk_nonneg hkn p q
-    (hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+    (hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
       (originCube d n) p q hParentBlockInt)
     (fun R hR =>
-      hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+      hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
         R p q (hDescBlockInt R hR))
 
 private theorem annealedResponseJAtScale_eq_expectedJScalarFormula_of_primitive
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P) {n : ℤ}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P) {n : ℤ}
     (primitive : Ch04.Internal.AnnealedPrimitiveScalarizationData (d := d) P n)
     (p q : Vec d)
     (hBlock : Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d n)) P) :
@@ -163,11 +163,11 @@ private theorem annealedResponseJAtScale_eq_expectedJScalarFormula_of_primitive
     funext i
     simp [matVecMul]
   have hSource :=
-    hP.integral_responseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
+    hP.integral_restrictionResponseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
       (originCube d n) p q hBlock
   calc
     Ch04.annealedResponseJAtScale P n p q =
-        ∫ a, Ch04.responseJObservableCubeSet (originCube d n) p q a ∂P := rfl
+        ∫ a, Ch04.restrictionResponseJObservableCubeSet (originCube d n) p q a ∂P := rfl
     _ = (1 / 2 : ℝ) * vecDot q
           (matVecMul (Ch04.annealedBlockMatrix P (cubeSet (originCube d n))).lowerRight q) -
         vecDot p q -
@@ -178,15 +178,15 @@ private theorem annealedResponseJAtScale_eq_expectedJScalarFormula_of_primitive
     _ = expectedJScalarFormula hP hStruct n p q := by
         rw [hLowerLeftZero, hStar, hB]
         simp [expectedJScalarFormula,
-          Ch04.LawCarrier.barSigmaAtScale, Ch04.LawCarrier.barSigmaStarAtScale,
+          Ch04.RestrictionLawCarrier.barSigmaAtScale, Ch04.RestrictionLawCarrier.barSigmaStarAtScale,
           Ch04.Internal.AnnealedPrimitiveScalarizationData.barSigma_eq_barB scalarization primitive,
           Ch04.Internal.AnnealedPrimitiveScalarizationData.barSigmaStar_eq_inv_barSigmaStarInv
             scalarization primitive,
           smul_matVecMul, hOneQ, hOneP, hZeroP, vecDot_smul_right, vecDot_zero_right]
 
 private theorem tauAtScale_eq_tauScalarFormula_of_primitive
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P) {n k : ℤ}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P) {n k : ℤ}
     (primitive_n : Ch04.Internal.AnnealedPrimitiveScalarizationData (d := d) P n)
     (primitive_k : Ch04.Internal.AnnealedPrimitiveScalarizationData (d := d) P k)
     (p q : Vec d)
@@ -212,8 +212,8 @@ private theorem tauAtScale_eq_tauScalarFormula_of_primitive
 /-- Note-facing scalar response formula under the Chapter 4 law and structural
 assumptions. -/
 theorem annealedResponseJAtScale_eq_expectedJScalarFormula
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (n : ℤ) (p q : Vec d)
     (hBlock : Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d n)) P) :
     Ch04.annealedResponseJAtScale P n p q =
@@ -224,8 +224,8 @@ theorem annealedResponseJAtScale_eq_expectedJScalarFormula
 
 /-- Note-facing scalar formula for `τ_{n,k}`. -/
 theorem tauAtScale_eq_tauScalarFormula
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (n k : ℤ) (p q : Vec d)
     (hBlock_n : Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d n)) P)
     (hBlock_k : Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d k)) P) :
@@ -243,8 +243,8 @@ All integrability needed for scalar monotonicity, response identities, and
 moment-factor comparison is derived internally from the law carrier, structural
 law, and `(P4)` hypotheses. -/
 theorem scalarPreliminaries_homogenizationScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (n m k : ℕ) (hnm : n ≤ m) (hkn : k ≤ n) (p q : Vec d) :
     1 ≤ thetaAtScale hP hStruct (m : ℤ) ∧

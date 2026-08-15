@@ -57,8 +57,8 @@ theorem blockJTraceAverageWithNormalizers_eq_sum_descendantsAverage
           rw [Finset.mul_sum]
 
 theorem integral_blockJTraceAverageWithNormalizers_eq_sum_originCube_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (child parent : ℕ) (hchild_parent : child ≤ parent)
     (S T : FullBlockMat d) :

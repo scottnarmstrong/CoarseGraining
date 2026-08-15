@@ -79,7 +79,7 @@ identities, then spends the geometric summation loss as `(1 - 2t)^{-1}`. -/
 private theorem coarseCaccioppoliRHSZeroTraceValueBridge
     {d : ℕ} [NeZero d] :
     CoarseCaccioppoliRHSZeroTraceValueBridge d := by
-  let Kd : ℝ := (d : ℝ) * cubeNeumannW22CalderonZygmundConstant d *
+  let Kd : ℝ := (d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d *
       (3 : ℝ) ^ ((d : ℝ) + 1) * (d : ℝ) +
     2 * (3 : ℝ) ^ ((d : ℝ) + 1)
   let C : ℝ := 5 * Kd ^ 2 + 1

@@ -21,7 +21,7 @@ namespace Homogenization
 
 open Homogenization MeasureTheory
 open Homogenization.Book.Ch04
-  (CoeffLaw LawCarrier StructuralLaw annealedBlockMatrixAtScale
+  (RestrictionCoeffLaw RestrictionLawCarrier RestrictionStructuralLaw annealedBlockMatrixAtScale
     scalarAnnealedBlockMatrixAtScale scalarFullBlockInvSqrtDiag)
 open Homogenization.Book.Ch05.Section54.VarianceBoundGoodScale
   (annealedBlockMatrixAtScale_eq_scalarAnnealedBlockMatrixAtScale
@@ -33,8 +33,8 @@ variable {d : ℕ}
 /-- **Probe → centered block quadratic.**  A quadratic probe of the normalized
 fluctuation matrix `H = D·(A_m − Ā_m)·D` equals the centered block quadratic
 form of the diagonally rescaled probe vector `w = ofFullBlockVec (D q)`. -/
-theorem fluctuation_probe_eq_centered_blockQuadratic [NeZero d] {L : CoeffLaw d}
-    (hP : LawCarrier L) (hStruct : StructuralLaw L) (m : ℤ) (q : FullBlockVec d)
+theorem fluctuation_probe_eq_centered_blockQuadratic [NeZero d] {L : RestrictionCoeffLaw d}
+    (hP : RestrictionLawCarrier L) (hStruct : RestrictionStructuralLaw L) (m : ℤ) (q : FullBlockVec d)
     (a : RegCoeffField d) :
     fullBlockQuadratic
         (fullBlockNormalizedFluctuationMatrix hP hStruct m (cubeSet (originCube d m)) a) q
@@ -113,9 +113,9 @@ private theorem mfactor_le [NeZero d] {b c Θ : ℝ}
 `64·Cd·Θ⁶·(3^m)^{-β}`, with `Cd` the dimension-only centered-moment constant. -/
 theorem probe_sq_integral_le [NeZero d] (hd : 3 ≤ d) :
     ∃ Cd : ℝ, 0 ≤ Cd ∧
-      ∀ {m : ℤ} (_hm : 0 ≤ m) {Θ : ℝ} (_hΘ : 1 ≤ Θ) {L : CoeffLaw d}
-        [IsProbabilityMeasure L] (hP : LawCarrier L) (hStruct : StructuralLaw L)
-        (hLaw : ThetaEllipticLaw Θ L) (q : FullBlockVec d) (_hq2 : dotProduct q q ≤ 4),
+      ∀ {m : ℤ} (_hm : 0 ≤ m) {Θ : ℝ} (_hΘ : 1 ≤ Θ) {L : RestrictionCoeffLaw d}
+        [IsProbabilityMeasure L] (hP : RestrictionLawCarrier L) (hStruct : RestrictionStructuralLaw L)
+        (_hLaw : ThetaEllipticLaw Θ L) (q : FullBlockVec d) (_hq2 : dotProduct q q ≤ 4),
       (∫ a, (fullBlockQuadratic
           (fullBlockNormalizedFluctuationMatrix hP hStruct m (cubeSet (originCube d m)) a) q)
             ^ 2 ∂L)
@@ -190,8 +190,8 @@ theorem probe_sq_integral_le [NeZero d] (hd : 3 ≤ d) :
 /-- **Probe second-moment integrability.**  Each squared probe of the normalized
 fluctuation matrix is integrable: it is `(X − c₀)²` for the a.s.-bounded coarse
 block quadratic `X` and a constant `c₀`. -/
-theorem integrable_fluctuation_probe_sq [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
-    (hΘ : 1 ≤ Θ) (hP : LawCarrier L) (hStruct : StructuralLaw L)
+theorem integrable_fluctuation_probe_sq [NeZero d] {L : RestrictionCoeffLaw d} {Θ : ℝ}
+    (hΘ : 1 ≤ Θ) (hP : RestrictionLawCarrier L) (hStruct : RestrictionStructuralLaw L)
     (hLaw : ThetaEllipticLaw Θ L) (m : ℤ) (q : FullBlockVec d) :
     Integrable
       (fun a : RegCoeffField d => (fullBlockQuadratic

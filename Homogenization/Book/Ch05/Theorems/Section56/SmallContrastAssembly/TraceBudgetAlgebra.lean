@@ -17,8 +17,8 @@ namespace SmallContrastAssembly
 open Section54.VarianceBoundGoodScale
 
 theorem normalizedBlockJTraceAverage_eq_blockJTraceAverageWithNormalizers
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     let b := hP.barSigmaAtScale hStruct center
     let c := hP.barSigmaStarAtScale hStruct center
@@ -56,7 +56,7 @@ theorem blockJTraceAverageWithNormalizers_eq_traceBudget_descendantsAverageBlock
         fun R : TriadicCube d => coarseBlockMatrix (cubeSet R) a.toFun := by
     funext R
     simpa [F] using
-      (Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      (Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha R).symm
   have hAvg :
       Pcell.weightedBlockAverage
@@ -359,8 +359,8 @@ theorem fullBlockJTraceBudgetWithNormalizers_normalized_eq_trace
   ring
 
 theorem descendantsAverageNormalizedFluctuationMatrix_eq_diagonal_average_sub_annealed
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (j : ℕ) (a : RegCoeffField d) :
     let b := hP.barSigmaAtScale hStruct center
     let c := hP.barSigmaStarAtScale hStruct center

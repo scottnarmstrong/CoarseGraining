@@ -25,7 +25,7 @@ real scaling and finite sums, and contains the constant fields
 (`constRegCoeffField`, including `1`); each closure property is witnessed by the
 corresponding closure of measurability and local integrability.
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 namespace Homogenization
@@ -37,7 +37,7 @@ noncomputable section
 /-- The regular-fields carrier: entrywise-Borel-measurable, locally-integrable
 coefficient fields.  Regularity is now free by type: every element carries a
 proof that each of its scalar entries is measurable and locally integrable
-(the paper, Armstrong–Kuusi–Loher, in prep). -/
+(the paper, Armstrong–Kuusi–Loher, to appear). -/
 structure RegCoeffField (d : ℕ) where
   /-- The underlying raw coefficient field. -/
   toFun : Vec d → Mat d

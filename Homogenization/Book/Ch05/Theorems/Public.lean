@@ -40,9 +40,9 @@ theorem homogenization_quenched_minimal_scale
       ∀ {σ : ℝ}, 0 < σ →
         ∀ {t : ℝ}, max params.sUpper params.sLower < t → t ≤ 1 →
           ∃ Cscale : ℝ, 0 < Cscale ∧
-            ∀ {P : Ch04.CoeffLaw d}
-              (hP : Ch04.LawCarrier P)
-              (hStruct : Ch04.StructuralLaw P)
+            ∀ {P : Ch04.RestrictionCoeffLaw d}
+              (hP : Ch04.RestrictionLawCarrier P)
+              (hStruct : Ch04.RestrictionStructuralLaw P)
               (hΓ : Section57.GammaSigmaCoarseGrainedEllipticityNoXi
                 P hP hStruct),
               hΓ.sigma = σ → hΓ.params = params →
@@ -66,9 +66,9 @@ theorem homogenization_quenched_minimal_scale
         max params.sUpper params.sLower < t →
         t ≤ 1 →
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hInf : Section57.GammaInfinityCoarseGrainedEllipticityNoXi
               P hP hStruct),
             hInf.params = params →
@@ -153,9 +153,9 @@ theorem homogenization_quenched_homogenization_comparison
         4 * t < s →
         s < 1 →
         ∃ C Cscale : ℝ, 0 < C ∧ 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : Section57.GammaSigmaCoarseGrainedEllipticityNoXi
               P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
@@ -187,9 +187,9 @@ theorem homogenization_quenched_homogenization_comparison
         4 * t < s →
         s < 1 →
         ∃ C Cscale : ℝ, 0 < C ∧ 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hInf : Section57.GammaInfinityCoarseGrainedEllipticityNoXi
               P hP hStruct),
             hInf.params = params →

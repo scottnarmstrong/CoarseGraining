@@ -21,45 +21,45 @@ namespace Internal
 
 /-- Internal route package for scalarization of the annealed coarse-grained
 matrices on origin cubes.  Public callers should use the direct
-`LawCarrier.*AtScale` scalar selectors instead. -/
-structure AnnealedScalarizationTheory {d : ℕ} (P : CoeffLaw d) : Prop where
+`RestrictionLawCarrier.*AtScale` scalar selectors instead. -/
+structure AnnealedScalarizationTheory {d : ℕ} (P : RestrictionCoeffLaw d) : Prop where
   scalarized : ∀ n : ℤ, HasAnnealedScalarizationAtScale P n
 
 namespace AnnealedScalarizationTheory
 
 /-- The chosen scalarization witness at scale `n`. -/
-noncomputable def witness {d : ℕ} {P : CoeffLaw d}
+noncomputable def witness {d : ℕ} {P : RestrictionCoeffLaw d}
     (h : AnnealedScalarizationTheory P) (n : ℤ) :
     AnnealedScalarizationWitness P n :=
   Classical.choice (h.scalarized n)
 
 /-- The scalar `\bar\sigma_n`. -/
-noncomputable def barSigma {d : ℕ} {P : CoeffLaw d}
+noncomputable def barSigma {d : ℕ} {P : RestrictionCoeffLaw d}
     (h : AnnealedScalarizationTheory P) (n : ℤ) : ℝ :=
   (h.witness n).sigma
 
 /-- The scalar `\bar\sigma_{*,n}`. -/
-noncomputable def barSigmaStar {d : ℕ} {P : CoeffLaw d}
+noncomputable def barSigmaStar {d : ℕ} {P : RestrictionCoeffLaw d}
     (h : AnnealedScalarizationTheory P) (n : ℤ) : ℝ :=
   (h.witness n).sigmaStar
 
-theorem annealedSigma_eq {d : ℕ} {P : CoeffLaw d}
+theorem annealedSigma_eq {d : ℕ} {P : RestrictionCoeffLaw d}
     (h : AnnealedScalarizationTheory P) (n : ℤ) :
     annealedSigmaAtScale P n = h.barSigma n • (1 : Mat d) :=
   (h.witness n).sigma_eq
 
-theorem annealedSigmaStar_eq {d : ℕ} {P : CoeffLaw d}
+theorem annealedSigmaStar_eq {d : ℕ} {P : RestrictionCoeffLaw d}
     (h : AnnealedScalarizationTheory P) (n : ℤ) :
     annealedSigmaStarAtScale P n = h.barSigmaStar n • (1 : Mat d) :=
   (h.witness n).sigmaStar_eq
 
-theorem annealedKappa_eq_zero {d : ℕ} {P : CoeffLaw d}
+theorem annealedKappa_eq_zero {d : ℕ} {P : RestrictionCoeffLaw d}
     (h : AnnealedScalarizationTheory P) (n : ℤ) :
     annealedKappaAtScale P n = 0 :=
   (h.witness n).kappa_eq_zero
 
 /-- The scalar contrast ratio used downstream. -/
-noncomputable def contrast {d : ℕ} {P : CoeffLaw d}
+noncomputable def contrast {d : ℕ} {P : RestrictionCoeffLaw d}
     (h : AnnealedScalarizationTheory P) (n : ℤ) : ℝ :=
   h.barSigma n * (h.barSigmaStar n)⁻¹
 
@@ -165,56 +165,56 @@ namespace Internal
 /-- Internal primitive scalarization data for the inverse-star and upper-left
 annealed blocks.  Public callers should use direct structural-law endpoints. -/
 abbrev AnnealedPrimitiveScalarizationData {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ) :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) :=
   AnnealedScalarizationPrimitiveData P n
 
 namespace AnnealedPrimitiveScalarizationData
 
 /-- The scalar coefficient of the annealed inverse-star block. -/
-noncomputable def barSigmaStarInv {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
+noncomputable def barSigmaStarInv {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n : ℤ}
     (h : AnnealedPrimitiveScalarizationData (d := d) P n) : ℝ :=
   Classical.choose
     (annealedSigmaStarInvAtScale_isScalarMatrix_of_invariant P n
       h.sigmaStarInvFlip h.sigmaStarInvSwap)
 
 /-- The scalar coefficient of the annealed upper-left block. -/
-noncomputable def barB {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
+noncomputable def barB {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n : ℤ}
     (h : AnnealedPrimitiveScalarizationData (d := d) P n) : ℝ :=
   Classical.choose
     (annealedBAtScale_isScalarMatrix_of_invariant P n h.bFlip h.bSwap)
 
 /-- The primitive scalar contrast used by downstream estimates. -/
-noncomputable def contrast {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
+noncomputable def contrast {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n : ℤ}
     (h : AnnealedPrimitiveScalarizationData (d := d) P n) : ℝ :=
   h.barB * h.barSigmaStarInv
 
-theorem sigmaStarInv_eq {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
+theorem sigmaStarInv_eq {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n : ℤ}
     (h : AnnealedPrimitiveScalarizationData (d := d) P n) :
     annealedSigmaStarInvAtScale P n = h.barSigmaStarInv • (1 : Mat d) :=
   Classical.choose_spec
     (annealedSigmaStarInvAtScale_isScalarMatrix_of_invariant P n
       h.sigmaStarInvFlip h.sigmaStarInvSwap)
 
-theorem b_eq {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
+theorem b_eq {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n : ℤ}
     (h : AnnealedPrimitiveScalarizationData (d := d) P n) :
     annealedBAtScale P n = h.barB • (1 : Mat d) :=
   Classical.choose_spec
     (annealedBAtScale_isScalarMatrix_of_invariant P n h.bFlip h.bSwap)
 
-theorem sigma_eq {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
+theorem sigma_eq {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n : ℤ}
     (h : AnnealedPrimitiveScalarizationData (d := d) P n) :
     annealedSigmaAtScale P n = h.barB • (1 : Mat d) := by
   rw [annealedSigmaAtScale_eq_annealedBAtScale_of_sigmaStarInvKappaMean_eq_zero
     P n h.sigmaStarInvKappaMean_eq_zero]
   exact h.b_eq
 
-theorem kappa_eq_zero {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
+theorem kappa_eq_zero {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n : ℤ}
     (h : AnnealedPrimitiveScalarizationData (d := d) P n) :
     annealedKappaAtScale P n = 0 :=
   annealedKappaAtScale_eq_zero_of_sigmaStarInvKappaMean_eq_zero
     P n h.sigmaStarInvKappaMean_eq_zero
 
-theorem barSigma_eq_barB {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
+theorem barSigma_eq_barB {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n : ℤ}
     (hScal : AnnealedScalarizationTheory (d := d) P)
     (hPrim : AnnealedPrimitiveScalarizationData (d := d) P n) :
     hScal.barSigma n = hPrim.barB :=
@@ -225,7 +225,7 @@ theorem barSigma_eq_barB {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
       _ = hPrim.barB • (1 : Mat d) := hPrim.sigma_eq
 
 theorem barSigmaStar_eq_inv_barSigmaStarInv {d : ℕ} [NeZero d]
-    {P : CoeffLaw d} {n : ℤ}
+    {P : RestrictionCoeffLaw d} {n : ℤ}
     (hScal : AnnealedScalarizationTheory (d := d) P)
     (hPrim : AnnealedPrimitiveScalarizationData (d := d) P n) :
     hScal.barSigmaStar n = hPrim.barSigmaStarInv⁻¹ :=
@@ -245,7 +245,7 @@ theorem barSigmaStar_eq_inv_barSigmaStarInv {d : ℕ} [NeZero d]
         rw [hPrim.sigmaStarInv_eq]
       _ = hPrim.barSigmaStarInv⁻¹ • (1 : Mat d) := hInv
 
-theorem scalar_contrast_eq {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
+theorem scalar_contrast_eq {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n : ℤ}
     (hScal : AnnealedScalarizationTheory (d := d) P)
     (hPrim : AnnealedPrimitiveScalarizationData (d := d) P n) :
     hScal.contrast n = hPrim.contrast := by
@@ -254,7 +254,7 @@ theorem scalar_contrast_eq {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
     barSigmaStar_eq_inv_barSigmaStarInv hScal hPrim]
 
 theorem barSigmaStarInv_le_of_matLoewnerLE
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {m n : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {m n : ℤ}
     (hm : AnnealedPrimitiveScalarizationData (d := d) P m)
     (hn : AnnealedPrimitiveScalarizationData (d := d) P n)
     (hLE : MatLoewnerLE (annealedSigmaStarInvAtScale P m)
@@ -264,7 +264,7 @@ theorem barSigmaStarInv_le_of_matLoewnerLE
   exact scalar_le_of_matLoewnerLE_smul_one hLE
 
 theorem barB_le_of_matLoewnerLE
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {m n : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {m n : ℤ}
     (hm : AnnealedPrimitiveScalarizationData (d := d) P m)
     (hn : AnnealedPrimitiveScalarizationData (d := d) P n)
     (hLE : MatLoewnerLE (annealedBAtScale P m) (annealedBAtScale P n)) :
@@ -273,7 +273,7 @@ theorem barB_le_of_matLoewnerLE
   exact scalar_le_of_matLoewnerLE_smul_one hLE
 
 theorem contrast_le_of_component_le
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {m n : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {m n : ℤ}
     (hm : AnnealedPrimitiveScalarizationData (d := d) P m)
     (hn : AnnealedPrimitiveScalarizationData (d := d) P n)
     (hB_le : hm.barB ≤ hn.barB)
@@ -285,7 +285,7 @@ theorem contrast_le_of_component_le
   exact mul_le_mul hB_le hStar_le hStar_m_nonneg hB_n_nonneg
 
 theorem barSigmaStar_le_of_barSigmaStarInv_le
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {n m : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n m : ℤ}
     (hScal : AnnealedScalarizationTheory (d := d) P)
     (hm : AnnealedPrimitiveScalarizationData (d := d) P m)
     (hn : AnnealedPrimitiveScalarizationData (d := d) P n)
@@ -300,7 +300,7 @@ theorem barSigmaStar_le_of_barSigmaStarInv_le
     barSigmaStar_eq_inv_barSigmaStarInv hScal hn] using hInv_le
 
 theorem barSigmaStar_le_barSigma_of_one_le_contrast
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n : ℤ}
     (hScal : AnnealedScalarizationTheory (d := d) P)
     (hPrim : AnnealedPrimitiveScalarizationData (d := d) P n)
     (hContrast : 1 ≤ hPrim.contrast)
@@ -313,7 +313,7 @@ theorem barSigmaStar_le_barSigma_of_one_le_contrast
     barSigma_eq_barB hScal hPrim] using hInv_le
 
 theorem barSigma_le_of_barB_le
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {n m : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n m : ℤ}
     (hScal : AnnealedScalarizationTheory (d := d) P)
     (hm : AnnealedPrimitiveScalarizationData (d := d) P m)
     (hn : AnnealedPrimitiveScalarizationData (d := d) P n)
@@ -325,19 +325,19 @@ end AnnealedPrimitiveScalarizationData
 
 /-- Internal scalar coefficient of the primitive upper-left block. -/
 noncomputable abbrev barBAtScaleOfPrimitive {d : ℕ} [NeZero d]
-    {P : CoeffLaw d} {n : ℤ}
+    {P : RestrictionCoeffLaw d} {n : ℤ}
     (h : AnnealedPrimitiveScalarizationData (d := d) P n) : ℝ :=
   h.barB
 
 /-- Internal scalar coefficient of the primitive inverse-star block. -/
 noncomputable abbrev barSigmaStarInvAtScaleOfPrimitive {d : ℕ} [NeZero d]
-    {P : CoeffLaw d} {n : ℤ}
+    {P : RestrictionCoeffLaw d} {n : ℤ}
     (h : AnnealedPrimitiveScalarizationData (d := d) P n) : ℝ :=
   h.barSigmaStarInv
 
 /-- Internal primitive contrast `Theta_n`. -/
 noncomputable abbrev annealedThetaAtScaleOfPrimitive {d : ℕ} [NeZero d]
-    {P : CoeffLaw d} {n : ℤ}
+    {P : RestrictionCoeffLaw d} {n : ℤ}
     (h : AnnealedPrimitiveScalarizationData (d := d) P n) : ℝ :=
   h.contrast
 

@@ -23,8 +23,8 @@ piece by the manuscript `sqrt tau * sqrt E[J_k]` term.  The remaining
 weak-norm and cutoff-product terms stay as expectations of the Ch4 scalar
 observables; later steps supply their law-facing integrability. -/
 theorem integral_jUpperWeakNormPointwiseRHSAtScale_le_expectedRHS
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     (s t : ℝ) (cutoffGradient : Vec d → Vec d)
     (C Cosc scaleSep BφS BφT cutoffCircOne poincareConst cutoffConstant
@@ -32,9 +32,9 @@ theorem integral_jUpperWeakNormPointwiseRHSAtScale_le_expectedRHS
     (p q p0 q0 : Vec d)
     (hC : 0 ≤ C)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hDesc : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P)
     (hGradWeak :
       Integrable
         (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet
@@ -66,7 +66,7 @@ theorem integral_jUpperWeakNormPointwiseRHSAtScale_le_expectedRHS
   let Q : TriadicCube d := originCube d m
   let j : ℕ := Int.toNat (m - k)
   let childAverage : RegCoeffField d → ℝ :=
-    fun a => descendantsAverage Q j (fun R => Ch04.responseJObservableCubeSet R p q a)
+    fun a => descendantsAverage Q j (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)
   let gradWeak : RegCoeffField d → ℝ :=
     fun a => Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
   let fluxWeak : RegCoeffField d → ℝ :=
@@ -81,7 +81,7 @@ theorem integral_jUpperWeakNormPointwiseRHSAtScale_le_expectedRHS
         (Real.sqrt (responseJAdditivityDefectAtScale m k p q a) *
           Real.sqrt (childAverage a))
   let oscPoint : RegCoeffField d → ℝ :=
-    fun a => Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a
+    fun a => Cosc * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a
   let gradPoint : RegCoeffField d → ℝ :=
     fun a =>
       (1 / 2 : ℝ) * ‖q0‖ *
@@ -99,14 +99,14 @@ theorem integral_jUpperWeakNormPointwiseRHSAtScale_le_expectedRHS
         cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant
   have hDescDepth :
       ∀ R, R ∈ descendantsAtDepth Q j →
-        Integrable (Ch04.responseJObservableCubeSet R p q) P := by
+        Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P := by
     intro R hR
     exact hDesc R (by
       simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm]
         using hR)
   have hChildInt : Integrable childAverage P := by
     simpa [childAverage, Q, j] using
-      Ch04.integrable_descendantsAverage_responseJObservableCubeSet hDescDepth
+      Ch04.integrable_descendantsAverage_restrictionResponseJObservableCubeSet hDescDepth
   have hDefectInt :
       Integrable (responseJAdditivityDefectAtScale m k p q) P :=
     integrable_responseJAdditivityDefectAtScale hkm p q hParent hDesc
@@ -116,7 +116,7 @@ theorem integral_jUpperWeakNormPointwiseRHSAtScale_le_expectedRHS
   have hChildNonneg : 0 ≤ᵐ[P] childAverage := by
     filter_upwards with a
     simpa [childAverage, Q, j] using
-      descendantsAverage_responseJObservableCubeSet_nonneg Q j p q a
+      descendantsAverage_restrictionResponseJObservableCubeSet_nonneg Q j p q a
   have hSqrtProdInt :
       Integrable
         (fun a : RegCoeffField d =>

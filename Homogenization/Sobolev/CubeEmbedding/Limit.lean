@@ -51,7 +51,7 @@ theorem gns_coord {m : ℕ} (hd : 3 ≤ m + 1) {ψ : Vec (m + 1) → ℝ}
       ≤ (SNormLESNormFDerivOfEqConst ℝ (volume : Measure (Vec (m + 1))) 2 : ℝ≥0∞)
         * ∑ i, eLpNorm (fun x => fderiv ℝ ψ x (basisVec i)) 2
           (volume : Measure (Vec (m + 1))) := by
-  refine (gns_contDiff_compactSupport hd hψ hcs).trans (mul_le_mul_left' ?_ _)
+  refine (gns_contDiff_compactSupport hd hψ hcs).trans (mul_le_mul_right ?_ _)
   have hcont : Continuous (fderiv ℝ ψ) := hψ.continuous_fderiv le_rfl
   have hsum_eq : (fun x => ∑ i, ‖fderiv ℝ ψ x (basisVec i)‖)
       = ∑ i, (fun x => ‖fderiv ℝ ψ x (basisVec i)‖) := by
@@ -79,7 +79,7 @@ theorem tendsto_eLpNorm_of_tendsto_sub {α : Type*} [MeasurableSpace α] {μ : M
       ≤ eLpNorm g p μ + eLpNorm (fun x => f k x - g x) p μ := by
     intro k
     refine (le_of_eq ?_).trans (eLpNorm_add_le hg ((hf k).sub hg) hp)
-    congr 1; funext x; simp only [Pi.add_apply, Pi.sub_apply]; ring
+    congr 1; funext x; simp only [Pi.add_apply]; ring
   have hneg : ∀ k, eLpNorm (fun x => g x - f k x) p μ = eLpNorm (fun x => f k x - g x) p μ := by
     intro k
     rw [show (fun x => g x - f k x) = -(fun x => f k x - g x) from by
@@ -226,7 +226,7 @@ theorem cubeSobolevEmbedding {d : ℕ} (hd : 3 ≤ d) :
     rw [hrestr _ _ (hψ_supp k)]
     refine (gns_coord hd3 ((w.approx_smooth k).of_le (by exact_mod_cast le_top))
       (w.approx_hasCompactSupport k)).trans ?_
-    refine mul_le_mul_left' (le_of_eq (Finset.sum_congr rfl fun i _ => ?_)) _
+    refine mul_le_mul_right (le_of_eq (Finset.sum_congr rfl fun i _ => ?_)) _
     exact (hrestr _ _ (hψ_dsupp k i)).symm
   -- b converges to binf
   set binf : ℝ≥0∞ := Cgns * ∑ i, eLpNorm (fun x => w.grad x i) 2 (volume.restrict (Box3 z hi))
@@ -309,7 +309,7 @@ theorem cubeSobolevEmbedding {d : ℕ} (hd : 3 ≤ d) :
     · refine le_trans (eLpNorm_mono_ae (Filter.Eventually.of_forall fun x => ?_))
         (Ext.grad_eLpNorm_le i)
       rw [norm_mul]; exact mul_le_of_le_one_left (norm_nonneg _) (hχ_le1 x)
-    · exact (hb2 i).trans (mul_le_mul_left' Ext.eLpNorm_le _)
+    · exact (hb2 i).trans (mul_le_mul_right Ext.eLpNorm_le _)
   -- L4 assembled
   have hL4 : binf ≤ (C0 : ℝ≥0∞)
       * ((∑ i, eLpNorm (fun x => u.grad x i) 2 (volume.restrict (Box z hi)))
@@ -327,14 +327,14 @@ theorem cubeSobolevEmbedding {d : ℕ} (hd : 3 ≤ d) :
     have hN1 : (1 : ℝ≥0∞) ≤ ((((m + 1) * 32 : ℕ)) : ℝ≥0∞) := by
       exact_mod_cast Nat.one_le_iff_ne_zero.2 (by positivity)
     rw [hbinf]
-    refine (mul_le_mul_left' hsum Cgns).trans ?_
+    refine (mul_le_mul_right hsum Cgns).trans ?_
     rw [hofReal, hC0]
     simp only [mul_add]
     refine add_le_add ?_ (le_of_eq ?_)
     · rw [show Cgns * (Cd * ∑ i, eLpNorm (fun x => u.grad x i) 2 (volume.restrict (Box z hi)))
           = (Cgns * Cd) * ∑ i, eLpNorm (fun x => u.grad x i) 2 (volume.restrict (Box z hi)) from by
         ring]
-      exact mul_le_mul_right' (le_mul_of_one_le_right' hN1) _
+      exact mul_le_mul_left (le_mul_of_one_le_right' hN1) _
     · push_cast; ring
   -- combine
   have hmain : eLpNorm u.toFun (twoStar (m + 1)) (volume.restrict (Box z hi))
@@ -345,7 +345,7 @@ theorem cubeSobolevEmbedding {d : ℕ} (hd : 3 ≤ d) :
   have hC0le : (C0 : ℝ≥0∞) ≤ (↑(C0.toNNReal + 1) : ℝ≥0∞) := by
     rw [ENNReal.coe_add, ENNReal.coe_toNNReal hC0_lt.ne, ENNReal.coe_one]
     exact le_self_add
-  exact hmain.trans (mul_le_mul_right' hC0le _)
+  exact hmain.trans (mul_le_mul_left hC0le _)
 
 end
 

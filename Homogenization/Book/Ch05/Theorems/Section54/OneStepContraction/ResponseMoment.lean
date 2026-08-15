@@ -114,12 +114,12 @@ private theorem block_cross_abs_le_half_quadratics
   simpa [z, a, b, add_comm] using htarget
 
 private theorem responseJ_special_pointwise_le_weighted_factors
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Vec d) (he : Ch02.vecNorm e = 1) :
     (fun a : RegCoeffField d =>
-        Ch04.responseJObservableCubeSet (originCube d 0)
+        Ch04.restrictionResponseJObservableCubeSet (originCube d 0)
           (specialPAtScale hP hStruct (m : ℤ) e)
           (specialQAtScale hP hStruct (m : ℤ) e) a)
       ≤ᵐ[P]
@@ -175,7 +175,7 @@ private theorem responseJ_special_pointwise_le_weighted_factors
     rw [hpq]
     norm_num
   filter_upwards
-    [Ch04.responseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarrier
+    [Ch04.restrictionResponseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarrier
       hP (originCube d 0) p_e q_e,
      hP.ae_locallyUniformlyEllipticField] with a hJ ha
   let Q : TriadicCube d := originCube d 0
@@ -185,7 +185,7 @@ private theorem responseJ_special_pointwise_le_weighted_factors
   have hEq :
       A = Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [A, F] using
-      Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   have hSymm : IsSymmetricBlockMat A := by
     rw [hEq]
@@ -204,9 +204,9 @@ private theorem responseJ_special_pointwise_le_weighted_factors
     simpa [upperQuad, lowerQuad, add_comm] using
       block_cross_abs_le_half_quadratics hSymm hPos p_e q_e
   have hJ_le_quads :
-      Ch04.responseJObservableCubeSet Q p_e q_e a ≤ upperQuad + lowerQuad := by
+      Ch04.restrictionResponseJObservableCubeSet Q p_e q_e a ≤ upperQuad + lowerQuad := by
     calc
-      Ch04.responseJObservableCubeSet Q p_e q_e a =
+      Ch04.restrictionResponseJObservableCubeSet Q p_e q_e a =
           (1 / 2 : ℝ) * lowerQuad - vecDot p_e q_e -
             vecDot q_e (matVecMul A.lowerLeft p_e) +
             (1 / 2 : ℝ) * upperQuad := by
@@ -278,7 +278,7 @@ private theorem responseJ_special_pointwise_le_weighted_factors
   exact hJ_le_quads.trans (add_le_add hUpperQuad_le hLowerQuad_le)
 
 private theorem realRpowMomentRoot_le_natAnnealedMomentRoot_of_ae_le
-    {d : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {ζ : ℝ} {ξ : ℕ} {X Y : RegCoeffField d → ℝ}
     (hζ_pos : 0 < ζ) (hζ_le_ξ : ζ ≤ (ξ : ℝ)) (hξ_one : 1 ≤ ξ)
     (hX_meas : AEMeasurable X P)
@@ -362,8 +362,8 @@ one-step proof.  The constant is `1`; the important point is that the
 normalizations remain matched as
 `\widehat\sigma_m^{-1} \Lambda + \widehat\sigma_m \lambda^{-1}`. -/
 theorem coarseFluctuationResponseMomentAtScale_zero_le_unitMomentWeightAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Vec d) (he : Ch02.vecNorm e = 1) :
     coarseFluctuationResponseMomentAtScale hP hStruct hP4 0 m e ≤
@@ -382,7 +382,7 @@ theorem coarseFluctuationResponseMomentAtScale_zero_le_unitMomentWeightAtScale
   let Y : RegCoeffField d → ℝ := fun a => YUpper a + YLower a
   let X : RegCoeffField d → ℝ :=
     fun a =>
-      Ch04.responseJObservableCubeSet (originCube d 0)
+      Ch04.restrictionResponseJObservableCubeSet (originCube d 0)
         (specialPAtScale hP hStruct (m : ℤ) e)
         (specialQAtScale hP hStruct (m : ℤ) e) a
   have hζ_pos : 0 < ζ := by
@@ -418,12 +418,12 @@ theorem coarseFluctuationResponseMomentAtScale_zero_le_unitMomentWeightAtScale
     by
       dsimp [X]
       exact
-        Ch04.responseJObservableCubeSet_nonneg (originCube d 0)
+        Ch04.restrictionResponseJObservableCubeSet_nonneg (originCube d 0)
           (specialPAtScale hP hStruct (m : ℤ) e)
           (specialQAtScale hP hStruct (m : ℤ) e) a
   have hX_meas : AEMeasurable X P := by
     simpa [X] using
-      hP.aemeasurable_responseJObservableCubeSet
+      hP.aemeasurable_restrictionResponseJObservableCubeSet
         (originCube d 0)
         (specialPAtScale hP hStruct (m : ℤ) e)
         (specialQAtScale hP hStruct (m : ℤ) e)
@@ -521,8 +521,8 @@ theorem coarseFluctuationResponseMomentAtScale_zero_le_unitMomentWeightAtScale
 /-- Product form of the unit-scale response-moment bridge, matching the
 positive-excess term in the Section 5.3 RHS. -/
 theorem coarseFluctuationUnitMomentWeight_mul_responseMoment_zero_le_sq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Vec d) (he : Ch02.vecNorm e = 1) :
     coarseFluctuationUnitMomentWeightAtScale hP hStruct hP4 m *

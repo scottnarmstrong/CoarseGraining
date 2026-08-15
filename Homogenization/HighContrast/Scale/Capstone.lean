@@ -60,7 +60,7 @@ scale constants **after** `Θ` (`∀ Θ, ∃ Cscale Ctriadic alpha, …`).
 
 open MeasureTheory
 open Homogenization
-open Homogenization.Book.Ch04 (CoeffLaw LawCarrier StructuralLaw)
+open Homogenization.Book.Ch04 (RestrictionCoeffLaw RestrictionLawCarrier RestrictionStructuralLaw)
 open Homogenization.Book.Ch05 (QuantitativeCoarseGrainedEllipticity)
 
 namespace Homogenization
@@ -151,8 +151,8 @@ theorem thetaEllipticLaw_implies_homogenizationScale
     {d : ℕ} [NeZero d] (hd : 3 ≤ d) (hc : HighContrastExponents d)
     (params : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticityParams d)
     (loc : LocalizationSmallContrastInput hc) (hcp : hc.params = params)
-    {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : CoeffLaw d} [IsProbabilityMeasure P]
-    (hP : LawCarrier P) (hStruct : StructuralLaw P)
+    {Θ : ℝ} (hΘ : 1 ≤ Θ) {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+    (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P)
     (hLaw : Homogenization.ThetaEllipticLaw Θ P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hparams : hP4.params = params)

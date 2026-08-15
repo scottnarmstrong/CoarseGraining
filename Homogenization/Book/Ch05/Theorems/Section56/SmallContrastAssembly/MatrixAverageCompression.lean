@@ -17,7 +17,7 @@ namespace SmallContrastAssembly
 open Section54.VarianceBoundGoodScale
 
 private theorem widetildeThetaAtScale_zero_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ widetildeThetaAtScale P 0 hP4 := by
   simp [widetildeThetaAtScale, Ch04.widetildeThetaAtScale]
@@ -39,7 +39,7 @@ private theorem rosenthalDescendantsAtScaleSqrtConst_nonneg
   positivity
 
 private theorem pairPointwiseBudgetConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ pairPointwiseBudgetConst hP4 := by
   have hLp := rosenthalDescendantsAtScaleLpConst_nonneg d 0 hP4.xi
@@ -79,8 +79,8 @@ private theorem rosenthalDescendantsAtScaleSqrtConst_natCast_eq_zero
   simp [Ch04.rosenthalDescendantsAtScaleSqrtConst, scaleColorPeriod_natCast_eq_zero n]
 
 private theorem smallContrast_goodScale_upper_delta_one
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     (m : ℕ) :
@@ -105,7 +105,7 @@ private theorem smallContrast_goodScale_upper_delta_one
         thetaAtScale hP hStruct (0 : ℤ) ≤ 2 :=
       (thetaAtScale_zero_le_widetildeThetaAtScale_zero_of_P4
         hP hStruct hP4).trans hsmall
-    simpa [thetaAtScale, Ch04.LawCarrier.thetaAtScale, b0, c0] using hθ0
+    simpa [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, b0, c0] using hθ0
   have hb0_le_two_c0 : b0 ≤ 2 * c0 := by
     have hmul := mul_le_mul_of_nonneg_right hθ0_two hc0_pos.le
     have hcancel : b0 * c0⁻¹ * c0 = b0 := by field_simp [ne_of_gt hc0_pos]
@@ -117,8 +117,8 @@ private theorem smallContrast_goodScale_upper_delta_one
     _ = (1 + (1 : ℝ)) * hP.barSigmaAtScale hStruct (m : ℤ) := by ring
 
 private theorem smallContrast_goodScale_lower_delta_one
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     (m : ℕ) :
@@ -146,7 +146,7 @@ private theorem smallContrast_goodScale_lower_delta_one
         thetaAtScale hP hStruct (0 : ℤ) ≤ 2 :=
       (thetaAtScale_zero_le_widetildeThetaAtScale_zero_of_P4
         hP hStruct hP4).trans hsmall
-    simpa [thetaAtScale, Ch04.LawCarrier.thetaAtScale, b0, c0] using hθ0
+    simpa [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, b0, c0] using hθ0
   have hb0_le_two_c0 : b0 ≤ 2 * c0 := by
     have hmul := mul_le_mul_of_nonneg_right hθ0_two hc0_pos.le
     have hcancel : b0 * c0⁻¹ * c0 = b0 := by field_simp [ne_of_gt hc0_pos]
@@ -167,7 +167,7 @@ private theorem smallContrast_goodScale_lower_delta_one
     _ = (1 + (1 : ℝ)) * (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ := by ring
 
 private theorem pairProbeRefinedDescendantAverageK_le_pointwiseConst_delta_one
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (j : ℕ) :
     pairProbeRefinedDescendantAverageK hP4 (1 : ℝ) j ≤
       pairPointwiseBudgetConst hP4 * widetildeThetaAtScale P 0 hP4 := by
@@ -248,13 +248,13 @@ private theorem pairProbeRefinedDescendantAverageK_le_pointwiseConst_delta_one
         ring
 
 noncomputable def refinedVarianceBasicBudgetSmallContrastConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   1 + 4 * pairPointwiseBudgetConst hP4 +
     8 * pairPointwiseBudgetConst hP4 ^ (2 : ℕ)
 
 private theorem refinedVarianceBasicBudgetSmallContrastConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ refinedVarianceBasicBudgetSmallContrastConst hP4 := by
   have hM := pairPointwiseBudgetConst_nonneg hP4
@@ -264,7 +264,7 @@ private theorem refinedVarianceBasicBudgetSmallContrastConst_nonneg
     (mul_nonneg (by norm_num) (sq_nonneg (pairPointwiseBudgetConst hP4)))
 
 private theorem refinedVarianceBasicBudget_one_le_smallContrastConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     (j : ℕ) :
@@ -310,13 +310,13 @@ private theorem refinedVarianceBasicBudget_one_le_smallContrastConst
         simp [refinedVarianceBasicBudgetSmallContrastConst, M]
 
 private theorem centeredOriginNormalizedQuadratic_sq_integral_le_smallContrastConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     (child : ℕ) (q : FullBlockVec d) :
     ∫ a,
-        |Ch04.centeredOriginObservable P (child : ℤ)
+        |Ch04.restrictionCenteredOriginObservable P (child : ℤ)
           (fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q) a| ^
           (2 : ℕ) ∂P ≤
       refinedMatrixBudgetConst d * refinedVarianceBasicBudgetSmallContrastConst hP4 *
@@ -330,7 +330,7 @@ private theorem centeredOriginNormalizedQuadratic_sq_integral_le_smallContrastCo
   have hleft_int :
       Integrable
         (fun a : RegCoeffField d =>
-          |Ch04.centeredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ)) P := by
+          |Ch04.restrictionCenteredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ)) P := by
     simpa [X] using
       fullBlockNormalizedQuadraticObservable_centeredOrigin_sq_integrable_at_self
         hP hStruct hP4 child q
@@ -342,7 +342,7 @@ private theorem centeredOriginNormalizedQuadratic_sq_integral_le_smallContrastCo
     hF_int.mul_const Dq
   have hpoint :
       (fun a : RegCoeffField d =>
-          |Ch04.centeredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ))
+          |Ch04.restrictionCenteredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ))
         ≤ᵐ[P] fun a => F a * Dq := by
     filter_upwards with a
     have hmean :
@@ -353,11 +353,11 @@ private theorem centeredOriginNormalizedQuadratic_sq_integral_le_smallContrastCo
       integral_origin_fullBlockNormalizedQuadraticObservable_self_eq_dotProduct
         hP hStruct hP4 child q
     have hcenter :
-        Ch04.centeredOriginObservable P (child : ℤ) X a =
+        Ch04.restrictionCenteredOriginObservable P (child : ℤ) X a =
           fullBlockQuadratic
             (fullBlockNormalizedFluctuationMatrix hP hStruct (child : ℤ)
               (cubeSet (originCube d (child : ℤ))) a) q := by
-      simp only [Ch04.centeredOriginObservable, X,
+      simp only [Ch04.restrictionCenteredOriginObservable, X,
         fullBlockNormalizedQuadraticObservableR]
       rw [hmean]
       exact
@@ -371,7 +371,7 @@ private theorem centeredOriginNormalizedQuadratic_sq_integral_le_smallContrastCo
       Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale,
       fullBlockNormalizedFluctuationOperatorNormSq_eq_norm_sq] using hquad
   have hmono :
-      ∫ a, |Ch04.centeredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ) ∂P ≤
+      ∫ a, |Ch04.restrictionCenteredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ) ∂P ≤
         ∫ a, F a * Dq ∂P :=
     integral_mono_ae hleft_int hright_int hpoint
   have hgood_upper :=
@@ -404,10 +404,10 @@ private theorem centeredOriginNormalizedQuadratic_sq_integral_le_smallContrastCo
     exact sq_nonneg (dotProduct q q)
   calc
     ∫ a,
-        |Ch04.centeredOriginObservable P (child : ℤ)
+        |Ch04.restrictionCenteredOriginObservable P (child : ℤ)
           (fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q) a| ^
           (2 : ℕ) ∂P =
-        ∫ a, |Ch04.centeredOriginObservable P (child : ℤ) X a| ^
+        ∫ a, |Ch04.restrictionCenteredOriginObservable P (child : ℤ) X a| ^
           (2 : ℕ) ∂P := rfl
     _ ≤ ∫ a, F a * Dq ∂P := hmono
     _ = (∫ a, F a ∂P) * Dq := by rw [integral_mul_const]
@@ -419,7 +419,7 @@ private theorem centeredOriginNormalizedQuadratic_sq_integral_le_smallContrastCo
         simp [Dq, mul_assoc]
 
 private noncomputable def normalizedQuadraticProbeAverageRootSqConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (q : FullBlockVec d) : ℝ :=
     (Ch04.rosenthalDescendantsAtScaleLpConst d 0 2 +
       Ch04.rosenthalDescendantsAtScaleSqrtConst d 0 2) ^ (2 : ℕ) *
@@ -427,14 +427,14 @@ private noncomputable def normalizedQuadraticProbeAverageRootSqConst
       (dotProduct q q) ^ (2 : ℕ))
 
 noncomputable def normalizedQuadraticProbeAverageUniformRootSqConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   (Ch04.rosenthalDescendantsAtScaleLpConst d 0 2 +
       Ch04.rosenthalDescendantsAtScaleSqrtConst d 0 2) ^ (2 : ℕ) *
     (refinedMatrixBudgetConst d * refinedVarianceBasicBudgetSmallContrastConst hP4 * 16)
 
 noncomputable def normalizedMatrixAverageGeometricConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   ((Fintype.card (BlockCoord d) : ℝ) ^ (6 : ℕ)) * 9 *
     normalizedQuadraticProbeAverageUniformRootSqConst hP4
@@ -445,7 +445,7 @@ private theorem refinedMatrixBudgetConst_nonneg (d : ℕ) :
   positivity
 
 theorem normalizedQuadraticProbeAverageUniformRootSqConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ normalizedQuadraticProbeAverageUniformRootSqConst hP4 := by
   have hbudget : 0 ≤
@@ -460,7 +460,7 @@ theorem normalizedQuadraticProbeAverageUniformRootSqConst_nonneg
     (mul_nonneg hbudget (by norm_num))
 
 private theorem normalizedQuadraticProbeAverageRootSqConst_le_uniform_coordinate
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (α : BlockCoord d) :
     normalizedQuadraticProbeAverageRootSqConst hP4 (fullBlockCoordinateProbe α) ≤
       normalizedQuadraticProbeAverageUniformRootSqConst hP4 := by
@@ -482,7 +482,7 @@ private theorem normalizedQuadraticProbeAverageRootSqConst_le_uniform_coordinate
         Ch04.rosenthalDescendantsAtScaleSqrtConst d 0 2))
 
 private theorem normalizedQuadraticProbeAverageRootSqConst_le_uniform_plus
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (α β : BlockCoord d) :
     normalizedQuadraticProbeAverageRootSqConst hP4 (fullBlockPlusProbe α β) ≤
       normalizedQuadraticProbeAverageUniformRootSqConst hP4 := by
@@ -511,7 +511,7 @@ private theorem normalizedQuadraticProbeAverageRootSqConst_le_uniform_plus
         Ch04.rosenthalDescendantsAtScaleSqrtConst d 0 2))
 
 private theorem normalizedQuadraticProbeAverageRootSqConst_le_uniform_minus
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (α β : BlockCoord d) :
     normalizedQuadraticProbeAverageRootSqConst hP4 (fullBlockMinusProbe α β) ≤
       normalizedQuadraticProbeAverageUniformRootSqConst hP4 := by
@@ -540,8 +540,8 @@ private theorem normalizedQuadraticProbeAverageRootSqConst_le_uniform_minus
         Ch04.rosenthalDescendantsAtScaleSqrtConst d 0 2))
 
 private theorem normalizedQuadraticProbeAverageRootBound_sq_le_card_inv_mul_smallContrastConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     {child parent : ℕ} (hchild_parent : child ≤ parent) (q : FullBlockVec d) :
@@ -551,7 +551,7 @@ private theorem normalizedQuadraticProbeAverageRootBound_sq_le_card_inv_mul_smal
   let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q
   let I : ℝ :=
-    ∫ a, |Ch04.centeredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ) ∂P
+    ∫ a, |Ch04.restrictionCenteredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ) ∂P
   let K : ℝ := I ^ (1 / (2 : ℝ))
   let N : ℝ := ((descendantsAtScale (originCube d (parent : ℤ)) (child : ℤ)).card : ℝ)
   let L : ℝ := Ch04.rosenthalDescendantsAtScaleLpConst d 0 2
@@ -622,8 +622,8 @@ private theorem normalizedQuadraticProbeAverageRootBound_sq_le_card_inv_mul_smal
           mul_left_comm, mul_assoc]
 
 private theorem normalizedMatrixAverageProbeRootBudget_le_of_probe_sq_bound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (child parent : ℕ) (B : ℝ)
     (hcoord :
       ∀ α : BlockCoord d,
@@ -692,8 +692,8 @@ private theorem normalizedMatrixAverageProbeRootBudget_le_of_probe_sq_bound
         ring
 
 theorem normalizedMatrixAverageProbeRootBudget_le_card_inv_mul_smallContrastConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     {child parent : ℕ} (hchild_parent : child ≤ parent) :

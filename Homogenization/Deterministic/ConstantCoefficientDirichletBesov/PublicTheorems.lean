@@ -306,18 +306,19 @@ theorem cubeKFunctionalDirichletPointwiseRegularity
   cubeKFunctionalDirichletPointwiseRegularity_of_endpointDecomposition
     (cubeDirichletKEndpointDecomposition d)
 
-/-- Direct assembly of the manuscript-facing Dirichlet Besov theorem from the
-finite-level pure K/overlapping comparison.
+/-- Direct assembly of the discrete compatibility Dirichlet Besov statement
+from the finite-level pure K/overlapping comparison.  This is not the source
+theorem pending the continuum `K`/`H^s` gate.
 
 This avoids using the over-strong all-functions K/overlapping equivalence
 package.  The output overlap norm is controlled by the proved overlap-Poincare
 comparison and bounded K partial sums for the output; those bounded output
 partials come from pointwise K-regularity and the input boundedness supplied by
 the finite-level partial comparison. -/
-theorem constantCoefficientDirichletBesovFunctionSpaces_of_partialBoundByOverlappingPositive
+theorem discreteConstantCoefficientDirichletBesovFunctionSpaces_of_partialBoundByOverlappingPositive
     {d : ℕ} [NeZero d]
     (hpartial : CubeKBesovPartialBoundByOverlappingPositive d) :
-    ConstantCoefficientDirichletBesovFunctionSpaces d := by
+    DiscreteConstantCoefficientDirichletBesovFunctionSpaces d := by
   intro s hs_pos hs_lt
   let CP : ℝ := cubeVectorH1OverlapPoincareConstant d
   let Coverlap : ℝ := 8 * (3 ^ d : ℝ) + 2 * CP ^ 2 + 2
@@ -433,23 +434,24 @@ theorem exists_cubeKBesovDirichletRegularityUniform
   exists_cubeKBesovDirichletRegularityUniform_of_components
     (cubeKBesovDirichletRegularityComponents d)
 
-/-- Uniform analytic theorem
-`l.constant.coefficient.Dirichlet.Besov.function.spaces`, with one
-dimension-only constant for all `s ∈ (0,1)`. -/
-theorem exists_constantCoefficientDirichletBesovFunctionSpacesUniform
+/-- Uniform discrete compatibility theorem, with one dimension-only constant
+for all `s ∈ (0,1)`.  It is not the source theorem pending the continuum
+`K`/`H^s` gate. -/
+theorem exists_discreteConstantCoefficientDirichletBesovFunctionSpacesUniform
     (d : ℕ) [NeZero d] :
-    ∃ C : ℝ, ConstantCoefficientDirichletBesovFunctionSpacesUniform d C :=
-  exists_constantCoefficientDirichletBesovFunctionSpacesUniform_of_partialBoundByOverlappingPositiveUniform
+    ∃ C : ℝ, DiscreteConstantCoefficientDirichletBesovFunctionSpacesUniform d C :=
+  exists_discreteConstantCoefficientDirichletBesovFunctionSpacesUniform_of_partialBoundByOverlappingPositiveUniform
     (cubeKBesovPartialBoundByOverlappingPositiveUniform d)
     (cubeKBesovDirichletRegularityComponents d)
 
-/-- Analytic theorem `l.constant.coefficient.Dirichlet.Besov.function.spaces`,
-assembled from the direct finite-partial K/overlapping route. -/
-theorem constantCoefficientDirichletBesovFunctionSpaces
+/-- Discrete compatibility theorem assembled from the direct finite-partial
+K/overlapping route.  It is not the source theorem pending the continuum
+`K`/`H^s` gate. -/
+theorem discreteConstantCoefficientDirichletBesovFunctionSpaces
     (d : ℕ) [NeZero d] :
-    ConstantCoefficientDirichletBesovFunctionSpaces d
+    DiscreteConstantCoefficientDirichletBesovFunctionSpaces d
   := by
-  rcases exists_constantCoefficientDirichletBesovFunctionSpacesUniform d with
+  rcases exists_discreteConstantCoefficientDirichletBesovFunctionSpacesUniform d with
     ⟨C, hC⟩
   exact hC.to_functionSpaces
 

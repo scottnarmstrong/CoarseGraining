@@ -20,9 +20,9 @@ noncomputable section
 /-- The finite maximum, over descendants, of the coordinate/pair probe sum
 controlling the limiting-normalized quadratic form. -/
 noncomputable def localizedLimitNormalizedJProbeSumMax
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (m n : ℕ) : RegCoeffField d → ℝ :=
   fun a =>
     let D : Finset (TriadicCube d) :=
@@ -34,9 +34,9 @@ noncomputable def localizedLimitNormalizedJProbeSumMax
 
 /-- The localized maximum of the normalized coordinate/pair probe sum. -/
 noncomputable def localizedLimitNormalizedJNormalizedProbeSumMax
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (m n : ℕ) : RegCoeffField d → ℝ :=
   fun a =>
     let D : Finset (TriadicCube d) :=
@@ -47,8 +47,8 @@ noncomputable def localizedLimitNormalizedJNormalizedProbeSumMax
       0
 
 theorem limitNormalizedJProbeSum_le_localizedLimitNormalizedJProbeSumMax
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {m n : ℕ} {R : TriadicCube d}
     (hR : R ∈ descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ))
     (a : RegCoeffField d) :
@@ -68,8 +68,8 @@ theorem limitNormalizedJProbeSum_le_localizedLimitNormalizedJProbeSumMax
 localized finite-probe maximum.  This is the Lean form of the finite-basis
 reduction used in Theorem `t.homogenization.quenched`. -/
 theorem localizedLimitNormalizedJMax_le_probeSumMax_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {m n : ℕ} (hnm : n ≤ m)
     (e : FullBlockVec d) (he : dotProduct e e ≤ 1) :
@@ -118,8 +118,8 @@ theorem localizedLimitNormalizedJMax_le_probeSumMax_ae
           (by positivity)
 
 theorem localizedLimitNormalizedJMax_le_normalizedProbeSumMax_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {m n : ℕ} (hnm : n ≤ m)
     (e : FullBlockVec d) (he : dotProduct e e ≤ 1) :
@@ -170,8 +170,8 @@ theorem localizedLimitNormalizedJMax_le_normalizedProbeSumMax_ae
           (by positivity)
 
 theorem localizedLimitNormalizedJMax_smul_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {m n : ℕ} (hnm : n ≤ m)
     (c : ℝ) (hc : c ≠ 0) (e : FullBlockVec d) :

@@ -105,7 +105,7 @@ theorem exists_optimal_width {d : ℕ} (hd : 3 ≤ d) {Θ L : ℝ}
 two-error bound (free `ℓ ∈ [4, L]`), the scalar block variance obeys the
 `min`-form with `β = (d-2)/(d-1)` and a `Θ²` upper factor. -/
 theorem scalar_opt {d : ℕ} (hd : 3 ≤ d) {Θ L Msq V C₀ : ℝ}
-    (hΘ : 1 ≤ Θ) (hL : 1 ≤ L) (hMsq : 0 ≤ Msq) (hC₀ : 0 ≤ C₀) (hV : 0 ≤ V)
+    (hΘ : 1 ≤ Θ) (hL : 1 ≤ L) (hC₀ : 0 ≤ C₀)
     (hdet : V ≤ 4 * Msq ^ 2)
     (htwo : ∀ ℓ : ℝ, 4 ≤ ℓ → ℓ ≤ L →
       V ≤ C₀ * (Θ ^ 3 * (ℓ / L) ^ (d - 2) + Θ * ℓ⁻¹) * Msq ^ 2) :

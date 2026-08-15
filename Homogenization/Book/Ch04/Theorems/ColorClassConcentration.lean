@@ -1,16 +1,16 @@
 import Homogenization.Book.Ch04.Theorems.Concentration
-import Homogenization.Book.Ch04.Theorems.IndependenceDefinitions
+import Homogenization.Book.Ch04.Theorems.RestrictionIndependence
 
 namespace Homogenization
 namespace Book
 namespace Ch04
 
 /-!
-# Public color-class concentration theorems
+# Restriction-local color-class concentration theorems
 
-These theorems combine the public unit-range dependence/local-random-variable
-interface with the proved Section 4.2 independent-sums estimates.  They are the
-single-color-class input for the finite-color partition-average step.
+These theorems combine the restriction-unit-range and restriction-local
+engineering interface with the proved Section 4.2 independent-sums estimates.
+They are the single-color-class input for the finite-color partition-average step.
 -/
 
 open MeasureTheory
@@ -20,15 +20,15 @@ noncomputable section
 
 /-- A single scale-color class of descendant cubes inherits `Gamma_sigma`
 concentration from uniformly controlled centered local summands. -/
-theorem isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw
+theorem isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_restrictionUnitRangeDependentLaw
     {d : ℕ} {Q : TriadicCube d} {k : ℤ} {c : ScaleColor d k}
-    {P : CoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
-    (hP : UnitRangeDependentLaw P)
+    {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
+    (hP : RestrictionUnitRangeDependentLaw P)
     (hσ₀ : 0 < σ) (hσ₂ : σ ≤ 2) (hK : 0 < K)
     (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c,
-        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
+        IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_meas :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c, Measurable (X R))
     (hX :
@@ -45,7 +45,7 @@ theorem isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRan
   · let Y : {R : TriadicCube d // R ∈ S} → RegCoeffField d → ℝ :=
       fun R => X R.1
     have h_indep : ProbabilityTheory.iIndepFun Y P := by
-      exact iIndepFun_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw
+      exact iIndepFun_descendantsAtScaleScaleColorClass_of_restrictionUnitRangeDependentLaw
         (Q := Q) (k := k) (c := c) (P := P) hP
         (fun R => hX_local R.1 R.2)
     have h_meas : ∀ R, Measurable (Y R) := by
@@ -83,15 +83,15 @@ theorem isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRan
 
 /-- A single scale-color class of descendant cubes inherits `Psi_sigma`
 concentration from uniformly controlled centered local summands. -/
-theorem isBigO_psiSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw
+theorem isBigO_psiSigma_finsetSum_descendantsAtScaleScaleColorClass_of_restrictionUnitRangeDependentLaw
     {d : ℕ} {Q : TriadicCube d} {k : ℤ} {c : ScaleColor d k}
-    {P : CoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
-    (hP : UnitRangeDependentLaw P)
+    {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
+    (hP : RestrictionUnitRangeDependentLaw P)
     (hσ : 1 ≤ σ) (hK : 0 < K)
     (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c,
-        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
+        IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_meas :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c, Measurable (X R))
     (hX_int :
@@ -110,7 +110,7 @@ theorem isBigO_psiSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRange
   · let Y : {R : TriadicCube d // R ∈ S} → RegCoeffField d → ℝ :=
       fun R => X R.1
     have h_indep : ProbabilityTheory.iIndepFun Y P := by
-      exact iIndepFun_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw
+      exact iIndepFun_descendantsAtScaleScaleColorClass_of_restrictionUnitRangeDependentLaw
         (Q := Q) (k := k) (c := c) (P := P) hP
         (fun R => hX_local R.1 R.2)
     have h_meas : ∀ R, Measurable (Y R) := by

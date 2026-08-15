@@ -285,9 +285,9 @@ theorem iIndepFun_coreBox_observable {ℓ : ℝ} (hℓ : 0 ≤ ℓ) (σ : Vec d)
     {k : ι → (Fin d → ℤ)} (hk : Function.Injective k)
     {P : MeasureTheory.Measure (CoeffField d)} [MeasureTheory.IsProbabilityMeasure P]
     (hP : IsRestrictionUnitRangeDependent P)
-    (X : ∀ i, MeasurableLocalObservable d (coreBox ℓ σ (k i)) (γ i)) :
+    (X : ∀ i, MeasurableRestrictionLocalObservable d (coreBox ℓ σ (k i)) (γ i)) :
     ProbabilityTheory.iIndepFun (fun i => X i) P :=
-  MeasurableLocalObservable.iIndepFun_of_isRestrictionUnitRangeDependent hP
+  MeasurableRestrictionLocalObservable.iIndepFun_of_isRestrictionUnitRangeDependent hP
     (pairwise_areUnitSeparated_coreBox hℓ σ hk) X
 
 end Homogenization

@@ -10,7 +10,7 @@ open scoped Matrix.Norms.Elementwise
 
 Concrete expectation-level weak-norm pieces for the raw
 high-contrast centered-response inequalities.  This file deliberately proves
-only component estimates from the LIH/current lemmas; it does not introduce a
+only component estimates from the library's/current lemmas; it does not introduce a
 new source, input, or feed wrapper.
 -/
 
@@ -21,8 +21,8 @@ noncomputable section
 
 open scoped Matrix.Norms.L2Operator in
 theorem aemeasurable_maxDescendantBMatrixNormCoeffFieldAtScale_sub_nat
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
     (Q : Homogenization.TriadicCube d) (n : ℕ) :
     AEMeasurable
       (fun a : Homogenization.RegCoeffField d =>
@@ -41,7 +41,7 @@ theorem aemeasurable_maxDescendantBMatrixNormCoeffFieldAtScale_sub_nat
               (Homogenization.coarseBlockMatrix
                 (Homogenization.cubeSet R) a).upperLeft)) P := by
     refine
-      Homogenization.Book.Ch04.LawCarrier.aemeasurable_finset_sup'
+      Homogenization.Book.Ch04.RestrictionLawCarrier.aemeasurable_finset_sup'
         hsDesc ?_
     intro R _hR
     simpa [Homogenization.Book.Ch02.matrixNorm,
@@ -59,7 +59,7 @@ theorem aemeasurable_maxDescendantBMatrixNormCoeffFieldAtScale_sub_nat
     ext a
     rw [Finset.sup'_apply]
     exact
-      (Homogenization.Book.Ch04.LawCarrier.finsetSupReal_eq_sup'
+      (Homogenization.Book.Ch04.RestrictionLawCarrier.finsetSupReal_eq_sup'
         sDesc hsDesc
         (fun R =>
           Homogenization.Book.Ch02.matrixNorm
@@ -68,13 +68,13 @@ theorem aemeasurable_maxDescendantBMatrixNormCoeffFieldAtScale_sub_nat
   refine hfin.congr ?_
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   simpa [sDesc] using
-    (Homogenization.Book.Ch04.LawCarrier.maxDescendantBMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae
+    (Homogenization.Book.Ch04.RestrictionLawCarrier.maxDescendantBMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae
         (a := a) ha Q (Q.scale - (n : ℤ))).symm
 
 open scoped Matrix.Norms.L2Operator in
 theorem aemeasurable_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_sub_nat
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
     (Q : Homogenization.TriadicCube d) (n : ℕ) :
     AEMeasurable
       (fun a : Homogenization.RegCoeffField d =>
@@ -93,7 +93,7 @@ theorem aemeasurable_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_sub_na
               (Homogenization.coarseBlockMatrix
                 (Homogenization.cubeSet R) a).lowerRight)) P := by
     refine
-      Homogenization.Book.Ch04.LawCarrier.aemeasurable_finset_sup'
+      Homogenization.Book.Ch04.RestrictionLawCarrier.aemeasurable_finset_sup'
         hsDesc ?_
     intro R _hR
     simpa [Homogenization.Book.Ch02.matrixNorm,
@@ -111,7 +111,7 @@ theorem aemeasurable_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_sub_na
     ext a
     rw [Finset.sup'_apply]
     exact
-      (Homogenization.Book.Ch04.LawCarrier.finsetSupReal_eq_sup'
+      (Homogenization.Book.Ch04.RestrictionLawCarrier.finsetSupReal_eq_sup'
         sDesc hsDesc
         (fun R =>
           Homogenization.Book.Ch02.matrixNorm
@@ -120,12 +120,12 @@ theorem aemeasurable_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_sub_na
   refine hfin.congr ?_
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   simpa [sDesc] using
-    (Homogenization.Book.Ch04.LawCarrier.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae
+    (Homogenization.Book.Ch04.RestrictionLawCarrier.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae
         (a := a) ha Q (Q.scale - (n : ℤ))).symm
 
 theorem aemeasurable_upperSmallSqrtTailCoeffField
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
     (m : ℕ) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
       (fun a : Homogenization.RegCoeffField d =>
@@ -189,7 +189,7 @@ theorem aemeasurable_upperSmallSqrtTailCoeffField
                     (1 / 2 : ℝ)) := by
           simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc] using
             ((summable_nat_add_iff m).mpr
-              (Homogenization.Book.Ch04.LawCarrier.summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale
+              (Homogenization.Book.Ch04.RestrictionLawCarrier.summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale
                   Q a hs))
         have htail :
             Summable
@@ -209,8 +209,8 @@ theorem aemeasurable_upperSmallSqrtTailCoeffField
         exact HasSum.tendsto_sum_nat htail.hasSum
 
 theorem aemeasurable_lowerSmallSqrtTailCoeffField
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
     (m : ℕ) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
       (fun a : Homogenization.RegCoeffField d =>
@@ -274,7 +274,7 @@ theorem aemeasurable_lowerSmallSqrtTailCoeffField
                     (1 / 2 : ℝ)) := by
           simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc] using
             ((summable_nat_add_iff m).mpr
-              (Homogenization.Book.Ch04.LawCarrier.summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
+              (Homogenization.Book.Ch04.RestrictionLawCarrier.summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
                   Q a hs))
         have htail :
             Summable
@@ -299,27 +299,27 @@ Scale-normalized laws shift the terminal scalar
 This is the first transport lemma needed for the local-baseline lower-edge
 replacement.
 -/
-theorem sigmaHatAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P) (k m : ℕ) :
+theorem sigmaHatAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P) (k m : ℕ) :
     Homogenization.Book.Ch05.sigmaHatAtScale
         (hP.scaleNormalized k) (hStruct.scaleNormalized k) (m : ℤ) =
       Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct
         ((k + m : ℕ) : ℤ) := by
   simp [Homogenization.Book.Ch05.sigmaHatAtScale,
-    hP.barSigmaAtScale_scaleNormalizedLaw hStruct k m,
-    hP.barSigmaStarAtScale_scaleNormalizedLaw hStruct k m]
+    hP.barSigmaAtScale_restrictionScaleNormalizedLaw hStruct k m,
+    hP.barSigmaStarAtScale_restrictionScaleNormalizedLaw hStruct k m]
 
 /--
 The special terminal gradient vector is invariant under scale normalization,
 with the normalized terminal scale transported from `m` to original scale
 `k + m`.
 -/
-theorem specialPAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+theorem specialPAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (k m : ℕ) (e : Homogenization.Vec d) :
     Homogenization.Book.Ch05.specialPAtScale
         (hP.scaleNormalized k) (hStruct.scaleNormalized k) (m : ℤ) e =
@@ -334,17 +334,17 @@ theorem specialPAtScale_scaleNormalizedLaw
         (Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct
           ((k + m : ℕ) : ℤ))
         (-(1 / 2 : ℝ)) • e
-  rw [sigmaHatAtScale_scaleNormalizedLaw hP hStruct k m]
+  rw [sigmaHatAtScale_restrictionScaleNormalizedLaw hP hStruct k m]
 
 /--
 The special terminal flux vector is invariant under scale normalization,
 with the normalized terminal scale transported from `m` to original scale
 `k + m`.
 -/
-theorem specialQAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+theorem specialQAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (k m : ℕ) (e : Homogenization.Vec d) :
     Homogenization.Book.Ch05.specialQAtScale
         (hP.scaleNormalized k) (hStruct.scaleNormalized k) (m : ℤ) e =
@@ -359,66 +359,66 @@ theorem specialQAtScale_scaleNormalizedLaw
         (Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct
           ((k + m : ℕ) : ℤ))
         (1 / 2 : ℝ) • e
-  rw [sigmaHatAtScale_scaleNormalizedLaw hP hStruct k m]
+  rw [sigmaHatAtScale_restrictionScaleNormalizedLaw hP hStruct k m]
 
 /--
 Scale-normalization transport in the form used by a window `k <= m`: normalized
 scale `m-k` corresponds to original scale `m`.
 -/
-theorem sigmaHatAtScale_scaleNormalizedLaw_of_le
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+theorem sigmaHatAtScale_restrictionScaleNormalizedLaw_of_le
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     {k m : ℕ} (hkm : k ≤ m) :
     Homogenization.Book.Ch05.sigmaHatAtScale
         (hP.scaleNormalized k) (hStruct.scaleNormalized k)
         ((m - k : ℕ) : ℤ) =
       Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ) := by
-  have h := sigmaHatAtScale_scaleNormalizedLaw hP hStruct k (m - k)
+  have h := sigmaHatAtScale_restrictionScaleNormalizedLaw hP hStruct k (m - k)
   have hsum : k + (m - k) = m := Nat.add_sub_of_le hkm
   simpa [hsum] using h
 
 /--
 Special gradient vector transport in the form used by a window `k <= m`.
 -/
-theorem specialPAtScale_scaleNormalizedLaw_of_le
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+theorem specialPAtScale_restrictionScaleNormalizedLaw_of_le
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     {k m : ℕ} (hkm : k ≤ m) (e : Homogenization.Vec d) :
     Homogenization.Book.Ch05.specialPAtScale
         (hP.scaleNormalized k) (hStruct.scaleNormalized k)
         ((m - k : ℕ) : ℤ) e =
       Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e := by
-  have h := specialPAtScale_scaleNormalizedLaw hP hStruct k (m - k) e
+  have h := specialPAtScale_restrictionScaleNormalizedLaw hP hStruct k (m - k) e
   have hsum : k + (m - k) = m := Nat.add_sub_of_le hkm
   simpa [hsum] using h
 
 /--
 Special flux vector transport in the form used by a window `k <= m`.
 -/
-theorem specialQAtScale_scaleNormalizedLaw_of_le
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+theorem specialQAtScale_restrictionScaleNormalizedLaw_of_le
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     {k m : ℕ} (hkm : k ≤ m) (e : Homogenization.Vec d) :
     Homogenization.Book.Ch05.specialQAtScale
         (hP.scaleNormalized k) (hStruct.scaleNormalized k)
         ((m - k : ℕ) : ℤ) e =
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e := by
-  have h := specialQAtScale_scaleNormalizedLaw hP hStruct k (m - k) e
+  have h := specialQAtScale_restrictionScaleNormalizedLaw hP hStruct k (m - k) e
   have hsum : k + (m - k) = m := Nat.add_sub_of_le hkm
   simpa [hsum] using h
 
 /--
-Source labels `p.HC.CR` and `e.P.bound`: LIH scale-zero scalar weight for
+Source labels `p.HC.CR` and `e.P.bound`: the library's scale-zero scalar weight for
 the law normalized at the left endpoint is exactly the corrected local
 weak-norm scalar on the original window.
 -/
-theorem coarseFluctuationScalarWeightAtScale_scaleNormalizedLaw_of_le
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+theorem coarseFluctuationScalarWeightAtScale_restrictionScaleNormalizedLaw_of_le
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     {k m : ℕ} (hkm : k ≤ m) :
     coarseFluctuationScalarWeightAtScale
         (hP.scaleNormalized k) (hStruct.scaleNormalized k) (m - k) =
@@ -428,20 +428,20 @@ theorem coarseFluctuationScalarWeightAtScale_scaleNormalizedLaw_of_le
       Homogenization.Book.Ch05.sigmaHatAtScale
           (hP.scaleNormalized k) (hStruct.scaleNormalized k) (M : ℤ) =
         Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ) := by
-    simpa [M] using sigmaHatAtScale_scaleNormalizedLaw_of_le
+    simpa [M] using sigmaHatAtScale_restrictionScaleNormalizedLaw_of_le
       (hP := hP) (hStruct := hStruct) hkm
   have hlower :
       (hP.scaleNormalized k).barSigmaStarAtScale
           (hStruct.scaleNormalized k) (0 : ℤ) =
         hP.barSigmaStarAtScale hStruct (k : ℤ) := by
     simpa using
-      hP.barSigmaStarAtScale_scaleNormalizedLaw hStruct k 0
+      hP.barSigmaStarAtScale_restrictionScaleNormalizedLaw hStruct k 0
   have hupper :
       (hP.scaleNormalized k).barSigmaAtScale
           (hStruct.scaleNormalized k) (0 : ℤ) =
         hP.barSigmaAtScale hStruct (k : ℤ) := by
     simpa using
-      hP.barSigmaAtScale_scaleNormalizedLaw hStruct k 0
+      hP.barSigmaAtScale_restrictionScaleNormalizedLaw hStruct k 0
   change
     Homogenization.Book.Ch05.sigmaHatAtScale
         (hP.scaleNormalized k) (hStruct.scaleNormalized k) (M : ℤ) *
@@ -462,9 +462,9 @@ Source labels `p.HC.CR` and `e.P.bound`: the local weak-norm scalar
 coefficient is nonnegative on a valid scale window.
 -/
 theorem localWeakNormScalarWeightAtScales_nonneg_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) :
     0 ≤ localWeakNormScalarWeightAtScales hP hStruct k m := by
@@ -475,14 +475,14 @@ theorem localWeakNormScalarWeightAtScales_nonneg_of_P4
 /--
 Source labels `p.HC.CR` and `e.tau.sum.absorb`: integrability of the
 response-defect square appearing in the special-vector weak-norm split.  This
-is LIH's finite weighted response-defect integrability theorem with all
+is the library's finite weighted response-defect integrability theorem with all
 parent/descendant response integrability inputs discharged from `(P4)`.
 -/
 theorem integrable_defectSum_sq_special_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (_hkm : k < m) (e : Homogenization.Vec d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -511,7 +511,7 @@ theorem integrable_defectSum_sq_special_of_P4
     exact_mod_cast Nat.zero_le k
   have hBlockM :
       MeasureTheory.Integrable
-        (Homogenization.Book.Ch04.responseJObservableCubeSet
+        (Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet
           (Homogenization.originCube d (m : ℤ)) p_e q_e) P := by
     have hFull :
         MeasureTheory.Integrable
@@ -520,14 +520,14 @@ theorem integrable_defectSum_sq_special_of_P4
       Homogenization.Book.Ch05.Section52.originBlockIntegrableAtScale_from_P4
         hP hStruct hP4 m
     exact
-      hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+      hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
         (Homogenization.originCube d (m : ℤ)) p_e q_e hFull
   have hDesc :
       ∀ n ∈ S,
         ∀ R, R ∈ Homogenization.descendantsAtScale
             (Homogenization.originCube d (m : ℤ)) n →
           MeasureTheory.Integrable
-            (Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e) P := by
+            (Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e) P := by
     intro n hn R hR
     have hn_bounds : (k : ℤ) + 1 ≤ n ∧ n ≤ (m : ℤ) :=
       Finset.mem_Icc.mp (by simpa [S] using hn)
@@ -550,7 +550,7 @@ theorem integrable_defectSum_sq_special_of_P4
       hP.integrable_coarseFullBlockMatrixAtCube_of_mem_descendantsAtScale_originCube
         hstat hn_nonneg hn_bounds.2 hR hOrigin
     exact
-      hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+      hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
         R p_e q_e hBlockR
   have hw : ∀ n ∈ S, 0 ≤ w n := by
     intro n _hn
@@ -561,7 +561,7 @@ theorem integrable_defectSum_sq_special_of_P4
 
 /--
 Source labels `p.HC.CR` and `e.tau.sum.absorb`: expectation-level conversion
-of the local weak-norm additivity-defect slot.  LIH supplies the integrated
+of the local weak-norm additivity-defect slot.  The library supplies the integrated
 Cauchy/stationarity estimate for the concrete special vectors; this theorem
 keeps the raw local scalar `P_{k,m}` and the explicit `5 * β⁻¹` constant.
 
@@ -570,10 +570,10 @@ fluctuation and lower-edge positive-excess components are separate raw
 weak-norm slots and are not discarded here.
 -/
 theorem localWeakNormScalarWeightAtScales_mul_integral_defectSum_sq_special_le_weightedTauSumAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -637,14 +637,14 @@ kept as separate terms.
 
 The two integrability hypotheses are the concrete analytic obligations needed
 to pass from the pointwise raw split to expectations; the inequality itself is
-obtained from the local paired-square lemma and LIH's integrated defect-square
+obtained from the local paired-square lemma and the library's integrated defect-square
 estimate, not assumed as a weak-norm wrapper.
 -/
 theorem integral_paired_mismatchTermSquares_special_le_rawHighContrastWeakNormSlots_local
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d)
     (hLowerEdge_int :
@@ -891,9 +891,9 @@ entry point for the terminal good/bad positive-part split, replacing the
 stale scale-zero baseline-gap route.
 -/
 theorem integral_localPositiveExcess_defectSum_sq_special_le_terminalPositiveExcess
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (e : Homogenization.Vec d)
     (hTerminalEdge_int :

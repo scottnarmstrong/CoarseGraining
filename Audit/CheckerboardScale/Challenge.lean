@@ -159,8 +159,8 @@ instance instMeasurableSpaceRegCoeffField (d : ℕ) :
     MeasurableSpace (RegCoeffField d) :=
   pointwiseSigmaR d ⊔ entryTestSigmaR d
 
-/-- A coefficient law on the carrier (mirrors `Book.Ch04.CoeffLaw`). -/
-abbrev CoeffLaw (d : ℕ) := Measure (RegCoeffField d)
+/-- A coefficient law on the carrier (mirrors `Book.Ch04.RestrictionCoeffLaw`). -/
+abbrev RestrictionCoeffLaw (d : ℕ) := Measure (RegCoeffField d)
 
 /-! ## Cubes and normalized cube averages -/
 
@@ -358,44 +358,44 @@ noncomputable def coarseBlockMatrix {d : ℕ} (U : Set (Vec d)) (a : CoeffField 
 
 /-! ### Annealed coarse matrices at scale -/
 
-noncomputable def annealedBlockMatrix {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedBlockMatrix {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : BlockMat d :=
   { upperLeft := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).upperLeft i j ∂P
     upperRight := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).upperRight i j ∂P
     lowerLeft := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).lowerLeft i j ∂P
     lowerRight := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).lowerRight i j ∂P }
 
-noncomputable def annealedSigmaStarInv {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedSigmaStarInv {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   (annealedBlockMatrix P U).lowerRight
 
-noncomputable def annealedSigmaStar {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedSigmaStar {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   (annealedSigmaStarInv P U)⁻¹
 
 noncomputable def annealedSigmaStarInvKappaMean {d : ℕ}
-    (P : CoeffLaw d) (U : Set (Vec d)) : Mat d :=
+    (P : RestrictionCoeffLaw d) (U : Set (Vec d)) : Mat d :=
   -((annealedBlockMatrix P U).lowerLeft)
 
-noncomputable def annealedKappa {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedKappa {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   annealedSigmaStar P U * annealedSigmaStarInvKappaMean P U
 
-noncomputable def annealedB {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedB {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   (annealedBlockMatrix P U).upperLeft
 
-noncomputable def annealedSigma {d : ℕ} (P : CoeffLaw d)
+noncomputable def annealedSigma {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) : Mat d :=
   annealedB P U
     - matTranspose (annealedKappa P U) * annealedSigmaStarInv P U * annealedKappa P U
 
 noncomputable def annealedSigmaAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) : Mat d :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) : Mat d :=
   annealedSigma P (cubeSet (triadicOriginCube d n))
 
 noncomputable def annealedSigmaStarAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) : Mat d :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) : Mat d :=
   annealedSigmaStar P (cubeSet (triadicOriginCube d n))
 
 /-! ### The total scalar contrast selector
@@ -412,12 +412,12 @@ determined by their `(0,0)` entry (`NeZero d`), the Mathlib-only mirror is the
 *total* function below; under the structural hypotheses the Solution bridges it
 to the repository selector. -/
 
-noncomputable def thetaAtScale {d : ℕ} [NeZero d] (P : CoeffLaw d) (n : ℤ) : ℝ :=
+noncomputable def thetaAtScale {d : ℕ} [NeZero d] (P : RestrictionCoeffLaw d) (n : ℤ) : ℝ :=
   annealedSigmaAtScale P n 0 0 * (annealedSigmaStarAtScale P n 0 0)⁻¹
 
 /-! ### The `Θ`-ellipticity class (quadratic-form form ONLY, per directive) -/
 
-def ThetaEllipticLaw {d : ℕ} (Θ : ℝ) (P : CoeffLaw d) : Prop :=
+def ThetaEllipticLaw {d : ℕ} (Θ : ℝ) (P : RestrictionCoeffLaw d) : Prop :=
   ∀ᵐ a ∂P, ∀ᵐ x ∂(MeasureTheory.volume : Measure (Vec d)),
     IsEllipticMatrix 1 Θ (a.toFun x)
 
@@ -438,7 +438,7 @@ abbrev Sample (d : ℕ) :=
   Lattice d → Bool
 
 def openUnitCell {d : ℕ} (z : Lattice d) : Set (Vec d) :=
-  {x | ∀ i : Fin d, |x i - (z i : ℝ)| < (1 / 2 : ℝ)}
+  {x | ∀ i : Fin d, |x i - (z i : ℝ)| < (1 / ((2 : ℕ) : ℝ) : ℝ)}
 
 def coinConductance (lam Lam : ℝ) (b : Bool) : ℝ :=
   if b then lam else Lam
@@ -458,15 +458,15 @@ theorem measurableSet_openUnitCell {d : ℕ} (z : Lattice d) :
   have hopen : IsOpen (openUnitCell z : Set (Vec d)) := by
     unfold openUnitCell
     have hset :
-        {x : Vec d | ∀ i : Fin d, |x i - (z i : ℝ)| < (1 / 2 : ℝ)} =
-          ⋂ i : Fin d, {x : Vec d | |x i - (z i : ℝ)| < (1 / 2 : ℝ)} := by
+        {x : Vec d | ∀ i : Fin d, |x i - (z i : ℝ)| < (1 / ((2 : ℕ) : ℝ) : ℝ)} =
+          ⋂ i : Fin d, {x : Vec d | |x i - (z i : ℝ)| < (1 / ((2 : ℕ) : ℝ) : ℝ)} := by
       ext x
       simp
     rw [hset]
     refine isOpen_iInter_of_finite fun i : Fin d => ?_
     have hleft : Continuous fun x : Vec d => |x i - (z i : ℝ)| :=
       ((continuous_apply i).sub continuous_const).abs
-    have hright : Continuous fun _ : Vec d => (1 / 2 : ℝ) :=
+    have hright : Continuous fun _ : Vec d => (1 / ((2 : ℕ) : ℝ) : ℝ) :=
       continuous_const
     exact isOpen_lt hleft hright
   exact hopen.measurableSet
@@ -488,13 +488,13 @@ theorem openUnitCell_unique {d : ℕ} {x : Vec d} {z w : Lattice d}
         - (x i - (z i : ℝ)) + (x i - (w i : ℝ)) := by ring
   have htriangle :
       |(z i : ℝ) - (w i : ℝ)| <
-        (1 / 2 : ℝ) + (1 / 2 : ℝ) := by
+        (1 / ((2 : ℕ) : ℝ) : ℝ) + (1 / ((2 : ℕ) : ℝ) : ℝ) := by
     calc
       |(z i : ℝ) - (w i : ℝ)|
           = |- (x i - (z i : ℝ)) + (x i - (w i : ℝ))| := by rw [hsplit]
       _ ≤ |-(x i - (z i : ℝ))| + |x i - (w i : ℝ)| := abs_add_le _ _
       _ = |x i - (z i : ℝ)| + |x i - (w i : ℝ)| := by rw [abs_neg]
-      _ < (1 / 2 : ℝ) + (1 / 2 : ℝ) := add_lt_add hz_i hw_i
+      _ < (1 / ((2 : ℕ) : ℝ) : ℝ) + (1 / ((2 : ℕ) : ℝ) : ℝ) := add_lt_add hz_i hw_i
   norm_num at htriangle
   linarith
 
@@ -617,7 +617,7 @@ def coinMeasure (p : ℝ≥0) (hp : p ≤ 1) : Measure Bool :=
 def sampleMeasure (d : ℕ) (p : ℝ≥0) (hp : p ≤ 1) : Measure (Sample d) :=
   Measure.infinitePi (fun _ : Lattice d => coinMeasure p hp)
 
-noncomputable def law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) : CoeffLaw d :=
+noncomputable def law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) : RestrictionCoeffLaw d :=
   Measure.map (checkerRegField lam Lam) (sampleMeasure d p hp)
 
 end

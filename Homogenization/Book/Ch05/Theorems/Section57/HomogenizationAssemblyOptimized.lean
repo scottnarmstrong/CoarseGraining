@@ -159,8 +159,8 @@ def assemblyHomogenizationComparisonRHSOfScalar {d : ℕ} [NeZero d]
 
 /-- Finite-`sigma` wrapper for the manuscript-shaped RHS. -/
 def assemblyHomogenizationComparisonRHS {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {P : Ch04.RestrictionCoeffLaw d} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (C α r₂ : ℝ) (X : RegCoeffField d → ℝ)
     (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)

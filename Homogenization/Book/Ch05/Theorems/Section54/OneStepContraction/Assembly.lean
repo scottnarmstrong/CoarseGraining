@@ -98,35 +98,35 @@ noncomputable def oneStepCompressionMultiplierParams {d : ℕ}
 
 @[simp]
 theorem oneStepScaleSeparationConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     oneStepScaleSeparationConstParams hP4.params =
       oneStepScaleSeparationConst hP4 := rfl
 
 @[simp]
 theorem oneStepCoarsePairLinearBudgetConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     oneStepCoarsePairLinearBudgetConstParams hP4.params =
       oneStepCoarsePairLinearBudgetConst hP4 := rfl
 
 @[simp]
 theorem oneStepWeightedRefinedBudgetConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     oneStepWeightedRefinedBudgetConstParams hP4.params =
       oneStepWeightedRefinedBudgetConst hP4 := rfl
 
 @[simp]
 theorem oneStepCoarseFullBlockConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     oneStepCoarseFullBlockConstParams hP4.params =
       oneStepCoarseFullBlockConst hP4 := rfl
 
 @[simp]
 theorem oneStepCoarseTauSumConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     oneStepCoarseTauSumConstParams hP4.params =
       oneStepCoarseTauSumConst hP4 := rfl
@@ -142,8 +142,8 @@ theorem exists_expectedCenteredResponseJAtScale_special_le_compressed
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ K : ℝ, 0 ≤ K ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ {Csep delta epsilon : ℝ} {m : ℕ},
@@ -231,8 +231,8 @@ theorem oneStepContraction_homogenizationScale
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ {delta : ℝ}, 0 < delta → delta ≤ 1 / 2 →

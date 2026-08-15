@@ -127,9 +127,9 @@ private theorem coarseBlockMatrix_neg_lowerLeft_adjoint_cubeSet_originCube_of_ex
 /-- **Hoisted invariance core (sign flip).**  The block observable is an
 opaque function variable `F`; keeping the heavy `coarseBlockMatrix _ a.toFun`
 term out of this proof avoids the `isDefEq` blow-up that the concrete
-integrand triggers.  See the paper (Armstrong–Kuusi–Loher, in prep). -/
+integrand triggers.  See the paper (Armstrong–Kuusi–Loher, to appear). -/
 private theorem matrix_signFlip_conj_integral_eq {d : ℕ} [NeZero d]
-    {P : CoeffLaw d} (hIso : IsotropicLaw P) (i : Fin d)
+    {P : RestrictionCoeffLaw d} (hIso : RestrictionIsotropicLaw P) (i : Fin d)
     (F : RegCoeffField d → Mat d)
     (hmeas : ∀ r c : Fin d, AEStronglyMeasurable (fun a => F a r c) P)
     (hcov : ∀ᵐ a ∂P,
@@ -162,7 +162,7 @@ private theorem matrix_signFlip_conj_integral_eq {d : ℕ} [NeZero d]
 /-- **Hoisted invariance core (swap).**  Opaque block observable `F`, as in
 `matrix_signFlip_conj_integral_eq`. -/
 private theorem matrix_swap_conj_integral_eq {d : ℕ} [NeZero d]
-    {P : CoeffLaw d} (hIso : IsotropicLaw P) (i j : Fin d)
+    {P : RestrictionCoeffLaw d} (hIso : RestrictionIsotropicLaw P) (i j : Fin d)
     (F : RegCoeffField d → Mat d)
     (hmeas : ∀ r c : Fin d, AEStronglyMeasurable (fun a => F a r c) P)
     (hcov : ∀ᵐ a ∂P,
@@ -192,7 +192,7 @@ private theorem matrix_swap_conj_integral_eq {d : ℕ} [NeZero d]
 
 /-- **Hoisted vanishing core (adjoint).**  Opaque block observable `G`. -/
 private theorem matrix_adjoint_neg_integral_eq_zero {d : ℕ} [NeZero d]
-    {P : CoeffLaw d} (hAdj : AdjointInvariantLaw P)
+    {P : RestrictionCoeffLaw d} (hAdj : RestrictionAdjointInvariantLaw P)
     (G : RegCoeffField d → Mat d)
     (hmeas : ∀ r c : Fin d, AEStronglyMeasurable (fun a => G a r c) P)
     (hcov : ∀ᵐ a ∂P, G (adjointReg a) = -G a) :
@@ -213,8 +213,8 @@ private theorem matrix_adjoint_neg_integral_eq_zero {d : ℕ} [NeZero d]
   linarith
 
 private theorem annealedSigmaStarInvAtScale_isSignFlipInvariant_of_covariant_ae
-    {d : ℕ} [NeZero d] (P : CoeffLaw d) (n : ℤ)
-    (hIso : IsotropicLaw P)
+    {d : ℕ} [NeZero d] (P : RestrictionCoeffLaw d) (n : ℤ)
+    (hIso : RestrictionIsotropicLaw P)
     (hmeas : ∀ r c : Fin d,
       AEStronglyMeasurable
         (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight r c) P)
@@ -236,8 +236,8 @@ private theorem annealedSigmaStarInvAtScale_isSignFlipInvariant_of_covariant_ae
     (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight) hmeas (hcov i)
 
 private theorem annealedSigmaStarInvAtScale_isSwapInvariant_of_covariant_ae
-    {d : ℕ} [NeZero d] (P : CoeffLaw d) (n : ℤ)
-    (hIso : IsotropicLaw P)
+    {d : ℕ} [NeZero d] (P : RestrictionCoeffLaw d) (n : ℤ)
+    (hIso : RestrictionIsotropicLaw P)
     (hmeas : ∀ r c : Fin d,
       AEStronglyMeasurable
         (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight r c) P)
@@ -259,8 +259,8 @@ private theorem annealedSigmaStarInvAtScale_isSwapInvariant_of_covariant_ae
     (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight) hmeas (hcov i j)
 
 private theorem annealedBAtScale_isSignFlipInvariant_of_covariant_ae
-    {d : ℕ} [NeZero d] (P : CoeffLaw d) (n : ℤ)
-    (hIso : IsotropicLaw P)
+    {d : ℕ} [NeZero d] (P : RestrictionCoeffLaw d) (n : ℤ)
+    (hIso : RestrictionIsotropicLaw P)
     (hmeas : ∀ r c : Fin d,
       AEStronglyMeasurable
         (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft r c) P)
@@ -282,8 +282,8 @@ private theorem annealedBAtScale_isSignFlipInvariant_of_covariant_ae
     (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft) hmeas (hcov i)
 
 private theorem annealedBAtScale_isSwapInvariant_of_covariant_ae
-    {d : ℕ} [NeZero d] (P : CoeffLaw d) (n : ℤ)
-    (hIso : IsotropicLaw P)
+    {d : ℕ} [NeZero d] (P : RestrictionCoeffLaw d) (n : ℤ)
+    (hIso : RestrictionIsotropicLaw P)
     (hmeas : ∀ r c : Fin d,
       AEStronglyMeasurable
         (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft r c) P)
@@ -305,8 +305,8 @@ private theorem annealedBAtScale_isSwapInvariant_of_covariant_ae
     (fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft) hmeas (hcov i j)
 
 private theorem annealedSigmaStarInvKappaMeanAtScale_eq_zero_of_adjoint_covariant_ae
-    {d : ℕ} [NeZero d] (P : CoeffLaw d) (n : ℤ)
-    (hAdj : AdjointInvariantLaw P)
+    {d : ℕ} [NeZero d] (P : RestrictionCoeffLaw d) (n : ℤ)
+    (hAdj : RestrictionAdjointInvariantLaw P)
     (hmeas : ∀ r c : Fin d,
       AEStronglyMeasurable
         (fun a => -((coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerLeft r c)) P)
@@ -329,11 +329,11 @@ private theorem annealedSigmaStarInvKappaMeanAtScale_eq_zero_of_adjoint_covarian
 /--
 Isotropy and adjoint invariance scalarize the primitive annealed blocks at a
 fixed scale.  The a.s. deterministic coarse-block existence needed by the
-covariance identities is supplied by `LawCarrier`.
+covariance identities is supplied by `RestrictionLawCarrier`.
 -/
 noncomputable def Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoint
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hIso : IsotropicLaw P) (hAdj : AdjointInvariantLaw P) (n : ℤ) :
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hIso : RestrictionIsotropicLaw P) (hAdj : RestrictionAdjointInvariantLaw P) (n : ℤ) :
     Internal.AnnealedPrimitiveScalarizationData (d := d) P n :=
   let hex := hP.ae_exists_coarseBlockMatrix_openCubeSet_originCube n
   {
@@ -386,138 +386,138 @@ noncomputable def Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoi
 /-- Structural-law version of
 `Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoint`. -/
 noncomputable def Internal.annealedPrimitiveScalarizationData_of_structuralLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) :
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) :
     Internal.AnnealedPrimitiveScalarizationData (d := d) P n :=
   Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoint hP
     hStruct.isotropic hStruct.adjoint_invariant n
 
 /-- Isotropy and adjoint invariance give scalarization at a fixed scale. -/
 theorem Internal.hasAnnealedScalarizationAtScale_of_isotropic_adjoint
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hIso : IsotropicLaw P) (hAdj : AdjointInvariantLaw P) (n : ℤ) :
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hIso : RestrictionIsotropicLaw P) (hAdj : RestrictionAdjointInvariantLaw P) (n : ℤ) :
     Internal.HasAnnealedScalarizationAtScale P n :=
   Internal.AnnealedScalarizationPrimitiveData.hasAnnealedScalarizationAtScale
     (Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoint hP hIso hAdj n)
 
 /-- Structural-law version of scalarization at a fixed scale. -/
 theorem Internal.hasAnnealedScalarizationAtScale_of_structuralLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) :
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) :
     Internal.HasAnnealedScalarizationAtScale P n :=
   Internal.AnnealedScalarizationPrimitiveData.hasAnnealedScalarizationAtScale
     (Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct n)
 
 /-- Isotropy and adjoint invariance give scalarization at every scale. -/
 theorem Internal.annealedScalarizationTheory_of_isotropic_adjoint
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hIso : IsotropicLaw P) (hAdj : AdjointInvariantLaw P) :
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hIso : RestrictionIsotropicLaw P) (hAdj : RestrictionAdjointInvariantLaw P) :
     Internal.AnnealedScalarizationTheory P where
   scalarized n :=
     Internal.hasAnnealedScalarizationAtScale_of_isotropic_adjoint hP hIso hAdj n
 
 /-- Structural-law version of scalarization at every scale. -/
 theorem Internal.annealedScalarizationTheory_of_structuralLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) :
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) :
     Internal.AnnealedScalarizationTheory P :=
   Internal.annealedScalarizationTheory_of_isotropic_adjoint hP
     hStruct.isotropic hStruct.adjoint_invariant
 
 /-- Structural-law scalar `\bar\sigma_n`. -/
-noncomputable def LawCarrier.barSigmaAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) : ℝ :=
+noncomputable def RestrictionLawCarrier.barSigmaAtScale
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) : ℝ :=
   (Internal.annealedScalarizationTheory_of_structuralLaw hP hStruct).barSigma n
 
 /-- Structural-law scalar `\bar\sigma_{*,n}`. -/
-noncomputable def LawCarrier.barSigmaStarAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) : ℝ :=
+noncomputable def RestrictionLawCarrier.barSigmaStarAtScale
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) : ℝ :=
   (Internal.annealedScalarizationTheory_of_structuralLaw hP hStruct).barSigmaStar n
 
 /-- Structural-law scalar upper-left coefficient `\bar b_n`. -/
-noncomputable def LawCarrier.barBAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) : ℝ :=
+noncomputable def RestrictionLawCarrier.barBAtScale
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) : ℝ :=
   (Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct n).barB
 
 /-- Structural-law scalar inverse-star coefficient `\bar\sigma_{*,n}^{-1}`. -/
-noncomputable def LawCarrier.barSigmaStarInvAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) : ℝ :=
+noncomputable def RestrictionLawCarrier.barSigmaStarInvAtScale
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) : ℝ :=
   (Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct n).barSigmaStarInv
 
 /-- Structural-law contrast `\Theta_n = \bar\sigma_n \bar\sigma_{*,n}^{-1}`. -/
-noncomputable def LawCarrier.thetaAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) : ℝ :=
+noncomputable def RestrictionLawCarrier.thetaAtScale
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) : ℝ :=
   hP.barSigmaAtScale hStruct n * (hP.barSigmaStarAtScale hStruct n)⁻¹
 
 /-- The structural-law scalar `\bar\sigma_n` scalarizes the annealed matrix. -/
-theorem LawCarrier.annealedSigmaAtScale_eq_barSigmaAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) :
+theorem RestrictionLawCarrier.annealedSigmaAtScale_eq_barSigmaAtScale
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) :
     annealedSigmaAtScale P n = hP.barSigmaAtScale hStruct n • (1 : Mat d) := by
-  simpa [LawCarrier.barSigmaAtScale] using
+  simpa [RestrictionLawCarrier.barSigmaAtScale] using
     (Internal.annealedScalarizationTheory_of_structuralLaw hP hStruct).annealedSigma_eq n
 
 /-- The structural-law scalar `\bar\sigma_{*,n}` scalarizes the annealed
 starred matrix. -/
-theorem LawCarrier.annealedSigmaStarAtScale_eq_barSigmaStarAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) :
+theorem RestrictionLawCarrier.annealedSigmaStarAtScale_eq_barSigmaStarAtScale
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) :
     annealedSigmaStarAtScale P n =
       hP.barSigmaStarAtScale hStruct n • (1 : Mat d) := by
-  simpa [LawCarrier.barSigmaStarAtScale] using
+  simpa [RestrictionLawCarrier.barSigmaStarAtScale] using
     (Internal.annealedScalarizationTheory_of_structuralLaw hP hStruct).annealedSigmaStar_eq n
 
 /-- The structural-law scalar `\bar b_n` scalarizes the annealed upper-left
 block. -/
-theorem LawCarrier.annealedBAtScale_eq_barBAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) :
+theorem RestrictionLawCarrier.annealedBAtScale_eq_barBAtScale
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) :
     annealedBAtScale P n = hP.barBAtScale hStruct n • (1 : Mat d) := by
-  simpa [LawCarrier.barBAtScale] using
+  simpa [RestrictionLawCarrier.barBAtScale] using
     (Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct n).b_eq
 
 /-- The structural-law scalar `\bar\sigma_{*,n}^{-1}` scalarizes the annealed
 inverse-star matrix. -/
-theorem LawCarrier.annealedSigmaStarInvAtScale_eq_barSigmaStarInvAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) :
+theorem RestrictionLawCarrier.annealedSigmaStarInvAtScale_eq_barSigmaStarInvAtScale
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) :
     annealedSigmaStarInvAtScale P n =
       hP.barSigmaStarInvAtScale hStruct n • (1 : Mat d) := by
-  simpa [LawCarrier.barSigmaStarInvAtScale] using
+  simpa [RestrictionLawCarrier.barSigmaStarInvAtScale] using
     (Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct n).sigmaStarInv_eq
 
 /-- Under the structural law, the scalarized conductivity agrees with the
 primitive upper-left scalar. -/
-theorem LawCarrier.barSigmaAtScale_eq_barBAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) :
+theorem RestrictionLawCarrier.barSigmaAtScale_eq_barBAtScale
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) :
     hP.barSigmaAtScale hStruct n = hP.barBAtScale hStruct n := by
-  simpa [LawCarrier.barSigmaAtScale, LawCarrier.barBAtScale] using
+  simpa [RestrictionLawCarrier.barSigmaAtScale, RestrictionLawCarrier.barBAtScale] using
     Internal.AnnealedPrimitiveScalarizationData.barSigma_eq_barB
       (Internal.annealedScalarizationTheory_of_structuralLaw hP hStruct)
       (Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct n)
 
 /-- Under the structural law, `\bar\sigma_{*,n}` is the inverse of the primitive
 inverse-star scalar. -/
-theorem LawCarrier.barSigmaStarAtScale_eq_inv_barSigmaStarInvAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) :
+theorem RestrictionLawCarrier.barSigmaStarAtScale_eq_inv_barSigmaStarInvAtScale
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) :
     hP.barSigmaStarAtScale hStruct n =
       (hP.barSigmaStarInvAtScale hStruct n)⁻¹ := by
-  simpa [LawCarrier.barSigmaStarAtScale, LawCarrier.barSigmaStarInvAtScale] using
+  simpa [RestrictionLawCarrier.barSigmaStarAtScale, RestrictionLawCarrier.barSigmaStarInvAtScale] using
     Internal.AnnealedPrimitiveScalarizationData.barSigmaStar_eq_inv_barSigmaStarInv
       (Internal.annealedScalarizationTheory_of_structuralLaw hP hStruct)
       (Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct n)
 
 /-- Under the structural law, the annealed coupling matrix vanishes. -/
-theorem LawCarrier.annealedKappaAtScale_eq_zero
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) :
+theorem RestrictionLawCarrier.annealedKappaAtScale_eq_zero
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) :
     annealedKappaAtScale P n = 0 := by
   simpa using
     (Internal.annealedScalarizationTheory_of_structuralLaw hP hStruct).annealedKappa_eq_zero n
@@ -525,8 +525,8 @@ theorem LawCarrier.annealedKappaAtScale_eq_zero
 /-- Internal compatibility between the structural-law contrast and the
 scalarization route contrast. -/
 theorem Internal.thetaAtScale_eq_scalarization_contrast
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (n : ℤ) :
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (n : ℤ) :
     hP.thetaAtScale hStruct n =
       (Internal.annealedScalarizationTheory_of_structuralLaw hP hStruct).contrast n := by
   rfl

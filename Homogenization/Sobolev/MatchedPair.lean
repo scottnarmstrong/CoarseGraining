@@ -13,7 +13,7 @@ This module re-exports the scaled Poincaré inequalities, the zero-set lower
 bound, and the matched-pair Poincaré inequality from the `MatchedPair`
 submodules, and proves the top-level matched-pair Sobolev inequality (the
 high-moment paper's Lemma 3.2, `l.doubled.sobolev` / `e.doubled.sobolev`,
-Armstrong–Kuusi–Loher, in preparation):
+Armstrong–Kuusi–Loher, to appear):
 
 For `f, g ∈ H¹(axisCube z L)` sharing a boundary trace (`f − g ∈ H¹₀`) whose
 value sets together cover at most `|U|`,

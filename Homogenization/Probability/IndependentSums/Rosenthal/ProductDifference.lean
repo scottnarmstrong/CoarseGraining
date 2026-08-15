@@ -1,4 +1,5 @@
 import Homogenization.Probability.IndependentSums.Rosenthal.Symmetrization
+import Mathlib.Analysis.MeanInequalitiesPow
 
 namespace Homogenization
 namespace IndependentSums
@@ -255,6 +256,53 @@ theorem sup'_abs_sub_pow_le
     exact add_pow_le hA_nonneg hB_nonneg p
   exact le_trans hpow (by simpa [A, B] using hadd)
 
+/-- Real-exponent pointwise `L^p` control of the finite maximum of the
+symmetrized family by the maxima of the two coordinate copies. -/
+theorem sup'_abs_sub_rpow_le
+    {X : ι → Ω → ℝ} {s : Finset ι} (hs : s.Nonempty) {p : ℝ}
+    (hp : 1 ≤ p) (ω : Ω × Ω) :
+    (s.sup' hs (fun i => |X i ω.1 - X i ω.2|)) ^ p ≤
+      (2 : ℝ) ^ (p - 1) *
+        ((s.sup' hs (fun i => |X i ω.1|)) ^ p + (s.sup' hs (fun i => |X i ω.2|)) ^ p) := by
+  let A : ℝ := s.sup' hs (fun i => |X i ω.1|)
+  let B : ℝ := s.sup' hs (fun i => |X i ω.2|)
+  have hA_nonneg : 0 ≤ A := by
+    have hnonneg : 0 ≤ |X hs.choose ω.1| := abs_nonneg _
+    have hle : |X hs.choose ω.1| ≤ A := by
+      simpa [A] using (Finset.le_sup' (f := fun i => |X i ω.1|) hs.choose_spec)
+    exact le_trans hnonneg hle
+  have hB_nonneg : 0 ≤ B := by
+    have hnonneg : 0 ≤ |X hs.choose ω.2| := abs_nonneg _
+    have hle : |X hs.choose ω.2| ≤ B := by
+      simpa [B] using (Finset.le_sup' (f := fun i => |X i ω.2|) hs.choose_spec)
+    exact le_trans hnonneg hle
+  have hsup_nonneg : 0 ≤ s.sup' hs (fun i => |X i ω.1 - X i ω.2|) := by
+    have hnonneg : 0 ≤ |X hs.choose ω.1 - X hs.choose ω.2| := abs_nonneg _
+    have hle :
+        |X hs.choose ω.1 - X hs.choose ω.2| ≤
+          s.sup' hs (fun i => |X i ω.1 - X i ω.2|) := by
+      exact Finset.le_sup' (f := fun i => |X i ω.1 - X i ω.2|) hs.choose_spec
+    exact le_trans hnonneg hle
+  have hsup :
+      s.sup' hs (fun i => |X i ω.1 - X i ω.2|) ≤ A + B := by
+    refine Finset.sup'_le hs _ ?_
+    intro i hi
+    have hAi : |X i ω.1| ≤ A := by
+      simpa [A] using (Finset.le_sup' (f := fun i => |X i ω.1|) hi)
+    have hBi : |X i ω.2| ≤ B := by
+      simpa [B] using (Finset.le_sup' (f := fun i => |X i ω.2|) hi)
+    calc
+      |X i ω.1 - X i ω.2| ≤ |X i ω.1| + |X i ω.2| := by
+        simpa [sub_eq_add_neg] using abs_add_le (X i ω.1) (-X i ω.2)
+      _ ≤ A + B := add_le_add hAi hBi
+  have hpow :
+      (s.sup' hs (fun i => |X i ω.1 - X i ω.2|)) ^ p ≤ (A + B) ^ p := by
+    exact Real.rpow_le_rpow hsup_nonneg hsup (by linarith)
+  have hadd :
+      (A + B) ^ p ≤ (2 : ℝ) ^ (p - 1) * (A ^ p + B ^ p) := by
+    exact_mod_cast NNReal.rpow_add_le_mul_rpow_add_rpow ⟨A, hA_nonneg⟩ ⟨B, hB_nonneg⟩ hp
+  exact le_trans hpow (by simpa [A, B] using hadd)
+
 end
 
 /-- Product-space `L^p` control of the finite maximum of the symmetrized family
@@ -462,6 +510,132 @@ theorem integrable_sup'_abs_sub_pow_of_integrable_sup'_abs_pow
     have hnonneg : 0 ≤ |X hs.choose ω.1 - X hs.choose ω.2| := abs_nonneg _
     exact le_trans hnonneg (Finset.le_sup' (f := fun i => |X i ω.1 - X i ω.2|) hs.choose_spec)
   simpa [G, M, abs_of_nonneg hbase_nonneg] using hω
+
+/-- Real-exponent integrability of the symmetrized finite maximum follows
+from integrability of the original finite maximum. -/
+theorem integrable_sup'_abs_sub_rpow_of_integrable_sup'_abs_rpow
+    [IsProbabilityMeasure μ]
+    {X : ι → Ω → ℝ} {s : Finset ι} (hs : s.Nonempty) {p : ℝ}
+    (hp : 1 ≤ p)
+    (h_meas : ∀ i, Measurable (X i))
+    (hmax_int : Integrable (fun ω => (s.sup' hs (fun i => |X i ω|)) ^ p) μ) :
+    Integrable (fun ω : Ω × Ω =>
+      (s.sup' hs (fun i => |X i ω.1 - X i ω.2|)) ^ p) (μ.prod μ) := by
+  let M : Ω → ℝ := fun ω => s.sup' hs (fun i => |X i ω|)
+  let G : Ω × Ω → ℝ := fun ω =>
+    (2 : ℝ) ^ (p - 1) * (M ω.1 ^ p + M ω.2 ^ p)
+  have hfst : Integrable (fun ω : Ω × Ω => M ω.1 ^ p) (μ.prod μ) := by
+    simpa [M] using hmax_int.comp_fst μ
+  have hsnd : Integrable (fun ω : Ω × Ω => M ω.2 ^ p) (μ.prod μ) := by
+    simpa [M] using hmax_int.comp_snd μ
+  have hG_int : Integrable G (μ.prod μ) := by
+    simpa [G] using (hfst.add hsnd).const_mul ((2 : ℝ) ^ (p - 1))
+  have hleft_meas :
+      Measurable (fun ω : Ω × Ω => s.sup' hs (fun i => |X i ω.1 - X i ω.2|)) := by
+    have hsup_meas :
+        Measurable (s.sup' hs (fun i (ω : Ω × Ω) => |X i ω.1 - X i ω.2|)) := by
+      refine Finset.measurable_sup' (hs := hs)
+        (f := fun i (ω : Ω × Ω) => |X i ω.1 - X i ω.2|) ?_
+      intro i hi
+      exact continuous_abs.measurable.comp
+        (((h_meas i).comp measurable_fst).sub ((h_meas i).comp measurable_snd))
+    convert hsup_meas using 1
+    ext ω
+    simp
+  have hleft_aesm :
+      AEStronglyMeasurable
+        (fun ω : Ω × Ω => (s.sup' hs (fun i => |X i ω.1 - X i ω.2|)) ^ p) (μ.prod μ) := by
+    exact (hleft_meas.pow_const p).aestronglyMeasurable
+  refine hG_int.mono' hleft_aesm ?_
+  filter_upwards with ω
+  have hω := sup'_abs_sub_rpow_le (X := X) (s := s) hs hp ω
+  have hbase_nonneg : 0 ≤ s.sup' hs (fun i => |X i ω.1 - X i ω.2|) := by
+    have hnonneg : 0 ≤ |X hs.choose ω.1 - X hs.choose ω.2| := abs_nonneg _
+    exact le_trans hnonneg
+      (Finset.le_sup' (f := fun i => |X i ω.1 - X i ω.2|) hs.choose_spec)
+  simpa [G, M, abs_of_nonneg (Real.rpow_nonneg hbase_nonneg p)] using hω
+
+/-- Product-space real-exponent `L^p` control of the finite maximum of the
+symmetrized family by the original maximum. -/
+theorem integral_sup'_abs_sub_rpow_le_two_rpow_mul_integral_sup'_abs_rpow
+    [IsProbabilityMeasure μ]
+    {X : ι → Ω → ℝ} {s : Finset ι} (hs : s.Nonempty) {p : ℝ}
+    (hp : 1 ≤ p)
+    (h_meas : ∀ i, Measurable (X i))
+    (hmax_int : Integrable (fun ω => (s.sup' hs (fun i => |X i ω|)) ^ p) μ) :
+    ∫ ω : Ω × Ω, (s.sup' hs (fun i => |X i ω.1 - X i ω.2|)) ^ p ∂(μ.prod μ) ≤
+      (2 : ℝ) ^ p * ∫ ω, (s.sup' hs (fun i => |X i ω|)) ^ p ∂μ := by
+  let M : Ω → ℝ := fun ω => s.sup' hs (fun i => |X i ω|)
+  let G : Ω × Ω → ℝ := fun ω =>
+    (2 : ℝ) ^ (p - 1) * (M ω.1 ^ p + M ω.2 ^ p)
+  have hfst : Integrable (fun ω : Ω × Ω => M ω.1 ^ p) (μ.prod μ) := by
+    simpa [M] using hmax_int.comp_fst μ
+  have hsnd : Integrable (fun ω : Ω × Ω => M ω.2 ^ p) (μ.prod μ) := by
+    simpa [M] using hmax_int.comp_snd μ
+  have hG_int : Integrable G (μ.prod μ) := by
+    simpa [G] using (hfst.add hsnd).const_mul ((2 : ℝ) ^ (p - 1))
+  have hleft_int :
+      Integrable
+        (fun ω : Ω × Ω => (s.sup' hs (fun i => |X i ω.1 - X i ω.2|)) ^ p) (μ.prod μ) := by
+    exact integrable_sup'_abs_sub_rpow_of_integrable_sup'_abs_rpow
+      (μ := μ) (X := X) hs hp h_meas hmax_int
+  have hpoint :
+      ∀ᵐ ω : Ω × Ω ∂(μ.prod μ),
+        (s.sup' hs (fun i => |X i ω.1 - X i ω.2|)) ^ p ≤ G ω :=
+    Filter.Eventually.of_forall fun ω => by
+      simpa [G, M] using sup'_abs_sub_rpow_le (X := X) (s := s) hs hp ω
+  have hM_meas : Measurable M := by
+    dsimp [M]
+    convert
+      (Finset.measurable_sup' (hs := hs) (f := fun i ω => |X i ω|) fun i _ =>
+        continuous_abs.measurable.comp (h_meas i)) using 1
+    ext ω
+    simp
+  have hid :
+      IdentDistrib
+        (fun ω : Ω × Ω => M ω.1 ^ p)
+        (fun ω : Ω × Ω => M ω.2 ^ p)
+        (μ.prod μ) (μ.prod μ) := by
+    simpa [M, Function.comp_def] using
+      (identDistrib_comp_fst_comp_snd_prod (μ := μ) (X := M) hM_meas.aemeasurable).comp
+        (measurable_id.pow_const p)
+  have hfst_eq :
+      ∫ ω : Ω × Ω, M ω.1 ^ p ∂(μ.prod μ) = ∫ ω, M ω ^ p ∂μ := by
+    simpa [M] using
+      (integral_fun_fst (μ := μ) (ν := μ) (f := fun ω : Ω => M ω ^ p))
+  have hsnd_eq :
+      ∫ ω : Ω × Ω, M ω.2 ^ p ∂(μ.prod μ) =
+        ∫ ω : Ω × Ω, M ω.1 ^ p ∂(μ.prod μ) := by
+    simpa using hid.integral_eq.symm
+  have hpow_two : (2 : ℝ) ^ (p - 1) * 2 = (2 : ℝ) ^ p := by
+    calc
+      (2 : ℝ) ^ (p - 1) * 2 =
+          (2 : ℝ) ^ (p - 1) * (2 : ℝ) ^ (1 : ℝ) := by rw [Real.rpow_one]
+      _ = (2 : ℝ) ^ ((p - 1) + 1) := (Real.rpow_add (by norm_num) _ _).symm
+      _ = (2 : ℝ) ^ p := by
+        congr 1
+        ring
+  calc
+    ∫ ω : Ω × Ω, (s.sup' hs (fun i => |X i ω.1 - X i ω.2|)) ^ p ∂(μ.prod μ)
+        ≤ ∫ ω : Ω × Ω, G ω ∂(μ.prod μ) := by
+            exact integral_mono_ae hleft_int hG_int hpoint
+    _ = (2 : ℝ) ^ (p - 1) *
+          (∫ ω : Ω × Ω, M ω.1 ^ p ∂(μ.prod μ) +
+            ∫ ω : Ω × Ω, M ω.2 ^ p ∂(μ.prod μ)) := by
+          rw [show (∫ ω : Ω × Ω, G ω ∂(μ.prod μ)) =
+            ∫ ω : Ω × Ω, (2 : ℝ) ^ (p - 1) * (M ω.1 ^ p + M ω.2 ^ p) ∂(μ.prod μ) by rfl]
+          rw [integral_const_mul]
+          congr 1
+          exact integral_add hfst hsnd
+    _ = (2 : ℝ) ^ (p - 1) * (2 * ∫ ω, M ω ^ p ∂μ) := by
+          rw [hsnd_eq, two_mul, hfst_eq]
+    _ = (2 : ℝ) ^ p * ∫ ω, M ω ^ p ∂μ := by
+          calc
+            (2 : ℝ) ^ (p - 1) * (2 * ∫ ω, M ω ^ p ∂μ) =
+                (((2 : ℝ) ^ (p - 1)) * 2) * ∫ ω, M ω ^ p ∂μ := by ring_nf
+            _ = (2 : ℝ) ^ p * ∫ ω, M ω ^ p ∂μ := by rw [hpow_two]
+    _ = (2 : ℝ) ^ p * ∫ ω, (s.sup' hs (fun i => |X i ω|)) ^ p ∂μ := by
+          rfl
 
 /-- Computing `sup'` over the subtype attached to a nonempty finset agrees with
 computing `sup'` over the original finset. -/

@@ -29,9 +29,9 @@ theorem measureReal_shiftedBadScaleEvent_quenchedProbeEnvelope_le_interpolated_c
     ∃ Cfluct Ccrude Centry a : ℝ,
       0 < Cfluct ∧ 0 < Ccrude ∧ 0 < Centry ∧ 0 < a ∧
       ∀ {t αbad Den : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {q : ℕ},
@@ -197,9 +197,9 @@ theorem measureReal_shiftedBadScaleEvent_quenchedProbeEnvelope_le_interpolated_c
       ∀ {σ : ℝ}, 0 < σ →
         ∃ Cfluct Ccrude : ℝ, 0 < Cfluct ∧ 0 < Ccrude ∧
           ∀ {t αbad Den : ℝ},
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
           ∀ {q : ℕ},
@@ -365,9 +365,9 @@ theorem measureReal_shiftedBadScaleEvent_quenchedProbeEnvelope_le_interpolated_c
     ∃ Cfluct Ccrude Centry a : ℝ,
       0 < Cfluct ∧ 0 < Ccrude ∧ 0 < Centry ∧ 0 < a ∧
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {q : ℕ},
@@ -477,9 +477,9 @@ theorem measureReal_shiftedBadScaleEvent_quenchedProbeEnvelope_le_interpolated_c
       ∀ {σ : ℝ}, 0 < σ →
         ∃ Cfluct Ccrude : ℝ, 0 < Cfluct ∧ 0 < Ccrude ∧
           ∀ {t αbad : ℝ},
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
           ∀ {q : ℕ},

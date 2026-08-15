@@ -24,8 +24,8 @@ noncomputable def oneStepContractionEpsilon (delta : ℝ) : ℝ :=
 /-- The scalar coefficient combination multiplying the additivity-defect sum
 in the Section 5.3 coarse-fluctuation estimate. -/
 noncomputable def oneStepScalarWeightAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℕ) : ℝ :=
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℕ) : ℝ :=
   sigmaHatAtScale hP hStruct (m : ℤ) *
       (hP.barSigmaStarAtScale hStruct 0)⁻¹ +
     (sigmaHatAtScale hP hStruct (m : ℤ))⁻¹ *
@@ -34,8 +34,8 @@ noncomputable def oneStepScalarWeightAtScale
 /-- The one-step scalar weight is the sum of the two good-scale scalar
 comparisons used in the manuscript proof. -/
 theorem oneStepScalarWeightAtScale_eq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℕ) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℕ) :
     oneStepScalarWeightAtScale hP hStruct m =
       sigmaHatAtScale hP hStruct (m : ℤ) *
           (hP.barSigmaStarAtScale hStruct 0)⁻¹ +

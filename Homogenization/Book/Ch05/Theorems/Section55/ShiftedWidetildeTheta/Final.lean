@@ -12,8 +12,8 @@ open scoped Matrix.Norms.Elementwise
 noncomputable section
 
 private theorem thetaAtScale_zero_le_widetildeThetaAtScale_zero
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     thetaAtScale hP hStruct 0 ≤ widetildeThetaAtScale P 0 hP4 := by
   have hBlock :
@@ -39,7 +39,7 @@ private theorem thetaAtScale_zero_le_widetildeThetaAtScale_zero
       hP hStruct hP4 hBlock hUpperPowInt hLowerPowInt 0
 
 private theorem widetildeThetaAtScale_nonneg
-    {d : ℕ} [NeZero d] (P : Ch04.CoeffLaw d)
+    {d : ℕ} [NeZero d] (P : Ch04.RestrictionCoeffLaw d)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℤ) :
     0 ≤ widetildeThetaAtScale P m hP4 := by
   unfold widetildeThetaAtScale Ch04.widetildeThetaAtScale
@@ -54,8 +54,8 @@ and before the law, structural hypotheses, and window `[k,n]`. -/
 theorem shiftedWidetildeThetaBound_homogenizationScale
     {d : ℕ} [NeZero d] (xi : ℕ) (β : ℝ) (hβ : 0 < β) :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
         (hP4 : QuantitativeCoarseGrainedEllipticity P),
         hP4.xi = xi →
         section53CoarseFluctuationBeta hP4 = β →

@@ -23,8 +23,8 @@ The remaining analytic inputs are exactly the two positive-excess power
 integrability facts; the quantitative bounds on those positive-excess roots are
 the genuine partition-average fluctuation step. -/
 theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_positiveExcess_products_of_integrable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hBlock :
       ∀ l : ℕ,
@@ -71,16 +71,16 @@ theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_positiveExcess_products_o
   letI : IsProbabilityMeasure P := hP.isProbability
   have hBarSigma0_nonneg : 0 ≤ hP.barSigmaAtScale hStruct 0 := by
     rw [hP.barSigmaAtScale_eq_barBAtScale hStruct (0 : ℤ)]
-    simpa [Ch04.LawCarrier.barBAtScale] using
-      Ch04.LawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
+    simpa [Ch04.RestrictionLawCarrier.barBAtScale] using
+      Ch04.RestrictionLawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
         (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct (0 : ℤ))
         (hBlock 0)
   have hBarSigmaStar0_inv_nonneg :
       0 ≤ (hP.barSigmaStarAtScale hStruct 0)⁻¹ := by
     have hstar := hP.barSigmaStarAtScale_eq_inv_barSigmaStarInvAtScale hStruct (0 : ℤ)
     rw [hstar, inv_inv]
-    simpa [Ch04.LawCarrier.barSigmaStarInvAtScale] using
-      (Ch04.LawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
+    simpa [Ch04.RestrictionLawCarrier.barSigmaStarInvAtScale] using
+      (Ch04.RestrictionLawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
         (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct (0 : ℤ))
         (hBlock 0)).le
   have hUpper0 :
@@ -136,8 +136,8 @@ theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_positiveExcess_products_o
 quantitative positive-excess estimates, with all scalar root decomposition and
 unit-scale factor comparisons discharged from the Chapter 4 surfaces. -/
 theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_error_of_integrable_positiveExcess_bounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hBlock :
       ∀ l : ℕ,
@@ -210,8 +210,8 @@ theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_error_of_integrable_posit
 positive-excess estimates with their manuscript coefficients. The probabilistic
 content is exactly the two positive-excess bounds supplied as hypotheses. -/
 theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_section52_error_of_integrable_positiveExcess_bounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hBlock :
       ∀ l : ℕ,

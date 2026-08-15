@@ -801,24 +801,19 @@ theorem exists_cubeKBesovDirichletRegularityUniform_of_components
     cubeKBesovVectorNormTwo_le_of_average_and_seminorm
       Q s (Cavg + CK) (fun x => w.toH1Function.grad x) h havg hsemi
 
-/-- The revised K-functional route to
-`l.constant.coefficient.Dirichlet.Besov.function.spaces`: one pure norm
-equivalence input and one PDE/K-functional regularity input. -/
-def ConstantCoefficientDirichletBesovKFunctionalRoute
+/-- Discrete compatibility K-functional route: one pure norm-equivalence input
+and one PDE/K-functional regularity input.  This is not the source theorem
+pending the continuum `K`/`H^s` gate. -/
+def DiscreteConstantCoefficientDirichletBesovKFunctionalRoute
     (d : ℕ) [NeZero d] : Prop :=
   CubeKBesovOverlappingEquivalence (cubeKBesovNormModel d) ∧
     CubeKBesovDirichletRegularity (cubeKBesovNormModel d)
 
-/--
-The exact statement of
-`l.constant.coefficient.Dirichlet.Besov.function.spaces`.
-
-For every scale/exponent `s ∈ (0,1)` there is a constant depending only on
-`s` and `d` such that, on every triadic cube, the zero-Dirichlet solution of
-`-Δw = div h` satisfies
-`||∇w||_{\underline B^s_{2,2}} ≤ C ||h||_{\underline B^s_{2,2}}`.
--/
-def ConstantCoefficientDirichletBesovFunctionSpaces
+/-- Discrete compatibility statement obtained from the finite-level
+K-functional/overlap machinery.  It is not the source theorem
+`l.constant.coefficient.Dirichlet.Besov.function.spaces` pending the continuum
+`K`/`H^s` gate. -/
+def DiscreteConstantCoefficientDirichletBesovFunctionSpaces
     (d : ℕ) [NeZero d] : Prop :=
   ∀ {s : ℝ}, 0 < s → s < 1 →
     ∃ C : ℝ, 0 ≤ C ∧
@@ -830,11 +825,11 @@ def ConstantCoefficientDirichletBesovFunctionSpaces
               (fun x => w.toH1Function.grad x) ≤
             C * cubeBesovOverlappingPositiveVectorNormTwo Q s h
 
-/-- Uniform-in-`s` strengthening of
-`ConstantCoefficientDirichletBesovFunctionSpaces`.  This is the theorem shape
-needed by the duality argument, where the later localization step pays the
-explicit `s⁻¹` loss. -/
-def ConstantCoefficientDirichletBesovFunctionSpacesUniform
+/-- Uniform-in-`s` discrete compatibility strengthening of
+`DiscreteConstantCoefficientDirichletBesovFunctionSpaces`, used by the
+compatibility duality route.  It is not the source theorem pending the
+continuum `K`/`H^s` gate. -/
+def DiscreteConstantCoefficientDirichletBesovFunctionSpacesUniform
     (d : ℕ) [NeZero d] (C : ℝ) : Prop :=
   0 ≤ C ∧
     ∀ {s : ℝ}, 0 < s → s < 1 →
@@ -848,21 +843,21 @@ def ConstantCoefficientDirichletBesovFunctionSpacesUniform
                 (fun x => w.toH1Function.grad x) ≤
               C * cubeBesovOverlappingPositiveVectorNormTwo Q s h
 
-theorem ConstantCoefficientDirichletBesovFunctionSpacesUniform.to_functionSpaces
+theorem DiscreteConstantCoefficientDirichletBesovFunctionSpacesUniform.to_functionSpaces
     {d : ℕ} [NeZero d] {C : ℝ}
-    (h : ConstantCoefficientDirichletBesovFunctionSpacesUniform d C) :
-    ConstantCoefficientDirichletBesovFunctionSpaces d := by
+    (h : DiscreteConstantCoefficientDirichletBesovFunctionSpacesUniform d C) :
+    DiscreteConstantCoefficientDirichletBesovFunctionSpaces d := by
   intro s hs_pos hs_lt
   refine ⟨C, h.1, ?_⟩
   intro Q F w hF hw
   exact (h.2 hs_pos hs_lt Q F w hF hw).2
 
-/-- Assemble the corrected overlapping Dirichlet Besov theorem from the revised
-K-functional route. -/
-theorem constantCoefficientDirichletBesovFunctionSpaces_of_KFunctionalRoute
+/-- Assemble the discrete compatibility Dirichlet Besov statement from the
+discrete K-functional route. -/
+theorem discreteConstantCoefficientDirichletBesovFunctionSpaces_of_discreteKFunctionalRoute
     {d : ℕ} [NeZero d]
-    (hroute : ConstantCoefficientDirichletBesovKFunctionalRoute d) :
-    ConstantCoefficientDirichletBesovFunctionSpaces d := by
+    (hroute : DiscreteConstantCoefficientDirichletBesovKFunctionalRoute d) :
+    DiscreteConstantCoefficientDirichletBesovFunctionSpaces d := by
   intro s hs_pos hs_lt
   let K : CubeKBesovNormModel d := cubeKBesovNormModel d
   rcases hroute with ⟨hK_equiv, hK_dir⟩
@@ -893,13 +888,14 @@ theorem constantCoefficientDirichletBesovFunctionSpaces_of_KFunctionalRoute
           mul_le_mul_of_nonneg_left hin (mul_nonneg hCe_nonneg hCd_nonneg)
       _ = Ce * Cd * Ce * cubeBesovOverlappingPositiveVectorNormTwo Q s h := by ring
 
-/-- Direct uniform assembly of the manuscript-facing Dirichlet Besov theorem
-from the uniform finite-partial K/overlapping comparison. -/
-theorem exists_constantCoefficientDirichletBesovFunctionSpacesUniform_of_partialBoundByOverlappingPositiveUniform
+/-- Direct uniform assembly of the discrete compatibility Dirichlet Besov
+statement from the uniform finite-partial K/overlapping comparison.  This is
+not the source theorem pending the continuum `K`/`H^s` gate. -/
+theorem exists_discreteConstantCoefficientDirichletBesovFunctionSpacesUniform_of_partialBoundByOverlappingPositiveUniform
     {d : ℕ} [NeZero d] {Cpartial : ℝ}
     (hpartial : CubeKBesovPartialBoundByOverlappingPositiveUniform d Cpartial)
     (hcomponents : CubeKBesovDirichletRegularityComponents d) :
-    ∃ C : ℝ, ConstantCoefficientDirichletBesovFunctionSpacesUniform d C := by
+    ∃ C : ℝ, DiscreteConstantCoefficientDirichletBesovFunctionSpacesUniform d C := by
   let CP : ℝ := cubeVectorH1OverlapPoincareConstant d
   let Coverlap : ℝ := 8 * (3 ^ d : ℝ) + 2 * CP ^ 2 + 2
   let Cin : ℝ := Cpartial + 1

@@ -783,7 +783,7 @@ theorem stronglyMeasurable_canonicalAEEMuHilbertMinimizer_aeeQuantitativeSlice_c
 theorem measurable_subtype_mk_aeeQuantitativeSlice_of_isLocalSigmaMeasurableOn
     {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} {U : Set (Vec d)} {k : ℕ}
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (hSlice : ∀ ω : Ω, AEEQuantitativeEllipticSlice U k (A ω)) :
     @Measurable Ω {a : CoeffField d // AEEQuantitativeEllipticSlice U k a}
       _ (AEEQuantitativeEllipticSlice.localMeasurableSpace U k)
@@ -795,7 +795,7 @@ theorem measurable_subtype_mk_aeeQuantitativeSlice_of_isLocalSigmaMeasurableOn
   apply Measurable.of_comap_le
   unfold AEEQuantitativeEllipticSlice.localMeasurableSpace
   rw [MeasurableSpace.comap_comp]
-  simpa [As, IsLocalSigmaMeasurableOn, Function.comp] using hA.comap_le
+  simpa [As, IsPointwiseLocalSigmaMeasurableOn, Function.comp] using hA.comap_le
 
 theorem measurable_blockEnergyAverage_comp_aeeQuantitativeSlice
     {Ω : Type*} [MeasurableSpace Ω]
@@ -806,7 +806,7 @@ theorem measurable_blockEnergyAverage_comp_aeeQuantitativeSlice
         (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
         (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel _)
         AEEQuantitativeEllipticSlice.toHilbertMatrixL2)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (hSlice : ∀ ω : Ω, AEEQuantitativeEllipticSlice U k (A ω))
     (X : BlockState d) (hX : MemBlockL2 U X.eval) :
     Measurable fun ω => blockEnergyAverage U (A ω) X := by
@@ -834,7 +834,7 @@ theorem measurable_blockPairingAverage_comp_aeeQuantitativeSlice
         (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
         (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel _)
         AEEQuantitativeEllipticSlice.toHilbertMatrixL2)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (hSlice : ∀ ω : Ω, AEEQuantitativeEllipticSlice U k (A ω))
     (X Y : BlockState d) (hX : MemBlockL2 U X.eval) (hY : MemBlockL2 U Y.eval) :
     Measurable fun ω => blockPairingAverage U (A ω) X Y := by
@@ -863,7 +863,7 @@ theorem measurable_blockEnergyAverage_comp_countable_aeeQuantitativeSlice_cover
           (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
           (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel _)
           AEEQuantitativeEllipticSlice.toHilbertMatrixL2)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (t : ℕ → Set Ω) (ht : ∀ k : ℕ, MeasurableSet (t k))
     (hcover : ⋃ k : ℕ, t k = Set.univ)
     (hSlice : ∀ k : ℕ, ∀ ω : Ω, ω ∈ t k →
@@ -875,8 +875,8 @@ theorem measurable_blockEnergyAverage_comp_countable_aeeQuantitativeSlice_cover
     fun k ω => blockEnergyAverage U (A ω.1) X
   have hfm : ∀ k : ℕ, Measurable (f k) := by
     intro k
-    have hA_sub : IsLocalSigmaMeasurableOn (fun ω : t k => A ω.1) U := by
-      simpa [IsLocalSigmaMeasurableOn, Function.comp] using hA.comp measurable_subtype_coe
+    have hA_sub : IsPointwiseLocalSigmaMeasurableOn (fun ω : t k => A ω.1) U := by
+      simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp] using hA.comp measurable_subtype_coe
     have hSlice_sub :
         ∀ ω : t k,
           AEEQuantitativeEllipticSlice U k ((fun ω : t k => A ω.1) ω) := by
@@ -912,7 +912,7 @@ theorem aemeasurable_blockEnergyAverage_comp_countable_aeeQuantitativeSlice_cove
           (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
           (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel _)
           AEEQuantitativeEllipticSlice.toHilbertMatrixL2)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (t : ℕ → Set Ω) (ht : ∀ k : ℕ, MeasurableSet (t k))
     (hcover_ae : ∀ᵐ ω ∂μ, ω ∈ ⋃ k : ℕ, t k)
     (hSlice : ∀ k : ℕ, ∀ ω : Ω, ω ∈ t k →
@@ -937,8 +937,8 @@ theorem aemeasurable_blockEnergyAverage_comp_countable_aeeQuantitativeSlice_cove
     cases i with
     | none => exact measurable_const
     | some k =>
-        have hA_sub : IsLocalSigmaMeasurableOn (fun ω : cover (some k) => A ω.1) U := by
-          simpa [IsLocalSigmaMeasurableOn, Function.comp, cover] using
+        have hA_sub : IsPointwiseLocalSigmaMeasurableOn (fun ω : cover (some k) => A ω.1) U := by
+          simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp, cover] using
             hA.comp measurable_subtype_coe
         have hSlice_sub :
             ∀ ω : cover (some k),
@@ -1004,7 +1004,7 @@ theorem measurable_blockEnergyAverage_comp_aeeQuantitativeSlice_sets
           (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
           (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel _)
           AEEQuantitativeEllipticSlice.toHilbertMatrixL2)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (hSliceMeas :
       ∀ k : ℕ, MeasurableSet {ω : Ω | AEEQuantitativeEllipticSlice U k (A ω)})
     (hcover : ∀ ω : Ω, ∃ k : ℕ, AEEQuantitativeEllipticSlice U k (A ω))
@@ -1033,7 +1033,7 @@ theorem aemeasurable_blockEnergyAverage_comp_aeeQuantitativeSlice_sets
           (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
           (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel _)
           AEEQuantitativeEllipticSlice.toHilbertMatrixL2)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (hSliceMeas :
       ∀ k : ℕ, MeasurableSet {ω : Ω | AEEQuantitativeEllipticSlice U k (A ω)})
     (hcover_ae : ∀ᵐ ω ∂μ, ∃ k : ℕ, AEEQuantitativeEllipticSlice U k (A ω))
@@ -1053,7 +1053,7 @@ theorem aemeasurable_blockEnergyAverage_comp_aeeQuantitativeSlice_sets_of_isOpen
     {d : ℕ} {U : Set (Vec d)}
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
     (hUopen : IsOpen U) (hUfinite : MeasureTheory.volume U ≠ ⊤)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (hSliceMeas :
       ∀ k : ℕ, MeasurableSet {ω : Ω | AEEQuantitativeEllipticSlice U k (A ω)})
     (hcover_ae : ∀ᵐ ω ∂μ, ∃ k : ℕ, AEEQuantitativeEllipticSlice U k (A ω))

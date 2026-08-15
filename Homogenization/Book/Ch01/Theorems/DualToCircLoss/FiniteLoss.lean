@@ -3,6 +3,7 @@ import Homogenization.Book.Ch01.Theorems.DualToCircLoss.ProjectionTests
 namespace Homogenization
 namespace Book
 namespace Ch01
+namespace Legacy
 
 noncomputable section
 
@@ -10,6 +11,10 @@ open scoped BigOperators ENNReal
 
 /-!
 # Dual-to-circ finite loss
+
+Legacy finite-truncation loss estimates for the totalized-real,
+disjoint/componentwise compatibility lane.  They are not the exact `ENNReal`
+overlap/dual/circ kernels.
 -/
 
 private theorem three_rpow_nonneg (x : ℝ) : 0 ≤ Real.rpow (3 : ℝ) x :=
@@ -324,8 +329,8 @@ theorem dualToCircFiniteLossCoefficient_half_le_fiftyFive_inv_sq
     (dualToCircGeometricLossCoefficient_half_le_fiftyFive_inv_sq hs hs_le)
 
 /-- Componentwise vector-valued genuine dual negative Besov norm, normalized by
-the parent cube scale.  This is the Chapter 1 analogue of the Chapter 3 public
-dual norm used in the flux-response statements. -/
+the parent cube scale, in the legacy totalized-real compatibility lane.  This
+is distinct from the exact `ENNReal` overlap/dual/circ kernels. -/
 noncomputable def normalizedDualNegativeBesovVectorNormTwo {d : ℕ}
     (Q : Cube d) (s : ℝ) (F : Vec d → Vec d) : ℝ :=
   cubeBesovScaleWeight s Q *
@@ -565,6 +570,7 @@ theorem cubeBesovNegativeVectorSeminormTwo_le_halfDual_fiftyFive_inv_sq_of_memVe
 
 end
 
+end Legacy
 end Ch01
 end Book
 end Homogenization

@@ -31,7 +31,7 @@ bound and the AEE slice) and is a *pointwise* self-map of coefficient fields.
 Main definitions/results:
 * `glueField`, its corridor value and pointwise congruence;
 * `coreLocalEnergy W X` — the block-energy of the glued field over a bounded
-  set `W`, shown **ambient-measurable** via the `LocalSigma W` generator trick
+  set `W`, shown **ambient-measurable** via the `PointwiseLocalSigma W` generator trick
   (this is the measurability heart, using only single-field local events);
 * `phaseSplitEnergy` — the manifestly pi-measurable assembled observable
   (corridor constant `+` a finite sum of single-coordinate core energies);
@@ -105,13 +105,13 @@ theorem coreLocalEnergy_congr {ℓ : ℝ} {σ : Vec d} {Θ : ℝ} {W : Set (Vec 
 
 /-- **Measurability heart.**  `coreLocalEnergy` is ambient-measurable in the
 field: it is a single-field bounded-local observable, hence measurable into
-`LocalSigma W` (via the generator trick) and thus into the ambient σ-algebra.
+`PointwiseLocalSigma W` (via the generator trick) and thus into the ambient σ-algebra.
 No cross-coordinate coupling is involved — this uses only single-field local
 events. -/
 theorem measurable_coreLocalEnergy {ℓ : ℝ} {σ : Vec d} {Θ : ℝ} {W : Set (Vec d)}
     (hWmeas : MeasurableSet W) (hWbdd : Bornology.IsBounded W) (X : BlockState d) :
     Measurable (fun a : CoeffField d => coreLocalEnergy ℓ σ Θ W X a) := by
-  have hloc : @Measurable (CoeffField d) ℝ (LocalSigma W) (borel ℝ)
+  have hloc : @Measurable (CoeffField d) ℝ (PointwiseLocalSigma W) (borel ℝ)
       (fun a : CoeffField d => coreLocalEnergy ℓ σ Θ W X a) := by
     intro t _ht
     refine MeasurableSpace.measurableSet_generateFrom ?_

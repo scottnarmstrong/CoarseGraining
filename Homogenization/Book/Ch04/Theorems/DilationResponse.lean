@@ -15,12 +15,12 @@ specialization needed for scale-normalized laws; descendant averages need the
 same statement before specializing to origin descendants.
 -/
 
-theorem responseJObservableCubeSet_rescaleCoeffField_of_aelocallyUniformlyElliptic
+theorem restrictionResponseJObservableCubeSet_rescaleCoeffField_of_aelocallyUniformlyElliptic
     {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (k : ℕ)
     (Q : TriadicCube d) (p q : Vec d) :
-    responseJObservableCubeSet Q p q (rescaleReg k a) =
-      responseJObservableCubeSet (Ch02.dilateCube (k : ℤ) Q) p q a := by
+    restrictionResponseJObservableCubeSet Q p q (rescaleReg k a) =
+      restrictionResponseJObservableCubeSet (Ch02.dilateCube (k : ℤ) Q) p q a := by
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   let G : Ch02.TriadicCoeffFamily d :=
@@ -44,7 +44,7 @@ theorem responseJObservableCubeSet_rescaleCoeffField_of_aelocallyUniformlyEllipt
     rw [htarget] at hdilate
     simpa [B] using hdilate
   calc
-    responseJObservableCubeSet Q p q (rescaleReg k a)
+    restrictionResponseJObservableCubeSet Q p q (rescaleReg k a)
         = Ch02.responseJ (Ch02.cubeDomain Q) (G.coeffOn Q) p q := by
           symm
           calc
@@ -54,13 +54,13 @@ theorem responseJObservableCubeSet_rescaleCoeffField_of_aelocallyUniformlyEllipt
                     coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                     Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                       (Ch02.cubeDomain Q) (G.coeffOn Q) p q
-            _ = responseJObservableCubeSet Q p q (rescaleReg k a) := by
+            _ = restrictionResponseJObservableCubeSet Q p q (rescaleReg k a) := by
                   rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q p q
                     (rescaleReg k a).toFun]
                   rfl
     _ = Ch02.responseJ (Ch02.cubeDomain Q) (B.coeffOn Q) p q := hAEEq
     _ = Ch02.responseJ (Ch02.cubeDomain Qsrc) (F.coeffOn Qsrc) p q := hdilate'
-    _ = responseJObservableCubeSet Qsrc p q a := by
+    _ = restrictionResponseJObservableCubeSet Qsrc p q a := by
           calc
             Ch02.responseJ (Ch02.cubeDomain Qsrc) (F.coeffOn Qsrc) p q =
                 ResponseJ (openCubeSet Qsrc) p q a.toFun := by
@@ -68,20 +68,20 @@ theorem responseJObservableCubeSet_rescaleCoeffField_of_aelocallyUniformlyEllipt
                     coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                     Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                       (Ch02.cubeDomain Qsrc) (F.coeffOn Qsrc) p q
-            _ = responseJObservableCubeSet Qsrc p q a := by
+            _ = restrictionResponseJObservableCubeSet Qsrc p q a := by
                   rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Qsrc p q a.toFun]
                   rfl
 
 /-- Scalar response observables under the dilation defining
-`scaleNormalizedLaw`, for arbitrary triadic cubes. -/
-theorem responseJObservableCubeSet_dilateCoeffField_neg_nat_of_aelocallyUniformlyElliptic
+`restrictionScaleNormalizedLaw`, for arbitrary triadic cubes. -/
+theorem restrictionResponseJObservableCubeSet_dilateCoeffField_neg_nat_of_aelocallyUniformlyElliptic
     {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (k : ℕ)
     (Q : TriadicCube d) (p q : Vec d) :
-    responseJObservableCubeSet Q p q (dilateReg (-(k : ℤ)) a) =
-      responseJObservableCubeSet (Ch02.dilateCube (k : ℤ) Q) p q a := by
+    restrictionResponseJObservableCubeSet Q p q (dilateReg (-(k : ℤ)) a) =
+      restrictionResponseJObservableCubeSet (Ch02.dilateCube (k : ℤ) Q) p q a := by
   rw [← rescaleReg_eq_dilateReg_neg_nat]
-  exact responseJObservableCubeSet_rescaleCoeffField_of_aelocallyUniformlyElliptic
+  exact restrictionResponseJObservableCubeSet_rescaleCoeffField_of_aelocallyUniformlyElliptic
     ha k Q p q
 
 end

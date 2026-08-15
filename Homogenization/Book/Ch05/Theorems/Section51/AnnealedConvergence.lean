@@ -39,9 +39,9 @@ theorem annealedConvergence_homogenizationScale
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C α : ℝ, 0 < C ∧ 0 < α ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P)
-      (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P)
+      (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ n : ℕ,
@@ -71,9 +71,9 @@ theorem annealedConvergence_homogenizationScale
 
   -- Enter the small-contrast regime for the shifted exponents at `N`.
   let N : ℕ := annealedAlgebraicEntryScale P hP4 Centry
-  let PN : Ch04.CoeffLaw d := Ch04.scaleNormalizedLaw N P
-  let hPN : Ch04.LawCarrier PN := hP.scaleNormalized N
-  let hStructN : Ch04.StructuralLaw PN := hStruct.scaleNormalized N
+  let PN : Ch04.RestrictionCoeffLaw d := Ch04.restrictionScaleNormalizedLaw N P
+  let hPN : Ch04.RestrictionLawCarrier PN := hP.scaleNormalized N
+  let hStructN : Ch04.RestrictionStructuralLaw PN := hStruct.scaleNormalized N
   let hP4N : QuantitativeCoarseGrainedEllipticity PN :=
     hP4.scaleNormalized hP hStruct N
   let hP4S : QuantitativeCoarseGrainedEllipticity PN :=
@@ -181,7 +181,7 @@ theorem annealedConvergence_homogenizationScale
       thetaAtScale hPN hStructN (n : ℤ) =
         thetaAtScale hP hStruct ((N + n : ℕ) : ℤ) := by
     dsimp [thetaAtScale, hPN, hStructN]
-    exact hP.thetaAtScale_scaleNormalizedLaw hStruct N n
+    exact hP.thetaAtScale_restrictionScaleNormalizedLaw hStruct N n
   have htarget_eq :
       thetaAtScale hP hStruct
           ((annealedAlgebraicEntryScale P hP4 Centry + n : ℕ) : ℤ) =

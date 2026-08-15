@@ -322,9 +322,9 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_weighted
     (hCfluct : 0 < Cfluct) (_hCentry : 0 < Centry) (ha : 0 < a)
     (hpair :
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {q m n : ℕ},
@@ -358,9 +358,9 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_weighted
         P.real (badPairEvent Hshift t αbad q m n) ≤
           (S.card : ℝ) * ((D.card : ℝ) * Real.exp (-(lam ^ tau)))) :
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {q r : ℕ} {j : Fin (q + 1)},
@@ -557,9 +557,9 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_weighted
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ Cfluct Centry a : ℝ, 0 < Cfluct ∧ 0 < Centry ∧ 0 < a ∧
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {q r : ℕ} {j : Fin (q + 1)},
@@ -615,9 +615,9 @@ theorem measureReal_shiftedHighBottomBadScaleEvent_quenchedProbeEnvelope_le_weig
     (_hCfluct : 0 < Cfluct) (_hCentry : 0 < Centry) (_ha : 0 < a)
     (hrow :
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {q r : ℕ} {j : Fin (q + 1)},
@@ -656,9 +656,9 @@ theorem measureReal_shiftedHighBottomBadScaleEvent_quenchedProbeEnvelope_le_weig
           ((S.card : ℝ) * w ^ q) *
             (w ^ r * Real.exp (-((A * ρ ^ r) ^ τ)))) :
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {q : ℕ},
@@ -778,9 +778,9 @@ theorem measureReal_shiftedHighBottomBadScaleEvent_quenchedProbeEnvelope_le_weig
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ Cfluct Centry a : ℝ, 0 < Cfluct ∧ 0 < Centry ∧ 0 < a ∧
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {q : ℕ},

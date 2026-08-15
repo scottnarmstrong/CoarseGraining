@@ -50,7 +50,7 @@ private theorem section52_sum_insert_image_some_apply
   simp
 
 theorem section52_annealedMomentRoot_positiveExcess_le_finset_sum
-    {d : ℕ} {P : Ch04.CoeffLaw d} {ι : Type*} {ξ : ℕ}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {ι : Type*} {ξ : ℕ}
     {s : Finset ι} {X : RegCoeffField d → ℝ} {base : ℝ}
     {G : ι → RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
@@ -118,7 +118,7 @@ theorem section52_annealedMomentRoot_positiveExcess_le_finset_sum
   exact hmono.trans htriangle
 
 theorem section52_annealedMomentRoot_positiveExcess_le_scaled_initial
-    {d : ℕ} {P : Ch04.CoeffLaw d} {ι : Type*} {ξ : ℕ}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {ι : Type*} {ξ : ℕ}
     {s : Finset ι} {X : RegCoeffField d → ℝ} {base initial finalCoeff : ℝ}
     {G : ι → RegCoeffField d → ℝ} {coeff : ι → ℝ}
     (hξ : 1 ≤ ξ)
@@ -147,7 +147,7 @@ theorem section52_annealedMomentRoot_positiveExcess_le_scaled_initial
           mul_le_mul_of_nonneg_right hCoeffSum hInitial_nonneg
 
 theorem section52_integrable_positiveExcess_pow_of_one_add_finset_bound
-    {d : ℕ} {P : Ch04.CoeffLaw d} {ι : Type*} [DecidableEq ι] {ξ : ℕ}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {ι : Type*} [DecidableEq ι] {ξ : ℕ}
     {s : Finset ι} {X : RegCoeffField d → ℝ} {base : ℝ}
     {G0 : RegCoeffField d → ℝ} {G : ι → RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
@@ -212,7 +212,7 @@ theorem section52_integrable_positiveExcess_pow_of_one_add_finset_bound
   simp [abs_of_nonneg (le_max_right (X a - base) 0)]
 
 theorem section52_annealedMomentRoot_positiveExcess_le_one_add_finset_scaled
-    {d : ℕ} {P : Ch04.CoeffLaw d} {ι : Type*} [DecidableEq ι] {ξ : ℕ}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {ι : Type*} [DecidableEq ι] {ξ : ℕ}
     {s : Finset ι} {X : RegCoeffField d → ℝ} {base initial finalCoeff coeff0 : ℝ}
     {G0 : RegCoeffField d → ℝ} {G : ι → RegCoeffField d → ℝ} {coeff : ι → ℝ}
     (hξ : 1 ≤ ξ)
@@ -305,8 +305,8 @@ theorem section52_annealedMomentRoot_positiveExcess_le_one_add_finset_scaled
       hPointI hRootI hCoeffI
 
 theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {s r : ℝ} {ξ m : ℕ}
     (hs : 0 < s) (hsr : s < r) (hr_lt_one : r < 1)
     (hξ_one : 1 ≤ ξ) (hξ_two : 2 ≤ ξ)
@@ -388,7 +388,7 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
     have hB0 :
         0 ≤ Ch04.Internal.barBAtScaleOfPrimitive primitive0 := by
       simpa [primitive0] using
-        Ch04.LawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
+        Ch04.RestrictionLawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
           (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct (0 : ℤ))
           hBlock0
     simpa [hBarSigma0_eq] using hB0
@@ -648,8 +648,8 @@ theorem upperPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
   exact ⟨hPowInt, hBound⟩
 
 theorem upperPositiveExcessMomentAtScale_le_raw_twoExponentCoeff
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {s r : ℝ} {ξ m : ℕ}
     (hs : 0 < s) (hsr : s < r) (hr_lt_one : r < 1)
     (hξ_one : 1 ≤ ξ) (hξ_two : 2 ≤ ξ)
@@ -679,8 +679,8 @@ theorem upperPositiveExcessMomentAtScale_le_raw_twoExponentCoeff
   exact h.2
 
 theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {s r : ℝ} {ξ m : ℕ}
     (hs : 0 < s) (hsr : s < r) (hr_lt_one : r < 1)
     (hξ_one : 1 ≤ ξ) (hξ_two : 2 ≤ ξ)
@@ -765,7 +765,7 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
     have hStar0 :
         0 < Ch04.Internal.barSigmaStarInvAtScaleOfPrimitive primitive0 := by
       simpa [primitive0] using
-        Ch04.LawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
+        Ch04.RestrictionLawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
           (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct (0 : ℤ))
           hBlock0
     simpa [hBarSigmaStar0_inv_eq] using hStar0.le
@@ -1025,8 +1025,8 @@ theorem lowerPositiveExcessMomentAtScale_integrable_and_le_raw_twoExponentCoeff
   exact ⟨hPowInt, hBound⟩
 
 theorem lowerPositiveExcessMomentAtScale_le_raw_twoExponentCoeff
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {s r : ℝ} {ξ m : ℕ}
     (hs : 0 < s) (hsr : s < r) (hr_lt_one : r < 1)
     (hξ_one : 1 ≤ ξ) (hξ_two : 2 ≤ ξ)
@@ -1059,8 +1059,8 @@ theorem lowerPositiveExcessMomentAtScale_le_raw_twoExponentCoeff
 moment lemma.  The source exponent is `s`; the scale-`m` target exponent is
 `r`. -/
 theorem LambdaPositiveExcessMomentAtScale_le_twoExponentMomentBoundCoeff
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {s r : ℝ} {ξ m : ℕ}
     (hs : 0 < s) (hsr : s < r) (hr_lt_one : r < 1)
     (hξ_one : 1 ≤ ξ) (hξ_two : 2 ≤ ξ)
@@ -1120,8 +1120,8 @@ theorem LambdaPositiveExcessMomentAtScale_le_twoExponentMomentBoundCoeff
 /-- Lower inverse positive-excess estimate in the corrected two-exponent
 Section 5.2 moment lemma. -/
 theorem lambdaInvPositiveExcessMomentAtScale_le_twoExponentMomentBoundCoeff
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {s r : ℝ} {ξ m : ℕ}
     (hs : 0 < s) (hsr : s < r) (hr_lt_one : r < 1)
     (hξ_one : 1 ≤ ξ) (hξ_two : 2 ≤ ξ)
@@ -1182,8 +1182,8 @@ theorem lambdaInvPositiveExcessMomentAtScale_le_twoExponentMomentBoundCoeff
 under `(P4)`.  This extracts the integrability already used inside the
 Section 5.2 two-exponent moment estimate. -/
 theorem upperPositiveExcessPowIntegrableAtScale_from_P4_twoExponent
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {rUpper : ℝ} (hrUpper_gt : hP4.sUpper < rUpper)
     (hrUpper_lt_one : rUpper < 1) (m : ℕ) :
@@ -1210,8 +1210,8 @@ theorem upperPositiveExcessPowIntegrableAtScale_from_P4_twoExponent
 /-- The shifted lower inverse positive excess appearing in Section 5.3 is
 integrable under `(P4)`. -/
 theorem lowerPositiveExcessPowIntegrableAtScale_from_P4_twoExponent
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {rLower : ℝ} (hrLower_gt : hP4.sLower < rLower)
     (hrLower_lt_one : rLower < 1) (m : ℕ) :
@@ -1243,8 +1243,8 @@ statement exposes it existentially, matching the manuscript's `C(d)`. -/
 theorem multiscaleEllipticityMomentBounds_homogenizationScale
     {d : ℕ} [NeZero d] :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
         (hP4 : QuantitativeCoarseGrainedEllipticity P),
         ∀ (rUpper rLower : ℝ) (m : ℕ),
           hP4.sUpper < rUpper → rUpper < 1 →

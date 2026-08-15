@@ -9,7 +9,19 @@ open scoped ENNReal BigOperators
 
 noncomputable section
 
-/-- Public selected constant for the full-dual multiscale Poincare theorem. -/
+/-!
+# Legacy disjoint-Besov multiscale Poincare compatibility lane
+
+The declarations in this namespace are retained only for compatibility with
+the legacy disjoint-positive, totalized-real, componentwise-circ Besov
+conventions. They are not the exact manuscript overlap/Euclidean statements.
+-/
+
+namespace Legacy
+
+/-- Legacy selected constant for the disjoint-positive, totalized-real,
+componentwise-circ compatibility Poincare lane; not an exact manuscript
+overlap/Euclidean constant. -/
 noncomputable abbrev fullVectorPoincareConstant {d : ℕ} [NeZero d]
     (Q : Cube d) : ℝ :=
   Homogenization.fullVectorPoincareCubeConstant Q
@@ -20,8 +32,8 @@ theorem fullVectorPoincareConstant_nonneg {d : ℕ} [NeZero d]
   simpa [fullVectorPoincareConstant] using
     Homogenization.fullVectorPoincareCubeConstant_nonneg Q
 
-/-- Note-facing full-dual multiscale Poincare estimate for `H¹` functions on
-cubes, with the corrected full dual gradient norm. -/
+/-- Legacy full-dual multiscale Poincare compatibility estimate for `H¹`
+functions on cubes; not an exact manuscript overlap/Euclidean statement. -/
 theorem h1_fullVectorPoincare {d : ℕ} [NeZero d] (Q : Cube d)
     (u : H1Function (openCubeSet Q)) :
     Homogenization.CubeDualFullVectorPoincareEstimate Q
@@ -31,8 +43,8 @@ theorem h1_fullVectorPoincare {d : ℕ} [NeZero d] (Q : Cube d)
   simpa [fullVectorPoincareConstant] using
     Homogenization.CubeDualFullVectorPoincareEstimate.of_h1Function Q u
 
-/-- Descendant form of the full-dual multiscale Poincare estimate for `H¹`
-functions on cubes. -/
+/-- Legacy descendant full-dual Poincare compatibility estimate for `H¹`
+functions on cubes; not an exact manuscript overlap/Euclidean statement. -/
 theorem h1_descendantFullVectorPoincare {d : ℕ} [NeZero d] (Q : Cube d)
     (u : H1Function (openCubeSet Q)) (N : ℕ) :
     Homogenization.CubeDescendantDualFullVectorPoincareEstimate Q
@@ -42,7 +54,8 @@ theorem h1_descendantFullVectorPoincare {d : ℕ} [NeZero d] (Q : Cube d)
   simpa [fullVectorPoincareConstant] using
     Homogenization.CubeDescendantDualFullVectorPoincareEstimate.of_h1Function Q u N
 
-/-- Descendant H1 Poincare estimate after componentwise circ domination.
+/-- Legacy descendant H1 Poincare compatibility estimate after componentwise
+circ domination. This is not an exact manuscript overlap/Euclidean statement.
 
 This is the honest full-circ bridge available from the full-dual theorem.  The
 remaining gradient-to-function cleanup is the separate summation step from
@@ -59,8 +72,9 @@ theorem h1_descendantLocalFullCircPoincare {d : ℕ} [NeZero d] (Q : Cube d)
       (fun i => u.grad_coord_memL2_normalizedCubeMeasure i)
       (fullVectorPoincareConstant_nonneg Q)
 
-/-- Note-facing finite-depth multiscale Poincare estimate for `H¹` functions,
-with the corrected componentwise full-circ negative Besov RHS. -/
+/-- Legacy finite-depth, disjoint-positive/totalized-real, componentwise-circ
+multiscale Poincare compatibility estimate; not an exact manuscript
+overlap/Euclidean statement. -/
 theorem h1_fluctuation_partialNormTop_two_le_sum_grad_circNorm
     {d : ℕ} [NeZero d] (Q : Cube d) (s : ℝ) (M : ℕ)
     (u : H1Function (openCubeSet Q)) (hs0 : 0 < s) (hs1 : s < 1) :
@@ -80,6 +94,8 @@ theorem h1_fluctuation_partialNormTop_two_le_sum_grad_circNorm
       (Q := Q) (s := s) (C := C) (u := fun x => u x)
       (G := fun x => u.grad x) (M := M)
       (fun i => u.grad_coord_memL2_normalizedCubeMeasure i) hs0.le hs1 hC
+
+end Legacy
 
 end
 

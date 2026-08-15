@@ -125,9 +125,9 @@ theorem exists_entryScaleConstant_theta_entry_and_memoryGridScale_le_logb_of_cho
     (hlambda_pos : 0 < lambda)
     (hlambda_lt_one : lambda < 1) :
     ∃ Crest : ℝ, 0 ≤ Crest ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (_hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {p_hm T : ℝ} {N Nstar I : ℕ} {A : ℝ},
           0 ≤ p_hm → 1 ≤ T →
@@ -208,9 +208,9 @@ theorem exists_entryScaleConstant_theta_entry_and_memoryGridScale_le_logb_of_cho
     (hlambda_pos : 0 < lambda)
     (hlambda_lt_one : lambda < 1) :
     ∃ Crest : ℝ, 0 ≤ Crest ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {p_hm : ℝ} {N Nstar I : ℕ} {A : ℝ},
           0 ≤ p_hm →
@@ -309,9 +309,9 @@ theorem exists_uniform_final_scale_decay_and_physical_scale_of_entry_split
     (hdelta_sc : delta_sc ≤ loc.delta0 / 2)
     (hCrest_nonneg : 0 ≤ Crest) :
     ∃ Cdim alpha : ℝ, 0 ≤ Cdim ∧ 0 < alpha ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P),
         hP4.params = hc.params →
         ∀ {p_hm : ℝ} {Nentry : ℕ},

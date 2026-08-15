@@ -21,9 +21,9 @@ conversion `sqrt(theta_m) = r_m`.
 -/
 theorem coarseFluctuationResponseMoment_add_star_le_four_r_m_mul_window_stochasticMax_add_two
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {rho r_m : ℝ} {N k m L : ℕ}
     (e : Homogenization.Vec d)
@@ -122,9 +122,9 @@ theorem exists_bufferExponent_responseMoment_add_star_le_four_r_m_mul_window_eta
     (hm : HighCenteredMomentParameters d hc) (L : ℕ)
     {η_M : ℝ} (hη_M : 0 < η_M) :
     ∃ B : ℝ, 1 ≤ B ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {rho r_m : ℝ} {N k m : ℕ}
         (e : Homogenization.Vec d),
@@ -192,9 +192,9 @@ response budget.  From the paired bound
 costs at most half of the paired budget.
 -/
 theorem sqrtTheta_mul_responseMoment_le_of_terminalP_pair
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (e : Homogenization.Vec d)
     {C_resp : ℝ}

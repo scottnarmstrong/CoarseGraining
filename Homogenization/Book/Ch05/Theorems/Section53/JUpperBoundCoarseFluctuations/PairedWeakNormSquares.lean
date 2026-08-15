@@ -188,8 +188,8 @@ private theorem sqrt_sub_one_sq_le_sub_one {θ : ℝ} (hθ : 1 ≤ θ) :
 /-- The constant affine tails in the weak-norm maximizer RHS are absorbed by
 the low-scale scalar tail of the final manuscript RHS. -/
 theorem paired_constantTail_special_le_lowScaleTail
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (_hkm : k < m) (e : Vec d) (he : vecNormSq e = 1) :
     let β := section53CoarseFluctuationBeta hP4
@@ -401,9 +401,9 @@ four component square expectations coming from the weak-norm maximizer RHS.
 This is the expectation-level square algebra; later lemmas convert the
 component integrals into the manuscript coarse-fluctuation terms. -/
 theorem paired_weakNormSquares_special_le_componentIntegrals
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Vec d) (he : vecNormSq e = 1)
     (hGradSq :
@@ -710,9 +710,9 @@ theorem paired_weakNormSquares_special_le_coarseFluctuationTerms
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (_hstat : Ch04.StationaryLaw P)
-      (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (_hstat : Ch04.RestrictionStationaryLaw P)
+      (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ {k m : ℕ}, k < m → ∀ e : Vec d, vecNormSq e = 1 →

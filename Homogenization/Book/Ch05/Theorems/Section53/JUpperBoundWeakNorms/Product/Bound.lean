@@ -42,7 +42,7 @@ theorem abs_cutoffProductTermOnDependentFamily_le_scaledWeakNormProduct
     let scaledFlux := cubeBesovScaleWeight (-t) Q * fluxWeak
     let gradCoeff :=
       (2 * cubeScaleFactor Q * B + 3 * cubeLpNorm Q ∞ (scalarCutoffGradientField φ)) *
-        ((Ch01.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
+        ((Ch01.Legacy.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
           (Fintype.card (Fin d) : ℝ))
     let fluxCoeff :=
       (Fintype.card (Fin d) : ℝ) *

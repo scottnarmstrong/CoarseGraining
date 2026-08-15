@@ -15,18 +15,18 @@ open scoped Matrix.Norms.Elementwise Matrix.Norms.L2Operator BigOperators
 
 noncomputable section
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 /-- Lower-right finite-parent coarse-block fluctuation bound, stated directly
 against the law-facing Ch4 surface.  The proof owns all locality,
 measurability, covariance, and deterministic positive-excess domination. -/
-theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRangeDependentLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_restrictionUnitRangeDependentLaw
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     {parents : Finset (TriadicCube d)} (hparents : parents.Nonempty)
     {n : ℤ} {ξ : ℕ} {K B : ℝ}
     (hn : 0 ≤ n)
     (hparent_scale : ∀ Q ∈ parents, n ≤ Q.scale)
-    (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
+    (hPstat : RestrictionStationaryLaw P) (hPdep : RestrictionUnitRangeDependentLaw P)
     (center : Mat d)
     (hcenter :
       ∀ i j : Fin d,
@@ -38,12 +38,12 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
       ∀ i j : Fin d,
         Integrable
           (fun a =>
-            |centeredOriginObservable P n
+            |restrictionCenteredOriginObservable P n
               (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| ^ ξ) P)
     (hOriginLp :
       ∀ i j : Fin d,
         (∫ a,
-            |centeredOriginObservable P n
+            |restrictionCenteredOriginObservable P n
               (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| ^ ξ ∂P) ^
             (1 / (ξ : ℝ)) ≤ K)
     (hBudget :
@@ -78,7 +78,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
     fun i j a =>
       parents.sup' hparents
         (fun Q =>
-          |centeredDescendantAverageOnCube P Q n
+          |restrictionCenteredDescendantAverageOnCube P Q n
             (fun U a => (coarseBlockMatrix U a).lowerRight i j) a|)
   have hξ_one : 1 ≤ ξ := by omega
   have hexcess_nonneg : ∀ a, 0 ≤ excess a := by
@@ -93,7 +93,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
             0) hQ0)
   have hentry_nonneg : ∀ i j a, 0 ≤ entry i j a := by
     intro i j a
-    exact finsetSup_abs_centeredDescendantAverageOnCube_nonneg hparents
+    exact finsetSup_abs_restrictionCenteredDescendantAverageOnCube_nonneg hparents
       (fun U a => (coarseBlockMatrix U a).lowerRight i j) a
   have hexcess_aemeas : AEMeasurable excess P := by
     simpa [excess] using
@@ -101,7 +101,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
   have hentry_aemeas : ∀ i j, AEMeasurable (entry i j) P := by
     intro i j
     simpa [entry] using
-      aemeasurable_finsetSup_abs_centeredDescendantAverageOnCube
+      aemeasurable_finsetSup_abs_restrictionCenteredDescendantAverageOnCube
         (P := P) (n := n) hparents
         (fun U a => (coarseBlockMatrix U a).lowerRight i j)
         (fun Q hQ R hR =>
@@ -114,15 +114,16 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
           (fun a : RegCoeffField d =>
             (parents.sup' hparents
               (fun Q =>
-                |centeredDescendantAverageOnCube P Q n
+                |restrictionCenteredDescendantAverageOnCube P Q n
                   (fun U a => (coarseBlockMatrix U a).lowerRight i j) a|)) ^ ξ) P :=
-      integrable_finsetSup_abs_centeredDescendantAverageOnCube_pow_of_stationary
+      integrable_finsetSup_abs_restrictionCenteredDescendantAverageOnCube_pow_of_stationary
         (d := d) (n := n) (P := P) (parents := parents) hparents
         hn hparent_scale hPstat
         (fun U a => (coarseBlockMatrix U a).lowerRight i j)
         (by
           simpa [blockMatEntry] using
-            isTranslationCovariantR_comp_toFun (coarseBlockMatrix_entry_translation_covariant (Sum.inr i) (Sum.inr j)))
+            isRestrictionTranslationCovariant_comp_toFun
+              (coarseBlockMatrix_entry_translation_covariant (Sum.inr i) (Sum.inr j)))
         (hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet (originCube d n) i j)
         (fun Q hQ R hR =>
           hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet R i j)
@@ -135,16 +136,17 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
         (∫ a, |entry i j a| ^ ξ ∂P) ^ (1 / (ξ : ℝ)) ≤ C := by
     intro i j
     have hroot :=
-      integral_finsetSup_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRangeDependentLaw_of_ae_eq_local
+      integral_finsetSup_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_of_restrictionUnitRangeDependentLaw_of_ae_eq_local
         (d := d) (n := n) (P := P) (parents := parents) hparents
         (p := ξ) (K := K) (B := B)
         hP hn hparent_scale hPstat hPdep
         (fun U a => (coarseBlockMatrix U a).lowerRight i j)
         (fun Q hQ R hR =>
-          hP.exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerRight_apply_cubeSet R i j)
+          hP.exists_isRestrictionLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerRight_apply_cubeSet R i j)
         (by
           simpa [blockMatEntry] using
-            isTranslationCovariantR_comp_toFun (coarseBlockMatrix_entry_translation_covariant (Sum.inr i) (Sum.inr j)))
+            isRestrictionTranslationCovariant_comp_toFun
+              (coarseBlockMatrix_entry_translation_covariant (Sum.inr i) (Sum.inr j)))
         (hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet (originCube d n) i j)
         (fun Q hQ R hR =>
           hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet R i j)
@@ -160,7 +162,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
   have hpoint :
       excess ≤ᵐ[P] fun a => ∑ i : Fin d, ∑ j : Fin d, entry i j a := by
     simpa [excess, entry] using
-      hP.coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_finsetSup_le_sum_finsetSup_abs_centeredDescendantAverageOnCube_ae
+      hP.coarseBlockMatrix_lowerRight_matrixNorm_positiveExcess_finsetSup_le_sum_finsetSup_abs_restrictionCenteredDescendantAverageOnCube_ae
         hparents hparent_scale center hcenter
   simpa [excess, entry, C] using
     momentRoot_excess_le_card_mul_entryRootBound
@@ -169,7 +171,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRang
       hentry_aemeas hentry_int hentry_root hpoint
 
 private theorem upperLeft_abs_entry_le_LambdaSqCoeffField_ae_aux
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) (i j : Fin d) :
     (fun a : RegCoeffField d => |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j|) ≤ᵐ[P]
       fun a => LambdaSqCoeffField Q s (.finite 1) a := by
@@ -180,7 +182,7 @@ private theorem upperLeft_abs_entry_le_LambdaSqCoeffField_ae_aux
       coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
-      LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   have hEntry :
       |(Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q)).upperLeft i j| ≤
@@ -199,7 +201,7 @@ private theorem upperLeft_abs_entry_le_LambdaSqCoeffField_ae_aux
       simp [LambdaSqCoeffField, ha, F]
 
 private theorem lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae_aux
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) (i j : Fin d) :
     (fun a : RegCoeffField d => |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j|) ≤ᵐ[P]
       fun a => (lambdaSqCoeffField Q s (.finite 1) a)⁻¹ := by
@@ -210,7 +212,7 @@ private theorem lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae_aux
       coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
-      LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   have hEntry :
       |(Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q)).lowerRight i j| ≤
@@ -231,7 +233,7 @@ private theorem lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae_aux
 
 
 theorem upperLeft_entry_le_LambdaSqCoeffField_ae
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
     (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft 0 0) ≤ᵐ[P]
       fun a => LambdaSqCoeffField Q s (.finite 1) a := by
@@ -239,7 +241,7 @@ theorem upperLeft_entry_le_LambdaSqCoeffField_ae
   exact (le_abs_self ((coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft 0 0)).trans hle
 
 theorem lowerRight_entry_le_lambdaSqCoeffField_inv_ae
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
     (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight 0 0) ≤ᵐ[P]
       fun a => (lambdaSqCoeffField Q s (.finite 1) a)⁻¹ := by
@@ -247,21 +249,21 @@ theorem lowerRight_entry_le_lambdaSqCoeffField_inv_ae
   exact (le_abs_self ((coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight 0 0)).trans hle
 
 theorem upperLeft_abs_entry_le_LambdaSqCoeffField_ae
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) (i j : Fin d) :
     (fun a : RegCoeffField d => |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j|) ≤ᵐ[P]
       fun a => LambdaSqCoeffField Q s (.finite 1) a := by
   exact upperLeft_abs_entry_le_LambdaSqCoeffField_ae_aux hP Q hs i j
 
 theorem lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) (i j : Fin d) :
     (fun a : RegCoeffField d => |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j|) ≤ᵐ[P]
       fun a => (lambdaSqCoeffField Q s (.finite 1) a)⁻¹ := by
   exact lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae_aux hP Q hs i j
 
 theorem integrable_abs_pow_of_ae_abs_le_nonneg
-    {d : ℕ} {P : CoeffLaw d} {ξ : ℕ}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {ξ : ℕ}
     {X Y : RegCoeffField d → ℝ}
     (hX_meas : AEMeasurable X P)
     (hY_nonneg : ∀ᵐ a ∂P, 0 ≤ Y a)
@@ -286,7 +288,7 @@ theorem integrable_abs_pow_of_ae_abs_le_nonneg
       abs_of_nonneg hright_nonneg] using hpow
 
 private theorem annealedMomentRoot_abs_le_of_ae_abs_le_nonneg
-    {d : ℕ} {P : CoeffLaw d} {ξ : ℕ}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {ξ : ℕ}
     {X Y : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
     (_hY_nonneg : ∀ a, 0 ≤ Y a)
@@ -308,7 +310,7 @@ private theorem annealedMomentRoot_abs_le_of_ae_abs_le_nonneg
     Real.rpow_le_rpow hleft_nonneg hint_le hexp_nonneg
 
 private theorem annealedMomentRoot_abs_sub_integral_le_two_mul
-    {d : ℕ} {P : CoeffLaw d} [IsProbabilityMeasure P]
+    {d : ℕ} {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {ξ : ℕ} {X : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ) (hX_meas : AEMeasurable X P)
     (hX_abs_pow_int : Integrable (fun a => |X a| ^ ξ) P) :
@@ -410,7 +412,7 @@ private theorem annealedMomentRoot_abs_sub_integral_le_two_mul
     _ = 2 * annealedMomentRoot P ξ (fun a => |X a|) := by ring
 
 private theorem centered_abs_sub_integrable_and_momentRoot_le_two_of_abs_le_nonneg
-    {d : ℕ} {P : CoeffLaw d} [IsProbabilityMeasure P] {ξ : ℕ}
+    {d : ℕ} {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P] {ξ : ℕ}
     {X Y : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ) (hX_meas : AEMeasurable X P)
     (hY_nonneg : ∀ᵐ a ∂P, 0 ≤ Y a) (hY_nonneg_forall : ∀ a, 0 ≤ Y a)
@@ -454,8 +456,8 @@ private theorem centered_abs_sub_integrable_and_momentRoot_le_two_of_abs_le_nonn
 
 /-- Unit-scale centered upper-left entries have their `L^ξ` roots controlled
 by the unit upper multiscale ellipticity moment. -/
-theorem centeredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem restrictionCenteredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentAtScale
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     {s : ℝ} {ξ : ℕ} (hs : 0 < s) (hξ : 1 ≤ ξ)
     (hUpperPowInt :
       Integrable
@@ -464,10 +466,10 @@ theorem centeredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentA
     (i j : Fin d) :
     Integrable
         (fun a =>
-          |centeredOriginObservable P 0
+          |restrictionCenteredOriginObservable P 0
             (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| ^ ξ) P ∧
       (∫ a,
-          |centeredOriginObservable P 0
+          |restrictionCenteredOriginObservable P 0
             (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| ^ ξ ∂P) ^
           (1 / (ξ : ℝ)) ≤
         2 * LambdaMomentAtScale P 0 s ξ := by
@@ -489,7 +491,7 @@ theorem centeredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentA
   have hXY : (fun a => |X a|) ≤ᵐ[P] Y := by
     simpa [X, Y] using
       upperLeft_abs_entry_le_LambdaSqCoeffField_ae hP (originCube d 0) hs i j
-  simpa [centeredOriginObservable, X, Y, LambdaMomentAtScale] using
+  simpa [restrictionCenteredOriginObservable, X, Y, LambdaMomentAtScale] using
     centered_abs_sub_integrable_and_momentRoot_le_two_of_abs_le_nonneg
       (P := P) (ξ := ξ) (X := X) (Y := Y)
       hξ hX_meas hY_nonneg hY_nonneg_forall hXY
@@ -497,8 +499,8 @@ theorem centeredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentA
 
 /-- Unit-scale centered lower-right entries have their `L^ξ` roots controlled
 by the unit lower inverse multiscale ellipticity moment. -/
-theorem centeredOriginObservable_lowerRight_entry_momentRoot_le_two_lambdaInvMomentAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem restrictionCenteredOriginObservable_lowerRight_entry_momentRoot_le_two_lambdaInvMomentAtScale
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     {s : ℝ} {ξ : ℕ} (hs : 0 < s) (hξ : 1 ≤ ξ)
     (hLowerPowInt :
       Integrable
@@ -507,10 +509,10 @@ theorem centeredOriginObservable_lowerRight_entry_momentRoot_le_two_lambdaInvMom
     (i j : Fin d) :
     Integrable
         (fun a =>
-          |centeredOriginObservable P 0
+          |restrictionCenteredOriginObservable P 0
             (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| ^ ξ) P ∧
       (∫ a,
-          |centeredOriginObservable P 0
+          |restrictionCenteredOriginObservable P 0
             (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| ^ ξ ∂P) ^
           (1 / (ξ : ℝ)) ≤
         2 * lambdaInvMomentAtScale P 0 s ξ := by
@@ -534,14 +536,14 @@ theorem centeredOriginObservable_lowerRight_entry_momentRoot_le_two_lambdaInvMom
   have hXY : (fun a => |X a|) ≤ᵐ[P] Y := by
     simpa [X, Y] using
       lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae hP (originCube d 0) hs i j
-  simpa [centeredOriginObservable, X, Y, lambdaInvMomentAtScale] using
+  simpa [restrictionCenteredOriginObservable, X, Y, lambdaInvMomentAtScale] using
     centered_abs_sub_integrable_and_momentRoot_le_two_of_abs_le_nonneg
       (P := P) (ξ := ξ) (X := X) (Y := Y)
       hξ hX_meas hY_nonneg hY_nonneg_forall hXY
       (by simpa [Y] using hLowerPowInt)
 
 
-end LawCarrier
+end RestrictionLawCarrier
 
 end
 

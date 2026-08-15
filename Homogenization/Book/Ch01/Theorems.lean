@@ -2,6 +2,7 @@ import Homogenization.Book.Ch01.Theorems.BesovPairing
 import Homogenization.Book.Ch01.Theorems.CircDomination
 import Homogenization.Book.Ch01.Theorems.CubeDirichletH2
 import Homogenization.Book.Ch01.Theorems.CubeNeumannCZ
+import Homogenization.Book.Ch01.Theorems.ClassicalInputsExact
 import Homogenization.Book.Ch01.Theorems.CutoffProduct
 import Homogenization.Book.Ch01.Theorems.DualToCircLoss.FiniteLoss
 import Homogenization.Book.Ch01.Theorems.DualToCircLoss.ProjectionTests

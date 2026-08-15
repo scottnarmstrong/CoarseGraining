@@ -7,7 +7,7 @@ import Homogenization.HighContrast.Corridor.FixedPhase.EfronSteinAE
 
 The capstone.  Combining the product-measurable clamped observable
 (`ClampedObservable`) with the landed a.e.-measurable Efron–Stein transfer
-(`efronStein_transfer_ae`), we obtain the Efron–Stein variance bound for the
+(`efronStein_transfer_ae_restriction`), we obtain the Efron–Stein variance bound for the
 fixed-phase observable `F_σ` in the **two-field surgery** (`patchCore`) form that
 the fixed-phase variance assembly consumes.
 
@@ -117,7 +117,7 @@ theorem efronStein_patch_abstract
     {C : ι → Set (Vec d)} (hC : ∀ i, MeasurableSet (C i))
     (hsep : Pairwise fun i j => AreUnitSeparated (C i) (C j))
     {L : Measure (RegCoeffField d)} [IsProbabilityMeasure L]
-    (hURD : IsUnitRangeDependentR L)
+    (hURD : IsRestrictionUnitRangeDependentR L)
     {G : (ι → RegCoeffField d) → ℝ} (hG : Measurable G)
     {M : ℝ} (hMG : ∀ y, |G y| ≤ M)
     {Φ : RegCoeffField d → ℝ} {Ψ : ι → RegCoeffField d → RegCoeffField d → ℝ}
@@ -131,7 +131,7 @@ theorem efronStein_patch_abstract
   classical
   set R : RegCoeffField d → (ι → RegCoeffField d) :=
     fun a i => restrictReg (C i) (hC i) a with hRdef
-  have key := efronStein_transfer hC hsep hURD hG hMG R hRdef
+  have key := efronStein_transfer_restriction hC hsep hURD hG hMG R hRdef
   have hRae_prod : ∀ᵐ p ∂(L.prod L), G (R p.1) = Φ p.1 :=
     (Measure.quasiMeasurePreserving_fst).ae hdiag
   have hterm : ∀ i : ι,
@@ -242,17 +242,19 @@ theorem clampedPhaseObservableR_update_ae [NeZero d]
         (ae_isEllipticMatrix_patchCore hp1 hp2)))
 
 /-- **Efron–Stein for the fixed-phase observable.**
-Under a unit-range-dependent, `Θ`-elliptic probability law on the carrier, the
+Under a restriction-unit-range-dependent, `Θ`-elliptic probability law on the
+carrier, the
 variance of the fixed-phase observable is controlled by the sum, over the cores
 meeting the cube, of the two-field core-resampling energies — the `patchCore`
 form consumed by the fixed-phase variance assembly.  The product-measurable
 witness is the genuinely carrier-measurable clamped observable
 `clampedPhaseObservableR` (`CarrierObservable.lean`), so the *genuine*
-`efronStein_transfer` applies (no a.e.-measurability relaxation needed). -/
+`efronStein_transfer_restriction` applies (no a.e.-measurability relaxation
+needed). -/
 theorem efronStein_phaseObservable [NeZero d]
     {ℓ : ℝ} {σ : Vec d} {Θ : ℝ} {m : ℤ} (hℓ : 0 < ℓ) (hΘ : 1 ≤ Θ) (P : BlockVec d)
     {L : Measure (RegCoeffField d)} [IsProbabilityMeasure L]
-    (hURD : IsUnitRangeDependentR L) (hL : ThetaEllipticLaw Θ L)
+    (hURD : IsRestrictionUnitRangeDependentR L) (hL : ThetaEllipticLaw Θ L)
     (K : Finset (Fin d → ℤ))
     (hK : ∀ k : Fin d → ℤ,
       (coreBox ℓ σ k ∩ cubeSet (originCube d m)).Nonempty → k ∈ K) :

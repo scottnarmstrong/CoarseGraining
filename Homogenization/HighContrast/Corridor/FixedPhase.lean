@@ -8,7 +8,7 @@ import Homogenization.HighContrast.Corridor.FixedPhase.CarrierObservable
 import Homogenization.HighContrast.Corridor.FixedPhase.EfronSteinPhase
 
 /-!
-# Fixed-phase variance (Proposition 4.3), Efron–Stein preparation
+# Fixed-phase variance (Proposition 4.3), Efron–Steto appear
 
 Facade re-exporting the fixed-phase components:
 
@@ -16,7 +16,7 @@ Facade re-exporting the fixed-phase components:
   fixed-phase observable from the independent per-core restrictions
   (`corePatch`, `phaseObservable_corePatch_restrict_eq`).
 * `FixedPhase.EfronSteinAE` — the a.e.-measurable Efron–Stein transfer wrapper
-  (`efronStein_transfer_ae`) and the update-resample pushforward
+  (`efronStein_transfer_ae_restriction`) and the update-resample pushforward
   (`map_update_prod_pi`).
 * `FixedPhase.Resample` — the deterministic one-core resampling stability bound
   (`abs_phaseObservable_resample_sub_le`).

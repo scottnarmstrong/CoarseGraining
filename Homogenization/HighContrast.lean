@@ -13,9 +13,9 @@ import Homogenization.HighContrast.Scale.Final
 /-!
 # High-contrast homogenization — theory root
 
-This is the theory root for the high-moment paper's formalization
-(Armstrong–Kuusi–Loher, in preparation).  It aggregates the two analytic pillars
-of the development:
+This is the theory root for the formalization of Armstrong--Kuusi--Loher,
+*Homogenization at a polynomial scale in high contrast* (to appear).  It
+aggregates the two analytic pillars of the development:
 
 * **Block-variance decay** (`t.block.variance`).  The coupled-corridor and
   Stampacchia machinery (`Coupled`, `Corridor`), the fixed-phase variance chain

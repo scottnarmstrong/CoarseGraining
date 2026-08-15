@@ -13,7 +13,7 @@ equalities and through a.e. translations. These are the algebraic
 substrate underneath the centered descendant-average finite-moment bounds.
 
 **Consumed by:** `Theorems/PartitionAverageMoments/Rosenthal.lean`
-(`integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtScale_of_unitRangeDependentLaw`
+(`integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtScale_of_restrictionUnitRangeDependentLaw`
 and the public Rosenthal-type endpoints it feeds).
 
 If the single-claim summary above grows into three or more distinct

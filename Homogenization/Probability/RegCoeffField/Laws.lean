@@ -11,9 +11,10 @@ This file restates the law-level structural predicates of
 are preserved:
 
 * `IsStationaryR` — invariance under integer translations;
-* `IsUnitRangeDependentR` — independence of the restriction σ-algebras of
-  unit-separated measurable sets (the `MeasurableSet` side-conditions are the
-  D7-approved refinement making `RestrictionSigmaR` well defined);
+* `IsRestrictionUnitRangeDependentR` — independence of the restriction
+  σ-algebras of unit-separated measurable sets (the `MeasurableSet`
+  side-conditions are the D7-approved refinement making `RestrictionSigmaR`
+  well defined);
 * `IsIsotropicInLawR` — invariance under signed-permutation rotations;
 * `IsAdjointInvariantInLawR` — invariance under the entrywise adjoint.
 
@@ -21,7 +22,7 @@ Each `Measure.map` is well formed: the underlying endomorphism is measurable
 (`measurable_translateReg`, `measurable_rotateReg`, `measurable_adjointReg`), and
 we record the corresponding integral/integrable transfer lemmas.
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 namespace Homogenization
@@ -50,10 +51,12 @@ theorem IsStationaryR.integral_comp_translateReg
 
 /-! ## Unit-range dependence -/
 
-/-- A carrier law is **unit-range dependent** if the restriction σ-algebras of any
-two unit-separated measurable sets are independent (mirrors
-`IsUnitRangeDependent`, with the `MeasurableSet` refinement). -/
-def IsUnitRangeDependentR (P : RegCoeffLaw d) : Prop :=
+/-- A carrier law is **restriction-unit-range dependent** if the restriction
+σ-algebras of any two sup-unit-separated measurable sets are independent.
+This is the pointwise-restriction lane, with the `MeasurableSet` refinement,
+and is distinct from the exact source-integral/Euclidean locality assumption;
+the differing separation predicates preclude a generic P2 implication. -/
+def IsRestrictionUnitRangeDependentR (P : RegCoeffLaw d) : Prop :=
   ∀ (U V : Set (Vec d)) (hU : MeasurableSet U) (hV : MeasurableSet V),
     AreUnitSeparated U V →
       ProbabilityTheory.Indep (RestrictionSigmaR U hU) (RestrictionSigmaR V hV) P

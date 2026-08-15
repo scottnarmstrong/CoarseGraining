@@ -16,7 +16,7 @@ Source label `e.tau.sum.absorb`: the concrete Section 5.3 scale weight used
 in the weighted additivity-defect sum is nonnegative.
 -/
 theorem section53CoarseFluctuationScaleWeight_nonneg
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m j : ℕ) :
     0 ≤ section53CoarseFluctuationScaleWeight hP4 m j := by
@@ -28,9 +28,9 @@ Source label `e.tau.sum.absorb`: the concrete weighted additivity-defect sum
 appearing in the no-drop high-moment proof.
 -/
 noncomputable def weightedTauSumAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d) : ℝ :=
   ∑ j ∈ Finset.Icc (k + 1) m,
@@ -40,14 +40,14 @@ noncomputable def weightedTauSumAtScales
         (Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e)
 
 /--
-Source labels `e.tau.sum.absorb` and `p.HC.CR`: LIH's integer-indexed
+Source labels `e.tau.sum.absorb` and `p.HC.CR`: the library's integer-indexed
 `coarseFluctuationTauSumAtScale` is the manuscript natural-scale weighted tau
 sum.  This is only the reindexing step; scalar prefactors remain separate.
 -/
 theorem coarseFluctuationTauSumAtScale_eq_weightedTauSumAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d) :
     coarseFluctuationTauSumAtScale hP hStruct hP4 k m e =
@@ -118,9 +118,9 @@ sum is controlled by the average of child response observables in the
 terminal descendants of the scale-`m` origin cube.
 -/
 theorem defectSum_sq_special_le_childResponseAverage
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d)
     {a : Homogenization.RegCoeffField d}
@@ -141,7 +141,7 @@ theorem defectSum_sq_special_le_childResponseAverage
           Homogenization.descendantsAverage
             (Homogenization.originCube d (m : ℤ)) (m - k)
             (fun R =>
-              Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a) := by
+              Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a) := by
   dsimp only
   let β := section53CoarseFluctuationBeta hP4
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
@@ -169,15 +169,15 @@ theorem defectSum_sq_special_le_childResponseAverage
 Source labels `p.HC.CR` and `e.tau.sum.absorb`: expectation-level conversion
 of the local weak-norm response-defect square into the manuscript weighted tau
 sum.  The pointwise `defectSum ^ 2` in the raw weak-norm split cannot be
-bounded by tau without integration; LIH supplies exactly this integrated
-Cauchy/stationarity estimate, and the theorem below rewrites LIH's integer
+bounded by tau without integration; the library supplies exactly this integrated
+Cauchy/stationarity estimate, and the theorem below rewrites the library's integer
 tau sum to the natural-scale `weightedTauSumAtScales`.
 -/
 theorem integral_defectSum_sq_special_le_beta_inv_weightedTauSumAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -211,11 +211,11 @@ theorem integral_defectSum_sq_special_le_beta_inv_weightedTauSumAtScales
 
 /--
 Source label `e.drift.nodrop`: geometric bound for the Section 5.3
-fluctuation weights, with a constant depending only on the LIH exponent
+fluctuation weights, with a constant depending only on the library's exponent
 `beta`.
 -/
 theorem section53CoarseFluctuationScaleWeight_sum_le_geometricConstant
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) :
     ∑ j ∈ Finset.Icc (k + 1) m,
@@ -290,14 +290,14 @@ theorem section53CoarseFluctuationScaleWeight_sum_le_geometricConstant
       rfl
 
 /--
-Source label `l.S.and.J`: natural-index form of LIH's Section 5.3 full-block
+Source label `l.S.and.J`: natural-index form of the library's Section 5.3 full-block
 fluctuation sum.  This avoids importing the Section 5.6 reindex lemma, which is
 not needed for the present development.
 -/
 theorem coarseFluctuationFullBlockSumAtScale_eq_nat_Icc
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) :
     coarseFluctuationFullBlockSumAtScale hP hStruct hP4 k m =
@@ -362,9 +362,9 @@ Source label `l.S.and.J`: stochastic part of the terminal-normalized
 full-block fluctuation, centered at the intermediate scale `j`.
 -/
 noncomputable def terminalCenteredFullBlockFluctuationSqAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (j m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) : ℝ :=
   fullBlockOperatorNorm
@@ -376,13 +376,13 @@ noncomputable def terminalCenteredFullBlockFluctuationSqAtScale
 /--
 Source label `l.S.and.J`: reverse deterministic split used only to prove the
 integrability of the centered square.  The term centered at scale `j` is
-bounded by the LIH terminal fluctuation centered at scale `m` plus a
+bounded by the library's terminal fluctuation centered at scale `m` plus a
 deterministic annealed offset.
 -/
 theorem terminalCenteredFullBlockFluctuationSqAtScale_le_two_fullBlockFluctuation_add_const
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (j m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) :
     terminalCenteredFullBlockFluctuationSqAtScale hP hStruct j m Q a ≤
@@ -432,9 +432,9 @@ theorem terminalCenteredFullBlockFluctuationSqAtScale_le_two_fullBlockFluctuatio
     (Dm * (Am - Aj) * Dm)
 
 private theorem continuous_terminalCenteredFullBlockFluctuationSqFunctional
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P) (j m : ℕ) :
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P) (j m : ℕ) :
     Continuous fun Y : Homogenization.FullBlockMat d =>
       fullBlockOperatorNorm
         (scalarFullBlockNormalizerMatrixAtScale hP hStruct m *
@@ -471,14 +471,14 @@ open scoped Matrix.Norms.Elementwise
 
 /--
 Source label `l.S.and.J`: `(P4)` supplies the real integrability needed for
-the stochastic centered square in the Section 5.3 split.  The proof uses LIH's
+the stochastic centered square in the Section 5.3 split.  The proof uses the library's
 full-block fluctuation-square integrability and the reverse deterministic
 triangle bound above, so no stochastic integrability assumption is introduced.
 -/
 theorem integrable_terminalCenteredFullBlockFluctuationSqAtScale_origin_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (j m : ℕ) :
     MeasureTheory.Integrable
@@ -546,9 +546,9 @@ square is exactly the square of the terminal coarse-block deviation used in the
 high-moment maximal envelope.
 -/
 theorem ofReal_terminalCenteredFullBlockFluctuationSqAtScale_eq_terminalCoarseBlockDeviation_sq
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (j m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) :
     ENNReal.ofReal
@@ -568,9 +568,9 @@ with only the explicit inverse weak weight lost.  This is the insertion step
 for the stochastic half of the Section 5.3 fluctuation estimate.
 -/
 theorem ofReal_terminalCenteredFullBlockFluctuationSqAtScale_le_inv_weight_mul_terminalCoarseBlockStochasticEnvelope_sq
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) {N j m : ℕ}
     (hNj : N ≤ j) (hjm : j ≤ m)
     (a : Homogenization.RegCoeffField d) :
@@ -650,9 +650,9 @@ estimate in `ENNReal`, before any conversion back to real-valued Section 5.3
 integrals.
 -/
 theorem lintegral_ofReal_terminalCenteredFullBlockFluctuationSqAtScale_le_inv_weight_sq_mul_lintegral_terminalCoarseBlockStochasticEnvelope_sq
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) {N j m : ℕ}
     (hNj : N ≤ j) (hjm : j ≤ m) :
     ∫⁻ a,
@@ -713,9 +713,9 @@ is the common stochastic envelope square times the explicit finite sum of
 Section 5.3 weights and inverse weak weights.
 -/
 theorem lintegral_ofReal_terminalCenteredFullBlockFluctuationSqAtScale_sum_le_weighted_inv_weight_sq_mul_lintegral_terminalCoarseBlockStochasticEnvelope_sq
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N k m : ℕ} (hNk : N ≤ k + 1) :
     ∑ j ∈ Finset.Icc (k + 1) m,
@@ -805,13 +805,13 @@ theorem lintegral_ofReal_terminalCenteredFullBlockFluctuationSqAtScale_sum_le_we
 /--
 Source labels `a.HM`, `M_m^st`, and `l.S.and.J`: convert the stochastic
 centered-square estimate from the `ENNReal` lintegral form used by the
-high-moment envelope into the real integral sum used by LIH's Section 5.3
+high-moment envelope into the real integral sum used by the library's Section 5.3
 full-block fluctuation sum.
 -/
 theorem terminalCenteredFullBlockFluctuationSqAtScale_integral_sum_le_of_lintegral_sum_le
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} {η : ℝ} (hη_nonneg : 0 ≤ η)
     (hlintegral :
@@ -911,10 +911,10 @@ theorem terminalStochasticWeakWeight_inv_sq_le_of_mem_Icc_of_sub_le
 Source labels `M_m^st` and `l.S.and.J`: the finite-window inverse-weak-weight
 loss in the integrated stochastic insertion is bounded by a constant depending
 only on the window length and `rho_M`, not on an additional relation between
-LIH's Section 5.3 exponent and `rho_M`.
+the library's Section 5.3 exponent and `rho_M`.
 -/
 theorem section53CoarseFluctuationScaleWeight_mul_terminalStochasticWeakWeight_inv_sq_sum_le_windowConstant
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {k m L : ℕ} (hWindow : m - k ≤ L) :
     ∑ j ∈ Finset.Icc (k + 1) m,

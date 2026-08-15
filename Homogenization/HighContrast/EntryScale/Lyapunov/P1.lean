@@ -150,9 +150,9 @@ resulting memory alternative for the scalar contrast excess carries **both** the
 quadratic drift term and the linear edge term:
 `F_m ≤ 4·memoryCoeff·(H²/(1+F_m)) + 4·edgeMemoryCoeff·linTerm`. -/
 theorem memory_alt_linear_of_memoryGrid_noDropResponseRHSLinear
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Homogenization.Vec d)
     {C_delta C_memory C_edgeMem eps rho etaS etaSt decay Hprev linTerm coeff
@@ -463,9 +463,9 @@ carries the extra `H`-linear edge term `Klin·H_prev` (already reduced from
 Layer A's `4·edgeMemoryCoeff·linTerm` via the KEY CHECK).  The linear constant
 is enlarged from `K` to `K + Klin`; `lambda` is unchanged. -/
 theorem lyapunov_step_of_memoryGrid_memory_alt_linear
-    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {N Nstar L i : ℕ}
     {A K Klin lambda rho memoryCoeff : ℝ}
@@ -617,9 +617,9 @@ exactly the `C_lin·(H_n/(1+F_k))·terminalP` residual committed in
 fully absorbed into the `A·H` channel, with `lambda` unchanged (the memory
 coefficient constraint is stated with the enlarged `K + 16·edgeMemoryCoeff`). -/
 theorem lyapunov_step_of_memoryGrid_noDropResponse_lower_memory_linear
-    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {N Nstar L i : ℕ}
     {A K lambda rho edgeMemoryCoeff memoryCoeff : ℝ}

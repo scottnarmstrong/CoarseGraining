@@ -21,5 +21,6 @@ those dependencies for inspection (see CI logs).
 #print axioms Homogenization.Book.MainResults.homogenizationComparison_uniformEllipticity
 
 -- The polynomial homogenization length scale theorem (d > 2, uniform
--- ellipticity; Armstrong-Kuusi-Loher, in preparation).
+-- ellipticity), from Armstrong--Kuusi--Loher, *Homogenization at a polynomial
+-- scale in high contrast* (to appear).
 #print axioms Homogenization.homogenizationScale_polynomial_of_unitRange

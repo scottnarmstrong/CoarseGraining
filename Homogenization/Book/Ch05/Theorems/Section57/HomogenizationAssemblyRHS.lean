@@ -26,8 +26,8 @@ noncomputable def assemblyLowerEllipticityEnvelopeOfScalar {d : ℕ} [NeZero d]
     (σ0⁻¹ * assemblyEllipticityEnvelope (d := d) α τ r X aω m)
 
 noncomputable def assemblyLowerEllipticityEnvelope {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {P : Ch04.RestrictionCoeffLaw d} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (_hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (α τ r : ℝ) (X : RegCoeffField d → ℝ) (aω : RegCoeffField d)
     (m : ℕ) : ℝ :=
@@ -73,8 +73,8 @@ noncomputable def assemblyCompressedTwoExponentRHSOfScalar {d : ℕ} [NeZero d]
 
 /-- Finite-`sigma` wrapper for the scale-separated compressed Ch3 RHS. -/
 noncomputable def assemblyCompressedTwoExponentRHS {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {P : Ch04.RestrictionCoeffLaw d} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (Ccg α τ s r r₂ : ℝ) (X : RegCoeffField d → ℝ)
     (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
@@ -162,8 +162,8 @@ theorem assemblyLowerEllipticityFactor_le_ofScalar
 
 theorem assemblyLowerEllipticityFactor_le
     {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {P : Ch04.RestrictionCoeffLaw d} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {α τ r : ℝ} {X : RegCoeffField d → ℝ} {aω : RegCoeffField d}
     {m : ℕ} (ha : Ch04.AELocallyUniformlyEllipticField aω)
@@ -418,8 +418,8 @@ theorem assemblyControlledFactors_lhs_le_compressedTwoExponentRHS_ofScalar
 substitution. -/
 theorem assemblyControlledFactors_lhs_le_compressedTwoExponentRHS
     {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {P : Ch04.RestrictionCoeffLaw d} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {Ccg α τ s r r₂ : ℝ} {X : RegCoeffField d → ℝ}
     {aω : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField aω)
@@ -446,7 +446,7 @@ theorem assemblyControlledFactors_lhs_le_compressedTwoExponentRHS
 
 /-- Sigma-agnostic a.e. handoff for the repaired two-exponent Ch3 assembly. -/
 theorem ae_homogenizationComparison_compressedTwoExponentRHSOfScalar_of_ae_controlledFactors
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     {σ0 : ℝ} (hσ0 : 0 < σ0)
     {Ccg α τ s r r₂ : ℝ} {X : RegCoeffField d → ℝ}
     (hCcg : 0 < Ccg) (hs : 0 < s) (hr : 0 < r)
@@ -501,9 +501,9 @@ theorem exists_homogenizationComparison_compressedTwoExponentRHS_interpolated_ex
         let ηU : ℝ := finiteQuenchedTailExponent d σ (τ / 2)
         let η : ℝ := min ηJ ηU
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
             ∃ X : RegCoeffField d → ℝ,

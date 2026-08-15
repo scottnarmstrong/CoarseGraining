@@ -44,7 +44,9 @@ private theorem convexApproxSmoothW1p_grad
   simp [convexApproxSmoothW1p, W1pFunction.ofContDiffOnIsOpenBoundedConvexDomain,
     W1pFunction.ofContDiffOnIsSobolevRegularDomain]
 
-private theorem tendsto_convexApproxSmoothW1p_toFun_eLpNorm_sub
+/-- Canonical convex smooth approximants converge to a `W^{1,p}` function in
+the value `L^p` norm on a bounded open convex domain. -/
+theorem tendsto_convexApproxSmoothW1p_toFun_eLpNorm_sub
     (hU : IsOpenBoundedConvexDomain U) (hp1 : 1 ≤ p) (hp : p ≠ ⊤)
     (u : W1pFunction U p)
     {x0 : Vec d} {r : ℝ} (hball : Metric.closedBall x0 r ⊆ U) (hr : 0 < r) :
@@ -97,7 +99,9 @@ private theorem tendsto_convexApproxSmoothW1p_toFun_eLpNorm_sub
         simpa [ψ, ρ] using congrFun
           (convexApproxSmoothW1p_toFun (U := U) hU hp1 u x0 hr n) x]
 
-private theorem tendsto_convexApproxSmoothW1p_grad_eLpNorm_sub
+/-- Canonical convex smooth approximants converge coordinatewise to the weak
+gradient in the `L^p` norm on a bounded open convex domain. -/
+theorem tendsto_convexApproxSmoothW1p_grad_eLpNorm_sub
     (hU : IsOpenBoundedConvexDomain U) (hp1 : 1 ≤ p) (hp : p ≠ ⊤)
     (u : W1pFunction U p)
     {x0 : Vec d} {r : ℝ} (hball : Metric.closedBall x0 r ⊆ U) (hr : 0 < r)

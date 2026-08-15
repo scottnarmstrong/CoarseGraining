@@ -96,9 +96,9 @@ theorem exists_entryScale_le_natCeil_logSq
     (hσ : 0 < σ) (hCentry : 0 < Centry)
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ CentryScale : ℝ, 0 < CentryScale ∧
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
         let N0 : ℕ :=
@@ -312,9 +312,9 @@ theorem exists_entryScale_pow_three_le_exp_logSq
     (hσ : 0 < σ) (hCentry : 0 < Centry)
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ CentryScale : ℝ, 0 < CentryScale ∧
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
         let N0 : ℕ :=

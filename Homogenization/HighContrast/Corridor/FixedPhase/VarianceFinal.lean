@@ -55,7 +55,7 @@ theorem phaseObservable_congr_ae {ℓ : ℝ} {σ : Vec d} {m : ℤ} {P : BlockVe
     · rw [corridorField_apply_of_mem hxc, corridorField_apply_of_mem hxc]
     · rw [corridorField_apply_of_not_mem hxc, corridorField_apply_of_not_mem hxc, hx]
   unfold phaseObservable
-  rw [coarseBlockMatrix_congr_of_ae_eq (measurableSet_cubeSet (originCube d m)) hcorr]
+  rw [coarseBlockMatrix_congr_of_ae_eq hcorr]
 
 /-! ## Obstruction 2 — joint measurability -/
 
@@ -123,13 +123,14 @@ theorem aestronglyMeasurable_phaseObservable_patchCore [NeZero d]
 
 /-! ## The fixed-phase variance (Proposition 4.3) -/
 
-/-- **`p.fixed.phase.variance` (Proposition 4.3).**  Under a unit-range-dependent,
-`Θ`-elliptic probability law, the variance of the fixed-phase observable obeys the
-`O((ℓ/3^m)^{d−2})` bound with a single dimensional constant. -/
+/-- **`p.fixed.phase.variance` (Proposition 4.3).**  Under a
+restriction-unit-range-dependent, `Θ`-elliptic probability law, the variance
+of the fixed-phase observable obeys the `O((ℓ/3^m)^{d−2})` bound with a single
+dimensional constant. -/
 theorem fixed_phase_variance [NeZero d] (hd : 3 ≤ d) {m : ℤ} {ℓ Θ : ℝ} {σ : Vec d}
     (hℓ4 : 4 ≤ ℓ) (hℓL : ℓ ≤ (3 : ℝ) ^ m) (hΘ : 1 ≤ Θ) (P : BlockVec d)
     {L : Measure (RegCoeffField d)} [IsProbabilityMeasure L]
-    (hURD : IsUnitRangeDependentR L) (hLaw : ThetaEllipticLaw Θ L) :
+    (hURD : IsRestrictionUnitRangeDependentR L) (hLaw : ThetaEllipticLaw Θ L) :
     ∃ Cd : ℝ, 0 ≤ Cd ∧
       Var[fun a => phaseObservable ℓ σ m P a.toFun; L]
         ≤ Cd * Θ ^ 3 * (ℓ / (3 : ℝ) ^ m) ^ (d - 2)

@@ -12,17 +12,17 @@ open scoped Matrix.Norms.Elementwise
 noncomputable section
 
 private theorem sUpper_add_beta_pos' {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < hP4.sUpper + section53CoarseFluctuationBeta hP4 :=
   add_pos hP4.sUpper_pos (section53CoarseFluctuationBeta_pos hP4)
 
 private theorem sLower_add_beta_pos' {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < hP4.sLower + section53CoarseFluctuationBeta hP4 :=
   add_pos hP4.sLower_pos (section53CoarseFluctuationBeta_pos hP4)
 
 private theorem sUpper_add_beta_lt_one' {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sUpper + section53CoarseFluctuationBeta hP4 < 1 := by
   have hsum := sUpper_add_sLower_add_two_beta_le_one hP4
   have hlower_beta_pos :
@@ -31,7 +31,7 @@ private theorem sUpper_add_beta_lt_one' {d : ℕ} [NeZero d]
   nlinarith
 
 private theorem sLower_add_beta_lt_one' {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sLower + section53CoarseFluctuationBeta hP4 < 1 := by
   have hsum := sUpper_add_sLower_add_two_beta_le_one hP4
   have hupper_beta_pos :
@@ -40,7 +40,7 @@ private theorem sLower_add_beta_lt_one' {d : ℕ} [NeZero d]
   nlinarith
 
 theorem integrable_pow_of_nonneg_le_const_add_nonneg
-    {d ξ : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
+    {d ξ : ℕ} {P : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {X E : RegCoeffField d → ℝ} {A : ℝ}
     (hξ : 1 ≤ ξ) (hA_nonneg : 0 ≤ A)
     (hX_nonneg : ∀ a, 0 ≤ X a)
@@ -80,8 +80,8 @@ theorem integrable_pow_of_nonneg_le_const_add_nonneg
   simp [abs_of_nonneg (hX_nonneg a)]
 
 theorem upperShiftedFactorPowerIntegrableAtScale_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     Integrable
       (fun a : RegCoeffField d =>
@@ -96,8 +96,8 @@ theorem upperShiftedFactorPowerIntegrableAtScale_from_P4
     max (X a - hP.barSigmaAtScale hStruct 0) 0
   have hBarSigma_nonneg : 0 ≤ hP.barSigmaAtScale hStruct 0 := by
     rw [hP.barSigmaAtScale_eq_barBAtScale hStruct (0 : ℤ)]
-    simpa [Ch04.LawCarrier.barBAtScale] using
-      Ch04.LawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
+    simpa [Ch04.RestrictionLawCarrier.barBAtScale] using
+      Ch04.RestrictionLawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
         (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw
           hP hStruct (0 : ℤ))
         (Section52.originBlockIntegrableAtScale_from_P4 hP hStruct hP4 0)
@@ -127,8 +127,8 @@ theorem upperShiftedFactorPowerIntegrableAtScale_from_P4
       hX_meas hE_meas hE_pow_int
 
 theorem lowerShiftedFactorPowerIntegrableAtScale_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     Integrable
       (fun a : RegCoeffField d =>
@@ -144,8 +144,8 @@ theorem lowerShiftedFactorPowerIntegrableAtScale_from_P4
   have hStarInv_nonneg : 0 ≤ (hP.barSigmaStarAtScale hStruct 0)⁻¹ := by
     have hstar := hP.barSigmaStarAtScale_eq_inv_barSigmaStarInvAtScale hStruct (0 : ℤ)
     rw [hstar, inv_inv]
-    simpa [Ch04.LawCarrier.barSigmaStarInvAtScale] using
-      (Ch04.LawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
+    simpa [Ch04.RestrictionLawCarrier.barSigmaStarInvAtScale] using
+      (Ch04.RestrictionLawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
         (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw
           hP hStruct (0 : ℤ))
         (Section52.originBlockIntegrableAtScale_from_P4 hP hStruct hP4 0)).le
@@ -177,8 +177,8 @@ theorem lowerShiftedFactorPowerIntegrableAtScale_from_P4
 
 /-- The quantitative ellipticity input with the Section 5.5 source exponents
 shifted by one `β`. -/
-def betaShiftedP4 {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+def betaShiftedP4 {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     QuantitativeCoarseGrainedEllipticity P where
   sUpper := hP4.sUpper + section53CoarseFluctuationBeta hP4
@@ -211,8 +211,8 @@ def betaShiftedP4 {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
 /-- Shifted scalar preliminary for Section 5.5:
 `\Theta_n <= \widetilde\Theta_n^{(\beta)}`. -/
 theorem thetaAtScale_le_betaShiftedWidetildeThetaAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (n : ℕ) :
     thetaAtScale hP hStruct (n : ℤ) ≤
       betaShiftedWidetildeThetaAtScale P (n : ℤ) hP4 := by

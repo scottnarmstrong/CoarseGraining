@@ -30,7 +30,7 @@ noncomputable def jUpperWeakNormPointwiseRHSAtScale {d : ℕ}
     let Q : TriadicCube d := originCube d m
     let j : ℕ := Int.toNat (m - k)
     let childAverage :=
-      descendantsAverage Q j (fun R => Ch04.responseJObservableCubeSet R p q a)
+      descendantsAverage Q j (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)
     let gradWeak := Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
     let fluxWeak := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun
     let gradCoeff := (3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS
@@ -38,7 +38,7 @@ noncomputable def jUpperWeakNormPointwiseRHSAtScale {d : ℕ}
     (2 * C) *
         (Real.sqrt (responseJAdditivityDefectAtScale m k p q a) *
           Real.sqrt childAverage) +
-      Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a +
+      Cosc * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a +
         ((1 / 2 : ℝ) * ‖q0‖ *
             (((Fintype.card (Fin d) : ℝ) * gradCoeff) * gradWeak) +
           (1 / 2 : ℝ) * ‖p0‖ *
@@ -59,7 +59,7 @@ noncomputable def jUpperWeakNormManuscriptPointwiseRHSAtScale {d : ℕ}
     let Q : TriadicCube d := originCube d m
     let j : ℕ := Int.toNat (m - k)
     let childAverage :=
-      descendantsAverage Q j (fun R => Ch04.responseJObservableCubeSet R p q a)
+      descendantsAverage Q j (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)
     let gradWeak := Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
     let fluxWeak := Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun
     let gradCoeff := (3 : ℝ) ^ ((d : ℝ) + s) * cubeBesovScaleWeight (-s) Q * BφS
@@ -69,7 +69,7 @@ noncomputable def jUpperWeakNormManuscriptPointwiseRHSAtScale {d : ℕ}
     (2 * C) *
         (Real.sqrt (responseJAdditivityDefectAtScale m k p q a) *
           Real.sqrt childAverage) +
-      Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a +
+      Cosc * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a +
         ((1 / 2 : ℝ) * ‖q0‖ *
             (((Fintype.card (Fin d) : ℝ) * gradCoeff) * gradWeak) +
           (1 / 2 : ℝ) * ‖p0‖ *
@@ -82,7 +82,7 @@ additivity term has been converted to `sqrt tau * sqrt E[J_k]`; the remaining
 weak-norm and cutoff-product terms are still written as expectations of the
 Ch4 scalar-response observables. -/
 noncomputable def jUpperWeakNormExpectedRHSAtScale {d : ℕ}
-    (P : Ch04.CoeffLaw d) (m k : ℤ) (s t : ℝ)
+    (P : Ch04.RestrictionCoeffLaw d) (m k : ℤ) (s t : ℝ)
     (cutoffGradient : Vec d → Vec d)
     (C Cosc scaleSep BφS BφT cutoffCircOne poincareConst cutoffConstant
       centeredCutoffConstant : ℝ)
@@ -115,7 +115,7 @@ noncomputable def jUpperWeakNormExpectedRHSAtScale {d : ℕ}
 been replaced by the final Cauchy product of the note-normalized gradient and
 flux weak-norm square expectations. -/
 noncomputable def jUpperWeakNormManuscriptExpectedRHSAtScale {d : ℕ}
-    (P : Ch04.CoeffLaw d) (m k : ℤ) (s t : ℝ)
+    (P : Ch04.RestrictionCoeffLaw d) (m k : ℤ) (s t : ℝ)
     (C Cosc scaleSep BφS BφT Cprod : ℝ)
     (p q p0 q0 : Vec d) : ℝ :=
   let Q : TriadicCube d := originCube d m
@@ -148,38 +148,38 @@ theorem childResponseJAverageOnDependentFamilyAtScale_eq_ch04
     let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
     childResponseJAverageOnFamilyAtDepth F (originCube d m) (Int.toNat (m - k)) p q =
       descendantsAverage (originCube d m) (Int.toNat (m - k))
-        (fun R => Ch04.responseJObservableCubeSet R p q a) := by
+        (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) := by
   intro F
   unfold childResponseJAverageOnFamilyAtDepth
   exact descendantsAverage_congr_of_eq_on_descendants
     (originCube d m) (Int.toNat (m - k)) (by
       intro R _hR
-      exact responseJOnDependentFamily_eq_responseJObservableCubeSet a ha R p q)
+      exact responseJOnDependentFamily_eq_restrictionResponseJObservableCubeSet a ha R p q)
 
 /-- The total Ch4 descendant response average is pointwise nonnegative. -/
-theorem descendantsAverage_responseJObservableCubeSet_nonneg
+theorem descendantsAverage_restrictionResponseJObservableCubeSet_nonneg
     {d : ℕ} (Q : TriadicCube d) (j : ℕ) (p q : Vec d)
     (a : RegCoeffField d) :
     0 ≤ descendantsAverage Q j
-      (fun R => Ch04.responseJObservableCubeSet R p q a) := by
-  simpa [Ch04.responseJObservableCubeSet] using
+      (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) := by
+  simpa [Ch04.restrictionResponseJObservableCubeSet] using
     descendantsAverage_nonneg Q j
       (fun R => ResponseJ (cubeSet R) p q a)
-      (fun R _hR => Ch04.responseJObservableCubeSet_nonneg R p q a)
+      (fun R _hR => Ch04.restrictionResponseJObservableCubeSet_nonneg R p q a)
 
 /-- The private additivity-defect observable is integrable when the parent and
 child response observables are integrable. -/
 theorem integrable_responseJAdditivityDefectAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     {k m : ℤ} (hkm : k ≤ m) (p q : Vec d)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hDesc : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     Integrable (responseJAdditivityDefectAtScale m k p q) P := by
   have hDescDepth :
       ∀ R, R ∈ descendantsAtDepth (originCube d m) (Int.toNat (m - k)) →
-        Integrable (Ch04.responseJObservableCubeSet R p q) P := by
+        Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P := by
     intro R hR
     exact hDesc R (by
       simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR)
@@ -187,47 +187,47 @@ theorem integrable_responseJAdditivityDefectAtScale
       Integrable
         (fun a : RegCoeffField d =>
           descendantsAverage (originCube d m) (Int.toNat (m - k))
-            (fun R => Ch04.responseJObservableCubeSet R p q a)) P :=
-    Ch04.integrable_descendantsAverage_responseJObservableCubeSet hDescDepth
+            (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)) P :=
+    Ch04.integrable_descendantsAverage_restrictionResponseJObservableCubeSet hDescDepth
   simpa [responseJAdditivityDefectAtScale] using hAvgInt.sub hParent
 
 /-- The additivity-defect observable is nonnegative on the a.s. elliptic
 support of a Chapter 4 law carrier. -/
 theorem responseJAdditivityDefectAtScale_nonneg_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) {k m : ℤ} (hkm : k ≤ m)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) {k m : ℤ} (hkm : k ≤ m)
     (p q : Vec d) :
     0 ≤ᵐ[P] responseJAdditivityDefectAtScale m k p q := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   have hle :
-      Ch04.responseJObservableCubeSet (originCube d m) p q a ≤
+      Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q a ≤
         descendantsAverage (originCube d m) (Int.toNat (m - k))
-          (fun R => Ch04.responseJObservableCubeSet R p q a) :=
-    Ch04.responseJObservableCubeSet_le_descendantsAverage_of_aelocallyUniformlyEllipticField
+          (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) :=
+    Ch04.restrictionResponseJObservableCubeSet_le_descendantsAverage_of_aelocallyUniformlyEllipticField
       (a := a) ha hkm p q
   simpa [responseJAdditivityDefectAtScale] using sub_nonneg.mpr hle
 
 /-- The square-root additivity term is controlled in expectation by the
 geometric mean of the `tau` defect and the child-scale annealed response. -/
 theorem integral_sqrt_responseJAdditivityDefectAtScale_mul_sqrt_childResponseAverage_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m) (p q : Vec d)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hDesc : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     ∫ a,
         Real.sqrt (responseJAdditivityDefectAtScale m k p q a) *
           Real.sqrt
             (descendantsAverage (originCube d m) (Int.toNat (m - k))
-              (fun R => Ch04.responseJObservableCubeSet R p q a)) ∂P
+              (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)) ∂P
       ≤
         Real.sqrt (tauAtScale P m k p q) *
           Real.sqrt (Ch04.expectedResponseJCubeSet P (originCube d k) p q) := by
   have hDescDepth :
       ∀ R, R ∈ descendantsAtDepth (originCube d m) (Int.toNat (m - k)) →
-        Integrable (Ch04.responseJObservableCubeSet R p q) P := by
+        Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P := by
     intro R hR
     exact hDesc R (by
       simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR)
@@ -235,8 +235,8 @@ theorem integral_sqrt_responseJAdditivityDefectAtScale_mul_sqrt_childResponseAve
       Integrable
         (fun a : RegCoeffField d =>
           descendantsAverage (originCube d m) (Int.toNat (m - k))
-            (fun R => Ch04.responseJObservableCubeSet R p q a)) P :=
-    Ch04.integrable_descendantsAverage_responseJObservableCubeSet hDescDepth
+            (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)) P :=
+    Ch04.integrable_descendantsAverage_restrictionResponseJObservableCubeSet hDescDepth
   have hDefectInt :
       Integrable (responseJAdditivityDefectAtScale m k p q) P :=
     integrable_responseJAdditivityDefectAtScale hkm p q hParent hDesc
@@ -247,9 +247,9 @@ theorem integral_sqrt_responseJAdditivityDefectAtScale_mul_sqrt_childResponseAve
       0 ≤ᵐ[P]
         fun a : RegCoeffField d =>
           descendantsAverage (originCube d m) (Int.toNat (m - k))
-            (fun R => Ch04.responseJObservableCubeSet R p q a) := by
+            (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) := by
     filter_upwards with a
-    exact descendantsAverage_responseJObservableCubeSet_nonneg
+    exact descendantsAverage_restrictionResponseJObservableCubeSet_nonneg
       (originCube d m) (Int.toNat (m - k)) p q a
   have hCauchy :=
     integral_sqrt_mul_sqrt_le_sqrt_integral_mul_sqrt_integral
@@ -257,7 +257,7 @@ theorem integral_sqrt_responseJAdditivityDefectAtScale_mul_sqrt_childResponseAve
       (A := responseJAdditivityDefectAtScale m k p q)
       (B := fun a : RegCoeffField d =>
         descendantsAverage (originCube d m) (Int.toNat (m - k))
-          (fun R => Ch04.responseJObservableCubeSet R p q a))
+          (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a))
       hDefectInt hChildInt hDefectNonneg hChildNonneg
   have hDefectIntegral :
       ∫ a, responseJAdditivityDefectAtScale m k p q a ∂P =
@@ -267,22 +267,22 @@ theorem integral_sqrt_responseJAdditivityDefectAtScale_mul_sqrt_childResponseAve
   have hChildIntegral :
       ∫ a,
           descendantsAverage (originCube d m) (Int.toNat (m - k))
-            (fun R => Ch04.responseJObservableCubeSet R p q a) ∂P =
+            (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) ∂P =
         Ch04.expectedResponseJCubeSet P (originCube d k) p q :=
-    hP.integral_descendantsAverage_responseJObservableCubeSet_eq_originCube_of_stationary
+    hP.integral_descendantsAverage_restrictionResponseJObservableCubeSet_eq_originCube_of_stationary
       hstat hk_nonneg hkm p q hDesc
   have hChildIntegral' :
       ∫ a,
           descendantsAverage (originCube d m) (Int.toNat (m - k))
             (fun R => ResponseJ (cubeSet R) p q a) ∂P =
         Ch04.expectedResponseJCubeSet P (originCube d k) p q := by
-    simpa [Ch04.responseJObservableCubeSet] using hChildIntegral
-  simpa [Ch04.responseJObservableCubeSet, hDefectIntegral, hChildIntegral'] using hCauchy
+    simpa [Ch04.restrictionResponseJObservableCubeSet] using hChildIntegral
+  simpa [Ch04.restrictionResponseJObservableCubeSet, hDefectIntegral, hChildIntegral'] using hCauchy
 
 /-- A.e. nonnegativity of the Ch4 scalar-response gradient weak norm. -/
 theorem canonicalScalarResponseGradientWeakNormCubeSet_nonneg_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (Q : TriadicCube d) {s : ℝ} (hs : 0 < s)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (Q : TriadicCube d) {s : ℝ} (hs : 0 < s)
     (p q p0 : Vec d) :
     0 ≤ᵐ[P] (fun a : RegCoeffField d => Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun) := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
@@ -304,8 +304,8 @@ theorem canonicalScalarResponseGradientWeakNormCubeSet_nonneg_ae
 
 /-- A.e. nonnegativity of the Ch4 scalar-response flux weak norm. -/
 theorem canonicalScalarResponseFluxWeakNormCubeSet_nonneg_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (Q : TriadicCube d) {t : ℝ} (ht : 0 < t)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (Q : TriadicCube d) {t : ℝ} (ht : 0 < t)
     (p q q0 : Vec d) :
     0 ≤ᵐ[P] (fun a : RegCoeffField d => Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun) := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
@@ -327,8 +327,8 @@ theorem canonicalScalarResponseFluxWeakNormCubeSet_nonneg_ae
 
 /-- A.e. nonnegativity of a scaled Ch4 scalar-response gradient weak norm. -/
 theorem scaledCanonicalScalarResponseGradientWeakNorm_nonneg_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (Q : TriadicCube d) {s : ℝ} (hs : 0 < s)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (Q : TriadicCube d) {s : ℝ} (hs : 0 < s)
     (p q p0 : Vec d) :
     0 ≤ᵐ[P]
       fun a : RegCoeffField d =>
@@ -340,8 +340,8 @@ theorem scaledCanonicalScalarResponseGradientWeakNorm_nonneg_ae
 
 /-- A.e. nonnegativity of a scaled Ch4 scalar-response flux weak norm. -/
 theorem scaledCanonicalScalarResponseFluxWeakNorm_nonneg_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (Q : TriadicCube d) {t : ℝ} (ht : 0 < t)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (Q : TriadicCube d) {t : ℝ} (ht : 0 < t)
     (p q q0 : Vec d) :
     0 ≤ᵐ[P]
       fun a : RegCoeffField d =>
@@ -355,8 +355,8 @@ theorem scaledCanonicalScalarResponseFluxWeakNorm_nonneg_ae
 square-root product once the deterministic bridge has been pointwise replaced
 by the note-normalized gradient/flux weak-norm product. -/
 theorem integral_cutoffProductBridgeRHS_le_weakNormSquareProduct
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (Q : TriadicCube d) {s t : ℝ}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (Q : TriadicCube d) {s t : ℝ}
     (hs : 0 < s) (ht : 0 < t)
     (cutoffGradient : Vec d → Vec d)
     (cutoffCircOne poincareConst cutoffConstant centeredCutoffConstant Cprod : ℝ)

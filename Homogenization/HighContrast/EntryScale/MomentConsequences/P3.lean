@@ -25,9 +25,9 @@ Source label `M_m^st`: the finite terminal stochastic envelope is never
 -/
 theorem terminalCoarseBlockStochasticEnvelope_ne_top_of_weak_le_terminal
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     {hc : HighContrastExponents d} (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
@@ -62,9 +62,9 @@ maximum has exactly the original ENNReal envelope as its extended norm.
 -/
 theorem enorm_terminalCoarseBlockStochasticMaxOfWeak_eq_envelope_of_weak_le_terminal
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     {hc : HighContrastExponents d} (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (weak : ℕ → Homogenization.TriadicCube d → ENNReal)
@@ -88,9 +88,9 @@ the powered terminal envelope as its `Q`-th power.
 -/
 theorem terminalCoarseBlockStochasticEnvelope_rpow_eq_QEnvelope
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
@@ -121,9 +121,9 @@ weak weight is pointwise controlled by the concrete powered ENNReal envelope.
 -/
 theorem terminalCoarseBlockStochasticMaxOfWeak_rpow_le_QEnvelope
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
@@ -153,9 +153,9 @@ pointwise controlled by the corresponding powered ENNReal envelope.
 -/
 theorem terminalCoarseBlockStochasticMax_rpow_le_QEnvelope
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
@@ -173,9 +173,9 @@ polynomial terminal coarse-block union bound.
 -/
 theorem lintegral_terminalCoarseBlockStochasticQEnvelope_le_polynomial_convolution_of_highMoment
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
@@ -208,9 +208,9 @@ maximum has the actual high `Q` moment supplied by the source envelope.
 -/
 theorem memLp_terminalCoarseBlockStochasticMax_of_QEnvelope_highMoment
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
@@ -259,9 +259,9 @@ specialization of the high `Q` moment for the terminal stochastic maximum.
 -/
 theorem memLp_terminalCoarseBlockStochasticMax_highMoment
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
@@ -301,9 +301,9 @@ Source labels `M_m^st`, `a.HM`, and `l.union.bound`: origin-cube version of
 the high `Q` moment for the source-weighted terminal stochastic maximum.
 -/
 theorem memLp_terminalCoarseBlockStochasticMax_origin_highMoment
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc) {N m : ℕ} (hNm : N ≤ m)
@@ -337,9 +337,9 @@ maximum is pointwise controlled by the concrete terminal coarse-block
 -/
 theorem lintegral_enorm_rpow_two_le_terminalCoarseBlockStochasticQEnvelope_polynomial_convolution_of_highMoment
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
@@ -381,9 +381,9 @@ maximum, inherited from the existing Lyapunov theorem.
 -/
 theorem lintegral_terminalCoarseBlockStochasticEnvelope_sq_le_polynomial_convolution_of_highMoment
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
@@ -453,9 +453,9 @@ of the ENNReal stochastic-envelope square estimate.
 -/
 theorem lintegral_terminalCoarseBlockStochasticEnvelope_sq_terminalWeak_le_polynomial_convolution_of_highMoment
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
@@ -493,9 +493,9 @@ bound for the literal source-weighted terminal stochastic maximum.
 -/
 theorem lintegral_enorm_rpow_two_terminalCoarseBlockStochasticMax_le_polynomial_convolution_of_highMoment
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
@@ -547,9 +547,9 @@ theorem exists_bufferExponent_lintegral_enorm_rpow_two_terminalCoarseBlockStocha
     (hm : HighCenteredMomentParameters d hc) {η : ℝ} (hη : 0 < η) :
     ∃ B : ℝ, 1 ≤ B ∧
       ∀ {Ω : Type*} [MeasurableSpace Ω]
-        {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+        {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         (μ : MeasureTheory.Measure Ω) [MeasureTheory.IsProbabilityMeasure μ]
         (Q : Homogenization.TriadicCube d) {N m : ℕ},
@@ -606,9 +606,9 @@ theorem exists_bufferExponent_lintegral_enorm_rpow_two_terminalCoarseBlockStocha
     (hm : HighCenteredMomentParameters d hc) {η : ℝ} (hη : 0 < η) :
     ∃ B : ℝ, 1 ≤ B ∧
       ∀ {Ω : Type*} [MeasurableSpace Ω]
-        {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+        {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         (μ : MeasureTheory.Measure Ω) [MeasureTheory.IsProbabilityMeasure μ]
         (Q : Homogenization.TriadicCube d) {N m : ℕ},
@@ -658,9 +658,9 @@ theorem exists_bufferExponent_lintegral_enorm_rpow_two_terminalCoarseBlockStocha
     (sub : SubthresholdPolynomialMomentParameters) {η_st : ℝ} (hη_st : 0 < η_st) :
     ∃ B : ℝ, 1 ≤ B ∧
       ∀ {Ω : Type*} [MeasurableSpace Ω]
-        {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+        {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         (μ : MeasureTheory.Measure Ω) [MeasureTheory.IsProbabilityMeasure μ]
         (Q : Homogenization.TriadicCube d) {N m : ℕ},

@@ -1,4 +1,4 @@
-import Homogenization.Ambient.Basic
+import Homogenization.Ambient.Euclidean
 import Homogenization.Geometry.Translation
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Data.Real.Pointwise
@@ -25,6 +25,12 @@ round Euclidean balls without changing ambient type to `EuclideanSpace`.
 metric. -/
 def euclideanSqDist {d : ℕ} (x y : Vec d) : ℝ :=
   vecNormSq (x - y)
+
+/-- The legacy squared-distance expression is the square of the explicit
+Euclidean distance. -/
+theorem euclideanSqDist_eq_euclideanDist_sq {d : ℕ} (x y : Vec d) :
+    euclideanSqDist x y = euclideanDist x y ^ 2 := by
+  rw [euclideanSqDist, euclideanDist, euclideanNorm_sq]
 
 /-- Explicit Euclidean open ball on `Vec d`. -/
 def euclideanBall {d : ℕ} (x₀ : Vec d) (R : ℝ) : Set (Vec d) :=

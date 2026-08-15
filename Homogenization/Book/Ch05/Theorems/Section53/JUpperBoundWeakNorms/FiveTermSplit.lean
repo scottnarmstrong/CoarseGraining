@@ -469,13 +469,13 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
 
 /-- Raw Ch2 response for the Chapter 4 dependent coefficient family is the
 Ch4 cube-set response observable. -/
-theorem responseJOnDependentFamily_eq_responseJObservableCubeSet
+theorem responseJOnDependentFamily_eq_restrictionResponseJObservableCubeSet
     {d : ℕ} [NeZero d] (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (p q : Vec d) :
     Ch02.responseJ (Ch02.cubeDomain Q)
         ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
         p q =
-      Ch04.responseJObservableCubeSet Q p q a := by
+      Ch04.restrictionResponseJObservableCubeSet Q p q a := by
   let F := Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   calc
     Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q) p q
@@ -484,7 +484,7 @@ theorem responseJOnDependentFamily_eq_responseJObservableCubeSet
               Ch04.coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
               Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                 (Ch02.cubeDomain Q) (F.coeffOn Q) p q
-    _ = Ch04.responseJObservableCubeSet Q p q a := by
+    _ = Ch04.restrictionResponseJObservableCubeSet Q p q a := by
           rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q p q a]
           rfl
 
@@ -504,21 +504,21 @@ theorem responseJPartitionDefectOnDependentFamilyAtScale_eq_responseJAdditivityD
   · exact descendantsAverage_congr_of_eq_on_descendants
       (originCube d m) (Int.toNat (m - k)) (by
         intro R _hR
-        exact responseJOnDependentFamily_eq_responseJObservableCubeSet a ha R p q)
-  · exact responseJOnDependentFamily_eq_responseJObservableCubeSet a ha (originCube d m) p q
+        exact responseJOnDependentFamily_eq_restrictionResponseJObservableCubeSet a ha R p q)
+  · exact responseJOnDependentFamily_eq_restrictionResponseJObservableCubeSet a ha (originCube d m) p q
 
 /-- Centered raw Ch2 response for the Chapter 4 dependent family is the Ch4
 centered response observable. -/
-theorem centeredResponseJOnDependentFamily_eq_centeredResponseJObservableCubeSet
+theorem centeredResponseJOnDependentFamily_eq_restrictionCenteredResponseJObservableCubeSet
     {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (p q p0 q0 : Vec d) :
     centeredResponseJOnCube Q
         ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
         p q p0 q0 =
-      Ch04.centeredResponseJObservableCubeSet Q p q p0 q0 a := by
-  simp [centeredResponseJOnCube, Ch04.centeredResponseJObservableCubeSet,
-    responseJOnDependentFamily_eq_responseJObservableCubeSet a ha Q p q]
+      Ch04.restrictionCenteredResponseJObservableCubeSet Q p q p0 q0 a := by
+  simp [centeredResponseJOnCube, Ch04.restrictionCenteredResponseJObservableCubeSet,
+    responseJOnDependentFamily_eq_restrictionResponseJObservableCubeSet a ha Q p q]
 
 /-- The deterministic child-weighted raw Ch2 response average agrees with the
 Ch4 response-observable average. -/
@@ -530,11 +530,11 @@ theorem cutoffWeightedChildResponseJOnDependentFamilyAtDepth_eq_ch04
         (Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha)
         Q j φ p q =
       descendantsAverage Q j
-        (fun R => cutoffChildWeight φ R * Ch04.responseJObservableCubeSet R p q a) := by
+        (fun R => cutoffChildWeight φ R * Ch04.restrictionResponseJObservableCubeSet R p q a) := by
   unfold cutoffWeightedChildResponseJOnFamilyAtDepth
   refine descendantsAverage_congr_of_eq_on_descendants Q j ?_
   intro R _hR
-  rw [responseJOnDependentFamily_eq_responseJObservableCubeSet a ha R p q]
+  rw [responseJOnDependentFamily_eq_restrictionResponseJObservableCubeSet a ha R p q]
 
 /-- Pointwise bridge from the deterministic raw split left side to the Ch4
 centered-minus-child expression used before taking expectations. -/
@@ -548,10 +548,10 @@ theorem centeredResponseJOnDependentFamily_sub_cutoffWeightedChildResponseJ_eq_c
       cutoffWeightedChildResponseJOnFamilyAtDepth
         (Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha)
         Q j φ p q =
-      Ch04.centeredResponseJObservableCubeSet Q p q p0 q0 a -
+      Ch04.restrictionCenteredResponseJObservableCubeSet Q p q p0 q0 a -
         descendantsAverage Q j
-          (fun R => cutoffChildWeight φ R * Ch04.responseJObservableCubeSet R p q a) := by
-  rw [centeredResponseJOnDependentFamily_eq_centeredResponseJObservableCubeSet a ha Q p q p0 q0,
+          (fun R => cutoffChildWeight φ R * Ch04.restrictionResponseJObservableCubeSet R p q a) := by
+  rw [centeredResponseJOnDependentFamily_eq_restrictionCenteredResponseJObservableCubeSet a ha Q p q p0 q0,
     cutoffWeightedChildResponseJOnDependentFamilyAtDepth_eq_ch04 a ha Q j φ p q]
 
 /-- Origin-scale version of the raw/Ch4 left-side bridge, matching the private

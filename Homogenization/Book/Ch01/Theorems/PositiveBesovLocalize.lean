@@ -11,14 +11,17 @@ noncomputable section
 open scoped BigOperators ENNReal
 
 /-!
-# Finite positive Besov localization
+# Legacy finite positive Besov localization
 
-This file records the bounded scalar `q = 2` localization helpers available for
-the Chapter 1 positive Besov API.  The unscaled full finite norm contains a
-cube-average term, so the exact unscaled localization statement is stated for
-the finite seminorm part.  The scaled form controls the full finite norm by the
-parent `positiveBesovPartialNormTwo`.
+This file records bounded scalar `q = 2` localization helpers for the legacy
+disjoint, finite-truncation/real-`sSup` compatibility lane.  They are not
+statements about the manuscript's exact overlapping `ENNReal` definitions.
+The unscaled full finite norm contains a cube-average term, so its unscaled
+localization statement is stated for the finite seminorm part.  The scaled form
+controls the full finite norm by the parent `positiveBesovPartialNormTwo`.
 -/
+
+namespace Legacy
 
 private theorem cubeBesovDepthWeight_eq_of_mem_descendantsAtDepth {d : ℕ}
     {Q R : Cube d} {j : ℕ} (hR : R ∈ descendantsAtDepth Q j) (s : ℝ) (n : ℕ) :
@@ -174,7 +177,8 @@ private theorem descendantsAverage_sq_cubeBesovDepthSeminorm_two_eq_shifted {d :
           symm
           exact sq_cubeBesovDepthSeminorm_two Q s u (j + n)
 
-/-- Finite scalar `q = 2` positive Besov seminorms localize over descendants. -/
+/-- Legacy disjoint finite scalar `q = 2` positive Besov seminorms localize over
+descendants. -/
 theorem descendantsAverage_sq_cubeBesovPartialSeminormTwo_le {d : ℕ}
     (Q : Cube d) (s : ℝ) (u : Vec d → ℝ) (j N : ℕ) :
     descendantsAverage Q j
@@ -263,10 +267,10 @@ private theorem positiveBesovPartialNormTwo_zero_le {d : ℕ}
   | zero => exact le_rfl
   | succ N ih => exact ih.trans (positiveBesovPartialNormTwo_le_succ Q s u N)
 
-/-- Ch1-facing form: the localized finite scalar seminorm is bounded by the
-parent finite positive Besov norm.  The corresponding unscaled statement with
-local `positiveBesovPartialNormTwo` on the left is false for this normalization;
-see the scaled full-norm localization below. -/
+/-- Legacy compatibility form: the localized finite scalar seminorm is bounded
+by the parent finite positive Besov norm.  The corresponding unscaled statement
+with local `positiveBesovPartialNormTwo` on the left is false for this
+normalization; see the scaled full-norm localization below. -/
 theorem descendantsAverage_sq_cubeBesovPartialSeminormTwo_le_positiveBesovPartialNormTwo
     {d : ℕ} (Q : Cube d) (s : ℝ) (u : Vec d → ℝ) (j N : ℕ) :
     descendantsAverage Q j
@@ -413,8 +417,8 @@ private theorem cubeBesovScaleWeight_mul_cubeLpNorm_two_le_positiveBesovPartialN
   exact (cubeBesovScaleWeight_mul_cubeLpNorm_two_le_positiveBesovPartialNormTwo_zero
     Q s u hu).trans (positiveBesovPartialNormTwo_zero_le Q s N u)
 
-/-- The scaled descendant cube-average term is controlled by the parent
-weighted `L²` norm. -/
+/-- In the legacy lane, the scaled descendant cube-average term is controlled
+by the parent weighted `L²` norm. -/
 theorem descendantsAverage_sq_scaled_positiveBesovMeanTerm_le_weighted_l2 {d : ℕ}
     (Q : Cube d) (s : ℝ) (u : Vec d → ℝ) (j : ℕ)
     (hu : MeasureTheory.MemLp u (2 : ℝ≥0∞) (normalizedCubeMeasure Q)) :
@@ -562,7 +566,7 @@ theorem descendantsAverage_sq_scaled_positiveBesovPartialSeminormTwo_le_positive
       Q s u j N
   exact hscaled.trans hsemi
 
-/-- Scaled finite positive `q = 2` Besov norms localize over descendants. -/
+/-- Legacy scaled finite positive `q = 2` Besov norms localize over descendants. -/
 theorem descendantsAverage_sq_scaled_positiveBesovPartialNormTwo_le {d : ℕ}
     (Q : Cube d) (s : ℝ) (u : Vec d → ℝ) (j N : ℕ)
     (hs : 0 ≤ s)
@@ -699,8 +703,9 @@ theorem tendsto_descendantsAverage_sq_scaled_positiveBesovPartialNormTwo_succ_at
           ((tendsto_positiveBesovPartialNormTwo_succ_atTop
             R s u (hLocalBdd R hR)).const_mul c).pow 2))
 
-/-- Infinite-depth scaled positive `q = 2` Besov norms localize over descendants,
-provided the parent and local `sSup`s are bounded above. -/
+/-- In the legacy real-`sSup` lane, infinite-depth scaled positive `q = 2`
+Besov norms localize over descendants, provided the parent and local `sSup`s
+are bounded above. -/
 theorem descendantsAverage_sq_scaled_positiveBesovNormTwo_le {d : ℕ}
     (Q : Cube d) (s : ℝ) (u : Vec d → ℝ) (j : ℕ)
     (hs : 0 ≤ s)
@@ -763,7 +768,7 @@ theorem memLp_normalizedCubeMeasure_of_memScalarL2_cubeSet {d : ℕ}
     huCube.of_measure_le_smul (c := ENNReal.ofReal ((cubeVolume Q)⁻¹))
       ENNReal.ofReal_ne_top (by rw [normalizedCubeMeasure, cubeMeasure])
 
-/-- Cube-general form of the positive Besov localization lemma. -/
+/-- Cube-general form of the legacy positive Besov localization lemma. -/
 theorem positiveBesovLocalize_cube {d : ℕ}
     (Q : Cube d) (s : ℝ) (u : Vec d → ℝ) (j : ℕ)
     (hs : 0 < s)
@@ -799,10 +804,11 @@ theorem positiveBesovLocalize_cube {d : ℕ}
     _ = positiveBesovLocalizeConstant d * positiveBesovNormTwo Q s u := by
           rw [abs_of_nonneg hrhs_nonneg]
 
-/-- Manuscript Lemma `l.Besov.positive.localize.function.spaces`.
-The normalized positive Besov norm of `u` on the origin cube `⌈_m` controls the
-geometrically weighted root-mean-square of normalized positive Besov norms on
-each triadic descendant `z + ⌈_n` for `n ≤ m`. -/
+/-- Legacy compatibility form associated with manuscript Lemma
+`l.Besov.positive.localize.function.spaces`.  The normalized legacy positive
+Besov norm of `u` on the origin cube `⌈_m` controls the geometrically
+weighted root-mean-square of normalized legacy positive Besov norms on each
+triadic descendant `z + ⌈_n` for `n ≤ m`. -/
 theorem positiveBesovLocalize {d : ℕ} {s : ℝ} {m n : ℤ}
     (_hd : 1 ≤ d) (hs_pos : 0 < s) (_hs_lt_one : s < 1)
     (hnm : n ≤ m) (u : Vec d → ℝ)
@@ -845,6 +851,8 @@ theorem positiveBesovLocalize {d : ℕ} {s : ℝ} {m n : ℤ}
   rw [← hfactor]
   exact positiveBesovLocalize_cube (Q := originCube d m) (s := s) (u := u)
     (j := Int.toNat (m - n)) hs_pos hu hParentBdd_succ hLocalBdd_succ
+
+end Legacy
 
 end
 

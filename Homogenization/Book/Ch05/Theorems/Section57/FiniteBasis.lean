@@ -61,8 +61,8 @@ private theorem fullBlockReflect_isSymm
 /-- The full-block matrix whose quadratic form is
 `J(Q,\overline A^{-1/2}e,\overline A^{1/2}e)`. -/
 noncomputable def limitNormalizedBlockJMatrix
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (Q : TriadicCube d) (a : RegCoeffField d) : FullBlockMat d :=
   let M : FullBlockMat d := toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)
   let S : FullBlockMat d := scalarLimitInvSqrtMatrix hP hStruct
@@ -72,8 +72,8 @@ noncomputable def limitNormalizedBlockJMatrix
       (1 : FullBlockMat d)
 
 theorem limitNormalizedBlockJMatrix_isSymm_of_isSymmetricBlockMat
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {Q : TriadicCube d} {a : RegCoeffField d}
     (hA : IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) :
     (limitNormalizedBlockJMatrix hP hStruct Q a).IsSymm := by
@@ -98,8 +98,8 @@ theorem limitNormalizedBlockJMatrix_isSymm_of_isSymmetricBlockMat
     ((hSM.smul (1 / 2 : ℝ)).add (hTM.smul (1 / 2 : ℝ))).sub Matrix.isSymm_one
 
 theorem limitNormalizedBlockJMatrix_isSymm_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (Q : TriadicCube d) :
     ∀ᵐ a ∂P, (limitNormalizedBlockJMatrix hP hStruct Q a).IsSymm := by
   filter_upwards
@@ -108,8 +108,8 @@ theorem limitNormalizedBlockJMatrix_isSymm_ae
     hP hStruct hA
 
 theorem limitNormalizedBlockJMatrix_quadratic_eq_blockJQuadratic
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (Q : TriadicCube d) (e : FullBlockVec d) (a : RegCoeffField d) :
     fullBlockQuadratic (limitNormalizedBlockJMatrix hP hStruct Q a) e =
@@ -188,8 +188,8 @@ theorem limitNormalizedBlockJMatrix_quadratic_eq_blockJQuadratic
           rfl
 
 theorem limitNormalizedBlockJObservable_ae_eq_limitNormalizedBlockJMatrix_quadratic
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (Q : TriadicCube d) (e : FullBlockVec d) :
     limitNormalizedBlockJObservable hP hStruct Q e =ᵐ[P]
@@ -213,8 +213,8 @@ theorem limitNormalizedBlockJObservable_ae_eq_limitNormalizedBlockJMatrix_quadra
     hP hStruct hΓ Q e a).symm
 
 theorem limitNormalizedBlockJObservable_eq_limitNormalizedBlockJMatrix_quadratic_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (e : FullBlockVec d) :
@@ -237,8 +237,8 @@ theorem limitNormalizedBlockJObservable_eq_limitNormalizedBlockJMatrix_quadratic
             hP hStruct hΓ Q e a).symm
 
 theorem limitNormalizedBlockJObservable_smul_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (Q : TriadicCube d) (c : ℝ) (e : FullBlockVec d) :
     limitNormalizedBlockJObservable hP hStruct Q (c • e) =ᵐ[P]
@@ -258,8 +258,8 @@ theorem limitNormalizedBlockJObservable_smul_ae
 /-- Finite coordinate and pair probes for the limiting-normalized `J`
 quadratic on one cube. -/
 noncomputable def limitNormalizedJProbeSum
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (Q : TriadicCube d) : RegCoeffField d → ℝ :=
   fun a =>
     ∑ α : BlockCoord d, ∑ β : BlockCoord d,
@@ -274,8 +274,8 @@ noncomputable def limitNormalizedJProbeSum
 plus/minus pair probes are scaled by `1/2` so their Euclidean square norm is at
 most one. -/
 noncomputable def limitNormalizedJNormalizedProbeSum
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (Q : TriadicCube d) : RegCoeffField d → ℝ :=
   fun a =>
     ∑ α : BlockCoord d, ∑ β : BlockCoord d,
@@ -287,8 +287,8 @@ noncomputable def limitNormalizedJNormalizedProbeSum
           ((1 / 2 : ℝ) • fullBlockMinusProbe α β) a)
 
 private theorem limitNormalizedBlockJObservable_probe_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (Q : TriadicCube d) (e : FullBlockVec d) (a : RegCoeffField d) :
     0 ≤ limitNormalizedBlockJObservable hP hStruct Q e a := by
   simpa [limitNormalizedBlockJObservable] using
@@ -300,8 +300,8 @@ private theorem limitNormalizedBlockJObservable_probe_nonneg
 a.e.-ellipticity witness.  This is the simultaneous version needed when the
 unit-vector supremum is packaged into a Chapter 2 scale response. -/
 theorem limitNormalizedBlockJObservable_le_probeSum_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (e : FullBlockVec d)
@@ -322,7 +322,7 @@ theorem limitNormalizedBlockJObservable_le_probeSum_of_aelocallyUniformlyEllipti
         coarseBlockMatrix (cubeSet Q) a.toFun =
           Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
       simpa [F] using
-        Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+        Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
           (a := a) ha Q
     rw [hcoarse]
     exact Ch02.isSymmetricBlockMat_coarseBlockMatrix
@@ -435,8 +435,8 @@ theorem limitNormalizedBlockJObservable_le_probeSum_of_aelocallyUniformlyEllipti
         ring
 
 theorem limitNormalizedJProbeSum_le_four_normalizedProbeSum_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (Q : TriadicCube d) :
     (limitNormalizedJProbeSum hP hStruct Q) ≤ᵐ[P]
@@ -521,8 +521,8 @@ theorem limitNormalizedJProbeSum_le_four_normalizedProbeSum_ae
   nlinarith
 
 theorem limitNormalizedBlockJObservable_le_probeSum_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (Q : TriadicCube d) (e : FullBlockVec d)
     (he : dotProduct e e ≤ 1) :
@@ -651,8 +651,8 @@ theorem limitNormalizedBlockJObservable_le_probeSum_ae
         ring
 
 theorem limitNormalizedBlockJObservable_le_normalizedProbeSum_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (Q : TriadicCube d) (e : FullBlockVec d)
     (he : dotProduct e e ≤ 1) :

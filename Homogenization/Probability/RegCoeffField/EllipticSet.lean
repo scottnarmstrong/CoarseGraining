@@ -24,7 +24,7 @@ structure; we record the corresponding `BorelSpace` instance transferred from th
 genuine pi type so that closed matrix sets are measurable for the carrier's
 `instMatMeasurableSpace`.
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 namespace Homogenization

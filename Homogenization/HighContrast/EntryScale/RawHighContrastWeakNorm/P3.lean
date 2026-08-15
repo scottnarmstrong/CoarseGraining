@@ -14,14 +14,14 @@ noncomputable section
 
 /--
 Source label `p.HC.CR`: unscaled child-average integrability for the terminal
-positive-excess weight.  This is the form used by the raw low-tail LIH branch;
+positive-excess weight.  This is the form used by the raw low-tail library branch;
 the existing scaled theorem is for the weak-norm defect-square route.
 -/
 theorem integrable_terminalPositiveExcess_childAverage_special_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -35,7 +35,7 @@ theorem integrable_terminalPositiveExcess_childAverage_special_of_P4
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
-        (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
     let lowerTerminal := fun a : Homogenization.RegCoeffField d =>
       max
         ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
@@ -60,7 +60,7 @@ theorem integrable_terminalPositiveExcess_childAverage_special_of_P4
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
   let lowerTerminal : Homogenization.RegCoeffField d → ℝ := fun a =>
@@ -112,15 +112,15 @@ theorem integrable_terminalPositiveExcess_childAverage_special_of_P4
 
 /--
 Source label `p.HC.CR`: integral normal form for the scale-zero
-positive-excess child-average branch.  Raw LIH presents this branch as
+positive-excess child-average branch.  The library presents this branch as
 `sigma * int lower + sigma^{-1} * int upper`; terminal Section 5.2 estimates
 use the integral of the combined weighted positive-excess observable.
 -/
 theorem integral_zeroBaselinePositiveExcess_childAverage_split_special_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -134,7 +134,7 @@ theorem integral_zeroBaselinePositiveExcess_childAverage_split_special_of_P4
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
-        (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
     let lowerZero := fun a : Homogenization.RegCoeffField d =>
       max
         ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
@@ -160,7 +160,7 @@ theorem integral_zeroBaselinePositiveExcess_childAverage_split_special_of_P4
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let lowerZero : Homogenization.RegCoeffField d → ℝ := fun a =>
     max
       ((Homogenization.Book.Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹ -
@@ -199,7 +199,7 @@ theorem integral_zeroBaselinePositiveExcess_childAverage_split_special_of_P4
       MeasureTheory.MemLp childAvg
         (ENNReal.ofReal (section53CoarseFluctuationZeta hP4)) P := by
     simpa [childAvg, Q, p_e, q_e] using
-      memLp_zeta_descendantsAverage_responseJObservableCubeSet_originCube_from_P4_of_stationary
+      memLp_zeta_descendantsAverage_restrictionResponseJObservableCubeSet_originCube_from_P4_of_stationary
         hP hstat hStruct hP4 hk_nonneg hkm_int p_e q_e
   have hLowerAE : AEMeasurable lowerZero P := by
     simpa [lowerZero, Q] using
@@ -276,9 +276,9 @@ arbitrary nonnegative response factor.  This is the raw low-tail bridge before
 the Section 5.2 terminal split is applied.
 -/
 theorem integral_zeroBaselinePositiveExcessWeight_mul_le_terminalPositiveExcessWeight_mul
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {m : ℕ} (rLower rUpper : ℝ)
     (J : Homogenization.RegCoeffField d → ℝ)
@@ -383,15 +383,15 @@ theorem integral_zeroBaselinePositiveExcessWeight_mul_le_terminalPositiveExcessW
 
 /--
 Source labels `p.HC.CR` and `e.M.def`: pointwise scalar lower-edge split of
-the terminal finite-one positive-excess weight into the LIH Section 5.2
+the terminal finite-one positive-excess weight into the library's Section 5.2
 small-tail terms plus large-scale descendant matrix positive-excess terms.
 This is the scalar multiscale extraction step before the downstream
 source-max good/bad split.
 -/
 theorem terminalPositiveExcessWeight_le_section52SmallTail_add_largeScalePositiveExcess
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (a : Homogenization.RegCoeffField d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -575,9 +575,9 @@ first power, priced by `2 * sqrt(theta_m)` instead of the crude
 -/
 theorem terminalPositiveExcessWeight_mul_le_section52SmallTail_mul_add_lowSum_add_edgeWeightLoss_mul_sqrtThetaAtScale_sourceMax_min_one_add_badEventTruncation_mul_response
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N m : ℕ}
     (a : Ω → Homogenization.RegCoeffField d) (ω : Ω)
@@ -852,9 +852,9 @@ the child response average.
 -/
 theorem terminalPositiveExcessWeight_mul_defectSum_sq_le_section52SmallTail_mul_childResponseAverage_add_lowSum_childResponseAverage_add_edgeWeightLoss_mul_sqrtThetaAtScale_sourceMax_min_one_add_badEventTruncation_mul_childResponseAverage
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {k m : ℕ}
     (hkm : k < m)
@@ -881,7 +881,7 @@ theorem terminalPositiveExcessWeight_mul_defectSum_sq_le_section52SmallTail_mul_
               (m : ℤ) n p_e q_e (a ω))
     let childAvg : ℝ :=
       Homogenization.descendantsAverage Q (m - k)
-        (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e (a ω))
+        (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e (a ω))
     let response : ℝ := (5 * β⁻¹) ^ 2 * childAvg
     let lowerTerminal : ℝ :=
       max
@@ -976,7 +976,7 @@ theorem terminalPositiveExcessWeight_mul_defectSum_sq_le_section52SmallTail_mul_
             (m : ℤ) n p_e q_e (a ω))
   let childAvg : ℝ :=
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e (a ω))
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e (a ω))
   let response : ℝ := (5 * β⁻¹) ^ 2 * childAvg
   let lowerTerminal : ℝ :=
     max
@@ -995,9 +995,9 @@ theorem terminalPositiveExcessWeight_mul_defectSum_sq_le_section52SmallTail_mul_
   have hchild_nonneg : 0 ≤ childAvg := by
     dsimp [childAvg]
     exact Homogenization.descendantsAverage_nonneg Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e (a ω))
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e (a ω))
       (fun R _hR =>
-        Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg R p_e q_e (a ω))
+        Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg R p_e q_e (a ω))
   have hresponse_nonneg : 0 ≤ response := by
     dsimp [response]
     exact mul_nonneg (sq_nonneg _) hchild_nonneg

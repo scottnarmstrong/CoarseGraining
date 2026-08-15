@@ -26,7 +26,7 @@ coarse-grained ellipticity witness `hP4`, and the pathwise fluctuation input
 
 open MeasureTheory
 open Homogenization
-open Homogenization.Book.Ch04 (CoeffLaw LawCarrier StructuralLaw)
+open Homogenization.Book.Ch04 (RestrictionCoeffLaw RestrictionLawCarrier RestrictionStructuralLaw)
 open Homogenization.Book.Ch05 (QuantitativeCoarseGrainedEllipticity thetaAtScale)
 
 namespace Homogenization
@@ -46,8 +46,8 @@ The scale/triadic constants and the decay exponent are chosen **before** `Θ`,
 so this is a genuine `Θ`-growth statement (`N₀ = O(log(2 + Θ))` uniformly). -/
 theorem homogenizationScale_polynomial_of_unitRange {d : ℕ} [NeZero d] (hd : 3 ≤ d) :
     ∃ Cscale Ctriadic alpha : ℝ, 0 < Cscale ∧ 0 < Ctriadic ∧ 0 < alpha ∧
-      ∀ {Θ : ℝ} (_hΘ : 1 ≤ Θ) {P : CoeffLaw d} [IsProbabilityMeasure P]
-        (hP : LawCarrier P) (hStruct : StructuralLaw P)
+      ∀ {Θ : ℝ} (_hΘ : 1 ≤ Θ) {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+        (hP : RestrictionLawCarrier P) (hStruct : RestrictionStructuralLaw P)
         (_hLaw : Homogenization.ThetaEllipticLaw Θ P),
       ∃ N0 : ℕ,
         (∀ n : ℕ,

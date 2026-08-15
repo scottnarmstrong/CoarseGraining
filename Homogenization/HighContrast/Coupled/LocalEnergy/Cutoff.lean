@@ -6,7 +6,7 @@ import Homogenization.Sobolev.H1.Algebra.H10Function
 
 Smoothness, `[0,1]`-bounds, and the product-rule gradient
 `∂ᵢ(η²) = 2 η ∂ᵢη` for the squared cutoff, together with the `L^∞`
-memberships (on a finite-measure domain) needed to feed the LIH smooth×`H¹`
+memberships (on a finite-measure domain) needed to feed the library's smooth×`H¹`
 product constructions.
 -/
 

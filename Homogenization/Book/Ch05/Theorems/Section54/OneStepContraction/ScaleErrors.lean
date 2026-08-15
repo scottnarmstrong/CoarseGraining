@@ -20,14 +20,14 @@ the numerical factors into its existential constant.
 /-- A scale-separation constant sufficient for the current one-step tail
 absorption. -/
 noncomputable def oneStepScaleSeparationConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   2 * (Section53.JUpperBoundCoarseFluctuations.section53CoarseFluctuationBeta hP4 *
     Real.log 3)⁻¹
 
 /-- The one-step scale-separation constant is positive. -/
 theorem oneStepScaleSeparationConst_pos
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < oneStepScaleSeparationConst hP4 := by
   unfold oneStepScaleSeparationConst
@@ -38,7 +38,7 @@ theorem oneStepScaleSeparationConst_pos
   positivity
 
 private theorem oneStepScaleSeparationConst_ge_section54
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     2 * (VarianceBoundGoodScale.section54VarianceBeta hP4 * Real.log 3)⁻¹ ≤
       oneStepScaleSeparationConst hP4 := by
@@ -209,7 +209,7 @@ private theorem rpow_neg_two_mul_self_le_sqrt_delta
   exact hlinear.trans (hT_over_A.trans hdelta_le_sqrt)
 
 private theorem widetildeThetaAtScale_zero_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ widetildeThetaAtScale P (0 : ℤ) hP4 := by
   simp [Ch04.widetildeThetaAtScale]
@@ -237,7 +237,7 @@ private theorem le_delta_mul_log_scale_argument
 /-- The logarithmic scale separation absorbs the square of
 `widetildeTheta_0`. -/
 theorem oneStepScaleSeparation_absorbs_widetildeThetaSq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {C delta : ℝ} {m : ℕ}
     (hC : oneStepScaleSeparationConst hP4 ≤ C)
@@ -285,7 +285,7 @@ theorem oneStepScaleSeparation_absorbs_widetildeThetaSq
 /-- The same logarithmic scale separation absorbs the Section 5.3-beta tail
 that appears in the final coarse-fluctuation RHS. -/
 theorem oneStepScaleSeparation_absorbs_section53Beta_widetildeThetaSq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {C delta : ℝ} {m : ℕ}
     (hC : oneStepScaleSeparationConst hP4 ≤ C)
@@ -335,7 +335,7 @@ theorem oneStepScaleSeparation_absorbs_section53Beta_widetildeThetaSq
 `3^{-βm} widetildeTheta_0` and
 `3^{-βm} widetildeTheta_0^2` for the Section 5.3 beta. -/
 theorem oneStepScaleSeparation_absorbs_section53Beta_widetildeThetaBudget
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {C delta : ℝ} {m : ℕ}
     (hC : oneStepScaleSeparationConst hP4 ≤ C)

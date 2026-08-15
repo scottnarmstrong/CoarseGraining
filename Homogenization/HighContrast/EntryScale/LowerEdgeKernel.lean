@@ -250,7 +250,7 @@ law-independent positive lower bound for `sUpper`.
 theorem HighCenteredMomentParameters.uniformSection52Exponent_le_sUpper
     {d : Nat} [NeZero d] {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hparams : hP4.params = hm.p4Params) :
     (2 * (d : Real)) / hm.Q <= hP4.sUpper := by
@@ -275,7 +275,7 @@ the starred counterpart of
 theorem HighCenteredMomentParameters.uniformSection52Exponent_le_sLower
     {d : Nat} [NeZero d] {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hparams : hP4.params = hm.p4Params) :
     (2 * (d : Real)) / hm.Q <= hP4.sLower := by
@@ -325,7 +325,7 @@ manuscript-faithful weighted union bound.
 theorem HighCenteredMomentParameters.Q_mul_sUpper_gt_dim
     {d : Nat} [NeZero d] {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hparams : hP4.params = hm.p4Params) :
     (d : Real) < hm.Q * hP4.sUpper := by
@@ -354,7 +354,7 @@ at high moment order.  This is the lower endpoint counterpart of
 theorem HighCenteredMomentParameters.Q_mul_sLower_gt_dim
     {d : Nat} [NeZero d] {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hparams : hP4.params = hm.p4Params) :
     (d : Real) < hm.Q * hP4.sLower := by
@@ -382,7 +382,7 @@ The Section 5.3 beta decay still fits after the descendant-count
 theorem HighCenteredMomentParameters.section53Beta_le_sUpper_sub_dim_div_Q
     {d : Nat} [NeZero d] {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hparams : hP4.params = hm.p4Params) :
     Homogenization.Book.Ch05.Section53.JUpperBoundCoarseFluctuations.section53CoarseFluctuationBeta
@@ -415,7 +415,7 @@ The Section 5.3 beta decay still fits after the descendant-count
 theorem HighCenteredMomentParameters.section53Beta_le_sLower_sub_dim_div_Q
     {d : Nat} [NeZero d] {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hparams : hP4.params = hm.p4Params) :
     Homogenization.Book.Ch05.Section53.JUpperBoundCoarseFluctuations.section53CoarseFluctuationBeta
@@ -570,7 +570,7 @@ with Section 5.3 beta.
 theorem HighCenteredMomentParameters.upper_section52LargeScaleWeight_mul_descendantCountRoot_le_section53BetaDecay
     {d : Nat} [NeZero d] {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hparams : hP4.params = hm.p4Params)
     {m j : Nat}
@@ -598,7 +598,7 @@ with Section 5.3 beta.
 theorem HighCenteredMomentParameters.lower_section52LargeScaleWeight_mul_descendantCountRoot_le_section53BetaDecay
     {d : Nat} [NeZero d] {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hparams : hP4.params = hm.p4Params)
     {m j : Nat}
@@ -685,9 +685,9 @@ theorem HighCenteredMomentParameters.count_mul_envelope_root_le_CQ_root_mul_coun
 
 /-- Low-index part of the grouped upper current-baseline Section 5.2 sum. -/
 noncomputable def lowerEdgeCurrentUpperSection52LowLargeScalePositiveExcessSum
-    {d : Nat} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : Nat} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (N k : Nat) (s : Real) :
     Homogenization.RegCoeffField d -> Real := fun a =>
   (Homogenization.Book.Ch05.Section52.section52LargeScaleSet k).attach.sum
@@ -700,9 +700,9 @@ noncomputable def lowerEdgeCurrentUpperSection52LowLargeScalePositiveExcessSum
 
 /-- Low-index part of the grouped lower/star current-baseline Section 5.2 sum. -/
 noncomputable def lowerEdgeCurrentLowerSection52LowLargeScalePositiveExcessSum
-    {d : Nat} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : Nat} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (N k : Nat) (s : Real) :
     Homogenization.RegCoeffField d -> Real := fun a =>
   (Homogenization.Book.Ch05.Section52.section52LargeScaleSet k).attach.sum

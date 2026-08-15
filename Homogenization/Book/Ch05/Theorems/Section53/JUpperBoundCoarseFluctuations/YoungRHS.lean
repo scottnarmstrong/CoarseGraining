@@ -26,8 +26,8 @@ noncomputable section
 /-- The coarse-fluctuation manuscript RHS with the initial square-root term
 replaced by its Young envelope. -/
 noncomputable def coarseFluctuationYoungManuscriptRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (C ε η : ℝ) (k m : ℕ) (e : Vec d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -68,17 +68,17 @@ private theorem sqrt_mul_sqrt_le_young
   linarith
 
 private theorem expectedResponseJCubeSet_nonneg
-    {d : ℕ} (P : Ch04.CoeffLaw d) (Q : TriadicCube d) (p q : Vec d) :
+    {d : ℕ} (P : Ch04.RestrictionCoeffLaw d) (Q : TriadicCube d) (p q : Vec d) :
     0 ≤ Ch04.expectedResponseJCubeSet P Q p q := by
   dsimp [Ch04.expectedResponseJCubeSet]
-  exact integral_nonneg fun a => Ch04.responseJObservableCubeSet_nonneg Q p q a
+  exact integral_nonneg fun a => Ch04.restrictionResponseJObservableCubeSet_nonneg Q p q a
 
 /-- Scalar comparison of the standard Section 5.3 coarse-fluctuation RHS with
 the Young-envelope RHS. -/
 theorem coarseFluctuationManuscriptRHSAtScale_le_youngManuscriptRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {C ε η : ℝ} (hC : 0 ≤ C) (hη : 0 < η)
     {k m : ℕ} (hkm : k ≤ m) (e : Vec d) :
@@ -142,9 +142,9 @@ theorem JUpperBoundCoarseFluctuations_young_homogenizationScale
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (_hstat : Ch04.StationaryLaw P)
-      (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (_hstat : Ch04.RestrictionStationaryLaw P)
+      (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ {k m : ℕ}, k < m → ∀ e : Vec d, vecNormSq e = 1 →

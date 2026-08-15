@@ -36,7 +36,7 @@ variable {d : ℕ}
 
 private theorem perCore_numeric {d : ℕ} (hd : 3 ≤ d)
     {Θ ℓ R Msq CdT CdS suppvol gradint Kinf : ℝ}
-    (hΘ : 1 ≤ Θ) (hℓ4 : 4 ≤ ℓ) (hℓR : ℓ ≤ R) (hR0 : 0 ≤ R) (hMsq : 0 ≤ Msq)
+    (hΘ : 1 ≤ Θ) (hℓ4 : 4 ≤ ℓ) (hℓR : ℓ ≤ R) (hMsq : 0 ≤ Msq)
     (hCdT : 0 ≤ CdT)
     (hsupp : suppvol ≤ (3 * ℓ) ^ d)
     (hgrad : gradint ≤ (d : ℝ) * (16 / ℓ) ^ 2 * (3 * ℓ) ^ d)
@@ -55,7 +55,7 @@ private theorem perCore_numeric {d : ℕ} (hd : 3 ≤ d)
     rw [hℓd, show (16 / ℓ) ^ 2 * (ℓ ^ e * ℓ ^ 2) = ((16 / ℓ) ^ 2 * ℓ ^ 2) * ℓ ^ e from by ring, h16]
   have hℓe0 : 0 ≤ ℓ ^ e := by positivity
   have h3d0 : (0 : ℝ) ≤ 3 ^ d := by positivity
-  have hℓ2R2 : ℓ ^ 2 ≤ R ^ 2 := by nlinarith [hℓR, hℓ0.le, hR0]
+  have hℓ2R2 : ℓ ^ 2 ≤ R ^ 2 := by nlinarith [hℓR, hℓ0.le]
   have hT1 : CdT * (Msq * suppvol) ≤ (CdT * 3 ^ d) * Θ * R ^ 2 * ℓ ^ e * Msq := by
     have h1 : Msq * suppvol ≤ Msq * (3 ^ d * (ℓ ^ e * ℓ ^ 2)) := by
       apply mul_le_mul_of_nonneg_left _ hMsq
@@ -129,7 +129,6 @@ theorem exists_perCore_minimizer_energy_le [NeZero d] (hd : 3 ≤ d) {m : ℤ} {
   have hℓ0 : (0 : ℝ) < ℓ := by linarith
   have hΘ0 : (0 : ℝ) < Θ := lt_of_lt_of_le one_pos hΘ
   set R : ℝ := (3 : ℝ) ^ m with hRdef
-  have hR0 : (0 : ℝ) < R := by rw [hRdef]; positivity
   set Msq : ℝ := Θ * vecNormSq P.1 + vecNormSq P.2 with hMsqdef
   have hMsq0 : (0 : ℝ) ≤ Msq :=
     add_nonneg (mul_nonneg hΘ0.le (vecNormSq_nonneg _)) (vecNormSq_nonneg _)
@@ -190,7 +189,7 @@ theorem exists_perCore_minimizer_energy_le [NeZero d] (hd : 3 ≤ d) {m : ℤ} {
             + Θ * Kinf ^ 2 * (∫ x in openCubeSet (originCube d m),
                 ∑ i, (fderiv ℝ (coreCutoff ℓ σ k) x (basisVec i)) ^ 2)) := hbound
       _ ≤ (CdT * 3 ^ d + CdT * CdS ^ 2 * (d : ℝ) * 256 * 3 ^ d) * Θ * R ^ 2 * ℓ ^ (d - 2) * Msq :=
-          perCore_numeric hd hΘ hℓ4 hℓL hR0.le hMsq0 hCdT0 hsupp hgrad hKinfdef
+          perCore_numeric hd hΘ hℓ4 hℓL hMsq0 hCdT0 hsupp hgrad hKinfdef
       _ = (CdT * 3 ^ d + CdT * CdS ^ 2 * (d : ℝ) * 256 * 3 ^ d) * W := by rw [hWdef]; ring
   choose f hf0 hfb using hperk
   -- uniform constant over the finite `K`
@@ -241,7 +240,6 @@ theorem exists_perCore_minimizer_energy_le_uniform [NeZero d] (hd : 3 ≤ d) :
   have hℓ0 : (0 : ℝ) < ℓ := by linarith
   have hΘ0 : (0 : ℝ) < Θ := lt_of_lt_of_le one_pos hΘ
   set R : ℝ := (3 : ℝ) ^ m with hRdef
-  have hR0 : (0 : ℝ) < R := by rw [hRdef]; positivity
   set Msq : ℝ := Θ * vecNormSq P.1 + vecNormSq P.2 with hMsqdef
   have hMsq0 : (0 : ℝ) ≤ Msq :=
     add_nonneg (mul_nonneg hΘ0.le (vecNormSq_nonneg _)) (vecNormSq_nonneg _)
@@ -292,6 +290,6 @@ theorem exists_perCore_minimizer_energy_le_uniform [NeZero d] (hd : 3 ≤ d) :
                 ∑ i, (fderiv ℝ (coreCutoff ℓ σ k) x (basisVec i)) ^ 2)) := hbound
       _ ≤ (514 * 3 ^ d + 514 * CdS ^ 2 * (d : ℝ) * 256 * 3 ^ d) * Θ
             * ((3 : ℝ) ^ m) ^ 2 * ℓ ^ (d - 2) * (Θ * vecNormSq P.1 + vecNormSq P.2) :=
-          perCore_numeric hd hΘ hℓ4 hℓL hR0.le hMsq0 (by norm_num) hsupp hgrad hKinfdef
+          perCore_numeric hd hΘ hℓ4 hℓL hMsq0 (by norm_num) hsupp hgrad hKinfdef
 
 end Homogenization

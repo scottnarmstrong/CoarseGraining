@@ -22,7 +22,7 @@ coefficient is a Section 5.2 large-scale root coefficient with exponent
 -/
 
 private theorem widetildeThetaAtScale_zero_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ widetildeThetaAtScale P 0 hP4 := by
   simp [widetildeThetaAtScale, Ch04.widetildeThetaAtScale]
@@ -32,7 +32,7 @@ private theorem widetildeThetaAtScale_zero_nonneg
 
 /-- Coordinate-probe descendant-average budgets are nonnegative. -/
 theorem coordinateProbeRefinedDescendantAverageK_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (j : ℕ) :
     0 ≤ coordinateProbeRefinedDescendantAverageK hP4 delta j := by
@@ -69,7 +69,7 @@ theorem coordinateProbeRefinedDescendantAverageK_nonneg
 
 /-- Pair-probe descendant-average budgets are nonnegative. -/
 theorem pairProbeRefinedDescendantAverageK_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (j : ℕ) :
     0 ≤ pairProbeRefinedDescendantAverageK hP4 delta j := by
@@ -174,7 +174,7 @@ theorem refinedScalarProbeVarianceBound_le_basic
 
 /-- Coordinate scalar budgets obey the uniform elementary bound. -/
 theorem coordinateProbeRefinedVarianceBound_le_basic
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (hdelta_le_one : delta ≤ 1)
     (j : ℕ) (α : BlockCoord d) :
@@ -190,7 +190,7 @@ theorem coordinateProbeRefinedVarianceBound_le_basic
 
 /-- Plus-pair scalar budgets obey the uniform elementary bound. -/
 theorem plusProbeRefinedVarianceBound_le_basic
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (hdelta_le_one : delta ≤ 1)
     (j : ℕ) (α β : BlockCoord d) :
@@ -206,7 +206,7 @@ theorem plusProbeRefinedVarianceBound_le_basic
 
 /-- Minus-pair scalar budgets obey the uniform elementary bound. -/
 theorem minusProbeRefinedVarianceBound_le_basic
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (hdelta_le_one : delta ≤ 1)
     (j : ℕ) (α β : BlockCoord d) :
@@ -255,7 +255,7 @@ theorem sum_Icc_int_eq_section52LargeScaleSet_sum (m : ℕ) (F : ℤ → ℝ) :
   exact Int.ofNat.inj hab
 
 private theorem section54VarianceBeta_plus_dim_div_xi_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ section54VarianceBeta hP4 + (d : ℝ) / (hP4.xi : ℝ) := by
   have hbeta := section54VarianceBeta_nonneg hP4
@@ -264,7 +264,7 @@ private theorem section54VarianceBeta_plus_dim_div_xi_nonneg
   exact add_nonneg hbeta (div_nonneg hd_nonneg hxi_nonneg)
 
 private theorem section54VarianceBeta_plus_dim_div_xi_gapLp_pos
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < (d : ℝ) - (section54VarianceBeta hP4 + (d : ℝ) / (hP4.xi : ℝ)) := by
   have hbeta_lt := section54VarianceBeta_lt_dim_div_two hP4
@@ -278,7 +278,7 @@ private theorem section54VarianceBeta_plus_dim_div_xi_gapLp_pos
   nlinarith
 
 private theorem section54VarianceBeta_plus_dim_div_xi_gapSqrt_pos
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 <
       ((d : ℝ) / 2) + (d : ℝ) / (hP4.xi : ℝ) -
@@ -289,7 +289,7 @@ private theorem section54VarianceBeta_plus_dim_div_xi_gapSqrt_pos
 /-- Sum of the Section 5.2 large-scale root coefficient at the exponent
 `β + d/ξ`, where its scale decay is exactly `3^{-β m}`. -/
 theorem section52LargeScaleRootCoeff_sum_le_beta_decay
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     let s : ℝ := section54VarianceBeta hP4 + (d : ℝ) / (hP4.xi : ℝ)
     (∑ n ∈ Section52.section52LargeScaleSet m,
@@ -313,7 +313,7 @@ theorem section52LargeScaleRootCoeff_sum_le_beta_decay
 
 /-- The scalar budget left after compressing the finite-probe matrix estimate. -/
 noncomputable def refinedVarianceBasicBudget
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (delta : ℝ) (j : ℕ) : ℝ :=
   delta +
@@ -327,7 +327,7 @@ noncomputable def refinedMatrixBudgetConst (d : ℕ) : ℝ :=
   ((Fintype.card (BlockCoord d) : ℝ) ^ (6 : ℕ)) * (54 * 256)
 
 private theorem refinedVarianceBasicBudget_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (j : ℕ) :
     0 ≤ refinedVarianceBasicBudget hP4 delta j := by
@@ -339,7 +339,7 @@ private theorem refinedVarianceBasicBudget_nonneg
 
 /-- The per-scale matrix budget is bounded by the compressed scalar budget. -/
 theorem refinedMatrixVarianceScaleBound_le_basicBudget
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (hdelta_le_one : delta ≤ 1)
     (j : ℕ) :

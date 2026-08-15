@@ -287,7 +287,7 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
       (2 * C) *
           (Real.sqrt (responseJPartitionDefectOnFamilyAtDepth F Q j p q) *
             Real.sqrt (childResponseJAverageOnFamilyAtDepth F Q j p q)) +
-        Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a +
+        Cosc * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a +
           |cutoffLinearPairTermOnCube Q (F.coeffOn Q) φ p q p0 q0| +
             cutoffProductBridgeRHS Q s cutoffGradient
               (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q 1 p q q0 a.toFun)
@@ -337,9 +337,9 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
         hdualCircOne hdualCircS hcutoffConstant_bound hcenteredCutoffConstant_bound
   have hosc :
       |cutoffOscillationTermOnCubeAtDepth Q (F.coeffOn Q) j φ p q| ≤
-        Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a := by
+        Cosc * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a := by
     simpa [F] using
-      abs_cutoffOscillationTermOnDependentFamilyAtDepth_le_scale_mul_responseJObservableCubeSet_of_ae_bounded_cutoff
+      abs_cutoffOscillationTermOnDependentFamilyAtDepth_le_scale_mul_restrictionResponseJObservableCubeSet_of_ae_bounded_cutoff
         (a := a) (ha := ha) (Q := Q) (j := j) (φ := φ)
         (B := B) (C := Cosc) (scaleSep := scaleSep)
         p q hφ_meas hφ_bound hOscPoint
@@ -482,7 +482,7 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
       (2 * C) *
           (Real.sqrt (responseJPartitionDefectOnFamilyAtDepth F Q j p q) *
             Real.sqrt (childResponseJAverageOnFamilyAtDepth F Q j p q)) +
-        Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a +
+        Cosc * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a +
           ((1 / 2 : ℝ) * ‖q0‖ *
               (((Fintype.card (Fin d) : ℝ) * gradCoeff) * gradWeak) +
             (1 / 2 : ℝ) * ‖p0‖ *
@@ -508,7 +508,7 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
     (2 * C) *
         (Real.sqrt (responseJPartitionDefectOnFamilyAtDepth F Q j p q) *
           Real.sqrt (childResponseJAverageOnFamilyAtDepth F Q j p q)) +
-      Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a
+      Cosc * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a
   have hdet :
       |centeredResponseJOnCube Q (F.coeffOn Q) p q p0 q0 -
           cutoffWeightedChildResponseJOnFamilyAtDepth F Q j φ p q| ≤
@@ -644,7 +644,7 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
       (2 * C) *
           (Real.sqrt (responseJPartitionDefectOnFamilyAtDepth F Q j p q) *
             Real.sqrt (childResponseJAverageOnFamilyAtDepth F Q j p q)) +
-        Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a +
+        Cosc * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a +
           ((1 / 2 : ℝ) * ‖q0‖ *
               (((Fintype.card (Fin d) : ℝ) * gradCoeff) * gradWeak) +
             (1 / 2 : ℝ) * ‖p0‖ *
@@ -661,7 +661,7 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
     (2 * C) *
         (Real.sqrt (responseJPartitionDefectOnFamilyAtDepth F Q j p q) *
           Real.sqrt (childResponseJAverageOnFamilyAtDepth F Q j p q)) +
-      Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a
+      Cosc * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a
   have hOsc_int :
       ∀ R ∈ descendantsAtDepth Q j,
         IntegrableOn
@@ -689,9 +689,9 @@ theorem abs_centeredResponseJOnCube_sub_cutoffWeightedChildResponseJOnDependentF
         hOsc_int hMean
   have hosc :
       |cutoffOscillationTermOnCubeAtDepth Q (F.coeffOn Q) j φ p q| ≤
-        Cosc * scaleSep * Ch04.responseJObservableCubeSet Q p q a := by
+        Cosc * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a := by
     simpa [F] using
-      abs_cutoffOscillationTermOnDependentFamilyAtDepth_le_scale_mul_responseJObservableCubeSet_of_ae_bounded_cutoff
+      abs_cutoffOscillationTermOnDependentFamilyAtDepth_le_scale_mul_restrictionResponseJObservableCubeSet_of_ae_bounded_cutoff
         (a := a) (ha := ha) (Q := Q) (j := j) (φ := φ)
         (B := B) (C := Cosc) (scaleSep := scaleSep)
         p q hφ_meas hφ_bound hOscPoint

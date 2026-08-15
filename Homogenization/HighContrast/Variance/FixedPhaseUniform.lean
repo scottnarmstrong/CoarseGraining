@@ -27,7 +27,7 @@ theorem fixed_phase_variance_uniform [NeZero d] (hd : 3 ≤ d) :
     ∃ Cd : ℝ, 0 ≤ Cd ∧
       ∀ {m : ℤ} {ℓ Θ : ℝ} {σ : Vec d} (_hℓ4 : 4 ≤ ℓ) (_hℓL : ℓ ≤ (3 : ℝ) ^ m)
         (_hΘ : 1 ≤ Θ) (P : BlockVec d) {L : Measure (RegCoeffField d)}
-        [IsProbabilityMeasure L] (_hURD : IsUnitRangeDependentR L)
+        [IsProbabilityMeasure L] (_hURD : IsRestrictionUnitRangeDependentR L)
         (_hLaw : ThetaEllipticLaw Θ L),
       Var[fun a => phaseObservable ℓ σ m P a.toFun; L]
         ≤ Cd * Θ ^ 3 * (ℓ / (3 : ℝ) ^ m) ^ (d - 2)

@@ -44,17 +44,17 @@ theorem quenchedProbeEnvelopeConst_pos (d : ℕ) [NeZero d] :
 
 /-- The finite-probe envelope controlling all localized unit-vector responses. -/
 noncomputable def quenchedProbeEnvelope
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (m n : ℕ) : RegCoeffField d → ℝ :=
   fun a =>
     quenchedProbeEnvelopeConst d *
       localizedNormalizedProbeJMax hP hStruct m n a
 
 theorem localizedLimitNormalizedJMax_le_quenchedProbeEnvelope_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {m n : ℕ} (hnm : n ≤ m)
     (e : FullBlockVec d) (he : dotProduct e e ≤ 1) :

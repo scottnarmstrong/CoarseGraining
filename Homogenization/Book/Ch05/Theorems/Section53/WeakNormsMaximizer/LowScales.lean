@@ -274,7 +274,7 @@ theorem descendantsAverage_parentGradient_le_lambdaSqCoeffField_responseJ
               (JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube Q (F.coeffOn Q) p q))) ≤
       ((2 * Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹)) *
           Real.rpow (3 : ℝ) (s' * (j : ℝ))) ^ 2 *
-        Ch04.responseJObservableCubeSet Q p q a := by
+        Ch04.restrictionResponseJObservableCubeSet Q p q a := by
   intro F
   let A := descendantsAverage Q j
         (fun R =>
@@ -282,14 +282,14 @@ theorem descendantsAverage_parentGradient_le_lambdaSqCoeffField_responseJ
             (cubeAverageVec R
               (JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube Q (F.coeffOn Q) p q)))
   let M := Ch02.maxDescendantSigmaStarInvMatrixNormAtScale Q (Q.scale - (j : ℤ)) F
-  let D := Ch04.responseJObservableCubeSet Q p q a
+  let D := Ch04.restrictionResponseJObservableCubeSet Q p q a
   let lamInv := (Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹
   let W := Real.rpow (3 : ℝ) (2 * s' * (j : ℝ))
   have hbase : A ≤ 2 * M * D := by
     have h :=
       descendantsAverage_parentGradient_le_maxSigmaStarInv_mul_responseJ a ha Q j p q
     simpa [A, M, D, F,
-      JUpperBoundWeakNorms.responseJOnDependentFamily_eq_responseJObservableCubeSet
+      JUpperBoundWeakNorms.responseJOnDependentFamily_eq_restrictionResponseJObservableCubeSet
         a ha Q p q] using h
   have hk : Q.scale - (j : ℤ) ≤ Q.scale :=
     sub_le_self _ (by exact_mod_cast Nat.zero_le j)
@@ -318,8 +318,8 @@ theorem descendantsAverage_parentGradient_le_lambdaSqCoeffField_responseJ
             rw [multiscaleDescendantWeight_sub_nat]
             simp [W, lamInv, F, Ch04.lambdaSqCoeffField, ha]
   have hD_nonneg : 0 ≤ D := by
-    change 0 ≤ Ch04.responseJObservableCubeSet Q p q a
-    rw [← JUpperBoundWeakNorms.responseJOnDependentFamily_eq_responseJObservableCubeSet
+    change 0 ≤ Ch04.restrictionResponseJObservableCubeSet Q p q a
+    rw [← JUpperBoundWeakNorms.responseJOnDependentFamily_eq_restrictionResponseJObservableCubeSet
       a ha Q p q]
     exact Ch02.responseJ_nonneg (Ch02.cubeDomain Q) (F.coeffOn Q) p q
   have hlamInv_nonneg : 0 ≤ lamInv := by
@@ -365,7 +365,7 @@ theorem descendantsAverage_parentFlux_le_LambdaSqCoeffField_responseJ
               (JUpperBoundWeakNorms.canonicalMaximizerFluxOnCube Q (F.coeffOn Q) p q))) ≤
       ((2 * Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a)) *
           Real.rpow (3 : ℝ) (t' * (j : ℝ))) ^ 2 *
-        Ch04.responseJObservableCubeSet Q p q a := by
+        Ch04.restrictionResponseJObservableCubeSet Q p q a := by
   intro F
   let A := descendantsAverage Q j
         (fun R =>
@@ -373,13 +373,13 @@ theorem descendantsAverage_parentFlux_le_LambdaSqCoeffField_responseJ
             (cubeAverageVec R
               (JUpperBoundWeakNorms.canonicalMaximizerFluxOnCube Q (F.coeffOn Q) p q)))
   let M := Ch02.maxDescendantBMatrixNormAtScale Q (Q.scale - (j : ℤ)) F
-  let D := Ch04.responseJObservableCubeSet Q p q a
+  let D := Ch04.restrictionResponseJObservableCubeSet Q p q a
   let Lam := Ch04.LambdaSqCoeffField Q t' (.finite 1) a
   let W := Real.rpow (3 : ℝ) (2 * t' * (j : ℝ))
   have hbase : A ≤ 2 * M * D := by
     have h := descendantsAverage_parentFlux_le_maxB_mul_responseJ a ha Q j p q
     simpa [A, M, D, F,
-      JUpperBoundWeakNorms.responseJOnDependentFamily_eq_responseJObservableCubeSet
+      JUpperBoundWeakNorms.responseJOnDependentFamily_eq_restrictionResponseJObservableCubeSet
         a ha Q p q] using h
   have hk : Q.scale - (j : ℤ) ≤ Q.scale :=
     sub_le_self _ (by exact_mod_cast Nat.zero_le j)
@@ -408,8 +408,8 @@ theorem descendantsAverage_parentFlux_le_LambdaSqCoeffField_responseJ
             rw [multiscaleDescendantWeight_sub_nat]
             simp [W, Lam, F, Ch04.LambdaSqCoeffField, ha]
   have hD_nonneg : 0 ≤ D := by
-    change 0 ≤ Ch04.responseJObservableCubeSet Q p q a
-    rw [← JUpperBoundWeakNorms.responseJOnDependentFamily_eq_responseJObservableCubeSet
+    change 0 ≤ Ch04.restrictionResponseJObservableCubeSet Q p q a
+    rw [← JUpperBoundWeakNorms.responseJOnDependentFamily_eq_restrictionResponseJObservableCubeSet
       a ha Q p q]
     exact Ch02.responseJ_nonneg (Ch02.cubeDomain Q) (F.coeffOn Q) p q
   have hLam_nonneg : 0 ≤ Lam := by
@@ -455,11 +455,11 @@ theorem gradientLowScaleDepthSum_le_lambdaSqCoeffField_responseJ
       (2 * Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹)) *
         (Real.rpow (3 : ℝ) (-(s - s') * (L : ℝ)) *
           (1 - Real.rpow (3 : ℝ) (-(s - s')))⁻¹) *
-          Real.sqrt (Ch04.responseJObservableCubeSet Q p q a) := by
+          Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a) := by
   intro F
   let low : ℕ → Prop := fun j => ¬ j < L
   let C := 2 * Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹)
-  let J := Ch04.responseJObservableCubeSet Q p q a
+  let J := Ch04.restrictionResponseJObservableCubeSet Q p q a
   have hshift :
       (∑ j ∈ (Finset.range (N + 1)).filter low,
           Real.rpow (3 : ℝ) (-s * (j : ℝ)) *
@@ -518,11 +518,11 @@ theorem fluxLowScaleDepthSum_le_LambdaSqCoeffField_responseJ
       (2 * Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a)) *
         (Real.rpow (3 : ℝ) (-(t - t') * (L : ℝ)) *
           (1 - Real.rpow (3 : ℝ) (-(t - t')))⁻¹) *
-          Real.sqrt (Ch04.responseJObservableCubeSet Q p q a) := by
+          Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a) := by
   intro F
   let low : ℕ → Prop := fun j => ¬ j < L
   let C := 2 * Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a)
-  let J := Ch04.responseJObservableCubeSet Q p q a
+  let J := Ch04.restrictionResponseJObservableCubeSet Q p q a
   have hshift :
       (∑ j ∈ (Finset.range (N + 1)).filter low,
           Real.rpow (3 : ℝ) (-t * (j : ℝ)) *

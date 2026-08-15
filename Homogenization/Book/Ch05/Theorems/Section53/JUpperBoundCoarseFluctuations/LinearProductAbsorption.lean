@@ -21,16 +21,16 @@ weak-norm square expectations.
 noncomputable section
 
 private theorem barSigmaStarAtScale_pos_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 < hP.barSigmaStarAtScale hStruct (m : ℤ) := by
   have hBlock :
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (m : ℤ))) P :=
     Section52.originBlockIntegrableAtScale_from_P4 hP hStruct hP4 m
   have hInv : 0 < hP.barSigmaStarInvAtScale hStruct (m : ℤ) := by
-    simpa [Ch04.LawCarrier.barSigmaStarInvAtScale] using
-      Ch04.LawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube
+    simpa [Ch04.RestrictionLawCarrier.barSigmaStarInvAtScale] using
+      Ch04.RestrictionLawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube
         hP
         (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw
           hP hStruct (m : ℤ))
@@ -39,8 +39,8 @@ private theorem barSigmaStarAtScale_pos_of_P4
   exact inv_pos.mpr hInv
 
 private theorem barSigmaAtScale_pos_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 < hP.barSigmaAtScale hStruct (m : ℤ) := by
   have hBlock :
@@ -54,18 +54,18 @@ private theorem barSigmaAtScale_pos_of_P4
       0 < hP.barSigmaAtScale hStruct (m : ℤ) *
         (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ := by
     exact lt_of_lt_of_le zero_lt_one (by
-      simpa [thetaAtScale, Ch04.LawCarrier.thetaAtScale] using htheta)
+      simpa [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale] using htheta)
   exact pos_of_mul_pos_left hprod_pos (inv_pos.mpr hstar_pos).le
 
 private theorem sigmaHatAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ) :
     0 ≤ sigmaHatAtScale hP hStruct m := by
   exact Real.sqrt_nonneg _
 
 private theorem sigmaHatAtScale_pos_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 < sigmaHatAtScale hP hStruct (m : ℤ) := by
   dsimp [sigmaHatAtScale]
@@ -145,8 +145,8 @@ private theorem norm_sq_le_vecNormSq {d : ℕ} (v : Vec d) :
     _ = vecNormSq v := hsqrt_sq
 
 private theorem sigmaHatAtScale_mul_norm_specialPCentering_sq_le_of_vecNormSq_eq_one
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d)
     (he : vecNormSq e = 1) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
@@ -171,8 +171,8 @@ private theorem sigmaHatAtScale_mul_norm_specialPCentering_sq_le_of_vecNormSq_eq
       simpa [p_e, q_e, p0_e, σ, he] using hvec
 
 private theorem inv_sigmaHatAtScale_mul_norm_specialQCentering_sq_le_of_vecNormSq_eq_one
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d)
     (he : vecNormSq e = 1) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
@@ -449,8 +449,8 @@ the paired weak-norm square expectations. -/
 theorem linearProductTerms_special_le_centering_add_pairedWeakNormSquares
     {d : ℕ} [NeZero d] :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       ∀ {k m : ℕ}, k < m → ∀ e : Vec d, vecNormSq e = 1 →
       ∀ {ε : ℝ}, 0 < ε → ε ≤ 1 →
@@ -519,7 +519,7 @@ theorem linearProductTerms_special_le_centering_add_pairedWeakNormSquares
   let KprodDim : ℝ :=
     (((128 * quantitativeCubeCutoffHessianConst d +
             24 * quantitativeCubeCutoffGradientConst d) * (2 : ℝ) ^ d) *
-      (((d : ℝ) * cubeNeumannW22CalderonZygmundConstant d *
+      (((d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d *
             (3 : ℝ) ^ ((d : ℝ) + 1)) * (d : ℝ)) *
         ((d : ℝ) * (3 : ℝ) ^ ((d : ℝ) + 1)))
   let Kprod : ℝ := max KprodDim 0
@@ -719,8 +719,8 @@ theorem linearProductTerms_special_le_centering_add_pairedWeakNormSquares
 input.  This is kept pointwise so subsequent expectation estimates can expand
 the RHS into separately integrable manuscript pieces. -/
 theorem ae_paired_weakNormSquares_special_le_four_rhsSquares
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Vec d) :
     ∀ᵐ a ∂P,

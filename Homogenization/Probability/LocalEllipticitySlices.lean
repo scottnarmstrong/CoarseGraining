@@ -501,7 +501,7 @@ theorem iff_of_localAgreementOn {d : ℕ} {lam Lam : ℝ} {U : Set (Vec d)}
     exact of_localAgreementOn (fun x hx => (hab x hx).symm) h
 
 theorem measurableSet_localSigma {d : ℕ} (lam Lam : ℝ) (U : Set (Vec d)) :
-    @MeasurableSet (CoeffField d) (LocalSigma U)
+    @MeasurableSet (CoeffField d) (PointwiseLocalSigma U)
       {a : CoeffField d | IsAEEllipticFieldOn lam Lam U a} :=
   MeasurableSpace.measurableSet_generateFrom
     (by
@@ -517,13 +517,13 @@ theorem mono {d : ℕ} {U V : Set (Vec d)} {k : ℕ} {a : CoeffField d}
     QuantitativeEllipticSlice V k a := by
   exact IsEllipticFieldOn.mono h hV hVU
 
-/-- A raw pointwise quantitative slice set can be `LocalSigma U`-measurable only if
+/-- A raw pointwise quantitative slice set can be `PointwiseLocalSigma U`-measurable only if
 membership in that slice is invariant under pointwise changes outside `U`.
 This records the exact compatibility condition imposed by the local
 coefficient-field sigma algebra. -/
 theorem eqOn_saturated_of_measurableSet_localSigma {d : ℕ} {U : Set (Vec d)}
     {k : ℕ} {a b : CoeffField d}
-    (hmeas : @MeasurableSet (CoeffField d) (LocalSigma U)
+    (hmeas : @MeasurableSet (CoeffField d) (PointwiseLocalSigma U)
       {c : CoeffField d | QuantitativeEllipticSlice U k c})
     (h : ∀ x, x ∈ U → a x = b x) :
     QuantitativeEllipticSlice U k a ↔ QuantitativeEllipticSlice U k b := by
@@ -537,11 +537,11 @@ algebra. We keep this as an explicit definition, rather than an instance, so
 theorem statements choose the local lane deliberately. -/
 def localMeasurableSpace {d : ℕ} (U : Set (Vec d)) (k : ℕ) :
     MeasurableSpace {a : CoeffField d // QuantitativeEllipticSlice U k a} :=
-  MeasurableSpace.comap Subtype.val (LocalSigma U)
+  MeasurableSpace.comap Subtype.val (PointwiseLocalSigma U)
 
 theorem measurable_val_localMeasurableSpace {d : ℕ} {U : Set (Vec d)} {k : ℕ} :
     @Measurable {a : CoeffField d // QuantitativeEllipticSlice U k a}
-      (CoeffField d) (localMeasurableSpace U k) (LocalSigma U) Subtype.val :=
+      (CoeffField d) (localMeasurableSpace U k) (PointwiseLocalSigma U) Subtype.val :=
   comap_measurable Subtype.val
 
 theorem memLp_restrictCoeffField {d : ℕ} {U : Set (Vec d)} {k : ℕ}
@@ -864,11 +864,11 @@ theorem of_quantitative {d : ℕ} {U : Set (Vec d)} {k : ℕ} {a : CoeffField d}
 algebra, now for essential/a.e. quantitative slices. -/
 def localMeasurableSpace {d : ℕ} (U : Set (Vec d)) (k : ℕ) :
     MeasurableSpace {a : CoeffField d // EssentialQuantitativeEllipticSlice U k a} :=
-  MeasurableSpace.comap Subtype.val (LocalSigma U)
+  MeasurableSpace.comap Subtype.val (PointwiseLocalSigma U)
 
 theorem measurable_val_localMeasurableSpace {d : ℕ} {U : Set (Vec d)} {k : ℕ} :
     @Measurable {a : CoeffField d // EssentialQuantitativeEllipticSlice U k a}
-      (CoeffField d) (localMeasurableSpace U k) (LocalSigma U) Subtype.val :=
+      (CoeffField d) (localMeasurableSpace U k) (PointwiseLocalSigma U) Subtype.val :=
   comap_measurable Subtype.val
 
 theorem measurableSet {d : ℕ} {U : Set (Vec d)} {k : ℕ} {a : CoeffField d}
@@ -956,11 +956,11 @@ namespace AEEQuantitativeEllipticSlice
 algebra, for the boundary-stable AEE quantitative slices. -/
 def localMeasurableSpace {d : ℕ} (U : Set (Vec d)) (k : ℕ) :
     MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
-  MeasurableSpace.comap Subtype.val (LocalSigma U)
+  MeasurableSpace.comap Subtype.val (PointwiseLocalSigma U)
 
 theorem measurable_val_localMeasurableSpace {d : ℕ} {U : Set (Vec d)} {k : ℕ} :
     @Measurable {a : CoeffField d // AEEQuantitativeEllipticSlice U k a}
-      (CoeffField d) (localMeasurableSpace U k) (LocalSigma U) Subtype.val :=
+      (CoeffField d) (localMeasurableSpace U k) (PointwiseLocalSigma U) Subtype.val :=
   comap_measurable Subtype.val
 
 theorem measurableSet {d : ℕ} {U : Set (Vec d)} {k : ℕ} {a : CoeffField d}
@@ -1007,7 +1007,7 @@ theorem iff_of_localAgreementOn {d : ℕ} {U : Set (Vec d)} {k : ℕ}
     exact of_localAgreementOn (fun x hx => (hab x hx).symm) h
 
 theorem measurableSet_localSigma {d : ℕ} (U : Set (Vec d)) (k : ℕ) :
-    @MeasurableSet (CoeffField d) (LocalSigma U)
+    @MeasurableSet (CoeffField d) (PointwiseLocalSigma U)
       {a : CoeffField d | AEEQuantitativeEllipticSlice U k a} :=
   MeasurableSpace.measurableSet_generateFrom
     (by

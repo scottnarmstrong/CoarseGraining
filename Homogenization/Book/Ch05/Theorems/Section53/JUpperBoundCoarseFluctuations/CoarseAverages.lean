@@ -50,7 +50,7 @@ private theorem canonicalScalarResponseGradientAverageCubeSet_self_eq_blockMatri
       coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) aQ := by
     simpa [F, aQ] using
-      Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   calc
     Ch04.canonicalScalarResponseGradientAverageCubeSet Q Q p q a.toFun =
@@ -97,7 +97,7 @@ private theorem canonicalScalarResponseFluxAverageCubeSet_self_eq_blockMatrix
       coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) aQ := by
     simpa [F, aQ] using
-      Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   calc
     Ch04.canonicalScalarResponseFluxAverageCubeSet Q Q p q a.toFun =
@@ -125,16 +125,16 @@ private theorem zero_matVecMul {d : ℕ} (x : Vec d) :
   simp [matVecMul]
 
 private noncomputable def scalarAnnealedBlockMatrixAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ) :
     BlockMat d :=
   Ch02.blockDiag
     (hP.barSigmaAtScale hStruct m • (1 : Mat d))
     ((hP.barSigmaStarAtScale hStruct m)⁻¹ • (1 : Mat d))
 
 private theorem special_average_mismatch_eq_reflected_block_fluctuation
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m : ℕ) (R : TriadicCube d) (e : Vec d) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
@@ -187,8 +187,8 @@ private theorem vecNormSq_sub_comm {d : ℕ} (x y : Vec d) :
   rw [h, vecNormSq_neg]
 
 private noncomputable def reflectedBlockFluctuationOperatorNormSqAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m : ℤ) (R : TriadicCube d) (a : RegCoeffField d) : ℝ :=
   let A := coarseBlockMatrix (cubeSet R) a.toFun
   let Abar := scalarAnnealedBlockMatrixAtScale hP hStruct m
@@ -481,8 +481,8 @@ private theorem weighted_blockVec_norm_sq_eq_sigma_inv_star_mul_normalized_norm_
           field_simp [ne_of_gt hc]
 
 private noncomputable def reflectedNormalizedBlockFluctuationOperatorNormSqAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m : ℤ) (R : TriadicCube d) (a : RegCoeffField d) : ℝ :=
   let b := hP.barSigmaAtScale hStruct m
   let c := hP.barSigmaStarAtScale hStruct m
@@ -497,14 +497,14 @@ Euclidean operator norm of the full block matrix.  This is exposed inside the
 third-lemma proof namespace so the assembly file can state the variance term
 without introducing a public Ch5 wrapper. -/
 noncomputable def fullBlockNormalizedFluctuationOperatorNormSqAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m : ℤ) (R : TriadicCube d) (a : RegCoeffField d) : ℝ :=
   Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct m R a
 
 private theorem reflectedNormalizedBlockFluctuationOperatorNormSqAtScale_eq_fullBlock
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m : ℤ) (R : TriadicCube d) (a : RegCoeffField d) :
     reflectedNormalizedBlockFluctuationOperatorNormSqAtScale hP hStruct m R a =
       fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct m R a := by
@@ -544,8 +544,8 @@ private theorem reflectedNormalizedBlockFluctuationOperatorNormSqAtScale_eq_full
           rw [hnorm]
 
 private theorem weighted_special_average_mismatch_le_reflected_normalized_block_fluctuation
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m : ℕ) (R : TriadicCube d) (e : Vec d)
     (hb : 0 < hP.barSigmaAtScale hStruct (m : ℤ))
@@ -696,8 +696,8 @@ normalized full-block fluctuation, with the Euclidean size of the special
 direction left explicit.  This is the robust internal form; the unit-vector
 corollary below is the one currently consumed by the high-scale assembly. -/
 theorem weighted_special_average_mismatch_le_fullBlockNormalized_fluctuation_mul_vecNormSq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m : ℕ) (R : TriadicCube d) (e : Vec d)
     (hb : 0 < hP.barSigmaAtScale hStruct (m : ℤ))
@@ -723,8 +723,8 @@ normalized full-block fluctuation for Euclidean-unit directions.  This remains
 a theorem in the coarse-fluctuation proof namespace, not a new public theorem
 package. -/
 theorem weighted_special_average_mismatch_le_fullBlockNormalized_fluctuation
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m : ℕ) (R : TriadicCube d) (e : Vec d)
     (hb : 0 < hP.barSigmaAtScale hStruct (m : ℤ))
@@ -749,8 +749,8 @@ theorem weighted_special_average_mismatch_le_fullBlockNormalized_fluctuation
 manuscript normalized full-block fluctuation, with the Euclidean direction
 size explicit. -/
 theorem descendantsAverage_weighted_special_average_mismatch_le_fullBlockNormalized_fluctuation_mul_vecNormSq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m : ℕ) (Q : TriadicCube d) (j : ℕ) (e : Vec d)
     (hb : 0 < hP.barSigmaAtScale hStruct (m : ℤ))
@@ -780,8 +780,8 @@ theorem descendantsAverage_weighted_special_average_mismatch_le_fullBlockNormali
 /-- Descendant-averaged special-vector average mismatch controlled by the
 manuscript normalized full-block fluctuation. -/
 theorem descendantsAverage_weighted_special_average_mismatch_le_fullBlockNormalized_fluctuation
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     (m : ℕ) (Q : TriadicCube d) (j : ℕ) (e : Vec d)
     (hb : 0 < hP.barSigmaAtScale hStruct (m : ℤ))

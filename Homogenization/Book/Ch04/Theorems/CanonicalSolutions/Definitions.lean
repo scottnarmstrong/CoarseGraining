@@ -16,7 +16,7 @@ open MeasureTheory
 This file is the public Ch4 handoff for selected canonical doubled-`Mu`
 Hilbert minimizers.  The definition below is total: on coefficient fields that
 lie in some AEE quantitative slice it uses the least slice index, and outside
-that support it returns `0`.  Under a `LawCarrier`, the outside branch is null.
+that support it returns `0`.  Under a `RestrictionLawCarrier`, the outside branch is null.
 -/
 
 /-- The canonical totalized selected doubled-`Mu` Hilbert minimizer on a
@@ -24,8 +24,8 @@ deterministic cube.  On fields that belong to some AEE quantitative slice it
 uses the least such slice index; outside the AEE slice cover it is `0`.
 
 The law-facing theorem
-`LawCarrier.aestronglyMeasurable_canonicalMuHilbertMinimizer_cubeSet` shows
-that this totalization is harmless under a `LawCarrier`. -/
+`RestrictionLawCarrier.aestronglyMeasurable_canonicalMuHilbertMinimizer_cubeSet` shows
+that this totalization is harmless under a `RestrictionLawCarrier`. -/
 noncomputable def canonicalMuHilbertMinimizerCubeSet
     {d : ℕ} (Q : TriadicCube d) (P0 : BlockVec d) :
     CoeffField d → HilbertBlockL2 (cubeSet Q) := by

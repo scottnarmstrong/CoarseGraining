@@ -25,8 +25,8 @@ This file formalizes the manuscript estimate
 /-- The four-term right side in
 `e.J.upper.bound.coarse.fluctuations.small.contrast.final`. -/
 noncomputable def smallContrastFinalRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (C : ℝ) (k m : ℕ) (e : Vec d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -38,8 +38,8 @@ noncomputable def smallContrastFinalRHSAtScale
         C * (thetaAtScale hP hStruct (m : ℤ) - 1) ^ (2 : ℕ)
 
 noncomputable def smallContrastReducedRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (C0 η : ℝ) (k m : ℕ) (e : Vec d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -65,8 +65,8 @@ theorem vecNorm_eq_one_of_vecNormSq_eq_one
   · linarith
 
 theorem thetaAtScale_zero_le_widetildeThetaAtScale_zero_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     thetaAtScale hP hStruct (0 : ℤ) ≤
       widetildeThetaAtScale P (0 : ℤ) hP4 :=
@@ -74,8 +74,8 @@ theorem thetaAtScale_zero_le_widetildeThetaAtScale_zero_of_P4
     hP hStruct hP4
 
 theorem thetaAtScale_le_two_of_widetildeThetaAtScale_zero_le_two
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2) (m : ℕ) :
     thetaAtScale hP hStruct (m : ℤ) ≤ 2 := by
@@ -92,8 +92,8 @@ theorem thetaAtScale_le_two_of_widetildeThetaAtScale_zero_le_two
   exact hmono.trans (htheta0.trans hsmall)
 
 theorem thetaAtScale_sub_one_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 ≤ thetaAtScale hP hStruct (m : ℤ) - 1 := by
   have hθ_one :
@@ -143,8 +143,8 @@ theorem quarter_theta_sub_one_le_sqrt_sub_one
     _ = Real.sqrt θ - 1 := by ring
 
 theorem expectedResponseJCubeSet_special_ge_quarter_theta_sub_one
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     (m : ℕ) (e : Vec d) (he : vecNormSq e = 1) :
@@ -173,8 +173,8 @@ theorem expectedResponseJCubeSet_special_ge_quarter_theta_sub_one
       simpa [p_e, q_e, θ] using hEq.symm
 
 theorem expectedResponseJCubeSet_special_le_two_expectedCenteredResponseJAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Vec d) (he : vecNormSq e = 1) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
@@ -203,8 +203,8 @@ theorem expectedResponseJCubeSet_special_le_two_expectedCenteredResponseJAtScale
       htheta_eq
 
 theorem coarseFluctuationScalarWeightAtScale_le_four_of_smallContrast
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     (m : ℕ) :
@@ -232,7 +232,7 @@ theorem coarseFluctuationScalarWeightAtScale_le_four_of_smallContrast
     have hθ0 :
         thetaAtScale hP hStruct (0 : ℤ) ≤ 2 :=
       (thetaAtScale_zero_le_widetildeThetaAtScale_zero_of_P4 hP hStruct hP4).trans hsmall
-    simpa [thetaAtScale, Ch04.LawCarrier.thetaAtScale, b0, c0] using hθ0
+    simpa [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, b0, c0] using hθ0
   have hb0_le_two_c0 : b0 ≤ 2 * c0 := by
     have hmul := mul_le_mul_of_nonneg_right hθ0_two hc0_pos.le
     have hcancel : b0 * c0⁻¹ * c0 = b0 := by field_simp [ne_of_gt hc0_pos]
@@ -280,9 +280,9 @@ theorem coarseFluctuationScalarWeightAtScale_le_four_of_smallContrast
   simpa [coarseFluctuationScalarWeightAtScale, σ, b0, c0] using hsum
 
 theorem coarseFluctuationResponseMomentAtScale_le_zero
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (_hkm : k ≤ m) (e : Vec d) :
     coarseFluctuationResponseMomentAtScale hP hStruct hP4 k m e ≤
@@ -299,24 +299,24 @@ theorem coarseFluctuationResponseMomentAtScale_le_zero
     fun a =>
       descendantsAverage (originCube d (k : ℤ))
         (Int.toNat ((k : ℤ) - (0 : ℤ)))
-        (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   have hparent_le_unit :
-      Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e ≤ᵐ[P]
+      Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e ≤ᵐ[P]
         unitAvg := by
     simpa [unitAvg, p_e, q_e] using
-      hP.responseJObservableCubeSet_le_descendantsAverage_ae
+      hP.restrictionResponseJObservableCubeSet_le_descendantsAverage_ae
         (n := (0 : ℤ)) (m := (k : ℤ)) hk_nonneg_int p_e q_e
   have hparent_rpow_le_unit :
       ∫ a,
           Real.rpow
-            (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ ∂P
+            (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ ∂P
         ≤ ∫ a, Real.rpow (unitAvg a) ζ ∂P := by
     refine integral_mono_ae ?_ ?_ ?_
     · exact
-        integrable_rpow_responseJObservableCubeSet_originCube_from_P4
+        integrable_rpow_restrictionResponseJObservableCubeSet_originCube_from_P4
           hP hStruct hP4 k p_e q_e
     · have hmem :=
-        memLp_zeta_descendantsAverage_responseJObservableCubeSet_originCube_from_P4_of_stationary
+        memLp_zeta_descendantsAverage_restrictionResponseJObservableCubeSet_originCube_from_P4_of_stationary
           hP hstat hStruct hP4 (by norm_num : (0 : ℤ) ≤ 0) hk_nonneg_int p_e q_e
       have hζ_ne_zero : ENNReal.ofReal ζ ≠ 0 := by
         simp [ENNReal.ofReal_eq_zero, not_le.mpr hζ_pos]
@@ -329,44 +329,44 @@ theorem coarseFluctuationResponseMomentAtScale_le_zero
       have hnonneg : 0 ≤ unitAvg a := by
         dsimp [unitAvg]
         exact descendantsAverage_nonneg _ _
-          (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
-          (fun R _hR => Ch04.responseJObservableCubeSet_nonneg R p_e q_e a)
+          (fun R => Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
+          (fun R _hR => Ch04.restrictionResponseJObservableCubeSet_nonneg R p_e q_e a)
       rw [ENNReal.toReal_ofReal hζ_pos.le, Real.norm_of_nonneg hnonneg,
         Real.rpow_eq_pow]
     · filter_upwards [hparent_le_unit] with a hle
       exact Real.rpow_le_rpow
-        (Ch04.responseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a)
+        (Ch04.restrictionResponseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a)
         hle hζ_nonneg
   have hunit_le_zero :
       ∫ a, Real.rpow (unitAvg a) ζ ∂P ≤
         ∫ a,
           Real.rpow
-            (Ch04.responseJObservableCubeSet (originCube d (0 : ℤ)) p_e q_e a) ζ ∂P := by
+            (Ch04.restrictionResponseJObservableCubeSet (originCube d (0 : ℤ)) p_e q_e a) ζ ∂P := by
     simpa [unitAvg, ζ, p_e, q_e] using
-      integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_le_originCube_of_stationary
+      integral_rpow_descendantsAverage_restrictionResponseJObservableCubeSet_originCube_le_originCube_of_stationary
         hP hstat hStruct hP4 (k := (0 : ℤ)) (m := (k : ℤ))
         (by norm_num) (by exact_mod_cast Nat.zero_le k) p_e q_e
   have hintegral_nonneg :
       0 ≤
         ∫ a,
           Real.rpow
-            (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ ∂P := by
+            (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ ∂P := by
     exact integral_nonneg fun a =>
       Real.rpow_nonneg
-        (Ch04.responseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a) _
+        (Ch04.restrictionResponseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a) _
   calc
     coarseFluctuationResponseMomentAtScale hP hStruct hP4 k m e =
         Real.rpow
           (∫ a,
             Real.rpow
-              (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ ∂P)
+              (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ ∂P)
           ζ⁻¹ := by
           simp [coarseFluctuationResponseMomentAtScale, ζ, p_e, q_e]
     _ ≤
         Real.rpow
           (∫ a,
             Real.rpow
-              (Ch04.responseJObservableCubeSet (originCube d (0 : ℤ)) p_e q_e a) ζ ∂P)
+              (Ch04.restrictionResponseJObservableCubeSet (originCube d (0 : ℤ)) p_e q_e a) ζ ∂P)
           ζ⁻¹ := by
           exact Real.rpow_le_rpow hintegral_nonneg
             (hparent_rpow_le_unit.trans hunit_le_zero) hζ_inv_nonneg
@@ -375,9 +375,9 @@ theorem coarseFluctuationResponseMomentAtScale_le_zero
           simp [coarseFluctuationResponseMomentAtScale, ζ, p_e, q_e]
 
 theorem coarseFluctuationUnitMomentWeight_mul_responseMoment_le_sixteen_of_smallContrast
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     {k m : ℕ} (hkm : k ≤ m) (e : Vec d) (he : vecNormSq e = 1) :
@@ -498,22 +498,22 @@ theorem sum_Icc_betaWeight_le_five_beta_inv
     _ ≤ 5 * β⁻¹ := hgeom_five
 
 theorem expectedResponseJCubeSet_origin_eq_annealedResponseJAtScale
-    {d : ℕ} (P : Ch04.CoeffLaw d) (n : ℤ) (p q : Vec d) :
+    {d : ℕ} (P : Ch04.RestrictionCoeffLaw d) (n : ℤ) (p q : Vec d) :
     Ch04.expectedResponseJCubeSet P (originCube d n) p q =
       Ch04.annealedResponseJAtScale P n p q := by
   rfl
 
 theorem expectedResponseJCubeSet_origin_eq_origin_add_tauAtScale
-    {d : ℕ} (P : Ch04.CoeffLaw d) (m k : ℤ) (p q : Vec d) :
+    {d : ℕ} (P : Ch04.RestrictionCoeffLaw d) (m k : ℤ) (p q : Vec d) :
     Ch04.expectedResponseJCubeSet P (originCube d k) p q =
       Ch04.expectedResponseJCubeSet P (originCube d m) p q +
         tauAtScale P m k p q := by
   simp [expectedResponseJCubeSet_origin_eq_annealedResponseJAtScale, tauAtScale]
 
 theorem tauAtScale_le_tauAtScale_of_left_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k n m : ℤ} (hk_nonneg : 0 ≤ k) (hkn : k ≤ n)
     (p q : Vec d) :
@@ -549,9 +549,9 @@ theorem tauAtScale_le_tauAtScale_of_left_le
   nlinarith
 
 theorem coarseFluctuationTauSumAtScale_le_five_beta_inv_tauAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (e : Vec d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -718,8 +718,8 @@ theorem self_le_half_add_of_le
   nlinarith
 
 theorem coarseFluctuationYoungManuscriptRHSAtScale_eq_decomp
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (C ε η : ℝ) (k m : ℕ) (e : Vec d) :
     coarseFluctuationYoungManuscriptRHSAtScale hP hStruct hP4 C ε η k m e =
@@ -757,8 +757,8 @@ theorem two_mul_sum_six_le
   nlinarith
 
 theorem young_rhs_two_mul_le_sum_of_term_bounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (C η : ℝ) (k m : ℕ) (e : Vec d)
     (B₁ B₂ B₃ B₄ B₅ B₆ : ℝ)

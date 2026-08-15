@@ -6,7 +6,7 @@ namespace Homogenization
 # Pointwise block algebra (items A4–A9)
 
 Sharp-constant pointwise block-matrix algebra of Proposition 2.1 of the
-high-moment paper (Armstrong–Kuusi–Loher, in preparation).  Items A4–A8-upper
+high-moment paper (Armstrong–Kuusi–Loher, to appear).  Items A4–A8-upper
 live here; the diagonal-sandwich lower bound A8 and the two-field comparison A9
 (which need the block Fenchel/inverse machinery) live in
 `SharpBlockBounds/DiagonalSandwich.lean`.

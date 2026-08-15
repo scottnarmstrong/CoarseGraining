@@ -1,14 +1,10 @@
 import Mathlib
 import Audit.PolynomialScale.SolutionBasic
 
-attribute [-instance] Homogenization.instMeasurableSpaceVec
-attribute [-instance] Homogenization.instMeasurableSpaceMat
-attribute [-instance] Homogenization.instMeasurableSpaceCoeffField
-
 /-!
 # Statement-level audit vocabulary for the checkerboard homogenization scale
 
-This file holds the Mathlib-shaped statement vocabulary for the comparator
+This Mathlib-only file holds the statement vocabulary for the comparator
 solution of the Bernoulli-checkerboard homogenization-scale corollary.  The
 shared vocabulary — the local mirrors of the ambient fields, the
 regular-fields carrier and its σ-algebra, cubes, Sobolev objects, the block
@@ -53,7 +49,7 @@ abbrev Sample (d : ℕ) :=
   Lattice d → Bool
 
 def openUnitCell {d : ℕ} (z : Lattice d) : Set (Vec d) :=
-  {x | ∀ i : Fin d, |x i - (z i : ℝ)| < (1 / 2 : ℝ)}
+  {x | ∀ i : Fin d, |x i - (z i : ℝ)| < (1 / ((2 : ℕ) : ℝ) : ℝ)}
 
 def coinConductance (lam Lam : ℝ) (b : Bool) : ℝ :=
   if b then lam else Lam
@@ -73,15 +69,15 @@ theorem measurableSet_openUnitCell {d : ℕ} (z : Lattice d) :
   have hopen : IsOpen (openUnitCell z : Set (Vec d)) := by
     unfold openUnitCell
     have hset :
-        {x : Vec d | ∀ i : Fin d, |x i - (z i : ℝ)| < (1 / 2 : ℝ)} =
-          ⋂ i : Fin d, {x : Vec d | |x i - (z i : ℝ)| < (1 / 2 : ℝ)} := by
+        {x : Vec d | ∀ i : Fin d, |x i - (z i : ℝ)| < (1 / ((2 : ℕ) : ℝ) : ℝ)} =
+          ⋂ i : Fin d, {x : Vec d | |x i - (z i : ℝ)| < (1 / ((2 : ℕ) : ℝ) : ℝ)} := by
       ext x
       simp
     rw [hset]
     refine isOpen_iInter_of_finite fun i : Fin d => ?_
     have hleft : Continuous fun x : Vec d => |x i - (z i : ℝ)| :=
       ((continuous_apply i).sub continuous_const).abs
-    have hright : Continuous fun _ : Vec d => (1 / 2 : ℝ) :=
+    have hright : Continuous fun _ : Vec d => (1 / ((2 : ℕ) : ℝ) : ℝ) :=
       continuous_const
     exact isOpen_lt hleft hright
   exact hopen.measurableSet
@@ -103,13 +99,13 @@ theorem openUnitCell_unique {d : ℕ} {x : Vec d} {z w : Lattice d}
         - (x i - (z i : ℝ)) + (x i - (w i : ℝ)) := by ring
   have htriangle :
       |(z i : ℝ) - (w i : ℝ)| <
-        (1 / 2 : ℝ) + (1 / 2 : ℝ) := by
+        (1 / ((2 : ℕ) : ℝ) : ℝ) + (1 / ((2 : ℕ) : ℝ) : ℝ) := by
     calc
       |(z i : ℝ) - (w i : ℝ)|
           = |- (x i - (z i : ℝ)) + (x i - (w i : ℝ))| := by rw [hsplit]
       _ ≤ |-(x i - (z i : ℝ))| + |x i - (w i : ℝ)| := abs_add_le _ _
       _ = |x i - (z i : ℝ)| + |x i - (w i : ℝ)| := by rw [abs_neg]
-      _ < (1 / 2 : ℝ) + (1 / 2 : ℝ) := add_lt_add hz_i hw_i
+      _ < (1 / ((2 : ℕ) : ℝ) : ℝ) + (1 / ((2 : ℕ) : ℝ) : ℝ) := add_lt_add hz_i hw_i
   norm_num at htriangle
   linarith
 
@@ -232,7 +228,7 @@ def coinMeasure (p : ℝ≥0) (hp : p ≤ 1) : Measure Bool :=
 def sampleMeasure (d : ℕ) (p : ℝ≥0) (hp : p ≤ 1) : Measure (Sample d) :=
   Measure.infinitePi (fun _ : Lattice d => coinMeasure p hp)
 
-noncomputable def law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) : CoeffLaw d :=
+noncomputable def law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) : RestrictionCoeffLaw d :=
   Measure.map (checkerRegField lam Lam) (sampleMeasure d p hp)
 
 end

@@ -6,7 +6,7 @@ import Homogenization.CoarseGraining.CoarseBounds.LawObservable
 # Coarse sandwich, a.e. bridge, and law-level measurability
 
 Root facade for the remaining parts of Proposition 2.2 of the high-moment paper
-(Armstrong–Kuusi–Loher, in preparation).
+(Armstrong–Kuusi–Loher, to appear).
 
 Submodules:
 
@@ -19,7 +19,7 @@ Submodules:
   inverse-free closed-set reformulation (C2 ii), the elliptic truncation
   (C2 iii), and the consumer-facing bridge packaging (C2 iv).
 * `CoarseBounds.LawObservable` — item **C3**: a.e.-strong measurability of the
-  scalar coarse observable under a `LawCarrier`, plus its a.s. bounds and
+  scalar coarse observable under a `RestrictionLawCarrier`, plus its a.s. bounds and
   integrability under an a.s.-elliptic law.
 
 All matrix/vector work is on `Vec d = Fin d → ℝ` / `Mat d`; no `EuclideanSpace`.

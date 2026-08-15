@@ -16,9 +16,9 @@ noncomputable section
 
 /-- Compact name for the Section 5.2 small-tail child-response integral. -/
 def section52SmallTailChildResponseIntegralAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -30,7 +30,7 @@ def section52SmallTailChildResponseIntegralAtScales
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
   let lowerSmall : Homogenization.RegCoeffField d → ℝ := fun a =>
@@ -45,9 +45,9 @@ def section52SmallTailChildResponseIntegralAtScales
 
 /-- Compact terminal-prefactor budget for the Section 5.2 small-tail term. -/
 def section52SmallTailTerminalResponseBudgetAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -80,10 +80,10 @@ def section52SmallTailTerminalResponseBudgetAtScales
 
 /-- Terminal-prefactor small-tail estimate with compact budget names. -/
 theorem section52SmallTailChildResponseIntegral_le_terminalResponseBudgetAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d) :
     section52SmallTailChildResponseIntegralAtScales hP hStruct hP4 k m e ≤
@@ -94,7 +94,7 @@ theorem section52SmallTailChildResponseIntegral_le_terminalResponseBudgetAtScale
       hP hstat hStruct hP4 hkm e).2
 
 /--
-Source labels `p.HC.CR` and `e.W.first.sum`: LIH's high-scale average
+Source labels `p.HC.CR` and `e.W.first.sum`: the library's high-scale average
 component has the manuscript terminal fluctuation shape, up to the explicit
 Section 5.3 constant and `β⁻¹` loss.  This theorem only rewrites
 `θ_m` as `1 + F_m`; it does not use the final coarse-fluctuation RHS.
@@ -102,10 +102,10 @@ Section 5.3 constant and `β⁻¹` loss.  This theorem only rewrites
 theorem integral_paired_highScaleAverageTerms_special_le_beta_inv_contrastExcess_fullBlockSumAtScale
     {d : ℕ} [NeZero d] :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (_hstat : Homogenization.Book.Ch04.StationaryLaw P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (_hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {k m : ℕ}, k < m → ∀ e : Homogenization.Vec d,
         Homogenization.vecNormSq e = 1 →
@@ -208,14 +208,14 @@ private theorem constantTail_sqrt_sub_one_sq_le_sub_one {θ : ℝ} (hθ : 1 ≤ 
 
 /--
 Source labels `p.HC.CR` and `e.W.first.sum`: the constant affine tails in
-LIH's weak-norm maximizer are bounded by the unweighted local geometric
+the library's weak-norm maximizer are bounded by the unweighted local geometric
 contrast tail.  This stops at the pre-Section 5.3 scalar-weight estimate in
-LIH's proof and exposes the manuscript-facing `F_m` tail.
+the library's proof and exposes the manuscript-facing `F_m` tail.
 -/
 theorem paired_constantTail_special_le_contrastExcess_lowScaleTail_unweighted
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (_hkm : k < m) (e : Homogenization.Vec d)
     (he : Homogenization.vecNormSq e = 1) :
@@ -406,14 +406,14 @@ theorem paired_constantTail_special_le_contrastExcess_lowScaleTail_unweighted
         simp [tail, θ, contrastExcessAtScale, mul_assoc]
 
 /--
-Source labels `p.HC.CR` and `e.W.low.tail`: LIH's cutoff-oscillation
+Source labels `p.HC.CR` and `e.W.low.tail`: the library's cutoff-oscillation
 remainder term is controlled by the same geometrically discounted contrast
 coefficient, before the scale-zero Section 5.3 scalar weight is inserted.
 This is the manuscript-facing local-tail form used in the high-moment paper
-(Armstrong–Kuusi–Loher, in preparation).
+(Armstrong–Kuusi–Loher, to appear).
 -/
 private theorem two_mul_section53CoarseFluctuationBeta_le_one
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P) :
     2 * section53CoarseFluctuationBeta hP4 ≤ 1 := by
   have hsum := sUpper_add_sLower_add_four_beta_le_one hP4
@@ -423,7 +423,7 @@ private theorem two_mul_section53CoarseFluctuationBeta_le_one
   nlinarith
 
 private theorem cutoff_decay_le_contrast_tail_decay
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (N : ℕ) :
     ((3 : ℝ) ^ N)⁻¹ ≤
@@ -451,7 +451,7 @@ private theorem cutoff_decay_le_contrast_tail_decay
   exact hrpow
 
 private theorem cutoffCoeff_le_uniform_contrast_tail_coeff
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (_hkm : k < m) {eps : ℝ} (heps : 0 < eps)
     (heps_le : eps ≤ 1) :
@@ -572,19 +572,19 @@ private theorem cutoffCoeff_le_uniform_contrast_tail_coeff
                   ring
 
 private theorem expectedResponseJCubeSet_nonneg_rawWeak
-    {d : ℕ} (P : Homogenization.Book.Ch04.CoeffLaw d)
+    {d : ℕ} (P : Homogenization.Book.Ch04.RestrictionCoeffLaw d)
     (Q : Homogenization.TriadicCube d) (p q : Homogenization.Vec d) :
     0 ≤ Homogenization.Book.Ch04.expectedResponseJCubeSet P Q p q := by
   dsimp [Homogenization.Book.Ch04.expectedResponseJCubeSet]
   exact MeasureTheory.integral_nonneg fun a =>
-    Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg Q p q a
+    Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg Q p q a
 
 theorem cutoffOscillation_special_expectedResponse_le_contrastTail_uniform
     {d : ℕ} [NeZero d] :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {k m : ℕ}, k < m →
         ∀ e : Homogenization.Vec d, Homogenization.vecNormSq e = 1 →
@@ -675,9 +675,9 @@ theorem cutoffOscillation_special_expectedResponse_le_contrastTail_uniform
 theorem normalized_cutoffOscillation_special_expectedResponse_le_decay_tail
     {d : ℕ} [NeZero d] :
     ∃ C_osc : ℝ, 0 ≤ C_osc ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {k m : ℕ}, k < m → ∀ e : Homogenization.Vec d,
         Homogenization.vecNormSq e = 1 →
@@ -755,18 +755,18 @@ theorem normalized_cutoffOscillation_special_expectedResponse_le_decay_tail
 
 /--
 Source labels `p.HC.CR`, `e.W.first.sum`, and `e.tau.sum.absorb`:
-LIH's component decomposition for the paired special weak-norm squares, with
+the library's component decomposition for the paired special weak-norm squares, with
 the mismatch component replaced by the local component slots.  This is the
-faithful insertion point before LIH's scale-zero coarse-fluctuation shortcut:
+faithful insertion point before the library's scale-zero coarse-fluctuation shortcut:
 the high-scale average, low-scale tail, and constant-tail components remain
 visible, while the response-defect component has the corrected local
 `P_{k,m}` coefficient.
 -/
 theorem paired_weakNormSquares_special_le_componentIntegrals_with_local_mismatch_slots
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d)
     (he : Homogenization.vecNormSq e = 1) :

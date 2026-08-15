@@ -26,8 +26,8 @@ open Section53.JUpperBoundCoarseFluctuations
 /-- The scalar weight in the Section 5.3 coarse-fluctuation RHS is exactly the
 one used by the Section 5.4 one-step contraction proof. -/
 theorem coarseFluctuationScalarWeightAtScale_eq_oneStepScalarWeightAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℕ) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℕ) :
     coarseFluctuationScalarWeightAtScale hP hStruct m =
       oneStepScalarWeightAtScale hP hStruct m := by
   rfl
@@ -88,8 +88,8 @@ private theorem sum_int_Icc_one_nat_eq_sum_nat_Icc (m : ℕ) (F : ℤ → ℝ) :
 
 /-- The Section 5.3-beta tau sum, reindexed over natural lower scales. -/
 noncomputable def oneStepCoarseTauSumAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Vec d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -102,8 +102,8 @@ noncomputable def oneStepCoarseTauSumAtScale
 /-- At `k = 0`, the Section 5.3 tau sum is the natural-scale sum used by the
 one-step proof, with the Section 5.3 beta. -/
 theorem coarseFluctuationTauSumAtScale_zero_eq_oneStepCoarseTauSumAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Vec d) :
     coarseFluctuationTauSumAtScale hP hStruct hP4 0 m e =
@@ -124,8 +124,8 @@ theorem coarseFluctuationTauSumAtScale_zero_eq_oneStepCoarseTauSumAtScale
 /-- The Section 5.3-beta full-block fluctuation sum, reindexed over natural
 lower scales. -/
 noncomputable def oneStepCoarseFullBlockSumAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
   ∑ j ∈ Finset.Icc 1 m,
@@ -137,8 +137,8 @@ noncomputable def oneStepCoarseFullBlockSumAtScale
 /-- At `k = 0`, the Section 5.3 full-block fluctuation sum is the natural-scale
 sum used by the one-step proof, with the Section 5.3 beta. -/
 theorem coarseFluctuationFullBlockSumAtScale_zero_eq_oneStepCoarseFullBlockSumAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     coarseFluctuationFullBlockSumAtScale hP hStruct hP4 0 m =
       oneStepCoarseFullBlockSumAtScale hP hStruct hP4 m := by
@@ -156,8 +156,8 @@ theorem coarseFluctuationFullBlockSumAtScale_zero_eq_oneStepCoarseFullBlockSumAt
 /-- The reindexed Section 5.3-beta full-block fluctuation sum is
 nonnegative. -/
 theorem oneStepCoarseFullBlockSumAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 ≤ oneStepCoarseFullBlockSumAtScale hP hStruct hP4 m := by
   unfold oneStepCoarseFullBlockSumAtScale
@@ -171,13 +171,13 @@ theorem oneStepCoarseFullBlockSumAtScale_nonneg
 
 /-- The harmless geometric constant for the Section 5.3-beta tau sum. -/
 noncomputable def oneStepCoarseTauSumConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   3 * (geometricDiscount (section53CoarseFluctuationBeta hP4) 1)⁻¹
 
 /-- The Section 5.3-beta tau-sum constant is nonnegative. -/
 theorem oneStepCoarseTauSumConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ oneStepCoarseTauSumConst hP4 := by
   unfold oneStepCoarseTauSumConst
@@ -188,8 +188,8 @@ theorem oneStepCoarseTauSumConst_nonneg
 /-- At a good scale, the Section 5.3-beta tau sum is bounded by the
 geometric tail times `delta * sqrt(Theta_0)`. -/
 theorem oneStepCoarseTauSumAtScale_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le : delta ≤ 1 / 2)
     {m : ℕ}
@@ -253,8 +253,8 @@ theorem oneStepCoarseTauSumAtScale_le
 /-- At a good scale, the scalar-weighted Section 5.3 tau sum at `k = 0` is
 `O(delta * Theta_0)`. -/
 theorem coarseFluctuationScalarWeight_mul_tauSum_zero_le_delta_theta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le : delta ≤ 1 / 2)
     {m : ℕ}
@@ -321,8 +321,8 @@ theorem coarseFluctuationScalarWeight_mul_tauSum_zero_le_delta_theta
 /-- At a good scale, the scalar-weighted Section 5.3 tau sum at `k = 0` is
 also `O(sqrt(delta) * Theta_0)`. -/
 theorem coarseFluctuationScalarWeight_mul_tauSum_zero_le_sqrt_delta_theta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le : delta ≤ 1 / 2)
     {m : ℕ}

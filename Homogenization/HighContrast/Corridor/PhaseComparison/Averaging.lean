@@ -27,7 +27,7 @@ member of the nonempty grid (`N ≥ ℓ ≥ 4 > 0`).  `M² := Θ·|p|² + |q|²`
 -/
 
 open Homogenization
-open Homogenization.Book.Ch04 (CoeffLaw LawCarrier)
+open Homogenization.Book.Ch04 (RestrictionCoeffLaw RestrictionLawCarrier)
 open MeasureTheory
 
 namespace Homogenization
@@ -43,7 +43,7 @@ bridge produces, from each a.s. realization, an everywhere-`(1,Θ)`-elliptic
 representative `a'` with `coarseBlockMatrix U a' = coarseBlockMatrix U a`, whence
 the deterministic C1′ sandwich (`zero_le_blockVecDot_coarseBlockMatrix_cube`,
 `blockVecDot_coarseBlockMatrix_cube_le`) transfers. -/
-theorem ae_coarseBlockQuadratic_bounds_of_thetaEllipticLaw [NeZero d] {L : CoeffLaw d}
+theorem ae_coarseBlockQuadratic_bounds_of_thetaEllipticLaw [NeZero d] {L : RestrictionCoeffLaw d}
     {Θ : ℝ} (hΘ : 1 ≤ Θ) (hell : ThetaEllipticLaw Θ L) (m : ℤ) (P : BlockVec d) :
     ∀ᵐ a ∂L,
       0 ≤ blockVecDot P
@@ -114,7 +114,7 @@ theorem gridPhase_summed_sq_le_of_realization [NeZero d] {Θ : ℝ} (hΘ : 1 ≤
       coarseBlockMatrix U (corridorField ℓ (gridPhase ℓ N σ) a)
         = coarseBlockMatrix U (corridorField ℓ (gridPhase ℓ N σ) a') := by
     intro σ
-    refine coarseBlockMatrix_congr_of_ae_eq hU ?_
+    refine coarseBlockMatrix_congr_of_ae_eq ?_
     filter_upwards [ha'ae] with x hx
     by_cases hxc : x ∈ corridorSet ℓ (gridPhase ℓ N σ)
     · rw [corridorField_apply_of_mem hxc, corridorField_apply_of_mem hxc]
@@ -245,13 +245,13 @@ theorem gridPhase_summed_sq_le_of_realization [NeZero d] {Θ : ℝ} (hΘ : 1 ≤
         mul_le_mul_of_nonneg_left hFa'le hcoef2
     _ = 576 * (d : ℝ) * Θ * (N : ℝ) ^ d * Msq ^ 2 / ℓ := by ring
 
-/-- **M3 (averaging + choice).**  Under a `LawCarrier` `Θ`-elliptic law and
+/-- **M3 (averaging + choice).**  Under a `RestrictionLawCarrier` `Θ`-elliptic law and
 `4 ≤ ℓ ≤ N`, there is a deterministic grid phase `σ_*` whose mean-square coarse
 deviation is `O(ℓ⁻¹)`, with an explicit dimensional constant `Cd = 576 d`.  The
 per-realization summed bound `gridPhase_summed_sq_le_of_realization` is averaged
 over the probability law and a below-average phase is selected. -/
 theorem exists_gridPhase_meanSq_le [NeZero d] {Θ : ℝ} (hΘ : 1 ≤ Θ)
-    {L : CoeffLaw d} (hP : LawCarrier L) (hell : ThetaEllipticLaw Θ L)
+    {L : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier L) (hell : ThetaEllipticLaw Θ L)
     {m : ℤ} {ℓ : ℝ} (hℓ : 4 ≤ ℓ) {N : ℕ} (hN : (ℓ : ℝ) ≤ (N : ℝ))
     (P : BlockVec d) :
     ∃ Cd : ℝ, 0 ≤ Cd ∧

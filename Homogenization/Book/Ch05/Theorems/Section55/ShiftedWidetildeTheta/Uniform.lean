@@ -11,7 +11,7 @@ open Section53.JUpperBoundCoarseFluctuations
 noncomputable section
 
 private theorem sUpper_add_beta_lt_one' {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sUpper + section53CoarseFluctuationBeta hP4 < 1 := by
   have hsum := sUpper_add_sLower_add_two_beta_le_one hP4
   have hlower_beta_pos :
@@ -20,7 +20,7 @@ private theorem sUpper_add_beta_lt_one' {d : ℕ} [NeZero d]
   nlinarith
 
 private theorem sLower_add_beta_lt_one' {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sLower + section53CoarseFluctuationBeta hP4 < 1 := by
   have hsum := sUpper_add_sLower_add_two_beta_le_one hP4
   have hupper_beta_pos :
@@ -36,8 +36,8 @@ the law and all scale parameters. -/
 theorem shiftedWidetildeThetaAtScale_shifted_bound_homogenizationScale
     {d : ℕ} [NeZero d] (xi : ℕ) (β : ℝ) (hβ : 0 < β) :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
         (hP4 : QuantitativeCoarseGrainedEllipticity P),
         hP4.xi = xi →
         section53CoarseFluctuationBeta hP4 = β →
@@ -59,7 +59,7 @@ theorem shiftedWidetildeThetaAtScale_shifted_bound_homogenizationScale
     nlinarith [mul_nonneg hD_nonneg hD_nonneg]
   refine ⟨C, hC_nonneg, ?_⟩
   intro P hP hStruct hP4 hxi hβeq k n hkn
-  let Pk := Ch04.scaleNormalizedLaw k P
+  let Pk := Ch04.restrictionScaleNormalizedLaw k P
   let hPk := hP.scaleNormalized k
   let hStructPk := hStruct.scaleNormalized k
   let hP4k := hP4.scaleNormalized hP hStruct k
@@ -184,9 +184,9 @@ theorem shiftedWidetildeThetaAtScale_shifted_bound_homogenizationScale
       _ = thetaAtScale hPk hStructPk 0 +
             C * decay * widetildeThetaAtScale Pk 0 hP4k := by ring
   have hshift :=
-    betaShiftedWidetildeThetaAtScale_scaleNormalizedLaw_of_le hP hStruct hP4 hkn
-  have htheta := thetaAtScale_zero_scaleNormalizedLaw hP hStruct k
-  have hw0 := widetildeThetaAtScale_zero_scaleNormalizedLaw hP hStruct hP4 k
+    betaShiftedWidetildeThetaAtScale_restrictionScaleNormalizedLaw_of_le hP hStruct hP4 hkn
+  have htheta := thetaAtScale_zero_restrictionScaleNormalizedLaw hP hStruct k
+  have hw0 := widetildeThetaAtScale_zero_restrictionScaleNormalizedLaw hP hStruct hP4 k
   have hbound := hbound_pk
   rw [hshift] at hbound
   rw [hw0] at hbound

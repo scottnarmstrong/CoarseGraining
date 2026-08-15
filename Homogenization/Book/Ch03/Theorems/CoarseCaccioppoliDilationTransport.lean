@@ -435,10 +435,10 @@ theorem triadicDilationFactor_neg_scale_sq {d : ℕ} (Q : TriadicCube d) :
 the half-open boundary is null. -/
 private theorem normalizedAverage_eq_volumeAverage_open {d : ℕ}
     (Q : TriadicCube d) (f : Vec d → ℝ) :
-    Ch01.normalizedAverage Q f = volumeAverage (openCubeSet Q) f := by
+    Ch01.Legacy.normalizedAverage Q f = volumeAverage (openCubeSet Q) f := by
   calc
-    Ch01.normalizedAverage Q f = volumeAverage (cubeSet Q) f := by
-      rw [Ch01.normalizedAverage]
+    Ch01.Legacy.normalizedAverage Q f = volumeAverage (cubeSet Q) f := by
+      rw [Ch01.Legacy.normalizedAverage]
       exact (volumeAverage_cubeSet_eq_cubeAverage Q f).symm
     _ = volumeAverage (openCubeSet Q) f :=
       ScalarCanonicalMaximizer.volumeAverage_cubeSet_eq_openCubeSet_of_triadicCube Q f
@@ -453,14 +453,14 @@ theorem normalizedAverage_dilate_solution_eq {d : ℕ} {k : ℤ}
     {u : Ch02.Solution (Ch02.cubeDomain Q) a}
     {v : Ch02.Solution (Ch02.cubeDomain (Ch02.dilateCube k Q)) b}
     (hDilation : Ch02.Solution.IsCubeDilation hCoeff u v) :
-    Ch01.normalizedAverage (Ch02.dilateCube k Q) v.toH1.toFun =
-      Ch02.triadicDilationFactor k * Ch01.normalizedAverage Q u.toH1.toFun := by
+    Ch01.Legacy.normalizedAverage (Ch02.dilateCube k Q) v.toH1.toFun =
+      Ch02.triadicDilationFactor k * Ch01.Legacy.normalizedAverage Q u.toH1.toFun := by
   let r : ℝ := Ch02.triadicDilationFactor k
   have hr : 0 < r := by
     dsimp [r]
     exact Ch02.triadicDilationFactor_pos k
   calc
-    Ch01.normalizedAverage (Ch02.dilateCube k Q) v.toH1.toFun =
+    Ch01.Legacy.normalizedAverage (Ch02.dilateCube k Q) v.toH1.toFun =
         volumeAverage (openCubeSet (Ch02.dilateCube k Q)) v.toH1.toFun :=
       normalizedAverage_eq_volumeAverage_open (Ch02.dilateCube k Q) v.toH1.toFun
     _ =
@@ -481,7 +481,7 @@ theorem normalizedAverage_dilate_solution_eq {d : ℕ} {k : ℤ}
           simpa [smul_eq_mul] using
             volumeAverage_smul (openCubeSet Q) r u.toH1.toFun
     _ = Ch02.triadicDilationFactor k *
-        Ch01.normalizedAverage Q u.toH1.toFun := by
+        Ch01.Legacy.normalizedAverage Q u.toH1.toFun := by
           rw [normalizedAverage_eq_volumeAverage_open Q u.toH1.toFun]
 
 /-- The centered parent `L²` oscillation scales with the same amplitude-square
@@ -501,8 +501,8 @@ theorem interiorCaccioppoliParentOscillationL2Sq_dilate_eq {d : ℕ} {k : ℤ}
     dsimp [r]
     exact Ch02.triadicDilationFactor_pos k
   have havg :
-      Ch01.normalizedAverage (Ch02.dilateCube k Q) v.toH1.toFun =
-        r * Ch01.normalizedAverage Q u.toH1.toFun := by
+      Ch01.Legacy.normalizedAverage (Ch02.dilateCube k Q) v.toH1.toFun =
+        r * Ch01.Legacy.normalizedAverage Q u.toH1.toFun := by
     simpa [r] using normalizedAverage_dilate_solution_eq hDilation
   have hvalue :
       v.toH1.toFun =ᵐ[volumeMeasureOn (openCubeSet (Ch02.dilateCube k Q))]
@@ -511,11 +511,11 @@ theorem interiorCaccioppoliParentOscillationL2Sq_dilate_eq {d : ℕ} {k : ℤ}
   have hsquares :
       (fun x : Vec d =>
           (v.toH1.toFun x -
-            Ch01.normalizedAverage (Ch02.dilateCube k Q) v.toH1.toFun) ^ (2 : ℕ))
+            Ch01.Legacy.normalizedAverage (Ch02.dilateCube k Q) v.toH1.toFun) ^ (2 : ℕ))
         =ᵐ[volumeMeasureOn (openCubeSet (Ch02.dilateCube k Q))]
       fun x =>
           (r * (u.toH1.toFun (Ch02.undilateVec k x) -
-            Ch01.normalizedAverage Q u.toH1.toFun)) ^ (2 : ℕ) := by
+            Ch01.Legacy.normalizedAverage Q u.toH1.toFun)) ^ (2 : ℕ) := by
     filter_upwards [hvalue] with x hx
     rw [hx, havg]
     ring
@@ -524,26 +524,26 @@ theorem interiorCaccioppoliParentOscillationL2Sq_dilate_eq {d : ℕ} {k : ℤ}
         volumeAverage (openCubeSet (Ch02.dilateCube k Q))
           (fun x : Vec d =>
             (v.toH1.toFun x -
-              Ch01.normalizedAverage (Ch02.dilateCube k Q) v.toH1.toFun) ^ (2 : ℕ)) := by
+              Ch01.Legacy.normalizedAverage (Ch02.dilateCube k Q) v.toH1.toFun) ^ (2 : ℕ)) := by
           simp [interiorCaccioppoliParentOscillationL2Sq,
             normalizedL2SqOnSet, normalizedSetAverage]
     _ =
         volumeAverage (openCubeSet (Ch02.dilateCube k Q))
           (fun x =>
             (r * (u.toH1.toFun (Ch02.undilateVec k x) -
-              Ch01.normalizedAverage Q u.toH1.toFun)) ^ (2 : ℕ)) :=
+              Ch01.Legacy.normalizedAverage Q u.toH1.toFun)) ^ (2 : ℕ)) :=
           volumeAverage_eq_of_ae_eq hsquares
     _ =
         volumeAverage (r • openCubeSet Q)
           (fun x =>
             (r * (u.toH1.toFun (Ch02.undilateVec k x) -
-              Ch01.normalizedAverage Q u.toH1.toFun)) ^ (2 : ℕ)) := by
+              Ch01.Legacy.normalizedAverage Q u.toH1.toFun)) ^ (2 : ℕ)) := by
           rw [Ch02.openCubeSet_dilateCube]
     _ =
         volumeAverage (openCubeSet Q)
           (fun x =>
             (r * (u.toH1.toFun x -
-              Ch01.normalizedAverage Q u.toH1.toFun)) ^ (2 : ℕ)) := by
+              Ch01.Legacy.normalizedAverage Q u.toH1.toFun)) ^ (2 : ℕ)) := by
           rw [Ch01.volumeAverage_smul_set_comp_smul_of_pos (d := d) hr]
           congr 1
           funext x
@@ -553,16 +553,16 @@ theorem interiorCaccioppoliParentOscillationL2Sq_dilate_eq {d : ℕ} {k : ℤ}
           volumeAverage (openCubeSet Q)
             (fun x =>
               (u.toH1.toFun x -
-                Ch01.normalizedAverage Q u.toH1.toFun) ^ (2 : ℕ)) := by
+                Ch01.Legacy.normalizedAverage Q u.toH1.toFun) ^ (2 : ℕ)) := by
           calc
             volumeAverage (openCubeSet Q)
               (fun x =>
                 (r * (u.toH1.toFun x -
-                  Ch01.normalizedAverage Q u.toH1.toFun)) ^ (2 : ℕ)) =
+                  Ch01.Legacy.normalizedAverage Q u.toH1.toFun)) ^ (2 : ℕ)) =
                 volumeAverage (openCubeSet Q)
                   ((r ^ (2 : ℕ)) • fun x =>
                     (u.toH1.toFun x -
-                      Ch01.normalizedAverage Q u.toH1.toFun) ^ (2 : ℕ)) := by
+                      Ch01.Legacy.normalizedAverage Q u.toH1.toFun) ^ (2 : ℕ)) := by
               congr 1
               funext x
               simp [Pi.smul_apply, smul_eq_mul]
@@ -572,11 +572,11 @@ theorem interiorCaccioppoliParentOscillationL2Sq_dilate_eq {d : ℕ} {k : ℤ}
                   volumeAverage (openCubeSet Q)
                     (fun x =>
                       (u.toH1.toFun x -
-                        Ch01.normalizedAverage Q u.toH1.toFun) ^ (2 : ℕ)) :=
+                        Ch01.Legacy.normalizedAverage Q u.toH1.toFun) ^ (2 : ℕ)) :=
               volumeAverage_smul (openCubeSet Q) (r ^ (2 : ℕ))
                 (fun x =>
                   (u.toH1.toFun x -
-                    Ch01.normalizedAverage Q u.toH1.toFun) ^ (2 : ℕ))
+                  Ch01.Legacy.normalizedAverage Q u.toH1.toFun) ^ (2 : ℕ))
     _ =
         (Ch02.triadicDilationFactor k) ^ (2 : ℕ) *
           interiorCaccioppoliParentOscillationL2Sq Q A u := by

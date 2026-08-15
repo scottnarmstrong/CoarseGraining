@@ -151,7 +151,7 @@ noncomputable def coreSqGrad (ℓ : ℝ) (σ : Vec d) (k : Fin d → ℤ) : Vec 
 
 theorem coreSqGrad_nonneg (ℓ : ℝ) (σ : Vec d) (k : Fin d → ℤ) (x : Vec d) :
     0 ≤ coreSqGrad ℓ σ k x :=
-  Finset.sum_nonneg (fun i _ => sq_nonneg _)
+  Finset.sum_nonneg (fun _ _ => sq_nonneg _)
 
 theorem continuous_coreSqGrad (ℓ : ℝ) (σ : Vec d) (k : Fin d → ℤ) :
     Continuous (coreSqGrad ℓ σ k) := by

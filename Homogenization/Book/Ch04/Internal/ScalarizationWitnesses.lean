@@ -20,7 +20,7 @@ noncomputable section
 
 /-- Witness data for scalarization of annealed matrices at scale `n`. -/
 structure AnnealedScalarizationWitness {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) where
+    (P : RestrictionCoeffLaw d) (n : ℤ) where
   sigma : ℝ
   sigmaStar : ℝ
   sigma_eq : annealedSigmaAtScale P n = sigma • 1
@@ -29,12 +29,12 @@ structure AnnealedScalarizationWitness {d : ℕ}
 
 /-- Scalarization at scale `n`, packaged as a witness. -/
 def HasAnnealedScalarizationAtScale {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ) : Prop :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) : Prop :=
   Nonempty (AnnealedScalarizationWitness P n)
 
 /-- Abstract invariance data sufficient to build a scalarization witness. -/
 structure AnnealedScalarizationInvarianceData {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ) where
+    (P : RestrictionCoeffLaw d) (n : ℤ) where
   sigmaFlip : IsSignFlipInvariant (annealedSigmaAtScale P n)
   sigmaSwap : IsSwapInvariant (annealedSigmaAtScale P n)
   sigmaStarFlip : IsSignFlipInvariant (annealedSigmaStarAtScale P n)
@@ -44,7 +44,7 @@ structure AnnealedScalarizationInvarianceData {d : ℕ} [NeZero d]
 /-- Primitive scalarization data for the annealed `b` and
 `\sigma_*^{-1}` blocks. -/
 structure AnnealedScalarizationPrimitiveData {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ) where
+    (P : RestrictionCoeffLaw d) (n : ℤ) where
   sigmaStarInvFlip : IsSignFlipInvariant (annealedSigmaStarInvAtScale P n)
   sigmaStarInvSwap : IsSwapInvariant (annealedSigmaStarInvAtScale P n)
   bFlip : IsSignFlipInvariant (annealedBAtScale P n)
@@ -53,46 +53,46 @@ structure AnnealedScalarizationPrimitiveData {d : ℕ} [NeZero d]
 
 /-- The scalar contrast ratio attached to a chosen scalarization witness. -/
 noncomputable def annealedContrastAtScale {d : ℕ}
-    {P : CoeffLaw d} {n : ℤ}
+    {P : RestrictionCoeffLaw d} {n : ℤ}
     (w : AnnealedScalarizationWitness P n) : ℝ :=
   w.sigma * w.sigmaStar⁻¹
 
 theorem annealedSigmaAtScale_isScalarMatrix_of_invariant {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ)
+    (P : RestrictionCoeffLaw d) (n : ℤ)
     (hFlip : IsSignFlipInvariant (annealedSigmaAtScale P n))
     (hSwap : IsSwapInvariant (annealedSigmaAtScale P n)) :
     IsScalarMatrix (annealedSigmaAtScale P n) :=
   isScalarMatrix_of_isSignFlipInvariant_of_isSwapInvariant hFlip hSwap
 
 theorem annealedSigmaStarInvAtScale_isScalarMatrix_of_invariant {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ)
+    (P : RestrictionCoeffLaw d) (n : ℤ)
     (hFlip : IsSignFlipInvariant (annealedSigmaStarInvAtScale P n))
     (hSwap : IsSwapInvariant (annealedSigmaStarInvAtScale P n)) :
     IsScalarMatrix (annealedSigmaStarInvAtScale P n) :=
   isScalarMatrix_of_isSignFlipInvariant_of_isSwapInvariant hFlip hSwap
 
 theorem annealedBAtScale_isScalarMatrix_of_invariant {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ)
+    (P : RestrictionCoeffLaw d) (n : ℤ)
     (hFlip : IsSignFlipInvariant (annealedBAtScale P n))
     (hSwap : IsSwapInvariant (annealedBAtScale P n)) :
     IsScalarMatrix (annealedBAtScale P n) :=
   isScalarMatrix_of_isSignFlipInvariant_of_isSwapInvariant hFlip hSwap
 
 theorem annealedSigmaStarAtScale_isScalarMatrix_of_invariant {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ)
+    (P : RestrictionCoeffLaw d) (n : ℤ)
     (hFlip : IsSignFlipInvariant (annealedSigmaStarAtScale P n))
     (hSwap : IsSwapInvariant (annealedSigmaStarAtScale P n)) :
     IsScalarMatrix (annealedSigmaStarAtScale P n) :=
   isScalarMatrix_of_isSignFlipInvariant_of_isSwapInvariant hFlip hSwap
 
 theorem annealedSigmaStarAtScale_isScalarMatrix_of_sigmaStarInv {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ)
+    (P : RestrictionCoeffLaw d) (n : ℤ)
     (hScalar : IsScalarMatrix (annealedSigmaStarInvAtScale P n)) :
     IsScalarMatrix (annealedSigmaStarAtScale P n) := by
   simpa [annealedSigmaStarAtScale, annealedSigmaStar] using isScalarMatrix_inv hScalar
 
 theorem annealedKappaAtScale_eq_zero_of_sigmaStarInvKappaMean_eq_zero {d : ℕ}
-    (P : CoeffLaw d) (n : ℤ)
+    (P : RestrictionCoeffLaw d) (n : ℤ)
     (hMean : annealedSigmaStarInvKappaMeanAtScale P n = 0) :
     annealedKappaAtScale P n = 0 := by
   change annealedKappa P (cubeSet (originCube d n)) = 0
@@ -101,7 +101,7 @@ theorem annealedKappaAtScale_eq_zero_of_sigmaStarInvKappaMean_eq_zero {d : ℕ}
     congrArg (fun M => annealedSigmaStar P (cubeSet (originCube d n)) * M) hMean
 
 theorem annealedSigmaAtScale_eq_annealedBAtScale_of_sigmaStarInvKappaMean_eq_zero
-    {d : ℕ} (P : CoeffLaw d) (n : ℤ)
+    {d : ℕ} (P : RestrictionCoeffLaw d) (n : ℤ)
     (hMean : annealedSigmaStarInvKappaMeanAtScale P n = 0) :
     annealedSigmaAtScale P n = annealedBAtScale P n := by
   change annealedSigma P (cubeSet (originCube d n)) = annealedB P (cubeSet (originCube d n))
@@ -113,7 +113,7 @@ theorem annealedSigmaAtScale_eq_annealedBAtScale_of_sigmaStarInvKappaMean_eq_zer
   simp [hKappa]
 
 theorem annealedSigmaAtScale_isScalarMatrix_of_bInvariant_of_sigmaStarInvKappaMean_eq_zero
-    {d : ℕ} [NeZero d] (P : CoeffLaw d) (n : ℤ)
+    {d : ℕ} [NeZero d] (P : RestrictionCoeffLaw d) (n : ℤ)
     (hBFlip : IsSignFlipInvariant (annealedBAtScale P n))
     (hBSwap : IsSwapInvariant (annealedBAtScale P n))
     (hMean : annealedSigmaStarInvKappaMeanAtScale P n = 0) :
@@ -124,7 +124,7 @@ theorem annealedSigmaAtScale_isScalarMatrix_of_bInvariant_of_sigmaStarInvKappaMe
 /-- Build scalarization from invariant annealed `\sigma`, `\sigma_*`, and
 zero coupling. -/
 noncomputable def annealedScalarizationWitnessOfInvariant {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ)
+    (P : RestrictionCoeffLaw d) (n : ℤ)
     (hSigmaFlip : IsSignFlipInvariant (annealedSigmaAtScale P n))
     (hSigmaSwap : IsSwapInvariant (annealedSigmaAtScale P n))
     (hSigmaStarFlip : IsSignFlipInvariant (annealedSigmaStarAtScale P n))
@@ -144,7 +144,7 @@ noncomputable def annealedScalarizationWitnessOfInvariant {d : ℕ} [NeZero d]
       kappa_eq_zero := hKappa }
 
 theorem hasAnnealedScalarizationAtScale_of_invariant {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ)
+    (P : RestrictionCoeffLaw d) (n : ℤ)
     (hSigmaFlip : IsSignFlipInvariant (annealedSigmaAtScale P n))
     (hSigmaSwap : IsSwapInvariant (annealedSigmaAtScale P n))
     (hSigmaStarFlip : IsSignFlipInvariant (annealedSigmaStarAtScale P n))
@@ -157,7 +157,7 @@ theorem hasAnnealedScalarizationAtScale_of_invariant {d : ℕ} [NeZero d]
 /-- Build scalarization from primitive invariant data for `b` and
 `\sigma_*^{-1}`. -/
 noncomputable def annealedScalarizationWitnessOfPrimitive {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ)
+    (P : RestrictionCoeffLaw d) (n : ℤ)
     (hSigmaStarInvFlip : IsSignFlipInvariant (annealedSigmaStarInvAtScale P n))
     (hSigmaStarInvSwap : IsSwapInvariant (annealedSigmaStarInvAtScale P n))
     (hBFlip : IsSignFlipInvariant (annealedBAtScale P n))
@@ -182,7 +182,7 @@ noncomputable def annealedScalarizationWitnessOfPrimitive {d : ℕ} [NeZero d]
         annealedKappaAtScale_eq_zero_of_sigmaStarInvKappaMean_eq_zero P n hMean }
 
 theorem hasAnnealedScalarizationAtScale_of_primitive {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ)
+    (P : RestrictionCoeffLaw d) (n : ℤ)
     (hSigmaStarInvFlip : IsSignFlipInvariant (annealedSigmaStarInvAtScale P n))
     (hSigmaStarInvSwap : IsSwapInvariant (annealedSigmaStarInvAtScale P n))
     (hBFlip : IsSignFlipInvariant (annealedBAtScale P n))
@@ -194,7 +194,7 @@ theorem hasAnnealedScalarizationAtScale_of_primitive {d : ℕ} [NeZero d]
 
 namespace AnnealedScalarizationInvarianceData
 
-variable {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
+variable {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n : ℤ}
 
 noncomputable def toWitness (h : AnnealedScalarizationInvarianceData P n) :
     AnnealedScalarizationWitness P n :=
@@ -209,7 +209,7 @@ end AnnealedScalarizationInvarianceData
 
 namespace AnnealedScalarizationPrimitiveData
 
-variable {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
+variable {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n : ℤ}
 
 noncomputable def toWitness (h : AnnealedScalarizationPrimitiveData P n) :
     AnnealedScalarizationWitness P n :=

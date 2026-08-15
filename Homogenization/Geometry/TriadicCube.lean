@@ -80,7 +80,11 @@ theorem isBounded_openCubeSet {d : ℕ} (Q : TriadicCube d) :
     intro i _hi
     exact hx i)
 
-/-- The standard centered triadic cube `\square_m = [-3^m / 2, 3^m / 2)^d`. -/
+/-- The centered triadic cube descriptor at scale `3^m`.
+
+Its source-facing realization `openCubeSet (originCube d m)` is
+`(-3^m / 2, 3^m / 2)^d`. The half-open `cubeSet` realization is the internal
+partition representative. -/
 def originCube (d : ℕ) (m : ℤ) : TriadicCube d :=
   { scale := m
     index := 0 }

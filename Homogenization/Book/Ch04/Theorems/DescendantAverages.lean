@@ -1,4 +1,5 @@
 import Mathlib.Algebra.Order.Chebyshev
+import Homogenization.Book.Ch04.PartitionAverageConstants
 import Homogenization.Book.Ch04.Theorems.ColorClassConcentration
 import Homogenization.Book.Ch04.Theorems.PartitionAveragesDefinitions
 import Homogenization.Book.Ch04.Theorems.PartitionAverages
@@ -12,8 +13,8 @@ namespace Ch04
 
 This file composes the public color-class concentration estimates with the
 finite-color aggregation theorem.  It is the coefficient-law-facing form of the
-partition-average fluctuation input: the statements use `UnitRangeDependentLaw`
-and `IsLocalRandomVariable`, while the old restriction-sigma machinery remains
+partition-average fluctuation input: the statements use `RestrictionUnitRangeDependentLaw`
+and `IsRestrictionLocalRandomVariable`, while the old restriction-sigma machinery remains
 outside the public theorem surface.
 -/
 
@@ -118,16 +119,16 @@ private theorem scaleColor_sqrt_card_sum_le {d : ℕ}
     (mul_le_mul_of_nonneg_right hsqrt_colors_le (by positivity))
 
 /-- Averaging over all descendants at scale `k` preserves `Gamma_sigma`
-concentration for public unit-range-dependent laws. -/
-theorem isBigO_gammaSigma_descendantAverage_of_unitRangeDependentLaw
+concentration for restriction-unit-range-dependent laws. -/
+theorem isBigO_gammaSigma_restrictionDescendantAverage_of_restrictionUnitRangeDependentLaw
     {d : ℕ} {Q : TriadicCube d} {k : ℤ}
-    {P : CoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
+    {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
     (hk : k ≤ Q.scale)
-    (hP : UnitRangeDependentLaw P)
+    (hP : RestrictionUnitRangeDependentLaw P)
     (hσ₀ : 0 < σ) (hσ₂ : σ ≤ 2) (hK : 0 < K)
     (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
-      ∀ R ∈ descendantsAtScale Q k, IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
+      ∀ R ∈ descendantsAtScale Q k, IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_meas : ∀ R ∈ descendantsAtScale Q k, Measurable (X R))
     (hX : ∀ R ∈ descendantsAtScale Q k, IsBigO P (gammaSigma σ) (X R) K)
     (h_mean : ∀ R ∈ descendantsAtScale Q k, ∫ a, X R a ∂P = 0) :
@@ -162,7 +163,7 @@ theorem isBigO_gammaSigma_descendantAverage_of_unitRangeDependentLaw
           (gammaSigmaIndependentSumConst σ * Real.sqrt (classCount c) * K) := by
     intro c hc
     have hcolor :=
-      isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw
+      isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_restrictionUnitRangeDependentLaw
         (Q := Q) (k := k) (c := c) (P := P) hP hσ₀ hσ₂ hK X
         (fun R hR => hX_local R (mem_descendantsAtScaleScaleColorClass_iff.mp hR).1)
         (fun R hR => hX_meas R (mem_descendantsAtScaleScaleColorClass_iff.mp hR).1)
@@ -216,16 +217,16 @@ theorem isBigO_gammaSigma_descendantAverage_of_unitRangeDependentLaw
     div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using haverage
 
 /-- Averaging over all descendants at scale `k` preserves `Psi_sigma`
-concentration for public unit-range-dependent laws. -/
-theorem isBigO_psiSigma_descendantAverage_of_unitRangeDependentLaw
+concentration for restriction-unit-range-dependent laws. -/
+theorem isBigO_psiSigma_restrictionDescendantAverage_of_restrictionUnitRangeDependentLaw
     {d : ℕ} {Q : TriadicCube d} {k : ℤ}
-    {P : CoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
+    {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
     (hk : k ≤ Q.scale)
-    (hP : UnitRangeDependentLaw P)
+    (hP : RestrictionUnitRangeDependentLaw P)
     (hσ : 1 ≤ σ) (hK : 0 < K)
     (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
-      ∀ R ∈ descendantsAtScale Q k, IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
+      ∀ R ∈ descendantsAtScale Q k, IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_meas : ∀ R ∈ descendantsAtScale Q k, Measurable (X R))
     (hX_int : ∀ R ∈ descendantsAtScale Q k, Integrable (X R) P)
     (hX : ∀ R ∈ descendantsAtScale Q k, IsBigO P (psiSigma σ) (X R) K)
@@ -261,7 +262,7 @@ theorem isBigO_psiSigma_descendantAverage_of_unitRangeDependentLaw
           (psiSigmaIndependentSumConst σ * Real.sqrt (classCount c) * K) := by
     intro c hc
     have hcolor :=
-      isBigO_psiSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw
+      isBigO_psiSigma_finsetSum_descendantsAtScaleScaleColorClass_of_restrictionUnitRangeDependentLaw
         (Q := Q) (k := k) (c := c) (P := P) hP hσ hK X
         (fun R hR => hX_local R (mem_descendantsAtScaleScaleColorClass_iff.mp hR).1)
         (fun R hR => hX_meas R (mem_descendantsAtScaleScaleColorClass_iff.mp hR).1)

@@ -21,8 +21,8 @@ hypotheses, rather than being added to the public theorem statement.
 -/
 
 private theorem barSigmaAtScale_le_LambdaMomentAtScale_zero_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP.barSigmaAtScale hStruct 0 ≤
       Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi := by
@@ -42,8 +42,8 @@ private theorem barSigmaAtScale_le_LambdaMomentAtScale_zero_of_P4
       0
 
 private theorem barSigmaStarAtScale_inv_le_lambdaInvMomentAtScale_zero_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     (hP.barSigmaStarAtScale hStruct 0)⁻¹ ≤
       Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi := by
@@ -65,8 +65,8 @@ private theorem barSigmaStarAtScale_inv_le_lambdaInvMomentAtScale_zero_of_P4
 /-- Under `(P4)`, the starred scalar is bounded by the upper scalar at every
 nonnegative scale. -/
 theorem barSigmaStarAtScale_le_barSigmaAtScale_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     hP.barSigmaStarAtScale hStruct (m : ℤ) ≤
       hP.barSigmaAtScale hStruct (m : ℤ) := by
@@ -79,7 +79,7 @@ theorem barSigmaStarAtScale_le_barSigmaAtScale_of_P4
     Section52.originBlockIntegrableAtScale_from_P4 hP hStruct hP4 m
   have htheta :
       1 ≤ b * c⁻¹ := by
-    simpa [thetaAtScale, Ch04.LawCarrier.thetaAtScale, b, c] using
+    simpa [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, b, c] using
       Section52.one_le_thetaAtScale_of_integrable_coarseFullBlockMatrixAtCube
         hP hStruct (m : ℤ) hBlock
   calc
@@ -92,8 +92,8 @@ theorem barSigmaStarAtScale_le_barSigmaAtScale_of_P4
 /-- Good-scale comparison: the inverse upper normalization at scale `m` is
 controlled by the scale-zero lower moment factor. -/
 theorem barSigmaAtScale_inv_le_one_add_delta_mul_lambdaInvMomentAtScale_zero_of_good
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (m : ℕ)
     (hgood_upper :
@@ -144,8 +144,8 @@ theorem barSigmaAtScale_inv_le_one_add_delta_mul_lambdaInvMomentAtScale_zero_of_
 /-- Good-scale comparison: the starred normalization at scale `m` is controlled
 by the scale-zero upper moment factor. -/
 theorem barSigmaStarAtScale_le_one_add_delta_mul_LambdaMomentAtScale_zero_of_good
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (m : ℕ)
     (hgood_lower :

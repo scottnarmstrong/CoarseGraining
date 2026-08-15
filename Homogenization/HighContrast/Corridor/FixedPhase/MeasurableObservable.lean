@@ -188,7 +188,7 @@ theorem rawPhaseObservable_restrict_eq_of_field [NeZero d]
       ⟨glueField ℓ σ Θ (corePatch ℓ σ K Ra), hkslice⟩ P).symm
   -- links 3–5: assemble
   rw [rawPhaseObservable, hInf, mu_eq_half_coarseBlockMatrix_cube hEllGlued P,
-    coarseBlockMatrix_congr_of_ae_eq hUmeas haeGlued]
+    coarseBlockMatrix_congr_of_ae_eq haeGlued]
   have hland := phaseObservable_corePatch_restrict_eq hℓ P hK b
   rw [phaseObservable]
   rw [show (fun k : {k // k ∈ K} => restrictCoeffField (coreBox ℓ σ k.val) b) = Ra from rfl] at hland

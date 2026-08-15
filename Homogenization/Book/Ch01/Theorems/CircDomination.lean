@@ -1,6 +1,14 @@
 import Homogenization.Book.Ch01.Definitions
 import Homogenization.Besov.Duality.GlobalComparison
 
+/-!
+# Chapter 1 circ domination
+
+The Chapter 1 public facade consists of the six exact source-regime bounds
+below.  The former totalized-real, disjoint-cube comparisons remain available
+only as compatibility results in `Book.Ch01.Legacy`.
+-/
+
 namespace Homogenization
 namespace Book
 namespace Ch01
@@ -9,7 +17,94 @@ open scoped ENNReal
 
 noncomputable section
 
-/-- Note-facing circ domination of the mean-zero dual negative Besov seminorm. -/
+/-- In the exact negative `q = 1` regime, the hatted dual seminorm is bounded
+by the exact finite-`q` circ seminorm. All proof obligations are internal. -/
+theorem dualNegativeBesovQOneHattedSeminorm_le_circNegativeBesovFiniteSeminorm
+    {d : ℕ} (P : DualNegativeBesovQOneParameters) (Q : Cube d) (f : Vec d → ℝ)
+    (hf : MeasureTheory.MemLp f (ENNReal.ofReal P.p)
+      (normalizedCubeMeasure Q)) :
+    dualNegativeBesovQOneHattedSeminorm P Q f hf ≤
+      (3 : ENNReal) ^ ((d : ℝ) + P.s) *
+        circNegativeBesovFiniteSeminorm P.circParameters Q f
+          (Homogenization.exactCircIntegrable_of_memLp Q P.p P.p_one_lt.le hf) :=
+  Homogenization.exactDualQOneHattedSeminorm_le_exactCircFiniteSeminorm P Q f hf
+
+/-- In the exact negative `q = 1` regime, the full dual norm is bounded by the
+exact finite-`q` circ seminorm plus the literal root term. All proof obligations
+are internal. -/
+theorem dualNegativeBesovQOneFullNorm_le_circNegativeBesovFiniteSeminorm_add_root
+    {d : ℕ} (P : DualNegativeBesovQOneParameters) (Q : Cube d) (f : Vec d → ℝ)
+    (hf : MeasureTheory.MemLp f (ENNReal.ofReal P.p)
+      (normalizedCubeMeasure Q)) :
+    dualNegativeBesovQOneFullNorm P Q f hf ≤
+      (3 : ENNReal) ^ ((d : ℝ) + P.s) *
+          circNegativeBesovFiniteSeminorm P.circParameters Q f
+            (Homogenization.exactCircIntegrable_of_memLp Q P.p P.p_one_lt.le hf) +
+        Homogenization.exactCircDepthWeight Q P.s 0 *
+          ENNReal.ofReal |Homogenization.cubeAverage Q f| :=
+  Homogenization.exactDualQOneFullNorm_le_exactCircFiniteSeminorm_add_root P Q f hf
+
+/-- In the exact finite-interior negative Besov (`1 < q < ∞`) regime, the
+hatted dual seminorm is bounded by the exact finite-`q` circ seminorm. All
+proof obligations are internal. -/
+theorem dualNegativeBesovFiniteHattedSeminorm_le_circNegativeBesovFiniteSeminorm
+    {d : ℕ} (P : DualNegativeBesovFiniteParameters) (Q : Cube d) (f : Vec d → ℝ)
+    (hf : MeasureTheory.MemLp f (ENNReal.ofReal P.p)
+      (normalizedCubeMeasure Q)) :
+    dualNegativeBesovFiniteHattedSeminorm P Q f hf ≤
+      (3 : ENNReal) ^ ((d : ℝ) + P.s) *
+        circNegativeBesovFiniteSeminorm P.circParameters Q f
+          (Homogenization.exactCircIntegrable_of_memLp Q P.p P.p_one_lt.le hf) :=
+  Homogenization.exactDualFiniteHattedSeminorm_le_exactCircFiniteSeminorm P Q f hf
+
+/-- In the exact finite-interior negative Besov (`1 < q < ∞`) regime, the full
+dual norm is bounded by the exact finite-`q` circ seminorm plus the literal
+root term. All proof obligations are internal. -/
+theorem dualNegativeBesovFiniteFullNorm_le_circNegativeBesovFiniteSeminorm_add_root
+    {d : ℕ} (P : DualNegativeBesovFiniteParameters) (Q : Cube d) (f : Vec d → ℝ)
+    (hf : MeasureTheory.MemLp f (ENNReal.ofReal P.p)
+      (normalizedCubeMeasure Q)) :
+    dualNegativeBesovFiniteFullNorm P Q f hf ≤
+      (3 : ENNReal) ^ ((d : ℝ) + P.s) *
+          circNegativeBesovFiniteSeminorm P.circParameters Q f
+            (Homogenization.exactCircIntegrable_of_memLp Q P.p P.p_one_lt.le hf) +
+        Homogenization.exactCircDepthWeight Q P.s 0 *
+          ENNReal.ofReal |Homogenization.cubeAverage Q f| :=
+  Homogenization.exactDualFiniteFullNorm_le_exactCircFiniteSeminorm_add_root P Q f hf
+
+/-- In the exact negative `q = ∞` regime, the hatted dual seminorm is bounded
+by the exact endpoint circ seminorm. All proof obligations are internal. -/
+theorem dualNegativeBesovTopHattedSeminorm_le_circNegativeBesovTopSeminorm
+    {d : ℕ} (P : DualNegativeBesovTopParameters) (Q : Cube d) (f : Vec d → ℝ)
+    (hf : MeasureTheory.MemLp f (ENNReal.ofReal P.p)
+      (normalizedCubeMeasure Q)) :
+    dualNegativeBesovTopHattedSeminorm P Q f hf ≤
+      (3 : ENNReal) ^ ((d : ℝ) + P.s) *
+        circNegativeBesovTopSeminorm P.circParameters Q f
+          (Homogenization.exactCircIntegrable_of_memLp Q P.p P.p_one_lt.le hf) :=
+  Homogenization.exactDualTopHattedSeminorm_le_exactCircTopSeminorm P Q f hf
+
+/-- In the exact negative `q = ∞` regime, the full dual norm is bounded by the
+exact endpoint circ seminorm plus the literal root term. All proof obligations
+are internal. -/
+theorem dualNegativeBesovTopFullNorm_le_circNegativeBesovTopSeminorm_add_root
+    {d : ℕ} (P : DualNegativeBesovTopParameters) (Q : Cube d) (f : Vec d → ℝ)
+    (hf : MeasureTheory.MemLp f (ENNReal.ofReal P.p)
+      (normalizedCubeMeasure Q)) :
+    dualNegativeBesovTopFullNorm P Q f hf ≤
+      (3 : ENNReal) ^ ((d : ℝ) + P.s) *
+          circNegativeBesovTopSeminorm P.circParameters Q f
+            (Homogenization.exactCircIntegrable_of_memLp Q P.p P.p_one_lt.le hf) +
+        Homogenization.exactCircDepthWeight Q P.s 0 *
+          ENNReal.ofReal |Homogenization.cubeAverage Q f| :=
+  Homogenization.exactDualTopFullNorm_le_exactCircTopSeminorm_add_root P Q f hf
+
+/-! ## Legacy totalized-real and disjoint-cube compatibility -/
+
+namespace Legacy
+
+/-- Compatibility comparison for the totalized-real, disjoint-cube mean-zero
+dual Besov seminorm; it is not an exact source-regime theorem. -/
 theorem circDominatesMeanZeroDualBesov {d : ℕ} (Q : Cube d)
     (s : ℝ) (p q : ℝ≥0∞) (u : Vec d → ℝ)
     (hs : 0 < s)
@@ -22,7 +117,8 @@ theorem circDominatesMeanZeroDualBesov {d : ℕ} (Q : Cube d)
   Homogenization.cubeBesovDualMeanZeroSeminorm_le_note_constant_mul_cubeBesovCircNorm
     Q s p q u hs hu hp hpTop hpConjTop hq
 
-/-- Note-facing circ domination of the full dual negative Besov norm. -/
+/-- Compatibility comparison for the totalized-real, disjoint-cube full dual
+Besov norm; it is not an exact source-regime theorem. -/
 theorem circDominatesFullDualBesov {d : ℕ} (Q : Cube d)
     (s : ℝ) (p q : ℝ≥0∞) (u : Vec d → ℝ)
     (hs : 0 < s)
@@ -36,8 +132,9 @@ theorem circDominatesFullDualBesov {d : ℕ} (Q : Cube d)
   Homogenization.cubeBesovDualFullNorm_le_note_rhs
     Q s p q u hs hu hp hpTop hpConjTop hq
 
-/-- Cube-wise Besov pairing controlled by the concrete circ negative norm for
-unit full-dual positive tests. -/
+/-- Compatibility pairing estimate for totalized-real, disjoint-cube Besov
+quantities and unit full-dual positive tests; it is not an exact source pairing
+theorem. -/
 theorem cubeBesovPairing_le_circNorm_of_fullTest {d : ℕ} (Q : Cube d)
     (s : ℝ) (p q : ℝ≥0∞) (u g : Vec d → ℝ)
     (hs : 0 < s)
@@ -64,6 +161,8 @@ theorem cubeBesovPairing_le_circNorm_of_fullTest {d : ℕ} (Q : Cube d)
       0 ≤ circNegativeBesovNorm Q s p q u :=
     Homogenization.cubeBesovCircNorm_nonneg Q s p q u hBdd
   exact hpair.trans (mul_le_mul_of_nonneg_right hconst hcirc_nonneg)
+
+end Legacy
 
 end
 

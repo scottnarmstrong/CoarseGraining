@@ -72,7 +72,7 @@ private theorem section52MomentLossCoeff_shift_le_xi_beta_cubed_core
     _ = 2 * ξ * (β ^ 3)⁻¹ := by ring
 
 theorem section53CoarseFluctuationBeta_inv_le_xi_of_sUpper
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sUpper⁻¹ ≤ (hP4.xi : ℝ) := by
   have hdim : (1 : ℝ) ≤ (d : ℝ) := by
@@ -89,7 +89,7 @@ theorem section53CoarseFluctuationBeta_inv_le_xi_of_sUpper
   exact (inv_le_comm₀ hs_pos hxi_pos).mpr hxi_inv_le_s
 
 theorem section53CoarseFluctuationBeta_inv_le_xi_of_sLower
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sLower⁻¹ ≤ (hP4.xi : ℝ) := by
   have hdim : (1 : ℝ) ≤ (d : ℝ) := by
@@ -106,7 +106,7 @@ theorem section53CoarseFluctuationBeta_inv_le_xi_of_sLower
   exact (inv_le_comm₀ hs_pos hxi_pos).mpr hxi_inv_le_s
 
 private theorem shiftedMomentDenom_upper_beta_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     let β := section53CoarseFluctuationBeta hP4
     β ≤ ((d : ℝ) / 2) + (d : ℝ) / (hP4.xi : ℝ) -
@@ -125,7 +125,7 @@ private theorem shiftedMomentDenom_upper_beta_le
   nlinarith
 
 private theorem shiftedMomentDenom_lower_beta_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     let β := section53CoarseFluctuationBeta hP4
     β ≤ ((d : ℝ) / 2) + (d : ℝ) / (hP4.xi : ℝ) -
@@ -144,7 +144,7 @@ private theorem shiftedMomentDenom_lower_beta_le
   nlinarith
 
 theorem section52MomentLossCoeff_upper_beta_shift_le_xi_beta_cubed
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     let β := section53CoarseFluctuationBeta hP4
     section52MomentLossCoeff d hP4.xi hP4.sUpper (hP4.sUpper + β) ≤
@@ -168,7 +168,7 @@ theorem section52MomentLossCoeff_upper_beta_shift_le_xi_beta_cubed
       (ξ := (hP4.xi : ℝ)) hβ hs hD hβ_le_s hsinv hxi_nonneg
 
 theorem section52MomentLossCoeff_lower_beta_shift_le_xi_beta_cubed
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     let β := section53CoarseFluctuationBeta hP4
     section52MomentLossCoeff d hP4.xi hP4.sLower (hP4.sLower + β) ≤
@@ -192,7 +192,7 @@ theorem section52MomentLossCoeff_lower_beta_shift_le_xi_beta_cubed
       (ξ := (hP4.xi : ℝ)) hβ hs hD hβ_le_s hsinv hxi_nonneg
 
 theorem section52MomentLossCoeff_upper_two_beta_shift_le_xi_beta_cubed
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     let β := section53CoarseFluctuationBeta hP4
     section52MomentLossCoeff d hP4.xi (hP4.sUpper + β)
@@ -231,7 +231,7 @@ theorem section52MomentLossCoeff_upper_two_beta_shift_le_xi_beta_cubed
       (ξ := (hP4.xi : ℝ)) hβ hs hD hβ_le_s hsinv hxi_nonneg
 
 theorem section52MomentLossCoeff_lower_two_beta_shift_le_xi_beta_cubed
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     let β := section53CoarseFluctuationBeta hP4
     section52MomentLossCoeff d hP4.xi (hP4.sLower + β)

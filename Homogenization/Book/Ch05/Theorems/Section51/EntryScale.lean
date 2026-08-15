@@ -20,7 +20,7 @@ burn-in scales.
 -/
 
 theorem widetildeThetaAtScale_nonneg
-    {d : ℕ} [NeZero d] (P : Ch04.CoeffLaw d)
+    {d : ℕ} [NeZero d] (P : Ch04.RestrictionCoeffLaw d)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℤ) :
     0 ≤ widetildeThetaAtScale P m hP4 := by
   unfold widetildeThetaAtScale Ch04.widetildeThetaAtScale

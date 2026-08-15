@@ -50,9 +50,9 @@ theorem QuantitativeEllipticSlice.ae_toHilbertMatrixL2_mem_quantitativeEllipticH
   rw [hcoeff]
   simpa [quantitativeEllipticHilbertMatSet, restrictCoeffField, hx] using a.2.2 x hx
 
-theorem IsLocalSigmaMeasurableOn.measurable_entryTestObservable
+theorem IsPointwiseLocalSigmaMeasurableOn.measurable_entryTestObservable
     {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} {A : Ω → CoeffField d} {U : Set (Vec d)}
-    (hA : IsLocalSigmaMeasurableOn A U) (i j : Fin d) {φ : Vec d → ℝ}
+    (hA : IsPointwiseLocalSigmaMeasurableOn A U) (i j : Fin d) {φ : Vec d → ℝ}
     (hφ_cont : ContDiff ℝ (⊤ : ℕ∞) φ) (hφ_compact : HasCompactSupport φ)
     (hφ_support : tsupport φ ⊆ U) :
     Measurable fun ω => ∫ x, A ω x i j * φ x ∂MeasureTheory.volume := by

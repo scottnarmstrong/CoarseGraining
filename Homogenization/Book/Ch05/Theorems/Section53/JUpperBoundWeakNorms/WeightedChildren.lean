@@ -25,19 +25,19 @@ The manuscript later supplies `weight R = 1 - (phi)_R`; the only stochastic
 input here is the Ch4 source theorem for weighted descendant response
 expectations. -/
 theorem integral_weightedChildResponseJ_eq_zero_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     (weight : TriadicCube d → ℝ) (p q : Vec d)
     (hweight :
       descendantsAverage (originCube d m) (Int.toNat (m - k)) weight = 0)
     (hJ : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     ∫ a,
         descendantsAverage (originCube d m) (Int.toNat (m - k))
-          (fun R => weight R * Ch04.responseJObservableCubeSet R p q a) ∂P = 0 := by
+          (fun R => weight R * Ch04.restrictionResponseJObservableCubeSet R p q a) ∂P = 0 := by
   rw [
-    hP.integral_weightedDescendantsAverage_responseJObservableCubeSet_eq_weight_average_mul_originCube_of_stationary
+    hP.integral_weightedDescendantsAverage_restrictionResponseJObservableCubeSet_eq_weight_average_mul_originCube_of_stationary
       hstat hk_nonneg hkm weight p q hJ,
     hweight]
   ring
@@ -85,22 +85,22 @@ noncomputable def cutoffWeightedChildResponseJAtScale {d : ℕ}
   fun a =>
     descendantsAverage (originCube d m) (Int.toNat (m - k))
       (fun R => cutoffChildWeight φ R *
-        Ch04.responseJObservableCubeSet R p q a)
+        Ch04.restrictionResponseJObservableCubeSet R p q a)
 
 /-- Childwise response integrability makes the cutoff-weighted child average
 integrable.  The cutoff weights are deterministic scalars. -/
 theorem integrable_cutoffWeightedChildResponseJAtScale
-    {d : ℕ} {P : Ch04.CoeffLaw d} {k m : ℤ} (hkm : k ≤ m)
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {k m : ℤ} (hkm : k ≤ m)
     (φ : Vec d → ℝ) (p q : Vec d)
     (hJ : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     Integrable (cutoffWeightedChildResponseJAtScale m k φ p q) P := by
   have hDepth :
       ∀ R, R ∈ descendantsAtDepth (originCube d m) (Int.toNat (m - k)) →
         Integrable
           (fun a : RegCoeffField d =>
             cutoffChildWeight φ R *
-              Ch04.responseJObservableCubeSet R p q a) P := by
+              Ch04.restrictionResponseJObservableCubeSet R p q a) P := by
     intro R hR
     have hRscale : R ∈ descendantsAtScale (originCube d m) k := by
       simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR
@@ -109,19 +109,19 @@ theorem integrable_cutoffWeightedChildResponseJAtScale
     Ch04.integrable_descendantsAverage
       (P := P) (Q := originCube d m) (j := Int.toNat (m - k))
       (F := fun R a =>
-        cutoffChildWeight φ R * Ch04.responseJObservableCubeSet R p q a) hDepth
+        cutoffChildWeight φ R * Ch04.restrictionResponseJObservableCubeSet R p q a) hDepth
 
 /-- The manuscript cutoff-weighted child response has zero expectation under
 stationarity once the cutoff is normalized to have parent average one. -/
 theorem integral_cutoffWeightedChildResponseJAtScale_eq_zero_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     (φ : Vec d → ℝ) (p q : Vec d)
     (hφ_int : IntegrableOn φ (cubeSet (originCube d m)) volume)
     (hMean : cubeAverage (originCube d m) φ = 1)
     (hJ : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     ∫ a, cutoffWeightedChildResponseJAtScale m k φ p q a ∂P = 0 := by
   have hweight :
       descendantsAverage (originCube d m) (Int.toNat (m - k))
@@ -136,7 +136,7 @@ theorem integral_cutoffWeightedChildResponseJAtScale_eq_zero_of_stationary
 /-- Parent centered response in the Section 5.3 notation. -/
 noncomputable def centeredResponseJAtScale {d : ℕ}
     (m : ℤ) (p q p0 q0 : Vec d) : RegCoeffField d → ℝ :=
-  Ch04.centeredResponseJObservableCubeSet (originCube d m) p q p0 q0
+  Ch04.restrictionCenteredResponseJObservableCubeSet (originCube d m) p q p0 q0
 
 /-- The centered parent response minus the cutoff-weighted child response
 average.  This is the stochastic side of the manuscript's centered splitting. -/
@@ -151,16 +151,16 @@ noncomputable def centeredJMinusCutoffWeightedChildAtScale {d : ℕ}
 expectation: the cutoff-weighted child contribution cancels by stationarity and
 normalization. -/
 theorem integral_centeredJMinusCutoffWeightedChildAtScale_eq_expectedResponseJCubeSet_sub_half_dot
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     (φ : Vec d → ℝ) (p q p0 q0 : Vec d)
     (hφ_int : IntegrableOn φ (cubeSet (originCube d m)) volume)
     (hMean : cubeAverage (originCube d m) φ = 1)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hJ : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     ∫ a, centeredJMinusCutoffWeightedChildAtScale m k φ p q p0 q0 a ∂P =
       Ch04.expectedResponseJCubeSet P (originCube d m) p q -
         (1 / 2 : ℝ) * vecDot p0 q0 := by
@@ -171,14 +171,14 @@ theorem integral_centeredJMinusCutoffWeightedChildAtScale_eq_expectedResponseJCu
   have hCenteredInt :
       Integrable (centeredResponseJAtScale m p q p0 q0) P := by
     simpa [centeredResponseJAtScale] using
-      Ch04.integrable_centeredResponseJObservableCubeSet
+      Ch04.integrable_restrictionCenteredResponseJObservableCubeSet
         (P := P) (Q := originCube d m) p q p0 q0 hParent
   have hCenteredIntegral :
       ∫ a, centeredResponseJAtScale m p q p0 q0 a ∂P =
         Ch04.expectedResponseJCubeSet P (originCube d m) p q -
           (1 / 2 : ℝ) * vecDot p0 q0 := by
     simpa [centeredResponseJAtScale] using
-      Ch04.integral_centeredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_sub_half_dot
+      Ch04.integral_restrictionCenteredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_sub_half_dot
         (P := P) (Q := originCube d m) p q p0 q0 hParent
   have hWeightedZero :
       ∫ a, cutoffWeightedChildResponseJAtScale m k φ p q a ∂P = 0 :=
@@ -210,25 +210,25 @@ noncomputable def responseJAdditivityDefectAtScale {d : ℕ}
     (m k : ℤ) (p q : Vec d) : RegCoeffField d → ℝ :=
   fun a =>
     descendantsAverage (originCube d m) (Int.toNat (m - k))
-      (fun R => Ch04.responseJObservableCubeSet R p q a) -
-      Ch04.responseJObservableCubeSet (originCube d m) p q a
+      (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) -
+      Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q a
 
 /-- The additivity-defect observable has expectation `tau_{m,k}` under
 stationarity.  This is the stochastic identity used in the square-root
 Cauchy step of Lemma `l.J.upper.bound.weak.norms.homogenization.scale`. -/
 theorem integral_responseJAdditivityDefectAtScale_eq_tauAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m) (p q : Vec d)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hDesc : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     ∫ a, responseJAdditivityDefectAtScale m k p q a ∂P =
       tauAtScale P m k p q := by
   have hDescDepth :
       ∀ R, R ∈ descendantsAtDepth (originCube d m) (Int.toNat (m - k)) →
-        Integrable (Ch04.responseJObservableCubeSet R p q) P := by
+        Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P := by
     intro R hR
     exact hDesc R (by
       simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR)
@@ -236,30 +236,30 @@ theorem integral_responseJAdditivityDefectAtScale_eq_tauAtScale
       Integrable
         (fun a : RegCoeffField d =>
           descendantsAverage (originCube d m) (Int.toNat (m - k))
-            (fun R => Ch04.responseJObservableCubeSet R p q a)) P :=
-    Ch04.integrable_descendantsAverage_responseJObservableCubeSet hDescDepth
+            (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)) P :=
+    Ch04.integrable_descendantsAverage_restrictionResponseJObservableCubeSet hDescDepth
   calc
     ∫ a, responseJAdditivityDefectAtScale m k p q a ∂P
         =
       ∫ a,
           descendantsAverage (originCube d m) (Int.toNat (m - k))
-            (fun R => Ch04.responseJObservableCubeSet R p q a) ∂P -
-        ∫ a, Ch04.responseJObservableCubeSet (originCube d m) p q a ∂P := by
+            (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) ∂P -
+        ∫ a, Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q a ∂P := by
           change
             ∫ a,
               (descendantsAverage (originCube d m) (Int.toNat (m - k))
-                (fun R => Ch04.responseJObservableCubeSet R p q a) -
-                Ch04.responseJObservableCubeSet (originCube d m) p q a) ∂P =
+                (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) -
+                Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q a) ∂P =
             ∫ a,
                 descendantsAverage (originCube d m) (Int.toNat (m - k))
-                  (fun R => Ch04.responseJObservableCubeSet R p q a) ∂P -
-              ∫ a, Ch04.responseJObservableCubeSet (originCube d m) p q a ∂P
+                  (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) ∂P -
+              ∫ a, Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q a ∂P
           rw [integral_sub hAvgInt hParent]
     _ =
       Ch04.expectedResponseJCubeSet P (originCube d k) p q -
         Ch04.expectedResponseJCubeSet P (originCube d m) p q := by
         rw [
-          hP.integral_descendantsAverage_responseJObservableCubeSet_eq_originCube_of_stationary
+          hP.integral_descendantsAverage_restrictionResponseJObservableCubeSet_eq_originCube_of_stationary
             hstat hk_nonneg hkm p q hDesc]
         rfl
     _ = tauAtScale P m k p q := by
@@ -280,16 +280,16 @@ theorem integral_le_integral_of_ae_abs_le
 the left side into the centered parent expectation, and an a.e. deterministic
 absolute-value bound controls it by the expectation of any integrable RHS. -/
 theorem integral_centeredJMinusCutoffWeightedChildAtScale_le_integral_of_ae_abs_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     (φ : Vec d → ℝ) (p q p0 q0 : Vec d) (RHS : RegCoeffField d → ℝ)
     (hφ_int : IntegrableOn φ (cubeSet (originCube d m)) volume)
     (hMean : cubeAverage (originCube d m) φ = 1)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hJ : ∀ R, R ∈ descendantsAtScale (originCube d m) k →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P)
     (hRHS : Integrable RHS P)
     (hBound :
       ∀ᵐ a ∂P,
@@ -306,7 +306,7 @@ theorem integral_centeredJMinusCutoffWeightedChildAtScale_le_integral_of_ae_abs_
   have hCenteredInt :
       Integrable (centeredResponseJAtScale m p q p0 q0) P := by
     simpa [centeredResponseJAtScale] using
-      Ch04.integrable_centeredResponseJObservableCubeSet
+      Ch04.integrable_restrictionCenteredResponseJObservableCubeSet
         (P := P) (Q := originCube d m) p q p0 q0 hParent
   have hXint : Integrable X P := by
     simpa [X, centeredJMinusCutoffWeightedChildAtScale] using

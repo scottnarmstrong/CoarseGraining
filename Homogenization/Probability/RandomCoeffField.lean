@@ -123,10 +123,15 @@ theorem law_skewPart (A : RandomCoeffField Ω d) (μ : MeasureTheory.Measure Ω)
   simpa [RandomCoeffField.skewPart] using
     A.law_map μ skewCoeffField measurable_skewCoeffField
 
-/-- The local sigma-algebra on the sample space induced by a random coefficient
-field and the deterministic region `U`. -/
-def localSigma (A : RandomCoeffField Ω d) (U : Set (Vec d)) : MeasurableSpace Ω :=
-  (LocalSigma U).comap A
+/-- The pointwise-local sigma-algebra on the sample space induced by a random
+coefficient field and the deterministic region `U`.  This belongs to the
+retained restriction engineering lane. -/
+def pointwiseLocalSigma (A : RandomCoeffField Ω d) (U : Set (Vec d)) : MeasurableSpace Ω :=
+  (PointwiseLocalSigma U).comap A
+
+/-- Compatibility name for `pointwiseLocalSigma`. -/
+abbrev localSigma (A : RandomCoeffField Ω d) (U : Set (Vec d)) : MeasurableSpace Ω :=
+  A.pointwiseLocalSigma U
 
 /-- The restriction sigma-algebra on the sample space induced by a random
 coefficient field and the deterministic region `U`. This is the pullback of
@@ -135,22 +140,36 @@ local observables. -/
 def restrictionSigma (A : RandomCoeffField Ω d) (U : Set (Vec d)) : MeasurableSpace Ω :=
   (RestrictionSigma U).comap A
 
+theorem measurable_pointwiseLocalSigma (A : RandomCoeffField Ω d) (U : Set (Vec d)) :
+    @Measurable Ω (CoeffField d) (A.pointwiseLocalSigma U) (PointwiseLocalSigma U) A :=
+  comap_measurable A
+
+/-- Compatibility spelling for `measurable_pointwiseLocalSigma`. -/
 theorem measurable_localSigma (A : RandomCoeffField Ω d) (U : Set (Vec d)) :
     @Measurable Ω (CoeffField d) (A.localSigma U) (LocalSigma U) A :=
-  comap_measurable A
+  A.measurable_pointwiseLocalSigma U
 
 theorem measurable_restrictionSigma (A : RandomCoeffField Ω d) (U : Set (Vec d)) :
     @Measurable Ω (CoeffField d) (A.restrictionSigma U) (RestrictionSigma U) A :=
   comap_measurable A
 
+theorem measurable_localTestObservable_pointwiseLocalSigma
+    (A : RandomCoeffField Ω d) (U : Set (Vec d))
+    (e e' : Vec d) {φ : Vec d → ℝ} (hφ_cont : ContDiff ℝ (⊤ : ℕ∞) φ)
+    (hφ_compact : HasCompactSupport φ) (hφ_support : tsupport φ ⊆ U) :
+    @Measurable Ω ℝ (A.pointwiseLocalSigma U) (borel ℝ)
+      (fun ω => localTestObservable e e' φ (A ω)) := by
+  exact
+    (measurable_localTestObservable_localSigma (U := U) e e' hφ_cont hφ_compact hφ_support).comp
+      (measurable_pointwiseLocalSigma (A := A) U)
+
+/-- Compatibility spelling for the pointwise-local test-observable theorem. -/
 theorem measurable_localTestObservable (A : RandomCoeffField Ω d) (U : Set (Vec d))
     (e e' : Vec d) {φ : Vec d → ℝ} (hφ_cont : ContDiff ℝ (⊤ : ℕ∞) φ)
     (hφ_compact : HasCompactSupport φ) (hφ_support : tsupport φ ⊆ U) :
     @Measurable Ω ℝ (A.localSigma U) (borel ℝ)
-      (fun ω => localTestObservable e e' φ (A ω)) := by
-  exact
-    (measurable_localTestObservable_localSigma (U := U) e e' hφ_cont hφ_compact hφ_support).comp
-      (measurable_localSigma (A := A) U)
+      (fun ω => localTestObservable e e' φ (A ω)) :=
+  A.measurable_localTestObservable_pointwiseLocalSigma U e e' hφ_cont hφ_compact hφ_support
 
 end RandomCoeffField
 

@@ -34,13 +34,13 @@ noncomputable def normalizedTraceJAverageGeometricConstParams {d : ℕ}
 
 @[simp]
 theorem normalizedTraceJAverageGeometricConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     normalizedTraceJAverageGeometricConstParams hP4.params =
       normalizedTraceJAverageGeometricConst hP4 := rfl
 
 theorem normalizedMatrixAverageGeometricConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ normalizedMatrixAverageGeometricConst hP4 := by
   unfold normalizedMatrixAverageGeometricConst
@@ -51,7 +51,7 @@ theorem normalizedMatrixAverageGeometricConst_nonneg
     (normalizedQuadraticProbeAverageUniformRootSqConst_nonneg hP4)
 
 theorem normalizedTraceJAverageGeometricConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ normalizedTraceJAverageGeometricConst hP4 := by
   unfold normalizedTraceJAverageGeometricConst
@@ -108,8 +108,8 @@ private theorem fullBlock_diagonal_conj_operatorNormSq_le_sixteen
   nlinarith [sq_nonneg ‖LM‖]
 
 private theorem diagonal_gap_operatorNormSq_le_thetaSq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     {ell j m : ℕ} (hellj : ell ≤ j) (hjm : j ≤ m) :
@@ -174,7 +174,7 @@ private theorem diagonal_gap_operatorNormSq_le_thetaSq
       bell * bm⁻¹ ≤ bell * cell⁻¹ :=
         mul_le_mul_of_nonneg_left hinv hbell_pos.le
       _ = thetaAtScale hP hStruct (ell : ℤ) := by
-        simp [thetaAtScale, Ch04.LawCarrier.thetaAtScale, bell, cell]
+        simp [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, bell, cell]
   have hlower_le_theta :
       cm * cell⁻¹ ≤ thetaAtScale hP hStruct (ell : ℤ) := by
     calc
@@ -182,7 +182,7 @@ private theorem diagonal_gap_operatorNormSq_le_thetaSq
         mul_le_mul_of_nonneg_right (hcm_le_bm.trans hbm_le_bell)
           (inv_nonneg.mpr hcell_pos.le)
       _ = thetaAtScale hP hStruct (ell : ℤ) := by
-        simp [thetaAtScale, Ch04.LawCarrier.thetaAtScale, bell, cell]
+        simp [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, bell, cell]
   have hupper_one : 1 ≤ bell * bm⁻¹ := by
     calc
       1 = bm * bm⁻¹ := by field_simp [hbm_pos.ne']
@@ -259,8 +259,8 @@ private theorem diagonal_gap_operatorNormSq_le_thetaSq
   exact pow_le_pow_left₀ (norm_nonneg _) hnorm_le 2
 
 private theorem normalizer_ratio_abs_le_two
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     {ell m : ℕ} (hellm : ell ≤ m) :
@@ -312,7 +312,7 @@ private theorem normalizer_ratio_abs_le_two
       bell * bm⁻¹ ≤ bell * cell⁻¹ :=
         mul_le_mul_of_nonneg_left hinv hbell_pos.le
       _ = θell := by
-        simp [θell, Ch04.LawCarrier.thetaAtScale, bell, cell]
+        simp [θell, Ch04.RestrictionLawCarrier.thetaAtScale, bell, cell]
   have hlower_ratio :
       cm * cell⁻¹ ≤ θell := by
     calc
@@ -320,7 +320,7 @@ private theorem normalizer_ratio_abs_le_two
         mul_le_mul_of_nonneg_right (hcm_le_bm.trans hbm_le_bell)
           (inv_nonneg.mpr hcell_pos.le)
       _ = θell := by
-        simp [θell, Ch04.LawCarrier.thetaAtScale, bell, cell]
+        simp [θell, Ch04.RestrictionLawCarrier.thetaAtScale, bell, cell]
   intro α
   cases α with
   | inl i =>
@@ -369,8 +369,8 @@ private theorem normalizer_ratio_abs_le_two
       simpa [cm, cell, x] using habs
 
 private theorem normalizer_change_operatorNormSq_le_sixteen
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     {ell m : ℕ} (hellm : ell ≤ m) (M : FullBlockMat d) :
@@ -454,8 +454,8 @@ private theorem normalizer_change_operatorNormSq_le_sixteen
         normalizer_ratio_abs_le_two hP hStruct hP4 hsmall hellm)
 
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_center_ell
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     {ell m : ℕ} (hellm : ell ≤ m) (Q : TriadicCube d) (a : RegCoeffField d) :
@@ -545,7 +545,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_center_ell
 
 /-- The geometric coefficient in the one-scale fluctuation estimate. -/
 noncomputable def fluctuationOneScaleGeometricConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   32 * (2 * normalizedMatrixAverageGeometricConst hP4 +
     8 * normalizedTraceJAverageGeometricConst hP4)
@@ -555,7 +555,7 @@ noncomputable def fluctuationOneScaleThetaConst (d : ℕ) : ℝ :=
   32 * (8 * normalizedTraceJAverageThetaConst d) + 2
 
 theorem fluctuationOneScaleGeometricConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ fluctuationOneScaleGeometricConst hP4 := by
   unfold fluctuationOneScaleGeometricConst
@@ -568,8 +568,8 @@ theorem fluctuationOneScaleThetaConst_nonneg (d : ℕ) :
   nlinarith [normalizedTraceJAverageThetaConst_nonneg d]
 
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_geometric_add_theta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     {ell j m : ℕ} (hellj : ell ≤ j) (hjm : j ≤ m) :
@@ -715,7 +715,7 @@ noncomputable def fluctuationOneScaleGeometricConstParams {d : ℕ}
 
 @[simp]
 theorem fluctuationOneScaleGeometricConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     fluctuationOneScaleGeometricConstParams hP4.params =
       fluctuationOneScaleGeometricConst hP4 := rfl
@@ -728,8 +728,8 @@ private theorem int_toNat_nat_sub_of_le {j m : ℕ} (hjm : j ≤ m) :
   simp
 
 theorem coarseFluctuationFullBlockSumAtScale_eq_nat_Icc
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) :
     let β := section53CoarseFluctuationBeta hP4
@@ -794,9 +794,9 @@ theorem coarseFluctuationFullBlockSumAtScale_le_assembly_fluctuation_bound
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ Ktau Kgeom Ktheta : ℝ,
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (_hstat : Ch04.StationaryLaw P)
-      (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (_hstat : Ch04.RestrictionStationaryLaw P)
+      (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2 →

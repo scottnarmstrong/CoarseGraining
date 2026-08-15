@@ -24,8 +24,8 @@ noncomputable section
 
 /-- Shifted localized quenched estimate above the tail-based minimal scale. -/
 theorem quenchedLocalizedEstimate_shifted_above_quenchedMinimalScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {t α : ℝ} {Nentry Nmin : ℕ}
     (hgoodAE :
@@ -95,8 +95,8 @@ theorem quenchedLocalizedEstimate_shifted_above_quenchedMinimalScale
 summation step: one gives the stochastic integrability of `X`, the other
 removes the null exceptional set with no good tail. -/
 theorem quenchedLocalizedEstimate_shifted_from_badTailBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {t α η B : ℝ} {Nentry Nmin : ℕ}
     (hη_pos : 0 < η) (hB : 1 ≤ B)
@@ -157,8 +157,8 @@ Since `badScaleEvent H t α` is antitone in the bad scale for `0 ≤ α`, the
 tail event over all later bad scales is contained in the bad-scale event at
 the first level. -/
 theorem quenchedLocalizedEstimate_shifted_from_badScaleBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {t α η B : ℝ} {Nentry Nmin : ℕ}
     (hα_nonneg : 0 ≤ α) (hη_pos : 0 < η) (hB : 1 ≤ B)
@@ -267,8 +267,8 @@ theorem exists_exp_neg_rpow_three_div_le
 input needed to remove the exceptional no-good-tail set follows from the same
 stretched-exponential tail bound. -/
 theorem quenchedLocalizedEstimate_shifted_from_badTailBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {t α η B : ℝ} {Nentry Nmin : ℕ}
     (hη_pos : 0 < η) (hB : 1 ≤ B)

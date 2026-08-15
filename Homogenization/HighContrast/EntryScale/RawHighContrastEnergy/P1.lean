@@ -36,9 +36,9 @@ budget, not to the raw `eps * F_m` centering slot.
 theorem cutoffOscillation_special_expectedResponse_le_rawEnergy_tail
     {d : ℕ} [NeZero d] :
     ∃ C_osc : ℝ, 0 ≤ C_osc ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {k m : ℕ}, k < m → ∀ e : Homogenization.Vec d,
         Homogenization.vecNormSq e = 1 →
@@ -118,10 +118,10 @@ theorem specialWeakNormEnergyRemainderAtScale_le_centering_add_components_with_s
     {d : ℕ} [NeZero d] :
     ∃ C_osc C_lin : ℝ,
       0 ≤ C_osc ∧ 0 ≤ C_lin ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         (hc : HighContrastExponents d)
         (hm : HighCenteredMomentParameters d hc)
@@ -151,7 +151,7 @@ theorem specialWeakNormEnergyRemainderAtScale_le_centering_add_components_with_s
          let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
          let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
-            (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+            (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
          let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
          let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -177,7 +177,7 @@ theorem specialWeakNormEnergyRemainderAtScale_le_centering_add_components_with_s
          let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
          let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
-            (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+            (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
          let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
          let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
@@ -225,7 +225,7 @@ theorem specialWeakNormEnergyRemainderAtScale_le_centering_add_components_with_s
          let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
          let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
-            (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+            (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
          let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
          let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -250,7 +250,7 @@ theorem specialWeakNormEnergyRemainderAtScale_le_centering_add_components_with_s
          let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
          let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
-            (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+            (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
          let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
          let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
@@ -298,7 +298,7 @@ theorem specialWeakNormEnergyRemainderAtScale_le_centering_add_components_with_s
           Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
          let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
-            (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+            (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
          let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
          let sourceMax :=
@@ -512,14 +512,14 @@ theorem specialWeakNormEnergyRemainderAtScale_le_centering_add_components_with_s
 /--
 Source labels `l.Jtilde.energy.bound` and `l.weaknorms.moreproto`:
 integrability of the special gradient weak-norm square needed by the raw
-centered-response energy estimate.  LIH proves this for its internal
+centered-response energy estimate.  The library proves this for its internal
 weak-norm maximizer abbreviation; this theorem exposes the unfolded canonical
 square used by the raw-energy bridge.
 -/
 theorem integrable_specialGradientWeakNormSquare_atScales_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d)
     (he : Homogenization.Book.Ch02.vecNorm e = 1) :
@@ -549,13 +549,13 @@ theorem integrable_specialGradientWeakNormSquare_atScales_of_P4
 /--
 Source labels `l.Jtilde.energy.bound` and `l.weaknorms.moreproto`:
 integrability of the special flux weak-norm square needed by the raw
-centered-response energy estimate, unfolded from LIH's internal abbreviation
+centered-response energy estimate, unfolded from the library's internal abbreviation
 to the canonical raw-energy hypothesis.
 -/
 theorem integrable_specialFluxWeakNormSquare_atScales_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d)
     (he : Homogenization.Book.Ch02.vecNorm e = 1) :
@@ -586,9 +586,9 @@ theorem integrable_specialFluxWeakNormSquare_atScales_of_P4
 compression.  This duplicates the no-drop API under a raw-energy-specific name
 to avoid changing the existing import graph. -/
 theorem tauAtScale_special_nonneg_of_P4_rawHighContrastEnergy
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (e : Homogenization.Vec d) :
     0 ≤
@@ -628,9 +628,9 @@ theorem tauAtScale_special_nonneg_of_P4_rawHighContrastEnergy
 
 /-- Canonical weak-norm contribution with an explicit lower-edge budget slot. -/
 noncomputable def specialWeakNormEnergyContributionWithLowerEdgeBudgetAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d) (lowerEdgeBudget : ℝ) : ℝ :=
   let P_km := terminalPAtScales hP hStruct k m
@@ -641,9 +641,9 @@ noncomputable def specialWeakNormEnergyContributionWithLowerEdgeBudgetAtScale
 
 /-- Older deterministic source drift carried by the memory lower-edge excess. -/
 def sourceMaxMemoryTermOfGrid
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) (N Nstar L i : ℕ) : ℝ :=
   let F_i : ℝ := contrastExcessAtScale hP hStruct (memoryGridScale Nstar L i)
   let Hprev : ℝ :=
@@ -657,9 +657,9 @@ def sourceMaxMemoryTermOfGrid
 
 /-- Canonical lower-tail response budget on a grid step. -/
 def sourceMaxCanonicalLowerTailBudgetOfGrid
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (Nstar L i : ℕ) (e : Homogenization.Vec d) (decay : ℝ) : ℝ :=
   let m : ℕ := memoryGridScale Nstar L i
@@ -673,7 +673,7 @@ def sourceMaxCanonicalLowerTailBudgetOfGrid
 
 /-- Nonnegativity of the source-max edge-loss scalar. -/
 private theorem sourceMax_edgeLossBudget_nonneg
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) (hcparams : hP4.params = hc.params) :
     0 ≤
@@ -725,7 +725,7 @@ geometric-discount edge-loss budget (the scalar payment of the summed
 source split.
 -/
 def sourceMaxSharpConst
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -739,7 +739,7 @@ def sourceMaxSharpConst
 
 /-- The resized source-max constant prefactor is nonnegative. -/
 theorem sourceMaxSharpConst_nonneg
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) (hcparams : hP4.params = hc.params) :
     0 ≤ sourceMaxSharpConst hP4 hc := by
@@ -762,7 +762,7 @@ noncomputable def sourceMaxSharpConstParams
 
 /-- Under `hP4.params = params` the sharp constant is parameter-determined. -/
 theorem sourceMaxSharpConst_eq_params
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {params :
       Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticityParams d}
@@ -791,9 +791,9 @@ source integrals are paid by the free scalar roots `stochRoot`, `polyRoot`
 plus twice the deterministic weighted drift supremum.
 -/
 def sourceMaxResizedBudgetAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) (N k m : ℕ) (hNm : N ≤ m)
     (e : Homogenization.Vec d) (stochRoot polyRoot : ℝ) : ℝ :=
@@ -817,9 +817,9 @@ Grid form of the resized source-max budget on the memory grid step `i`, at
 scales `k := m_{i-1}` and `m := m_i`.
 -/
 def sourceMaxResizedBudgetOfGrid
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) (N Nstar L i : ℕ) (hNNstar : N ≤ Nstar)
     (e : Homogenization.Vec d) (stochRoot polyRoot : ℝ) : ℝ :=

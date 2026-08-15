@@ -24,9 +24,9 @@ finite-RHS inputs supplied by the scalar maximizer weak-norm lemma.  The two
 integrability hypotheses say exactly that the scaled gradient and flux weak-norm
 square expectations appearing on the right-hand side are finite. -/
 theorem JUpperBoundWeakNorms_homogenizationScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     {s t : ℝ} (hs : 0 < s) (hs_lt_one : s < 1) (ht : 0 < t)
@@ -64,9 +64,9 @@ than by Cauchy in probability.  This is the surface used by the flatness-rules
 route: the RHS contains `eta * E[J_k] + eta^{-1} * tau_{m,k}` instead of
 `sqrt(tau_{m,k}) * sqrt(E[J_k])`. -/
 theorem JUpperBoundWeakNorms_young_homogenizationScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     {s t : ℝ} (hs : 0 < s) (hs_lt_one : s < 1) (ht : 0 < t)

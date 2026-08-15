@@ -24,16 +24,16 @@ first-lemma weak-norm RHS to the manuscript coarse-fluctuation RHS.
 noncomputable section
 
 private theorem barSigmaStarAtScale_pos_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 < hP.barSigmaStarAtScale hStruct (m : ℤ) := by
   have hBlock :
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (m : ℤ))) P :=
     Section52.originBlockIntegrableAtScale_from_P4 hP hStruct hP4 m
   have hInv : 0 < hP.barSigmaStarInvAtScale hStruct (m : ℤ) := by
-    simpa [Ch04.LawCarrier.barSigmaStarInvAtScale] using
-      Ch04.LawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube
+    simpa [Ch04.RestrictionLawCarrier.barSigmaStarInvAtScale] using
+      Ch04.RestrictionLawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube
         hP
         (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw
           hP hStruct (m : ℤ))
@@ -42,8 +42,8 @@ private theorem barSigmaStarAtScale_pos_of_P4
   exact inv_pos.mpr hInv
 
 private theorem barSigmaAtScale_pos_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 < hP.barSigmaAtScale hStruct (m : ℤ) := by
   have hBlock :
@@ -57,18 +57,18 @@ private theorem barSigmaAtScale_pos_of_P4
       0 < hP.barSigmaAtScale hStruct (m : ℤ) *
         (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ := by
     exact lt_of_lt_of_le zero_lt_one (by
-      simpa [thetaAtScale, Ch04.LawCarrier.thetaAtScale] using htheta)
+      simpa [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale] using htheta)
   exact pos_of_mul_pos_left hprod_pos (inv_pos.mpr hstar_pos).le
 
 private theorem sigmaHatAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ) :
     0 ≤ sigmaHatAtScale hP hStruct m := by
   exact Real.sqrt_nonneg _
 
 private theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m : ℤ) (R : TriadicCube d) (a : RegCoeffField d) :
     0 ≤ fullBlockNormalizedFluctuationOperatorNormSqAtScale hP hStruct m R a := by
   simp [fullBlockNormalizedFluctuationOperatorNormSqAtScale,
@@ -90,8 +90,8 @@ private theorem aemeasurable_vecNormSq_sub_const
 
 /-- Nonnegativity of the scalar ellipticity weight in the final RHS. -/
 theorem coarseFluctuationScalarWeightAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 ≤ coarseFluctuationScalarWeightAtScale hP hStruct m := by
   dsimp [coarseFluctuationScalarWeightAtScale]
@@ -109,8 +109,8 @@ theorem coarseFluctuationScalarWeightAtScale_nonneg
   exact add_nonneg (mul_nonneg hσ hstar_inv) (mul_nonneg hσ_inv hbar)
 
 private theorem sigmaHatAtScale_pos_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 < sigmaHatAtScale hP hStruct (m : ℤ) := by
   dsimp [sigmaHatAtScale]
@@ -123,8 +123,8 @@ below.  This is just AM-GM applied to
 `\widehat\sigma_m \bar\sigma_{*,0}^{-1}` and
 `\widehat\sigma_m^{-1} \bar\sigma_0`, whose product is `Theta_0 ≥ 1`. -/
 theorem one_le_coarseFluctuationScalarWeightAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     1 ≤ coarseFluctuationScalarWeightAtScale hP hStruct m := by
   dsimp [coarseFluctuationScalarWeightAtScale]
@@ -150,7 +150,7 @@ theorem one_le_coarseFluctuationScalarWeightAtScale
     simpa [θ0] using one_le_thetaAtScale_of_P4 hP hStruct hP4 0
   have hθ0_nonneg : 0 ≤ θ0 := le_trans zero_le_one hθ0_one
   have hxy : x * y = θ0 := by
-    dsimp [x, y, θ0, thetaAtScale, Ch04.LawCarrier.thetaAtScale,
+    dsimp [x, y, θ0, thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale,
       b0, c0]
     field_simp [hσ.ne', hc0.ne']
   have hAM : 2 * Real.sqrt θ0 ≤ x + y :=
@@ -165,8 +165,8 @@ theorem one_le_coarseFluctuationScalarWeightAtScale
 the squared Euclidean operator norm (`Matrix.toEuclideanCLM`), not a Frobenius
 norm. -/
 theorem coarseFluctuationFullBlockSumAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (k m : ℕ) :
     0 ≤ coarseFluctuationFullBlockSumAtScale hP hStruct hP4 k m := by
   dsimp [coarseFluctuationFullBlockSumAtScale]
@@ -180,9 +180,9 @@ theorem coarseFluctuationFullBlockSumAtScale_nonneg
 
 /-- Nonnegativity of the tau sum in the final RHS. -/
 theorem coarseFluctuationTauSumAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Vec d) :
     0 ≤ coarseFluctuationTauSumAtScale hP hStruct hP4 k m e := by
@@ -222,8 +222,8 @@ theorem coarseFluctuationTauSumAtScale_nonneg
 
 /-- Nonnegativity of the unit-scale ellipticity moment weight. -/
 theorem coarseFluctuationUnitMomentWeightAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 ≤ coarseFluctuationUnitMomentWeightAtScale hP hStruct hP4 m := by
   dsimp [coarseFluctuationUnitMomentWeightAtScale]
@@ -241,8 +241,8 @@ theorem coarseFluctuationUnitMomentWeightAtScale_nonneg
 
 /-- Nonnegativity of the response moment term. -/
 theorem coarseFluctuationResponseMomentAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Vec d) :
     0 ≤ coarseFluctuationResponseMomentAtScale hP hStruct hP4 k m e := by
@@ -253,10 +253,10 @@ theorem coarseFluctuationResponseMomentAtScale_nonneg
   have hJpow_nonneg :
       ∀ a : RegCoeffField d,
         0 ≤ Real.rpow
-          (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ := by
+          (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ := by
     intro a
     exact Real.rpow_nonneg
-      (Ch04.responseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a) _
+      (Ch04.restrictionResponseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a) _
   exact Real.rpow_nonneg (integral_nonneg hJpow_nonneg) _
 
 private theorem sum_range_to_Icc_descending {k m : ℤ} (hkm : k ≤ m)
@@ -351,9 +351,9 @@ weak-norm maximizer RHS.  This is the full-block fluctuation part of the
 paired square estimate; the fluctuation observable is the squared Euclidean
 operator norm (`Matrix.toEuclideanCLM`), not a Frobenius norm. -/
 theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (_hkm : k < m) (e : Vec d) (he : vecNormSq e = 1) :
     let β := section53CoarseFluctuationBeta hP4
@@ -605,7 +605,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
             (2 * θ * coarseFluctuationFullBlockSumAtScale hP hStruct hP4 k m) := by
             congr 1
             simp [coarseFluctuationFullBlockSumAtScale, S, w, β, θ,
-              Finset.mul_sum, mul_assoc, mul_left_comm, mul_comm]
+              Finset.mul_sum, mul_assoc, mul_comm]
   have hmain :
       ∫ a, X a ∂P ≤
         (∑ n ∈ S, w n) *
@@ -625,9 +625,9 @@ not a Frobenius norm. -/
 theorem integral_paired_highScaleAverageTerms_special_le_beta_inv_fullBlockSumAtScale
     {d : ℕ} [NeZero d] :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P) (_hstat : Ch04.StationaryLaw P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P) (_hstat : Ch04.RestrictionStationaryLaw P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hP4 : QuantitativeCoarseGrainedEllipticity P)
         {k m : ℕ}, k < m → ∀ e : Vec d, vecNormSq e = 1 →
         let β := section53CoarseFluctuationBeta hP4
@@ -727,9 +727,9 @@ special vectors is controlled by the manuscript weighted tau sum.  All
 response integrability inputs are discharged from `(P4)` and the Ch4
 law-facing integrability surface. -/
 theorem integral_sq_beta_weighted_sqrt_responseDefectAverageAtScale_special_le_tauSum
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Vec d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -763,13 +763,13 @@ theorem integral_sq_beta_weighted_sqrt_responseDefectAverageAtScale_special_le_t
     Section52.originBlockIntegrableAtScale_from_P4 hP hStruct hP4 m
   have hParent :
       Integrable
-        (Ch04.responseJObservableCubeSet (originCube d (m : ℤ)) p_e q_e) P :=
-    hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+        (Ch04.restrictionResponseJObservableCubeSet (originCube d (m : ℤ)) p_e q_e) P :=
+    hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
       (originCube d (m : ℤ)) p_e q_e hBlockM
   have hDesc :
       ∀ n ∈ Finset.Icc ((k : ℤ) + 1) (m : ℤ),
         ∀ R, R ∈ descendantsAtScale (originCube d (m : ℤ)) n →
-          Integrable (Ch04.responseJObservableCubeSet R p_e q_e) P := by
+          Integrable (Ch04.restrictionResponseJObservableCubeSet R p_e q_e) P := by
     intro n hn R hR
     have hn_bounds := Finset.mem_Icc.mp hn
     have hn_nonneg : 0 ≤ n := by
@@ -790,7 +790,7 @@ theorem integral_sq_beta_weighted_sqrt_responseDefectAverageAtScale_special_le_t
       hP.integrable_coarseFullBlockMatrixAtCube_of_mem_descendantsAtScale_originCube
         hstat hn_nonneg hnm hR hOrigin
     exact
-      hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+      hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
         R p_e q_e hBlockR
   have hbase :=
     integral_sq_beta_weighted_sqrt_responseDefectAverageAtScale_le_beta_inv_tauSum

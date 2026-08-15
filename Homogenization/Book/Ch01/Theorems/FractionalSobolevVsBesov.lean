@@ -4,13 +4,13 @@ import Homogenization.Sobolev.Fractional.GagliardoLeBesov
 import Homogenization.Sobolev.Fractional.CongruenceAE
 
 /-!
-# Fractional Sobolev versus Besov seminorms (CG Lemma 1.3)
+# Legacy fractional Sobolev versus Besov seminorms (CG Lemma 1.3)
 
-Note-facing form of `l.Wsp.vs.Bspp.function.spaces`: on every triadic cube,
-the volume-normalized fractional Sobolev (Gagliardo) seminorm and the
-overlapping triadic Besov seminorm `B^s_{p,p}` are equivalent, with a constant
-depending only on the dimension — uniformly in `s ∈ (0,1]`, `p ∈ [1,∞)`, and
-the cube scale.
+Legacy, restricted real-valued overlap-comparison lane.  On every triadic
+cube, its volume-normalized fractional Sobolev (Gagliardo) seminorm and older
+overlapping triadic Besov presentation `B^s_{p,p}` are equivalent, with a
+constant depending only on the dimension — uniformly in `s ∈ (0,1]`,
+`p ∈ [1,∞)`, and the cube scale.
 
 Constant accounting (each factor uniform in `s, p`):
 
@@ -22,16 +22,19 @@ Constant accounting (each factor uniform in `s, p`):
 * both collapse to the single constant `wspVsBsppConstant d = 2^3·3^{3d+2}`
   after the `p`-th root, since `(X^p)^{1/p} = X` and `Y^{1/p} ≤ Y` for `Y ≥ 1`.
 
-The Lean proof replaces the manuscript's partition-of-unity argument by the
-discrete-annulus argument (statement unchanged); the kernel uses the ambient
-sup-norm distance, absorbed into `C(d)`.
+The Lean proof replaces the manuscript's partition-of-unity argument by a
+discrete-annulus argument.  Within this restricted lane the comparison shape
+is unchanged, but its Gagliardo kernel uses the ambient sup-distance, absorbed
+into `C(d)`.  Its overlap Besov side is the older finite-truncation /
+real-`sSup` presentation.  This is not the new exact Euclidean / `ENNReal`
+manuscript API.
 
 The packaged hypothesis `MemFractionalSobolev` (`MemLp` + `MemWsp`) is the
-manuscript's `u ∈ W^{s,p}(□)`; no measurability of the representative is
-assumed in the packaged theorem (the statement is a.e.-invariant, and a
-measurable representative is transported through `CongruenceAE`).  The
-`BddAbove` side condition of the infinite-scale Besov seminorm is *derived*
-(it follows from membership in `W^{s,p}`), not assumed.
+legacy analogue of `u ∈ W^{s,p}(□)` for this ambient-sup-distance kernel.  No
+measurability of the representative is assumed in the packaged theorem (the
+statement is a.e.-invariant, and a measurable representative is transported
+through `CongruenceAE`).  The `BddAbove` side condition of the infinite-scale
+Besov seminorm is *derived*, not assumed.
 -/
 
 namespace Homogenization
@@ -43,20 +46,24 @@ noncomputable section
 open MeasureTheory
 open scoped ENNReal
 
-/-- The note-facing fractional Sobolev seminorm `[u]_{W̲^{s,p}(□)}`. -/
+namespace Legacy
+
+/-- The legacy/restricted fractional Sobolev seminorm
+`[u]_{W̲^{s,p}(□)}`, using the ambient sup-distance Gagliardo kernel. -/
 noncomputable abbrev fractionalSobolevSeminorm {d : ℕ} (Q : Cube d) (s : ℝ)
     (p : ℝ≥0∞) (u : Vec d → ℝ) : ℝ :=
   Gagliardo.cubeGagliardoSeminorm Q s p u
 
-/-- The note-facing overlapping Besov seminorm `[u]_{B̲^s_{p,p}(□)}`. -/
+/-- The legacy/restricted overlapping Besov seminorm `[u]_{B̲^s_{p,p}(□)}`
+in the finite-truncation / real-`sSup` presentation. -/
 noncomputable abbrev positiveBesovOverlapSeminormDiagonal {d : ℕ} (Q : Cube d)
     (s : ℝ) (p : ℝ≥0∞) (u : Vec d → ℝ) : ℝ :=
   cubeBesovOverlapSeminorm Q s p p u
 
-/-- Packaged membership `u ∈ W^{s,p}(□)`: `L^p` on the cube with finite
-Gagliardo seminorm.  This is the single note-facing hypothesis corresponding
-to the manuscript's `u ∈ W^{s,p}(□_m)`; no measurability of the representative
-is assumed (it is recovered a.e. from `MemLp`). -/
+/-- Legacy/restricted packaged membership: `L^p` on the cube with finite
+ambient-sup-distance Gagliardo seminorm.  This is not the exact Euclidean /
+`ENNReal` manuscript `u ∈ W^{s,p}(□_m)` API; no measurability of the
+representative is assumed (it is recovered a.e. from `MemLp`). -/
 def MemFractionalSobolev {d : ℕ} (Q : Cube d) (s : ℝ) (p : ℝ≥0∞)
     (u : Vec d → ℝ) : Prop :=
   MeasureTheory.MemLp u p (normalizedCubeMeasure Q) ∧ Gagliardo.MemWsp Q s p u
@@ -69,8 +76,8 @@ theorem MemFractionalSobolev.memWsp {d : ℕ} {Q : Cube d} {s : ℝ}
     {p : ℝ≥0∞} {u : Vec d → ℝ} (h : MemFractionalSobolev Q s p u) :
     Gagliardo.MemWsp Q s p u := h.2
 
-/-- The equivalence constant of CG Lemma 1.3; depends on the dimension only,
-and is fixed before every other quantifier. -/
+/-- The legacy/restricted overlap-comparison constant; it depends on the
+dimension only and is fixed before every other quantifier. -/
 noncomputable def wspVsBsppConstant (d : ℕ) : ℝ :=
   2 ^ 3 * 3 ^ (3 * d + 2)
 
@@ -93,8 +100,8 @@ section MainTheorem
 
 variable {d : ℕ} [NeZero d] (Q : Cube d) {s : ℝ} {p : ℝ≥0∞} {u : Vec d → ℝ}
 
-/-- Upper bound of CG Lemma 1.3: every finite-depth Besov partial seminorm is
-controlled by the Gagliardo seminorm. -/
+/-- Legacy upper bound: every finite-depth overlap-Besov partial seminorm is
+controlled by the ambient-sup-distance Gagliardo seminorm. -/
 theorem besovOverlapPartial_le_const_mul_gagliardo
     (hs : 0 < s) (hp : 1 ≤ p) (hpt : p ≠ ∞) (humeas : Measurable u)
     (hu : MemLp u p (normalizedCubeMeasure Q))
@@ -167,8 +174,8 @@ theorem besovOverlapPartial_le_const_mul_gagliardo
     pow_le_pow_right₀ (by norm_num) (by omega)
   nlinarith [pow_nonneg (show (0:ℝ) ≤ 3 by norm_num) d]
 
-/-- CG Lemma 1.3 (`l.Wsp.vs.Bspp.function.spaces`), note-facing two-sided
-form: `C(d)⁻¹·[u]_{W̲^{s,p}} ≤ [u]_{B̲^s_{p,p}} ≤ C(d)·[u]_{W̲^{s,p}}` on every
+/-- Legacy/restricted two-sided overlap comparison:
+`C(d)⁻¹·[u]_{W̲^{s,p}} ≤ [u]_{B̲^s_{p,p}} ≤ C(d)·[u]_{W̲^{s,p}}` on every
 triadic cube, with `C(d) = wspVsBsppConstant d` fixed before all other
 quantifiers, uniformly in `s ∈ (0,1]`, `p ∈ [1,∞)`, and the cube. -/
 theorem fractionalSobolevVsBesovSeminorms
@@ -265,8 +272,8 @@ theorem fractionalSobolevVsBesovSeminorms
     rintro x ⟨N, rfl⟩
     exact besovOverlapPartial_le_const_mul_gagliardo Q hs hp hpt humeas hu hW N
 
-/-- CG Lemma 1.3 with the packaged membership hypothesis: the literal
-`u ∈ W^{s,p}(□)` surface.  No measurability hypothesis: the statement is
+/-- The legacy/restricted two-sided overlap comparison with its packaged
+membership hypothesis.  No measurability hypothesis: the statement is
 invariant under a.e.-modification, and a measurable representative is
 extracted from `MemLp` and transported back through the congruence lemmas. -/
 theorem fractionalSobolevVsBesovSeminorms_of_memFractionalSobolev
@@ -294,6 +301,8 @@ theorem fractionalSobolevVsBesovSeminorms_of_memFractionalSobolev
   exact main
 
 end MainTheorem
+
+end Legacy
 
 end
 

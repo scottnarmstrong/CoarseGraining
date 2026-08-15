@@ -23,8 +23,8 @@ normalization constants to `\widetilde\Theta_0`.
 /-- Centered origin moment bound from a matched upper/lower unit-scale
 ellipticity domination. -/
 theorem section54_centeredOrigin_momentRoot_le_weighted_factor_sum_of_abs_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {CUpper CLower : ℝ} (hCUpper_nonneg : 0 ≤ CUpper)
     (hCLower_nonneg : 0 ≤ CLower) {X : RegCoeffField d → ℝ}

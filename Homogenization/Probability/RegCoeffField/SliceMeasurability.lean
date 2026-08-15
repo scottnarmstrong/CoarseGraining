@@ -27,7 +27,7 @@ cube is Lebesgue-null, so rational balls in the open core suffice, and
 `LocalSigmaR (openCubeSet Q) ≤ LocalSigmaR (cubeSet Q)` upgrades the result to the
 consumer's cube.
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 namespace Homogenization

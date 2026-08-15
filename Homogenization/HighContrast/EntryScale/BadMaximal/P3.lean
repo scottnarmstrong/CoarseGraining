@@ -21,14 +21,14 @@ namespace Homogenization.HighContrast.EntryScale
 noncomputable section
 
 /--
-The terminal full-norm envelope of the same LIH normalized fluctuation matrix.
+The terminal full-norm envelope of the same library normalized fluctuation matrix.
 This is an upper envelope for the spectral positive part; the exact
 `‖M⁺‖ ≤ ‖M‖` bridge is intentionally kept separate.
 -/
 noncomputable def terminalFullBlockFluctuationNormAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) : ℝ :=
   fullBlockOperatorNorm
@@ -38,12 +38,12 @@ noncomputable def terminalFullBlockFluctuationNormAtScale
 /--
 One-block source-to-envelope bridge for the bad maximal: the manuscript
 positive-part observable is controlled by the corresponding full operator
-norm of the same LIH terminal normalized fluctuation matrix.
+norm of the same library terminal normalized fluctuation matrix.
 -/
 theorem terminalSpectralPositivePartAtScale_le_terminalFullBlockFluctuationNormAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) :
     terminalSpectralPositivePartAtScale hP hStruct m Q a ≤
@@ -55,13 +55,13 @@ theorem terminalSpectralPositivePartAtScale_le_terminalFullBlockFluctuationNormA
 
 /--
 Source labels `M_m^st` and `e.drift.general`: for a fixed large scale `j`,
-the LIH terminal full-norm fluctuation is bounded by the terminal stochastic
+the library's terminal full-norm fluctuation is bounded by the terminal stochastic
 centered fluctuation plus the deterministic annealed drift.
 -/
 theorem terminalFullBlockFluctuationNormAtScale_le_centered_add_drift
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (j m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) :
     terminalFullBlockFluctuationNormAtScale hP hStruct m Q a ≤
@@ -131,9 +131,9 @@ used in the response estimate.
 -/
 theorem weighted_terminalCoarseBlockDeviation_toReal_le_terminalCoarseBlockStochasticMax
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) {N m j : ℕ}
     (Q : Homogenization.TriadicCube d)
     (a : Ω → Homogenization.RegCoeffField d) (ω : Ω)
@@ -195,9 +195,9 @@ bounded by the stochastic, subthreshold, and deterministic drift split.
 -/
 theorem terminalSpectralPositivePartSourceMax_le_terminalBadMaximalSplitEnvelope
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) {N m : ℕ} (hNm : N ≤ m)
     (Q : Homogenization.TriadicCube d)
     (a : Ω → Homogenization.RegCoeffField d) (M_sub : ℕ → Ω → ℝ) :
@@ -290,9 +290,9 @@ Source labels `e.M.def`, `M_m^st`, and `a.HM`: the literal source maximal
 observable has the high `Q` moment required for the bad-event truncation.
 -/
 theorem memLp_terminalSpectralPositivePartSourceMax_origin_highMoment
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc) {N m : ℕ} (hNm : N ≤ m)

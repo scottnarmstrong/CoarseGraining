@@ -16,8 +16,8 @@ namespace SmallContrastAssembly
 open Section54.VarianceBoundGoodScale
 
 theorem fullBlockFluctuationMatrixWithNormalizer_isSymm_of_isSymmetricBlockMat
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) {U : Set (Vec d)} {a : RegCoeffField d}
     (hA : IsSymmetricBlockMat (coarseBlockMatrix U a)) :
     (fullBlockFluctuationMatrixWithNormalizer hP hStruct center S U a).IsSymm := by
@@ -40,8 +40,8 @@ theorem fullBlockFluctuationMatrixWithNormalizer_isSymm_of_isSymmetricBlockMat
     Matrix.IsHermitian, Matrix.IsSymm] using hconj
 
 theorem fullBlockFluctuationMatrixWithNormalizer_isSymm_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) :
     ∀ᵐ a ∂P,
       (fullBlockFluctuationMatrixWithNormalizer
@@ -63,8 +63,8 @@ theorem descendantsAverageFullBlockMat_isSymm
     exact (hF R hR).apply α β
 
 theorem descendantsAverageFluctuationMatrixWithNormalizer_isSymm_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ) :
     ∀ᵐ a ∂P,
       (descendantsAverageFluctuationMatrixWithNormalizer
@@ -90,8 +90,8 @@ theorem descendantsAverageFluctuationMatrixWithNormalizer_isSymm_ae
           (cubeSet R) a) ha
 
 theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_le_probeSqBudget_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ) :
     (fun a : RegCoeffField d =>
       descendantsAverageFluctuationOperatorNormSqWithNormalizer
@@ -109,8 +109,8 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_le_probeSqBudg
     Section54.VarianceBoundGoodScale.fullBlock_operatorNorm_sq_le_probeSqBudget hM
 
 theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_probeBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m n k : ℕ) (hk : k ≤ n) (S : FullBlockMat d)
     (Ccoord : BlockCoord d → ℝ)

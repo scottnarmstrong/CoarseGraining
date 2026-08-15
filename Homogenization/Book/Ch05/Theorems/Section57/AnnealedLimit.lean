@@ -23,27 +23,27 @@ coefficient as the supremum of the increasing `\bar σ_{*,n}`.
 noncomputable section
 
 /-- Candidate limiting scalar `\bar σ = inf_n \bar σ_n`. -/
-noncomputable def barSigmaLimit {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) : ℝ :=
+noncomputable def barSigmaLimit {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) : ℝ :=
   sInf (Set.range fun n : ℕ => hP.barSigmaAtScale hStruct (n : ℤ))
 
 /-- Candidate limiting starred scalar `\bar σ_* = sup_n \bar σ_{*,n}`. -/
-noncomputable def barSigmaStarLimit {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) : ℝ :=
+noncomputable def barSigmaStarLimit {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) : ℝ :=
   sSup (Set.range fun n : ℕ => hP.barSigmaStarAtScale hStruct (n : ℤ))
 
 /-- Limiting scalarized annealed doubled matrix. -/
 noncomputable def scalarAnnealedBlockMatrixLimit
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) : BlockMat d :=
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) : BlockMat d :=
   Ch02.blockDiag
     (barSigmaLimit hP hStruct • (1 : Mat d))
     ((barSigmaStarLimit hP hStruct)⁻¹ • (1 : Mat d))
 
 namespace GammaSigmaCoarseGrainedEllipticity
 
-variable {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-variable {hP : Ch04.LawCarrier P} {hStruct : Ch04.StructuralLaw P}
+variable {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+variable {hP : Ch04.RestrictionLawCarrier P} {hStruct : Ch04.RestrictionStructuralLaw P}
 
 private theorem exponentialDecay_tendsto_zero {α : ℝ} (hα : 0 < α) :
     Tendsto (fun n : ℕ => Real.rpow (3 : ℝ) (-α * (n : ℝ)))
@@ -200,7 +200,7 @@ private theorem barSigmaLimit_le_one_add_mul_barSigmaStarLimit
     simpa [cm, hP4] using
       Section54.Pigeonhole.barSigmaStarAtScale_pos_of_P4 hP hStruct hP4 m
   have htheta_def : bm * cm⁻¹ ≤ 1 + ε := by
-    simpa [thetaAtScale, Ch04.LawCarrier.thetaAtScale, bm, cm] using htheta_eps
+    simpa [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, bm, cm] using htheta_eps
   have hb_le : bm ≤ (1 + ε) * cm := by
     have hmul :=
       mul_le_mul_of_nonneg_right htheta_def hcm_pos.le
@@ -261,7 +261,7 @@ theorem barSigmaAtScale_zero_le_thetaAtScale_zero_mul_barSigmaLimit
     _ ≤ (b0 * c0⁻¹) * L :=
       mul_le_mul_of_nonneg_left hc0_le_L htheta_nonneg
     _ = thetaAtScale hP hStruct (0 : ℤ) * barSigmaLimit hP hStruct := by
-      simp [thetaAtScale, Ch04.LawCarrier.thetaAtScale, b0, c0, L]
+      simp [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, b0, c0, L]
 
 /-- The limiting inverse upper scalar is controlled by the unit-scale inverse
 upper scalar times the initial scalar contrast. -/
@@ -321,7 +321,7 @@ theorem barSigmaStarAtScale_zero_inv_le_thetaAtScale_zero_mul_barSigmaLimit_inv
     _ = (b0 * c0⁻¹) * L⁻¹ := by ring
     _ = thetaAtScale hP hStruct (0 : ℤ) *
         (barSigmaLimit hP hStruct)⁻¹ := by
-      simp [thetaAtScale, Ch04.LawCarrier.thetaAtScale, b0, c0, L]
+      simp [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, b0, c0, L]
 
 /-- The initial scalar contrast is bounded by the Γσ ellipticity scale supplied
 by `(P5)`. -/

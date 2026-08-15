@@ -31,8 +31,8 @@ theorem restrictsTo_descendantsDomainPartition_of_aelocallyUniformlyEllipticFiel
   exact F.restrictsTo_descendant hk hiScale
 
 theorem normalizedPositiveError_trace_le_two_upperBlockJTraceAverage
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : TriadicCube d) (j : ℕ) {a : RegCoeffField d}
     (ha : Ch04.AELocallyUniformlyEllipticField a) :
@@ -84,7 +84,7 @@ theorem normalizedPositiveError_trace_le_two_upperBlockJTraceAverage
       coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
-      Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   have hTerm :
       (fun R : TriadicCube d =>
@@ -92,7 +92,7 @@ theorem normalizedPositiveError_trace_le_two_upperBlockJTraceAverage
         fun R : TriadicCube d => coarseBlockMatrix (cubeSet R) a.toFun := by
     funext R
     simpa [F] using
-      (Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      (Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha R).symm
   have hAvg :
       Pcell.weightedBlockAverage
@@ -173,8 +173,8 @@ theorem normalizedPositiveError_trace_le_two_upperBlockJTraceAverage
   simpa [b, c, r, D, F, Pcell, hParent.symm, hAvg, hD, hJ] using htrace
 
 theorem positiveErrorWithNormalizer_trace_le_two_blockJTraceAverageWithNormalizers
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S T : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a) :
     Ch02.fullBlockTrace
@@ -195,7 +195,7 @@ theorem positiveErrorWithNormalizer_trace_le_two_blockJTraceAverageWithNormalize
       coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
-      Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   have hTerm :
       (fun R : TriadicCube d =>
@@ -203,7 +203,7 @@ theorem positiveErrorWithNormalizer_trace_le_two_blockJTraceAverageWithNormalize
         fun R : TriadicCube d => coarseBlockMatrix (cubeSet R) a.toFun := by
     funext R
     simpa [F] using
-      (Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      (Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha R).symm
   have hAvg :
       Pcell.weightedBlockAverage
@@ -330,8 +330,8 @@ theorem positiveErrorWithNormalizer_trace_le_two_blockJTraceAverageWithNormalize
   simpa [hBudgetAvg] using htrace
 
 theorem normalizedCoarseAveragePositiveErrorMatrix_posSemidef
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (j : ℕ) {a : RegCoeffField d}
     (ha : Ch04.AELocallyUniformlyEllipticField a) :
     (normalizedCoarseAveragePositiveErrorMatrix hP hStruct center Q j a).PosSemidef := by
@@ -362,7 +362,7 @@ theorem normalizedCoarseAveragePositiveErrorMatrix_posSemidef
         coarseBlockMatrix (cubeSet Q) a.toFun =
           Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
       simpa [F] using
-        Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+        Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
           ha Q
     rw [hParent]
     exact Ch02.isSymmetricBlockMat_coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q)
@@ -372,7 +372,7 @@ theorem normalizedCoarseAveragePositiveErrorMatrix_posSemidef
         fun R : TriadicCube d => coarseBlockMatrix (cubeSet R) a.toFun := by
     funext R
     simpa [F] using
-      (Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      (Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha R).symm
   have hAvg :
       Pcell.weightedBlockAverage
@@ -416,8 +416,8 @@ theorem normalizedCoarseAveragePositiveErrorMatrix_posSemidef
     r hSub hParentSymm hAvgSymm
 
 theorem coarseAveragePositiveErrorMatrixWithNormalizer_posSemidef
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a) :
     (coarseAveragePositiveErrorMatrixWithNormalizer
@@ -446,7 +446,7 @@ theorem coarseAveragePositiveErrorMatrixWithNormalizer_posSemidef
         coarseBlockMatrix (cubeSet Q) a.toFun =
           Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
       simpa [F] using
-        Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+        Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
           ha Q
     rw [hParent]
     exact Ch02.isSymmetricBlockMat_coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q)
@@ -456,7 +456,7 @@ theorem coarseAveragePositiveErrorMatrixWithNormalizer_posSemidef
         fun R : TriadicCube d => coarseBlockMatrix (cubeSet R) a.toFun := by
     funext R
     simpa [F] using
-      (Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      (Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha R).symm
   have hAvg :
       Pcell.weightedBlockAverage
@@ -500,8 +500,8 @@ theorem coarseAveragePositiveErrorMatrixWithNormalizer_posSemidef
     S hSub hParentSymm hAvgSymm
 
 theorem coarseAverageErrorOperatorNormSqWithNormalizer_le_four_blockJTraceAverageSqWithNormalizers
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S T : FullBlockMat d) (Q : TriadicCube d) (j : ℕ)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a) :
     coarseAverageErrorOperatorNormSqWithNormalizer hP hStruct center S Q j a ≤
@@ -545,8 +545,8 @@ theorem coarseAverageErrorOperatorNormSqWithNormalizer_le_four_blockJTraceAverag
           ring
 
 theorem coarseAverageErrorOperatorNormSqWithNormalizer_le_four_blockJTraceAverageSqWithNormalizers_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (S T : FullBlockMat d) (Q : TriadicCube d) (j : ℕ) :
     (fun a : RegCoeffField d =>
       coarseAverageErrorOperatorNormSqWithNormalizer hP hStruct center S Q j a)
@@ -558,8 +558,8 @@ theorem coarseAverageErrorOperatorNormSqWithNormalizer_le_four_blockJTraceAverag
     hP hStruct center S T Q j ha
 
 theorem normalizedCoarseAverageErrorOperatorNormSq_le_four_normalizedBlockJTraceAverageSq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : TriadicCube d) (j : ℕ) {a : RegCoeffField d}
     (ha : Ch04.AELocallyUniformlyEllipticField a) :
@@ -609,8 +609,8 @@ theorem normalizedCoarseAverageErrorOperatorNormSq_le_four_normalizedBlockJTrace
           ring
 
 theorem normalizedCoarseAverageErrorOperatorNormSq_le_four_normalizedBlockJTraceAverageSq_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : TriadicCube d) (j : ℕ) :
     (fun a : RegCoeffField d =>

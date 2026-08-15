@@ -118,8 +118,8 @@ In the manuscript notation this is
 `barσ_0^{-1} Λ_{s_1,1}(□_0) + barσ_0 λ_{s_2,1}^{-1}(□_0)`.
 -/
 noncomputable def gammaSigmaUnitEllipticityObservable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (sUpper sLower : ℝ) : RegCoeffField d → ℝ :=
   if 0 < hP.barSigmaAtScale hStruct (0 : ℤ) then
     fun a =>
@@ -139,8 +139,8 @@ appears in the choice of the exponents or constants beyond the tail statement
 itself; later estimates should quantify their constants before the law.
 -/
 structure GammaSigmaCoarseGrainedEllipticity
-    {d : ℕ} [NeZero d] (P : Ch04.CoeffLaw d)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) : Type where
+    {d : ℕ} [NeZero d] (P : Ch04.RestrictionCoeffLaw d)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) : Type where
   sigma : ℝ
   sigma_pos : 0 < sigma
   params : QuantitativeCoarseGrainedEllipticityParams d
@@ -155,8 +155,8 @@ structure GammaSigmaCoarseGrainedEllipticity
 /-- The manuscript-facing finite-`σ` Section 5.7 `(P5)` input, with no exposed
 moment exponent `xi`. -/
 structure GammaSigmaCoarseGrainedEllipticityNoXi
-    {d : ℕ} [NeZero d] (P : Ch04.CoeffLaw d)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) : Type where
+    {d : ℕ} [NeZero d] (P : Ch04.RestrictionCoeffLaw d)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) : Type where
   sigma : ℝ
   sigma_pos : 0 < sigma
   params : GammaCoarseGrainedEllipticityParams d
@@ -170,8 +170,8 @@ structure GammaSigmaCoarseGrainedEllipticityNoXi
 
 namespace GammaSigmaCoarseGrainedEllipticityNoXi
 
-variable {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-variable {hP : Ch04.LawCarrier P} {hStruct : Ch04.StructuralLaw P}
+variable {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+variable {hP : Ch04.RestrictionLawCarrier P} {hStruct : Ch04.RestrictionStructuralLaw P}
 
 /-- Add the internal finite moment exponent used by the existing Section 5.7
 proof infrastructure. -/
@@ -200,8 +200,8 @@ end GammaSigmaCoarseGrainedEllipticityNoXi
 
 namespace GammaSigmaCoarseGrainedEllipticity
 
-variable {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-variable {hP : Ch04.LawCarrier P} {hStruct : Ch04.StructuralLaw P}
+variable {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+variable {hP : Ch04.RestrictionLawCarrier P} {hStruct : Ch04.RestrictionStructuralLaw P}
 
 theorem sUpper_pos
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct) :
@@ -348,12 +348,12 @@ theorem barSigmaAtScale_zero_pos
       exact le_add_of_nonneg_left (hL_nonneg a)
     have hUpperAbsPowInt :
         Integrable (fun a : RegCoeffField d => |L a| ^ ξ) P :=
-      Ch04.LawCarrier.integrable_abs_pow_of_ae_abs_le_nonneg hL_meas
+      Ch04.RestrictionLawCarrier.integrable_abs_pow_of_ae_abs_le_nonneg hL_meas
         (Filter.Eventually.of_forall hsum_nonneg)
         hUpperDom hsum_abs_pow_int
     have hLowerAbsPowInt :
         Integrable (fun a : RegCoeffField d => |I a| ^ ξ) P :=
-      Ch04.LawCarrier.integrable_abs_pow_of_ae_abs_le_nonneg hI_meas
+      Ch04.RestrictionLawCarrier.integrable_abs_pow_of_ae_abs_le_nonneg hI_meas
         (Filter.Eventually.of_forall hsum_nonneg)
         hLowerDom hsum_abs_pow_int
     have hUpperPowInt :
@@ -375,7 +375,7 @@ theorem barSigmaAtScale_zero_pos
         (by simpa [L, ξ] using hUpperPowInt)
         (by simpa [I, ξ] using hLowerPowInt)
     exact
-      Ch04.LawCarrier.barSigmaAtScale_pos_of_integrable_coarseFullBlockMatrixAtCube
+      Ch04.RestrictionLawCarrier.barSigmaAtScale_pos_of_integrable_coarseFullBlockMatrixAtCube
         hP hStruct hBlock
 
 theorem barSigmaAtScale_zero_nonneg
@@ -483,13 +483,13 @@ def toQuantitativeCoarseGrainedEllipticity_of_barSigmaAtScale_zero_pos
     rw [mul_pow]
   have hUpperAbsPowInt :
       Integrable (fun a : RegCoeffField d => |L a| ^ ξ) P :=
-    Ch04.LawCarrier.integrable_abs_pow_of_ae_abs_le_nonneg hL_meas
+    Ch04.RestrictionLawCarrier.integrable_abs_pow_of_ae_abs_le_nonneg hL_meas
       (Filter.Eventually.of_forall fun a =>
         mul_nonneg hb_nonneg (abs_nonneg (X a)))
       hUpperDom hUpperY_pow_int
   have hLowerAbsPowInt :
       Integrable (fun a : RegCoeffField d => |I a| ^ ξ) P :=
-    Ch04.LawCarrier.integrable_abs_pow_of_ae_abs_le_nonneg hI_meas
+    Ch04.RestrictionLawCarrier.integrable_abs_pow_of_ae_abs_le_nonneg hI_meas
       (Filter.Eventually.of_forall fun a =>
         mul_nonneg hb_inv_nonneg (abs_nonneg (X a)))
       hLowerDom hLowerY_pow_int
@@ -783,7 +783,7 @@ theorem thetaAtScale_zero_le_unitEllipticityMomentRoot
   calc
     thetaAtScale hP hStruct (0 : ℤ) =
         b * (hP.barSigmaStarAtScale hStruct (0 : ℤ))⁻¹ := by
-          simp [thetaAtScale, Ch04.LawCarrier.thetaAtScale, b]
+          simp [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, b]
     _ ≤ b * (b⁻¹ * R) :=
           mul_le_mul_of_nonneg_left hStarInv_le hb_nonneg
     _ = R := by

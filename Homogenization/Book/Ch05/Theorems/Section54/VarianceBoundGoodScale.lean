@@ -20,7 +20,7 @@ summation, and the logarithmic scale-separation absorption.
 
 /-- Final constant used in the good-scale variance bound. -/
 noncomputable def varianceBoundGoodScaleConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   max 1
     (max (varianceScaleSeparationConst hP4)
@@ -83,55 +83,55 @@ noncomputable def varianceBoundGoodScaleConstParams {d : ℕ}
 
 @[simp]
 theorem section54VarianceBetaCoreParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section54VarianceBetaCoreParams hP4.params =
       section54VarianceBetaCore hP4 := rfl
 
 @[simp]
 theorem section54VarianceBetaParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section54VarianceBetaParams hP4.params =
       section54VarianceBeta hP4 := rfl
 
 @[simp]
 theorem varianceScaleSeparationConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     varianceScaleSeparationConstParams hP4.params =
       varianceScaleSeparationConst hP4 := rfl
 
 @[simp]
 theorem lpVarianceDecayParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     lpVarianceDecayParams d hP4.params = lpVarianceDecay d hP4 := rfl
 
 @[simp]
 theorem pairLinearBudgetConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     pairLinearBudgetConstParams hP4.params =
       pairLinearBudgetConst hP4 := rfl
 
 @[simp]
 theorem pairPointwiseBudgetConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     pairPointwiseBudgetConstParams hP4.params =
       pairPointwiseBudgetConst hP4 := rfl
 
 @[simp]
 theorem weightedRefinedBudgetConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     weightedRefinedBudgetConstParams hP4.params =
       weightedRefinedBudgetConst hP4 := rfl
 
 @[simp]
 theorem varianceBoundGoodScaleConstParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     varianceBoundGoodScaleConstParams hP4.params =
       varianceBoundGoodScaleConst hP4 := rfl
@@ -148,14 +148,14 @@ private theorem varianceBoundGoodScaleConstParams_pos {d : ℕ}
   exact lt_of_lt_of_le zero_lt_one (le_max_left _ _)
 
 private theorem varianceBoundGoodScaleConst_ge_scaleSep
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     varianceScaleSeparationConst hP4 ≤ varianceBoundGoodScaleConst hP4 := by
   unfold varianceBoundGoodScaleConst
   exact (le_max_left _ _).trans (le_max_right _ _)
 
 private theorem varianceBoundGoodScaleConst_ge_budget
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     3 * (refinedMatrixBudgetConst d * weightedRefinedBudgetConst hP4) ≤
       varianceBoundGoodScaleConst hP4 := by
@@ -167,8 +167,8 @@ theorem varianceBoundGoodScale_homogenizationScale
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ {delta : ℝ}, 0 < delta → delta ≤ 1 / 2 →

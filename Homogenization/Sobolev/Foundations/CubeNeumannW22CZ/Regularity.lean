@@ -2,30 +2,35 @@ import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.Arbitr
 
 namespace Homogenization
 
+/-!
+# Legacy positive-test Neumann compatibility package
+
+This module packages the downstream positive-test endpoint for Neumann Poisson
+solutions.  It does **not** state the manuscript's weak-Hessian
+Calderon--Zygmund estimate; that literal statement lives in the exact
+Euclidean-normalized lane.
+-/
+
+namespace Legacy
+
 open scoped ENNReal
 
 noncomputable section
 
-/-- Neumann `W2,2` / Calderon-Zygmund regularity for the mean-zero Neumann
-Poisson problem on a cube, stated in the downstream positive Besov form.
-
-Informally, if `-Delta W = F - (F)_Q` with Neumann boundary condition and
-zero average, then `||nabla^2 W||_L2(Q) <= C ||F||_L2(Q)`. Local Poincare on
-each triadic subcube converts this Hessian estimate into the uniform
-`B^1_{2,infty}` bounds on the components of `nabla W` recorded by
-`CubePoissonGradientDualTestNormL2CoreEstimate`. -/
+/-- Legacy name for the downstream positive-test core estimate.  This is a
+compatibility wrapper, not a weak-Hessian Calderon--Zygmund statement. -/
 def CubeNeumannW22CalderonZygmundRegularity {d : ℕ}
     (Q : TriadicCube d) (C : ℝ) : Prop :=
   CubePoissonGradientDualTestNormL2CoreEstimate Q C
 
-/-- Dimension-uniform Neumann `W2,2` / Calderon-Zygmund regularity on cubes. -/
+/-- Dimension-uniform legacy positive-test compatibility predicate on cubes. -/
 def CubeNeumannW22CalderonZygmundRegularityInDimension
     (d : ℕ) (C : ℝ) : Prop :=
   0 ≤ C ∧ ∀ Q : TriadicCube d, CubeNeumannW22CalderonZygmundRegularity Q C
 
-/-- Chosen dimension-only Neumann `W2,2` / Calderon-Zygmund constant, obtained
-from the exact reflected-parent depth constant plus the exact component-average
-constant. -/
+/-- Chosen dimension-only constant for the legacy positive-test compatibility
+package, obtained from the reflected-parent depth and component-average
+constants. -/
 noncomputable def cubeNeumannW22CalderonZygmundConstant
     (d : ℕ) [NeZero d] : ℝ :=
   originCubeWeakInteriorDepthConstantExact d 0 +
@@ -39,8 +44,7 @@ theorem cubeNeumannW22CalderonZygmundConstant_nonneg
     (mul_nonneg (Nat.cast_nonneg d)
       (originCubeMeanZeroH1CoerciveEstimate d 0).constant_nonneg)
 
-/-- Selected dimension-uniform Neumann `W2,2` / Calderon-Zygmund regularity on
-a cube. -/
+/-- Selected legacy positive-test compatibility estimate on a cube. -/
 theorem cubeNeumannW22CalderonZygmundRegularity
     {d : ℕ} [NeZero d] (Q : TriadicCube d) :
     CubeNeumannW22CalderonZygmundRegularity Q
@@ -52,8 +56,8 @@ theorem cubeNeumannW22CalderonZygmundRegularity
   simpa [CubeNeumannW22CalderonZygmundRegularity,
     cubeNeumannW22CalderonZygmundConstant, hdepth, havg] using hcore
 
-/-- Dimension-uniform Neumann `W2,2` / Calderon-Zygmund regularity exists with
-the explicit constant above. -/
+/-- The legacy positive-test compatibility package has the explicit constant
+above in every dimension. -/
 theorem exists_cubeNeumannW22CalderonZygmundRegularityInDimension
     (d : ℕ) [NeZero d] :
     ∃ C : ℝ, CubeNeumannW22CalderonZygmundRegularityInDimension d C := by
@@ -61,16 +65,15 @@ theorem exists_cubeNeumannW22CalderonZygmundRegularityInDimension
     cubeNeumannW22CalderonZygmundConstant_nonneg d,
     cubeNeumannW22CalderonZygmundRegularity⟩
 
-/-- Local existence form of the dimension-uniform Neumann `W2,2` /
-Calderon-Zygmund regularity input. -/
+/-- Local existence form of the legacy positive-test compatibility input. -/
 theorem exists_cubeNeumannW22CalderonZygmundRegularity
     {d : ℕ} [NeZero d] (Q : TriadicCube d) :
     ∃ C : ℝ, CubeNeumannW22CalderonZygmundRegularity Q C :=
   ⟨cubeNeumannW22CalderonZygmundConstant d,
     cubeNeumannW22CalderonZygmundRegularity Q⟩
 
-/-- Downstream positive-test core estimate obtained from the named Neumann
-`W2,2` / Calderon-Zygmund regularity statement. -/
+/-- Downstream positive-test core estimate from the legacy compatibility
+package. -/
 theorem exists_cubePoissonGradientDualTestNormL2CoreEstimate
     {d : ℕ} [NeZero d] (Q : TriadicCube d) :
     ∃ C : ℝ, CubePoissonGradientDualTestNormL2CoreEstimate Q C := by
@@ -79,5 +82,7 @@ theorem exists_cubePoissonGradientDualTestNormL2CoreEstimate
       cubeNeumannW22CalderonZygmundRegularity Q⟩
 
 end
+
+end Legacy
 
 end Homogenization

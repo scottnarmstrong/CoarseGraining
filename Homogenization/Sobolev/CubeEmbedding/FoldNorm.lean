@@ -139,7 +139,9 @@ theorem map_foldR_restrict (lo hi : ℝ) (h : lo < hi) :
   have hbranchL : (volume.restrict (Set.Ioo (2 * lo - hi) lo)).map (fun t => 2 * lo - t)
       = volume.restrict (Set.Ioo lo hi) := by
     have hpre : (fun t => 2 * lo - t) ⁻¹' Set.Ioo lo hi = Set.Ioo (2 * lo - hi) lo := by
-      rw [preimage_reflect_Ioo]; congr 1 <;> ring
+      rw [preimage_reflect_Ioo]
+      congr
+      all_goals ring
     calc (volume.restrict (Set.Ioo (2 * lo - hi) lo)).map (fun t => 2 * lo - t)
         = (volume.restrict ((fun t => 2 * lo - t) ⁻¹' Set.Ioo lo hi)).map (fun t => 2 * lo - t) := by
           rw [hpre]
@@ -149,7 +151,9 @@ theorem map_foldR_restrict (lo hi : ℝ) (h : lo < hi) :
   have hbranchR : (volume.restrict (Set.Ioo hi (2 * hi - lo))).map (fun t => 2 * hi - t)
       = volume.restrict (Set.Ioo lo hi) := by
     have hpre : (fun t => 2 * hi - t) ⁻¹' Set.Ioo lo hi = Set.Ioo hi (2 * hi - lo) := by
-      rw [preimage_reflect_Ioo]; congr 1 <;> ring
+      rw [preimage_reflect_Ioo]
+      congr
+      all_goals ring
     calc (volume.restrict (Set.Ioo hi (2 * hi - lo))).map (fun t => 2 * hi - t)
         = (volume.restrict ((fun t => 2 * hi - t) ⁻¹' Set.Ioo lo hi)).map (fun t => 2 * hi - t) := by
           rw [hpre]

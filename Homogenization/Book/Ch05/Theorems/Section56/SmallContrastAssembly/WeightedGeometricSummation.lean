@@ -319,9 +319,9 @@ theorem sum_Icc_varianceWeight_mul_geometric_add_const_le
 constant depends on the quantitative ellipticity package, not on the law. -/
 theorem coarseFluctuationTauSumAtScale_le_const_tauAtScale_of_params
     {d : ℕ} [NeZero d] (params : QuantitativeCoarseGrainedEllipticityParams d)
-    {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hparams : hP4.params = params)
     {k m : ℕ} (hkm : k ≤ m) (e : Vec d) :

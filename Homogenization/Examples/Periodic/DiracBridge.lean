@@ -31,7 +31,7 @@ open scoped ENNReal
 noncomputable section
 
 /-- The deterministic law concentrated at a carrier coefficient field. -/
-abbrev diracCoeffLaw {d : ℕ} (a₀ : RegCoeffField d) : Book.Ch04.CoeffLaw d :=
+abbrev diracCoeffLaw {d : ℕ} (a₀ : RegCoeffField d) : Book.Ch04.RestrictionCoeffLaw d :=
   Measure.dirac a₀
 
 /-- Integer-periodicity of a deterministic coefficient field. -/
@@ -78,7 +78,7 @@ theorem adjointReg_eq_self_of_adjointInvariant {d : ℕ} {a₀ : RegCoeffField d
 /-- Pointwise periodicity gives stationarity of the Dirac law. -/
 theorem dirac_stationary {d : ℕ} {a₀ : RegCoeffField d}
     (hper : IsPeriodicCoeffField a₀.toFun) :
-    Book.Ch04.StationaryLaw (diracCoeffLaw a₀) := by
+    Book.Ch04.RestrictionStationaryLaw (diracCoeffLaw a₀) := by
   intro z
   rw [diracCoeffLaw, Measure.map_dirac (measurable_translateReg (intVecToRealVec z)),
     translateReg_eq_self_of_periodic hper z]
@@ -86,7 +86,7 @@ theorem dirac_stationary {d : ℕ} {a₀ : RegCoeffField d}
 /-- Pointwise signed-permutation invariance gives isotropy of the Dirac law. -/
 theorem dirac_isotropic {d : ℕ} {a₀ : RegCoeffField d}
     (hiso : IsIsotropicCoeffField a₀.toFun) :
-    Book.Ch04.IsotropicLaw (diracCoeffLaw a₀) := by
+    Book.Ch04.RestrictionIsotropicLaw (diracCoeffLaw a₀) := by
   intro R hR
   rw [diracCoeffLaw, Measure.map_dirac (measurable_rotateReg R hR),
     rotateReg_eq_self_of_isotropic hiso hR]
@@ -94,16 +94,16 @@ theorem dirac_isotropic {d : ℕ} {a₀ : RegCoeffField d}
 /-- Pointwise adjoint invariance gives adjoint invariance of the Dirac law. -/
 theorem dirac_adjointInvariant {d : ℕ} {a₀ : RegCoeffField d}
     (hadj : IsAdjointInvariantCoeffField a₀.toFun) :
-    Book.Ch04.AdjointInvariantLaw (diracCoeffLaw a₀) := by
+    Book.Ch04.RestrictionAdjointInvariantLaw (diracCoeffLaw a₀) := by
   show Measure.map adjointReg (Measure.dirac a₀) = Measure.dirac a₀
   rw [Measure.map_dirac measurable_adjointReg,
     adjointReg_eq_self_of_adjointInvariant hadj]
 
-/-- **Unit-range dependence of a deterministic Dirac law is automatic**, and on
-the carrier it is *genuine*: `RestrictionSigmaR` events are genuinely
-measurable, so the Dirac law evaluates them by membership. -/
-theorem dirac_unitRangeDependent {d : ℕ} (a₀ : RegCoeffField d) :
-    Book.Ch04.UnitRangeDependentLaw (diracCoeffLaw a₀) := by
+/-- **Restriction-unit-range dependence of a deterministic Dirac law is
+automatic**, and on the carrier it is *genuine*: `RestrictionSigmaR` events are
+genuinely measurable, so the Dirac law evaluates them by membership. -/
+theorem dirac_restrictionUnitRangeDependent {d : ℕ} (a₀ : RegCoeffField d) :
+    Book.Ch04.RestrictionUnitRangeDependentLaw (diracCoeffLaw a₀) := by
   intro U V hU hV _hsep
   rw [ProbabilityTheory.Indep_iff]
   intro s t hs ht
@@ -133,22 +133,22 @@ theorem dirac_uniformEllipticityBounds {d : ℕ}
 ellipticity support. -/
 theorem dirac_lawCarrier {d : ℕ} {a₀ : RegCoeffField d} {lam Lam : ℝ}
     (hUE : Book.MainResults.UniformEllipticityBounds (diracCoeffLaw a₀) lam Lam) :
-    Book.Ch04.LawCarrier (diracCoeffLaw a₀) :=
+    Book.Ch04.RestrictionLawCarrier (diracCoeffLaw a₀) :=
   Book.Ch04.lawCarrier_of_aeLocallyUniformlyElliptic
     hUE.toAELocallyUniformlyEllipticLaw
 
 /--
 The structural-law part of the Dirac bridge.  Stationarity, isotropy, and
 adjoint invariance reduce to pointwise deterministic invariance, while
-unit-range dependence is automatic for a Dirac law.
+restriction-unit-range dependence is automatic for a Dirac law.
 -/
 theorem dirac_structuralLaw {d : ℕ} {a₀ : RegCoeffField d}
     (hper : IsPeriodicCoeffField a₀.toFun)
     (hiso : IsIsotropicCoeffField a₀.toFun)
     (hadj : IsAdjointInvariantCoeffField a₀.toFun) :
-    Book.Ch04.StructuralLaw (diracCoeffLaw a₀) where
+    Book.Ch04.RestrictionStructuralLaw (diracCoeffLaw a₀) where
   stationary := dirac_stationary hper
-  unit_range := dirac_unitRangeDependent a₀
+  unit_range := dirac_restrictionUnitRangeDependent a₀
   isotropic := dirac_isotropic hiso
   adjoint_invariant := dirac_adjointInvariant hadj
 

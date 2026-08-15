@@ -144,8 +144,8 @@ theorem constantFullBlockMatrixInvSqrt_scalarMatrix_eq_scalarFullBlockInvSqrt
 /-- Pointwise version of the finite-basis normalization step for sampled
 coefficient fields. -/
 theorem limitNormalizedJProbeSum_le_four_normalizedProbeSum_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) :
@@ -238,8 +238,8 @@ theorem limitNormalizedJProbeSum_le_four_normalizedProbeSum_of_aelocallyUniforml
 /-- One-cube bridge from the Chapter 2 normalized block-response maximum to the
 Section 5.7 finite normalized probe sum. -/
 theorem normalizedBlockResponseMax_scalarMatrix_le_limitNormalizedJNormalizedProbeSum_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) :
@@ -319,8 +319,8 @@ theorem normalizedBlockResponseMax_scalarMatrix_le_limitNormalizedJNormalizedPro
 /-- A descendant's normalized finite-probe sum is bounded by the localized
 maximum over all descendants at the same scale. -/
 theorem limitNormalizedJNormalizedProbeSum_le_localizedLimitNormalizedJNormalizedProbeSumMax
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {m n : ℕ} {R : TriadicCube d}
     (hR : R ∈ descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ))
     (a : RegCoeffField d) :
@@ -339,8 +339,8 @@ theorem limitNormalizedJNormalizedProbeSum_le_localizedLimitNormalizedJNormalize
 /-- Localized bridge from the Chapter 2 descendant response maximum to the
 Section 5.7 finite normalized-probe maximum. -/
 theorem maxDescendantNormalizedBlockResponseAtScale_originCube_scalarMatrix_le_localizedNormalizedProbeJMax_of_aelocallyUniformlyEllipticField
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n : ℕ} (hnm : n ≤ m) :
@@ -397,8 +397,8 @@ theorem maxDescendantNormalizedBlockResponseAtScale_originCube_scalarMatrix_le_l
 /-- If every normalized finite probe satisfies a weighted localized estimate,
 then the finite-probe maximum satisfies the same weighted estimate. -/
 theorem weighted_localizedNormalizedProbeJMax_le_of_forall_probe
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {m n : ℕ} (a : RegCoeffField d) {W R : ℝ}
     (hW : 0 < W)
     (hprobe : ∀ i : NormalizedProbeIndex d,
@@ -426,8 +426,8 @@ theorem weighted_localizedNormalizedProbeJMax_le_of_forall_probe
 
 /-- The limiting-normalized block response is nonnegative. -/
 theorem limitNormalizedBlockJObservable_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (Q : TriadicCube d) (e : FullBlockVec d) (a : RegCoeffField d) :
     0 ≤ limitNormalizedBlockJObservable hP hStruct Q e a := by
   simpa [limitNormalizedBlockJObservable] using
@@ -437,8 +437,8 @@ theorem limitNormalizedBlockJObservable_nonneg
 
 /-- Localized limiting-normalized maxima are nonnegative. -/
 theorem localizedLimitNormalizedJMax_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {m n : ℕ} (hnm : n ≤ m) (e : FullBlockVec d) (a : RegCoeffField d) :
     0 ≤ localizedLimitNormalizedJMax hP hStruct m n e a := by
   classical
@@ -459,8 +459,8 @@ theorem localizedLimitNormalizedJMax_nonneg
 
 /-- The finite normalized-probe maximum is nonnegative. -/
 theorem localizedNormalizedProbeJMax_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {m n : ℕ} (hnm : n ≤ m) (a : RegCoeffField d) :
     0 ≤ localizedNormalizedProbeJMax hP hStruct m n a := by
   classical
@@ -487,8 +487,8 @@ theorem localizedNormalizedProbeJMax_nonneg
 /-- Natural-scale response control from the localized finite normalized-probe
 maximum. -/
 theorem scaleResponseAtScale_originCube_nat_le_sqrt_const_mul_localizedNormalizedProbeJMax
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n : ℕ} (hnm : n ≤ m) :

@@ -138,7 +138,7 @@ theorem abs_cutoffOscillationTermOnCubeAtDepth_le_scale_mul_responseJOnCube_of_a
 
 /-- Law-facing form of the cutoff-oscillation bound for the Ch4 dependent
 triadic coefficient family. -/
-theorem abs_cutoffOscillationTermOnDependentFamilyAtDepth_le_scale_mul_responseJObservableCubeSet_of_ae_bounded_cutoff
+theorem abs_cutoffOscillationTermOnDependentFamilyAtDepth_le_scale_mul_restrictionResponseJObservableCubeSet_of_ae_bounded_cutoff
     {d : ℕ} [NeZero d] (a : RegCoeffField d)
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     (Q : TriadicCube d) (j : ℕ) {φ : Vec d → ℝ} {B C scaleSep : ℝ}
@@ -152,14 +152,14 @@ theorem abs_cutoffOscillationTermOnDependentFamilyAtDepth_le_scale_mul_responseJ
     |cutoffOscillationTermOnCubeAtDepth Q
         ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
         j φ p q| ≤
-      C * scaleSep * Ch04.responseJObservableCubeSet Q p q a := by
+      C * scaleSep * Ch04.restrictionResponseJObservableCubeSet Q p q a := by
   have hraw :=
     abs_cutoffOscillationTermOnCubeAtDepth_le_scale_mul_responseJOnCube_of_ae_bounded_cutoff
       (Q := Q)
       (a := (Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
       (j := j) (φ := φ) (B := B) (C := C) (scaleSep := scaleSep)
       p q hφ_meas hφ_bound hOscPoint
-  simpa [responseJOnDependentFamily_eq_responseJObservableCubeSet a ha Q p q]
+  simpa [responseJOnDependentFamily_eq_restrictionResponseJObservableCubeSet a ha Q p q]
     using hraw
 
 end

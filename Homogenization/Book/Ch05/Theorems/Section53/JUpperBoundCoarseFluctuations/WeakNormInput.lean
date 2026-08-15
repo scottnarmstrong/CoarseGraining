@@ -22,8 +22,8 @@ special vectors and beta-shifted Section 5.3 exponents.
 maximizer.  This is the direct bridge from the second Section 5.3 lemma into
 the third one. -/
 theorem ae_specialWeakNormsMaximizer_homogenizationScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Vec d) :
     ∀ᵐ a ∂P,

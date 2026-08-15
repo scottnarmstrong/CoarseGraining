@@ -31,9 +31,9 @@ theorem exists_unitEllipticityMinimalScale_interpolated_expLogSq
       0 ≤ α →
       α < t →
       ∃ Cscale : ℝ, 0 < Cscale ∧
-        ∀ {P : Ch04.CoeffLaw d}
-          (hP : Ch04.LawCarrier P)
-          (hStruct : Ch04.StructuralLaw P)
+        ∀ {P : Ch04.RestrictionCoeffLaw d}
+          (hP : Ch04.RestrictionLawCarrier P)
+          (hStruct : Ch04.RestrictionStructuralLaw P)
           (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
           hΓ.sigma = σ → hΓ.params = params →
           ∃ X : RegCoeffField d → ℝ,

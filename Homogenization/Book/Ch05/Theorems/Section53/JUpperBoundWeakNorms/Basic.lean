@@ -38,12 +38,12 @@ noncomputable def cutoffProductBridgeRHS {d : ℕ}
           (cubeBesovScaleWeight s Q * centeredCutoffConstant))))
 
 /-- Private coefficient in the manuscript product estimate after centering the
-potential and applying the Ch01 cutoff-product bound. -/
+potential and applying Ch01's legacy disjoint-Besov cutoff-product bound. -/
 noncomputable def cutoffProductScaledWeakNormCoeff {d : ℕ} [NeZero d]
     (Q : TriadicCube d) (s t B : ℝ) (cutoffGradient : Vec d → Vec d) : ℝ :=
   let gradCoeff :=
     (2 * cubeScaleFactor Q * B + 3 * cubeLpNorm Q ∞ cutoffGradient) *
-      ((Ch01.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
+      ((Ch01.Legacy.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
         (Fintype.card (Fin d) : ℝ))
   let fluxCoeff :=
     (Fintype.card (Fin d) : ℝ) *

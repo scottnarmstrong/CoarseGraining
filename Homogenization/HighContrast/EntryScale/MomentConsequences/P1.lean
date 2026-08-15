@@ -31,7 +31,7 @@ Source labels `a.HM`, `e.Q.large`, and `p.HC.CR`: the high moment exponent
 dominates the finite Holder exponent needed for the bad-event square.
 -/
 theorem highCenteredMoment_two_mul_p4_xi_le_Q
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
@@ -736,7 +736,7 @@ theorem terminalWeak_highCenteredMoment_summand_eq_convolution
 
 /--
 Source label `l.union.bound`: after substituting `a.HM`, terminal normalization,
-weak weights, and LIH descendant counting, the finite `ENNReal` sum is bounded
+weak weights, and the library's descendant counting, the finite `ENNReal` sum is bounded
 by the real convolution envelope from the paper.
 -/
 theorem sum_Icc_terminalWeak_highCenteredMomentEnvelope_le_convolution

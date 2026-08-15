@@ -34,7 +34,7 @@ theorem grad_ae_zero_on_level_set {d : ℕ} {U : Set (Vec d)}
   let cH : H1Function U :=
     { toFun := fun _ => c, grad := fun _ _ => 0
       memL2 := memLp_const c
-      gradMemL2 := fun _ => by simpa using (memLp_const (0 : ℝ))
+      gradMemL2 := fun _ => by exact memLp_const (0 : ℝ)
       hasWeakGradient := hcweak }
   set v : H1Function U := v₁ - v₂ with hv_def
   set w : H1Function U := u - cH with hw_def
@@ -80,7 +80,7 @@ theorem grad_ae_zero_on_level_set {d : ℕ} {U : Set (Vec d)}
   have hvgrad : v.grad x = v₁.grad x - v₂.grad x := by
     funext i; simp only [hv_def, H1Function.sub_grad]
   have hv1 : v₁.grad x = 0 := by
-    rw [h1x]; simp [Set.indicator_apply, hc]
+    rw [h1x]; simp [hc]
   have hv2 : v₂.grad x = 0 := by
     rw [h2x]
     refine Set.indicator_of_notMem ?_ _

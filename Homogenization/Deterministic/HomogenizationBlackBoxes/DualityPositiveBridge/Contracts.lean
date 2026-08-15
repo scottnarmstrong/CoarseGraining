@@ -12,10 +12,12 @@ open scoped BigOperators ENNReal
 
 The restored proof of the deterministic flux-defect duality lemma tests each
 component of the solution-comparison field against a scalar unit full-dual
-positive Besov test.  To feed that test into the corrected constant-coefficient
+positive Besov test.  To feed that test into the discrete compatibility
 Dirichlet theorem, we insert the scalar test into one vector coordinate and
 need the resulting vector field to be admissible for the overlapping positive
-norm used by `ConstantCoefficientDirichletBesovFunctionSpacesUniform`.
+norm used by the discrete compatibility statement
+`DiscreteConstantCoefficientDirichletBesovFunctionSpacesUniform` (not the
+source theorem pending the continuum `K`/`H^s` gate).
 
 This file records that bridge with the true target norm.  The `MemLp` part is
 formal and proved here; the remaining analytic comparison is the finite-overlap

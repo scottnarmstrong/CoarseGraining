@@ -22,7 +22,7 @@ matrix upgrade.  The per-scale budget is now expressed in terms of `delta` and
 
 /-- Refined coordinate-probe scalar variance budget at scale `j`. -/
 noncomputable def coordinateProbeRefinedVarianceBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (delta : ℝ) (j : ℕ) (α : BlockCoord d) : ℝ :=
   refinedScalarProbeVarianceBound delta (fullBlockCoordinateProbe α)
@@ -30,7 +30,7 @@ noncomputable def coordinateProbeRefinedVarianceBound
 
 /-- Refined plus-pair scalar variance budget at scale `j`. -/
 noncomputable def plusProbeRefinedVarianceBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (delta : ℝ) (j : ℕ) (α β : BlockCoord d) : ℝ :=
   refinedScalarProbeVarianceBound delta (fullBlockPlusProbe α β)
@@ -38,7 +38,7 @@ noncomputable def plusProbeRefinedVarianceBound
 
 /-- Refined minus-pair scalar variance budget at scale `j`. -/
 noncomputable def minusProbeRefinedVarianceBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (delta : ℝ) (j : ℕ) (α β : BlockCoord d) : ℝ :=
   refinedScalarProbeVarianceBound delta (fullBlockMinusProbe α β)
@@ -46,7 +46,7 @@ noncomputable def minusProbeRefinedVarianceBound
 
 /-- Refined finite-probe matrix variance budget at one scale. -/
 noncomputable def refinedMatrixVarianceScaleBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (delta : ℝ) (j : ℕ) : ℝ :=
   ((Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ)) *
@@ -66,8 +66,8 @@ noncomputable def refinedMatrixVarianceScaleBound
                   minusProbeRefinedVarianceBound hP4 delta j α β)))
 
 private theorem integral_plusProbe_self_sq_eq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m j : ℕ) (α : BlockCoord d) :
     ∫ a,
         (fullBlockQuadratic
@@ -99,8 +99,8 @@ private theorem integral_plusProbe_self_sq_eq
   rw [hpoint, integral_const_mul]
 
 private theorem integral_minusProbe_self_sq_eq_zero
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m j : ℕ) (α : BlockCoord d) :
     ∫ a,
         (fullBlockQuadratic
@@ -122,8 +122,8 @@ private theorem integral_minusProbe_self_sq_eq_zero
 
 /-- Per-scale matrix variance bound using the refined scalar probe estimates. -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_refinedMatrixVarianceScaleBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta)
     (m j : ℕ) (hj : j ≤ m)
@@ -233,8 +233,8 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_refinedM
 
 /-- The variance sum is bounded by the beta-weighted refined per-scale budgets. -/
 theorem varianceGoodScaleFullBlockSumAtScale_le_weighted_refinedMatrixVarianceScaleBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta)
     (m : ℕ)

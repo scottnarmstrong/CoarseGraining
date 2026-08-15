@@ -16,8 +16,9 @@ instance stack on the carrier:
 * `lawCarrier` — via `lawCarrier_of_aeLocallyUniformlyElliptic` (a.e.
   ellipticity holds per sample, everywhere, with deterministic constants);
 * `structuralLaw` — stationarity/isotropy/adjoint invariance from the carrier
-  endomorphism commutations of `Basic.lean`, and genuine unit-range dependence
-  (`IsUnitRangeDependentR`) through `RestrictionSigmaR` and the coin σ-algebras;
+  endomorphism commutations of `Basic.lean`, and genuine restriction-unit-range
+  dependence (`IsRestrictionUnitRangeDependentR`) through `RestrictionSigmaR`
+  and the coin σ-algebras;
 * `thetaEllipticLaw` — the conjunct-free `Θ`-ellipticity class membership;
 * the triadically scaled family (`scaledLaw`, `checkerboardSetup`) and the
   public quenched-comparison corollary;
@@ -25,7 +26,7 @@ instance stack on the carrier:
   `homogenizationScale_polynomial_of_unitRange` instantiated on the
   checkerboard law.
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 namespace Homogenization
@@ -38,7 +39,7 @@ open scoped ENNReal NNReal
 noncomputable section
 
 /-- The unscaled checkerboard law on the honest-fields carrier. -/
-def law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) : Book.Ch04.CoeffLaw d :=
+def law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) : Book.Ch04.RestrictionCoeffLaw d :=
   Measure.map (checkerRegField lam Lam) (sampleMeasure d p hp)
 
 instance instIsProbabilityMeasure_law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) :
@@ -68,14 +69,14 @@ theorem law_uniformEllipticityBounds {d : ℕ} {lam Lam : ℝ}
 
 theorem lawCarrier {d : ℕ} {lam Lam : ℝ}
     (hlam : 0 < lam) (hle : lam ≤ Lam) (p : ℝ≥0) (hp : p ≤ 1) :
-    Book.Ch04.LawCarrier (law d lam Lam p hp) :=
+    Book.Ch04.RestrictionLawCarrier (law d lam Lam p hp) :=
   Book.Ch04.lawCarrier_of_aeLocallyUniformlyElliptic
     (law_uniformEllipticityBounds (d := d) hlam hle p hp).toAELocallyUniformlyEllipticLaw
 
 /-! ## Structural law -/
 
 theorem stationary_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
-    Book.Ch04.StationaryLaw (law d lam Lam p hp) := by
+    Book.Ch04.RestrictionStationaryLaw (law d lam Lam p hp) := by
   intro z
   rw [law]
   calc
@@ -110,7 +111,7 @@ theorem stationary_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
           rw [sampleMeasure_map_shiftSample z p hp]
 
 theorem adjointInvariant_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
-    Book.Ch04.AdjointInvariantLaw (law d lam Lam p hp) := by
+    Book.Ch04.RestrictionAdjointInvariantLaw (law d lam Lam p hp) := by
   show Measure.map adjointReg (law d lam Lam p hp) = law d lam Lam p hp
   rw [law]
   calc
@@ -130,7 +131,7 @@ theorem adjointInvariant_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤
           exact adjointReg_checkerRegField ω
 
 theorem isotropic_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
-    Book.Ch04.IsotropicLaw (law d lam Lam p hp) := by
+    Book.Ch04.RestrictionIsotropicLaw (law d lam Lam p hp) := by
   intro R hR
   obtain ⟨σ, s, hs, hRdef⟩ := id hR
   rw [law]
@@ -166,12 +167,13 @@ theorem isotropic_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
     _ = Measure.map (checkerRegField lam Lam) (sampleMeasure d p hp) := by
           rw [sampleMeasure_map_reindexSample e p hp]
 
-/-- **Genuine unit-range dependence on the carrier**: the restriction
+/-- **Genuine restriction-unit-range dependence on the carrier**: the restriction
 σ-algebras of unit-separated measurable sets pull back through the sample map
 into the coin σ-algebras of disjoint cell families, which are independent under
 the Bernoulli product law. -/
-theorem unitRangeDependent_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
-    Book.Ch04.UnitRangeDependentLaw (law d lam Lam p hp) := by
+theorem restrictionUnitRangeDependent_law {d : ℕ} {lam Lam : ℝ}
+    (p : ℝ≥0) (hp : p ≤ 1) :
+    Book.Ch04.RestrictionUnitRangeDependentLaw (law d lam Lam p hp) := by
   intro U V hU hV hUV
   rw [law]
   have hcells : Disjoint (cellsMeeting U) (cellsMeeting V) :=
@@ -212,9 +214,9 @@ theorem unitRangeDependent_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p �
 /-- The unscaled Bernoulli checkerboard law satisfies all structural
 assumptions used by the public main results. -/
 theorem structuralLaw {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
-    Book.Ch04.StructuralLaw (law d lam Lam p hp) where
+    Book.Ch04.RestrictionStructuralLaw (law d lam Lam p hp) where
   stationary := stationary_law p hp
-  unit_range := unitRangeDependent_law p hp
+  unit_range := restrictionUnitRangeDependent_law p hp
   isotropic := isotropic_law p hp
   adjoint_invariant := adjointInvariant_law p hp
 
@@ -242,8 +244,8 @@ theorem thetaEllipticLaw {d : ℕ} {lam Lam Θ : ℝ}
 
 /-- The scaled checkerboard law used by the public corollary. -/
 def scaledLaw (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) (k : ℕ) :
-    Book.Ch04.CoeffLaw d :=
-  Book.Ch04.scaleNormalizedLaw k (law d lam Lam p hp)
+    Book.Ch04.RestrictionCoeffLaw d :=
+  Book.Ch04.restrictionScaleNormalizedLaw k (law d lam Lam p hp)
 
 /-- The reader-facing checkerboard scale.  A single triadic downscaling already
 makes the application visibly a scaled law while preserving all constants as
@@ -253,7 +255,7 @@ def publicScale : ℕ := 1
 /-- The scaled checkerboard law has the Chapter 4 law carrier. -/
 theorem scaledLawCarrier {d : ℕ} {lam Lam : ℝ}
     (hlam : 0 < lam) (hle : lam ≤ Lam) (p : ℝ≥0) (hp : p ≤ 1) (k : ℕ) :
-    Book.Ch04.LawCarrier (scaledLaw d lam Lam p hp k) := by
+    Book.Ch04.RestrictionLawCarrier (scaledLaw d lam Lam p hp k) := by
   simpa [scaledLaw] using
     (lawCarrier (d := d) (lam := lam) (Lam := Lam) hlam hle p hp).scaleNormalized k
 
@@ -276,7 +278,7 @@ theorem scaledUniformEllipticityBounds {d : ℕ} {lam Lam : ℝ}
   lam_pos := hlam
   lam_le_Lam := hle
   aee_elliptic := by
-    rw [scaledLaw, Book.Ch04.scaleNormalizedLaw_eq_map_rescaleReg, law,
+    rw [scaledLaw, Book.Ch04.restrictionScaleNormalizedLaw_eq_map_rescaleReg, law,
       Measure.map_map (measurable_rescaleReg (d := d) k)
         (measurable_checkerRegField (d := d) lam Lam)]
     have hcomp : Measurable (rescaleReg (d := d) k ∘ checkerRegField lam Lam) :=
@@ -290,7 +292,7 @@ theorem scaledUniformEllipticityBounds {d : ℕ} {lam Lam : ℝ}
 /-- The scaled checkerboard law satisfies the structural assumptions. -/
 theorem scaledStructuralLaw {d : ℕ} {lam Lam : ℝ}
     (p : ℝ≥0) (hp : p ≤ 1) (k : ℕ) :
-    Book.Ch04.StructuralLaw (scaledLaw d lam Lam p hp k) := by
+    Book.Ch04.RestrictionStructuralLaw (scaledLaw d lam Lam p hp k) := by
   simpa [scaledLaw] using
     (structuralLaw (d := d) (lam := lam) (Lam := Lam) p hp).scaleNormalized k
 
@@ -334,7 +336,7 @@ theorem randomCheckerboard_quenchedComparison
                 {m : ℕ} {g : Vec d → Vec d}
                 (pair : S.ComparisonPair aω ha m g),
                 X aω ≤ (3 : ℝ) ^ m →
-                Book.Ch03.ForceSobolevRegularity
+                Book.Ch03.Legacy.ForceSobolevRegularity
                   (Book.MainResults.originCube d m) Book.MainResults.fixedComparisonS g →
                 S.comparisonDefect Book.MainResults.fixedComparisonS pair ≤
                   C * ((3 : ℝ) ^ m / X aω) ^ (-α) *
@@ -352,7 +354,7 @@ theorem randomCheckerboard_quenchedComparison
 
 The headline `homogenizationScale_polynomial_of_unitRange` instantiates on the
 Bernoulli checkerboard law: for `1 ≤ lam ≤ Lam ≤ Θ` every hypothesis of the
-capstone — the probability instance, `LawCarrier`, `StructuralLaw`, and the
+capstone — the probability instance, `RestrictionLawCarrier`, `RestrictionStructuralLaw`, and the
 conjunct-free `ThetaEllipticLaw` — is discharged by the construction in this
 file, so the homogenization-scale contrast decay holds for the checkerboard
 with the dimensional constants of the headline. -/

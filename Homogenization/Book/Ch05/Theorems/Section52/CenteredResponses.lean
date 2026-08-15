@@ -16,8 +16,8 @@ Centered primal and adjoint response identities.
 -/
 
 theorem expectedJScalarFormula_sub_scalarizedResponseCenteringTerm_eq_centeredResponseExpectationFormula
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (p q : Vec d) :
     expectedJScalarFormula hP hStruct m p q -
       scalarizedResponseCenteringTerm hP hStruct m p q =
@@ -25,43 +25,43 @@ theorem expectedJScalarFormula_sub_scalarizedResponseCenteringTerm_eq_centeredRe
   simp [expectedJScalarFormula, scalarizedResponseCenteringTerm,
     centeredResponseExpectationFormula, sub_eq_add_neg,
     vecDot_add_right, vecDot_neg_right, vecDot_smul_right,
-    vecDot_comm, thetaAtScale, Ch04.LawCarrier.thetaAtScale]
+    vecDot_comm, thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale]
   ring_nf
 
-theorem integrable_centeredResponseJObservableCubeSet
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d} [IsFiniteMeasure P]
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+theorem integrable_restrictionCenteredResponseJObservableCubeSet
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d} [IsFiniteMeasure P]
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (Q : TriadicCube d) (p q : Vec d)
-    (hJ : Integrable (Ch04.responseJObservableCubeSet Q p q) P) :
-    Integrable (centeredResponseJObservableCubeSet hP hStruct m Q p q) P := by
-  simpa [centeredResponseJObservableCubeSet] using
+    (hJ : Integrable (Ch04.restrictionResponseJObservableCubeSet Q p q) P) :
+    Integrable (restrictionCenteredResponseJObservableCubeSet hP hStruct m Q p q) P := by
+  simpa [restrictionCenteredResponseJObservableCubeSet] using
     hJ.sub (integrable_const _)
 
-theorem integrable_centeredResponseJStarObservableCubeSet
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d} [IsFiniteMeasure P]
-    (hAdj : Ch04.AdjointInvariantLaw P)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+theorem integrable_restrictionCenteredResponseJStarObservableCubeSet
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d} [IsFiniteMeasure P]
+    (hAdj : Ch04.RestrictionAdjointInvariantLaw P)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (Q : TriadicCube d) (p q : Vec d)
-    (hJ : Integrable (Ch04.responseJObservableCubeSet Q p q) P) :
-    Integrable (centeredResponseJStarObservableCubeSet hP hStruct m Q p q) P := by
+    (hJ : Integrable (Ch04.restrictionResponseJObservableCubeSet Q p q) P) :
+    Integrable (restrictionCenteredResponseJStarObservableCubeSet hP hStruct m Q p q) P := by
   have hJAdj :
       Integrable
         (fun a : RegCoeffField d =>
-          Ch04.responseJObservableCubeSet Q p q (adjointReg a)) P :=
+          Ch04.restrictionResponseJObservableCubeSet Q p q (adjointReg a)) P :=
     by
-      have hFmap : Integrable (Ch04.responseJObservableCubeSet Q p q)
+      have hFmap : Integrable (Ch04.restrictionResponseJObservableCubeSet Q p q)
           (Measure.map (adjointReg (d := d)) P) := by rwa [hAdj]
       simpa [Function.comp_def] using
         hFmap.comp_measurable (measurable_adjointReg (d := d))
-  simpa [centeredResponseJStarObservableCubeSet] using
+  simpa [restrictionCenteredResponseJStarObservableCubeSet] using
     hJAdj.sub (integrable_const _)
 
-theorem integral_centeredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_sub
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+theorem integral_restrictionCenteredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_sub
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (Q : TriadicCube d) (p q : Vec d)
-    (hJ : Integrable (Ch04.responseJObservableCubeSet Q p q) P) :
-    ∫ a, centeredResponseJObservableCubeSet hP hStruct m Q p q a ∂P =
+    (hJ : Integrable (Ch04.restrictionResponseJObservableCubeSet Q p q) P) :
+    ∫ a, restrictionCenteredResponseJObservableCubeSet hP hStruct m Q p q a ∂P =
       Ch04.expectedResponseJCubeSet P Q p q -
         scalarizedResponseCenteringTerm hP hStruct m p q := by
   have hConst :
@@ -70,14 +70,14 @@ theorem integral_centeredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_
           scalarizedResponseCenteringTerm hP hStruct m p q) P :=
     integrable_const _
   calc
-    ∫ a, centeredResponseJObservableCubeSet hP hStruct m Q p q a ∂P
+    ∫ a, restrictionCenteredResponseJObservableCubeSet hP hStruct m Q p q a ∂P
         =
       ∫ a,
-        Ch04.responseJObservableCubeSet Q p q a -
+        Ch04.restrictionResponseJObservableCubeSet Q p q a -
           scalarizedResponseCenteringTerm hP hStruct m p q ∂P := by
           rfl
     _ =
-      ∫ a, Ch04.responseJObservableCubeSet Q p q a ∂P -
+      ∫ a, Ch04.restrictionResponseJObservableCubeSet Q p q a ∂P -
         ∫ _a : RegCoeffField d,
           scalarizedResponseCenteringTerm hP hStruct m p q ∂P := by
           rw [integral_sub hJ hConst]
@@ -88,21 +88,21 @@ theorem integral_centeredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_
           simp [Ch04.expectedResponseJCubeSet, Measure.real,
             IsProbabilityMeasure.measure_univ]
 
-theorem integral_centeredResponseJStarObservableCubeSet_eq_expectedResponseJCubeSet_sub
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
-    (hAdj : Ch04.AdjointInvariantLaw P)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+theorem integral_restrictionCenteredResponseJStarObservableCubeSet_eq_expectedResponseJCubeSet_sub
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+    (hAdj : Ch04.RestrictionAdjointInvariantLaw P)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (Q : TriadicCube d) (p q : Vec d)
-    (hJ : Integrable (Ch04.responseJObservableCubeSet Q p q) P) :
-    ∫ a, centeredResponseJStarObservableCubeSet hP hStruct m Q p q a ∂P =
+    (hJ : Integrable (Ch04.restrictionResponseJObservableCubeSet Q p q) P) :
+    ∫ a, restrictionCenteredResponseJStarObservableCubeSet hP hStruct m Q p q a ∂P =
       Ch04.expectedResponseJCubeSet P Q p q -
         scalarizedResponseCenteringTerm hP hStruct m p q := by
   have hJAdj :
       Integrable
         (fun a : RegCoeffField d =>
-          Ch04.responseJObservableCubeSet Q p q (adjointReg a)) P :=
+          Ch04.restrictionResponseJObservableCubeSet Q p q (adjointReg a)) P :=
     by
-      have hFmap : Integrable (Ch04.responseJObservableCubeSet Q p q)
+      have hFmap : Integrable (Ch04.restrictionResponseJObservableCubeSet Q p q)
           (Measure.map (adjointReg (d := d)) P) := by rwa [hAdj]
       simpa [Function.comp_def] using
         hFmap.comp_measurable (measurable_adjointReg (d := d))
@@ -112,21 +112,21 @@ theorem integral_centeredResponseJStarObservableCubeSet_eq_expectedResponseJCube
           scalarizedResponseCenteringTerm hP hStruct m p q) P :=
     integrable_const _
   calc
-    ∫ a, centeredResponseJStarObservableCubeSet hP hStruct m Q p q a ∂P
+    ∫ a, restrictionCenteredResponseJStarObservableCubeSet hP hStruct m Q p q a ∂P
         =
       ∫ a,
-        Ch04.responseJObservableCubeSet Q p q (adjointReg a) -
+        Ch04.restrictionResponseJObservableCubeSet Q p q (adjointReg a) -
           scalarizedResponseCenteringTerm hP hStruct m p q ∂P := by
           rfl
     _ =
-      ∫ a, Ch04.responseJObservableCubeSet Q p q (adjointReg a) ∂P -
+      ∫ a, Ch04.restrictionResponseJObservableCubeSet Q p q (adjointReg a) ∂P -
         ∫ _a : RegCoeffField d,
           scalarizedResponseCenteringTerm hP hStruct m p q ∂P := by
           rw [integral_sub hJAdj hConst]
     _ =
-      ∫ a, Ch04.responseJObservableCubeSet Q p q a ∂P -
+      ∫ a, Ch04.restrictionResponseJObservableCubeSet Q p q a ∂P -
         scalarizedResponseCenteringTerm hP hStruct m p q := by
-          rw [hAdj.integral_comp_adjointReg (Ch04.responseJObservableCubeSet Q p q) hJ.aestronglyMeasurable]
+          rw [hAdj.integral_comp_adjointReg (Ch04.restrictionResponseJObservableCubeSet Q p q) hJ.aestronglyMeasurable]
           rw [integral_const]
           simp [Measure.real, IsProbabilityMeasure.measure_univ]
     _ =
@@ -135,44 +135,44 @@ theorem integral_centeredResponseJStarObservableCubeSet_eq_expectedResponseJCube
           rfl
 
 theorem expectedCenteredResponseJAtScale_eq_annealedResponseJAtScale_sub
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (p q : Vec d)
-    (hJ : Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P) :
+    (hJ : Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P) :
     expectedCenteredResponseJAtScale hP hStruct m p q =
       Ch04.annealedResponseJAtScale P m p q -
         scalarizedResponseCenteringTerm hP hStruct m p q := by
   simpa [expectedCenteredResponseJAtScale, Ch04.annealedResponseJAtScale,
-    Ch04.responseJAtScale, Ch04.responseJObservableCubeSet] using
-      integral_centeredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_sub
+    Ch04.responseJAtScale, Ch04.restrictionResponseJObservableCubeSet] using
+      integral_restrictionCenteredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_sub
         hP hStruct m (originCube d m) p q hJ
 
 theorem expectedCenteredResponseJStarAtScale_eq_annealedResponseJAtScale_sub
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
-    (hAdj : Ch04.AdjointInvariantLaw P)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+    (hAdj : Ch04.RestrictionAdjointInvariantLaw P)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ)
     (p q : Vec d)
-    (hJ : Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P) :
+    (hJ : Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P) :
     expectedCenteredResponseJStarAtScale hP hStruct m p q =
       Ch04.annealedResponseJAtScale P m p q -
         scalarizedResponseCenteringTerm hP hStruct m p q := by
   simpa [expectedCenteredResponseJStarAtScale, Ch04.annealedResponseJAtScale,
-    Ch04.responseJAtScale, Ch04.responseJObservableCubeSet] using
-      integral_centeredResponseJStarObservableCubeSet_eq_expectedResponseJCubeSet_sub
+    Ch04.responseJAtScale, Ch04.restrictionResponseJObservableCubeSet] using
+      integral_restrictionCenteredResponseJStarObservableCubeSet_eq_expectedResponseJCubeSet_sub
         hAdj hP hStruct m (originCube d m) p q hJ
 
 /-- Note-facing primal centered-response expectation formula. -/
 theorem expectedCenteredResponseJAtScale_eq_centeredResponseExpectationFormula
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m : ℤ) (p q : Vec d)
     (hBlock : Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d m)) P) :
     expectedCenteredResponseJAtScale hP hStruct m p q =
       centeredResponseExpectationFormula hP hStruct m p q := by
   letI : IsProbabilityMeasure P := hP.isProbability
   have hJ :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P :=
-    hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P :=
+    hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
       (originCube d m) p q hBlock
   calc
     expectedCenteredResponseJAtScale hP hStruct m p q =
@@ -191,16 +191,16 @@ theorem expectedCenteredResponseJAtScale_eq_centeredResponseExpectationFormula
 
 /-- Note-facing adjoint centered-response expectation formula. -/
 theorem expectedCenteredResponseJStarAtScale_eq_centeredResponseExpectationFormula
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m : ℤ) (p q : Vec d)
     (hBlock : Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d m)) P) :
     expectedCenteredResponseJStarAtScale hP hStruct m p q =
       centeredResponseExpectationFormula hP hStruct m p q := by
   letI : IsProbabilityMeasure P := hP.isProbability
   have hJ :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P :=
-    hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P :=
+    hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
       (originCube d m) p q hBlock
   calc
     expectedCenteredResponseJStarAtScale hP hStruct m p q =
@@ -221,8 +221,8 @@ theorem expectedCenteredResponseJStarAtScale_eq_centeredResponseExpectationFormu
 identity part: the centered primal and adjoint responses have the same
 scalarized expectation. -/
 theorem centeredResponses_homogenizationScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (p q : Vec d) :
     expectedCenteredResponseJAtScale hP hStruct (m : ℤ) p q =

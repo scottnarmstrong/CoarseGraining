@@ -376,7 +376,7 @@ private theorem coarseBlockMatrix_lowerRight_toRepo {d : ℕ} (U : Set (Vec d))
 /-! ### Bridge B3 — annealed matrices: the annealed integrals transport along
 the carrier equivalence `regEquiv`, and the matrix algebra is congruent. -/
 
-private theorem annealedBlockMatrix_upperLeft_toRepo {d : ℕ} (P : CoeffLaw d)
+private theorem annealedBlockMatrix_upperLeft_toRepo {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) :
     (annealedBlockMatrix P U).upperLeft =
       (_root_.Homogenization.Book.Ch04.annealedBlockMatrix
@@ -392,7 +392,7 @@ private theorem annealedBlockMatrix_upperLeft_toRepo {d : ℕ} (P : CoeffLaw d)
   funext a
   exact coarseBlockMatrix_upperLeft_toRepo U a.toFun i j
 
-private theorem annealedBlockMatrix_upperRight_toRepo {d : ℕ} (P : CoeffLaw d)
+private theorem annealedBlockMatrix_upperRight_toRepo {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) :
     (annealedBlockMatrix P U).upperRight =
       (_root_.Homogenization.Book.Ch04.annealedBlockMatrix
@@ -408,7 +408,7 @@ private theorem annealedBlockMatrix_upperRight_toRepo {d : ℕ} (P : CoeffLaw d)
   funext a
   exact coarseBlockMatrix_upperRight_toRepo U a.toFun i j
 
-private theorem annealedBlockMatrix_lowerLeft_toRepo {d : ℕ} (P : CoeffLaw d)
+private theorem annealedBlockMatrix_lowerLeft_toRepo {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) :
     (annealedBlockMatrix P U).lowerLeft =
       (_root_.Homogenization.Book.Ch04.annealedBlockMatrix
@@ -424,7 +424,7 @@ private theorem annealedBlockMatrix_lowerLeft_toRepo {d : ℕ} (P : CoeffLaw d)
   funext a
   exact coarseBlockMatrix_lowerLeft_toRepo U a.toFun i j
 
-private theorem annealedBlockMatrix_lowerRight_toRepo {d : ℕ} (P : CoeffLaw d)
+private theorem annealedBlockMatrix_lowerRight_toRepo {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) :
     (annealedBlockMatrix P U).lowerRight =
       (_root_.Homogenization.Book.Ch04.annealedBlockMatrix
@@ -440,7 +440,7 @@ private theorem annealedBlockMatrix_lowerRight_toRepo {d : ℕ} (P : CoeffLaw d)
   funext a
   exact coarseBlockMatrix_lowerRight_toRepo U a.toFun i j
 
-private theorem annealedSigmaStarInv_toRepo {d : ℕ} (P : CoeffLaw d)
+private theorem annealedSigmaStarInv_toRepo {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) :
     annealedSigmaStarInv P U =
       _root_.Homogenization.Book.Ch04.annealedSigmaStarInv
@@ -449,7 +449,7 @@ private theorem annealedSigmaStarInv_toRepo {d : ℕ} (P : CoeffLaw d)
     _root_.Homogenization.Book.Ch04.annealedSigmaStarInv
   exact annealedBlockMatrix_lowerRight_toRepo P U
 
-private theorem annealedSigmaStar_toRepo {d : ℕ} (P : CoeffLaw d)
+private theorem annealedSigmaStar_toRepo {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) :
     annealedSigmaStar P U =
       _root_.Homogenization.Book.Ch04.annealedSigmaStar
@@ -457,7 +457,7 @@ private theorem annealedSigmaStar_toRepo {d : ℕ} (P : CoeffLaw d)
   unfold annealedSigmaStar _root_.Homogenization.Book.Ch04.annealedSigmaStar
   rw [annealedSigmaStarInv_toRepo]
 
-private theorem annealedSigmaStarInvKappaMean_toRepo {d : ℕ} (P : CoeffLaw d)
+private theorem annealedSigmaStarInvKappaMean_toRepo {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) :
     annealedSigmaStarInvKappaMean P U =
       _root_.Homogenization.Book.Ch04.annealedSigmaStarInvKappaMean
@@ -466,7 +466,7 @@ private theorem annealedSigmaStarInvKappaMean_toRepo {d : ℕ} (P : CoeffLaw d)
     _root_.Homogenization.Book.Ch04.annealedSigmaStarInvKappaMean
   rw [annealedBlockMatrix_lowerLeft_toRepo]
 
-private theorem annealedKappa_toRepo {d : ℕ} (P : CoeffLaw d)
+private theorem annealedKappa_toRepo {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) :
     annealedKappa P U =
       _root_.Homogenization.Book.Ch04.annealedKappa
@@ -474,7 +474,7 @@ private theorem annealedKappa_toRepo {d : ℕ} (P : CoeffLaw d)
   unfold annealedKappa _root_.Homogenization.Book.Ch04.annealedKappa
   rw [annealedSigmaStar_toRepo, annealedSigmaStarInvKappaMean_toRepo]
 
-private theorem annealedB_toRepo {d : ℕ} (P : CoeffLaw d)
+private theorem annealedB_toRepo {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) :
     annealedB P U =
       _root_.Homogenization.Book.Ch04.annealedB
@@ -482,7 +482,7 @@ private theorem annealedB_toRepo {d : ℕ} (P : CoeffLaw d)
   unfold annealedB _root_.Homogenization.Book.Ch04.annealedB
   exact annealedBlockMatrix_upperLeft_toRepo P U
 
-private theorem annealedSigma_toRepo {d : ℕ} (P : CoeffLaw d)
+private theorem annealedSigma_toRepo {d : ℕ} (P : RestrictionCoeffLaw d)
     (U : Set (Vec d)) :
     annealedSigma P U =
       _root_.Homogenization.Book.Ch04.annealedSigma
@@ -491,7 +491,7 @@ private theorem annealedSigma_toRepo {d : ℕ} (P : CoeffLaw d)
   rw [annealedB_toRepo, annealedKappa_toRepo, annealedSigmaStarInv_toRepo]
   rfl
 
-private theorem annealedSigmaAtScale_toRepo {d : ℕ} (P : CoeffLaw d) (n : ℤ) :
+private theorem annealedSigmaAtScale_toRepo {d : ℕ} (P : RestrictionCoeffLaw d) (n : ℤ) :
     annealedSigmaAtScale P n =
       _root_.Homogenization.Book.Ch04.annealedSigmaAtScale
         (Measure.map (toRepoReg (d := d)) P) n := by
@@ -499,7 +499,7 @@ private theorem annealedSigmaAtScale_toRepo {d : ℕ} (P : CoeffLaw d) (n : ℤ)
     _root_.Homogenization.Book.Ch04.annealedSigmaAtScale
   exact annealedSigma_toRepo P _
 
-private theorem annealedSigmaStarAtScale_toRepo {d : ℕ} (P : CoeffLaw d)
+private theorem annealedSigmaStarAtScale_toRepo {d : ℕ} (P : RestrictionCoeffLaw d)
     (n : ℤ) :
     annealedSigmaStarAtScale P n =
       _root_.Homogenization.Book.Ch04.annealedSigmaStarAtScale
@@ -520,9 +520,9 @@ scalarization witnesses built from the structural law, the scalars
 total mirror `thetaAtScale P n`. -/
 
 private theorem repo_thetaAtScale_eq_entry_formula {d : ℕ} [NeZero d]
-    {P : _root_.Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : _root_.Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : _root_.Homogenization.Book.Ch04.StructuralLaw P) (n : ℤ) :
+    {P : _root_.Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : _root_.Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : _root_.Homogenization.Book.Ch04.RestrictionStructuralLaw P) (n : ℤ) :
     _root_.Homogenization.Book.Ch05.thetaAtScale hP hStruct n =
       _root_.Homogenization.Book.Ch04.annealedSigmaAtScale P n 0 0 *
         (_root_.Homogenization.Book.Ch04.annealedSigmaStarAtScale P n 0 0)⁻¹ := by
@@ -591,9 +591,9 @@ the selector reduces to the entry formula
 the entries along the carrier equivalence and the law identification. -/
 private theorem thetaAtScale_checkerboard {d : ℕ} [NeZero d] {lam Lam : ℝ}
     (p : ℝ≥0) (hp : p ≤ 1)
-    (hP : _root_.Homogenization.Book.Ch04.LawCarrier
+    (hP : _root_.Homogenization.Book.Ch04.RestrictionLawCarrier
       (_root_.Homogenization.Examples.RandomCheckerboard.law d lam Lam p hp))
-    (hStruct : _root_.Homogenization.Book.Ch04.StructuralLaw
+    (hStruct : _root_.Homogenization.Book.Ch04.RestrictionStructuralLaw
       (_root_.Homogenization.Examples.RandomCheckerboard.law d lam Lam p hp))
     (n : ℤ) :
     _root_.Homogenization.Book.Ch05.thetaAtScale hP hStruct n =

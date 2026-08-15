@@ -18,8 +18,8 @@ there is a scale `n ∈ {h, ..., N}` at which both scalar chains are nearly
 stationary across the gap `h`, or the contrast has already contracted by
 `sigma`. -/
 theorem pigeonhole_homogenizationScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta sigma : ℝ} (hdelta_pos : 0 < delta)
     (hdelta_le : delta ≤ 1 / 2)
@@ -116,7 +116,7 @@ theorem pigeonhole_homogenizationScale
         have haK_nonneg : 0 ≤ hP.barSigmaAtScale hStruct ((k * h : ℕ) : ℤ) :=
           (Pigeonhole.barSigmaAtScale_pos_of_P4 hP hStruct hP4 (k * h)).le
         have hprod := mul_le_mul ha_mono hb_mono hbN_nonneg haK_nonneg
-        simpa [thetaAtScale, Ch04.LawCarrier.thetaAtScale, A, a, b] using hprod
+        simpa [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, A, a, b] using hprod
       have hA0_nonneg : 0 ≤ A 0 := by
         have ha0 := Pigeonhole.barSigmaAtScale_pos_of_P4 hP hStruct hP4 0
         have hb0 := Pigeonhole.barSigmaStarAtScale_inv_pos_of_P4 hP hStruct hP4 0
@@ -134,7 +134,7 @@ theorem pigeonhole_homogenizationScale
         thetaAtScale hP hStruct (N : ℤ) ≤ A k := hthetaN_le_Ak
         _ ≤ sigma * A 0 := hAk_le_sigma
         _ = sigma * thetaAtScale hP hStruct 0 := by
-          simp [A, a, b, thetaAtScale, Ch04.LawCarrier.thetaAtScale]
+          simp [A, a, b, thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale]
 
 end
 

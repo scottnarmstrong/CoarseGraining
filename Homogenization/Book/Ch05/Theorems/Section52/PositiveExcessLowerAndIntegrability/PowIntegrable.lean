@@ -12,7 +12,7 @@ open scoped Matrix.Norms.Elementwise
 noncomputable section
 
 theorem section52_integrable_abs_pow_of_ae_abs_le_nonneg
-    {d : ℕ} {P : Ch04.CoeffLaw d} {ξ : ℕ}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {ξ : ℕ}
     {X Y : RegCoeffField d → ℝ}
     (hX_aemeas : AEMeasurable X P)
     (hY_nonneg : ∀ a, 0 ≤ Y a)
@@ -31,7 +31,7 @@ theorem section52_integrable_abs_pow_of_ae_abs_le_nonneg
   simpa [hleft, hright] using hpow
 
 theorem section52_integrable_abs_finset_sum_pow_of_integrable_abs_pow
-    {d : ℕ} {P : Ch04.CoeffLaw d} {ι : Type*} {ξ : ℕ}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {ι : Type*} {ξ : ℕ}
     {s : Finset ι} {G : ι → RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
     (hG_aemeas : ∀ i ∈ s, AEMeasurable (G i) P)
@@ -53,7 +53,7 @@ theorem section52_integrable_abs_finset_sum_pow_of_integrable_abs_pow
       (Nat.pos_iff_ne_zero.mp (lt_of_lt_of_le zero_lt_one hξ))
 
 theorem section52_integrable_abs_positiveExcess_pow_of_ae_finset_sum_bound
-    {d : ℕ} {P : Ch04.CoeffLaw d} {ι : Type*} {ξ : ℕ}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {ι : Type*} {ξ : ℕ}
     {s : Finset ι} {X : RegCoeffField d → ℝ} {base : ℝ}
     {G : ι → RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
@@ -85,8 +85,8 @@ theorem section52_integrable_abs_positiveExcess_pow_of_ae_finset_sum_bound
       hExcess_aemeas hY_nonneg hPoint_abs hY_int
 
 theorem upper_unitDescendant_Lambda_integrable_abs_pow
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {s : ℝ} {ξ m : ℕ} (hs : 0 < s)
     (hSourceInt :
       Integrable
@@ -136,8 +136,8 @@ theorem upper_unitDescendant_Lambda_integrable_abs_pow
     (hP.aemeasurable_LambdaSqCoeffField_finite_one U hs) hX0_aemeas hmap hX0_abs_int
 
 theorem upperFactorPowerIntegrableAtScale_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     Integrable
       (fun a : RegCoeffField d =>
@@ -197,7 +197,7 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
     have hB0 :
         0 ≤ Ch04.Internal.barBAtScaleOfPrimitive primitive0 := by
       simpa [primitive0] using
-        Ch04.LawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
+        Ch04.RestrictionLawCarrier.Internal.barB_nonneg_of_integrable_coarseFullBlockMatrixAtCube hP
           (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct (0 : ℤ))
           hBlock0
     simpa [hBarSigma0_eq] using hB0

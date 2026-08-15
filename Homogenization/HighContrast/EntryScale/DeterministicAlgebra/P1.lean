@@ -19,8 +19,8 @@ open scoped Matrix.Norms.L2Operator
 # Deterministic contrast algebra
 
 Pure-real deterministic algebra from the high-moment paper
-(Armstrong–Kuusi–Loher, in preparation), Section "Deterministic contrast
-algebra".  The scalar drop estimates are paired with the LIH operator-norm API
+(Armstrong–Kuusi–Loher, to appear), Section "Deterministic contrast
+algebra".  The scalar drop estimates are paired with the library's operator-norm API
 for the normalization comparison in `e.norm.compare`.
 -/
 
@@ -53,21 +53,21 @@ def noDropWindow (rho F_k F_m : ℝ) : Prop :=
 Source label: `e.F.drop`.
 -/
 noncomputable def contrastExcessAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (m : ℕ) : ℝ :=
   Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ) - 1
 
 /--
-Source label `e.J.moment.bound`: conversion from LIH's
+Source label `e.J.moment.bound`: conversion from the library's
 `sqrt(theta_m)` scalar to the manuscript's `r_m` normalization, under the
 source hypothesis `r_m^2 = 1 + F_m`.
 -/
 theorem sqrt_thetaAtScale_eq_r_m_of_sq_contrastExcess
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (m : ℕ) {r_m : ℝ}
     (hr_nonneg : 0 ≤ r_m)
     (hr_sq : r_m ^ 2 = 1 + contrastExcessAtScale hP hStruct m) :
@@ -83,14 +83,14 @@ theorem sqrt_thetaAtScale_eq_r_m_of_sq_contrastExcess
     (by rw [hθ_eq, ← hr_sq])
 
 /--
-Source labels `p.HC.CR` and `e.HC.CR`: LIH's centered coarse-fluctuation
+Source labels `p.HC.CR` and `e.HC.CR`: the library's centered coarse-fluctuation
 term `(sqrt(theta_m) - 1)^2` is controlled by the manuscript contrast excess
 `F_m = theta_m - 1`.
 -/
 theorem sqrt_thetaAtScale_sub_one_sq_le_contrastExcessAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) :
     (Real.sqrt (Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ)) - 1) ^
@@ -136,9 +136,9 @@ The concrete terminal scalar prefactor at scales `k <= m`:
 Source label: `e.P.bound`.
 -/
 noncomputable def terminalPAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (k m : ℕ) : ℝ :=
   terminalP
     (Real.sqrt (1 + contrastExcessAtScale hP hStruct m))
@@ -149,15 +149,15 @@ noncomputable def terminalPAtScales
 
 /--
 Local weak-norm scalar weight at the left edge of the window.  This is the
-coefficient produced by the raw high-contrast computation before LIH's final
+coefficient produced by the raw high-contrast computation before the library's final
 scale-zero baseline conversion.
 
 Source labels: `p.HC.CR` and `e.P.bound`.
 -/
 noncomputable def localWeakNormScalarWeightAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (k m : ℕ) : ℝ :=
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   σ * (hP.barSigmaStarAtScale hStruct (k : ℤ))⁻¹ +
@@ -170,7 +170,7 @@ theorem contrast_drop_eq (r_m a b : ℝ) :
   rfl
 
 /--
-Source label `e.tau.terminal`: real algebra rewriting the LIH special-vector
+Source label `e.tau.terminal`: real algebra rewriting the library's special-vector
 tau scalar formula into the paper's `r_m`, `a_{j,m}`, `b_{j,m}` notation.
 -/
 theorem terminalTau_eq_of_barSigma_ratios {sigma theta bm cm bk ck : ℝ}
@@ -215,7 +215,7 @@ theorem terminalTau_eq_of_barSigma_ratios {sigma theta bm cm bk ck : ℝ}
           ring
 
 /--
-Source label `e.sqrt.tau.absorb`: real algebra rewriting LIH's special-vector
+Source label `e.sqrt.tau.absorb`: real algebra rewriting the library's special-vector
 expected-response scalar formula into the paper's terminal prefactor notation.
 -/
 theorem half_terminalP_sub_one_eq_of_barSigma_ratios {sigma theta bm cm bk ck : ℝ}
@@ -261,15 +261,15 @@ theorem half_terminalP_sub_one_eq_of_barSigma_ratios {sigma theta bm cm bk ck : 
           ring
 
 /--
-Source label `e.tau.terminal`: LIH-facing terminal-pair formula.  For the
+Source label `e.tau.terminal`: library-facing terminal-pair formula.  For the
 special vectors `p_e,q_e`, `tauAtScale` is exactly the local scalar
 `terminalTau` with `r_m = sqrt Theta_m` and the paper ratios
 `a_{k,m}`, `b_{k,m}`.
 -/
 theorem tauAtScale_special_eq_terminalTau_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m k : ℕ) (_hk_le_m : k ≤ m) (e : Homogenization.Vec d)
     (he : Homogenization.Book.Ch02.vecNorm e = 1) :
@@ -362,14 +362,14 @@ theorem tauAtScale_special_eq_terminalTau_of_P4
         rfl
 
 /--
-Source label `l.union.bound`: LIH Section 52 scalar preliminaries compare the
+Source label `l.union.bound`: the library's Section 52 scalar preliminaries compare the
 scale-`m` scalar contrast to the corrected note's initial budget
 `T = widetildeTheta_0`.
 -/
 theorem thetaAtScale_le_initialWidetildeTheta_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) :
     Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ) ≤
@@ -385,9 +385,9 @@ Source label `l.union.bound`: the corrected initial contrast budget
 `T = widetildeTheta_0` is at least one under `(P4)`.
 -/
 theorem one_le_initialWidetildeTheta_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P) :
     1 ≤ Homogenization.Book.Ch05.widetildeThetaAtScale P (0 : ℤ) hP4 := by
   have htheta :
@@ -398,9 +398,9 @@ theorem one_le_initialWidetildeTheta_of_P4
 
 /-- Source label `e.F.drop`: `F_m = Theta_m - 1` is nonnegative under `(P4)`. -/
 theorem contrastExcessAtScale_nonneg_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) :
     0 ≤ contrastExcessAtScale hP hStruct m := by
@@ -416,9 +416,9 @@ Source label `l.det.memory`: the manuscript contrast sequence
 `F_m = Theta_m - 1` is nonincreasing in the scale.
 -/
 theorem contrastExcessAtScale_antitone_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P) :
     Antitone fun m : ℕ => contrastExcessAtScale hP hStruct m := by
   intro j m hjm
@@ -454,9 +454,9 @@ inverse-star scalar normalization ratios is controlled by the corrected initial
 budget `T = widetildeTheta_0`.
 -/
 theorem terminalScalarRatioProduct_le_initialWidetildeTheta_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {j m : ℕ} (_hjm : j ≤ m) :
     (hP.barSigmaAtScale hStruct (j : ℤ) /
@@ -515,9 +515,9 @@ normalization change is controlled by the initial budget
 `T = widetildeTheta_0`.
 -/
 theorem terminalUpperScalarRatio_le_initialWidetildeTheta_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {j m : ℕ} (hjm : j ≤ m) :
     hP.barSigmaAtScale hStruct (j : ℤ) /
@@ -570,9 +570,9 @@ terminal/intermediate normalization change is controlled by the initial budget
 `T = widetildeTheta_0`.
 -/
 theorem terminalInvStarScalarRatio_le_initialWidetildeTheta_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {j m : ℕ} (hjm : j ≤ m) :
     (hP.barSigmaStarAtScale hStruct (j : ℤ))⁻¹ /
@@ -652,14 +652,14 @@ theorem rtau_drop_of_eq {r_m a b F_j F_m tau : ℝ}
   exact rtau_drop r_m a b ha hb
 
 /--
-Source label `e.rtau.drop`: LIH-facing terminal-pair version.  The special
+Source label `e.rtau.drop`: library-facing terminal-pair version.  The special
 vectors `p_e,q_e` identify `tauAtScale` with the terminal scalar `tau`, and the
 contrast excesses give the deterministic drop `F_j - F_m`.
 -/
 theorem sqrt_contrastExcess_mul_tauAtScale_special_le_half_contrastExcess_drop_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {j m : ℕ} (hjm : j ≤ m) (e : Homogenization.Vec d)
     (he : Homogenization.Book.Ch02.vecNorm e = 1) :
@@ -775,13 +775,13 @@ theorem sqrt_contrastExcess_mul_tauAtScale_special_le_half_contrastExcess_drop_o
   simpa [r_m, tau] using hbase
 
 /--
-Source label `e.sqrt.tau.absorb`: LIH-facing formula for the lower-scale
+Source label `e.sqrt.tau.absorb`: library-facing formula for the lower-scale
 expected response of the special terminal pair.
 -/
 theorem expectedResponseJCubeSet_special_eq_half_terminalP_sub_one_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m k : ℕ) (e : Homogenization.Vec d)
     (he : Homogenization.Book.Ch02.vecNorm e = 1) :
@@ -818,7 +818,7 @@ theorem expectedResponseJCubeSet_special_eq_half_terminalP_sub_one_of_P4
     simpa [Homogenization.Book.Ch04.expectedResponseJCubeSet,
       Homogenization.Book.Ch04.annealedResponseJAtScale,
       Homogenization.Book.Ch04.responseJAtScale,
-      Homogenization.Book.Ch04.responseJObservableCubeSet] using h
+      Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet] using h
   have hspecial :
       Homogenization.Book.Ch05.expectedJScalarFormula hP hStruct (k : ℤ)
           p_e q_e =

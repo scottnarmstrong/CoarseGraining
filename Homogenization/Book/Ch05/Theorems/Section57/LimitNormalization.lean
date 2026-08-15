@@ -23,8 +23,8 @@ noncomputable section
 /-- Diagonal full-block matrix representing `\overline A^{-1/2}` in the
 scalarized limiting normalization. -/
 noncomputable def scalarLimitInvSqrtMatrix
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) :
     FullBlockMat d :=
   Matrix.diagonal
     (Ch04.scalarFullBlockInvSqrtDiag
@@ -33,8 +33,8 @@ noncomputable def scalarLimitInvSqrtMatrix
 /-- Diagonal full-block matrix representing `\overline A^{1/2}` in the
 scalarized limiting normalization. -/
 noncomputable def scalarLimitSqrtMatrix
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) :
     FullBlockMat d :=
   Matrix.diagonal
     (Section56.scalarFullBlockSqrtDiag
@@ -43,24 +43,24 @@ noncomputable def scalarLimitSqrtMatrix
 /-- The first block vector in
 `J(Q,\overline A^{-1/2}e,\overline A^{1/2}e)`. -/
 noncomputable def scalarLimitInvSqrtBlockVec
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (e : FullBlockVec d) : BlockVec d :=
   ofFullBlockVec (Matrix.mulVec (scalarLimitInvSqrtMatrix hP hStruct) e)
 
 /-- The second block vector in
 `J(Q,\overline A^{-1/2}e,\overline A^{1/2}e)`. -/
 noncomputable def scalarLimitSqrtBlockVec
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (e : FullBlockVec d) : BlockVec d :=
   ofFullBlockVec (Matrix.mulVec (scalarLimitSqrtMatrix hP hStruct) e)
 
 /-- The Section 5.7 normalized block-response observable with the limiting
 annealed normalization. -/
 noncomputable def limitNormalizedBlockJObservable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (Q : TriadicCube d) (e : FullBlockVec d) : RegCoeffField d → ℝ :=
   Ch04.blockJObservableCubeSetBlockVec Q
     (scalarLimitInvSqrtBlockVec hP hStruct e)
@@ -70,8 +70,8 @@ noncomputable def limitNormalizedBlockJObservable
 This is the pointwise factor produced after replacing
 `\overline A_0` by `\overline A`. -/
 noncomputable def limitWeightedUnitEllipticityObservable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (sUpper sLower : ℝ) : RegCoeffField d → ℝ :=
   fun a =>
     (barSigmaLimit hP hStruct)⁻¹ *
@@ -84,8 +84,8 @@ scalar normalization.  The origin version above is the special case used by
 the Γσ assumption; this localized version is the one needed for descendant
 unit cubes inside a larger cube. -/
 noncomputable def limitWeightedUnitEllipticityObservableOnCube
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (Q : TriadicCube d) (sUpper sLower : ℝ) : RegCoeffField d → ℝ :=
   fun a =>
     (barSigmaLimit hP hStruct)⁻¹ *
@@ -94,8 +94,8 @@ noncomputable def limitWeightedUnitEllipticityObservableOnCube
         (Ch04.lambdaSqCoeffField Q sLower (.finite 1) a)⁻¹
 
 @[simp] theorem limitWeightedUnitEllipticityObservableOnCube_originCube_zero
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (sUpper sLower : ℝ) :
     limitWeightedUnitEllipticityObservableOnCube hP hStruct
         (originCube d 0) sUpper sLower =
@@ -104,8 +104,8 @@ noncomputable def limitWeightedUnitEllipticityObservableOnCube
 
 namespace GammaSigmaCoarseGrainedEllipticity
 
-variable {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-variable {hP : Ch04.LawCarrier P} {hStruct : Ch04.StructuralLaw P}
+variable {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+variable {hP : Ch04.RestrictionLawCarrier P} {hStruct : Ch04.RestrictionStructuralLaw P}
 
 /-- The two limiting scalar normalizers are dual: their pairing preserves the
 Euclidean square norm of the full-block vector. -/

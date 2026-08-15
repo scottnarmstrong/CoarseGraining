@@ -129,8 +129,8 @@ instance instMeasurableSpaceRegCoeffField (d : ℕ) :
     MeasurableSpace (RegCoeffField d) :=
   pointwiseSigmaR d ⊔ entryTestSigmaR d
 
-/-- A coefficient law on the carrier (mirrors `Book.Ch04.CoeffLaw`). -/
-abbrev CoeffLaw (d : ℕ) := Measure (RegCoeffField d)
+/-- A coefficient law on the carrier (mirrors `Book.Ch04.RestrictionCoeffLaw`). -/
+abbrev RestrictionCoeffLaw (d : ℕ) := Measure (RegCoeffField d)
 
 /-! ## Signed permutations and carrier endomorphisms
 
@@ -413,9 +413,9 @@ noncomputable def restrictReg {d : ℕ} (U : Set (Vec d)) (hU : MeasurableSet U)
     intro K hK
     exact ((a.entry_locInt i j).integrableOn_isCompact hK).indicator hU
 
-/-- The restriction σ-algebra on the carrier (mirrors `RestrictionSigmaR`):
-the comap of the canonical carrier σ-algebra along `restrictReg U hU`. -/
-def RestrictionSigmaR {d : ℕ} (U : Set (Vec d)) (hU : MeasurableSet U) :
+/-- The pointwise-restriction σ-algebra used by this copied sup-metric law
+lane: the comap of the canonical carrier σ-algebra along `restrictReg U hU`. -/
+def restrictionSigma {d : ℕ} (U : Set (Vec d)) (hU : MeasurableSet U) :
     MeasurableSpace (RegCoeffField d) :=
   MeasurableSpace.comap (restrictReg U hU) inferInstance
 
@@ -490,32 +490,31 @@ noncomputable def cubeFluctuation {d : ℕ} (Q : TriadicCube d)
 
 /-! ## Law assumptions -/
 
-/-- Stationarity of a carrier law: invariance under every integer translation
-(mirrors `IsStationaryR`). -/
-def IsStationary {d : ℕ} (P : CoeffLaw d) : Prop :=
+/-- Stationarity in the pointwise-restriction/sup-metric law lane: invariance
+under every integer translation. -/
+def RestrictionStationaryLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
   ∀ z : Fin d → ℤ, Measure.map (translateReg (intVecToRealVec z)) P = P
 
-def AreUnitSeparated {d : ℕ} (U V : Set (Vec d)) : Prop :=
+def RestrictionUnitSeparated {d : ℕ} (U V : Set (Vec d)) : Prop :=
   ∀ ⦃x y : Vec d⦄, x ∈ U → y ∈ V → 1 ≤ dist x y
 
-/-- Unit-range dependence of a carrier law: independence of the restriction
-σ-algebras of unit-separated measurable sets (mirrors
-`IsUnitRangeDependentR`; the `MeasurableSet` side-conditions make
-`RestrictionSigmaR` well defined). -/
-def IsUnitRangeDependent {d : ℕ} (P : CoeffLaw d) : Prop :=
+/-- Unit-range dependence in the pointwise-restriction/sup-metric law lane:
+independence of the restriction σ-algebras of unit-separated measurable sets;
+the `MeasurableSet` side-conditions make `restrictionSigma` well defined. -/
+def RestrictionUnitRangeDependentLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
   ∀ (U V : Set (Vec d)) (hU : MeasurableSet U) (hV : MeasurableSet V),
-    AreUnitSeparated U V →
-      ProbabilityTheory.Indep (RestrictionSigmaR U hU) (RestrictionSigmaR V hV) P
+    RestrictionUnitSeparated U V →
+      ProbabilityTheory.Indep (restrictionSigma U hU) (restrictionSigma V hV) P
 
 /-- Isotropy of a carrier law: invariance under every signed-permutation
 rotation (mirrors `IsIsotropicInLawR`). -/
-def IsIsotropicInLaw {d : ℕ} (P : CoeffLaw d) : Prop :=
+def IsIsotropicInLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
   ∀ (R : Mat d) (hR : IsSignedPermutationMatrix R),
     Measure.map (rotateReg R hR) P = P
 
 /-- Adjoint invariance of a carrier law (mirrors
 `IsAdjointInvariantInLawR`). -/
-def IsAdjointInvariantInLaw {d : ℕ} (P : CoeffLaw d) : Prop :=
+def IsAdjointInvariantInLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
   Measure.map adjointReg P = P
 
 def IsAEEllipticFieldOn {d : ℕ} (lam Lam : ℝ) (U : Set (Vec d))
@@ -538,25 +537,25 @@ def AELocallyUniformlyEllipticField {d : ℕ} (a : RegCoeffField d) : Prop :=
       0 < lam ∧ lam ≤ Lam ∧
         AEEllipticOn lam Lam (openCubeSet Q) a
 
-def AELocallyUniformlyEllipticLaw {d : ℕ} (P : CoeffLaw d) : Prop :=
+def AELocallyUniformlyEllipticLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
   ∀ᵐ a ∂P, AELocallyUniformlyEllipticField a
 
-/-- The Chapter 4 law carrier (mirrors `Book.Ch04.LawCarrier`).  On the
+/-- The Chapter 4 law carrier (mirrors `Book.Ch04.RestrictionLawCarrier`).  On the
 honest-fields carrier the former measurability fields are law-independent free
 theorems, so the carrier consists of the probability instance and the a.s.
 local uniform ellipticity support alone. -/
-structure LawCarrier {d : ℕ} (P : CoeffLaw d) : Prop where
+structure RestrictionLawCarrier {d : ℕ} (P : RestrictionCoeffLaw d) : Prop where
   isProbability : IsProbabilityMeasure P
   ae_locally_uniformly_elliptic : AELocallyUniformlyEllipticLaw P
 
-structure StructuralLaw {d : ℕ} (P : CoeffLaw d) : Prop where
-  stationary : IsStationary P
-  unit_range : IsUnitRangeDependent P
+structure RestrictionStructuralLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop where
+  stationary : RestrictionStationaryLaw P
+  unit_range : RestrictionUnitRangeDependentLaw P
   isotropic : IsIsotropicInLaw P
   adjoint_invariant : IsAdjointInvariantInLaw P
 
 structure UniformEllipticityBounds {d : ℕ}
-    (P : CoeffLaw d) (lam Lam : ℝ) : Prop where
+    (P : RestrictionCoeffLaw d) (lam Lam : ℝ) : Prop where
   lam_pos : 0 < lam
   lam_le_Lam : lam ≤ Lam
   aee_elliptic :
@@ -851,9 +850,9 @@ noncomputable def comparisonData {d : ℕ} [NeZero d] (sigmaBar : ℝ)
 
 structure Setup (d : ℕ) [NeZero d] where
   two_le_dim : 2 ≤ d
-  P : CoeffLaw d
-  hP : LawCarrier P
-  hStruct : StructuralLaw P
+  P : RestrictionCoeffLaw d
+  hP : RestrictionLawCarrier P
+  hStruct : RestrictionStructuralLaw P
   lam : ℝ
   Lam : ℝ
   hUE : UniformEllipticityBounds P lam Lam

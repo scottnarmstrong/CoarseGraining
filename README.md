@@ -18,10 +18,15 @@ Inventiones Mathematicae **242** (2025), 895–1086,
 [doi:10.1007/s00222-025-01370-9](https://doi.org/10.1007/s00222-025-01370-9);
 carrying out that formalization was the principal aim of the project. The
 library has since been extended with the high-contrast development —
-block-variance decay and the polynomial homogenization length scale
-(Armstrong–Kuusi–Loher, in preparation) — described below.
+block-variance decay and the polynomial homogenization length scale — from
+Scott Armstrong, Tuomo Kuusi, and Amélie Loher,
+*Homogenization at a polynomial scale in high contrast* (to appear), described
+below. The supporting analytic library now also includes finite-exponent cube
+Calderón–Zygmund estimates, finite-exponent Sobolev and fractional-Sobolev
+infrastructure, and a finite-exponent local coarse-graining theorem.
 
-- **1,413 Lean source files, ~537,000 lines.**
+- **1,693 Lean source files, 616,164 lines** (including the comparator audit
+  surface; the production library is 1,672 files and 600,084 lines).
 - **No `sorry`** anywhere in the library. (Each Mathlib-only comparator
   challenge in `Audit/` contains its single intentional statement-level
   `sorry`, filled by the corresponding solution file.)
@@ -91,7 +96,8 @@ the law.
 
 In dimension `d > 2`, the development also proves that homogenization sets in
 at a length scale which is **polynomial in the ellipticity contrast**. This
-formalizes the main result of Armstrong–Kuusi–Loher (in preparation).
+formalizes the main result of Scott Armstrong, Tuomo Kuusi, and Amélie Loher,
+*Homogenization at a polynomial scale in high contrast* (to appear).
 
 **`homogenizationScale_polynomial_of_unitRange`**
 ([`Homogenization/HighContrast/Scale/Final.lean`](Homogenization/HighContrast/Scale/Final.lean)).
@@ -121,7 +127,7 @@ below).
 
 ## Verified against a Mathlib-only statement
 
-So that the central claims can be checked without trusting the ~537k-line
+So that the central claims can be checked without trusting the ~600k-line
 development, they are **independently verified by
 [`leanprover/comparator`](https://github.com/leanprover/comparator)**. Each is
 restated using **only Mathlib** — no project definitions — in a
@@ -190,9 +196,9 @@ lake build           # compile the project
 which pins the exact dependency revisions.
 
 On an 8-core / 32 GB machine, with Mathlib supplied by `lake exe cache get`, the
-project itself elaborates in roughly half an hour (4,450 build jobs for the
+project itself elaborates in roughly half an hour (4,624 build jobs for the
 default `Homogenization` target; `lake build Audit` additionally elaborates the
-comparator surface). Continuous
+comparator surface and its semantic regression). Continuous
 integration rebuilds the entire tree on every push; the live pass/fail status and
 GitHub's own measured build time for each run are shown in the
 [Actions tab](https://github.com/scottnarmstrong/CoarseGraining/actions) and in the
@@ -210,7 +216,7 @@ Homogenization/
   Geometry/        triadic cubes, partitions, domains
   Multiscale/      cube averages and projections
   Besov/           Besov spaces, duality, Poincaré inequalities
-  Sobolev/         H¹ / W^{1,p} theory, Hodge decomposition
+  Sobolev/         H¹ / W^{1,p}, fractional Sobolev, cube CZ, Hodge decomposition
   PDE/             weak solutions, Dirichlet problems
   Probability/     regular coefficient fields, stationarity, concentration, independence
   Deterministic/   coarse Caccioppoli / Poincaré, deterministic homogenization
@@ -229,10 +235,10 @@ doc/coarse-graining.pdf
 ## How this was built
 
 The original Lean code in this repository was written by GPT-5.5 and Claude
-Opus 4.6–4.8, under the close supervision of the authors. Subsequent updates —
-the polynomial scale high contrast development — were written by Claude
-Fable 5, under the same supervision. The models, tooling,
-cost, and review status are disclosed in full in
+Opus 4.6–4.8, under the close supervision of the authors. Subsequent updates,
+including the polynomial-scale high-contrast and finite-exponent analytic
+developments, were written by Claude Fable 5 under the same supervision. The
+models, tooling, cost, and review status are disclosed in full in
 [`formalization.yaml`](formalization.yaml), following the
 [mathlib-initiative](https://github.com/mathlib-initiative/formalization.yaml)
 standard.

@@ -9,13 +9,13 @@ namespace Homogenization
 
 The scalar coarse observable
 `a ↦ P · 𝐀(cubeSet (originCube d n); a) P`
-is almost-everywhere-strongly-measurable under any Chapter 4 `LawCarrier`, and —
+is almost-everywhere-strongly-measurable under any Chapter 4 `RestrictionLawCarrier`, and —
 under a `ThetaEllipticLaw` — almost surely lands in `[0, 2(Θ|p|² + |q|²)]` and is
 integrable.
 
-The `LawCarrier` a.e.-measurability of every coarse block-matrix entry is
+The `RestrictionLawCarrier` a.e.-measurability of every coarse block-matrix entry is
 already available
-(`LawCarrier.aemeasurable_coarseBlockMatrix_{upperLeft,upperRight,lowerLeft,
+(`RestrictionLawCarrier.aemeasurable_coarseBlockMatrix_{upperLeft,upperRight,lowerLeft,
 lowerRight}_apply_cubeSet`, all polarizations of `aemeasurable_Mu_cubeSet`); we
 wrap those into the scalar quadratic observable.  The a.s. deterministic bound
 comes from feeding the a.e.-elliptic realizations through the C2 bridge to an
@@ -25,13 +25,13 @@ everywhere-elliptic representative and applying the C1′ scalar sandwich.
 open Homogenization.Book.Ch04
 open MeasureTheory
 
-variable {d : ℕ} [NeZero d]
+variable {d : ℕ}
 
 /-! ## Measurability -/
 
 /-- Bilinear scalar observable of a block-entry-measurable matrix family is
 a.e.-measurable. -/
-private theorem aemeasurable_vecDot_matVecMul {L : CoeffLaw d} {Bfield : RegCoeffField d → Mat d}
+private theorem aemeasurable_vecDot_matVecMul {L : RestrictionCoeffLaw d} {Bfield : RegCoeffField d → Mat d}
     (u v : Vec d) (hB : ∀ i j, AEMeasurable (fun a => Bfield a i j) L) :
     AEMeasurable (fun a => vecDot u (matVecMul (Bfield a) v)) L := by
   have heq :
@@ -48,7 +48,7 @@ private theorem aemeasurable_vecDot_matVecMul {L : CoeffLaw d} {Bfield : RegCoef
 
 /-- The scalar quadratic observable of a block matrix family is a.e.-measurable
 whenever all four block entries are. -/
-private theorem aemeasurable_blockQuadratic {L : CoeffLaw d}
+private theorem aemeasurable_blockQuadratic {L : RestrictionCoeffLaw d}
     {Mfield : RegCoeffField d → BlockMat d} (P : BlockVec d)
     (hUL : ∀ i j, AEMeasurable (fun a => (Mfield a).upperLeft i j) L)
     (hUR : ∀ i j, AEMeasurable (fun a => (Mfield a).upperRight i j) L)
@@ -74,9 +74,9 @@ private theorem aemeasurable_blockQuadratic {L : CoeffLaw d}
 
 /-- **C3 (measurability).**  The scalar coarse observable
 `a ↦ P · 𝐀(cubeSet (originCube d n); a) P` is a.e.-strongly-measurable under any
-`LawCarrier`. -/
+`RestrictionLawCarrier`. -/
 theorem aestronglyMeasurable_coarseBlockQuadratic_cubeSet
-    {L : CoeffLaw d} (hP : LawCarrier L) (n : ℤ) (P : BlockVec d) :
+    {L : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier L) (n : ℤ) (P : BlockVec d) :
     AEStronglyMeasurable
       (fun a =>
         blockVecDot P
@@ -99,10 +99,12 @@ pointwise substitute
 `∀ᵐ a ∂L, IsEllipticFieldOn 1 Θ (cubeSet (originCube d n)) a`, from which the
 deterministic C1′ sandwich transfers realization-by-realization. -/
 
+variable [NeZero d]
+
 /-- **C3 (a.s. bounds).**  Under an a.s.-`(1, Θ)`-elliptic law, the coarse
 observable a.s. lands in `[0, 2(Θ|p|² + |q|²)]`. -/
 theorem coarseBlockQuadratic_ae_bounds_of_ae_isEllipticFieldOn
-    {L : CoeffLaw d} {Θ : ℝ} (n : ℤ) (P : BlockVec d)
+    {L : RestrictionCoeffLaw d} {Θ : ℝ} (n : ℤ) (P : BlockVec d)
     (hell : ∀ᵐ a ∂L, IsEllipticFieldOn 1 Θ (cubeSet (originCube d n)) a.toFun) :
     ∀ᵐ a ∂L,
       0 ≤ blockVecDot P
@@ -114,11 +116,11 @@ theorem coarseBlockQuadratic_ae_bounds_of_ae_isEllipticFieldOn
   exact ⟨zero_le_blockVecDot_coarseBlockMatrix_cube ha P,
     blockVecDot_coarseBlockMatrix_cube_le ha P⟩
 
-/-- **C3 (integrability).**  Under a `LawCarrier` (for measurability) and an
+/-- **C3 (integrability).**  Under a `RestrictionLawCarrier` (for measurability) and an
 a.s.-`(1, Θ)`-elliptic law (for the deterministic bound), the coarse observable
 is integrable. -/
 theorem integrable_coarseBlockQuadratic_of_ae_isEllipticFieldOn
-    {L : CoeffLaw d} (hP : LawCarrier L) {Θ : ℝ} (n : ℤ) (P : BlockVec d)
+    {L : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier L) {Θ : ℝ} (n : ℤ) (P : BlockVec d)
     (hell : ∀ᵐ a ∂L, IsEllipticFieldOn 1 Θ (cubeSet (originCube d n)) a.toFun) :
     Integrable
       (fun a =>

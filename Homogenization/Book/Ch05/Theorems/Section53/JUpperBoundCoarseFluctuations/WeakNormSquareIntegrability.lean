@@ -22,8 +22,8 @@ noncomputable section
 namespace Internal
 
 @[irreducible] noncomputable def specialGradientWeakNormSquare
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Vec d) (a : RegCoeffField d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -35,8 +35,8 @@ namespace Internal
   (Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p_e q_e p0_e a.toFun) ^ 2
 
 @[irreducible] noncomputable def specialFluxWeakNormSquare
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Vec d) (a : RegCoeffField d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -48,8 +48,8 @@ namespace Internal
   (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p_e q_e q0_e a.toFun) ^ 2
 
 @[irreducible] noncomputable def specialPairedWeakNormSquare
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Vec d) (a : RegCoeffField d) : ℝ :=
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
@@ -57,8 +57,8 @@ namespace Internal
     σ⁻¹ * specialFluxWeakNormSquare hP hStruct hP4 m e a
 
 @[irreducible] noncomputable def specialWeakNormComponentSquareSum
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Vec d) (a : RegCoeffField d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -105,16 +105,16 @@ namespace Internal
 end Internal
 
 private theorem barSigmaStarAtScale_pos_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 < hP.barSigmaStarAtScale hStruct (m : ℤ) := by
   have hBlock :
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (m : ℤ))) P :=
     Section52.originBlockIntegrableAtScale_from_P4 hP hStruct hP4 m
   have hInv : 0 < hP.barSigmaStarInvAtScale hStruct (m : ℤ) := by
-    simpa [Ch04.LawCarrier.barSigmaStarInvAtScale] using
-      Ch04.LawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube
+    simpa [Ch04.RestrictionLawCarrier.barSigmaStarInvAtScale] using
+      Ch04.RestrictionLawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube
         hP
         (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw
           hP hStruct (m : ℤ))
@@ -123,8 +123,8 @@ private theorem barSigmaStarAtScale_pos_of_P4
   exact inv_pos.mpr hInv
 
 private theorem barSigmaAtScale_pos_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 < hP.barSigmaAtScale hStruct (m : ℤ) := by
   have hBlock :
@@ -138,12 +138,12 @@ private theorem barSigmaAtScale_pos_of_P4
       0 < hP.barSigmaAtScale hStruct (m : ℤ) *
         (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ := by
     exact lt_of_lt_of_le zero_lt_one (by
-      simpa [thetaAtScale, Ch04.LawCarrier.thetaAtScale] using htheta)
+      simpa [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale] using htheta)
   exact pos_of_mul_pos_left hprod_pos (inv_pos.mpr hstar_pos).le
 
 private theorem sigmaHatAtScale_pos_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 < sigmaHatAtScale hP hStruct (m : ℤ) := by
   dsimp [sigmaHatAtScale]
@@ -195,9 +195,9 @@ private theorem paired_rhsSquares_le_componentSquares
               K ^ 2 * (σ * CG ^ 2 + σ⁻¹ * CF ^ 2)) := by ring
 
 private theorem integrable_specialWeakNormComponentSquareSum
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Vec d) (he : vecNormSq e = 1) :
     Integrable (Internal.specialWeakNormComponentSquareSum hP hStruct hP4 k m e) P := by
@@ -278,8 +278,8 @@ private theorem integrable_specialWeakNormComponentSquareSum
   simpa [mul_assoc] using hinside.const_mul 16
 
 private theorem aemeasurable_specialPairedWeakNormSquares
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {m : ℕ} (e : Vec d) :
     AEMeasurable (Internal.specialPairedWeakNormSquare hP hStruct hP4 m e) P := by
@@ -309,8 +309,8 @@ private theorem aemeasurable_specialPairedWeakNormSquares
       ((hf.mul hf).const_mul σ⁻¹)
 
 private theorem ae_nonneg_specialPairedWeakNormSquares
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {m : ℕ} (e : Vec d) :
     0 ≤ᵐ[P] Internal.specialPairedWeakNormSquare hP hStruct hP4 m e := by
@@ -349,8 +349,8 @@ private theorem ae_nonneg_specialPairedWeakNormSquares
       (mul_nonneg (inv_nonneg.mpr hσ_nonneg) (sq_nonneg _))
 
 private theorem ae_specialPairedWeakNormSquares_le_componentSquareSum
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Vec d) :
     Internal.specialPairedWeakNormSquare hP hStruct hP4 m e
@@ -465,9 +465,9 @@ non-circular version: the left side is integrated by domination from the
 second Section 5.3 weak-norm maximizer estimate and the already proved
 component-square integrability facts. -/
 theorem integrable_paired_specialWeakNormSquares_from_weakNormMaximizer
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Vec d) (he : vecNormSq e = 1) :
     Integrable (Internal.specialPairedWeakNormSquare hP hStruct hP4 m e) P := by
@@ -496,9 +496,9 @@ theorem integrable_paired_specialWeakNormSquares_from_weakNormMaximizer
 /-- Special-vector gradient weak-norm square integrability from the second
 Section 5.3 weak-norm maximizer lemma. -/
 theorem integrable_specialGradientWeakNormSquare_from_weakNormMaximizer
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Vec d) (he : vecNormSq e = 1) :
     Integrable (Internal.specialGradientWeakNormSquare hP hStruct hP4 m e) P := by
@@ -568,9 +568,9 @@ theorem integrable_specialGradientWeakNormSquare_from_weakNormMaximizer
 /-- Special-vector flux weak-norm square integrability from the second
 Section 5.3 weak-norm maximizer lemma. -/
 theorem integrable_specialFluxWeakNormSquare_from_weakNormMaximizer
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Vec d) (he : vecNormSq e = 1) :
     Integrable (Internal.specialFluxWeakNormSquare hP hStruct hP4 m e) P := by

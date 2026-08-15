@@ -3,7 +3,7 @@ import Homogenization.Book.Ch05.Theorems.Section52.Weights
 /-!
 # Section 5.2 index conversions
 
-Small local wrappers around the LeanIntoHomogenization Section 5.2 large-scale
+Small local wrappers around the library's Section 5.2 large-scale
 index facts, plus the scale-to-depth descendant conversion used by terminal
 lower-edge bridges.
 -/

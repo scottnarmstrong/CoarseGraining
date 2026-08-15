@@ -16,7 +16,7 @@ Origin-block integrability consequences of P4.
 -/
 
 private theorem memLp_two_of_nonneg_pow_integrable
-    {d : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {ξ : ℕ} {X : RegCoeffField d → ℝ}
     (hξ : 2 ≤ ξ) (hX_meas : AEMeasurable X P)
     (hX_nonneg : ∀ᵐ a ∂P, 0 ≤ X a)
@@ -34,7 +34,7 @@ private theorem memLp_two_of_nonneg_pow_integrable
   exact hmem_ξ.mono_exponent (by exact_mod_cast hξ)
 
 private theorem integrable_abs_sq_of_ae_abs_le_nonneg_memLp_two
-    {d : ℕ} {P : Ch04.CoeffLaw d}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d}
     {X Y : RegCoeffField d → ℝ}
     (hX_meas : AEMeasurable X P)
     (hY_nonneg : ∀ a, 0 ≤ Y a)
@@ -113,7 +113,7 @@ private theorem norm_toEuclideanCLM_le_sum_abs_entries
     (mul_nonneg (mul_nonneg (Nat.cast_nonneg _) hS_nonneg) (norm_nonneg x))).mp hnorm_sq
 
 private theorem norm_toEuclideanCLM_sq_integrable_of_entry_memLp_two
-    {d : ℕ} {P : Ch04.CoeffLaw d} {Z : RegCoeffField d → FullBlockMat d}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {Z : RegCoeffField d → FullBlockMat d}
     (hZ_aemeas : AEMeasurable Z P)
     (hZ_entry : ∀ α β : BlockCoord d, MemLp (fun a => Z a α β) (2 : ENNReal) P) :
     Integrable
@@ -185,8 +185,8 @@ private theorem blockBasis_sub_pairing'
   ring
 
 private theorem aemeasurable_blockMatEntry_coarseBlockMatrix_cubeSet
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (Q : TriadicCube d)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (Q : TriadicCube d)
     (α β : BlockCoord d) :
     AEMeasurable
       (fun a : RegCoeffField d => blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β) P := by
@@ -282,8 +282,8 @@ private theorem abs_cross_blockMatEntry_le_diag_sum_of_blockPosDef'
   constructor <;> nlinarith
 
 private theorem blockMatEntry_abs_le_factor_sum_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (Q : TriadicCube d)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (Q : TriadicCube d)
     {sUpper sLower : ℝ} (hsUpper : 0 < sUpper) (hsLower : 0 < sLower)
     (α β : BlockCoord d) :
     (fun a : RegCoeffField d =>
@@ -298,7 +298,7 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
       coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
-      Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   have hSymm : IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) := by
     rw [hEq]
@@ -395,8 +395,8 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
           exact (hLowerEntry i j).trans (by linarith)
 
 theorem originBlockIntegrableAtScale_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (m : ℤ))) P :=
   hP.integrable_coarseFullBlockMatrixAtCube_of_integrable_factor_observables
@@ -406,8 +406,8 @@ theorem originBlockIntegrableAtScale_from_P4
     (lowerFactorPowerIntegrableAtScale_from_P4 hP hStruct hP4 m)
 
 theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (n : ℕ) (α β : BlockCoord d) :
     MemLp
@@ -483,8 +483,8 @@ theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
   simpa [Real.norm_eq_abs] using hEntry_abs_sq
 
 theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_originCube_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℤ) (n : ℕ) :
     Integrable
       (Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale

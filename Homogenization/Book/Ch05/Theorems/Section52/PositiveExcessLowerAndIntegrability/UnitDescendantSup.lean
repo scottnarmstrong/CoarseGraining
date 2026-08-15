@@ -12,7 +12,7 @@ open scoped Matrix.Norms.Elementwise
 noncomputable section
 
 theorem section52_annealedMomentRoot_le_const_mul_of_ae_le
-    {d : ℕ} {P : Ch04.CoeffLaw d} {ξ : ℕ} {c : ℝ}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {ξ : ℕ} {c : ℝ}
     {X Y : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ) (hc : 0 ≤ c)
     (hX_nonneg : ∀ a, 0 ≤ X a) (hY_nonneg : ∀ a, 0 ≤ Y a)
@@ -58,8 +58,8 @@ theorem section52_annealedMomentRoot_le_const_mul_of_ae_le
         section52_annealedMomentRoot_const_mul_of_nonneg hξ hc hY_nonneg
 
 theorem upper_unitDescendantSup_integrable_abs_pow
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {s : ℝ} {ξ m : ℕ} (hs : 0 < s) (hξ_one : 1 ≤ ξ)
     (hSourceInt :
       Integrable
@@ -131,8 +131,8 @@ theorem upper_unitDescendantSup_integrable_abs_pow
       hS_aemeas hsum_nonneg hS_le_sum hsum_int
 
 theorem upper_unitDescendantSup_aemeasurable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) {s : ℝ} {m : ℕ} (hs : 0 < s) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) {s : ℝ} {m : ℕ} (hs : 0 < s) :
     let D := descendantsAtScale (originCube d (m : ℤ)) 0
     let hD : D.Nonempty :=
       descendantsAtScale_nonempty (originCube d (m : ℤ)) (by simp [originCube])
@@ -172,8 +172,8 @@ theorem upper_unitDescendantSup_nonneg
         (f := fun U => Ch04.LambdaSqCoeffField U s (.finite 1) a) hU0)
 
 theorem lower_unitDescendant_lambdaInv_integrable_abs_pow
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {s : ℝ} {ξ m : ℕ} (hs : 0 < s)
     (hSourceInt :
       Integrable
@@ -225,8 +225,8 @@ theorem lower_unitDescendant_lambdaInv_integrable_abs_pow
     (hP.aemeasurable_lambdaSqCoeffField_finite_one_inv U hs) hX0_aemeas hmap hX0_abs_int
 
 theorem lower_unitDescendantSup_integrable_abs_pow
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {s : ℝ} {ξ m : ℕ} (hs : 0 < s) (hξ_one : 1 ≤ ξ)
     (hSourceInt :
       Integrable
@@ -299,8 +299,8 @@ theorem lower_unitDescendantSup_integrable_abs_pow
       hS_aemeas hsum_nonneg hS_le_sum hsum_int
 
 theorem lower_unitDescendantSup_aemeasurable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) {s : ℝ} {m : ℕ} (hs : 0 < s) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) {s : ℝ} {m : ℕ} (hs : 0 < s) :
     let D := descendantsAtScale (originCube d (m : ℤ)) 0
     let hD : D.Nonempty :=
       descendantsAtScale_nonempty (originCube d (m : ℤ)) (by simp [originCube])
@@ -342,8 +342,8 @@ theorem lower_unitDescendantSup_nonneg
         (f := fun U => (Ch04.lambdaSqCoeffField U s (.finite 1) a)⁻¹) hU0)
 
 theorem lowerFactorPowerIntegrableAtScale_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     Integrable
       (fun a : RegCoeffField d =>
@@ -407,7 +407,7 @@ theorem lowerFactorPowerIntegrableAtScale_from_P4
     have hStar0 :
         0 < Ch04.Internal.barSigmaStarInvAtScaleOfPrimitive primitive0 := by
       simpa [primitive0] using
-        Ch04.LawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
+        Ch04.RestrictionLawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube hP
           (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw hP hStruct (0 : ℤ))
           hBlock0
     simpa [hBarSigmaStar0_inv_eq] using hStar0.le

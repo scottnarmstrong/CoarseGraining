@@ -18,7 +18,7 @@ open Section54.VarianceBoundGoodScale
 /-- Constant multiplying the geometric matrix-average contribution in the
 concrete trace-`J` square estimate. -/
 noncomputable def normalizedTraceJAverageGeometricConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   8 * (Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ) *
     normalizedMatrixAverageGeometricConst hP4
@@ -29,8 +29,8 @@ noncomputable def normalizedTraceJAverageThetaConst (d : ℕ) : ℝ :=
   2 * (Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ)
 
 theorem normalizedBlockJTraceAverage_eq_trace_fluctuation_add_theta_gap
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {child parent : ℕ}
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a) :
@@ -76,7 +76,7 @@ theorem normalizedBlockJTraceAverage_eq_trace_fluctuation_add_theta_gap
         ((1 + θ) / 2) *
             Ch02.fullBlockTrace (D * toFullBlockMat Aavg * D) -
           (Fintype.card (BlockCoord d) : ℝ) := by
-    simpa [D, T, θ, thetaAtScale, Ch04.LawCarrier.thetaAtScale, b, c] using
+    simpa [D, T, θ, thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, b, c] using
       fullBlockJTraceBudgetWithNormalizers_normalized_eq_trace
         (d := d) hb hc Aavg
   have hFluct :
@@ -116,8 +116,8 @@ theorem normalizedBlockJTraceAverage_eq_trace_fluctuation_add_theta_gap
           ((Fintype.card (BlockCoord d) : ℝ) / 2) * (θ - 1) := by ring
 
 theorem normalizedBlockJTraceAverageSq_le_matrix_average_add_thetaSq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     {child parent : ℕ}
@@ -219,8 +219,8 @@ theorem normalizedBlockJTraceAverageSq_le_matrix_average_add_thetaSq
         simp [Q, j, opSq, θ, card]
 
 theorem normalizedBlockJTraceAverageSq_integral_le_geometric_add_thetaSq_of_smallContrast
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 ≤ 2)
     {child parent : ℕ} (hchild_parent : child ≤ parent) :

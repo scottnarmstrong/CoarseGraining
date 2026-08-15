@@ -58,8 +58,8 @@ theorem fullBlockQuadratic_descendantsAverageFullBlockMat
           rfl
 
 theorem integral_origin_fullBlockNormalizedQuadraticObservable_self_eq_dotProduct
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (q : FullBlockVec d) :
     (∫ a,
@@ -87,9 +87,9 @@ theorem integral_origin_fullBlockNormalizedQuadraticObservable_self_eq_dotProduc
     _ = fullBlockQuadratic (1 : FullBlockMat d) q := by rw [hAnnealed]
     _ = dotProduct q q := fullBlockQuadratic_one q
 
-theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_eq_centeredDescendantAverage
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_eq_restrictionCenteredDescendantAverage
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {child parent : ℕ} (hchild_parent : child ≤ parent)
     (q : FullBlockVec d) (a : RegCoeffField d) :
@@ -97,7 +97,7 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_eq_cent
         (descendantsAverageNormalizedFluctuationMatrix
           hP hStruct (child : ℤ) (originCube d (parent : ℤ))
             (parent - child) a) q =
-      Ch04.centeredDescendantAverage P (child : ℤ) (parent : ℤ)
+      Ch04.restrictionCenteredDescendantAverage P (child : ℤ) (parent : ℤ)
         (fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q) a := by
   classical
   let Q : TriadicCube d := originCube d (parent : ℤ)
@@ -133,9 +133,9 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_eq_cent
                 fullBlockNormalizedFluctuationMatrix hP hStruct (child : ℤ)
                   (cubeSet R) a) q
     _ =
-      Ch04.centeredDescendantAverage P (child : ℤ) (parent : ℤ)
+      Ch04.restrictionCenteredDescendantAverage P (child : ℤ) (parent : ℤ)
         (fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q) a := by
-          unfold descendantsAverage Ch04.centeredDescendantAverage
+          unfold descendantsAverage Ch04.restrictionCenteredDescendantAverage
           rw [hdepth_scale]
           apply congrArg
             (fun s : ℝ =>
@@ -149,21 +149,21 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_eq_cent
           rw [← hquad, hmean]
 
 theorem aemeasurable_fullBlockNormalizedQuadraticObservable_cubeSet_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
         fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a) P := by
   rcases
-      exists_isLocalRandomVariable_ae_eq_fullBlockNormalizedQuadraticObservable_cubeSet
+      exists_isRestrictionLocalRandomVariable_ae_eq_fullBlockNormalizedQuadraticObservable_cubeSet
         hP hStruct center q Q with
     ⟨Y, hY_local, hY_eq⟩
   exact (hP.aemeasurable_of_isLocalRandomVariable hY_local).congr hY_eq.symm
 
 theorem aemeasurable_fullBlockNormalizedQuadraticObservable_descendants_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) (Q : TriadicCube d) (n : ℤ) :
     ∀ R ∈ descendantsAtScale Q n,
       AEMeasurable
@@ -174,13 +174,13 @@ theorem aemeasurable_fullBlockNormalizedQuadraticObservable_descendants_of_P4
     hP hStruct center q R
 
 noncomputable def normalizedQuadraticProbeAverageRootBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (child parent : ℕ) (q : FullBlockVec d) : ℝ :=
   let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q
   let K : ℝ :=
-    (∫ a, |Ch04.centeredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ) ∂P) ^
+    (∫ a, |Ch04.restrictionCenteredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ) ∂P) ^
       (1 / (2 : ℝ))
   let N : ℝ := ((descendantsAtScale (originCube d (parent : ℤ)) (child : ℤ)).card : ℝ)
   N⁻¹ *
@@ -190,13 +190,13 @@ noncomputable def normalizedQuadraticProbeAverageRootBound
         Real.sqrt N * K)
 
 theorem fullBlockNormalizedQuadraticObservable_centeredOrigin_sq_integrable_at_self
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (child : ℕ) (q : FullBlockVec d) :
     Integrable
       (fun a : RegCoeffField d =>
-        |Ch04.centeredOriginObservable P (child : ℤ)
+        |Ch04.restrictionCenteredOriginObservable P (child : ℤ)
           (fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q) a| ^
           (2 : ℕ)) P := by
   have hsub :=
@@ -204,15 +204,15 @@ theorem fullBlockNormalizedQuadraticObservable_centeredOrigin_sq_integrable_at_s
       hP hStruct hP4 child child q
   refine hsub.congr ?_
   filter_upwards with a
-  rw [Ch04.centeredOriginObservable]
+  rw [Ch04.restrictionCenteredOriginObservable]
   simp only [fullBlockNormalizedQuadraticObservableR]
   rw [
     integral_origin_fullBlockNormalizedQuadraticObservable_self_eq_dotProduct
       hP hStruct hP4 child q]
 
 theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_sq_integrable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {child parent : ℕ} (hchild_parent : child ≤ parent)
     (q : FullBlockVec d) :
@@ -228,15 +228,15 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_sq_inte
   have hZ_int :
       Integrable
         (fun a =>
-          |Ch04.centeredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
+          |Ch04.restrictionCenteredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
             (2 : ℕ)) P := by
     refine
-      Ch04.integrable_abs_pow_centeredDescendantAverage_of_stationary
+      Ch04.integrable_abs_pow_restrictionCenteredDescendantAverage_of_stationary
         (d := d) (n := (child : ℤ)) (m := (parent : ℤ)) (P := P)
         (p := 2) (by exact_mod_cast Nat.zero_le child)
         (by exact_mod_cast hchild_parent) hStruct.stationary X
         ?_ ?_ ?_ (by norm_num) ?_
-    · exact Ch04.isTranslationCovariantR_comp_toFun
+    · exact Ch04.isRestrictionTranslationCovariant_comp_toFun
         (fullBlockNormalizedQuadraticObservable_translation_covariant
           hP hStruct (child : ℤ) q)
     · simpa [X] using
@@ -251,15 +251,15 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_sq_inte
   refine hZ_int.congr ?_
   filter_upwards with a
   have hEq :=
-    fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_eq_centeredDescendantAverage
+    fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_eq_restrictionCenteredDescendantAverage
       hP hStruct hP4 hchild_parent q a
   rw [hEq]
   exact
-    sq_abs (Ch04.centeredDescendantAverage P (child : ℤ) (parent : ℤ) X a)
+    sq_abs (Ch04.restrictionCenteredDescendantAverage P (child : ℤ) (parent : ℤ) X a)
 
 theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_integral_sq_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {child parent : ℕ} (hchild_parent : child ≤ parent)
     (q : FullBlockVec d) :
@@ -273,7 +273,7 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_integra
   let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q
   let K : ℝ :=
-    (∫ a, |Ch04.centeredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ) ∂P) ^
+    (∫ a, |Ch04.restrictionCenteredOriginObservable P (child : ℤ) X a| ^ (2 : ℕ) ∂P) ^
       (1 / (2 : ℝ))
   let B : ℝ := normalizedQuadraticProbeAverageRootBound hP hStruct child parent q
   have hK_nonneg : 0 ≤ K := by
@@ -281,11 +281,11 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_integra
     positivity
   have hroot :
       (∫ a,
-        |Ch04.centeredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
+        |Ch04.restrictionCenteredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
           (2 : ℕ) ∂P) ^
         (1 / (2 : ℝ)) ≤ B := by
     have hraw :=
-      integral_abs_centeredDescendantAverage_pow_rpow_inv_le_of_unitRangeDependentLaw_of_ae_eq_local
+      integral_abs_restrictionCenteredDescendantAverage_pow_rpow_inv_le_of_restrictionUnitRangeDependentLaw_of_ae_eq_local
         (d := d) (n := (child : ℤ)) (m := (parent : ℤ)) (P := P)
         (p := 2) (K := K) hP
         (by exact_mod_cast Nat.zero_le child)
@@ -294,7 +294,7 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_integra
           simpa [X] using
             fullBlockNormalizedQuadraticObservable_descendants_localRep
               hP hStruct (child : ℤ) q (originCube d (parent : ℤ)) (child : ℤ))
-        (Ch04.isTranslationCovariantR_comp_toFun
+        (Ch04.isRestrictionTranslationCovariant_comp_toFun
           (fullBlockNormalizedQuadraticObservable_translation_covariant
             hP hStruct (child : ℤ) q))
         (by
@@ -315,24 +315,24 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_integra
   have hI_nonneg :
       0 ≤
         ∫ a,
-          |Ch04.centeredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
+          |Ch04.restrictionCenteredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
             (2 : ℕ) ∂P :=
     integral_nonneg fun a => pow_nonneg (abs_nonneg _) (2 : ℕ)
   have hroot_nonneg :
       0 ≤
         (∫ a,
-          |Ch04.centeredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
+          |Ch04.restrictionCenteredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
             (2 : ℕ) ∂P) ^
           (1 / (2 : ℝ)) := by
     positivity
   have hsq := pow_le_pow_left₀ hroot_nonneg hroot 2
   have hroot_sq :
       ((∫ a,
-          |Ch04.centeredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
+          |Ch04.restrictionCenteredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
             (2 : ℕ) ∂P) ^
           (1 / (2 : ℝ))) ^ (2 : ℕ) =
         ∫ a,
-          |Ch04.centeredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
+          |Ch04.restrictionCenteredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
             (2 : ℕ) ∂P := by
     rw [← Real.sqrt_eq_rpow, Real.sq_sqrt hI_nonneg]
   have hcenter_eq :
@@ -342,12 +342,12 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_integra
               hP hStruct (child : ℤ) (originCube d (parent : ℤ))
                 (parent - child) a) q) ^ (2 : ℕ) ∂P =
         ∫ a,
-          |Ch04.centeredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
+          |Ch04.restrictionCenteredDescendantAverage P (child : ℤ) (parent : ℤ) X a| ^
             (2 : ℕ) ∂P := by
     apply integral_congr_ae
     filter_upwards with a
     have hEq :=
-      fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_eq_centeredDescendantAverage
+      fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_eq_restrictionCenteredDescendantAverage
         hP hStruct hP4 hchild_parent q a
     rw [hEq]
     exact (sq_abs _).symm
@@ -355,8 +355,8 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_integra
   simpa [hcenter_eq, B] using hsq
 
 theorem descendantsAverageNormalizedFluctuationMatrix_isSymm_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (j : ℕ) :
     ∀ᵐ a ∂P,
       (descendantsAverageNormalizedFluctuationMatrix hP hStruct center Q j a).IsSymm := by
@@ -379,8 +379,8 @@ theorem descendantsAverageNormalizedFluctuationMatrix_isSymm_ae
         fullBlockNormalizedFluctuationMatrix hP hStruct center (cubeSet R) a) ha
 
 theorem descendantsAverageNormalizedFluctuationOperatorNormSq_le_probeSqBudget_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) (j : ℕ) :
     (fun a : RegCoeffField d =>
       descendantsAverageNormalizedFluctuationOperatorNormSq
@@ -398,8 +398,8 @@ theorem descendantsAverageNormalizedFluctuationOperatorNormSq_le_probeSqBudget_a
     fullBlock_operatorNorm_sq_le_probeSqBudget hM
 
 noncomputable def normalizedMatrixAverageProbeRootBudget
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (child parent : ℕ) : ℝ :=
   ((Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ)) *
     ((Fintype.card (BlockCoord d) : ℝ) *
@@ -415,8 +415,8 @@ noncomputable def normalizedMatrixAverageProbeRootBudget
                     (fullBlockMinusProbe α β)) ^ (2 : ℕ)))
 
 theorem descendantsAverageNormalizedFluctuationOperatorNormSq_integral_le_probeRootBudget
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {child parent : ℕ} (hchild_parent : child ≤ parent) :
     ∫ a,

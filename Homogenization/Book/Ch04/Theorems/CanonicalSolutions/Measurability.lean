@@ -31,7 +31,7 @@ separable range of the slice-indexed minimizers upgrades to
 `AEStronglyMeasurable`.
 -/
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 private theorem aemeasurable_vecNormSq_sub_const
     {α : Type*} [MeasurableSpace α] {μ : Measure α}
@@ -142,11 +142,16 @@ private theorem measurable_canonicalMuHilbertMinimizerCubeSet_localSigmaR
     | none => exact measurable_const
     | some k =>
         have hEntry :
-            ∀ (i' j' : Fin d) {φ : Vec d → ℝ}, IsProbeR φ → Function.support φ ⊆ cubeSet Q →
+            ∀ (i' j' : Fin d) {φ : Vec d → ℝ}, ContDiff ℝ (⊤ : ℕ∞) φ →
+              HasCompactSupport φ → tsupport φ ⊆ cubeSet Q →
               @Measurable (cover (some k)) ℝ _ _
                 (fun x => entryTestR i' j' φ (x : RegCoeffField d)) := by
-          intro i' j' φ hφ hsupp
-          exact (measurable_entryTestR_localSigmaR i' j' hφ hsupp).comp measurable_subtype_coe
+          intro i' j' φ hφ_cont hφ_compact hφ_support
+          have hφ_probe : IsProbeR φ := IsProbeR.of_smooth hφ_cont hφ_compact
+          have hφ_support' : Function.support φ ⊆ cubeSet Q :=
+            (Function.support_subset_iff.2 fun x hx => subset_tsupport φ hx).trans hφ_support
+          exact (measurable_entryTestR_localSigmaR i' j' hφ_probe hφ_support').comp
+            measurable_subtype_coe
         have hsm :=
           stronglyMeasurable_canonicalMinimizer_carrier
             (mΩ := (inferInstance : MeasurableSpace (cover (some k)))) Q
@@ -283,11 +288,16 @@ private theorem measurable_canonicalMuHilbertEnergyBilinFixedCubeSet_localSigmaR
     | none => exact measurable_const
     | some k =>
         have hEntry :
-            ∀ (i' j' : Fin d) {φ : Vec d → ℝ}, IsProbeR φ → Function.support φ ⊆ cubeSet Q →
+            ∀ (i' j' : Fin d) {φ : Vec d → ℝ}, ContDiff ℝ (⊤ : ℕ∞) φ →
+              HasCompactSupport φ → tsupport φ ⊆ cubeSet Q →
               @Measurable (cover (some k)) ℝ _ _
                 (fun x => entryTestR i' j' φ (x : RegCoeffField d)) := by
-          intro i' j' φ hφ hsupp
-          exact (measurable_entryTestR_localSigmaR i' j' hφ hsupp).comp measurable_subtype_coe
+          intro i' j' φ hφ_cont hφ_compact hφ_support
+          have hφ_probe : IsProbeR φ := IsProbeR.of_smooth hφ_cont hφ_compact
+          have hφ_support' : Function.support φ ⊆ cubeSet Q :=
+            (Function.support_subset_iff.2 fun x hx => subset_tsupport φ hx).trans hφ_support
+          exact (measurable_entryTestR_localSigmaR i' j' hφ_probe hφ_support').comp
+            measurable_subtype_coe
         exact
           measurable_energyBilin_fixed_canonicalMinimizer_carrier
             (mΩ := (inferInstance : MeasurableSpace (cover (some k)))) Q
@@ -330,7 +340,7 @@ private theorem measurable_canonicalMuHilbertEnergyBilinFixedCubeSet_localSigmaR
 /-- Public Ch4 law-facing measurability of the selected canonical doubled-`Mu`
 Hilbert minimizer on a deterministic cube (carrier re-type). -/
 theorem aestronglyMeasurable_canonicalMuHilbertMinimizer_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (_hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (_hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d) :
     AEStronglyMeasurable
       (fun a : RegCoeffField d => canonicalMuHilbertMinimizerCubeSet Q P0 a.toFun) P := by
@@ -384,7 +394,7 @@ theorem aestronglyMeasurable_canonicalMuHilbertMinimizer_cubeSet
 /-- Law-facing strong measurability of the potential component of the selected
 doubled-`Mu` Hilbert minimizer. -/
 theorem aestronglyMeasurable_canonicalMuHilbertPotential_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d) :
     AEStronglyMeasurable
       (fun a : RegCoeffField d => canonicalMuHilbertPotentialCubeSet Q P0 a.toFun) P := by
@@ -395,7 +405,7 @@ theorem aestronglyMeasurable_canonicalMuHilbertPotential_cubeSet
 /-- Law-facing strong measurability of the flux component of the selected
 doubled-`Mu` Hilbert minimizer. -/
 theorem aestronglyMeasurable_canonicalMuHilbertFlux_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d) :
     AEStronglyMeasurable
       (fun a : RegCoeffField d => canonicalMuHilbertFluxCubeSet Q P0 a.toFun) P := by
@@ -406,7 +416,7 @@ theorem aestronglyMeasurable_canonicalMuHilbertFlux_cubeSet
 /-- Law-facing a.e.-measurability of the potential component of the selected
 doubled-`Mu` Hilbert minimizer. -/
 theorem aemeasurable_canonicalMuHilbertPotential_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d) :
     AEMeasurable
       (fun a : RegCoeffField d => canonicalMuHilbertPotentialCubeSet Q P0 a.toFun) P :=
@@ -415,7 +425,7 @@ theorem aemeasurable_canonicalMuHilbertPotential_cubeSet
 /-- Law-facing a.e.-measurability of the flux component of the selected
 doubled-`Mu` Hilbert minimizer. -/
 theorem aemeasurable_canonicalMuHilbertFlux_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d) :
     AEMeasurable
       (fun a : RegCoeffField d => canonicalMuHilbertFluxCubeSet Q P0 a.toFun) P :=
@@ -423,7 +433,7 @@ theorem aemeasurable_canonicalMuHilbertFlux_cubeSet
 
 /-- Law-facing strong measurability of the selected doubled-`Mu` potential field. -/
 theorem aestronglyMeasurable_canonicalDoubledMuResponsePotentialField_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
     AEStronglyMeasurable
       (fun a : RegCoeffField d => canonicalDoubledMuResponsePotentialFieldCubeSet Q p q a.toFun) P := by
@@ -432,7 +442,7 @@ theorem aestronglyMeasurable_canonicalDoubledMuResponsePotentialField_cubeSet
 
 /-- Law-facing strong measurability of the selected doubled-`Mu` flux field. -/
 theorem aestronglyMeasurable_canonicalDoubledMuResponseFluxField_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
     AEStronglyMeasurable
       (fun a : RegCoeffField d => canonicalDoubledMuResponseFluxFieldCubeSet Q p q a.toFun) P := by
@@ -441,7 +451,7 @@ theorem aestronglyMeasurable_canonicalDoubledMuResponseFluxField_cubeSet
 
 /-- Law-facing a.e.-measurability of the selected doubled-`Mu` potential field. -/
 theorem aemeasurable_canonicalDoubledMuResponsePotentialField_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d => canonicalDoubledMuResponsePotentialFieldCubeSet Q p q a.toFun) P :=
@@ -449,7 +459,7 @@ theorem aemeasurable_canonicalDoubledMuResponsePotentialField_cubeSet
 
 /-- Law-facing a.e.-measurability of the selected doubled-`Mu` flux field. -/
 theorem aemeasurable_canonicalDoubledMuResponseFluxField_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d => canonicalDoubledMuResponseFluxFieldCubeSet Q p q a.toFun) P :=
@@ -458,7 +468,7 @@ theorem aemeasurable_canonicalDoubledMuResponseFluxField_cubeSet
 /-- Law-facing measurability of selected doubled-`Mu` potential averages over a
 deterministic subcube. -/
 theorem aemeasurable_canonicalDoubledMuResponsePotentialFieldAverage_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q R : TriadicCube d) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -479,7 +489,7 @@ theorem aemeasurable_canonicalDoubledMuResponsePotentialFieldAverage_cubeSet
 /-- Law-facing measurability of selected doubled-`Mu` flux averages over a
 deterministic subcube. -/
 theorem aemeasurable_canonicalDoubledMuResponseFluxFieldAverage_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q R : TriadicCube d) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -500,7 +510,7 @@ theorem aemeasurable_canonicalDoubledMuResponseFluxFieldAverage_cubeSet
 /-- Law-facing measurability of finite descendant averages of selected
 response-gradient averages. -/
 theorem aemeasurable_descendantsAverageCanonicalDoubledMuResponsePotentialFieldAverage_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -518,7 +528,7 @@ theorem aemeasurable_descendantsAverageCanonicalDoubledMuResponsePotentialFieldA
 /-- Law-facing measurability of finite descendant averages of selected
 response-flux averages. -/
 theorem aemeasurable_descendantsAverageCanonicalDoubledMuResponseFluxFieldAverage_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -536,7 +546,7 @@ theorem aemeasurable_descendantsAverageCanonicalDoubledMuResponseFluxFieldAverag
 /-- Law-facing measurability of finite-depth selected response-gradient weak
 norms. -/
 theorem aemeasurable_canonicalDoubledMuResponsePotentialWeakNormPartial_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (s : ℝ) (N : ℕ) (p q p0 : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -556,7 +566,7 @@ theorem aemeasurable_canonicalDoubledMuResponsePotentialWeakNormPartial_cubeSet
 /-- Law-facing measurability of finite-depth selected response-flux weak
 norms. -/
 theorem aemeasurable_canonicalDoubledMuResponseFluxWeakNormPartial_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (t : ℝ) (N : ℕ) (p q q0 : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -575,7 +585,7 @@ theorem aemeasurable_canonicalDoubledMuResponseFluxWeakNormPartial_cubeSet
 
 /-- Law-facing measurability of the selected doubled-`Mu` potential weak norm. -/
 theorem aemeasurable_canonicalDoubledMuResponsePotentialWeakNorm_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (s : ℝ) (p q p0 : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -586,7 +596,7 @@ theorem aemeasurable_canonicalDoubledMuResponsePotentialWeakNorm_cubeSet
 
 /-- Law-facing measurability of the selected doubled-`Mu` flux weak norm. -/
 theorem aemeasurable_canonicalDoubledMuResponseFluxWeakNorm_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (t : ℝ) (p q q0 : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -599,7 +609,7 @@ theorem aemeasurable_canonicalDoubledMuResponseFluxWeakNorm_cubeSet
 the selected canonical doubled-`Mu` minimizer. This is the public Ch4 source for
 raw scalar-response operator-image averages. -/
 theorem aemeasurable_canonicalMuHilbertEnergyBilinFixed_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (_hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (_hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d)
     (Y : BlockState d) (hY : MemBlockL2 (cubeSet Q) Y.eval) :
     AEMeasurable
@@ -612,7 +622,7 @@ theorem aemeasurable_canonicalMuHilbertEnergyBilinFixed_cubeSet
 /-- Law-facing measurability of the upper coefficient-operator image averages
 of the selected doubled-`Mu` response minimizer. -/
 theorem aemeasurable_canonicalDoubledMuResponseUpperImageAverage_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q R : TriadicCube d) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d => canonicalDoubledMuResponseUpperImageAverageCubeSet Q R p q a.toFun) P := by
@@ -628,7 +638,7 @@ theorem aemeasurable_canonicalDoubledMuResponseUpperImageAverage_cubeSet
 /-- Law-facing measurability of the lower coefficient-operator image averages
 of the selected doubled-`Mu` response minimizer. -/
 theorem aemeasurable_canonicalDoubledMuResponseLowerImageAverage_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q R : TriadicCube d) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d => canonicalDoubledMuResponseLowerImageAverageCubeSet Q R p q a.toFun) P := by
@@ -644,7 +654,7 @@ theorem aemeasurable_canonicalDoubledMuResponseLowerImageAverage_cubeSet
 /-- Law-facing measurability of raw scalar response-gradient averages
 `avg_R grad v_m`. -/
 theorem aemeasurable_canonicalScalarResponseGradientAverage_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q R : TriadicCube d) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d => canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun) P := by
@@ -661,7 +671,7 @@ theorem aemeasurable_canonicalScalarResponseGradientAverage_cubeSet
 /-- Law-facing measurability of raw scalar response-flux averages
 `avg_R a grad v_m`. -/
 theorem aemeasurable_canonicalScalarResponseFluxAverage_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q R : TriadicCube d) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d => canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun) P := by
@@ -678,7 +688,7 @@ theorem aemeasurable_canonicalScalarResponseFluxAverage_cubeSet
 /-- Law-facing measurability of finite-depth raw scalar response-gradient weak
 norms. -/
 theorem aemeasurable_canonicalScalarResponseGradientWeakNormPartial_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (s : ℝ) (N : ℕ) (p q p0 : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -698,7 +708,7 @@ theorem aemeasurable_canonicalScalarResponseGradientWeakNormPartial_cubeSet
 /-- Law-facing measurability of finite-depth raw scalar response-flux weak
 norms. -/
 theorem aemeasurable_canonicalScalarResponseFluxWeakNormPartial_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (t : ℝ) (N : ℕ) (p q q0 : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -718,7 +728,7 @@ theorem aemeasurable_canonicalScalarResponseFluxWeakNormPartial_cubeSet
 /-- Law-facing measurability of the full raw scalar response-gradient weak
 norm. -/
 theorem aemeasurable_canonicalScalarResponseGradientWeakNorm_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (s : ℝ) (p q p0 : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d => canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun) P := by
@@ -728,7 +738,7 @@ theorem aemeasurable_canonicalScalarResponseGradientWeakNorm_cubeSet
 
 /-- Law-facing measurability of the full raw scalar response-flux weak norm. -/
 theorem aemeasurable_canonicalScalarResponseFluxWeakNorm_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (t : ℝ) (p q q0 : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d => canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun) P := by
@@ -739,7 +749,7 @@ theorem aemeasurable_canonicalScalarResponseFluxWeakNorm_cubeSet
 /-- Law-facing strong measurability of the full raw scalar response-gradient
 weak norm. -/
 theorem aestronglyMeasurable_canonicalScalarResponseGradientWeakNorm_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (s : ℝ) (p q p0 : Vec d) :
     AEStronglyMeasurable
       (fun a : RegCoeffField d => canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun) P :=
@@ -748,13 +758,13 @@ theorem aestronglyMeasurable_canonicalScalarResponseGradientWeakNorm_cubeSet
 /-- Law-facing strong measurability of the full raw scalar response-flux weak
 norm. -/
 theorem aestronglyMeasurable_canonicalScalarResponseFluxWeakNorm_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (t : ℝ) (p q q0 : Vec d) :
     AEStronglyMeasurable
       (fun a : RegCoeffField d => canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun) P :=
   (hP.aemeasurable_canonicalScalarResponseFluxWeakNorm_cubeSet Q t p q q0).aestronglyMeasurable
 
-end LawCarrier
+end RestrictionLawCarrier
 
 end Ch04
 end Book

@@ -352,10 +352,10 @@ private theorem cubeBesovDualFullNorm_toRepo {d : ℕ}
 
 private theorem scaleNormalizedNegativeSobolevVectorNormTwo_toRepo
     {d : ℕ} (Q : TriadicCube d) (s : ℝ) (F : Vec d → Vec d) :
-    _root_.Homogenization.Book.Ch03.scaleNormalizedNegativeSobolevVectorNormTwo
+    _root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedNegativeSobolevVectorNormTwo
         (toRepoTriadicCube Q) s F =
       scaleNormalizedNegativeSobolevVectorNormTwo Q s F := by
-  unfold _root_.Homogenization.Book.Ch03.scaleNormalizedNegativeSobolevVectorNormTwo
+  unfold _root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedNegativeSobolevVectorNormTwo
     _root_.Homogenization.Book.Ch03.scaleNormalizedDualNegativeBesovVectorNormTwo
     scaleNormalizedNegativeSobolevVectorNormTwo
   rw [show ((toRepoTriadicCube Q).scale : ℤ) = Q.scale by rfl]
@@ -378,12 +378,12 @@ private theorem gagliardoKernel_toRepo {d : ℕ} {E : Type*}
 
 private theorem scaleNormalizedPositiveSobolevVectorSeminormTwo_toRepo
     {d : ℕ} [NeZero d] (m : ℕ) (s : ℝ) (g : Vec d → Vec d) :
-    _root_.Homogenization.Book.Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo
+    _root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo
         (_root_.Homogenization.Book.MainResults.originCube d m) s g =
       scaleNormalizedPositiveSobolevVectorSeminormTwo (originCube d m) s g := by
-  simp [_root_.Homogenization.Book.Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo,
+  simp [_root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo,
     scaleNormalizedPositiveSobolevVectorSeminormTwo,
-    _root_.Homogenization.Book.Ch01.fractionalSobolevSeminorm,
+    _root_.Homogenization.Book.Ch01.Legacy.fractionalSobolevSeminorm,
     fractionalSobolevSeminorm,
     _root_.Homogenization.Gagliardo.cubeGagliardoSeminorm,
     Gagliardo.cubeGagliardoSeminorm,
@@ -542,9 +542,9 @@ private theorem toRepo_AELocallyUniformlyEllipticField {d : ℕ}
   simpa [_root_.Homogenization.Book.Ch04.AEEllipticOn,
     openCubeSet_ofRepoTriadicCube] using hRepo
 
-private theorem toRepoLawCarrier {d : ℕ} {P : CoeffLaw d}
-    (hP : LawCarrier P) :
-    _root_.Homogenization.Book.Ch04.LawCarrier
+private theorem toRepoLawCarrier {d : ℕ} {P : RestrictionCoeffLaw d}
+    (hP : RestrictionLawCarrier P) :
+    _root_.Homogenization.Book.Ch04.RestrictionLawCarrier
       (Measure.map (toRepoReg (d := d)) P) where
   isProbability := by
     haveI := hP.isProbability
@@ -558,7 +558,7 @@ private theorem toRepoLawCarrier {d : ℕ} {P : CoeffLaw d}
 if the audit endomorphism `T` is intertwined with the repository endomorphism
 `Trepo` and preserves the audit law, then `Trepo` preserves the transported
 law. -/
-private theorem map_transport {d : ℕ} {P : CoeffLaw d}
+private theorem map_transport {d : ℕ} {P : RestrictionCoeffLaw d}
     (T : RegCoeffField d → RegCoeffField d)
     (Trepo : _root_.Homogenization.RegCoeffField d →
       _root_.Homogenization.RegCoeffField d)
@@ -585,9 +585,9 @@ private theorem map_transport {d : ℕ} {P : CoeffLaw d}
           (Measure.map_map measurable_toRepoReg hT_meas).symm
     _ = Measure.map (toRepoReg (d := d)) P := by rw [hInv]
 
-private theorem toRepoStructuralLaw {d : ℕ} {P : CoeffLaw d}
-    (hStruct : StructuralLaw P) :
-    _root_.Homogenization.Book.Ch04.StructuralLaw
+private theorem toRepoStructuralLaw {d : ℕ} {P : RestrictionCoeffLaw d}
+    (hStruct : RestrictionStructuralLaw P) :
+    _root_.Homogenization.Book.Ch04.RestrictionStructuralLaw
       (Measure.map (toRepoReg (d := d)) P) where
   stationary := by
     intro z
@@ -597,7 +597,7 @@ private theorem toRepoStructuralLaw {d : ℕ} {P : CoeffLaw d}
       (funext fun a => rfl) (hStruct.stationary z)
   unit_range := by
     intro U V hU hV hsep
-    have hsep_aud : AreUnitSeparated U V := hsep
+    have hsep_aud : RestrictionUnitSeparated U V := hsep
     have haud := hStruct.unit_range U V hU hV hsep_aud
     rw [ProbabilityTheory.Indep_iff]
     intro s t hs ht
@@ -605,11 +605,11 @@ private theorem toRepoStructuralLaw {d : ℕ} {P : CoeffLaw d}
       _root_.Homogenization.restrictionSigmaR_le U hU s hs
     have ht_amb : MeasurableSet t :=
       _root_.Homogenization.restrictionSigmaR_le V hV t ht
-    have hs_aud : @MeasurableSet (RegCoeffField d) (RestrictionSigmaR U hU)
+    have hs_aud : @MeasurableSet (RegCoeffField d) (restrictionSigma U hU)
         (toRepoReg ⁻¹' s) := by
       rcases hs with ⟨t0, ht0, rfl⟩
       exact ⟨toRepoReg ⁻¹' t0, measurable_toRepoReg ht0, rfl⟩
-    have ht_aud : @MeasurableSet (RegCoeffField d) (RestrictionSigmaR V hV)
+    have ht_aud : @MeasurableSet (RegCoeffField d) (restrictionSigma V hV)
         (toRepoReg ⁻¹' t) := by
       rcases ht with ⟨t0, ht0, rfl⟩
       exact ⟨toRepoReg ⁻¹' t0, measurable_toRepoReg ht0, rfl⟩
@@ -630,7 +630,7 @@ private theorem toRepoStructuralLaw {d : ℕ} {P : CoeffLaw d}
       _root_.Homogenization.measurable_adjointReg
       (funext fun a => rfl) hStruct.adjoint_invariant
 
-private theorem toRepoUniformEllipticityBounds {d : ℕ} {P : CoeffLaw d}
+private theorem toRepoUniformEllipticityBounds {d : ℕ} {P : RestrictionCoeffLaw d}
     {lam Lam : ℝ} (hUE : UniformEllipticityBounds P lam Lam) :
     _root_.Homogenization.Book.Ch05.Section57.UniformEllipticityBounds
       (Measure.map (toRepoReg (d := d)) P) lam Lam where
@@ -784,13 +784,13 @@ private def toRepoH10Origin {d : ℕ} [NeZero d] {m : ℕ}
 private theorem toRepo_ForceSobolevRegularity {d : ℕ} [NeZero d]
     {m : ℕ} {s : ℝ} {g : Vec d → Vec d}
     (hg : ForceSobolevRegularity (originCube d m) s g) :
-    _root_.Homogenization.Book.Ch03.ForceSobolevRegularity
+    _root_.Homogenization.Book.Ch03.Legacy.ForceSobolevRegularity
       (_root_.Homogenization.Book.MainResults.originCube d m) s g := by
-  simpa [_root_.Homogenization.Book.Ch03.ForceSobolevRegularity,
+  simpa [_root_.Homogenization.Book.Ch03.Legacy.ForceSobolevRegularity,
     ForceSobolevRegularity,
-    _root_.Homogenization.Book.Ch01.MemFractionalSobolev,
+    _root_.Homogenization.Book.Ch01.Legacy.MemFractionalSobolev,
     MemFractionalSobolev,
-    _root_.Homogenization.Book.Ch01.fractionalSobolevSeminorm,
+    _root_.Homogenization.Book.Ch01.Legacy.fractionalSobolevSeminorm,
     fractionalSobolevSeminorm,
     _root_.Homogenization.Gagliardo.MemWsp, Gagliardo.MemWsp,
     _root_.Homogenization.Gagliardo.gagliardoKernel, Gagliardo.gagliardoKernel,
@@ -900,7 +900,7 @@ private theorem comparisonDefect_toRepo {d : ℕ} [NeZero d]
     {haRepo : _root_.Homogenization.Book.Ch04.AELocallyUniformlyEllipticField (toRepoReg a)}
     {m : ℕ} {g : Vec d → Vec d} (s : ℝ)
     (pair : ComparisonPair sigmaBar a ha m g) :
-    _root_.Homogenization.Book.Ch03.homogenizationComparisonNegativeSobolevLHS
+    _root_.Homogenization.Book.Ch03.Legacy.homogenizationComparisonNegativeSobolevLHS
         (_root_.Homogenization.Book.MainResults.originCube d m)
         (_root_.Homogenization.Book.Ch05.Section57.assemblyCoeffFamily (toRepoReg a) haRepo)
         (_root_.Homogenization.Book.Ch05.Section57.assemblyConstantCoeffMatrixOfScalar
@@ -940,7 +940,7 @@ private theorem comparisonDefect_toRepo {d : ℕ} [NeZero d]
       _root_.Homogenization.originCube, triadicOriginCube,
       _root_.Homogenization.scalarMatrix, scalarMatrix, toRepoReg_toFun,
       _root_.Homogenization.matVecMul, matVecMul, toRepoH1Origin, toRepoH1Function]
-  unfold _root_.Homogenization.Book.Ch03.homogenizationComparisonNegativeSobolevLHS
+  unfold _root_.Homogenization.Book.Ch03.Legacy.homogenizationComparisonNegativeSobolevLHS
     comparisonDefect
   rw [hgrad, hflux, ← toRepo_originCube (d := d) m]
   rw [scaleNormalizedNegativeSobolevVectorNormTwo_toRepo,
@@ -957,7 +957,7 @@ private theorem comparisonData_toRepo {d : ℕ} [NeZero d]
           (_root_.Homogenization.Book.MainResults.originCube d m)
           (_root_.Homogenization.Book.Ch05.Section57.assemblyCoeffFamily (toRepoReg a) haRepo)
           (toRepoH1Origin pair.u) +
-      _root_.Homogenization.Book.Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo
+      _root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo
         (_root_.Homogenization.Book.MainResults.originCube d m) s g =
       comparisonData sigmaBar s pair := by
   rw [h1EnergyNormOnCube_toRepo, scaleNormalizedPositiveSobolevVectorSeminormTwo_toRepo]
@@ -1036,7 +1036,7 @@ theorem homogenizationComparison_uniformEllipticity
           _root_.Homogenization.Book.MainResults.Setup.homogenizedMatrix] using
           toRepoComparisonPair (a := a) hsigma haRepo pair
     have hgRepo :
-        _root_.Homogenization.Book.Ch03.ForceSobolevRegularity
+        _root_.Homogenization.Book.Ch03.Legacy.ForceSobolevRegularity
           (_root_.Homogenization.Book.MainResults.originCube d m)
           _root_.Homogenization.Book.MainResults.fixedComparisonS g := by
       simpa [fixedComparisonS,

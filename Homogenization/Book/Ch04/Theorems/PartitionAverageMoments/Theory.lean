@@ -5,7 +5,7 @@ namespace Book
 namespace Ch04
 
 /-!
-# Public partition-average moment estimates
+# Restriction-carrier partition-average moment estimates
 
 This file exposes the finite-moment partition-average estimate against the
 clean Chapter 4 observable surface.  The hypotheses are direct: locality on the
@@ -154,34 +154,34 @@ theorem integral_finsetSup_abs_pow_rpow_inv_le_card_rpow_mul
       Real.pow_rpow_inv_natCast hK_nonneg hp_ne_zero]
   exact hroot.trans_eq htarget
 
-/-- Finite-parent maximum of centered descendant averages, using the public
-unit-range partition-average moment theorem on each parent cube.
+/-- Finite-parent maximum of restriction-centered descendant averages, using
+the restriction-unit-range partition-average moment theorem on each parent cube.
 
 This is the Ch4 probabilistic block behind the one-scale fluctuation estimate
 in the Section 5.2 multiscale ellipticity moment lemma: the finite maximum over
 parents costs only `parents.card ^ (1 / p)` after the per-parent Rosenthal
 bound has been proved. -/
-theorem integral_finsetSup_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRangeDependentLaw
-    {d : ℕ} {n : ℤ} {P : CoeffLaw d} [IsProbabilityMeasure P]
+theorem integral_finsetSup_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_of_restrictionUnitRangeDependentLaw
+    {d : ℕ} {n : ℤ} {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {parents : Finset (TriadicCube d)} (hparents : parents.Nonempty)
     {p : ℕ} {K B : ℝ}
     (hn : 0 ≤ n)
     (hparent_scale : ∀ Q ∈ parents, n ≤ Q.scale)
-    (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
+    (hPstat : RestrictionStationaryLaw P) (hPdep : RestrictionUnitRangeDependentLaw P)
     (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_local :
       ∀ Q ∈ parents, ∀ R ∈ descendantsAtScale Q n,
-        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X (cubeSet R)))
-    (hX_cov : IsTranslationCovariantR X)
+        IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X (cubeSet R)))
+    (hX_cov : IsRestrictionTranslationCovariant X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ Q ∈ parents, ∀ R ∈ descendantsAtScale Q n,
         AEMeasurable (X (cubeSet R)) P)
     (hp : 2 ≤ p) (hK_nonneg : 0 ≤ K) (hB_nonneg : 0 ≤ B)
     (hX0Lp_int :
-      Integrable (fun a => |centeredOriginObservable P n X a| ^ p) P)
+      Integrable (fun a => |restrictionCenteredOriginObservable P n X a| ^ p) P)
     (hX0Lp :
-      (∫ a, |centeredOriginObservable P n X a| ^ p ∂P) ^
+      (∫ a, |restrictionCenteredOriginObservable P n X a| ^ p ∂P) ^
           (1 / (p : ℝ)) ≤ K)
     (hB :
       ∀ Q ∈ parents,
@@ -192,7 +192,7 @@ theorem integral_finsetSup_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_o
               Real.sqrt ((descendantsAtScale Q n).card : ℝ) * K) ≤ B) :
     (∫ a,
         (parents.sup' hparents
-          (fun Q => |centeredDescendantAverageOnCube P Q n X a|)) ^ p ∂P) ^
+          (fun Q => |restrictionCenteredDescendantAverageOnCube P Q n X a|)) ^ p ∂P) ^
         (1 / (p : ℝ)) ≤
       (parents.card : ℝ) ^ (1 / (p : ℝ)) * B := by
   have hp_one : 1 ≤ p := by omega
@@ -200,9 +200,9 @@ theorem integral_finsetSup_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_o
     integral_finsetSup_abs_pow_rpow_inv_le_card_rpow_mul
       (μ := P) (s := parents) hparents (p := p) (K := B)
       hp_one hB_nonneg
-      (fun Q a => centeredDescendantAverageOnCube P Q n X a) ?_ ?_ ?_
+      (fun Q a => restrictionCenteredDescendantAverageOnCube P Q n X a) ?_ ?_ ?_
   · intro Q hQ
-    unfold centeredDescendantAverageOnCube
+    unfold restrictionCenteredDescendantAverageOnCube
     have hsum :
         AEMeasurable
           (fun a =>
@@ -221,49 +221,49 @@ theorem integral_finsetSup_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_o
       hsum
   · intro Q hQ
     exact
-      integrable_abs_pow_centeredDescendantAverageOnCube_of_stationary
+      integrable_abs_pow_restrictionCenteredDescendantAverageOnCube_of_stationary
         (d := d) (Q := Q) (n := n) (P := P) (p := p)
         hn (hparent_scale Q hQ) hPstat X hX_cov hX0_aemeas
         (hX_desc_aemeas Q hQ) hp_one hX0Lp_int
   · intro Q hQ
     exact
-      (integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRangeDependentLaw
+      (integral_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_of_restrictionUnitRangeDependentLaw
         (d := d) (Q := Q) (n := n) (P := P) (p := p) (K := K)
         hn (hparent_scale Q hQ) hPstat hPdep X
         (hX_local Q hQ) hX_cov hX0_aemeas (hX_desc_aemeas Q hQ)
         hp hK_nonneg hX0Lp_int hX0Lp).trans (hB Q hQ)
 
 /-- Completed-local finite-parent version of
-`integral_finsetSup_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRangeDependentLaw`.
+`integral_finsetSup_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_of_restrictionUnitRangeDependentLaw`.
 
 The caller supplies raw translation-covariant observables and Ch4 supplies
 local representatives on each descendant cube.  This is the form used by
 law-facing coarse-block fluctuation estimates, where the raw totalized
 observable is a.e.-equal to a local-test representative but is not itself
 definitionally local. -/
-theorem integral_finsetSup_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRangeDependentLaw_of_ae_eq_local
-    {d : ℕ} {n : ℤ} {P : CoeffLaw d} [IsProbabilityMeasure P]
+theorem integral_finsetSup_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_of_restrictionUnitRangeDependentLaw_of_ae_eq_local
+    {d : ℕ} {n : ℤ} {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {parents : Finset (TriadicCube d)} (hparents : parents.Nonempty)
     {p : ℕ} {K B : ℝ}
-    (hP : LawCarrier P)
+    (hP : RestrictionLawCarrier P)
     (hn : 0 ≤ n)
     (hparent_scale : ∀ Q ∈ parents, n ≤ Q.scale)
-    (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
+    (hPstat : RestrictionStationaryLaw P) (hPdep : RestrictionUnitRangeDependentLaw P)
     (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_localRep :
       ∀ Q ∈ parents, ∀ R ∈ descendantsAtScale Q n,
         ∃ Y : RegCoeffField d → ℝ,
-          IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y)
-    (hX_cov : IsTranslationCovariantR X)
+          IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y)
+    (hX_cov : IsRestrictionTranslationCovariant X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ Q ∈ parents, ∀ R ∈ descendantsAtScale Q n,
         AEMeasurable (X (cubeSet R)) P)
     (hp : 2 ≤ p) (hK_nonneg : 0 ≤ K) (hB_nonneg : 0 ≤ B)
     (hX0Lp_int :
-      Integrable (fun a => |centeredOriginObservable P n X a| ^ p) P)
+      Integrable (fun a => |restrictionCenteredOriginObservable P n X a| ^ p) P)
     (hX0Lp :
-      (∫ a, |centeredOriginObservable P n X a| ^ p ∂P) ^
+      (∫ a, |restrictionCenteredOriginObservable P n X a| ^ p ∂P) ^
           (1 / (p : ℝ)) ≤ K)
     (hB :
       ∀ Q ∈ parents,
@@ -274,7 +274,7 @@ theorem integral_finsetSup_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_o
               Real.sqrt ((descendantsAtScale Q n).card : ℝ) * K) ≤ B) :
     (∫ a,
         (parents.sup' hparents
-          (fun Q => |centeredDescendantAverageOnCube P Q n X a|)) ^ p ∂P) ^
+          (fun Q => |restrictionCenteredDescendantAverageOnCube P Q n X a|)) ^ p ∂P) ^
         (1 / (p : ℝ)) ≤
       (parents.card : ℝ) ^ (1 / (p : ℝ)) * B := by
   have hp_one : 1 ≤ p := by omega
@@ -282,9 +282,9 @@ theorem integral_finsetSup_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_o
     integral_finsetSup_abs_pow_rpow_inv_le_card_rpow_mul
       (μ := P) (s := parents) hparents (p := p) (K := B)
       hp_one hB_nonneg
-      (fun Q a => centeredDescendantAverageOnCube P Q n X a) ?_ ?_ ?_
+      (fun Q a => restrictionCenteredDescendantAverageOnCube P Q n X a) ?_ ?_ ?_
   · intro Q hQ
-    unfold centeredDescendantAverageOnCube
+    unfold restrictionCenteredDescendantAverageOnCube
     have hsum :
         AEMeasurable
           (fun a =>
@@ -302,13 +302,13 @@ theorem integral_finsetSup_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_o
     exact aemeasurable_const.mul hsum
   · intro Q hQ
     exact
-      integrable_abs_pow_centeredDescendantAverageOnCube_of_stationary
+      integrable_abs_pow_restrictionCenteredDescendantAverageOnCube_of_stationary
         (d := d) (Q := Q) (n := n) (P := P) (p := p)
         hn (hparent_scale Q hQ) hPstat X hX_cov hX0_aemeas
         (hX_desc_aemeas Q hQ) hp_one hX0Lp_int
   · intro Q hQ
     exact
-      (integral_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_of_unitRangeDependentLaw_of_ae_eq_local
+      (integral_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_of_restrictionUnitRangeDependentLaw_of_ae_eq_local
         (d := d) (Q := Q) (n := n) (P := P) (p := p) (K := K)
         hP hn (hparent_scale Q hQ) hPstat hPdep X
         (hX_localRep Q hQ) hX_cov hX0_aemeas (hX_desc_aemeas Q hQ)
@@ -316,34 +316,34 @@ theorem integral_finsetSup_abs_centeredDescendantAverageOnCube_pow_rpow_inv_le_o
 
 /-- Low-moment finite partition-average fluctuation estimate with explicit
 Rosenthal constants. -/
-theorem integral_abs_centeredDescendantAverage_le_of_unitRangeDependentLaw
-    {d : ℕ} {n m : ℤ} {P : CoeffLaw d} [IsProbabilityMeasure P]
+theorem integral_abs_restrictionCenteredDescendantAverage_le_of_restrictionUnitRangeDependentLaw
+    {d : ℕ} {n m : ℤ} {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {ξ : ℕ} {K : ℝ}
     (hn : 0 ≤ n) (hnm : n ≤ m)
-    (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
+    (hPstat : RestrictionStationaryLaw P) (hPdep : RestrictionUnitRangeDependentLaw P)
     (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X (cubeSet R)))
-    (hX_cov : IsTranslationCovariantR X)
+        IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X (cubeSet R)))
+    (hX_cov : IsRestrictionTranslationCovariant X)
     (hX0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P)
     (hX_desc_aemeas :
       ∀ R ∈ descendantsAtScale (originCube d m) n, AEMeasurable (X (cubeSet R)) P)
     (hξ : 2 ≤ ξ) (hK_nonneg : 0 ≤ K)
     (hX0ξ_int :
-      Integrable (fun a => |centeredOriginObservable P n X a| ^ ξ) P)
+      Integrable (fun a => |restrictionCenteredOriginObservable P n X a| ^ ξ) P)
     (hX0ξ :
-      (∫ a, |centeredOriginObservable P n X a| ^ ξ ∂P) ^
+      (∫ a, |restrictionCenteredOriginObservable P n X a| ^ ξ ∂P) ^
           (1 / (ξ : ℝ)) ≤ K) :
-    ∫ a, |centeredDescendantAverage P n m X a| ∂P ≤
+    ∫ a, |restrictionCenteredDescendantAverage P n m X a| ∂P ≤
       ((descendantsAtScale (originCube d m) n).card : ℝ)⁻¹ *
         (rosenthalDescendantsAtScaleLpConst d n 2 *
             Real.sqrt ((descendantsAtScale (originCube d m) n).card : ℝ) * K +
           rosenthalDescendantsAtScaleSqrtConst d n 2 *
             Real.sqrt ((descendantsAtScale (originCube d m) n).card : ℝ) * K) := by
-  let X0 : RegCoeffField d → ℝ := centeredOriginObservable P n X
+  let X0 : RegCoeffField d → ℝ := restrictionCenteredOriginObservable P n X
   have hX0c_aemeas : AEMeasurable X0 P := by
-    simpa [X0, centeredOriginObservable] using hX0_aemeas.sub measurable_const.aemeasurable
+    simpa [X0, restrictionCenteredOriginObservable] using hX0_aemeas.sub measurable_const.aemeasurable
   have hX0_two_int :
       Integrable (fun a => |X0 a| ^ (2 : ℕ)) P := by
     have hξ_ne_zero : ξ ≠ 0 := by omega
@@ -361,13 +361,13 @@ theorem integral_abs_centeredDescendantAverage_le_of_unitRangeDependentLaw
         (μ := P) (f := X0) hξ hX0c_aemeas (by simpa [X0] using hX0ξ_int)).trans
         (by simpa [X0] using hX0ξ)
   have havg_two :=
-    integral_abs_centeredDescendantAverage_pow_rpow_inv_le_of_unitRangeDependentLaw
+    integral_abs_restrictionCenteredDescendantAverage_pow_rpow_inv_le_of_restrictionUnitRangeDependentLaw
       (d := d) (n := n) (m := m) (P := P) (p := 2) (K := K)
       hn hnm hPstat hPdep X hX_local hX_cov hX0_aemeas hX_desc_aemeas
       (by norm_num) hK_nonneg (by simpa [X0] using hX0_two_int)
       (by simpa [X0] using hX0_two)
-  have hAavg_aemeas : AEMeasurable (centeredDescendantAverage P n m X) P := by
-    unfold centeredDescendantAverage
+  have hAavg_aemeas : AEMeasurable (restrictionCenteredDescendantAverage P n m X) P := by
+    unfold restrictionCenteredDescendantAverage
     have hsum :
         AEMeasurable
           (fun a =>
@@ -385,9 +385,9 @@ theorem integral_abs_centeredDescendantAverage_le_of_unitRangeDependentLaw
     exact aemeasurable_const.mul
       hsum
   have hAavg_two_int :
-      Integrable (fun a => |centeredDescendantAverage P n m X a| ^ (2 : ℕ)) P := by
+      Integrable (fun a => |restrictionCenteredDescendantAverage P n m X a| ^ (2 : ℕ)) P := by
     exact
-      integrable_abs_pow_centeredDescendantAverage_of_stationary
+      integrable_abs_pow_restrictionCenteredDescendantAverage_of_stationary
         (d := d) (n := n) (m := m) (P := P) (p := 2)
         hn hnm hPstat X hX_cov hX0_aemeas hX_desc_aemeas
         (by norm_num) (by simpa [X0] using hX0_two_int)
@@ -396,9 +396,9 @@ theorem integral_abs_centeredDescendantAverage_le_of_unitRangeDependentLaw
         ((descendantsAtScale (originCube d m) n).card : ℝ) ^ (1 / (2 : ℝ)) := by
     rw [Real.sqrt_eq_rpow]
   calc
-    ∫ a, |centeredDescendantAverage P n m X a| ∂P
+    ∫ a, |restrictionCenteredDescendantAverage P n m X a| ∂P
       ≤
-        (∫ a, |centeredDescendantAverage P n m X a| ^ (2 : ℕ) ∂P) ^
+        (∫ a, |restrictionCenteredDescendantAverage P n m X a| ^ (2 : ℕ) ∂P) ^
           (1 / (2 : ℝ)) := by
             exact integral_abs_le_integral_abs_sq_rpow_half_aemeasurable
               hAavg_aemeas hAavg_two_int

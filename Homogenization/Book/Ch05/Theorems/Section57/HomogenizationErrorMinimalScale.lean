@@ -73,8 +73,8 @@ private theorem collapsed_square_envelope_le_of_le
 which controls both the positive-scale `J` rows and the negative-scale
 unit-ellipticity rows. -/
 theorem homogenizationErrorOnOriginCube_le_of_minimalScaleUnitJ_and_unitEllipticity
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m : ℕ} {r τ δ q X α : ℝ}
@@ -328,8 +328,8 @@ theorem homogenizationErrorOnOriginCube_le_of_minimalScaleUnitJ_and_unitElliptic
 /-- Natural lower-scale response estimate obtained from the finite normalized
 probe maximum and the minimal-scale envelope. -/
 theorem scaleResponseAtScale_originCube_nat_sub_le_of_minimalScaleProbeJ
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n l : ℕ} (hln : l ≤ n) (hnm : n ≤ m)
@@ -373,8 +373,8 @@ theorem scaleResponseAtScale_originCube_nat_sub_le_of_minimalScaleProbeJ
 /-- Whole-cube finite-`q` homogenization-error control from positive-scale
 response rows and the negative-scale unit-ellipticity envelope. -/
 theorem homogenizationErrorOnOriginCube_le_of_positiveScaleResponses_and_unitEllipticity
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m : ℕ} {r τ δ q X α : ℝ}
@@ -615,8 +615,8 @@ theorem homogenizationErrorOnOriginCube_le_of_positiveScaleResponses_and_unitEll
 which controls the positive finite-probe `J` rows and the negative-scale
 unit-ellipticity rows. -/
 theorem homogenizationErrorOnOriginCube_le_of_minimalScaleProbeJ_and_unitEllipticity
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m : ℕ} {r τ δ q X α : ℝ}
@@ -690,8 +690,8 @@ theorem homogenizationErrorOnOriginCube_le_of_minimalScaleProbeJ_and_unitEllipti
 probe `J` rows and the unit-ellipticity rows.  The exposed bound uses the
 single collapsed scale `max XJ XU`. -/
 theorem homogenizationErrorOnOriginCube_le_of_two_minimalScales_probeJ
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m : ℕ} {r τ δ q XJ XU α : ℝ}
@@ -771,8 +771,8 @@ theorem homogenizationErrorOnOriginCube_le_of_two_minimalScales_probeJ
 rows and the unit-ellipticity rows.  The exposed bound uses the single
 collapsed scale `max XJ XU`. -/
 theorem homogenizationErrorOnOriginCube_le_of_two_minimalScales
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m : ℕ} {r τ δ q XJ XU α : ℝ}

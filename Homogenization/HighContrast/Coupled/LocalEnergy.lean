@@ -28,12 +28,15 @@ local notation "U" => openCubeSet (originCube d m)
 
 /-! ## Integrability of the two elementary weights -/
 
+omit [NeZero d] in
 theorem integrableOn_sqCutoff {η : Vec d → ℝ} (hη : ContDiff ℝ (⊤ : ℕ∞) η)
     (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1) :
     IntegrableOn (sqCutoff η) U := by
   letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
   exact (sqCutoff_memLpTop (m := m) hη hIcc).integrable le_top
 
+omit [NeZero d] in
+/-- The squared-gradient norm is integrable on the cube. -/
 theorem integrableOn_gradEtaSq {η : Vec d → ℝ} {Gη : ℝ} (hη : ContDiff ℝ (⊤ : ℕ∞) η)
     (hGη : ∀ x i, |fderiv ℝ η x (basisVec i)| ≤ Gη) :
     IntegrableOn (fun x => vecNormSq (fun i => fderiv ℝ η x (basisVec i))) U := by
@@ -63,6 +66,7 @@ theorem integrableOn_gradEtaSq {η : Vec d → ℝ} {Gη : ℝ} (hη : ContDiff 
 
 /-! ## `∫ η² ≤ |supp η ∩ U|` -/
 
+omit [NeZero d] in
 theorem setIntegral_sqCutoff_le {η : Vec d → ℝ} (hη : ContDiff ℝ (⊤ : ℕ∞) η)
     (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1) :
     (∫ x in U, sqCutoff η x) ≤ (volume (Function.support η ∩ U)).toReal := by
@@ -82,7 +86,7 @@ theorem setIntegral_sqCutoff_le {η : Vec d → ℝ} (hη : ContDiff ℝ (⊤ : 
     intro x _
     by_cases hx : x ∈ Function.support η
     · rw [Set.indicator_of_mem hx]; exact sqCutoff_le_one hIcc x
-    · rw [Set.indicator_of_not_mem hx]
+    · rw [Set.indicator_of_notMem hx]
       simp only [Function.mem_support, not_not] at hx
       rw [sqCutoff_apply, hx]; norm_num
   calc (∫ x in U, sqCutoff η x)
@@ -95,6 +99,7 @@ theorem setIntegral_sqCutoff_le {η : Vec d → ℝ} (hη : ContDiff ℝ (⊤ : 
 
 /-! ## The two integral estimates -/
 
+omit [NeZero d] in
 theorem setIntegral_bulkIntegrand_le {a : CoeffField d} {Θ : ℝ} {v vstar : H1Function U}
     {P : BlockVec d} {η : Vec d → ℝ}
     (hEllO : IsEllipticFieldOn 1 Θ U a)
@@ -119,6 +124,7 @@ theorem setIntegral_bulkIntegrand_le {a : CoeffField d} {Θ : ℝ} {v vstar : H1
         rw [integral_add (hisq.const_mul _) (hie.const_mul _), integral_const_mul,
           integral_const_mul]
 
+omit [NeZero d] in
 theorem setIntegral_cutoffIntegrand_le {a : CoeffField d} {Θ : ℝ} {v vstar : H1Function U}
     {P : BlockVec d} {η : Vec d → ℝ} {Gη c Kinf : ℝ}
     (hEllO : IsEllipticFieldOn 1 Θ U a)
@@ -148,7 +154,7 @@ theorem setIntegral_cutoffIntegrand_le {a : CoeffField d} {Θ : ℝ} {v vstar : 
     have hmem : ∀ᵐ x ∂(volumeMeasureOn U), x ∈ (openCubeSet (originCube d m) : Set (Vec d)) :=
       ae_restrict_mem (measurableSet_openCubeSet _)
     filter_upwards [hmem, hKv, hKvs] with x hx hxv hxvs
-    exact cutoffIntegrand_le hEllO hη hIcc hx hxv hxvs
+    exact cutoffIntegrand_le hEllO hη hx hxv hxvs
   calc (∫ x in U, cutoffIntegrand a v vstar P c η x)
       ≤ ∫ x in U, ((1/16) * energyIntegrand a v vstar P η x
           + 2 * (Θ * vecNormSq P.1 + vecNormSq P.2) * sqCutoff η x
@@ -174,6 +180,8 @@ theorem setIntegral_cutoffIntegrand_le {a : CoeffField d} {Θ : ℝ} {v vstar : 
 
 /-! ## `∑ᵢ(∂ᵢη)² = |∇η|²` bridge -/
 
+omit [NeZero d] in
+/-- The coordinate expression of `|∇η|²` equals its vector norm. -/
 theorem gradEtaSq_eq_vecNormSq {η : Vec d → ℝ} (x : Vec d) :
     (∑ i, (fderiv ℝ η x (basisVec i)) ^ 2)
       = vecNormSq (fun i => fderiv ℝ η x (basisVec i)) := by
@@ -182,6 +190,8 @@ theorem gradEtaSq_eq_vecNormSq {η : Vec d → ℝ} (x : Vec d) :
 
 /-! ## Θ ≥ 0 from ellipticity on the (nonempty) cube -/
 
+omit [NeZero d] in
+/-- The ellipticity parameter is nonnegative on the nonempty cube. -/
 theorem theta_nonneg_of_isEllipticFieldOn {a : CoeffField d} {Θ : ℝ}
     (hEllO : IsEllipticFieldOn 1 Θ U a) : 0 ≤ Θ := by
   have hne : Set.Nonempty (openCubeSet (originCube d m)) := by
@@ -193,11 +203,12 @@ theorem theta_nonneg_of_isEllipticFieldOn {a : CoeffField d} {Θ : ℝ}
 
 /-! ## T1 — the centered energy bound -/
 
+omit [NeZero d] in
 /-- **T1 — `centered_local_block_energy`.**  The `𝓔`-level bound of `p.local.block.energy`. -/
 theorem centered_local_block_energy {a : CoeffField d} {Θ : ℝ}
     {v vstar : H1Function U} {P : BlockVec d} {η : Vec d → ℝ} {Gη c Kinf : ℝ}
     (hEllO : IsEllipticFieldOn 1 Θ U a)
-    (hWeak : CoupledWeakForm a U P.1 P.2 v vstar)
+    (hWeak : CoupledWeakForm a U P.2 v vstar)
     (hTrace : MemH10 U (fun x => v.toFun x + vstar.toFun x - vecDot P.1 x))
     (hKv : ∀ᵐ x ∂(volumeMeasureOn U), |(centeredPotential m v P.1 c).toFun x| ≤ Kinf)
     (hKvs : ∀ᵐ x ∂(volumeMeasureOn U), |(centeredPotential m vstar P.1 (-c)).toFun x| ≤ Kinf)
@@ -265,6 +276,7 @@ theorem centered_local_block_energy {a : CoeffField d} {Θ : ℝ}
 
 /-! ## T2 — the consumer shape -/
 
+omit [NeZero d] in
 /-- Adding back the affine part: `2∇v·s∇v ≤ 4V·sV + Θ|p|²` with `V = ∇v − ½p`. -/
 theorem two_symmPart_grad_le {Θ : ℝ} {A : Mat d} (hA : IsThetaElliptic Θ A) (gv p : Vec d) :
     2 * vecDot gv (matVecMul (symmPart A) gv)
@@ -291,13 +303,14 @@ theorem two_symmPart_grad_le {Θ : ℝ} {A : Mat d} (hA : IsThetaElliptic Θ A) 
   rw [hgvVb]
   nlinarith [hpar, hpsd, hbsb, hupper]
 
+omit [NeZero d] in
 /-- **T2 — `local_block_energy`.**  The consumer shape of `p.local.block.energy`:
 the block energy on `C` is controlled by `M²·|supp η ∩ U| + Θ·K∞²·∫_U Σᵢ(∂ᵢη)²`. -/
 theorem local_block_energy {a : CoeffField d} {Θ : ℝ}
     {v vstar : H1Function U} {P : BlockVec d} {η : Vec d → ℝ} {Gη c Kinf : ℝ}
     {Z : BlockState d} {C : Set (Vec d)}
     (hEllO : IsEllipticFieldOn 1 Θ U a)
-    (hWeak : CoupledWeakForm a U P.1 P.2 v vstar)
+    (hWeak : CoupledWeakForm a U P.2 v vstar)
     (hTrace : MemH10 U (fun x => v.toFun x + vstar.toFun x - vecDot P.1 x))
     (hKv : ∀ᵐ x ∂(volumeMeasureOn U), |(centeredPotential m v P.1 c).toFun x| ≤ Kinf)
     (hKvs : ∀ᵐ x ∂(volumeMeasureOn U), |(centeredPotential m vstar P.1 (-c)).toFun x| ≤ Kinf)
@@ -446,6 +459,7 @@ theorem local_block_energy {a : CoeffField d} {Θ : ℝ}
 
 /-! ## T1 and T2 — explicit-numeral (uniform-constant) restatements -/
 
+omit [NeZero d] in
 /-- **T1 with the explicit numeral `128`.**  The witness of
 `centered_local_block_energy` is the fixed dimensional constant `128`; this is the
 same bound stated with that literal so the consumer can see a field-independent
@@ -453,7 +467,7 @@ constant. -/
 theorem centered_local_block_energy_num {a : CoeffField d} {Θ : ℝ}
     {v vstar : H1Function U} {P : BlockVec d} {η : Vec d → ℝ} {Gη c Kinf : ℝ}
     (hEllO : IsEllipticFieldOn 1 Θ U a)
-    (hWeak : CoupledWeakForm a U P.1 P.2 v vstar)
+    (hWeak : CoupledWeakForm a U P.2 v vstar)
     (hTrace : MemH10 U (fun x => v.toFun x + vstar.toFun x - vecDot P.1 x))
     (hKv : ∀ᵐ x ∂(volumeMeasureOn U), |(centeredPotential m v P.1 c).toFun x| ≤ Kinf)
     (hKvs : ∀ᵐ x ∂(volumeMeasureOn U), |(centeredPotential m vstar P.1 (-c)).toFun x| ≤ Kinf)
@@ -512,6 +526,7 @@ theorem centered_local_block_energy_num {a : CoeffField d} {Θ : ℝ}
     mul_nonneg hM20 hvol0
   nlinarith [hsplit, hbulk, hcut, hMsqvol, hMsqvol2, hΘKIG, hMvol0]
 
+omit [NeZero d] in
 /-- **T2 with the explicit numeral `514 = 4·128 + 2`.**  The uniform-constant
 restatement of `local_block_energy`: its witness is the field-independent
 dimensional constant `514`, exposed here as a literal so the per-core energy
@@ -520,7 +535,7 @@ theorem local_block_energy_uniform {a : CoeffField d} {Θ : ℝ}
     {v vstar : H1Function U} {P : BlockVec d} {η : Vec d → ℝ} {Gη c Kinf : ℝ}
     {Z : BlockState d} {C : Set (Vec d)}
     (hEllO : IsEllipticFieldOn 1 Θ U a)
-    (hWeak : CoupledWeakForm a U P.1 P.2 v vstar)
+    (hWeak : CoupledWeakForm a U P.2 v vstar)
     (hTrace : MemH10 U (fun x => v.toFun x + vstar.toFun x - vecDot P.1 x))
     (hKv : ∀ᵐ x ∂(volumeMeasureOn U), |(centeredPotential m v P.1 c).toFun x| ≤ Kinf)
     (hKvs : ∀ᵐ x ∂(volumeMeasureOn U), |(centeredPotential m vstar P.1 (-c)).toFun x| ≤ Kinf)

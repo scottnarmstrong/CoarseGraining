@@ -69,9 +69,9 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
       0 < etaS → 0 < etaSt → 0 < delta_sc → 0 < L → 0 < decay →
     ∃ B : ℝ,
       1 ≤ B ∧
-        ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-          (hP : Homogenization.Book.Ch04.LawCarrier P)
-          (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+        ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+          (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+          (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
           (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P),
           hP4.params = params →
           ∀ {N Nstar i : ℕ} (e : Homogenization.Vec d)
@@ -192,7 +192,7 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
              let childAvg := fun a : Homogenization.RegCoeffField d =>
               Homogenization.descendantsAverage Q (m - k)
                 (fun R =>
-                  Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+                  Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
              let response := fun a : Homogenization.RegCoeffField d =>
               (5 * β⁻¹) ^ 2 * childAvg a
              let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -221,7 +221,7 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
              let childAvg := fun a : Homogenization.RegCoeffField d =>
               Homogenization.descendantsAverage Q (m - k)
                 (fun R =>
-                  Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+                  Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
              let response := fun a : Homogenization.RegCoeffField d =>
               (5 * β⁻¹) ^ 2 * childAvg a
              let lowerSlot :
@@ -277,9 +277,7 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
          responseBaselineCoeff * responseTerm + 2 * constantCoeff +
             tailFactor * (smallBudget + lowBudget + sourceBudget) ≤
           childTailBudget) →
-            (let m : ℕ := memoryGridScale Nstar L i
-             let k : ℕ := memoryGridScale Nstar L (i - 1)
-             let sourceBudget : ℝ :=
+            (let sourceBudget : ℝ :=
               sourceMaxResizedBudgetOfGrid hP hStruct hP4 hc N Nstar L i
                 hNNstar e stochRoot polyRoot
          childTailBudget + smallBudget + lowBudget + sourceBudget ≤ lowerEdgeBudget) →
@@ -734,9 +732,9 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
       0 < etaS → 0 < etaSt → 0 < delta_sc → 0 < L → 0 < decay →
     ∃ B : ℝ,
       1 ≤ B ∧
-        ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-          (hP : Homogenization.Book.Ch04.LawCarrier P)
-          (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+        ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+          (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+          (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
           (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P),
           hP4.params = params →
           ∀ {N Nstar i : ℕ} (e : Homogenization.Vec d)
@@ -867,9 +865,7 @@ theorem exists_rawEnergyConstants_bufferExponent_lyapunov_step_of_main_buffer_an
          responseBaselineCoeff * responseTerm + 2 * constantCoeff +
             tailFactor * (smallBudget + lowBudget + sourceBudget) ≤
           childTailBudget) →
-            (let m : ℕ := memoryGridScale Nstar L i
-             let k : ℕ := memoryGridScale Nstar L (i - 1)
-             let smallBudget : ℝ :=
+            (let smallBudget : ℝ :=
               section52SmallTailTerminalResponseBudgetAtScales hP hStruct hP4
                 (memoryGridScale Nstar L (i - 1)) (memoryGridScale Nstar L i) e
              let lowBudget : ℝ :=

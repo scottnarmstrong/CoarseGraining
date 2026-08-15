@@ -11,7 +11,7 @@ open MeasureTheory
 # `Mu` measurability (carrier re-aim, Packet P5 centrepiece)
 
 This file is the public Ch4 handoff for the coarse-grained energy `Mu` on the
-honest carrier.  Following the carrier redesign, a law `P : CoeffLaw d` is a
+honest carrier.  Following the carrier redesign, a law `P : RestrictionCoeffLaw d` is a
 measure on `RegCoeffField d`, and the observable is `a ↦ Mu (cubeSet Q) P0 a.toFun`.
 
 The measurability is genuinely established, not merely null-covered.  The
@@ -22,20 +22,20 @@ using only the honest entry-test generators of the carrier (no fine pointwise
 data).  The AEE slice events are genuinely `LocalSigmaR`-measurable (P4b), so the
 countable slice cover assembles by a **genuine `liftCover`** — no null
 bookkeeping — into a `LocalSigmaR`-measurable representative `Y`, which the gate
-`IsLocalRandomVariable.of_measurable_localSigmaR` promotes to a genuine
+`IsRestrictionLocalRandomVariable.of_measurable_localSigmaR` promotes to a genuine
 restriction-local random variable.
 
 Note (statement check, Packet P5): `Mu ∘ toFun` is **not** `LocalSigmaR`-measurable
 on all of the carrier — off the a.e.-elliptic locus the carrier admits fields on
-which `Mu` is uninformative — so `exists_isLocalRandomVariable_ae_eq_Mu_cubeSet`
+which `Mu` is uninformative — so `exists_isRestrictionLocalRandomVariable_ae_eq_Mu_cubeSet`
 is *not* trivialised: the a.e.-representative `Y` (equal to `Mu ∘ toFun` on the
 a.s.-full elliptic locus) is genuinely needed.  The honest endpoint therefore
 remains law-relative `AEMeasurable`, with the genuine local representative `Y`.
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 /-- **Law-relative local representative of `Mu` on a fixed triadic cube.**  The
 carrier `Mu`-slice engine makes `Mu ∘ toFun` genuinely `LocalSigmaR (cubeSet Q)`-
@@ -43,11 +43,11 @@ measurable on each AEE quantitative slice; the slices are genuinely
 `LocalSigmaR`-measurable and cover the law a.s., so a genuine `liftCover` produces
 a `LocalSigmaR`-measurable `Y` agreeing with `Mu ∘ toFun` almost surely, promoted
 to a restriction-local random variable by the gate. -/
-theorem exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+theorem exists_isRestrictionLocalRandomVariable_ae_eq_Mu_cubeSet
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d) :
     ∃ Y : RegCoeffField d → ℝ,
-      IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+      IsRestrictionLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
         (fun a : RegCoeffField d => Mu (cubeSet Q) P0 a.toFun) =ᵐ[P] Y := by
   classical
   let slice : ℕ → Set (RegCoeffField d) :=
@@ -101,18 +101,22 @@ theorem exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
         | none => exact measurable_const
         | some k =>
             have hEntry :
-                ∀ (i' j' : Fin d) {φ : Vec d → ℝ}, IsProbeR φ → Function.support φ ⊆ cubeSet Q →
+                ∀ (i' j' : Fin d) {φ : Vec d → ℝ}, ContDiff ℝ (⊤ : ℕ∞) φ →
+                  HasCompactSupport φ → tsupport φ ⊆ cubeSet Q →
                   @Measurable (cover (some k)) ℝ _ _
                     (fun x => entryTestR i' j' φ (x : RegCoeffField d)) := by
-              intro i' j' φ hφ hsupp
-              exact (measurable_entryTestR_localSigmaR i' j' hφ hsupp).comp
+              intro i' j' φ hφ_cont hφ_compact hφ_support
+              have hφ_probe : IsProbeR φ := IsProbeR.of_smooth hφ_cont hφ_compact
+              have hφ_support' : Function.support φ ⊆ cubeSet Q :=
+                (Function.support_subset_iff.2 fun x hx => subset_tsupport φ hx).trans hφ_support
+              exact (measurable_entryTestR_localSigmaR i' j' hφ_probe hφ_support').comp
                 measurable_subtype_coe
             simpa [f] using
               measurable_Mu_comp_aeeSlice_of_measurable_entryTest Q
                 (A := fun x : cover (some k) => (x : RegCoeffField d))
                 (fun x => x.2) hEntry P0
       exact measurable_liftCover cover hcover_meas f hfm hagree hcover
-    exact IsLocalRandomVariable.of_measurable_localSigmaR (measurableSet_cubeSet Q) hY_localSigma
+    exact IsRestrictionLocalRandomVariable.of_measurable_localSigmaR (measurableSet_cubeSet Q) hY_localSigma
   · -- `Y` agrees with `Mu ∘ toFun` on the a.s.-full elliptic locus.
     have hcovered_ae : ∀ᵐ a ∂P, a ∈ covered := by
       filter_upwards
@@ -131,10 +135,10 @@ deterministic triadic cube.  Downstream chapters should use this theorem
 directly; `coarseBlockMatrix`, `ResponseJ`, and `BlockJ` measurability should
 be derived from this finite-polarization root. -/
 theorem aemeasurable_Mu_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (P0 : BlockVec d) :
     AEMeasurable (fun a : RegCoeffField d => Mu (cubeSet Q) P0 a.toFun) P := by
-  obtain ⟨Y, hY_local, hY_eq⟩ := hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet Q P0
+  obtain ⟨Y, hY_local, hY_eq⟩ := hP.exists_isRestrictionLocalRandomVariable_ae_eq_Mu_cubeSet Q P0
   have hY_restr :
       @Measurable (RegCoeffField d) ℝ
         (RestrictionSigmaR (cubeSet Q) (measurableSet_cubeSet Q)) _ Y := hY_local
@@ -142,7 +146,7 @@ theorem aemeasurable_Mu_cubeSet
     hY_restr.mono (restrictionSigmaR_le (cubeSet Q) (measurableSet_cubeSet Q)) le_rfl
   exact hY_meas.aemeasurable.congr hY_eq.symm
 
-end LawCarrier
+end RestrictionLawCarrier
 
 end Ch04
 end Book

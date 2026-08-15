@@ -33,7 +33,7 @@ noncomputable section
 /-- **E1 (cube Sobolev embedding, critical exponent `2* = 2d/(d−2)`).**
 
 For `d ≥ 3` there is a constant `C = C(d) > 0` such that for every open axis cube
-`U = axisCube z L` of side `L > 0` and every `u ∈ H¹(U)` (LIH `H1Function U`, no
+`U = axisCube z L` of side `L > 0` and every `u ∈ H¹(U)` (the library's `H1Function U`, no
 boundary vanishing),
 `‖u‖_{L^{2*}(U)} ≤ C (‖∇u‖_{L²(U)} + L⁻¹ ‖u‖_{L²(U)})`,
 with `‖u‖_{L^{2*}(U)} = eLpNorm u.toFun (twoStar d) (volumeMeasureOn U)` and the

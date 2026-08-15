@@ -21,7 +21,7 @@ noncomputable section
 /-- The minimum quantity whose fixed small fraction is the exponent `β` in the
 third Section 5.3 lemma. -/
 noncomputable def section53CoarseFluctuationBetaCore {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   min (1 - hP4.sUpper - hP4.sLower)
     (min hP4.sUpper
       (min hP4.sLower
@@ -31,13 +31,13 @@ noncomputable def section53CoarseFluctuationBetaCore {d : ℕ} [NeZero d]
 /-- The exponent `β` used in
 `l.J.upper.bound.coarse.fluctuations.homogenization.scale`. -/
 noncomputable def section53CoarseFluctuationBeta {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   section53CoarseFluctuationBetaCore hP4 / 8
 
 /-- The Hölder conjugate `ζ = ξ / (ξ - 1)` used in the third Section 5.3
 lemma. -/
 noncomputable def section53CoarseFluctuationZeta {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   (hP4.xi : ℝ) / ((hP4.xi : ℝ) - 1)
 
 /-- Parameter-only version of the Section 5.3 coarse-fluctuation beta core. -/
@@ -61,27 +61,27 @@ noncomputable def section53CoarseFluctuationZetaParams {d : ℕ}
 
 @[simp]
 theorem section53CoarseFluctuationBetaCoreParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationBetaCoreParams hP4.params =
       section53CoarseFluctuationBetaCore hP4 := rfl
 
 @[simp]
 theorem section53CoarseFluctuationBetaParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationBetaParams hP4.params =
       section53CoarseFluctuationBeta hP4 := rfl
 
 @[simp]
 theorem section53CoarseFluctuationZetaParams_eq_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationZetaParams hP4.params =
       section53CoarseFluctuationZeta hP4 := rfl
 
 private theorem section53CoarseFluctuationBetaCore_pos {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < section53CoarseFluctuationBetaCore hP4 := by
   have hgap : 0 < 1 - hP4.sUpper - hP4.sLower := by
     linarith [hP4.sum_lt_one]
@@ -96,37 +96,37 @@ private theorem section53CoarseFluctuationBetaCore_pos {d : ℕ} [NeZero d]
     (lt_min hupper (lt_min hlower (lt_min hupper_gain hlower_gain)))
 
 theorem section53CoarseFluctuationBeta_pos {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < section53CoarseFluctuationBeta hP4 := by
   unfold section53CoarseFluctuationBeta
   nlinarith [section53CoarseFluctuationBetaCore_pos hP4]
 
 theorem section53CoarseFluctuationBeta_nonneg {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ section53CoarseFluctuationBeta hP4 :=
   (section53CoarseFluctuationBeta_pos hP4).le
 
 private theorem section53CoarseFluctuationBetaCore_le_sum_gap {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationBetaCore hP4 ≤
       1 - hP4.sUpper - hP4.sLower := by
   unfold section53CoarseFluctuationBetaCore
   exact min_le_left _ _
 
 private theorem section53CoarseFluctuationBetaCore_le_sUpper {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationBetaCore hP4 ≤ hP4.sUpper := by
   unfold section53CoarseFluctuationBetaCore
   exact (min_le_right _ _).trans (min_le_left _ _)
 
 private theorem section53CoarseFluctuationBetaCore_le_sLower {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationBetaCore hP4 ≤ hP4.sLower := by
   unfold section53CoarseFluctuationBetaCore
   exact (min_le_right _ _).trans ((min_le_right _ _).trans (min_le_left _ _))
 
 private theorem section53CoarseFluctuationBetaCore_le_sUpper_gain {d : ℕ}
-    [NeZero d] {P : Ch04.CoeffLaw d}
+    [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationBetaCore hP4 ≤
       hP4.sUpper - (d : ℝ) / (hP4.xi : ℝ) := by
@@ -135,7 +135,7 @@ private theorem section53CoarseFluctuationBetaCore_le_sUpper_gain {d : ℕ}
     ((min_le_right _ _).trans ((min_le_right _ _).trans (min_le_left _ _)))
 
 private theorem section53CoarseFluctuationBetaCore_le_sLower_gain {d : ℕ}
-    [NeZero d] {P : Ch04.CoeffLaw d}
+    [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationBetaCore hP4 ≤
       hP4.sLower - (d : ℝ) / (hP4.xi : ℝ) := by
@@ -144,7 +144,7 @@ private theorem section53CoarseFluctuationBetaCore_le_sLower_gain {d : ℕ}
     ((min_le_right _ _).trans ((min_le_right _ _).trans (min_le_right _ _)))
 
 theorem section53CoarseFluctuationBeta_le_sUpper {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationBeta hP4 ≤ hP4.sUpper := by
   unfold section53CoarseFluctuationBeta
   have hcore_nonneg : 0 ≤ section53CoarseFluctuationBetaCore hP4 :=
@@ -153,7 +153,7 @@ theorem section53CoarseFluctuationBeta_le_sUpper {d : ℕ} [NeZero d]
   nlinarith
 
 theorem section53CoarseFluctuationBeta_le_sLower {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationBeta hP4 ≤ hP4.sLower := by
   unfold section53CoarseFluctuationBeta
   have hcore_nonneg : 0 ≤ section53CoarseFluctuationBetaCore hP4 :=
@@ -162,7 +162,7 @@ theorem section53CoarseFluctuationBeta_le_sLower {d : ℕ} [NeZero d]
   nlinarith
 
 theorem section53CoarseFluctuationBeta_le_sUpper_sub_dim_div_xi {d : ℕ}
-    [NeZero d] {P : Ch04.CoeffLaw d}
+    [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationBeta hP4 ≤
       hP4.sUpper - (d : ℝ) / (hP4.xi : ℝ) := by
@@ -173,7 +173,7 @@ theorem section53CoarseFluctuationBeta_le_sUpper_sub_dim_div_xi {d : ℕ}
   nlinarith
 
 theorem section53CoarseFluctuationBeta_le_sLower_sub_dim_div_xi {d : ℕ}
-    [NeZero d] {P : Ch04.CoeffLaw d}
+    [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationBeta hP4 ≤
       hP4.sLower - (d : ℝ) / (hP4.xi : ℝ) := by
@@ -184,7 +184,7 @@ theorem section53CoarseFluctuationBeta_le_sLower_sub_dim_div_xi {d : ℕ}
   nlinarith
 
 theorem sUpper_add_sLower_add_two_beta_le_one {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sUpper + hP4.sLower +
         2 * section53CoarseFluctuationBeta hP4 ≤ 1 := by
   unfold section53CoarseFluctuationBeta
@@ -194,7 +194,7 @@ theorem sUpper_add_sLower_add_two_beta_le_one {d : ℕ} [NeZero d]
   nlinarith
 
 theorem sUpper_add_sLower_add_four_beta_le_one {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sUpper + hP4.sLower +
         4 * section53CoarseFluctuationBeta hP4 ≤ 1 := by
   unfold section53CoarseFluctuationBeta
@@ -204,7 +204,7 @@ theorem sUpper_add_sLower_add_four_beta_le_one {d : ℕ} [NeZero d]
   nlinarith
 
 theorem sLower_add_beta_le_one {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sLower + section53CoarseFluctuationBeta hP4 ≤ 1 := by
   have hsum := sUpper_add_sLower_add_two_beta_le_one hP4
   have hupper_nonneg := hP4.sUpper_nonneg
@@ -212,7 +212,7 @@ theorem sLower_add_beta_le_one {d : ℕ} [NeZero d]
   nlinarith
 
 theorem sLower_add_two_beta_le_one {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sLower + 2 * section53CoarseFluctuationBeta hP4 ≤ 1 := by
   have hsum := sUpper_add_sLower_add_four_beta_le_one hP4
   have hupper_nonneg := hP4.sUpper_nonneg
@@ -220,7 +220,7 @@ theorem sLower_add_two_beta_le_one {d : ℕ} [NeZero d]
   nlinarith
 
 theorem sUpper_add_beta_le_one {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sUpper + section53CoarseFluctuationBeta hP4 ≤ 1 := by
   have hsum := sUpper_add_sLower_add_two_beta_le_one hP4
   have hlower_nonneg := hP4.sLower_nonneg
@@ -228,7 +228,7 @@ theorem sUpper_add_beta_le_one {d : ℕ} [NeZero d]
   nlinarith
 
 theorem sUpper_add_two_beta_le_one {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sUpper + 2 * section53CoarseFluctuationBeta hP4 ≤ 1 := by
   have hsum := sUpper_add_sLower_add_four_beta_le_one hP4
   have hlower_nonneg := hP4.sLower_nonneg
@@ -236,59 +236,59 @@ theorem sUpper_add_two_beta_le_one {d : ℕ} [NeZero d]
   nlinarith
 
 theorem half_sLower_add_beta_le_sLower {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     (hP4.sLower + section53CoarseFluctuationBeta hP4) / 2 ≤ hP4.sLower := by
   have hle := section53CoarseFluctuationBeta_le_sLower hP4
   nlinarith
 
 theorem sLower_lt_sLower_add_beta {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sLower < hP4.sLower + section53CoarseFluctuationBeta hP4 := by
   have hbeta := section53CoarseFluctuationBeta_pos hP4
   linarith
 
 theorem half_sLower_add_two_beta_le_sLower_add_beta {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     (hP4.sLower + 2 * section53CoarseFluctuationBeta hP4) / 2 ≤
       hP4.sLower + section53CoarseFluctuationBeta hP4 := by
   have hlower_nonneg := hP4.sLower_nonneg
   nlinarith
 
 theorem sLower_add_beta_lt_sLower_add_two_beta {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sLower + section53CoarseFluctuationBeta hP4 <
       hP4.sLower + 2 * section53CoarseFluctuationBeta hP4 := by
   have hbeta := section53CoarseFluctuationBeta_pos hP4
   linarith
 
 theorem half_sUpper_add_beta_le_sUpper {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     (hP4.sUpper + section53CoarseFluctuationBeta hP4) / 2 ≤ hP4.sUpper := by
   have hle := section53CoarseFluctuationBeta_le_sUpper hP4
   nlinarith
 
 theorem sUpper_lt_sUpper_add_beta {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sUpper < hP4.sUpper + section53CoarseFluctuationBeta hP4 := by
   have hbeta := section53CoarseFluctuationBeta_pos hP4
   linarith
 
 theorem half_sUpper_add_two_beta_le_sUpper_add_beta {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     (hP4.sUpper + 2 * section53CoarseFluctuationBeta hP4) / 2 ≤
       hP4.sUpper + section53CoarseFluctuationBeta hP4 := by
   have hupper_nonneg := hP4.sUpper_nonneg
   nlinarith
 
 theorem sUpper_add_beta_lt_sUpper_add_two_beta {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sUpper + section53CoarseFluctuationBeta hP4 <
       hP4.sUpper + 2 * section53CoarseFluctuationBeta hP4 := by
   have hbeta := section53CoarseFluctuationBeta_pos hP4
   linarith
 
 theorem sLower_add_beta_sub_dim_div_xi_pos {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < hP4.sLower + section53CoarseFluctuationBeta hP4 -
         (d : ℝ) / (hP4.xi : ℝ) := by
   have hgain : 0 < hP4.sLower - (d : ℝ) / (hP4.xi : ℝ) := by
@@ -297,7 +297,7 @@ theorem sLower_add_beta_sub_dim_div_xi_pos {d : ℕ} [NeZero d]
   linarith
 
 theorem sUpper_add_beta_sub_dim_div_xi_pos {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < hP4.sUpper + section53CoarseFluctuationBeta hP4 -
         (d : ℝ) / (hP4.xi : ℝ) := by
   have hgain : 0 < hP4.sUpper - (d : ℝ) / (hP4.xi : ℝ) := by
@@ -306,14 +306,14 @@ theorem sUpper_add_beta_sub_dim_div_xi_pos {d : ℕ} [NeZero d]
   linarith
 
 theorem section53CoarseFluctuationZeta_pos {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < section53CoarseFluctuationZeta hP4 := by
   unfold section53CoarseFluctuationZeta
   have hxi_two : (2 : ℝ) ≤ (hP4.xi : ℝ) := by exact_mod_cast hP4.two_le_xi
   exact div_pos (by linarith) (by linarith)
 
 theorem one_lt_section53CoarseFluctuationZeta {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     1 < section53CoarseFluctuationZeta hP4 := by
   unfold section53CoarseFluctuationZeta
   have hxi_two : (2 : ℝ) ≤ (hP4.xi : ℝ) := by exact_mod_cast hP4.two_le_xi
@@ -322,7 +322,7 @@ theorem one_lt_section53CoarseFluctuationZeta {d : ℕ} [NeZero d]
   linarith
 
 theorem section53CoarseFluctuationZeta_le_two {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationZeta hP4 ≤ 2 := by
   unfold section53CoarseFluctuationZeta
   have hxi_two : (2 : ℝ) ≤ (hP4.xi : ℝ) := by exact_mod_cast hP4.two_le_xi
@@ -331,7 +331,7 @@ theorem section53CoarseFluctuationZeta_le_two {d : ℕ} [NeZero d]
   linarith
 
 theorem inv_xi_add_inv_section53CoarseFluctuationZeta {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     ((hP4.xi : ℝ)⁻¹ + (section53CoarseFluctuationZeta hP4)⁻¹) = 1 := by
   unfold section53CoarseFluctuationZeta
   have hxi_two : (2 : ℝ) ≤ (hP4.xi : ℝ) := by exact_mod_cast hP4.two_le_xi

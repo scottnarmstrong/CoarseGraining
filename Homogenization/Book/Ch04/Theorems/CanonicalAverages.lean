@@ -49,12 +49,12 @@ private theorem aemeasurable_matVecMul_const
       (μ := μ) (f := fun j a => M a i j * x j)
       (fun j _hj => (hM_entry j).mul aemeasurable_const))
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 /-- The whole-cube canonical averaged gradient is a.e.-measurable under the
 single Chapter 4 law carrier. -/
 theorem aemeasurable_canonicalAverageGradientCubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
     AEMeasurable (canonicalAverageGradientCubeSet Q p q) P := by
   have hLowerRight :
@@ -73,7 +73,7 @@ theorem aemeasurable_canonicalAverageGradientCubeSet
 /-- The whole-cube canonical averaged flux is a.e.-measurable under the single
 Chapter 4 law carrier. -/
 theorem aemeasurable_canonicalAverageFluxCubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
     AEMeasurable (canonicalAverageFluxCubeSet Q p q) P := by
   have hUpperRight :
@@ -92,7 +92,7 @@ theorem aemeasurable_canonicalAverageFluxCubeSet
 /-- Finite descendant averages of canonical averaged-gradient components are
 a.e.-measurable. -/
 theorem aemeasurable_descendantsAverage_canonicalAverageGradientCubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -112,7 +112,7 @@ theorem aemeasurable_descendantsAverage_canonicalAverageGradientCubeSet
 /-- Finite descendant averages of canonical averaged-flux components are
 a.e.-measurable. -/
 theorem aemeasurable_descendantsAverage_canonicalAverageFluxCubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -129,7 +129,7 @@ theorem aemeasurable_descendantsAverage_canonicalAverageFluxCubeSet
         (aemeasurable_pi_iff.mp
           (hP.aemeasurable_canonicalAverageFluxCubeSet R p q)) i)
 
-end LawCarrier
+end RestrictionLawCarrier
 
 end Ch04
 end Book

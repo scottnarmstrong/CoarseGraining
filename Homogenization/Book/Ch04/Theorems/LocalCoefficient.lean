@@ -15,7 +15,7 @@ open MeasureTheory
 This file starts the Ch4 theorem surface for coefficient-field observables.
 The primitive observable is the smooth local test used to generate
 the restriction-local observable interface; downstream code should compose from
-bundled `Observable`s instead of reproving measurability in Chapter 5.
+bundled `RestrictionObservable`s instead of reproving measurability in Chapter 5.
 
 Following the carrier redesign, the local test observable is evaluated on the
 honest sample `a.toFun` of a carrier field `a : RegCoeffField d`.  Its locality
@@ -26,7 +26,7 @@ measurable (probe supported in `U`), hence restriction-local by
 `localSigmaR_le_restrictionSigmaR`.  (The observation set's measurability is a
 D7-approved side-condition making `RestrictionSigmaR` well defined.)
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 /-- **The carrier mixing identity for the smooth local test.**  The smooth local
@@ -68,7 +68,7 @@ theorem localTestObservable_toFun_eq_sum_entryTestR {d : ℕ}
           rw [integral_const_mul]
           rfl
 
-namespace Observable
+namespace RestrictionObservable
 
 /-- The smooth coefficient-field test observable, evaluated on the honest sample,
 bundled with its Ch4 locality proof.  The observation-set measurability `hU` is
@@ -78,7 +78,7 @@ noncomputable def localTest {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U)
     (hφ_cont : ContDiff ℝ (⊤ : ℕ∞) φ)
     (hφ_compact : HasCompactSupport φ)
     (hφ_support : tsupport φ ⊆ U) :
-    Observable d U ℝ where
+    RestrictionObservable d U ℝ where
   measurableSet := hU
   toFun := fun a => localTestObservable e e' φ a.toFun
   isLocal := by
@@ -110,7 +110,7 @@ theorem localTest_apply {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U)
       localTestObservable e e' φ a.toFun :=
   rfl
 
-end Observable
+end RestrictionObservable
 
 end Ch04
 end Book

@@ -36,7 +36,7 @@ record's own parameters (no quantifiers over laws).  Consumers recover the
 per-`(P4)` form via `sourceMaxLowerGap_of_params`/`sourceMaxUpperGap_of_params`
 using `hP4.params = hc.params`.
 
-Source: the high-moment paper (Armstrong–Kuusi–Loher, in preparation), and
+Source: the high-moment paper (Armstrong–Kuusi–Loher, to appear), and
 ultimately the high-contrast manuscript, label `l.weaknorms.moreproto`.
 -/
 structure HighContrastExponents (d : ℕ) where
@@ -56,7 +56,7 @@ structure HighContrastExponents (d : ℕ) where
   exponent `rho_M` and the response exponent `beta`, while `rho_M` retains its
   other (union-bound / stochastic-decay) roles.
 
-  Source: the high-moment paper (Armstrong–Kuusi–Loher, in preparation),
+  Source: the high-moment paper (Armstrong–Kuusi–Loher, to appear),
   memory-decay discussion `s.memory` and `l.lyapunov`.
   -/
   kappaH : ℝ
@@ -95,7 +95,7 @@ open Homogenization.Book.Ch05.Section53.JUpperBoundCoarseFluctuations
 /-- Per-`(P4)` form of the lower source-max gap: for any law whose `(P4)`
 parameters match the record, the gap holds against `section53CoarseFluctuationBeta`. -/
 theorem sourceMaxLowerGap_of_params {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d} (hc : HighContrastExponents d)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d} (hc : HighContrastExponents d)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (h : hP4.params = hc.params) :
     hc.rhoM < hP4.sLower + section53CoarseFluctuationBeta hP4 := by
@@ -105,7 +105,7 @@ theorem sourceMaxLowerGap_of_params {d : ℕ} [NeZero d]
 
 /-- Per-`(P4)` form of the upper source-max gap. -/
 theorem sourceMaxUpperGap_of_params {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d} (hc : HighContrastExponents d)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d} (hc : HighContrastExponents d)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (h : hP4.params = hc.params) :
     hc.rhoM < hP4.sUpper + section53CoarseFluctuationBeta hP4 := by
@@ -148,9 +148,9 @@ structure LocalizationSmallContrastInput
     {d : ℕ} [NeZero d] (hc : HighContrastExponents d)
     extends LocalizationSmallContrastConstants where
   localization :
-    ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-      (hP : Homogenization.Book.Ch04.LawCarrier P)
-      (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+      (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+      (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
       (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P),
       hP4.params = hc.params →
       ∀ {k n : ℕ},
@@ -164,9 +164,9 @@ structure LocalizationSmallContrastInput
               C_loc * (3 : ℝ) ^ (-(beta_loc * ((n - k : ℕ) : ℝ))) *
                 Homogenization.Book.Ch05.widetildeThetaAtScale P (0 : ℤ) hP4
   small_contrast :
-    ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-      (hP : Homogenization.Book.Ch04.LawCarrier P)
-      (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+      (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+      (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
       (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P),
       hP4.params = hc.params →
       ∀ {N : ℕ},
@@ -205,7 +205,7 @@ structure HighCenteredMomentParameters (d : ℕ) (hc : HighContrastExponents d) 
 
 /-- Constants for the old polynomial subthreshold contribution in `a.HM`.
 
-Source: the high-moment paper (Armstrong–Kuusi–Loher, in preparation).  This records
+Source: the high-moment paper (Armstrong–Kuusi–Loher, to appear).  This records
 only the polynomial prefactor before the weak-norm weight is used; the
 geometric buffer absorption is proved in `MomentConsequences.lean`.
 -/

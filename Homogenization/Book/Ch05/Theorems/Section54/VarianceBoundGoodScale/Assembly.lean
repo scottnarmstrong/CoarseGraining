@@ -28,8 +28,8 @@ noncomputable def scalarProbeVarianceBound
 /-- Coordinate-probe scalar variance budget at scale `j` normalized by scale
 `m`. -/
 noncomputable def coordinateProbeVarianceBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (delta : ℝ) (m j : ℕ) (α : BlockCoord d) : ℝ :=
   scalarProbeVarianceBound delta (fullBlockCoordinateProbe α)
@@ -38,8 +38,8 @@ noncomputable def coordinateProbeVarianceBound
 /-- Off-diagonal plus-pair scalar variance budget at scale `j` normalized by
 scale `m`. -/
 noncomputable def plusProbeVarianceBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (delta : ℝ) (m j : ℕ) (α β : BlockCoord d) : ℝ :=
   scalarProbeVarianceBound delta (fullBlockPlusProbe α β)
@@ -48,8 +48,8 @@ noncomputable def plusProbeVarianceBound
 /-- Off-diagonal minus-pair scalar variance budget at scale `j` normalized by
 scale `m`. -/
 noncomputable def minusProbeVarianceBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (delta : ℝ) (m j : ℕ) (α β : BlockCoord d) : ℝ :=
   scalarProbeVarianceBound delta (fullBlockMinusProbe α β)
@@ -59,8 +59,8 @@ noncomputable def minusProbeVarianceBound
 probes are handled algebraically: `e_α + e_α = 2e_α` and
 `e_α - e_α = 0`. -/
 noncomputable def matrixVarianceScaleBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (delta : ℝ) (m j : ℕ) : ℝ :=
   ((Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ)) *
@@ -80,8 +80,8 @@ noncomputable def matrixVarianceScaleBound
                   minusProbeVarianceBound hP hStruct hP4 delta m j α β)))
 
 private theorem integral_plusProbe_self_sq_eq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m j : ℕ) (α : BlockCoord d) :
     ∫ a,
         (fullBlockQuadratic
@@ -113,8 +113,8 @@ private theorem integral_plusProbe_self_sq_eq
   rw [hpoint, integral_const_mul]
 
 private theorem integral_minusProbe_self_sq_eq_zero
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m j : ℕ) (α : BlockCoord d) :
     ∫ a,
         (fullBlockQuadratic
@@ -137,8 +137,8 @@ private theorem integral_minusProbe_self_sq_eq_zero
 /-- Per-scale matrix variance bound obtained by assembling all scalar probe
 estimates at a good scale. -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_matrixVarianceScaleBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta)
     (m j : ℕ) (hj : j ≤ m)
@@ -247,8 +247,8 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_matrixVa
 /-- The exact beta-weighted variance sum is bounded by the corresponding
 sum of per-scale matrix budgets. -/
 theorem varianceGoodScaleFullBlockSumAtScale_le_weighted_matrixVarianceScaleBound
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta)
     (m : ℕ)

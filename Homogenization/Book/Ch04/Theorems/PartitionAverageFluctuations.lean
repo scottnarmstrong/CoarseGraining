@@ -6,12 +6,12 @@ namespace Book
 namespace Ch04
 
 /-!
-# Public partition-average fluctuation theorems
+# Restriction-local partition-average fluctuation theorems
 
-This file connects the public descendant-average concentration estimates to
+This file connects the restriction-local descendant-average concentration estimates to
 the centered origin-cube formulation used in the notes.  The proof uses the
 existing stationarity lemmas internally, but the theorem statements are phrased
-only in terms of the public Chapter 4 law and local-random-variable notions.
+only in terms of the explicit restriction law and restriction-local-random-variable notions.
 -/
 
 open MeasureTheory
@@ -20,7 +20,7 @@ open scoped BigOperators
 noncomputable section
 
 private theorem isBigO_gammaSigma_iff_of_map_eq_map
-    {d : ℕ} {P : CoeffLaw d} {σ A : ℝ}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {σ A : ℝ}
     {f g : RegCoeffField d → ℝ}
     (hf : Measurable f) (hg : Measurable g)
     (hmap : Measure.map f P = Measure.map g P) :
@@ -55,7 +55,7 @@ private theorem isBigO_gammaSigma_iff_of_map_eq_map
     exact h ht
 
 private theorem isBigO_psiSigma_iff_of_map_eq_map
-    {d : ℕ} {P : CoeffLaw d} {σ A : ℝ}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {σ A : ℝ}
     {f g : RegCoeffField d → ℝ}
     (hf : Measurable f) (hg : Measurable g)
     (hmap : Measure.map f P = Measure.map g P) :
@@ -90,18 +90,18 @@ private theorem isBigO_psiSigma_iff_of_map_eq_map
     exact h ht
 
 private theorem centered_descendant_map_eq_origin {d : ℕ} {n m : ℤ}
-    {P : CoeffLaw d} [IsProbabilityMeasure P]
-    (hn : 0 ≤ n) (hnm : n ≤ m) (hPstat : StationaryLaw P)
+    {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
+    (hn : 0 ≤ n) (hnm : n ≤ m) (hPstat : RestrictionStationaryLaw P)
     (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX0_meas : Measurable (X (cubeSet (originCube d n))))
-    (hX_cov : IsTranslationCovariantR X)
+    (hX_cov : IsRestrictionTranslationCovariant X)
     (R : TriadicCube d) (hR : R ∈ descendantsAtScale (originCube d m) n) :
     let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
     Measure.map (fun a => X (cubeSet R) a - μ0) P =
       Measure.map (fun a => X (cubeSet (originCube d n)) a - μ0) P := by
   intro μ0
   let Y : Set (Vec d) → RegCoeffField d → ℝ := fun U a => X U a - μ0
-  have hY_cov : IsTranslationCovariantR Y := by
+  have hY_cov : IsRestrictionTranslationCovariant Y := by
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_meas : Measurable (Y (cubeSet (originCube d n))) := by
@@ -119,7 +119,7 @@ private theorem centered_descendant_map_eq_origin {d : ℕ} {n m : ℤ}
               (cubeSet (originCube d n)))) P := by
           rw [hshift]
     _ = Measure.map (Y (cubeSet (originCube d n))) P := by
-          exact map_eq_map_translateReg_of_isTranslationCovariantR
+          exact map_eq_map_translateReg_of_isRestrictionTranslationCovariant
             (P := P) hPstat (U := cubeSet (originCube d n)) hY0_meas hY_cov
             (scaleTranslationShift n R)
     _ = Measure.map (fun a => X (cubeSet (originCube d n)) a - μ0) P := by
@@ -128,16 +128,16 @@ private theorem centered_descendant_map_eq_origin {d : ℕ} {n m : ℤ}
 /-- Stationarity identifies the expectation of the uncentered descendant
 partition average with the expectation on the origin cube at the descendant
 scale. -/
-theorem integral_descendantAverage_eq_integral_originCube_of_stationary
-    {d : ℕ} {n m : ℤ} {P : CoeffLaw d} [IsProbabilityMeasure P]
+theorem integral_restrictionDescendantAverage_eq_integral_originCube_of_stationary
+    {d : ℕ} {n m : ℤ} {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     (hn : 0 ≤ n) (hnm : n ≤ m)
-    (hPstat : StationaryLaw P)
+    (hPstat : RestrictionStationaryLaw P)
     (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX0_meas : Measurable (X (cubeSet (originCube d n))))
     (hX_desc_int :
       ∀ R ∈ descendantsAtScale (originCube d m) n, Integrable (X (cubeSet R)) P)
-    (hX_cov : IsTranslationCovariantR X) :
-    ∫ a, descendantAverage n m X a ∂P =
+    (hX_cov : IsRestrictionTranslationCovariant X) :
+    ∫ a, restrictionDescendantAverage n m X a ∂P =
       ∫ a, X (cubeSet (originCube d n)) a ∂P := by
   let s := descendantsAtScale (originCube d m) n
   let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
@@ -158,15 +158,15 @@ theorem integral_descendantAverage_eq_integral_originCube_of_stationary
                   (cubeSet (originCube d n))) a ∂P := by
               rw [hshift]
       _ = ∫ a, X (cubeSet (originCube d n)) a ∂P := by
-            exact integral_eq_of_isTranslationCovariantR_of_stationary
+            exact integral_eq_of_isRestrictionTranslationCovariant_of_stationary
               (P := P) hPstat (U := cubeSet (originCube d n)) hX0_meas hX_cov
               (scaleTranslationShift n R)
       _ = μ0 := by
             rfl
   calc
-    ∫ a, descendantAverage n m X a ∂P
+    ∫ a, restrictionDescendantAverage n m X a ∂P
         = ∫ a, ((s.card : ℝ)⁻¹ * ∑ R ∈ s, X (cubeSet R) a) ∂P := by
-            simp [descendantAverage, s]
+            simp [restrictionDescendantAverage, s]
     _ = (s.card : ℝ)⁻¹ * ∫ a, ∑ R ∈ s, X (cubeSet R) a ∂P := by
             rw [integral_const_mul]
     _ = (s.card : ℝ)⁻¹ * ∑ R ∈ s, ∫ a, X (cubeSet R) a ∂P := by
@@ -185,16 +185,16 @@ theorem integral_descendantAverage_eq_integral_originCube_of_stationary
           rfl
 
 /-- The centered descendant partition average has mean zero under stationarity. -/
-theorem integral_centeredDescendantAverage_eq_zero_of_stationary
-    {d : ℕ} {n m : ℤ} {P : CoeffLaw d} [IsProbabilityMeasure P]
+theorem integral_restrictionCenteredDescendantAverage_eq_zero_of_stationary
+    {d : ℕ} {n m : ℤ} {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     (hn : 0 ≤ n) (hnm : n ≤ m)
-    (hPstat : StationaryLaw P)
+    (hPstat : RestrictionStationaryLaw P)
     (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX0_meas : Measurable (X (cubeSet (originCube d n))))
     (hX_desc_int :
       ∀ R ∈ descendantsAtScale (originCube d m) n, Integrable (X (cubeSet R)) P)
-    (hX_cov : IsTranslationCovariantR X) :
-    ∫ a, centeredDescendantAverage P n m X a ∂P = 0 := by
+    (hX_cov : IsRestrictionTranslationCovariant X) :
+    ∫ a, restrictionCenteredDescendantAverage P n m X a ∂P = 0 := by
   let s := descendantsAtScale (originCube d m) n
   let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
   have hs_nonempty : s.Nonempty := by
@@ -202,26 +202,26 @@ theorem integral_centeredDescendantAverage_eq_zero_of_stationary
   have hs_card_ne_zero : ((s.card : ℝ)) ≠ 0 := by
     exact_mod_cast hs_nonempty.card_ne_zero
   have havg :=
-    integral_descendantAverage_eq_integral_originCube_of_stationary
+    integral_restrictionDescendantAverage_eq_integral_originCube_of_stationary
       (P := P) hn hnm hPstat X hX0_meas hX_desc_int hX_cov
   have hsum_int :
       Integrable (fun a => ∑ R ∈ s, X (cubeSet R) a) P := by
     refine integrable_finset_sum _ ?_
     intro R hR
     exact hX_desc_int R (by simpa [s] using hR)
-  have hdesc_int : Integrable (descendantAverage n m X) P := by
+  have hdesc_int : Integrable (restrictionDescendantAverage n m X) P := by
     have hdesc_eq :
-        descendantAverage n m X =
+        restrictionDescendantAverage n m X =
           fun a => ((s.card : ℝ)⁻¹ * ∑ R ∈ s, X (cubeSet R) a) := by
       funext a
-      simp [descendantAverage, s]
+      simp [restrictionDescendantAverage, s]
     rw [hdesc_eq]
     exact hsum_int.const_mul ((s.card : ℝ)⁻¹)
   have hcenter_eq :
-      centeredDescendantAverage P n m X =
-        fun a => descendantAverage n m X a - μ0 := by
+      restrictionCenteredDescendantAverage P n m X =
+        fun a => restrictionDescendantAverage n m X a - μ0 := by
     funext a
-    rw [centeredDescendantAverage, descendantAverage]
+    rw [restrictionCenteredDescendantAverage, restrictionDescendantAverage]
     change
       ((s.card : ℝ)⁻¹ * ∑ R ∈ s, (X (cubeSet R) a - μ0)) =
         ((s.card : ℝ)⁻¹ * ∑ R ∈ s, X (cubeSet R) a) - μ0
@@ -229,10 +229,10 @@ theorem integral_centeredDescendantAverage_eq_zero_of_stationary
     simp [nsmul_eq_mul, μ0]
     field_simp [hs_card_ne_zero]
   calc
-    ∫ a, centeredDescendantAverage P n m X a ∂P
-        = ∫ a, descendantAverage n m X a - μ0 ∂P := by
+    ∫ a, restrictionCenteredDescendantAverage P n m X a ∂P
+        = ∫ a, restrictionDescendantAverage n m X a - μ0 ∂P := by
             rw [hcenter_eq]
-    _ = ∫ a, descendantAverage n m X a ∂P - ∫ _a, μ0 ∂P := by
+    _ = ∫ a, restrictionDescendantAverage n m X a ∂P - ∫ _a, μ0 ∂P := by
           exact integral_sub hdesc_int (integrable_const μ0)
     _ = μ0 - μ0 := by
           rw [havg]
@@ -240,31 +240,31 @@ theorem integral_centeredDescendantAverage_eq_zero_of_stationary
     _ = 0 := by
           ring
 
-/-- Centered `Gamma_sigma` fluctuation bound for public centered descendant
-averages of a translation-covariant cube observable. -/
-theorem isBigO_gammaSigma_centeredDescendantAverage_of_unitRangeDependentLaw
-    {d : ℕ} {n m : ℤ} {P : CoeffLaw d} [IsProbabilityMeasure P]
+/-- Centered `Gamma_sigma` fluctuation bound for restriction-centered
+descendant averages of a translation-covariant cube observable. -/
+theorem isBigO_gammaSigma_restrictionCenteredDescendantAverage_of_restrictionUnitRangeDependentLaw
+    {d : ℕ} {n m : ℤ} {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {σ K : ℝ}
     (hn : 0 ≤ n) (hnm : n ≤ m)
-    (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
+    (hPstat : RestrictionStationaryLaw P) (hPdep : RestrictionUnitRangeDependentLaw P)
     (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X (cubeSet R)))
-    (hX_cov : IsTranslationCovariantR X)
+        IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X (cubeSet R)))
+    (hX_cov : IsRestrictionTranslationCovariant X)
     (hX0_meas : Measurable (X (cubeSet (originCube d n))))
     (hX_desc_meas :
       ∀ R ∈ descendantsAtScale (originCube d m) n, Measurable (X (cubeSet R)))
     (hσ₀ : 0 < σ) (hσ₂ : σ ≤ 2) (hK : 0 < K)
-    (hX0 : IsBigO P (gammaSigma σ) (centeredOriginObservable P n X) K) :
-    IsBigO P (gammaSigma σ) (centeredDescendantAverage P n m X)
+    (hX0 : IsBigO P (gammaSigma σ) (restrictionCenteredOriginObservable P n X) K) :
+    IsBigO P (gammaSigma σ) (restrictionCenteredDescendantAverage P n m X)
       (gammaSigmaDescendantsAtScaleConst d n σ *
         partitionCardinalityScale (d := d) n m * K) := by
   let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
   let Z : TriadicCube d → RegCoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
   have hZ_local :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Z R) := by
+        IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Z R) := by
     intro R hR
     simpa [Z] using (hX_local R hR).sub measurable_const
   have hZ_meas :
@@ -284,7 +284,7 @@ theorem isBigO_gammaSigma_centeredDescendantAverage_of_unitRangeDependentLaw
       hX0_meas.sub measurable_const
     have horigin :
         IsBigO P (gammaSigma σ) (fun a => X (cubeSet (originCube d n)) a - μ0) K := by
-      simpa [centeredOriginObservable, μ0] using hX0
+      simpa [restrictionCenteredOriginObservable, μ0] using hX0
     have htail :=
       (isBigO_gammaSigma_iff_of_map_eq_map
         (P := P) (σ := σ) (A := K) hZR_meas hZ0_meas (by simpa [Z] using hmap)).2
@@ -297,7 +297,7 @@ theorem isBigO_gammaSigma_centeredDescendantAverage_of_unitRangeDependentLaw
       hasGammaMomentGrowthWith_of_isBigO_gammaSigma
         (μ := P) (X := Z (originCube d n)) (K := K) (σ := σ)
         hσ₀ hK hZ0_meas.aemeasurable (by
-          simpa [Z, centeredOriginObservable, μ0] using hX0)
+          simpa [Z, restrictionCenteredOriginObservable, μ0] using hX0)
     have hZ0_abs_int : Integrable (fun a => |Z (originCube d n) a|) P := by
       simpa using
         (IndependentSums.gammaMomentGrowth_natCast_bound
@@ -329,7 +329,7 @@ theorem isBigO_gammaSigma_centeredDescendantAverage_of_unitRangeDependentLaw
     have hshift :=
       cubeSet_eq_translateSet_originCube_of_mem_descendantsAtScale_originCube
         (d := d) hn hnm hR
-    have hZ_cov : IsTranslationCovariantR (fun U a => X U a - μ0) := by
+    have hZ_cov : IsRestrictionTranslationCovariant (fun U a => X U a - μ0) := by
       intro U z a
       simpa using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
     have hZ0_meas' : Measurable ((fun U a => X U a - μ0) (cubeSet (originCube d n))) := by
@@ -350,37 +350,37 @@ theorem isBigO_gammaSigma_centeredDescendantAverage_of_unitRangeDependentLaw
                         (cubeSet (originCube d n))) a ∂P
               rw [hshift]
         _ = ∫ a, (fun U a => X U a - μ0) (cubeSet (originCube d n)) a ∂P := by
-              exact integral_eq_of_isTranslationCovariantR_of_stationary
+              exact integral_eq_of_isRestrictionTranslationCovariant_of_stationary
                 (P := P) hPstat (U := cubeSet (originCube d n)) hZ0_meas' hZ_cov
                 (scaleTranslationShift n R)
         _ = ∫ a, Z (originCube d n) a ∂P := by
               rfl
     exact hint.trans hZ0_mean
   have havg :=
-    isBigO_gammaSigma_descendantAverage_of_unitRangeDependentLaw
+    isBigO_gammaSigma_restrictionDescendantAverage_of_restrictionUnitRangeDependentLaw
       (Q := originCube d m) (k := n) (P := P)
       hnm hPdep hσ₀ hσ₂ hK Z hZ_local hZ_meas hZ_tail hZ_mean
   have havg_fun_eq :
       (fun a => ((descendantsAtScale (originCube d m) n).card : ℝ)⁻¹ *
         ∑ R ∈ descendantsAtScale (originCube d m) n, Z R a) =
-        centeredDescendantAverage P n m X := by
+        restrictionCenteredDescendantAverage P n m X := by
     funext a
-    simp [centeredDescendantAverage, Z, μ0]
+    simp [restrictionCenteredDescendantAverage, Z, μ0]
   simpa [havg_fun_eq, partitionCardinalityScale,
     div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using havg
 
-/-- Centered `Psi_sigma` fluctuation bound for public centered descendant
-averages of a translation-covariant cube observable. -/
-theorem isBigO_psiSigma_centeredDescendantAverage_of_unitRangeDependentLaw
-    {d : ℕ} {n m : ℤ} {P : CoeffLaw d} [IsProbabilityMeasure P]
+/-- Centered `Psi_sigma` fluctuation bound for restriction-centered
+descendant averages of a translation-covariant cube observable. -/
+theorem isBigO_psiSigma_restrictionCenteredDescendantAverage_of_restrictionUnitRangeDependentLaw
+    {d : ℕ} {n m : ℤ} {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {σ K : ℝ}
     (hn : 0 ≤ n) (hnm : n ≤ m)
-    (hPstat : StationaryLaw P) (hPdep : UnitRangeDependentLaw P)
+    (hPstat : RestrictionStationaryLaw P) (hPdep : RestrictionUnitRangeDependentLaw P)
     (X : Set (Vec d) → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X (cubeSet R)))
-    (hX_cov : IsTranslationCovariantR X)
+        IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X (cubeSet R)))
+    (hX_cov : IsRestrictionTranslationCovariant X)
     (hX0_meas : Measurable (X (cubeSet (originCube d n))))
     (hX0_int : Integrable (X (cubeSet (originCube d n))) P)
     (hX_desc_meas :
@@ -388,15 +388,15 @@ theorem isBigO_psiSigma_centeredDescendantAverage_of_unitRangeDependentLaw
     (hX_desc_int :
       ∀ R ∈ descendantsAtScale (originCube d m) n, Integrable (X (cubeSet R)) P)
     (hσ : 1 ≤ σ) (hK : 0 < K)
-    (hX0 : IsBigO P (psiSigma σ) (centeredOriginObservable P n X) K) :
-    IsBigO P (psiSigma σ) (centeredDescendantAverage P n m X)
+    (hX0 : IsBigO P (psiSigma σ) (restrictionCenteredOriginObservable P n X) K) :
+    IsBigO P (psiSigma σ) (restrictionCenteredDescendantAverage P n m X)
       (psiSigmaDescendantsAtScaleConst d n σ *
         partitionCardinalityScale (d := d) n m * K) := by
   let μ0 : ℝ := ∫ a, X (cubeSet (originCube d n)) a ∂P
   let Z : TriadicCube d → RegCoeffField d → ℝ := fun R a => X (cubeSet R) a - μ0
   have hZ_local :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
-        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Z R) := by
+        IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Z R) := by
     intro R hR
     simpa [Z] using (hX_local R hR).sub measurable_const
   have hZ_meas :
@@ -420,7 +420,7 @@ theorem isBigO_psiSigma_centeredDescendantAverage_of_unitRangeDependentLaw
       hX0_meas.sub measurable_const
     have horigin :
         IsBigO P (psiSigma σ) (fun a => X (cubeSet (originCube d n)) a - μ0) K := by
-      simpa [centeredOriginObservable, μ0] using hX0
+      simpa [restrictionCenteredOriginObservable, μ0] using hX0
     have htail :=
       (isBigO_psiSigma_iff_of_map_eq_map
         (P := P) (σ := σ) (A := K) hZR_meas hZ0_meas (by simpa [Z] using hmap)).2
@@ -441,7 +441,7 @@ theorem isBigO_psiSigma_centeredDescendantAverage_of_unitRangeDependentLaw
     have hshift :=
       cubeSet_eq_translateSet_originCube_of_mem_descendantsAtScale_originCube
         (d := d) hn hnm hR
-    have hZ_cov : IsTranslationCovariantR (fun U a => X U a - μ0) := by
+    have hZ_cov : IsRestrictionTranslationCovariant (fun U a => X U a - μ0) := by
       intro U z a
       simpa using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
     have hZ0_meas' : Measurable ((fun U a => X U a - μ0) (cubeSet (originCube d n))) := by
@@ -462,22 +462,22 @@ theorem isBigO_psiSigma_centeredDescendantAverage_of_unitRangeDependentLaw
                         (cubeSet (originCube d n))) a ∂P
               rw [hshift]
         _ = ∫ a, (fun U a => X U a - μ0) (cubeSet (originCube d n)) a ∂P := by
-              exact integral_eq_of_isTranslationCovariantR_of_stationary
+              exact integral_eq_of_isRestrictionTranslationCovariant_of_stationary
                 (P := P) hPstat (U := cubeSet (originCube d n)) hZ0_meas' hZ_cov
                 (scaleTranslationShift n R)
         _ = ∫ a, Z (originCube d n) a ∂P := by
               rfl
     exact hint.trans hZ0_mean
   have havg :=
-    isBigO_psiSigma_descendantAverage_of_unitRangeDependentLaw
+    isBigO_psiSigma_restrictionDescendantAverage_of_restrictionUnitRangeDependentLaw
       (Q := originCube d m) (k := n) (P := P)
       hnm hPdep hσ hK Z hZ_local hZ_meas hZ_int hZ_tail hZ_mean
   have havg_fun_eq :
       (fun a => ((descendantsAtScale (originCube d m) n).card : ℝ)⁻¹ *
         ∑ R ∈ descendantsAtScale (originCube d m) n, Z R a) =
-        centeredDescendantAverage P n m X := by
+        restrictionCenteredDescendantAverage P n m X := by
     funext a
-    simp [centeredDescendantAverage, Z, μ0]
+    simp [restrictionCenteredDescendantAverage, Z, μ0]
   simpa [havg_fun_eq, partitionCardinalityScale,
     div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using havg
 

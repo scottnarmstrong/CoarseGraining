@@ -6,7 +6,7 @@ import Homogenization.HighContrast.EntryScale.Inputs
 /-!
 # Variance-to-high-moment interpolation (`l.moment.variance.upgrade`)
 
-Source: the high-moment paper (Armstrong–Kuusi–Loher, in preparation).
+Source: the high-moment paper (Armstrong–Kuusi–Loher, to appear).
 
 For a nonnegative observable bounded pathwise by `C_0 (2+T)^b` whose second
 moment decays like `C_2 3^{-2 delta (j - N_2)}` from the entry scale

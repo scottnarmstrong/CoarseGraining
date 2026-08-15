@@ -24,9 +24,9 @@ geometric weight `3^{-s'(m-n)} <= 3^{-s'(m-N0)}`, so at `N0 := N` the `Nstar`
 buffer kills the scale-zero moment factors.
 -/
 noncomputable def section52LowTailBelowStartCoeff
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (N0 m : ℕ) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -70,9 +70,9 @@ budget (whose bracket carries the same stochastic/polynomial/drift roots as
 the source channel).
 -/
 noncomputable def lowTailSharpBudgetAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) (N k m : ℕ) (hNm : N ≤ m)
     (e : Homogenization.Vec d) (stochRoot polyRoot : ℝ) : ℝ :=
@@ -91,9 +91,9 @@ bracket; only the `n < N` crude tail keeps scale-zero coefficients, with
 buffer-killable weights.
 -/
 theorem integral_section52LowTail_childResponseAverage_special_le_lowTailSharpBudgetAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) (hcparams : hP4.params = hc.params)
     (hm : HighCenteredMomentParameters d hc)
@@ -138,7 +138,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_lowTailSharpBu
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
-        (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
     let response := fun a : Homogenization.RegCoeffField d =>
       (5 * β⁻¹) ^ 2 * childAvg a
     let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
@@ -190,7 +190,7 @@ theorem integral_section52LowTail_childResponseAverage_special_le_lowTailSharpBu
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
   let sourceMax : Homogenization.RegCoeffField d → ℝ :=
@@ -294,9 +294,9 @@ theorem integral_section52LowTail_childResponseAverage_special_le_lowTailSharpBu
     intro a
     dsimp [childAvg]
     exact Homogenization.descendantsAverage_nonneg Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       (fun R _hR =>
-        Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg R p_e q_e a)
+        Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg R p_e q_e a)
   have hsrc_nonneg : ∀ a, 0 ≤ sourceMax a :=
     terminalSpectralPositivePartSourceMax_nonneg hP hStruct hc N m Q
       (fun x : Homogenization.RegCoeffField d => x)
@@ -593,9 +593,9 @@ theorem exists_bufferExponent_section52SmallTailTerminalResponseBudget_le_eta_mu
       Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticityParams d)
     {eta : ℝ} (heta : 0 < eta) :
     ∃ B : ℝ, 1 ≤ B ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P),
         hP4.params = params →
         ∀ {N k m : ℕ},

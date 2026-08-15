@@ -12,5 +12,5 @@ import Homogenization.HighContrast.EntryScale.VarianceUpgrade
 # High-moment entry-scale assembly
 
 Aggregator for the entry-scale (homogenization-scale) development following
-the high-moment paper (Armstrong–Kuusi–Loher, in preparation).
+the high-moment paper (Armstrong–Kuusi–Loher, to appear).
 -/

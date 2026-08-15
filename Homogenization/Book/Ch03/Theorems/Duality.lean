@@ -122,7 +122,7 @@ private theorem fluxDefectDualityTheory_of_scalarSolutionComparisonDualityEstima
 
 private theorem fluxDefectDualityTheory_of_dirichletBesov_of_coordinateBridgeSharpLoss_of_localizedPairing
     {d : ℕ} [NeZero d] {Cdir Cbridge Cpairing : ℝ}
-    (hdir : ConstantCoefficientDirichletBesovFunctionSpacesUniform d Cdir)
+    (hdir : DiscreteConstantCoefficientDirichletBesovFunctionSpacesUniform d Cdir)
     (hbridge : UnitFullDualCoordinateOverlappingBridgeSharpLoss d Cbridge)
     (hpair : LocalizedFluxDefectPositivePairingEstimate d Cpairing) :
     FluxDefectDualityTheory d :=
@@ -138,7 +138,7 @@ private theorem fluxDefectDualityTheory_of_coordinateBridge
     {d : ℕ} [NeZero d] {Cbridge : ℝ}
     (hbridge : UnitFullDualCoordinateOverlappingBridgeSharpLoss d Cbridge) :
     FluxDefectDualityTheory d := by
-  rcases Homogenization.exists_constantCoefficientDirichletBesovFunctionSpacesUniform d with
+  rcases Homogenization.exists_discreteConstantCoefficientDirichletBesovFunctionSpacesUniform d with
     ⟨Cdir, hdir⟩
   exact
     fluxDefectDualityTheory_of_dirichletBesov_of_coordinateBridgeSharpLoss_of_localizedPairing

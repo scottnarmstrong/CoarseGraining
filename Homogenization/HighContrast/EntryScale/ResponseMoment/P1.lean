@@ -12,9 +12,9 @@ open scoped Matrix.Norms.Elementwise
 /-!
 # Response-moment bridges for the entry-scale window
 
-Local LeanIntoHomogenization-facing response estimates needed for the
+Local library-facing response estimates needed for the
 `e.J.moment.bound` half of `l.S.and.J` in the high-moment paper
-(Armstrong–Kuusi–Loher, in preparation).
+(Armstrong–Kuusi–Loher, to appear).
 -/
 
 namespace Homogenization
@@ -121,7 +121,7 @@ Moment-root comparison used to turn an a.e. nonnegative bound at exponent
 `zeta` into a natural-exponent annealed moment root bound.
 -/
 theorem responseMoment_realRpowMomentRoot_le_natAnnealedMomentRoot_of_ae_le
-    {d : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {ζ : ℝ} {ξ : ℕ} {X Y : RegCoeffField d → ℝ}
     (hζ_pos : 0 < ζ) (hζ_le_ξ : ζ ≤ (ξ : ℝ)) (hξ_one : 1 ≤ ξ)
     (hX_meas : AEMeasurable X P)
@@ -204,9 +204,9 @@ theorem responseMoment_realRpowMomentRoot_le_natAnnealedMomentRoot_of_ae_le
 Source label `p.HC.CR`: the Section 5.3 response moment transports through
 scale normalization at the left endpoint of the window.
 -/
-theorem coarseFluctuationResponseMomentAtScale_scaleNormalizedLaw_of_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem coarseFluctuationResponseMomentAtScale_restrictionScaleNormalizedLaw_of_le
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (e : Vec d) :
     coarseFluctuationResponseMomentAtScale
@@ -230,8 +230,8 @@ theorem coarseFluctuationResponseMomentAtScale_scaleNormalizedLaw_of_le
           (hP.scaleNormalized k) (hStruct.scaleNormalized k) (M : ℤ) =
         sigmaHatAtScale hP hStruct (m : ℤ) := by
     simp [sigmaHatAtScale,
-      hP.barSigmaAtScale_scaleNormalizedLaw hStruct k M,
-      hP.barSigmaStarAtScale_scaleNormalizedLaw hStruct k M,
+      hP.barSigmaAtScale_restrictionScaleNormalizedLaw hStruct k M,
+      hP.barSigmaStarAtScale_restrictionScaleNormalizedLaw hStruct k M,
       hsum]
   have hp : pN = p := by
     change
@@ -253,44 +253,44 @@ theorem coarseFluctuationResponseMomentAtScale_scaleNormalizedLaw_of_le
     Real.rpow
         (∫ a,
           Real.rpow
-            (Ch04.responseJObservableCubeSet (originCube d (0 : ℤ)) pN qN a) ζ
-          ∂Ch04.scaleNormalizedLaw k P)
+            (Ch04.restrictionResponseJObservableCubeSet (originCube d (0 : ℤ)) pN qN a) ζ
+          ∂Ch04.restrictionScaleNormalizedLaw k P)
         ζ⁻¹ =
       Real.rpow
         (∫ a,
           Real.rpow
-            (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p q a) ζ
+            (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p q a) ζ
           ∂P)
         ζ⁻¹
   rw [hp, hq]
   apply congrArg (fun x : ℝ => Real.rpow x ζ⁻¹)
   let X : RegCoeffField d → ℝ := fun a =>
-    Real.rpow (Ch04.responseJObservableCubeSet (originCube d (0 : ℤ)) p q a) ζ
-  have hX_meas : AEStronglyMeasurable X (Ch04.scaleNormalizedLaw k P) := by
+    Real.rpow (Ch04.restrictionResponseJObservableCubeSet (originCube d (0 : ℤ)) p q a) ζ
+  have hX_meas : AEStronglyMeasurable X (Ch04.restrictionScaleNormalizedLaw k P) := by
     dsimp [X]
     exact ((Real.continuous_rpow_const hζ_nonneg).measurable.comp_aemeasurable
-      ((hP.scaleNormalized k).aemeasurable_responseJObservableCubeSet
+      ((hP.scaleNormalized k).aemeasurable_restrictionResponseJObservableCubeSet
         (originCube d (0 : ℤ)) p q)).aestronglyMeasurable
-  change ∫ a, X a ∂Ch04.scaleNormalizedLaw k P =
+  change ∫ a, X a ∂Ch04.restrictionScaleNormalizedLaw k P =
     ∫ a, Real.rpow
-      (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p q a) ζ ∂P
-  rw [Ch04.integral_scaleNormalizedLaw k X hX_meas]
+      (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p q a) ζ ∂P
+  rw [Ch04.integral_restrictionScaleNormalizedLaw k X hX_meas]
   apply integral_congr_ae
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   dsimp [X]
   have hresp :=
-    Ch04.responseJObservableCubeSet_dilateCoeffField_neg_nat_of_aelocallyUniformlyElliptic
+    Ch04.restrictionResponseJObservableCubeSet_dilateCoeffField_neg_nat_of_aelocallyUniformlyElliptic
       ha k (originCube d (0 : ℤ)) p q
   have hcube :
       Ch02.dilateCube (k : ℤ) (originCube d (0 : ℤ)) =
         originCube d (k : ℤ) := by
     simpa using Ch04.dilateCube_originCube_nat (d := d) k 0
   have hinside :
-      Ch04.responseJObservableCubeSet (originCube d (0 : ℤ)) p q
+      Ch04.restrictionResponseJObservableCubeSet (originCube d (0 : ℤ)) p q
           (dilateReg (-(k : ℤ)) a) =
-        Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p q a := by
+        Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p q a := by
     rw [hresp, hcube]
-  simpa [Ch04.responseJObservableCubeSet] using
+  simpa [Ch04.restrictionResponseJObservableCubeSet] using
     congrArg (fun x : ℝ => Real.rpow x ζ) hinside
 end OneStepContraction
 end Section54
@@ -382,9 +382,9 @@ the Section 5.3 response moment kept in the manuscript terminal slot.
 -/
 theorem expectedResponseJCubeSet_le_coarseFluctuationResponseMomentAtScale
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d) :
     let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
@@ -397,7 +397,7 @@ theorem expectedResponseJCubeSet_le_coarseFluctuationResponseMomentAtScale
   dsimp only
   let ζ := section53CoarseFluctuationZeta hP4
   let X : Homogenization.RegCoeffField d → ℝ := fun a =>
-    Homogenization.Book.Ch04.responseJObservableCubeSet
+    Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet
       (Homogenization.originCube d (k : ℤ))
       (Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e)
       (Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e) a
@@ -405,7 +405,7 @@ theorem expectedResponseJCubeSet_le_coarseFluctuationResponseMomentAtScale
     (one_lt_section53CoarseFluctuationZeta hP4).le
   have hX_meas : AEMeasurable X P := by
     simpa [X] using
-      hP.aemeasurable_responseJObservableCubeSet
+      hP.aemeasurable_restrictionResponseJObservableCubeSet
         (Homogenization.originCube d (k : ℤ))
         (Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e)
         (Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e)
@@ -413,14 +413,14 @@ theorem expectedResponseJCubeSet_le_coarseFluctuationResponseMomentAtScale
     Filter.Eventually.of_forall fun a => by
       dsimp [X]
       exact
-        Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg
+        Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg
           (Homogenization.originCube d (k : ℤ))
           (Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e)
           (Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e) a
   have hXpow_int :
       MeasureTheory.Integrable (fun a => Real.rpow (X a) ζ) P := by
     simpa [X, ζ] using
-      Homogenization.Book.Ch05.Section53.JUpperBoundCoarseFluctuations.integrable_rpow_responseJObservableCubeSet_originCube_from_P4
+      Homogenization.Book.Ch05.Section53.JUpperBoundCoarseFluctuations.integrable_rpow_restrictionResponseJObservableCubeSet_originCube_from_P4
         hP hStruct hP4 k
         (Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e)
         (Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e)
@@ -438,10 +438,10 @@ low-tail baseline conversion
 -/
 theorem expectedResponseJCubeSet_terminal_le_coarseFluctuationResponseMomentAtScale
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (e : Homogenization.Vec d) :
     let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e
@@ -456,12 +456,12 @@ theorem expectedResponseJCubeSet_terminal_le_coarseFluctuationResponseMomentAtSc
   let j : ℕ := Int.toNat ((m : ℤ) - (k : ℤ))
   let Jm : Homogenization.RegCoeffField d → ℝ :=
     fun a =>
-      Homogenization.Book.Ch04.responseJObservableCubeSet Q p_e q_e a
+      Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet Q p_e q_e a
   let childAvg : Homogenization.RegCoeffField d → ℝ :=
     fun a =>
       Homogenization.descendantsAverage Q j
         (fun R =>
-          Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+          Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   have hk_nonneg : (0 : ℤ) ≤ (k : ℤ) := by
     exact_mod_cast Nat.zero_le k
   have hkm_int : (k : ℤ) ≤ (m : ℤ) := by
@@ -477,7 +477,7 @@ theorem expectedResponseJCubeSet_terminal_le_coarseFluctuationResponseMomentAtSc
       ∀ R, R ∈ Homogenization.descendantsAtScale
           (Homogenization.originCube d (m : ℤ)) (k : ℤ) →
         MeasureTheory.Integrable
-          (Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e) P := by
+          (Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e) P := by
     intro R hR
     have hBlockR :
         MeasureTheory.Integrable
@@ -485,12 +485,12 @@ theorem expectedResponseJCubeSet_terminal_le_coarseFluctuationResponseMomentAtSc
       hP.integrable_coarseFullBlockMatrixAtCube_of_mem_descendantsAtScale_originCube
         hstat hk_nonneg hkm_int hR hOriginBlock
     exact
-      hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+      hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
         R p_e q_e hBlockR
   have hChildJ_depth :
       ∀ R, R ∈ Homogenization.descendantsAtDepth Q j →
         MeasureTheory.Integrable
-          (Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e) P := by
+          (Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e) P := by
     intro R hR
     exact hChildJ R (by
       simpa [Q, j,
@@ -504,18 +504,18 @@ theorem expectedResponseJCubeSet_terminal_le_coarseFluctuationResponseMomentAtSc
         Homogenization.Book.Ch05.Section52.originBlockIntegrableAtScale_from_P4
           hP hStruct hP4 m
     simpa [Jm] using
-      hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+      hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
         Q p_e q_e hBlock
   have hChildInt : MeasureTheory.Integrable childAvg P := by
     simpa [childAvg, Q, j] using
       Homogenization.Book.Ch04.integrable_descendantsAverage
         (Q := Q) (j := j)
         (F := fun R a =>
-          Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+          Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
         hChildJ_depth
   have hParent_le_child : Jm ≤ᵐ[P] childAvg := by
     simpa [Jm, childAvg, Q, j] using
-      hP.responseJObservableCubeSet_le_descendantsAverage_ae hkm_int p_e q_e
+      hP.restrictionResponseJObservableCubeSet_le_descendantsAverage_ae hkm_int p_e q_e
   have hparent_integral_le :
       ∫ a, Jm a ∂P ≤ ∫ a, childAvg a ∂P :=
     MeasureTheory.integral_mono_ae hJmInt hChildInt hParent_le_child
@@ -524,7 +524,7 @@ theorem expectedResponseJCubeSet_terminal_le_coarseFluctuationResponseMomentAtSc
         Homogenization.Book.Ch04.expectedResponseJCubeSet P
           (Homogenization.originCube d (k : ℤ)) p_e q_e := by
     simpa [childAvg, Q, j] using
-      hP.integral_descendantsAverage_responseJObservableCubeSet_eq_originCube_of_stationary
+      hP.integral_descendantsAverage_restrictionResponseJObservableCubeSet_eq_originCube_of_stationary
         hstat hk_nonneg hkm_int p_e q_e hChildJ
   have hlower :
       Homogenization.Book.Ch04.expectedResponseJCubeSet P
@@ -552,12 +552,12 @@ terminal response observable over the `k`-scale children is integrable, and its
 expectation is bounded by the lower-edge response moment.  This is the
 good-event response branch used in the terminal positive-excess proof.
 -/
-theorem integrable_terminalDescendantsAverage_responseJObservableCubeSet_and_integral_le
+theorem integrable_terminalDescendantsAverage_restrictionResponseJObservableCubeSet_and_integral_le
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (e : Homogenization.Vec d) :
     let Q : Homogenization.TriadicCube d := Homogenization.originCube d (m : ℤ)
@@ -565,7 +565,7 @@ theorem integrable_terminalDescendantsAverage_responseJObservableCubeSet_and_int
     let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
     let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
-        (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
     MeasureTheory.Integrable childAvg P ∧
       ∫ a, childAvg a ∂P ≤
         coarseFluctuationResponseMomentAtScale hP hStruct hP4 k m e := by
@@ -579,7 +579,7 @@ theorem integrable_terminalDescendantsAverage_responseJObservableCubeSet_and_int
     fun a =>
       Homogenization.descendantsAverage Q j
         (fun R =>
-          Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+          Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   have hk_nonneg : (0 : ℤ) ≤ (k : ℤ) := by
     exact_mod_cast Nat.zero_le k
   have hkm_int : (k : ℤ) ≤ (m : ℤ) := by
@@ -595,7 +595,7 @@ theorem integrable_terminalDescendantsAverage_responseJObservableCubeSet_and_int
       ∀ R, R ∈ Homogenization.descendantsAtScale
           (Homogenization.originCube d (m : ℤ)) (k : ℤ) →
         MeasureTheory.Integrable
-          (Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e) P := by
+          (Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e) P := by
     intro R hR
     have hBlockR :
         MeasureTheory.Integrable
@@ -603,12 +603,12 @@ theorem integrable_terminalDescendantsAverage_responseJObservableCubeSet_and_int
       hP.integrable_coarseFullBlockMatrixAtCube_of_mem_descendantsAtScale_originCube
         hstat hk_nonneg hkm_int hR hOriginBlock
     exact
-      hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+      hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
         R p_e q_e hBlockR
   have hChildJ_depth :
       ∀ R, R ∈ Homogenization.descendantsAtDepth Q j →
         MeasureTheory.Integrable
-          (Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e) P := by
+          (Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e) P := by
     intro R hR
     exact hChildJ R (by
       simpa [Q, j,
@@ -619,14 +619,14 @@ theorem integrable_terminalDescendantsAverage_responseJObservableCubeSet_and_int
       Homogenization.Book.Ch04.integrable_descendantsAverage
         (Q := Q) (j := j)
         (F := fun R a =>
-          Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+          Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
         hChildJ_depth
   have hchild_integral_eq :
       ∫ a, childAvg a ∂P =
         Homogenization.Book.Ch04.expectedResponseJCubeSet P
           (Homogenization.originCube d (k : ℤ)) p_e q_e := by
     simpa [childAvg, Q, j] using
-      hP.integral_descendantsAverage_responseJObservableCubeSet_eq_originCube_of_stationary
+      hP.integral_descendantsAverage_restrictionResponseJObservableCubeSet_eq_originCube_of_stationary
         hstat hk_nonneg hkm_int p_e q_e hChildJ
   have hlower :
       Homogenization.Book.Ch04.expectedResponseJCubeSet P
@@ -657,9 +657,9 @@ composed with `adjointCoeffField`.
 -/
 noncomputable def coarseFluctuationResponseMomentStarAtScale
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d) : ℝ :=
   let ζ := section53CoarseFluctuationZeta hP4
@@ -668,7 +668,7 @@ noncomputable def coarseFluctuationResponseMomentStarAtScale
   Real.rpow
     (∫ a,
       Real.rpow
-        (Homogenization.Book.Ch04.responseJObservableCubeSet
+        (Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet
           (Homogenization.originCube d (k : ℤ)) p_e q_e
           (Homogenization.adjointReg a)) ζ ∂P)
     ζ⁻¹
@@ -676,9 +676,9 @@ noncomputable def coarseFluctuationResponseMomentStarAtScale
 /-- Nonnegativity of the adjoint/star response moment term. -/
 theorem coarseFluctuationResponseMomentStarAtScale_nonneg
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d) :
     0 ≤ coarseFluctuationResponseMomentStarAtScale hP hStruct hP4 k m e := by
@@ -689,12 +689,12 @@ theorem coarseFluctuationResponseMomentStarAtScale_nonneg
   have hJpow_nonneg :
       ∀ a : Homogenization.RegCoeffField d,
         0 ≤ Real.rpow
-          (Homogenization.Book.Ch04.responseJObservableCubeSet
+          (Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet
             (Homogenization.originCube d (k : ℤ)) p_e q_e
             (Homogenization.adjointReg a)) ζ := by
     intro a
     exact Real.rpow_nonneg
-        (Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg
+        (Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg
         (Homogenization.originCube d (k : ℤ)) p_e q_e
         (Homogenization.adjointReg a)) _
   exact Real.rpow_nonneg (integral_nonneg hJpow_nonneg) _
@@ -706,9 +706,9 @@ homogenization repo's centered `J = J^*` symmetry.
 -/
 theorem coarseFluctuationResponseMomentStarAtScale_eq_responseMomentAtScale
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d) :
     coarseFluctuationResponseMomentStarAtScale hP hStruct hP4 k m e =
@@ -718,13 +718,13 @@ theorem coarseFluctuationResponseMomentStarAtScale_eq_responseMomentAtScale
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
   let Q : Homogenization.TriadicCube d := Homogenization.originCube d (k : ℤ)
   let f : Homogenization.RegCoeffField d → ℝ := fun a =>
-    Real.rpow (Homogenization.Book.Ch04.responseJObservableCubeSet Q p_e q_e a) ζ
+    Real.rpow (Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet Q p_e q_e a) ζ
   have hζ_nonneg : 0 ≤ ζ := by
     exact (section53CoarseFluctuationZeta_pos hP4).le
   have hf_aemeas : AEMeasurable f P := by
     dsimp [f]
     exact (Real.continuous_rpow_const hζ_nonneg).measurable.comp_aemeasurable
-      (hP.aemeasurable_responseJObservableCubeSet Q p_e q_e)
+      (hP.aemeasurable_restrictionResponseJObservableCubeSet Q p_e q_e)
   have hint :
       ∫ a, f (Homogenization.adjointReg a) ∂P = ∫ a, f a ∂P :=
     hStruct.adjoint_invariant.integral_comp_adjointReg f
@@ -819,9 +819,9 @@ private theorem responseMomentFullBlockQuadratic_toFullBlockMat
 
 private theorem responseMoment_upper_special_quad_le_sqrtTheta_terminalNorm
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Homogenization.Vec d)
     (he : Homogenization.Book.Ch02.vecNorm e = 1)
@@ -942,9 +942,9 @@ private theorem responseMoment_upper_special_quad_le_sqrtTheta_terminalNorm
 
 private theorem responseMoment_lower_special_quad_le_sqrtTheta_terminalNorm
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Homogenization.Vec d)
     (he : Homogenization.Book.Ch02.vecNorm e = 1)
@@ -1074,9 +1074,9 @@ norm appearing in the pointwise response estimate
 -/
 noncomputable def terminalUncenteredCoarseBlockNorm
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) : ℝ :=
   fullBlockOperatorNorm
@@ -1086,9 +1086,9 @@ noncomputable def terminalUncenteredCoarseBlockNorm
 
 private theorem measurable_terminalUncenteredFunctional
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P) (m : ℕ) :
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P) (m : ℕ) :
     Measurable fun Y : Homogenization.FullBlockMat d =>
       fullBlockOperatorNorm
         (scalarFullBlockNormalizerMatrixAtScale hP hStruct m *
@@ -1126,9 +1126,9 @@ terminal-normalized block norm used in the response moment estimate.
 -/
 theorem aemeasurable_terminalUncenteredCoarseBlockNorm
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d) :
     AEMeasurable
       (fun a : Homogenization.RegCoeffField d =>
@@ -1152,14 +1152,14 @@ manuscript's `r_m` normalization.
 -/
 theorem responseJ_special_ae_le_two_sqrtTheta_terminalUncentered
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d)
     (he : Homogenization.Book.Ch02.vecNorm e = 1) :
     (fun a : Homogenization.RegCoeffField d =>
-        Homogenization.Book.Ch04.responseJObservableCubeSet
+        Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet
           (Homogenization.originCube d (k : ℤ))
           (Homogenization.Book.Ch05.specialPAtScale hP hStruct (m : ℤ) e)
           (Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e) a)
@@ -1208,7 +1208,7 @@ theorem responseJ_special_ae_le_two_sqrtTheta_terminalUncentered
     rw [hpq]
     norm_num
   filter_upwards
-    [Homogenization.Book.Ch04.responseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarrier
+    [Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarrier
         hP (Homogenization.originCube d (k : ℤ)) p_e q_e,
      hP.ae_locallyUniformlyEllipticField] with a hJ ha
   let Q : Homogenization.TriadicCube d := Homogenization.originCube d (k : ℤ)
@@ -1221,7 +1221,7 @@ theorem responseJ_special_ae_le_two_sqrtTheta_terminalUncentered
         Homogenization.Book.Ch02.coarseBlockMatrix
           (Homogenization.Book.Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [A, F] using
-      Homogenization.Book.Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Homogenization.Book.Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   have hSymm : Homogenization.IsSymmetricBlockMat A := by
     rw [hEq]
@@ -1243,10 +1243,10 @@ theorem responseJ_special_ae_le_two_sqrtTheta_terminalUncentered
       Homogenization.Book.Ch05.Section54.OneStepContraction.responseMoment_block_cross_abs_le_half_quadratics
           hSymm hPos p_e q_e
   have hJ_le_quads :
-      Homogenization.Book.Ch04.responseJObservableCubeSet Q p_e q_e a ≤
+      Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet Q p_e q_e a ≤
         upperQuad + lowerQuad := by
     calc
-      Homogenization.Book.Ch04.responseJObservableCubeSet Q p_e q_e a =
+      Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet Q p_e q_e a =
           (1 / 2 : ℝ) * lowerQuad - Homogenization.vecDot p_e q_e -
             Homogenization.vecDot q_e (Homogenization.matVecMul A.lowerLeft p_e) +
             (1 / 2 : ℝ) * upperQuad := by
@@ -1284,7 +1284,7 @@ theorem responseJ_special_ae_le_two_sqrtTheta_terminalUncentered
       responseMoment_lower_special_quad_le_sqrtTheta_terminalNorm
         hP hStruct hP4 m e he A
   calc
-    Homogenization.Book.Ch04.responseJObservableCubeSet Q p_e q_e a
+    Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet Q p_e q_e a
         ≤ upperQuad + lowerQuad := hJ_le_quads
     _ ≤ Real.sqrt θ * terminalUncenteredCoarseBlockNorm hP hStruct m Q a +
           Real.sqrt θ * terminalUncenteredCoarseBlockNorm hP hStruct m Q a :=

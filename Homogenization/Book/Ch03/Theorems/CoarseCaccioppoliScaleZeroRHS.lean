@@ -117,13 +117,13 @@ theorem interiorCaccioppoliParentOscillationL2Sq_eq_harmonicL2Sq_pointwise_norma
     simpa [f] using memLp_harmonicFunction_normalizedCubeMeasure Q A w
   have havg :
       integralAverage (openCubeSet Q) (fun y => u.toH1.toFun y) =
-        Ch01.normalizedAverage Q u.toH1.toFun := by
-    simpa [Ch01.normalizedAverage] using
+        Ch01.Legacy.normalizedAverage Q u.toH1.toFun := by
+    simpa [Ch01.Legacy.normalizedAverage] using
       (cubeAverage_eq_integralAverage_openCubeSet Q
         (fun y => u.toH1.toFun y)).symm
   have hf_pointwise :
       ∀ y : Vec d, f y =
-        u.toH1.toFun y - Ch01.normalizedAverage Q u.toH1.toFun := by
+        u.toH1.toFun y - Ch01.Legacy.normalizedAverage Q u.toH1.toFun := by
     intro y
     simp [f, w, A, CubeSolution.toPointwiseAHarmonic, havg]
   have hsq_integral :
@@ -149,7 +149,7 @@ theorem interiorCaccioppoliParentOscillationL2Sq_eq_harmonicL2Sq_pointwise_norma
   calc
     (MeasureTheory.volume (openCubeSet Q)).toReal⁻¹ *
         ∫ y in openCubeSet Q,
-          (u.toH1.toFun y - Ch01.normalizedAverage Q u.toH1.toFun) ^ (2 : ℕ)
+          (u.toH1.toFun y - Ch01.Legacy.normalizedAverage Q u.toH1.toFun) ^ (2 : ℕ)
           ∂MeasureTheory.volume =
         (cubeVolume Q)⁻¹ *
           ∫ y in openCubeSet Q, f y ^ (2 : ℕ) ∂MeasureTheory.volume := by

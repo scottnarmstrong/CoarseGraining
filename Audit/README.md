@@ -17,6 +17,11 @@ Each comparator lives in its own subdirectory:
 | `PolynomialScale/` | `Homogenization.StatementAudit.PolynomialScale.homogenizationScale_polynomial_of_unitRange` |
 | `CheckerboardScale/` | `Homogenization.StatementAudit.CheckerboardScale.randomCheckerboard_homogenizationScale` |
 
+`MeasurabilityLocality/SemanticRegression.lean` is an additional project-level
+regression module, not an eighth comparator.  It checks that the integral-local
+coarse measurable structure and the pointwise regular measurable structure
+remain semantically distinct, including the corresponding locality notions.
+
 The first five comparators check the quenched comparison estimate described
 below.  `PolynomialScale/` checks the unconditional homogenization-scale
 capstone: under the explicit dimension restriction `d > 2` (the hypothesis
@@ -183,7 +188,14 @@ lake build \
   Audit.RandomCheckerboard.Challenge Audit.RandomCheckerboard.Solution \
   Audit.PolynomialScale.Challenge Audit.PolynomialScale.Solution \
   Audit.CheckerboardScale.Challenge Audit.CheckerboardScale.Solution
+
+lake build Audit.MeasurabilityLocality.SemanticRegression
 ```
+
+The seven challenge modules each emit their one documented theorem-body
+`sorry` warning.  Those are the only expected warnings: the solutions,
+semantic regression, and production library must emit no linter or other
+compiler warnings.
 
 Run the seven comparators:
 

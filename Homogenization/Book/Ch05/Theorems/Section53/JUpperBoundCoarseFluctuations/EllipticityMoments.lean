@@ -21,7 +21,7 @@ positive-excess ellipticity factors appearing in the third Section 5.3 lemma.
 -/
 
 theorem holderConjugate_xi_section53CoarseFluctuationZeta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     (hP4.xi : ℝ).HolderConjugate (section53CoarseFluctuationZeta hP4) where
   inv_add_inv_eq_inv := by
@@ -31,7 +31,7 @@ theorem holderConjugate_xi_section53CoarseFluctuationZeta
   right_pos := section53CoarseFluctuationZeta_pos hP4
 
 theorem memLp_of_integrable_nonneg_nat_pow
-    {d : ℕ} {P : Ch04.CoeffLaw d} {ξ : ℕ} {X : RegCoeffField d → ℝ}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {ξ : ℕ} {X : RegCoeffField d → ℝ}
     (hξ : 0 < ξ) (hX_aemeas : AEMeasurable X P)
     (hX_nonneg : ∀ᵐ a ∂P, 0 ≤ X a)
     (hX_int : Integrable (fun a => X a ^ ξ) P) :
@@ -49,7 +49,7 @@ theorem memLp_of_integrable_nonneg_nat_pow
   simpa using hmem
 
 private theorem memLp_of_integrable_nonneg_rpow
-    {d : ℕ} {P : Ch04.CoeffLaw d} {p : ℝ} {X : RegCoeffField d → ℝ}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {p : ℝ} {X : RegCoeffField d → ℝ}
     (hp : 0 < p) (hX_aemeas : AEMeasurable X P)
     (hX_nonneg : ∀ᵐ a ∂P, 0 ≤ X a)
     (hX_int : Integrable (fun a => Real.rpow (X a) p) P) :
@@ -66,7 +66,7 @@ private theorem memLp_of_integrable_nonneg_rpow
   exact hnorm_int
 
 theorem shiftedUpperDecay_le_betaDecay
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     let β := section53CoarseFluctuationBeta hP4
     Real.rpow (3 : ℝ)
@@ -82,7 +82,7 @@ theorem shiftedUpperDecay_le_betaDecay
   nlinarith
 
 theorem shiftedLowerDecay_le_betaDecay
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     let β := section53CoarseFluctuationBeta hP4
     Real.rpow (3 : ℝ)
@@ -98,7 +98,7 @@ theorem shiftedLowerDecay_le_betaDecay
   nlinarith
 
 private theorem shiftedMomentDenom_pos
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) {r : ℝ} (hr : r < 1) :
     0 < ((d : ℝ) / 2) + (d : ℝ) / (hP4.xi : ℝ) - r := by
   have hd_two : (2 : ℝ) ≤ (d : ℝ) := by exact_mod_cast hP4.two_le_dim
@@ -111,7 +111,7 @@ private theorem shiftedMomentDenom_pos
   linarith
 
 theorem section52MomentLossCoeff_nonneg_at_shift
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) {s r : ℝ}
     (_hs : 0 < s) (_hsr : s < r) (hr : r < 1) :
     0 ≤ section52MomentLossCoeff d hP4.xi s r := by
@@ -224,18 +224,18 @@ private theorem sum_Icc_betaWeight_le_five_beta_inv
     _ ≤ (1 - Real.rpow (3 : ℝ) (-β))⁻¹ := hgeom
     _ ≤ 5 * β⁻¹ := hgeom_five
 
-private theorem descendantsAverage_responseJObservableCubeSet_mono_to_finerScale
+private theorem descendantsAverage_restrictionResponseJObservableCubeSet_mono_to_finerScale
     {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : Ch04.AELocallyUniformlyEllipticField a)
     {k n m : ℤ} (hkn : k ≤ n) (hnm : n ≤ m) (p q : Vec d) :
     descendantsAverage (originCube d m) (Int.toNat (m - n))
-        (fun R => Ch04.responseJObservableCubeSet R p q a) ≤
+        (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) ≤
       descendantsAverage (originCube d m) (Int.toNat (m - k))
-        (fun R => Ch04.responseJObservableCubeSet R p q a) := by
+        (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) := by
   let Q : TriadicCube d := originCube d m
   let j : ℕ := Int.toNat (m - n)
   let l : ℕ := Int.toNat (n - k)
-  let F : TriadicCube d → ℝ := fun R => Ch04.responseJObservableCubeSet R p q a
+  let F : TriadicCube d → ℝ := fun R => Ch04.restrictionResponseJObservableCubeSet R p q a
   have hpoint :
       ∀ R ∈ descendantsAtDepth Q j, F R ≤ descendantsAverage R l F := by
     intro R hR
@@ -244,7 +244,7 @@ private theorem descendantsAverage_responseJObservableCubeSet_mono_to_finerScale
     have hRscale : R.scale = n := scale_eq_of_mem_descendantsAtScale hRscaleMem
     have hkR : k ≤ R.scale := by simpa [hRscale] using hkn
     simpa [F, l, hRscale] using
-      Ch04.responseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUniformlyEllipticField
+      Ch04.restrictionResponseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUniformlyEllipticField
         ha R hkR p q
   have hmono :
       descendantsAverage Q j F ≤
@@ -258,14 +258,14 @@ private theorem descendantsAverage_responseJObservableCubeSet_mono_to_finerScale
     simpa [j, l] using int_toNat_sub_add_toNat_sub hkn hnm
   calc
     descendantsAverage (originCube d m) (Int.toNat (m - n))
-        (fun R => Ch04.responseJObservableCubeSet R p q a)
+        (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)
         = descendantsAverage Q j F := rfl
     _ ≤ descendantsAverage Q j (fun R => descendantsAverage R l F) := hmono
     _ = descendantsAverage Q (j + l) F := hcompose
     _ = descendantsAverage Q (Int.toNat (m - k)) F := by rw [hjl]
     _ =
       descendantsAverage (originCube d m) (Int.toNat (m - k))
-        (fun R => Ch04.responseJObservableCubeSet R p q a) := rfl
+        (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) := rfl
 
 private theorem responseDefectAverageAtScale_le_childResponseAverageAtScale
     {d : ℕ} [NeZero d] {a : RegCoeffField d}
@@ -273,21 +273,21 @@ private theorem responseDefectAverageAtScale_le_childResponseAverageAtScale
     {k n m : ℤ} (hkn : k ≤ n) (hnm : n ≤ m) (p q : Vec d) :
     WeakNormsMaximizer.responseDefectAverageAtScale m n p q a ≤
       descendantsAverage (originCube d m) (Int.toNat (m - k))
-        (fun R => Ch04.responseJObservableCubeSet R p q a) := by
+        (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) := by
   have hparent_nonneg :
-      0 ≤ Ch04.responseJObservableCubeSet (originCube d m) p q a :=
-    Ch04.responseJObservableCubeSet_nonneg (originCube d m) p q a
+      0 ≤ Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q a :=
+    Ch04.restrictionResponseJObservableCubeSet_nonneg (originCube d m) p q a
   have hdef_le :
       WeakNormsMaximizer.responseDefectAverageAtScale m n p q a ≤
         descendantsAverage (originCube d m) (Int.toNat (m - n))
-          (fun R => Ch04.responseJObservableCubeSet R p q a) := by
+          (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) := by
     have hparent_nonneg' :
         0 ≤ ResponseJ (cubeSet (originCube d m)) p q a := by
-      simpa [Ch04.responseJObservableCubeSet] using hparent_nonneg
+      simpa [Ch04.restrictionResponseJObservableCubeSet] using hparent_nonneg
     dsimp [WeakNormsMaximizer.responseDefectAverageAtScale]
     linarith
   exact hdef_le.trans
-    (descendantsAverage_responseJObservableCubeSet_mono_to_finerScale
+    (descendantsAverage_restrictionResponseJObservableCubeSet_mono_to_finerScale
       ha hkn hnm p q)
 
 theorem sq_beta_weighted_sqrt_responseDefectAverageAtScale_le_childResponseAverageAtScale
@@ -302,7 +302,7 @@ theorem sq_beta_weighted_sqrt_responseDefectAverageAtScale_le_childResponseAvera
       ≤
         (5 * β⁻¹) ^ 2 *
           descendantsAverage (originCube d m) (Int.toNat (m - k))
-            (fun R => Ch04.responseJObservableCubeSet R p q a) := by
+            (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a) := by
   let S : Finset ℤ := Finset.Icc (k + 1) m
   let w : ℤ → ℝ :=
     fun n => Real.rpow (3 : ℝ) (-β * (Int.toNat (m - n) : ℝ))
@@ -310,7 +310,7 @@ theorem sq_beta_weighted_sqrt_responseDefectAverageAtScale_le_childResponseAvera
     fun n => WeakNormsMaximizer.responseDefectAverageAtScale m n p q a
   let childK : ℝ :=
     descendantsAverage (originCube d m) (Int.toNat (m - k))
-      (fun R => Ch04.responseJObservableCubeSet R p q a)
+      (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)
   have hw : ∀ n ∈ S, 0 ≤ w n := by
     intro n _hn
     exact Real.rpow_nonneg (by norm_num : 0 ≤ (3 : ℝ)) _
@@ -330,7 +330,7 @@ theorem sq_beta_weighted_sqrt_responseDefectAverageAtScale_le_childResponseAvera
       ha (hIndex n hn).1 (hIndex n hn).2 p q
   have hchild_nonneg : 0 ≤ childK := by
     dsimp [childK]
-    exact JUpperBoundWeakNorms.descendantsAverage_responseJObservableCubeSet_nonneg
+    exact JUpperBoundWeakNorms.descendantsAverage_restrictionResponseJObservableCubeSet_nonneg
       (originCube d m) (Int.toNat (m - k)) p q a
   have hCauchy :=
     sq_sum_mul_sqrt_le_sum_mul_sum_mul S w D hw hD_nonneg
@@ -369,8 +369,8 @@ theorem sq_beta_weighted_sqrt_responseDefectAverageAtScale_le_childResponseAvera
 
 /-- Holder conversion for the lower inverse ellipticity positive-excess term. -/
 theorem lowerPositiveExcess_responseJ_expectation_le_of_integrable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Vec d)
     (hLowerPowInt :
@@ -390,7 +390,7 @@ theorem lowerPositiveExcess_responseJ_expectation_le_of_integrable
       Integrable
         (fun a : RegCoeffField d =>
           Real.rpow
-            (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ) P) :
+            (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ) P) :
     let β := section53CoarseFluctuationBeta hP4
     let rLower := hP4.sLower + β
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
@@ -401,7 +401,7 @@ theorem lowerPositiveExcess_responseJ_expectation_le_of_integrable
                 (originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹ -
               (hP.barSigmaStarAtScale hStruct 0)⁻¹)
             0) *
-          Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a ∂P
+          Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a ∂P
       ≤
         lambdaInvPositiveExcessMomentAtScale P (m : ℤ) rLower hP4.xi hP hStruct *
           coarseFluctuationResponseMomentAtScale hP hStruct hP4 k m e := by
@@ -419,7 +419,7 @@ theorem lowerPositiveExcess_responseJ_expectation_le_of_integrable
           (hP.barSigmaStarAtScale hStruct 0)⁻¹)
         0
   let J : RegCoeffField d → ℝ :=
-    fun a => Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a
+    fun a => Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a
   have hζ_pos : 0 < ζ := by
     simpa [ζ] using section53CoarseFluctuationZeta_pos hP4
   have hrLower_pos : 0 < rLower := by
@@ -440,11 +440,11 @@ theorem lowerPositiveExcess_responseJ_expectation_le_of_integrable
         hLower_nonneg (by simpa [lowerExcess, rLower, β] using hLowerPowInt)
   have hJ_aemeas : AEMeasurable J P := by
     simpa [J] using
-      hP.aemeasurable_responseJObservableCubeSet
+      hP.aemeasurable_restrictionResponseJObservableCubeSet
         (originCube d (k : ℤ)) p_e q_e
   have hJ_nonneg : ∀ᵐ a ∂P, 0 ≤ J a := by
     filter_upwards with a
-    exact Ch04.responseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a
+    exact Ch04.restrictionResponseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a
   have hJ_mem : MemLp J (ENNReal.ofReal ζ) P := by
     exact
       memLp_of_integrable_nonneg_rpow hζ_pos hJ_aemeas hJ_nonneg
@@ -459,8 +459,8 @@ theorem lowerPositiveExcess_responseJ_expectation_le_of_integrable
 
 /-- Holder conversion for the upper ellipticity positive-excess term. -/
 theorem upperPositiveExcess_responseJ_expectation_le_of_integrable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Vec d)
     (hUpperPowInt :
@@ -480,7 +480,7 @@ theorem upperPositiveExcess_responseJ_expectation_le_of_integrable
       Integrable
         (fun a : RegCoeffField d =>
           Real.rpow
-            (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ) P) :
+            (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ) P) :
     let β := section53CoarseFluctuationBeta hP4
     let rUpper := hP4.sUpper + β
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
@@ -491,7 +491,7 @@ theorem upperPositiveExcess_responseJ_expectation_le_of_integrable
                 (originCube d (m : ℤ)) rUpper (.finite 1) a -
               hP.barSigmaAtScale hStruct 0)
             0) *
-          Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a ∂P
+          Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a ∂P
       ≤
         LambdaPositiveExcessMomentAtScale P (m : ℤ) rUpper hP4.xi hP hStruct *
           coarseFluctuationResponseMomentAtScale hP hStruct hP4 k m e := by
@@ -509,7 +509,7 @@ theorem upperPositiveExcess_responseJ_expectation_le_of_integrable
           hP.barSigmaAtScale hStruct 0)
         0
   let J : RegCoeffField d → ℝ :=
-    fun a => Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a
+    fun a => Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a
   have hζ_pos : 0 < ζ := by
     simpa [ζ] using section53CoarseFluctuationZeta_pos hP4
   have hrUpper_pos : 0 < rUpper := by
@@ -530,11 +530,11 @@ theorem upperPositiveExcess_responseJ_expectation_le_of_integrable
         hUpper_nonneg (by simpa [upperExcess, rUpper, β] using hUpperPowInt)
   have hJ_aemeas : AEMeasurable J P := by
     simpa [J] using
-      hP.aemeasurable_responseJObservableCubeSet
+      hP.aemeasurable_restrictionResponseJObservableCubeSet
         (originCube d (k : ℤ)) p_e q_e
   have hJ_nonneg : ∀ᵐ a ∂P, 0 ≤ J a := by
     filter_upwards with a
-    exact Ch04.responseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a
+    exact Ch04.restrictionResponseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a
   have hJ_mem : MemLp J (ENNReal.ofReal ζ) P := by
     exact
       memLp_of_integrable_nonneg_rpow hζ_pos hJ_aemeas hJ_nonneg

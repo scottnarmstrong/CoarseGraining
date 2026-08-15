@@ -27,9 +27,9 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_soft_hig
     (hCfluct : 0 < Cfluct) (_hCentry : 0 < Centry) (ha : 0 < a)
     (hhighRaw :
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = (2 : ℝ) → hΓ.params = params →
       ∀ {q m n : ℕ},
@@ -63,9 +63,9 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_soft_hig
         P.real (badPairEvent Hshift t αbad q m n) ≤
           (S.card : ℝ) * ((D.card : ℝ) * Real.exp (-(lam ^ tau)))) :
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
         hInf.params = params →
       ∀ {q m n : ℕ},
@@ -209,9 +209,9 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_eq_zero_of_
     (hCcrude : 0 < Ccrude)
     (hzeroRaw :
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
         hInf.params = params →
       ∀ {N0 q m n : ℕ},
@@ -227,9 +227,9 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_eq_zero_of_
         n < m → q ≤ m → 1 ≤ lam →
         P.real (badPairEvent Hshift t αbad q m n) = 0) :
       ∀ {Centry a t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
         hInf.params = params →
       ∀ {q m n : ℕ},
@@ -303,9 +303,9 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_weighted
     (_hCentry : 0 < Centry) (_ha : 0 < a)
     (hhigh :
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
         hInf.params = params →
       ∀ {q m n : ℕ},
@@ -334,9 +334,9 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_weighted
           softPairTail pref highA 2)
     (hzero :
       ∀ {Centry' a' t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
         hInf.params = params →
       ∀ {q m n : ℕ},
@@ -355,9 +355,9 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_weighted
         n < m → q ≤ m → n ≤ q → αbad < t → 1 ≤ crudeA →
         P.real (highBottomPairEvent Hshift K a' t αbad q m n) = 0) :
       ∀ {t αbad Den : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
         hInf.params = params →
       ∀ {q r : ℕ} {j : Fin (q + 1)},
@@ -549,9 +549,9 @@ theorem measureReal_shiftedHighBottomBadScaleEvent_quenchedProbeEnvelope_le_weig
     (params : QuantitativeCoarseGrainedEllipticityParams d)
     (hrow :
       ∀ {t αbad Den : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
         hInf.params = params →
       ∀ {q r : ℕ} {j : Fin (q + 1)},
@@ -584,9 +584,9 @@ theorem measureReal_shiftedHighBottomBadScaleEvent_quenchedProbeEnvelope_le_weig
           (Cpref * w ^ q) *
             (w ^ r * Real.exp (-((A * ρ ^ r) ^ η)))) :
       ∀ {t αbad Den : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
         hInf.params = params →
       ∀ {q : ℕ},
@@ -683,9 +683,9 @@ theorem measureReal_shiftedCrudeBottomPairEvent_quenchedProbeEnvelope_eq_zero_ga
     (hCcrude : 0 < Ccrude)
     (hzeroRaw :
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
         hInf.params = params →
       ∀ {N0 q m n : ℕ},
@@ -701,9 +701,9 @@ theorem measureReal_shiftedCrudeBottomPairEvent_quenchedProbeEnvelope_eq_zero_ga
         n < m → q ≤ m → 1 ≤ lam →
         P.real (badPairEvent Hshift t αbad q m n) = 0) :
       ∀ {Centry a t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
         hInf.params = params →
       ∀ {q r : ℕ} {j : Fin (q + 1)},
@@ -832,9 +832,9 @@ theorem measureReal_shiftedCrudeBottomBadScaleEvent_quenchedProbeEnvelope_eq_zer
     (params : QuantitativeCoarseGrainedEllipticityParams d)
     (hpair :
       ∀ {Centry a t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
         hInf.params = params →
       ∀ {q r : ℕ} {j : Fin (q + 1)},
@@ -858,9 +858,9 @@ theorem measureReal_shiftedCrudeBottomBadScaleEvent_quenchedProbeEnvelope_eq_zer
         1 ≤ A →
         P.real (crudeBottomPairEvent Hshift K a t αbad q m n) = 0) :
       ∀ {Centry a t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
         hInf.params = params →
       ∀ {q : ℕ},

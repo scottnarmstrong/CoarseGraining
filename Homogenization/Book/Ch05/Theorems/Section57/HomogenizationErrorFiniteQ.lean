@@ -85,8 +85,8 @@ theorem sqrt_mul_le_sqrt_mul_rpow_half_of_weighted_le
 /-- One-scale response control from the localized finite-probe maximum, after
 using the weighted Section 5.7 estimate. -/
 theorem scaleResponseAtScale_originCube_nat_le_rpow_of_weighted_localizedNormalizedProbeJMax
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n : ℕ} (hnm : n ≤ m) {τ R : ℝ} (hR : 0 ≤ R)
@@ -126,8 +126,8 @@ theorem scaleResponseAtScale_originCube_nat_le_rpow_of_weighted_localizedNormali
 /-- The same one-scale response control, using the unit-vector form supplied by
 the minimal-scale theorem. -/
 theorem scaleResponseAtScale_originCube_nat_le_rpow_of_weighted_localizedUnitJMax
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n : ℕ} (hnm : n ≤ m) {τ R : ℝ} (hR : 0 ≤ R)
@@ -165,8 +165,8 @@ theorem scaleResponseAtScale_originCube_nat_le_rpow_of_weighted_localizedUnitJMa
 This is the form used in the finite-`q` row summation: the `l`-th term in
 `\mathcal E(Q,n)` samples the scale `n-l`. -/
 theorem scaleResponseAtScale_originCube_nat_sub_le_rpow_of_weighted_localizedUnitJMax
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n l : ℕ} (hln : l ≤ n) (hnm : n ≤ m) {τ R : ℝ} (hR : 0 ≤ R)
@@ -195,8 +195,8 @@ theorem scaleResponseAtScale_originCube_nat_sub_le_rpow_of_weighted_localizedUni
 /-- One natural lower-scale response estimate obtained by inserting the
 minimal-scale envelope and taking a square root. -/
 theorem scaleResponseAtScale_originCube_nat_sub_le_of_minimalScaleUnitJ
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n l : ℕ} (hln : l ≤ n) (hnm : n ≤ m)
@@ -242,8 +242,8 @@ This controls the part of the finite-`q` homogenization-error series with
 `\mathcal E` corollary absorbs the lower scales into the same minimal-scale
 envelope before exposing a theorem statement. -/
 theorem finset_sum_nat_scaleResponse_terms_le_of_minimalScaleUnitJ
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m n : ℕ} (hnm : n ≤ m)

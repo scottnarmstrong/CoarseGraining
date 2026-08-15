@@ -10,13 +10,16 @@ noncomputable section
 open scoped BigOperators ENNReal
 
 /-!
-# Negative Besov localization scaffolding
+# Legacy negative Besov localization scaffolding
 
-This file records the Ch1-local duality primitives and the final negative
-Besov localization theorem.  The proof pairs a parent mean-zero dual test
-against the descendants, applies the local full-dual bound on each descendant,
-and closes with the positive Besov localization estimate for the test.
+This file records the legacy totalized/disjoint-real negative Besov
+localization API retained for downstream compatibility.  The proof pairs a
+parent mean-zero dual test against the descendants, applies the local full-dual
+bound on each descendant, and closes with the positive Besov localization
+estimate for the test.
 -/
+
+namespace Legacy
 
 /-- Bound the mean-zero dual negative Besov seminorm by bounding its pairing
 against every global mean-zero unit test. -/
@@ -661,6 +664,8 @@ theorem negativeBesovLocalize {d : ℕ} {s : ℝ} {m n : ℤ}
   rw [← hfactor]
   exact negativeBesovLocalize_cube (Q := originCube d m) (s := s) (f := f)
     (j := Int.toNat (m - n)) hs_pos hf
+
+end Legacy
 
 end
 

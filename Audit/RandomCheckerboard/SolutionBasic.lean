@@ -1,14 +1,9 @@
 import Mathlib
-import Homogenization.Examples.RandomCheckerboard.CarrierLaw
-
-attribute [-instance] Homogenization.instMeasurableSpaceVec
-attribute [-instance] Homogenization.instMeasurableSpaceMat
-attribute [-instance] Homogenization.instMeasurableSpaceCoeffField
 
 /-!
 # Statement-level audit vocabulary (carrier mirror)
 
-This file holds the Mathlib-shaped statement vocabulary shared by the
+This Mathlib-only file holds the statement vocabulary shared by the
 comparator solution: the local mirrors of the ambient fields, the
 regular-fields carrier and its σ-algebra, cubes, Sobolev objects, and the
 comparison quantities.  It is split out of `Solution.lean` to keep each file
@@ -113,8 +108,8 @@ instance instMeasurableSpaceRegCoeffField (d : ℕ) :
     MeasurableSpace (RegCoeffField d) :=
   pointwiseSigmaR d ⊔ entryTestSigmaR d
 
-/-- A coefficient law on the carrier (mirrors `Book.Ch04.CoeffLaw`). -/
-abbrev CoeffLaw (d : ℕ) := Measure (RegCoeffField d)
+/-- A coefficient law on the carrier (mirrors `Book.Ch04.RestrictionCoeffLaw`). -/
+abbrev RestrictionCoeffLaw (d : ℕ) := Measure (RegCoeffField d)
 
 /-- Local-integrability transport under a homeomorphism whose pushforward of
 Lebesgue measure is a finite nonzero rescaling of Lebesgue measure (mirrors
@@ -717,11 +712,11 @@ def coinMeasure (p : ℝ≥0) (hp : p ≤ 1) : Measure Bool :=
 def sampleMeasure (d : ℕ) (p : ℝ≥0) (hp : p ≤ 1) : Measure (Sample d) :=
   Measure.infinitePi (fun _ : Lattice d => coinMeasure p hp)
 
-noncomputable def law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) : CoeffLaw d :=
+noncomputable def law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) : RestrictionCoeffLaw d :=
   Measure.map (checkerRegField lam Lam) (sampleMeasure d p hp)
 
 noncomputable def scaledLaw (d : ℕ) (lam Lam : ℝ)
-    (p : ℝ≥0) (hp : p ≤ 1) (k : ℕ) : CoeffLaw d :=
+    (p : ℝ≥0) (hp : p ≤ 1) (k : ℕ) : RestrictionCoeffLaw d :=
   Measure.map (rescaleReg k) (law d lam Lam p hp)
 
 def publicScale : ℕ :=
@@ -732,7 +727,7 @@ noncomputable def checkerboardThetaHat (d : ℕ) (lam Lam : ℝ) : ℝ :=
   let lower := 4 * (Fintype.card (Fin d) : ℝ) * lam⁻¹
   1 + lower * upper + upper * lower
 
-def IsCheckerboardMinimalScale {d : ℕ} (P : CoeffLaw d) (lam Lam : ℝ)
+def IsCheckerboardMinimalScale {d : ℕ} (P : RestrictionCoeffLaw d) (lam Lam : ℝ)
     (X : RegCoeffField d → ℝ) (Cscale : ℝ) : Prop :=
   (∀ a, 1 ≤ X a) ∧
     IsBigO P (gammaSigma ((d : ℕ) : ℝ)) X

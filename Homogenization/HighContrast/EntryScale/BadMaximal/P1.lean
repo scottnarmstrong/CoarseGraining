@@ -96,9 +96,9 @@ The deterministic weighted drift supremum in the manuscript split of
 `\mathcal M_m`.
 -/
 noncomputable def terminalBadMaximalDriftSup
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) {N m : ℕ} (hNm : N ≤ m) : ℝ :=
   (Finset.Icc N m).sup'
     ⟨N, Finset.mem_Icc.mpr ⟨le_rfl, hNm⟩⟩
@@ -113,9 +113,9 @@ it is the pointwise upper envelope whose square is later integrated.
 -/
 noncomputable def terminalBadMaximalSplitEnvelope
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) {N m : ℕ} (hNm : N ≤ m)
     (Q : Homogenization.TriadicCube d)
     (a : Ω → Homogenization.RegCoeffField d) (M_sub : ℕ → Ω → ℝ) : Ω → ℝ :=
@@ -126,9 +126,9 @@ noncomputable def terminalBadMaximalSplitEnvelope
 
 theorem terminalCoarseBlockStochasticMax_nonneg
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (a : Ω → Homogenization.RegCoeffField d) :
@@ -138,9 +138,9 @@ theorem terminalCoarseBlockStochasticMax_nonneg
   exact ENNReal.toReal_nonneg
 
 theorem terminalBadMaximalDriftSup_nonneg
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) {N m : ℕ} (hNm : N ≤ m) :
     0 ≤ terminalBadMaximalDriftSup hP hStruct hc hNm := by
   classical
@@ -163,9 +163,9 @@ Any scale term in the deterministic drift split is selected by the drift
 supremum over the high-scale window.
 -/
 theorem weighted_terminalAnnealedFullBlockDriftAtScales_le_terminalBadMaximalDriftSup
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) {N m j : ℕ} (hNm : N ≤ m)
     (hj : j ∈ Finset.Icc N m) :
     (3 : ℝ) ^ (-(hc.rhoM * ((m - j : ℕ) : ℝ))) *
@@ -499,14 +499,14 @@ end L2OperatorNorm
 /--
 The literal terminally-normalized spectral positive part on one block.
 
-This uses LIH's normalized full-block fluctuation matrix for
+This uses the library's normalized full-block fluctuation matrix for
 `Ahom_m^{-1/2} (bfA(Q) - Ahom_m) Ahom_m^{-1/2}` and mathlib's C-star
 positive part `M⁺`.
 -/
 noncomputable def terminalSpectralPositivePartAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) : ℝ :=
   fullBlockOperatorNorm
@@ -515,9 +515,9 @@ noncomputable def terminalSpectralPositivePartAtScale
           (Homogenization.cubeSet Q) a)⁺)
 
 theorem terminalSpectralPositivePartAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) :
     0 ≤ terminalSpectralPositivePartAtScale hP hStruct m Q a := by
@@ -525,9 +525,9 @@ theorem terminalSpectralPositivePartAtScale_nonneg
   exact fullBlockOperatorNorm_nonneg _
 
 theorem aemeasurable_terminalFullBlockNormalizedFluctuationMatrixAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d) :
     AEMeasurable
       (fun a : Homogenization.RegCoeffField d =>
@@ -537,9 +537,9 @@ theorem aemeasurable_terminalFullBlockNormalizedFluctuationMatrixAtScale
     hP hStruct (m : ℤ) Q
 
 theorem aemeasurable_terminalSpectralPositivePartAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d) :
     AEMeasurable
       (fun a : Homogenization.RegCoeffField d =>
@@ -611,9 +611,9 @@ private theorem fullBlockQuadratic_le_posPart_of_isSymm
   linarith only [hdiff_quad, hsub]
 
 theorem fullBlockNormalizedQuadraticObservable_sub_dotProduct_le_terminalSpectralPositivePartAtScale_mul_dotProduct
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d)
@@ -717,7 +717,7 @@ theorem coarseBlockMatrix_cubeSet_symm_of_aelocallyUniformlyEllipticField
         Homogenization.Book.Ch02.coarseBlockMatrix
           (Homogenization.Book.Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa only using
-      Homogenization.Book.Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Homogenization.Book.Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   rw [hEq]
   exact
@@ -737,7 +737,7 @@ theorem coarseBlockMatrix_cubeSet_blockPosDef_of_aelocallyUniformlyEllipticField
         Homogenization.Book.Ch02.coarseBlockMatrix
           (Homogenization.Book.Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa only using
-      Homogenization.Book.Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Homogenization.Book.Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   rw [hEq]
   exact
@@ -745,9 +745,9 @@ theorem coarseBlockMatrix_cubeSet_blockPosDef_of_aelocallyUniformlyEllipticField
       (Homogenization.Book.Ch02.cubeDomain Q) (F.coeffOn Q)).block_matrix_posDef
 
 theorem fullBlockNormalizedQuadraticObservable_upperLift_eq
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) (e : Homogenization.Vec d) :
@@ -811,9 +811,9 @@ theorem fullBlockNormalizedQuadraticObservable_upperLift_eq
           simp only [Homogenization.blockVecDot, Homogenization.blockMatVecMul, Homogenization.matVecMul_zero, add_zero, Homogenization.vecDot_zero_left, A]
 
 theorem fullBlockNormalizedQuadraticObservable_lowerLift_eq
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) (e : Homogenization.Vec d) :

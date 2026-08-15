@@ -39,8 +39,8 @@ theorem three_mul_log_descendantsAtScale_originCube_nat_card_pos
 theorem shiftedHighBadPairFluctuationScale_pos
     {d : ℕ} [NeZero d] {σ Cfluct : ℝ}
     (hσ_pos : 0 < σ) (hCfluct : 0 < Cfluct)
-    {P : Ch04.CoeffLaw d}
-    {hP : Ch04.LawCarrier P} {hStruct : Ch04.StructuralLaw P}
+    {P : Ch04.RestrictionCoeffLaw d}
+    {hP : Ch04.RestrictionLawCarrier P} {hStruct : Ch04.RestrictionStructuralLaw P}
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {N0 m n ℓ : ℕ} (hnm : n < m) :
     0 <
@@ -124,9 +124,9 @@ theorem measureReal_shiftedHigh_badPairEvent_quenchedProbeEnvelope_le_exp_of_nat
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ Cfluct Centry a : ℝ, 0 < Cfluct ∧ 0 < Centry ∧ 0 < a ∧
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {q m n : ℕ} {s : ℝ},
@@ -235,9 +235,9 @@ theorem measureReal_shiftedHigh_badPairEvent_quenchedProbeEnvelope_le_exp_of_nat
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ Cfluct Centry a : ℝ, 0 < Cfluct ∧ 0 < Centry ∧ 0 < a ∧
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {q m n : ℕ},
@@ -331,9 +331,9 @@ theorem measureReal_shiftedHigh_badPairEvent_quenchedProbeEnvelope_le_exp_of_nat
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ Cfluct Centry a : ℝ, 0 < Cfluct ∧ 0 < Centry ∧ 0 < a ∧
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {q m n : ℕ},
@@ -447,9 +447,9 @@ theorem measureReal_shiftedHigh_badPairEvent_quenchedProbeEnvelope_le_exp_of_nat
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ Cfluct Centry a : ℝ, 0 < Cfluct ∧ 0 < Centry ∧ 0 < a ∧
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {q m n : ℕ} {B : ℝ},

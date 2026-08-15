@@ -18,8 +18,8 @@ pieces consumed by the one-step contraction proof.
 /-- At a good scale, the unit-scale annealed response for the special vectors
 is controlled by `sqrt(Theta_0)`. -/
 theorem goodScale_J_zero_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le : delta ≤ 1 / 2)
     {m : ℕ}
@@ -43,8 +43,8 @@ theorem goodScale_J_zero_le
 /-- At a good scale, all lower-scale additivity defects for the special
 vectors are controlled by `delta * sqrt(Theta_0)`. -/
 theorem goodScale_tau_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le : delta ≤ 1 / 2)
     {m j : ℕ} (hj : j ≤ m)
@@ -67,8 +67,8 @@ theorem goodScale_tau_le
 
 /-- Good-scale upper scalar-chain comparison in the normalized variables. -/
 theorem goodScale_sigmaHat_inv_barSigma_zero_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le : delta ≤ 1 / 2)
     {m : ℕ}
@@ -89,8 +89,8 @@ theorem goodScale_sigmaHat_inv_barSigma_zero_le
 
 /-- Good-scale lower scalar-chain comparison in the normalized variables. -/
 theorem goodScale_sigmaHat_barSigmaStar_zero_inv_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le : delta ≤ 1 / 2)
     {m : ℕ}
@@ -112,8 +112,8 @@ theorem goodScale_sigmaHat_barSigmaStar_zero_inv_le
 /-- The scalar weight multiplying the tau sum is bounded by a harmless
 constant times `sqrt(Theta_0)` at a good scale. -/
 theorem goodScale_oneStepScalarWeight_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le : delta ≤ 1 / 2)
     {m : ℕ}
@@ -154,16 +154,16 @@ theorem goodScale_oneStepScalarWeight_le
 
 /-- At scale zero, `(P4)` implies `Theta_0 >= 1`. -/
 theorem one_le_thetaAtScale_zero_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     1 ≤ thetaAtScale hP hStruct (0 : ℤ) := by
   simpa using GoodScale.one_le_thetaAtScale_of_P4 hP hStruct hP4 0
 
 /-- At scale zero, `sqrt(Theta_0) <= Theta_0`. -/
 theorem sqrt_thetaAtScale_zero_le_thetaAtScale_zero_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     Real.sqrt (thetaAtScale hP hStruct (0 : ℤ)) ≤
       thetaAtScale hP hStruct (0 : ℤ) := by

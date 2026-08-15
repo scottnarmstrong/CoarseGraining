@@ -46,7 +46,7 @@ theorem maxDescendantBMatrixNormCoeffFieldAtScale_eq_sup_upperLeft_of_aelocallyU
         coarseBlockMatrix (cubeSet R) a.toFun =
           Ch02.coarseBlockMatrix (Ch02.cubeDomain R) (F.coeffOn R) := by
       simpa [F] using
-        Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+        Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
           ha R
     simp [Ch02.coarseBMatrixNorm, hEq]
   calc
@@ -83,7 +83,7 @@ theorem maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_eq_sup_lowerRight_o
         coarseBlockMatrix (cubeSet R) a.toFun =
           Ch02.coarseBlockMatrix (Ch02.cubeDomain R) (F.coeffOn R) := by
       simpa [F] using
-        Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+        Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
           ha R
     simp [Ch02.coarseSigmaStarInvMatrixNorm, hEq]
   calc
@@ -526,8 +526,8 @@ theorem lowerPositiveExcess_pointwise_le_smallTail_add_largeScalePositiveExcess
   exact max_sub_base_zero_le_of_le_base_add_nonneg hnonneg hpoint
 
 theorem section52_upperCenter_entries
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (i j : Fin d) :
     (hP.barSigmaAtScale hStruct 0 •
         (1 : Mat d)) i j =
@@ -548,8 +548,8 @@ theorem section52_upperCenter_entries
       rfl
 
 theorem section52_lowerCenter_entries
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (i j : Fin d) :
     ((hP.barSigmaStarAtScale hStruct 0)⁻¹ •
         (1 : Mat d)) i j =
@@ -575,8 +575,8 @@ theorem section52_lowerCenter_entries
       rfl
 
 theorem upperLargeScaleFiniteParentFluctuation
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {m n : ℕ} (hnm : n ≤ m) :
     let parents := descendantsAtScale (originCube d (m : ℤ)) (n : ℤ)
@@ -626,22 +626,22 @@ theorem upperLargeScaleFiniteParentFluctuation
       ∀ i j : Fin d,
         Integrable
             (fun a =>
-              |Ch04.centeredOriginObservable P 0
+              |Ch04.restrictionCenteredOriginObservable P 0
                 (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| ^
                 hP4.xi) P ∧
           (∫ a,
-              |Ch04.centeredOriginObservable P 0
+              |Ch04.restrictionCenteredOriginObservable P 0
                 (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| ^
                 hP4.xi ∂P) ^
               (1 / (hP4.xi : ℝ)) ≤ K := by
     intro i j
     have h :=
-      Ch04.LawCarrier.centeredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentAtScale
+      Ch04.RestrictionLawCarrier.restrictionCenteredOriginObservable_upperLeft_entry_momentRoot_le_two_LambdaMomentAtScale
         hP hP4.sUpper_pos (Nat.succ_le_of_lt hP4.xi_pos)
         hP4.upper_moment_integrable i j
     simpa [K] using h
   exact
-    Ch04.LawCarrier.upperLeft_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRangeDependentLaw
+    Ch04.RestrictionLawCarrier.upperLeft_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_restrictionUnitRangeDependentLaw
       hP hparents hn_nonneg hparent_scale hStruct.stationary hStruct.unit_range
       (hP.barSigmaAtScale hStruct 0 •
         (1 : Mat d))
@@ -656,8 +656,8 @@ theorem upperLargeScaleFiniteParentFluctuation
           (f := fun Q => section52UnitDescendantRosenthalBudget Q hP4.xi K) hQ)
 
 theorem lowerLargeScaleFiniteParentFluctuation
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {m n : ℕ} (hnm : n ≤ m) :
     let parents := descendantsAtScale (originCube d (m : ℤ)) (n : ℤ)
@@ -707,22 +707,22 @@ theorem lowerLargeScaleFiniteParentFluctuation
       ∀ i j : Fin d,
         Integrable
             (fun a =>
-              |Ch04.centeredOriginObservable P 0
+              |Ch04.restrictionCenteredOriginObservable P 0
                 (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| ^
                 hP4.xi) P ∧
           (∫ a,
-              |Ch04.centeredOriginObservable P 0
+              |Ch04.restrictionCenteredOriginObservable P 0
                 (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| ^
                 hP4.xi ∂P) ^
               (1 / (hP4.xi : ℝ)) ≤ K := by
     intro i j
     have h :=
-      Ch04.LawCarrier.centeredOriginObservable_lowerRight_entry_momentRoot_le_two_lambdaInvMomentAtScale
+      Ch04.RestrictionLawCarrier.restrictionCenteredOriginObservable_lowerRight_entry_momentRoot_le_two_lambdaInvMomentAtScale
         hP hP4.sLower_pos (Nat.succ_le_of_lt hP4.xi_pos)
         hP4.lower_inv_moment_integrable i j
     simpa [K] using h
   exact
-    Ch04.LawCarrier.lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_unitRangeDependentLaw
+    Ch04.RestrictionLawCarrier.lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_restrictionUnitRangeDependentLaw
       hP hparents hn_nonneg hparent_scale hStruct.stationary hStruct.unit_range
       ((hP.barSigmaStarAtScale hStruct 0)⁻¹ •
         (1 : Mat d))

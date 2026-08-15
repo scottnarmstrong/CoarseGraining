@@ -14,7 +14,7 @@ scalar-diagonal block matrices `blockDiag (½•1) ((2Θ)⁻¹•1)` and
 `blockDiag ((2Θ)•1) (2•1)` in the block Loewner order, for every coefficient
 field that is `(1, Θ)`-elliptic on `U`.  This is Proposition 2.2's coarse
 ellipticity statement `e.coarse.block.ellipticity` in the high-moment paper
-(Armstrong–Kuusi–Loher, in preparation).
+(Armstrong–Kuusi–Loher, to appear).
 
 * **C1 upper** — the constant competitor `X ≡ P` is `Mu`-admissible, and the
   pointwise A8 upper bound `bfA ≤ blockDiag ((2Θ)•1) (2•1)` gives
@@ -36,7 +36,7 @@ open MeasureTheory
 
 noncomputable section
 
-variable {d : ℕ} [NeZero d] {m : ℤ} {Θ : ℝ} {a : CoeffField d}
+variable {d : ℕ} {m : ℤ} {Θ : ℝ} {a : CoeffField d}
 
 /-! ## Shared cube data -/
 
@@ -91,6 +91,10 @@ private theorem memVectorL2_flux_of_admissible
   have heq : ((fun _ : Vec d => P.2) + fun x => X.flux x - P.2) = X.flux := by
     funext x; simp only [Pi.add_apply]; abel
   rwa [heq] at h
+
+section
+
+variable [NeZero d]
 
 /-- The average of an admissible potential field recovers `p`.  This is C0(i)
 turned into a `volumeAverage` identity. -/
@@ -150,6 +154,8 @@ private theorem volumeAverage_flux_eq
     volumeAverage_const cube_volume_pos.ne']
   ring
 
+end
+
 /-! ## The pointwise A8 bounds on the block energy density -/
 
 /-- Pointwise A8 lower bound on the block energy density. -/
@@ -204,6 +210,8 @@ private theorem blockEnergyDensity_const_le
   linarith [hup, harith.le, harith.symm.le]
 
 /-! ## C1 as `Mu` bounds -/
+
+variable [NeZero d]
 
 /-- **C1 lower** as a `Mu` bound:
 `¼|p|² + (4Θ)⁻¹|q|² ≤ Mu (U; P, a)`. -/
@@ -283,6 +291,7 @@ theorem diag_lower_le_mu_cube
             (4 * Θ)⁻¹ * vecNormSq (X.flux x)) := hsplit.symm
     _ ≤ volumeAverage (cubeSet (originCube d m)) (blockEnergyDensity a X) := hstep1
 
+omit [NeZero d] in
 /-- **C1 upper** as a `Mu` bound:
 `Mu (U; P, a) ≤ Θ|p|² + |q|²`. -/
 theorem mu_le_diag_upper_cube

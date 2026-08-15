@@ -8,7 +8,7 @@ namespace Homogenization
 # Quadratic stability, item B′3 (integral form)
 
 The integral half of Lemma 4.1 (`l.quadratic.stability`) of the high-moment
-paper (Armstrong–Kuusi–Loher, in preparation): stability of the two quadratic
+paper (Armstrong–Kuusi–Loher, to appear): stability of the two quadratic
 minima under an `L∞`-comparable perturbation of the coefficient field supported
 on `S`.
 

@@ -5,13 +5,15 @@ import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.PositiveSemi
 import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge.CoordinateStandard
 
 /-!
-# Sobolev-facing public wrappers for the Chapter 3 comparison
+# Legacy Sobolev/dual-Besov compatibility wrappers for the Chapter 3 comparison
 
-This file supplies the thin public layer used by `Book.MainResults`: positive
-data are stated in componentwise fractional Sobolev form, while the negative
-left-hand side is stated using the dual `H^{-s}` wrapper.  The bridge lemmas
-convert these public quantities to the Besov quantities consumed by the
-already-proved deterministic comparison theorem.
+This file supplies the compatibility layer used by `Book.MainResults`: positive
+data use the componentwise legacy fractional-Sobolev form from `Ch01.Legacy`,
+while the negative left-hand side is a legacy dual-Besov wrapper. The bridge
+lemmas convert these compatibility quantities to the Besov quantities consumed
+by the already-proved deterministic comparison theorem. The positive lane is
+the legacy ambient-sup-distance, finite-truncation / real-`sSup` overlap
+presentation, not the exact Euclidean / `ENNReal` manuscript API.
 -/
 
 namespace Homogenization
@@ -23,32 +25,31 @@ noncomputable section
 open MeasureTheory
 open scoped BigOperators ENNReal
 
-/-- Componentwise `H^s(Q; R^d)` regularity for a vector force. -/
+namespace Legacy
+
+/-- Legacy componentwise fractional-Sobolev regularity for a vector force. -/
 def ForceSobolevRegularity {d : ℕ} (Q : TriadicCube d)
     (s : ℝ) (g : Vec d → Vec d) : Prop :=
   ∀ i : Fin d,
-    Ch01.MemFractionalSobolev Q s (2 : ℝ≥0∞) (fun x => g x i)
+    Ch01.Legacy.MemFractionalSobolev Q s (2 : ℝ≥0∞) (fun x => g x i)
 
-/-- Scale-normalized componentwise Sobolev seminorm
-`3^{sm} ∑ᵢ [gᵢ]_{H^s(□ₘ)}`. -/
+/-- Legacy scale-normalized componentwise fractional-Sobolev seminorm. -/
 noncomputable def scaleNormalizedPositiveSobolevVectorSeminormTwo {d : ℕ}
     (Q : TriadicCube d) (s : ℝ) (g : Vec d → Vec d) : ℝ :=
   cubeBesovScaleWeight (-s) Q *
     ∑ i : Fin d,
-      Ch01.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞) (fun x => g x i)
+      Ch01.Legacy.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞) (fun x => g x i)
 
-/-- The public negative `H^{-s}` norm, represented by the formalized dual norm
-and note-normalized as `3^{-sm} ||F||_{H^{-s}(□ₘ)}`.
+/-- Legacy dual-Besov wrapper used by the Chapter 3 compatibility lane.
 
-Here `H^{-s}` is realized as the dual of the fractional Sobolev space
-`H^s = B^s_{2,2}`: the underlying `scaleNormalizedDualNegativeBesovVectorNormTwo`
-is the dual norm taken over the `H^s` test space, so this coincides with the
-negative Besov norm `B^{-s}_{2,2}` used by the internal comparison theorem. -/
+Its body is `scaleNormalizedDualNegativeBesovVectorNormTwo`; it is not an
+identification with either Chapter 1 negative-Sobolev primitive. -/
 noncomputable abbrev scaleNormalizedNegativeSobolevVectorNormTwo {d : ℕ}
     (Q : TriadicCube d) (s : ℝ) (F : Vec d → Vec d) : ℝ :=
   scaleNormalizedDualNegativeBesovVectorNormTwo Q s F
 
-/-- Sobolev-facing left-hand side of the homogenization comparison. -/
+/-- Legacy dual-Besov compatibility left-hand side of the homogenization
+comparison. -/
 noncomputable def homogenizationComparisonNegativeSobolevLHS {d : ℕ}
     (Q : TriadicCube d) (a : CoeffFamily d) (a0 : ConstantCoeffMatrix d)
     (s : ℝ) (u v : H1Function (Ch02.cubeDomain Q : Set (Vec d))) : ℝ :=
@@ -70,6 +71,8 @@ theorem forceSobolevRegularity_memLp {d : ℕ} {Q : TriadicCube d}
     (hg : ForceSobolevRegularity Q s g) :
     MeasureTheory.MemLp g (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
   exact MeasureTheory.MemLp.of_eval fun i => (hg i).memLp
+
+end Legacy
 
 theorem cubeLpNorm_two_vec_le_sum_components {d : ℕ}
     (Q : TriadicCube d) (u : Vec d → Vec d)
@@ -315,14 +318,16 @@ theorem cubeBesovPositiveVectorPartialSeminormTwo_le_scaleWeight_mul_sum_compone
                 (fun x => g x i) j) hW_nonneg
           simpa [Real.sqrt_eq_rpow] using hsqrt
 
+namespace Legacy
+
 theorem cubeBesovPositiveVectorPartialSeminormTwo_le_const_mul_sobolev
     {d : ℕ} [NeZero d] (Q : TriadicCube d) {s : ℝ} (N : ℕ)
     (g : Vec d → Vec d) (hs : 0 < s) (_hs1 : s ≤ 1)
     (hg : ForceSobolevRegularity Q s g) :
     cubeBesovPositiveVectorPartialSeminormTwo Q s N g ≤
-      ((3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.wspVsBsppConstant d) *
+      ((3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.Legacy.wspVsBsppConstant d) *
         scaleNormalizedPositiveSobolevVectorSeminormTwo Q s g := by
-  let C : ℝ := (3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.wspVsBsppConstant d
+  let C : ℝ := (3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.Legacy.wspVsBsppConstant d
   have hmem : MeasureTheory.MemLp g (2 : ℝ≥0∞) (normalizedCubeMeasure Q) :=
     forceSobolevRegularity_memLp hg
   have hbase :=
@@ -333,8 +338,8 @@ theorem cubeBesovPositiveVectorPartialSeminormTwo_le_const_mul_sobolev
         cubeBesovPartialSeminorm Q s (2 : ℝ≥0∞) (2 : ℝ≥0∞) N
             (fun x => g x i) ≤
           (3 : ℝ) ^ ((d : ℝ) / 2) *
-            (Ch01.wspVsBsppConstant d *
-              Ch01.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
+            (Ch01.Legacy.wspVsBsppConstant d *
+              Ch01.Legacy.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
                 (fun x => g x i)) := by
     intro i
     obtain ⟨gi, hgi_meas, hgi_ae_norm⟩ :=
@@ -351,8 +356,8 @@ theorem cubeBesovPositiveVectorPartialSeminormTwo_le_const_mul_sobolev
           cubeBesovOverlapPartialSeminorm Q s (2 : ℝ≥0∞) (2 : ℝ≥0∞) N gi :=
       Gagliardo.overlap_partialSeminorm_congr_ae hgi_ae
     have hfrac_eq :
-        Ch01.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞) (fun x => g x i) =
-          Ch01.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞) gi :=
+        Ch01.Legacy.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞) (fun x => g x i) =
+          Ch01.Legacy.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞) gi :=
       congrArg ENNReal.toReal (Gagliardo.cubeGagliardoESeminorm_congr_ae hgi_ae)
     have hdisjoint_overlap :=
       cubeBesovPartialSeminorm_le_three_rpow_mul_overlapPartialSeminorm
@@ -361,7 +366,7 @@ theorem cubeBesovPositiveVectorPartialSeminormTwo_le_const_mul_sobolev
         (by norm_num : 1 ≤ ENNReal.toReal (2 : ℝ≥0∞))
         N (fun x => g x i)
     have hSob :=
-      Ch01.besovOverlapPartial_le_const_mul_gagliardo
+      Ch01.Legacy.besovOverlapPartial_le_const_mul_gagliardo
         (Q := Q) (s := s) (p := (2 : ℝ≥0∞))
         (u := gi) hs (by norm_num) (by norm_num)
         hgi_meas hgiLp hgiW N
@@ -378,14 +383,14 @@ theorem cubeBesovPositiveVectorPartialSeminormTwo_le_const_mul_sobolev
                 (fun x => g x i) := by norm_num
       _ ≤
             (3 : ℝ) ^ ((d : ℝ) / 2) *
-              (Ch01.wspVsBsppConstant d *
-                Ch01.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
+              (Ch01.Legacy.wspVsBsppConstant d *
+                Ch01.Legacy.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
                   (fun x => g x i)) := by
             have hSob' :
                 cubeBesovOverlapPartialSeminorm Q s (2 : ℝ≥0∞) (2 : ℝ≥0∞) N
                     (fun x => g x i) ≤
-                  Ch01.wspVsBsppConstant d *
-                    Ch01.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
+                  Ch01.Legacy.wspVsBsppConstant d *
+                    Ch01.Legacy.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
                       (fun x => g x i) := by
               simpa [hpartial_eq, hfrac_eq] using hSob
             exact mul_le_mul_of_nonneg_left hSob'
@@ -394,9 +399,9 @@ theorem cubeBesovPositiveVectorPartialSeminormTwo_le_const_mul_sobolev
       ∑ i : Fin d,
           cubeBesovPartialSeminorm Q s (2 : ℝ≥0∞) (2 : ℝ≥0∞) N
             (fun x => g x i) ≤
-        (3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.wspVsBsppConstant d *
+        (3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.Legacy.wspVsBsppConstant d *
           ∑ i : Fin d,
-            Ch01.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
+            Ch01.Legacy.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
               (fun x => g x i) := by
     calc
       ∑ i : Fin d,
@@ -405,14 +410,14 @@ theorem cubeBesovPositiveVectorPartialSeminormTwo_le_const_mul_sobolev
           ≤
         ∑ i : Fin d,
           (3 : ℝ) ^ ((d : ℝ) / 2) *
-            (Ch01.wspVsBsppConstant d *
-              Ch01.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
+            (Ch01.Legacy.wspVsBsppConstant d *
+              Ch01.Legacy.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
                 (fun x => g x i)) := by
           exact Finset.sum_le_sum fun i _ => hcomponent i
       _ =
-        (3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.wspVsBsppConstant d *
+        (3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.Legacy.wspVsBsppConstant d *
           ∑ i : Fin d,
-              Ch01.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
+              Ch01.Legacy.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
                 (fun x => g x i) := by
           rw [Finset.mul_sum]
           ring_nf
@@ -425,13 +430,13 @@ theorem cubeBesovPositiveVectorPartialSeminormTwo_le_const_mul_sobolev
             cubeBesovPartialSeminorm Q s (2 : ℝ≥0∞) (2 : ℝ≥0∞) N
               (fun x => g x i) := hbase
     _ ≤ cubeBesovScaleWeight (-s) Q *
-          ((3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.wspVsBsppConstant d *
+          ((3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.Legacy.wspVsBsppConstant d *
             ∑ i : Fin d,
-              Ch01.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
+              Ch01.Legacy.fractionalSobolevSeminorm Q s (2 : ℝ≥0∞)
                 (fun x => g x i)) := by
           exact mul_le_mul_of_nonneg_left hsum hW_nonneg
     _ =
-      ((3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.wspVsBsppConstant d) *
+      ((3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.Legacy.wspVsBsppConstant d) *
         scaleNormalizedPositiveSobolevVectorSeminormTwo Q s g := by
           unfold scaleNormalizedPositiveSobolevVectorSeminormTwo
           ring
@@ -441,7 +446,7 @@ theorem ForceSobolevRegularity.toForceBesovRegularity
     (hg : ForceSobolevRegularity Q s g) (hs : 0 < s) (hs1 : s ≤ 1) :
     ForceBesovRegularity Q s g := by
   refine ⟨forceSobolevRegularity_memLp hg, ?_⟩
-  refine ⟨((3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.wspVsBsppConstant d) *
+  refine ⟨((3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.Legacy.wspVsBsppConstant d) *
       scaleNormalizedPositiveSobolevVectorSeminormTwo Q s g, ?_⟩
   rintro x ⟨N, rfl⟩
   exact cubeBesovPositiveVectorPartialSeminormTwo_le_const_mul_sobolev
@@ -452,7 +457,7 @@ theorem scaleNormalizedPositiveBesovVectorSeminormTwo_le_const_mul_sobolev
     (hs : 0 < s) (hs1 : s ≤ 1)
     (hg : ForceSobolevRegularity Q s g) :
     scaleNormalizedPositiveBesovVectorSeminormTwo Q s g ≤
-      ((3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.wspVsBsppConstant d) *
+      ((3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.Legacy.wspVsBsppConstant d) *
         scaleNormalizedPositiveSobolevVectorSeminormTwo Q s g := by
   simpa [scaleNormalizedPositiveBesovVectorSeminormTwo] using
     cubeBesovPositiveVectorSeminormTwo_le_of_partialBound Q s g
@@ -531,6 +536,8 @@ theorem homogenizationComparisonNegativeSobolevLHS_le_const_mul_negativeBesovLHS
           unfold homogenizationComparisonNegativeBesovLHS
           dsimp [Gc, Gf, K]
           ring
+
+end Legacy
 
 end
 

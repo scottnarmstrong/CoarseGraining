@@ -3,7 +3,7 @@ import Homogenization.Probability.EfronStein.Transfer
 /-!
 # The a.e.-measurable Efron–Stein transfer wrapper
 
-The landed `efronStein_transfer` requires a *genuinely measurable* bounded
+The landed `efronStein_transfer_restriction` requires a *genuinely measurable* bounded
 observable `G`.  The fixed-phase observable of Proposition 4.3, being a coarse
 quadratic, is only *a.e.-strongly-measurable* under the resampled product law
 `Π := Measure.pi (fun i => P.map (restrictReg (C i) (hC i)))`.  This file relaxes
@@ -13,7 +13,7 @@ Efron–Stein conclusion.
 The plumbing:
 * clamp a measurable modification `Gt` of `G` (via `hG.mk`) to `[-M, M]`, so it is
   measurable, everywhere bounded by `M`, and `Gt =ᵐ[Π] G`;
-* run the landed `efronStein_transfer` on `Gt`;
+* run the landed `efronStein_transfer_restriction` on `Gt`;
 * transfer the variance (LHS) and each resampling energy (RHS) back to `G` using
   the pushforward identities `Measure.map R P = Π`,
   `Measure.map (·.1 ↦ R) (P ⊗ P) = Π`, and the update-resample identity
@@ -74,17 +74,18 @@ theorem map_update_prod_pi {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /-! ## The a.e.-measurable Efron–Stein transfer -/
 
-/-- **Efron–Stein transfer (a.e. variant).**  Identical to `efronStein_transfer`,
-but the observable `G` need only be `AEStronglyMeasurable` under the
+/-- **Restriction Efron–Stein transfer (a.e. variant).**  Identical to
+`efronStein_transfer_restriction`, but the observable `G` need only be
+`AEStronglyMeasurable` under the
 resampled product law `Π := Measure.pi (fun i => P.map (restrictReg (C i) (hC i)))`,
 not genuinely measurable.  This is the form consumed by the fixed-phase variance
-step, whose coarse observable is only a.e.-measurable under a `LawCarrier`. -/
-theorem efronStein_transfer_ae
+step, whose coarse observable is only a.e.-measurable under a `RestrictionLawCarrier`. -/
+theorem efronStein_transfer_ae_restriction
     {ι : Type*} [Fintype ι] [DecidableEq ι]
     {C : ι → Set (Vec d)} (hC : ∀ i, MeasurableSet (C i))
     (hsep : Pairwise fun i j => AreUnitSeparated (C i) (C j))
     {P : Measure (RegCoeffField d)} [IsProbabilityMeasure P]
-    (hP : IsUnitRangeDependentR P)
+    (hP : IsRestrictionUnitRangeDependentR P)
     {G : (ι → RegCoeffField d) → ℝ}
     (hG : AEStronglyMeasurable G (Measure.pi (fun i => P.map (restrictReg (C i) (hC i)))))
     {M : ℝ} (hMG : ∀ x, |G x| ≤ M)
@@ -106,9 +107,9 @@ theorem efronStein_transfer_ae
     have hf : ∀ i, AEMeasurable (fun a => X i a) P := fun i =>
       (measurable_restrictObservable (C i) (hC i)).aemeasurable
     have hindep : ProbabilityTheory.iIndepFun X P :=
-      Book.Ch04.iIndepFun_of_unitRangeDependentLaw_of_pairwise_separated
+      Book.Ch04.iIndepFun_of_restrictionUnitRangeDependentLaw_of_pairwise_separated
         (P := P) (U := C) (X := X) hC hP
-        (fun i => isLocalRandomVariable_restrictObservable (C i) (hC i)) hsep
+        (fun i => isRestrictionLocalRandomVariable_restrictObservable (C i) (hC i)) hsep
     have h := (ProbabilityTheory.iIndepFun_iff_map_fun_eq_pi_map hf).1 hindep
     rw [hRdef]; exact h
   -- Clamp a measurable modification of `G` to `[-M, M]`.
@@ -128,7 +129,7 @@ theorem efronStein_transfer_ae
     dsimp only
     rw [← hx, min_eq_right (abs_le.1 (hMG x)).2, max_eq_right (abs_le.1 (hMG x)).1]
   -- Run the landed transfer on the measurable, bounded `Gt`.
-  have key := efronStein_transfer hC hsep hP hGtmeas hGtbound R hRdef
+  have key := efronStein_transfer_restriction hC hsep hP hGtmeas hGtbound R hRdef
   -- LHS: `Var[G ∘ R] = Var[Gt ∘ R]`.
   have hLHS : Var[G ∘ R; P] = Var[Gt ∘ R; P] := by
     refine variance_congr ?_

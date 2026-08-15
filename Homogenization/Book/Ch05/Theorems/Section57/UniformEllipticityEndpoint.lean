@@ -30,8 +30,8 @@ The field `bound` is the Lean version of the uniform estimate
 `Γ_∞`: the unit-cube ellipticity observable is bounded by `thetaHat`
 almost surely. -/
 structure GammaInfinityCoarseGrainedEllipticity
-    {d : ℕ} [NeZero d] (P : Ch04.CoeffLaw d)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) : Type where
+    {d : ℕ} [NeZero d] (P : Ch04.RestrictionCoeffLaw d)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) : Type where
   params : QuantitativeCoarseGrainedEllipticityParams d
   thetaHat : ℝ
   thetaHat_pos : 0 < thetaHat
@@ -42,8 +42,8 @@ structure GammaInfinityCoarseGrainedEllipticity
 /-- Manuscript-facing `σ = ∞` endpoint of `(P5)`, with no exposed moment
 exponent `xi`. -/
 structure GammaInfinityCoarseGrainedEllipticityNoXi
-    {d : ℕ} [NeZero d] (P : Ch04.CoeffLaw d)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) : Type where
+    {d : ℕ} [NeZero d] (P : Ch04.RestrictionCoeffLaw d)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) : Type where
   params : GammaCoarseGrainedEllipticityParams d
   thetaHat : ℝ
   thetaHat_pos : 0 < thetaHat
@@ -53,8 +53,8 @@ structure GammaInfinityCoarseGrainedEllipticityNoXi
 
 namespace GammaInfinityCoarseGrainedEllipticityNoXi
 
-variable {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-variable {hP : Ch04.LawCarrier P} {hStruct : Ch04.StructuralLaw P}
+variable {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+variable {hP : Ch04.RestrictionLawCarrier P} {hStruct : Ch04.RestrictionStructuralLaw P}
 
 /-- Add the internal finite moment exponent used by the existing endpoint
 proof infrastructure. -/
@@ -91,8 +91,8 @@ theorem ae_le_of_map_eq_map_aemeasurable
 /-- A deterministic counterpart of the finite-`Γσ` scale-zero propagation:
 an a.s. bound at the unit origin cube propagates to every larger origin cube. -/
 theorem blockJObservableCubeSetBlockVec_originCube_le_of_scaleZero_ae
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hPμ : Ch04.LawCarrier Pμ) (hstat : Ch04.StationaryLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hPμ : Ch04.RestrictionLawCarrier Pμ) (hstat : Ch04.RestrictionStationaryLaw Pμ)
     {θ : ℝ} (Pvec Qvec : BlockVec d)
     (h0 :
       Ch04.blockJObservableCubeSetBlockVec (originCube d 0) Pvec Qvec
@@ -111,8 +111,8 @@ theorem blockJObservableCubeSetBlockVec_originCube_le_of_scaleZero_ae
     simpa [originCube] using hn
   have hD_nonempty : D.Nonempty := by
     simpa [D] using descendantsAtScale_nonempty (originCube d n) hn0
-  have hX_cov : Ch04.IsTranslationCovariantR X :=
-    Ch04.blockJSetObservableBlockVec_translation_covariantR Pvec Qvec
+  have hX_cov : Ch04.IsRestrictionTranslationCovariant X :=
+    Ch04.blockJSetObservableBlockVec_restrictionTranslationCovariant Pvec Qvec
   have hX0_aemeas :
       AEMeasurable (X (cubeSet (originCube d 0))) Pμ := by
     simpa [X] using
@@ -148,7 +148,7 @@ theorem blockJObservableCubeSetBlockVec_originCube_le_of_scaleZero_ae
                   (cubeSet (originCube d 0)))) Pμ := by
               rw [hshift]
         _ = Measure.map (X (cubeSet (originCube d 0))) Pμ := by
-              exact Ch04.map_eq_map_translateReg_of_isTranslationCovariantR_aemeasurable
+              exact Ch04.map_eq_map_translateReg_of_isRestrictionTranslationCovariant_aemeasurable
                 (P := Pμ) hstat (U := cubeSet (originCube d 0))
                 hX0_aemeas hX_cov (Ch04.scaleTranslationShift 0 R)
     have h0X : X (cubeSet (originCube d 0)) ≤ᵐ[Pμ] fun _ => θ := by
@@ -193,9 +193,9 @@ theorem blockJObservableCubeSetBlockVec_originCube_le_of_scaleZero_ae
 /-- Transfer an a.s. bound from the origin cube at scale `n` to a descendant
 cube at the same scale, using stationarity. -/
 theorem limitNormalizedBlockJObservable_of_mem_descendantsAtScale_le_ae
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hPμ : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
-    (hstat : Ch04.StationaryLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hPμ : Ch04.RestrictionLawCarrier Pμ) (hStruct : Ch04.RestrictionStructuralLaw Pμ)
+    (hstat : Ch04.RestrictionStationaryLaw Pμ)
     {θ : ℝ} {m n : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
     {R : TriadicCube d}
     (hR : R ∈ descendantsAtScale (originCube d m) n)
@@ -220,9 +220,9 @@ theorem limitNormalizedBlockJObservable_of_mem_descendantsAtScale_le_ae
 
 /-- An a.s. origin-cube bound controls the localized maximum over descendants. -/
 theorem localizedLimitNormalizedJMax_le_of_originCube_ae
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hPμ : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
-    (hstat : Ch04.StationaryLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hPμ : Ch04.RestrictionLawCarrier Pμ) (hStruct : Ch04.RestrictionStructuralLaw Pμ)
+    (hstat : Ch04.RestrictionStationaryLaw Pμ)
     {θ : ℝ} {m n : ℕ} (hnm : n ≤ m) (e : FullBlockVec d)
     (hOrigin :
       limitNormalizedBlockJObservable hPμ hStruct
@@ -260,8 +260,8 @@ theorem localizedLimitNormalizedJMax_le_of_originCube_ae
 
 namespace GammaInfinityCoarseGrainedEllipticity
 
-variable {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-variable {hP : Ch04.LawCarrier P} {hStruct : Ch04.StructuralLaw P}
+variable {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+variable {hP : Ch04.RestrictionLawCarrier P} {hStruct : Ch04.RestrictionStructuralLaw P}
 
 theorem sUpper_pos
     (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct) :
@@ -594,8 +594,8 @@ end GammaInfinityCoarseGrainedEllipticity
 
 namespace GammaInfinityCoarseGrainedEllipticityNoXi
 
-variable {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-variable {hP : Ch04.LawCarrier P} {hStruct : Ch04.StructuralLaw P}
+variable {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+variable {hP : Ch04.RestrictionLawCarrier P} {hStruct : Ch04.RestrictionStructuralLaw P}
 
 /-- Forget the endpoint input to any finite positive `Γσ` input, in the
 manuscript-facing parameter package with no exposed moment exponent. -/
@@ -624,9 +624,9 @@ theorem firstQuenchedEstimate_limitNormalized_uniformAnnealedExponent_noXi_infin
     (params : GammaCoarseGrainedEllipticityParams d) :
     ∃ Centry a : ℝ, 0 < Centry ∧ 0 < a ∧
       ∃ Cfluct : ℝ, 0 < Cfluct ∧
-        ∀ {Pμ : Ch04.CoeffLaw d}
-          (hPμ : Ch04.LawCarrier Pμ)
-          (hStruct : Ch04.StructuralLaw Pμ)
+        ∀ {Pμ : Ch04.RestrictionCoeffLaw d}
+          (hPμ : Ch04.RestrictionLawCarrier Pμ)
+          (hStruct : Ch04.RestrictionStructuralLaw Pμ)
           (hInf : GammaInfinityCoarseGrainedEllipticityNoXi Pμ hPμ hStruct),
           hInf.params = params →
         ∀ (e : FullBlockVec d), dotProduct e e ≤ 1 →

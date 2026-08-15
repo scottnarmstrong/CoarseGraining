@@ -1,6 +1,5 @@
-import Homogenization.Book.Ch04.Theorems.Concentration
-import Homogenization.Book.Ch04.Observable
-import Homogenization.Geometry.ScaleColoring
+import Homogenization.Book.Ch04.PartitionAverageConstants
+import Homogenization.Book.Ch04.RestrictionObservable
 
 namespace Homogenization
 namespace Book
@@ -10,25 +9,24 @@ open scoped BigOperators
 open MeasureTheory
 
 /-!
-# Partition-Average Fluctuation Definitions
+# Restriction-Carrier Partition-Average Fluctuation Definitions
 
-Definitions and equality lemmas for the partition-average fluctuation endpoints
-used in Proposition
-`p.local.partition.average.fluctuations.stationary.random.fields` and its
-finite-moment/J corollaries.
+Definitions and equality lemmas for the restriction-carrier engineering
+partition-average fluctuation endpoints. Source-manuscript counterparts live
+in the source-specific API.
 -/
 
 noncomputable section
 
 /-- The origin observable centered by its expectation. -/
-noncomputable def centeredOriginObservable {d : ℕ} (P : CoeffLaw d)
+noncomputable def restrictionCenteredOriginObservable {d : ℕ} (P : RestrictionCoeffLaw d)
     (n : ℤ) (X : Set (Vec d) → RegCoeffField d → ℝ) : RegCoeffField d → ℝ :=
   fun a => X (cubeSet (originCube d n)) a -
     ∫ b, X (cubeSet (originCube d n)) b ∂P
 
 /-- The uncentered descendant partition average over the scale-`n` descendants
 of the origin cube at scale `m`. -/
-noncomputable def descendantAverage {d : ℕ}
+noncomputable def restrictionDescendantAverage {d : ℕ}
     (n m : ℤ) (X : Set (Vec d) → RegCoeffField d → ℝ) : RegCoeffField d → ℝ :=
   fun a =>
     ((descendantsAtScale (originCube d m) n).card : ℝ)⁻¹ *
@@ -36,7 +34,7 @@ noncomputable def descendantAverage {d : ℕ}
 
 /-- The centered descendant partition average over the scale-`n` descendants of
 the origin cube at scale `m`. -/
-noncomputable def centeredDescendantAverage {d : ℕ} (P : CoeffLaw d)
+noncomputable def restrictionCenteredDescendantAverage {d : ℕ} (P : RestrictionCoeffLaw d)
     (n m : ℤ) (X : Set (Vec d) → RegCoeffField d → ℝ) : RegCoeffField d → ℝ :=
   fun a =>
     ((descendantsAtScale (originCube d m) n).card : ℝ)⁻¹ *
@@ -45,7 +43,7 @@ noncomputable def centeredDescendantAverage {d : ℕ} (P : CoeffLaw d)
 
 /-- The uncentered descendant partition average over the scale-`n` descendants
 of an arbitrary parent cube. -/
-noncomputable def descendantAverageOnCube {d : ℕ}
+noncomputable def restrictionDescendantAverageOnCube {d : ℕ}
     (Q : TriadicCube d) (n : ℤ) (X : Set (Vec d) → RegCoeffField d → ℝ) :
     RegCoeffField d → ℝ :=
   fun a =>
@@ -54,7 +52,7 @@ noncomputable def descendantAverageOnCube {d : ℕ}
 
 /-- The centered descendant partition average over the scale-`n` descendants
 of an arbitrary parent cube, centered by the origin scale-`n` expectation. -/
-noncomputable def centeredDescendantAverageOnCube {d : ℕ} (P : CoeffLaw d)
+noncomputable def restrictionCenteredDescendantAverageOnCube {d : ℕ} (P : RestrictionCoeffLaw d)
     (Q : TriadicCube d) (n : ℤ) (X : Set (Vec d) → RegCoeffField d → ℝ) :
     RegCoeffField d → ℝ :=
   fun a =>
@@ -63,32 +61,32 @@ noncomputable def centeredDescendantAverageOnCube {d : ℕ} (P : CoeffLaw d)
         (X (cubeSet R) a - ∫ b, X (cubeSet (originCube d n)) b ∂P)
 
 /-- A.e.-equal observables have the same centered origin observable. -/
-theorem centeredOriginObservable_ae_eq_of_ae_eq {d : ℕ} {P : CoeffLaw d}
+theorem restrictionCenteredOriginObservable_ae_eq_of_ae_eq {d : ℕ} {P : RestrictionCoeffLaw d}
     {n : ℤ} {X Y : Set (Vec d) → RegCoeffField d → ℝ}
     (hXY :
       X (cubeSet (originCube d n)) =ᵐ[P] Y (cubeSet (originCube d n))) :
-    centeredOriginObservable P n X =ᵐ[P] centeredOriginObservable P n Y := by
+    restrictionCenteredOriginObservable P n X =ᵐ[P] restrictionCenteredOriginObservable P n Y := by
   have hμ :
       ∫ b, X (cubeSet (originCube d n)) b ∂P =
         ∫ b, Y (cubeSet (originCube d n)) b ∂P :=
     integral_congr_ae hXY
   filter_upwards [hXY] with a ha
-  simp [centeredOriginObservable, ha, hμ]
+  simp [restrictionCenteredOriginObservable, ha, hμ]
 
 /-- A.e.-equal descendant observables have the same uncentered descendant
 average on a fixed parent cube. -/
-theorem descendantAverageOnCube_ae_eq_of_ae_eq {d : ℕ} {P : CoeffLaw d}
+theorem restrictionDescendantAverageOnCube_ae_eq_of_ae_eq {d : ℕ} {P : RestrictionCoeffLaw d}
     {Q : TriadicCube d} {n : ℤ} {X Y : Set (Vec d) → RegCoeffField d → ℝ}
     (hXY :
       ∀ R, R ∈ descendantsAtScale Q n →
         X (cubeSet R) =ᵐ[P] Y (cubeSet R)) :
-    descendantAverageOnCube Q n X =ᵐ[P] descendantAverageOnCube Q n Y := by
+    restrictionDescendantAverageOnCube Q n X =ᵐ[P] restrictionDescendantAverageOnCube Q n Y := by
   have hAll :
       ∀ᵐ a ∂P, ∀ R, R ∈ descendantsAtScale Q n →
         X (cubeSet R) a = Y (cubeSet R) a :=
     ae_forall_mem_finset (P := P) (descendantsAtScale Q n) hXY
   filter_upwards [hAll] with a ha
-  unfold descendantAverageOnCube
+  unfold restrictionDescendantAverageOnCube
   congr 1
   exact Finset.sum_congr rfl fun R hR => by
     simp [ha R hR]
@@ -96,15 +94,15 @@ theorem descendantAverageOnCube_ae_eq_of_ae_eq {d : ℕ} {P : CoeffLaw d}
 /-- A.e.-equal descendant observables, with a.e.-equal origin representatives
 for the centering constant, have the same centered descendant average on a
 fixed parent cube. -/
-theorem centeredDescendantAverageOnCube_ae_eq_of_ae_eq {d : ℕ} {P : CoeffLaw d}
+theorem restrictionCenteredDescendantAverageOnCube_ae_eq_of_ae_eq {d : ℕ} {P : RestrictionCoeffLaw d}
     {Q : TriadicCube d} {n : ℤ} {X Y : Set (Vec d) → RegCoeffField d → ℝ}
     (hOrigin :
       X (cubeSet (originCube d n)) =ᵐ[P] Y (cubeSet (originCube d n)))
     (hDesc :
       ∀ R, R ∈ descendantsAtScale Q n →
         X (cubeSet R) =ᵐ[P] Y (cubeSet R)) :
-    centeredDescendantAverageOnCube P Q n X =ᵐ[P]
-      centeredDescendantAverageOnCube P Q n Y := by
+    restrictionCenteredDescendantAverageOnCube P Q n X =ᵐ[P]
+      restrictionCenteredDescendantAverageOnCube P Q n Y := by
   have hμ :
       ∫ b, X (cubeSet (originCube d n)) b ∂P =
         ∫ b, Y (cubeSet (originCube d n)) b ∂P :=
@@ -114,7 +112,7 @@ theorem centeredDescendantAverageOnCube_ae_eq_of_ae_eq {d : ℕ} {P : CoeffLaw d
         X (cubeSet R) a = Y (cubeSet R) a :=
     ae_forall_mem_finset (P := P) (descendantsAtScale Q n) hDesc
   filter_upwards [hAll] with a ha
-  unfold centeredDescendantAverageOnCube
+  unfold restrictionCenteredDescendantAverageOnCube
   rw [hμ]
   congr 1
   exact Finset.sum_congr rfl fun R hR => by
@@ -122,12 +120,12 @@ theorem centeredDescendantAverageOnCube_ae_eq_of_ae_eq {d : ℕ} {P : CoeffLaw d
 
 /-- The centered descendant average on an arbitrary parent cube is the
 uncentered descendant average minus the origin-cube centering constant. -/
-theorem centeredDescendantAverageOnCube_eq_descendantAverageOnCube_sub
-    {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {n : ℤ}
+theorem restrictionCenteredDescendantAverageOnCube_eq_restrictionDescendantAverageOnCube_sub
+    {d : ℕ} {P : RestrictionCoeffLaw d} {Q : TriadicCube d} {n : ℤ}
     (hnQ : n ≤ Q.scale) (X : Set (Vec d) → RegCoeffField d → ℝ) :
-    centeredDescendantAverageOnCube P Q n X =
+    restrictionCenteredDescendantAverageOnCube P Q n X =
       fun a =>
-        descendantAverageOnCube Q n X a -
+        restrictionDescendantAverageOnCube Q n X a -
           ∫ b, X (cubeSet (originCube d n)) b ∂P := by
   let s := descendantsAtScale Q n
   let μ0 : ℝ := ∫ b, X (cubeSet (originCube d n)) b ∂P
@@ -136,7 +134,7 @@ theorem centeredDescendantAverageOnCube_eq_descendantAverageOnCube_sub
   have hs_card_ne_zero : ((s.card : ℝ)) ≠ 0 := by
     exact_mod_cast hs_nonempty.card_ne_zero
   funext a
-  rw [centeredDescendantAverageOnCube, descendantAverageOnCube]
+  rw [restrictionCenteredDescendantAverageOnCube, restrictionDescendantAverageOnCube]
   change
     ((s.card : ℝ)⁻¹ * ∑ R ∈ s, (X (cubeSet R) a - μ0)) =
       ((s.card : ℝ)⁻¹ * ∑ R ∈ s, X (cubeSet R) a) - μ0
@@ -146,43 +144,26 @@ theorem centeredDescendantAverageOnCube_eq_descendantAverageOnCube_sub
 
 /-- The response observable `U ↦ J(U,p,q;·)` used in the special partition
 average corollary. -/
-noncomputable abbrev responseJCubeObservable {d : ℕ} (p q : Vec d) :
+noncomputable abbrev restrictionResponseJCubeObservable {d : ℕ} (p q : Vec d) :
     Set (Vec d) → RegCoeffField d → ℝ :=
   fun U a => ResponseJ U p q a.toFun
 
 /-- The response observable on the origin cube, centered by its expectation. -/
-noncomputable abbrev centeredResponseJOriginObservable {d : ℕ} (P : CoeffLaw d)
+noncomputable abbrev restrictionCenteredResponseJOriginObservable {d : ℕ} (P : RestrictionCoeffLaw d)
     (n : ℤ) (p q : Vec d) : RegCoeffField d → ℝ :=
-  centeredOriginObservable P n (responseJCubeObservable p q)
+  restrictionCenteredOriginObservable P n (restrictionResponseJCubeObservable p q)
 
 /-- The uncentered partition average of the response functional over scale-`n`
 descendants of the origin cube at scale `m`. -/
-noncomputable abbrev responseJDescendantAverage {d : ℕ}
+noncomputable abbrev restrictionResponseJDescendantAverage {d : ℕ}
     (n m : ℤ) (p q : Vec d) : RegCoeffField d → ℝ :=
-  descendantAverage n m (responseJCubeObservable p q)
+  restrictionDescendantAverage n m (restrictionResponseJCubeObservable p q)
 
 /-- The centered partition average of the response functional over scale-`n`
 descendants of the origin cube at scale `m`. -/
-noncomputable abbrev centeredResponseJDescendantAverage {d : ℕ} (P : CoeffLaw d)
+noncomputable abbrev restrictionCenteredResponseJDescendantAverage {d : ℕ} (P : RestrictionCoeffLaw d)
     (n m : ℤ) (p q : Vec d) : RegCoeffField d → ℝ :=
-  centeredDescendantAverage P n m (responseJCubeObservable p q)
-
-/-- Cardinal square-root fluctuation scale of a triadic partition. -/
-noncomputable def partitionCardinalityScale {d : ℕ} (n m : ℤ) : ℝ :=
-  Real.sqrt ((descendantsAtScale (originCube d m) n).card : ℝ) /
-    ((descendantsAtScale (originCube d m) n).card : ℝ)
-
-/-- Explicit color-count constant for descendant averages with `Gamma_sigma`
-tails. -/
-noncomputable def gammaSigmaDescendantsAtScaleConst (d : ℕ) (k : ℤ) (σ : ℝ) : ℝ :=
-  gammaTriangleConst σ * gammaSigmaIndependentSumConst σ *
-    Real.sqrt ((((scaleColorPeriod k) ^ d : ℕ) : ℝ))
-
-/-- Explicit color-count constant for descendant averages with `Psi_sigma`
-tails. -/
-noncomputable def psiSigmaDescendantsAtScaleConst (d : ℕ) (k : ℤ) (σ : ℝ) : ℝ :=
-  psiSigmaTriangleConst σ * psiSigmaIndependentSumConst σ *
-    Real.sqrt ((((scaleColorPeriod k) ^ d : ℕ) : ℝ))
+  restrictionCenteredDescendantAverage P n m (restrictionResponseJCubeObservable p q)
 
 /-- Exact Chapter 4 color-count constant multiplying the genuinely `L^p`
 Rosenthal term in the partition-average fluctuation bound. -/

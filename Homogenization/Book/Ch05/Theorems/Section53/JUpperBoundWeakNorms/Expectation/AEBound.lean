@@ -25,8 +25,8 @@ This theorem discharges the coefficient-dependent integrability inputs and the
 a.s. ellipticity support.  The remaining hypotheses are deterministic cutoff
 controls for the still-arbitrary manuscript cutoff `φ`. -/
 theorem ae_abs_centeredJMinusCutoffWeightedChildAtScale_le_jUpperWeakNormManuscriptPointwiseRHS
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P)
     (m k : ℤ) (s t : ℝ) (φ : Vec d → ℝ) (p q p0 q0 : Vec d)
     {C B Cosc scaleSep BφS BφT cutoffDerivative Cprod : ℝ}
     (hC : 0 ≤ C)

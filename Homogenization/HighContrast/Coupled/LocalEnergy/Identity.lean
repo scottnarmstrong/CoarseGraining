@@ -64,7 +64,7 @@ theorem pointwise_energy_test_identity (A : Mat d) (gv gvs p q gS : Vec d)
   set V := gv - (1/2:ℝ)•p with hVdef
   set Vstar := gvs - (1/2:ℝ)•p with hVsdef
   simp only [sub_eq_add_neg, vecDot_add_left, vecDot_add_right,
-    vecDot_smul_left, vecDot_smul_right, vecDot_neg_left, smul_eq_mul]
+    vecDot_smul_left, vecDot_smul_right, vecDot_neg_left]
   rw [vecDot_comm (matVecMul A p) V, vecDot_comm (matVecMul (matTranspose A) p) Vstar,
     vecDot_comm (matVecMul A V) gS, vecDot_comm (matVecMul A p) gS,
     vecDot_comm (matVecMul (matTranspose A) Vstar) gS,
@@ -106,12 +106,14 @@ def cutoffIntegrand (a : CoeffField d) (v vstar : H1Function U) (P : BlockVec d)
 
 section Integrability
 
+omit [NeZero d] in
 /-- `L∞` control of `η²`. -/
 theorem memLpTop_sqCutoff_cube {η : Vec d → ℝ}
     (hη : ContDiff ℝ (⊤ : ℕ∞) η) (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1) :
     MemLp (sqCutoff η) (⊤ : ENNReal) (volumeMeasureOn (openCubeSet (originCube d m))) :=
   sqCutoff_memLpTop hη hIcc
 
+omit [NeZero d] in
 /-- `L∞` control of `∂ᵢ(η²)`. -/
 theorem memLpTop_fderiv_sqCutoff_cube {η : Vec d → ℝ} {Gη : ℝ}
     (hη : ContDiff ℝ (⊤ : ℕ∞) η) (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1)
@@ -120,12 +122,14 @@ theorem memLpTop_fderiv_sqCutoff_cube {η : Vec d → ℝ} {Gη : ℝ}
       (volumeMeasureOn (openCubeSet (originCube d m))) :=
   sqCutoff_fderiv_memLpTop hη hIcc hGη i
 
+omit [NeZero d] in
 /-- `V = ∇v − ½p ∈ L²`. -/
 theorem memVectorL2_centeredGrad (v : H1Function U) (P : BlockVec d) :
     MemVectorL2 U (fun x => v.grad x - (1/2:ℝ)•P.1) := by
   letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
   exact v.grad_memVectorL2.sub (memVectorL2_const ((1/2:ℝ)•P.1))
 
+omit [NeZero d] in
 theorem integrableOn_energyIntegrand {a : CoeffField d} {Θ : ℝ}
     {v vstar : H1Function U} {P : BlockVec d} {η : Vec d → ℝ}
     (hEllO : IsEllipticFieldOn 1 Θ U a)
@@ -149,6 +153,7 @@ theorem integrableOn_energyIntegrand {a : CoeffField d} {Θ : ℝ}
     (memVectorL2_matVecMul_symmPart_of_isEllipticFieldOn hEllO
       (memVectorL2_centeredGrad vstar P))
 
+omit [NeZero d] in
 theorem integrableOn_bulkIntegrand {a : CoeffField d} {Θ : ℝ}
     {v vstar : H1Function U} {P : BlockVec d} {η : Vec d → ℝ}
     (hEllO : IsEllipticFieldOn 1 Θ U a)
@@ -179,6 +184,7 @@ theorem integrableOn_bulkIntegrand {a : CoeffField d} {Θ : ℝ}
   exact integrableOn_memLpTop_mul_vecDot (memLpTop_sqCutoff_cube hη hIcc) hF2
     (memVectorL2_centeredGrad vstar P)
 
+omit [NeZero d] in
 theorem integrableOn_cutoffIntegrand {a : CoeffField d} {Θ : ℝ}
     {v vstar : H1Function U} {P : BlockVec d} {η : Vec d → ℝ} {Gη : ℝ}
     (hEllO : IsEllipticFieldOn 1 Θ U a)
@@ -205,6 +211,7 @@ end Integrability
 
 /-! ## The integral test identity -/
 
+omit [NeZero d] in
 /-- **The test identity.**  With the weak form and the
 `η²·u` test pair, the energy integral equals the bulk integral plus the cutoff
 integral. -/
@@ -214,7 +221,7 @@ theorem energyIntegral_eq_bulk_add_cutoff
     (hEllO : IsEllipticFieldOn 1 Θ U a)
     (hη : ContDiff ℝ (⊤ : ℕ∞) η) (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1)
     (hGη : ∀ x i, |fderiv ℝ η x (basisVec i)| ≤ Gη)
-    (hWeak : CoupledWeakForm a U P.1 P.2 v vstar)
+    (hWeak : CoupledWeakForm a U P.2 v vstar)
     (hTrace : MemH10 U (fun x => v.toFun x + vstar.toFun x - vecDot P.1 x)) :
     (∫ x in U, energyIntegrand a v vstar P η x)
       = (∫ x in U, bulkIntegrand a v vstar P η x)

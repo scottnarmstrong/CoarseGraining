@@ -119,10 +119,10 @@ theorem memH10_of_ae_eq_h10 {U : Set (Vec d)} (hU : IsOpenBoundedConvexDomain U)
 
 /-! ## Sign flip of the coupled weak form -/
 
-/-- The coupled weak form is odd in `(p, q, v, v*)`. -/
-theorem coupledWeakForm_neg {a : CoeffField d} {U : Set (Vec d)} {p q : Vec d}
-    {v vstar : H1Function U} (h : CoupledWeakForm a U p q v vstar) :
-    CoupledWeakForm a U (-p) (-q) (-v) (-vstar) := by
+/-- The coupled weak form is odd in `(q, v, v*)`. -/
+theorem coupledWeakForm_neg {a : CoeffField d} {U : Set (Vec d)} {q : Vec d}
+    {v vstar : H1Function U} (h : CoupledWeakForm a U q v vstar) :
+    CoupledWeakForm a U (-q) (-v) (-vstar) := by
   intro φ φstar hsum
   have hbase := h φ φstar hsum
   have e1 : ∀ x, vecDot (φ.grad x) (matVecMul (a x) ((-v).grad x))
@@ -192,7 +192,7 @@ pair `(f_k, −g_k)` yields
 theorem levelEnergy_identity {U : Set (Vec d)} (hU : IsOpenBoundedConvexDomain U)
     {Θ : ℝ} {a : CoeffField d} (hEll : IsEllipticFieldOn 1 Θ U a)
     {p q : Vec d} {v vstar : H1Function U}
-    (hCWF : CoupledWeakForm a U p q v vstar)
+    (hCWF : CoupledWeakForm a U q v vstar)
     {w₁ w₂ : H1Function U} (hw1meas : Measurable w₁.toFun) (hw2meas : Measurable w₂.toFun)
     (hw1g : ∀ x, w₁.grad x = v.grad x - (1 / 2 : ℝ) • p)
     (hw2g : ∀ x, w₂.grad x = -vstar.grad x + (1 / 2 : ℝ) • p)
@@ -363,7 +363,7 @@ by the `s`-metric Young inequality (`t = 1`) and the coefficient bounds. -/
 theorem levelEnergy_sq_bound {U : Set (Vec d)} (hU : IsOpenBoundedConvexDomain U)
     {Θ : ℝ} (hΘ : 0 ≤ Θ) {a : CoeffField d} (hEll : IsEllipticFieldOn 1 Θ U a)
     {p q : Vec d} {v vstar : H1Function U}
-    (hCWF : CoupledWeakForm a U p q v vstar)
+    (hCWF : CoupledWeakForm a U q v vstar)
     {w₁ w₂ : H1Function U} (hw1meas : Measurable w₁.toFun) (hw2meas : Measurable w₂.toFun)
     (hw1g : ∀ x, w₁.grad x = v.grad x - (1 / 2 : ℝ) • p)
     (hw2g : ∀ x, w₂.grad x = -vstar.grad x + (1 / 2 : ℝ) • p)
@@ -598,7 +598,7 @@ level-energy hypothesis with `E₀ = 2√d·√(Θ|p|²+|q|²)`. -/
 theorem coupled_levelEnergy {U : Set (Vec d)} (hU : IsOpenBoundedConvexDomain U)
     {Θ : ℝ} (hΘ : 0 ≤ Θ) {a : CoeffField d} (hEll : IsEllipticFieldOn 1 Θ U a)
     {p q : Vec d} {v vstar : H1Function U}
-    (hCWF : CoupledWeakForm a U p q v vstar)
+    (hCWF : CoupledWeakForm a U q v vstar)
     (htrace : MemH10 U (fun x => v.toFun x + vstar.toFun x - vecDot p x)) :
     ∃ (w₁ w₂ : H1Function U),
       Measurable w₁.toFun ∧ Measurable w₂.toFun ∧

@@ -84,8 +84,8 @@ private theorem highScaleWeight_le_betaWeight
   nlinarith
 
 private theorem sigmaHatAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℤ) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℤ) :
     0 ≤ sigmaHatAtScale hP hStruct m := by
   exact Real.sqrt_nonneg _
 
@@ -94,8 +94,8 @@ average terms at the Section 5.3 special vectors.  The right side is the
 weighted descendant average of the normalized full-block operator-norm-square
 fluctuation. -/
 theorem paired_highScaleAverageTerms_special_le_weighted_fullBlockNormalized_fluctuation
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (a : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField a)
     {k m : ℕ} (β s t : ℝ) (hβs : β ≤ s) (hβt : β ≤ t) (e : Vec d)
     (hb : 0 < hP.barSigmaAtScale hStruct (m : ℤ))

@@ -27,8 +27,8 @@ noncomputable section
 coarse-fluctuation special vectors, before the second and third Section 5.3
 lemmas are used to rewrite it into manuscript coarse-fluctuation quantities. -/
 noncomputable def specialWeakNormManuscriptRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Vec d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -52,8 +52,8 @@ noncomputable def specialWeakNormManuscriptRHSAtScale
 /-- Scalar weight multiplying the tau and low-scale tail terms in the final
 coarse-fluctuation RHS. -/
 noncomputable def coarseFluctuationScalarWeightAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (m : ℕ) : ℝ :=
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (m : ℕ) : ℝ :=
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
   σ * (hP.barSigmaStarAtScale hStruct 0)⁻¹ +
     σ⁻¹ * hP.barSigmaAtScale hStruct 0
@@ -61,8 +61,8 @@ noncomputable def coarseFluctuationScalarWeightAtScale
 /-- Weighted sum of normalized full-block operator-norm-square fluctuation
 expectations appearing in the final coarse-fluctuation RHS. -/
 noncomputable def coarseFluctuationFullBlockSumAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -74,8 +74,8 @@ noncomputable def coarseFluctuationFullBlockSumAtScale
 
 /-- Weighted tau sum appearing in the final coarse-fluctuation RHS. -/
 noncomputable def coarseFluctuationTauSumAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Vec d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -87,8 +87,8 @@ noncomputable def coarseFluctuationTauSumAtScale
 
 /-- Unit-scale moment weight appearing in the final coarse-fluctuation RHS. -/
 noncomputable def coarseFluctuationUnitMomentWeightAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) : ℝ :=
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
   σ * Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi +
@@ -97,8 +97,8 @@ noncomputable def coarseFluctuationUnitMomentWeightAtScale
 /-- Response moment appearing in the positive-excess contribution of the final
 coarse-fluctuation RHS. -/
 noncomputable def coarseFluctuationResponseMomentAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Vec d) : ℝ :=
   let ζ := section53CoarseFluctuationZeta hP4
@@ -107,7 +107,7 @@ noncomputable def coarseFluctuationResponseMomentAtScale
   Real.rpow
     (∫ a,
       Real.rpow
-        (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ ∂P)
+        (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ ∂P)
     ζ⁻¹
 
 /-- The six-term manuscript RHS from
@@ -117,8 +117,8 @@ This is the target RHS for the final third Section 5.3 lemma.  The matrix
 fluctuation term uses the Euclidean operator norm via
 `fullBlockNormalizedFluctuationOperatorNormSqAtScale`. -/
 noncomputable def coarseFluctuationManuscriptRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (C ε : ℝ) (k m : ℕ) (e : Vec d) : ℝ :=
   let β := section53CoarseFluctuationBeta hP4
@@ -148,9 +148,9 @@ the finite-RHS side conditions intentionally left on
 `JUpperBoundWeakNorms_homogenizationScale`; this theorem does not introduce a
 new proof package. -/
 theorem expectedCenteredResponseJAtScale_le_specialWeakNormManuscriptRHSAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Vec d)
     (hGradSq :
@@ -228,9 +228,9 @@ Ch4 law-facing stationarity theorem.  The observable is the Ch4 normalized
 full-block operator-norm-square fluctuation; this theorem only rewrites the
 proof-folder alias and applies stationarity. -/
 private theorem integral_descendantsAverage_fullBlockNormalizedFluctuationOperatorNormSqAtScale_eq_originCube_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P) (center : ℤ)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P) (center : ℤ)
     {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
     (hOrigin :
       Integrable
@@ -254,9 +254,9 @@ average also stationarize to the origin cube.  This is the form used after the
 deterministic coarse-average bridge, whose right side carries the deterministic
 factor `2 * thetaAtScale`. -/
 private theorem integral_descendantsAverage_const_mul_fullBlockNormalizedFluctuationOperatorNormSqAtScale_eq_originCube_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P) (center : ℤ)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P) (center : ℤ)
     {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m) (C : ℝ)
     (hOrigin :
       Integrable
@@ -310,9 +310,9 @@ private theorem integral_descendantsAverage_const_mul_fullBlockNormalizedFluctua
 /-- Expectation-level stationarity conversion for the weighted full-block
 fluctuation sum generated by the deterministic high-scale bridge. -/
 theorem integral_weighted_descendantsAverage_fullBlockNormalizedFluctuationOperatorNormSqAtScale_eq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) :
     let β := section53CoarseFluctuationBeta hP4

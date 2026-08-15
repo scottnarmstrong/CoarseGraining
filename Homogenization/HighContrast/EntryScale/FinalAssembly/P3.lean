@@ -21,9 +21,9 @@ theorem exists_bufferExponent_terminal_p_mul_responseMoment_add_star_le_const_on
     (hC_resp :
       4 * (4 * ((3 : ℝ) ^ (hc.rhoM * (L : ℝ)) * η_M + 2)) ≤ C_resp) :
     ∃ B : ℝ, 1 ≤ B ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {rho : ℝ} {N k m : ℕ}
         (e : Homogenization.Vec d),
@@ -123,7 +123,6 @@ theorem sharp_lowerEdge_budget_payment
     (hdecay_le : decay ≤ (1 / 4 : ℝ))
     (heps_pos : 0 < eps)
     (hC_resp_nonneg : 0 ≤ C_resp)
-    (hc_fold_pos : 0 < c_fold)
     (hpair : Pv * RMv + Pv * RMSv ≤ C_resp * (1 + Fv))
     (hone_le_P : (1 : ℝ) ≤ Pv)
     (hP_nonneg : 0 ≤ Pv)

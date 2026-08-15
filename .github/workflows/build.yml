@@ -18,14 +18,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      # Installs the toolchain from `lean-toolchain`, runs `lake exe cache get`
-      # to fetch prebuilt mathlib oleans, then `lake build` for the project.
-      - name: Build (lean-action)
+      # Install the toolchain from `lean-toolchain` and fetch the Mathlib cache.
+      # The build itself runs in the next step so its complete output can be
+      # checked before any project oleans exist.
+      - name: Set up Lean and Mathlib cache
         uses: leanprover/lean-action@v1
         with:
+          build: false
           use-mathlib-cache: true
+
+      - name: Enforce warning-free production build
+        shell: bash
+        run: |
+          set -o pipefail
+          lake build 2>&1 | tee production-build.log
+          if grep -iE '^warning:|declaration uses .sorry' production-build.log; then
+            echo "Production build emitted a warning."
+            exit 1
+          fi
 
       # Build the axiom audit and surface its `#print axioms` output in the log,
       # confirming the public theorems use only the standard mathlib axioms.
       - name: Axiom audit
-        run: lake build Homogenization.Meta.AxiomsAudit
+        shell: bash
+        run: |
+          set -o pipefail
+          lake build Homogenization.Meta.AxiomsAudit 2>&1 | tee axioms-audit.log
+          if grep -iE '^warning:|declaration uses .sorry' axioms-audit.log; then
+            echo "Axiom audit build emitted a warning."
+            exit 1
+          fi

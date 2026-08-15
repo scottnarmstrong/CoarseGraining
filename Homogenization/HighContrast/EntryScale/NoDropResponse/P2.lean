@@ -20,9 +20,9 @@ Linear analog of
 theorem expectedCenteredResponsesAtMemoryGrid_le_noDropResponseRHSLinear_of_split_raw_highContrast_lower_memory_no_bad_with_packaged_fluctuation_tau_and_sqrt_linear
     {ι : Type*} (s : Finset ι)
     {d : ℕ} [NeZero d] (hc : HighContrastExponents d)
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {N Nstar L i : ℕ} (e : Homogenization.Vec d)
     {rho C C_delta C_memory C_edgeMem C_S C_fluct C_sqrt eps etaS etaSt decay

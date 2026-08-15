@@ -61,9 +61,9 @@ part of the Section 5.3 fluctuation sum, up to the remaining measurability
 surface for the real terminal stochastic maximum.
 -/
 theorem lintegral_ofReal_terminalCenteredFullBlockFluctuationSqAtScale_sum_le_windowConstant_mul_polynomial_convolution_of_highMoment
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc)
@@ -167,9 +167,9 @@ theorem exists_bufferExponent_lintegral_ofReal_terminalCenteredFullBlockFluctuat
     {d : ℕ} [NeZero d] {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc) (L : ℕ) {η_S : ℝ} (hη_S : 0 < η_S) :
     ∃ B : ℝ, 1 ≤ B ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {N k m : ℕ},
           N ≤ k + 1 →
@@ -281,9 +281,9 @@ theorem exists_bufferExponent_terminalCenteredFullBlockFluctuationSqAtScale_inte
     {d : ℕ} [NeZero d] {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc) (L : ℕ) {η_S : ℝ} (hη_S : 0 < η_S) :
     ∃ B : ℝ, 1 ≤ B ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {N k m : ℕ},
           N ≤ k + 1 →
@@ -317,21 +317,21 @@ Source label `l.S.and.J`: squared deterministic annealed-drift contribution
 appearing after `|X+Y|^2 <= 2|X|^2 + 2|Y|^2`.
 -/
 noncomputable def terminalAnnealedFullBlockDriftSqAtScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (j m : ℕ) : ℝ :=
   terminalAnnealedFullBlockDriftAtScales hP hStruct j m ^ 2
 
 /--
 Source label `l.S.and.J`: named form of the pointwise deterministic split of
-the LIH terminal fluctuation into the stochastic centered-at-`j` part and the
+the library's terminal fluctuation into the stochastic centered-at-`j` part and the
 annealed drift.
 -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_terminalCentered_add_two_terminalAnnealedDrift
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (j m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) :
     Homogenization.Book.Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
@@ -343,15 +343,15 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_terminalCente
       hP hStruct j m Q a
 
 /--
-Source label `l.S.and.J`: after LIH's Section 5.3 natural reindex, the
+Source label `l.S.and.J`: after the library's Section 5.3 natural reindex, the
 coarse full-block fluctuation sum is bounded by the terminal stochastic
 centered-at-`j` sum plus the deterministic annealed-drift sum.  The only
 integrability needed for the stochastic centered square is supplied by `(P4)`.
 -/
 theorem coarseFluctuationFullBlockSumAtScale_le_two_terminalCentered_integral_sum_add_two_terminalAnnealedDrift_sum
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) :
     coarseFluctuationFullBlockSumAtScale hP hStruct hP4 k m ≤
@@ -474,9 +474,9 @@ The hypothesis `hDrift` is the remaining pointwise content of
 `T_m` scaling.
 -/
 theorem terminal_weight_mul_terminalAnnealedFullBlockDriftSq_sum_le_of_drift_bound
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) {C Cw rho F_m T_m : ℝ}
     (hC_nonneg : 0 ≤ C)
@@ -527,13 +527,13 @@ theorem terminal_weight_mul_terminalAnnealedFullBlockDriftSq_sum_le_of_drift_bou
 /--
 Source labels `e.drift.general`, `e.drift.nodrop`, and `l.S.and.J`: concrete
 no-drop insertion for the deterministic annealed-drift sum, with the geometric
-Section 5.3 weight constant from LIH instead of the temporary window-length
+Section 5.3 weight constant from the library instead of the temporary window-length
 bound.
 -/
 theorem terminal_weight_mul_terminalAnnealedFullBlockDriftSq_sum_le_noDrop_contrastExcess
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) {rho T_m : ℝ}
     (hrho_nonneg : 0 ≤ rho)
@@ -576,9 +576,9 @@ the analytic bridge from the stochastic buffer to the source-form
 `T_m S_{k,m} <= C (eta_S + rho^2) F_m`.
 -/
 theorem terminal_weight_mul_coarseFluctuationFullBlockSumAtScale_le_stochastic_add_drift
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) {rho T_m delta C_delta etaS : ℝ}
     (hdelta_pos : 0 < delta)
@@ -675,9 +675,9 @@ theorem exists_bufferExponent_terminal_weight_mul_coarseFluctuationFullBlockSumA
     {d : ℕ} [NeZero d] {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc) (L : ℕ) {etaS : ℝ} (hηS : 0 < etaS) :
     ∃ B : ℝ, 1 ≤ B ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {N k m : ℕ} {rho T_m delta C_delta : ℝ},
           N ≤ k + 1 →

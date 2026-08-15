@@ -151,9 +151,9 @@ theorem exists_weightedEllipticityOnOriginCube_interpolated_expLogSq
         let ηU : ℝ := finiteQuenchedTailExponent d σ (τ / 2)
         let η : ℝ := min ηJ ηU
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
             ∃ X : RegCoeffField d → ℝ,
@@ -313,9 +313,9 @@ theorem exists_weightedEllipticityOnOriginCube_uniformEndpoint_expLogSq
         0 < (s - τ / 2) * (2 : ℝ) →
         let η : ℝ := ((d : ℕ) : ℝ)
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hInf : GammaInfinityCoarseGrainedEllipticity P hP hStruct),
             hInf.params = params →
             ∃ X : RegCoeffField d → ℝ,

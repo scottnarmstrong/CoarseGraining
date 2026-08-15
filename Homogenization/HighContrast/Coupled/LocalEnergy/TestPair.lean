@@ -6,7 +6,7 @@ import Homogenization.Sobolev.Foundations.MeanZero
 
 The centered potentials `u = v − ½p·x − c`, `u* = v* − ½p·x + c` as
 `H¹` functions (with constant gradients `V = ∇v − ½p`, `V* = ∇v* − ½p`), and
-the smooth test pair `(η²u, η²u*)` built from the LIH smooth×`H¹` product
+the smooth test pair `(η²u, η²u*)` built from the library's smooth×`H¹` product
 `H1Function.mulContDiffMemLpTop`.  The admissibility
 `MemH10 (η²u + η²u*)` is obtained from `η²·(v+v*−p·x) ∈ H¹₀` via
 `H10Function.mulContDiffMemLpTop`.
@@ -32,6 +32,8 @@ def centeredPotential (m : ℤ) (v : H1Function (openCubeSet (originCube d m)))
   letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
   v + (-(1 / 2 : ℝ)) • affineH1 m p + H1Function.const (-c)
 
+omit [NeZero d] in
+/-- Evaluation formula for the centered potential. -/
 @[simp] theorem centeredPotential_toFun (v : H1Function (openCubeSet (originCube d m)))
     (p : Vec d) (c : ℝ) (x : Vec d) :
     (centeredPotential m v p c).toFun x = v.toFun x - (1 / 2 : ℝ) * vecDot p x - c := by
@@ -41,6 +43,8 @@ def centeredPotential (m : ℤ) (v : H1Function (openCubeSet (originCube d m)))
     affineH1_toFun, H1Function.const_apply]
   ring
 
+omit [NeZero d] in
+/-- Gradient formula for the centered potential. -/
 @[simp] theorem centeredPotential_grad (v : H1Function (openCubeSet (originCube d m)))
     (p : Vec d) (c : ℝ) (x : Vec d) :
     (centeredPotential m v p c).grad x = v.grad x - (1 / 2 : ℝ) • p := by
@@ -50,6 +54,7 @@ def centeredPotential (m : ℤ) (v : H1Function (openCubeSet (originCube d m)))
     affineH1_grad, H1Function.grad_const, add_zero]
   module
 
+omit [NeZero d] in
 /-- The sum of the two centered potentials is `v + v* − p·x`. -/
 theorem centeredPotential_add_toFun (v vstar : H1Function (openCubeSet (originCube d m)))
     (p : Vec d) (c : ℝ) (x : Vec d) :
@@ -62,12 +67,15 @@ theorem centeredPotential_add_toFun (v vstar : H1Function (openCubeSet (originCu
 
 variable {η : Vec d → ℝ}
 
-/-- Packaged `L^∞` data for `η²` and its gradient on the finite-measure cube. -/
+omit [NeZero d] in
+/-- Packaged `L^∞` data for `η²` on the finite-measure cube. -/
 theorem sqCutoff_memLpTop (hη : ContDiff ℝ (⊤ : ℕ∞) η)
     (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1) :
     MemLp (sqCutoff η) (⊤ : ENNReal) (volume.restrict (openCubeSet (originCube d m))) :=
   memLpTop_sqCutoff hη hIcc
 
+omit [NeZero d] in
+/-- Packaged `L∞` data for a partial derivative of `η²`. -/
 theorem sqCutoff_fderiv_memLpTop (hη : ContDiff ℝ (⊤ : ℕ∞) η)
     (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1) {Gη : ℝ}
     (hGη : ∀ x i, |fderiv ℝ η x (basisVec i)| ≤ Gη) (i : Fin d) :
@@ -77,7 +85,7 @@ theorem sqCutoff_fderiv_memLpTop (hη : ContDiff ℝ (⊤ : ℕ∞) η)
 
 /-! ## The test function `η²·u` -/
 
-/-- `η² · u` as an `H¹` function via the LIH smooth×`H¹` product. -/
+/-- `η² · u` as an `H¹` function via the library's smooth×`H¹` product. -/
 def testFun (hη : ContDiff ℝ (⊤ : ℕ∞) η) (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1)
     {Gη : ℝ} (hGη : ∀ x i, |fderiv ℝ η x (basisVec i)| ≤ Gη)
     (u : H1Function (openCubeSet (originCube d m))) :
@@ -85,6 +93,8 @@ def testFun (hη : ContDiff ℝ (⊤ : ℕ∞) η) (hIcc : ∀ x, η x ∈ Set.I
   u.mulContDiffMemLpTop (sqCutoff_contDiff hη) (sqCutoff_memLpTop (m := m) hη hIcc)
     (fun i => sqCutoff_fderiv_memLpTop (m := m) hη hIcc hGη i)
 
+omit [NeZero d] in
+/-- Evaluation formula for the cutoff test function. -/
 @[simp] theorem testFun_toFun (hη : ContDiff ℝ (⊤ : ℕ∞) η)
     (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1) {Gη : ℝ}
     (hGη : ∀ x i, |fderiv ℝ η x (basisVec i)| ≤ Gη)
@@ -92,6 +102,8 @@ def testFun (hη : ContDiff ℝ (⊤ : ℕ∞) η) (hIcc : ∀ x, η x ∈ Set.I
     (testFun hη hIcc hGη u).toFun x = sqCutoff η x * u.toFun x := by
   rw [testFun, Homogenization.H1Function.mulContDiffMemLpTop_toFun]
 
+omit [NeZero d] in
+/-- Gradient formula for the cutoff test function. -/
 @[simp] theorem testFun_grad (hη : ContDiff ℝ (⊤ : ℕ∞) η)
     (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1) {Gη : ℝ}
     (hGη : ∀ x i, |fderiv ℝ η x (basisVec i)| ≤ Gη)
@@ -102,7 +114,8 @@ def testFun (hη : ContDiff ℝ (⊤ : ℕ∞) η) (hIcc : ∀ x, η x ∈ Set.I
 
 /-! ## Admissibility of the test pair -/
 
-/-- `MemH10 (η² u + η² u*)`, from `η² · (u + u*) ∈ H¹₀` and the LIH
+omit [NeZero d] in
+/-- `MemH10 (η² u + η² u*)`, from `η² · (u + u*) ∈ H¹₀` and the library's
 `H10Function` smooth product.  The input `hTrace` is the trace fact
 `v + v* − p·x ∈ H¹₀(U)`. -/
 theorem memH10_testPair_sum (hη : ContDiff ℝ (⊤ : ℕ∞) η)

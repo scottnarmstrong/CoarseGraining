@@ -24,9 +24,9 @@ Source label `l.union.bound`: `ENNReal` form of the terminal/intermediate
 normalization comparison, ready to combine with the high-moment envelope.
 -/
 theorem ofReal_fullBlockOperatorNorm_terminalNormalizedCenteredFullBlock_le_initialWidetildeTheta_mul_intermediate_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {j m : ℕ} (hjm : j ≤ m) (Y : Homogenization.FullBlockMat d) :
     ENNReal.ofReal
@@ -73,9 +73,9 @@ attached to the cube `Q`; the normalization and centering are both at scale `j`.
 -/
 noncomputable def intermediateCenteredFullBlockDeviation
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (Y : ℕ → Homogenization.TriadicCube d → Ω → Homogenization.FullBlockMat d) :
     ℕ → Homogenization.TriadicCube d → Ω → ENNReal :=
   fun j Q ω =>
@@ -91,9 +91,9 @@ full-block matrix centered at scale `j`.
 -/
 noncomputable def terminalCenteredFullBlockDeviation
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (m : ℕ)
     (Y : ℕ → Homogenization.TriadicCube d → Ω → Homogenization.FullBlockMat d) :
     ℕ → Homogenization.TriadicCube d → Ω → ENNReal :=
@@ -111,9 +111,9 @@ intermediate-normalized deviation from the high-moment hypothesis.
 -/
 theorem terminalCenteredFullBlockDeviation_le_initialWidetildeTheta_mul_intermediate_of_P4
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ)
     (Y : ℕ → Homogenization.TriadicCube d → Ω → Homogenization.FullBlockMat d)
@@ -129,7 +129,7 @@ theorem terminalCenteredFullBlockDeviation_le_initialWidetildeTheta_mul_intermed
       hP hStruct hP4 hjm (Y j Q ω)
 
 /--
-Source label `a.HM`: LIH full-block coarse matrix process on a triadic cube.
+Source label `a.HM`: the library's full-block coarse matrix process on a triadic cube.
 The scale parameter is present only to match the high-moment observable shape.
 -/
 noncomputable def coarseFullBlockMatrixAtCubeProcess
@@ -144,9 +144,9 @@ coarse-block deviation
 -/
 noncomputable def intermediateCoarseBlockDeviation
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (a : Ω → Homogenization.RegCoeffField d) :
     ℕ → Homogenization.TriadicCube d → Ω → ENNReal :=
   intermediateCenteredFullBlockDeviation hP hStruct
@@ -158,23 +158,23 @@ deviation used in the maximal union bound.
 -/
 noncomputable def terminalCoarseBlockDeviation
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (m : ℕ) (a : Ω → Homogenization.RegCoeffField d) :
     ℕ → Homogenization.TriadicCube d → Ω → ENNReal :=
   terminalCenteredFullBlockDeviation hP hStruct m
     (coarseFullBlockMatrixAtCubeProcess a)
 
 /--
-Source label `l.S.and.J`: LIH's squared terminal full-block fluctuation
+Source label `l.S.and.J`: the library's squared terminal full-block fluctuation
 observable is the square of the local full-block operator norm with the same
 terminal normalization.
 -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_eq_terminal_norm_sq
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) :
     Homogenization.Book.Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
@@ -192,14 +192,14 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_eq_terminal_norm_sq
     fullBlockOperatorNorm]
 
 /--
-Source label `l.S.and.J`: deterministic split of the LIH terminal full-block
+Source label `l.S.and.J`: deterministic split of the library's terminal full-block
 fluctuation into the stochastic centered-at-`j` block and the deterministic
 annealed drift `Ahom_j - Ahom_m`.
 -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_le_two_stochastic_add_two_drift
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (j m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) :
     Homogenization.Book.Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
@@ -287,9 +287,9 @@ theorem p_bound_of_no_drop {r_m a b F_k F_m rho P_km : ℝ}
 
 /-- Source label `e.P.bound`: the concrete terminal prefactor is nonnegative. -/
 theorem terminalPAtScales_nonneg_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) :
     0 ≤ terminalPAtScales hP hStruct k m := by
@@ -337,9 +337,9 @@ dominates the terminal square-root scale.  Under `(P4)`, the scalar ratios
 `P_{k,m} = r_m (a_{k,m}+b_{k,m})` is in particular at least `r_m`.
 -/
 theorem sqrt_one_add_contrastExcessAtScale_le_terminalPAtScales_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) :
     Real.sqrt (1 + contrastExcessAtScale hP hStruct m) ≤
@@ -387,16 +387,16 @@ theorem sqrt_one_add_contrastExcessAtScale_le_terminalPAtScales_of_P4
 
 /--
 Source labels `p.HC.CR` and `e.P.bound`: the terminal prefactor dominates
-twice the LIH scalar `sqrt(theta_m)`.  Under `(P4)` both scalar ratios
+twice the library's scalar `sqrt(theta_m)`.  Under `(P4)` both scalar ratios
 `a_{k,m}` and `b_{k,m}` are at least one, so
 `P_{k,m} = r_m (a_{k,m} + b_{k,m}) >= 2 r_m = 2 sqrt(theta_m)`.  This is the
 sharp pricing needed to pay the summed-weight first-power source split with
 `2 * r_m` instead of the crude `2 * (1 + F_m)`.
 -/
 theorem two_mul_sqrtTheta_le_terminalPAtScales_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) :
     2 * Real.sqrt (Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ)) ≤
@@ -453,9 +453,9 @@ Source labels `p.HC.CR` and `e.P.bound`: the local weak-norm scalar
 coefficient is exactly the manuscript terminal prefactor `P_{k,m}`.
 -/
 theorem localWeakNormScalarWeightAtScales_eq_terminalPAtScales_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) :
     localWeakNormScalarWeightAtScales hP hStruct k m =
@@ -506,9 +506,9 @@ Source label `e.P.bound`: on a no-drop window, the concrete terminal
 prefactor satisfies `P_{k,m} <= 4 r_m`.
 -/
 theorem terminalPAtScales_le_four_mul_sqrt_contrastExcess_of_noDrop_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) {rho : ℝ}
     (hno :
@@ -654,9 +654,9 @@ residual factor `terminalPAtScales / (1 + F_k)` collapses so that
 factor is thus **fully absorbable into an `A·H` (linear-memory) channel**: it
 reduces to `4·H` up to fixed no-drop constants, leaving no residual `√(1+F)`. -/
 theorem linearEdgeMemory_terminalPAtScales_factor_le_four_of_noDrop_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) {rho H : ℝ}
     (hno :
@@ -687,9 +687,9 @@ Source label `e.sqrt.tau.absorb`: on a no-drop window, the expected
 lower-scale response of the special terminal pair is at most `2 r_m`.
 -/
 theorem expectedResponseJCubeSet_special_le_two_mul_sqrt_contrastExcess_of_noDrop_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) {rho : ℝ}
     (hno :

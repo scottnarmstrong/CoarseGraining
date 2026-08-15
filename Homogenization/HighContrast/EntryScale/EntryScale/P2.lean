@@ -114,9 +114,9 @@ theorem exists_entryScaleConstant_theta_entry_and_memoryGridScale_le_logb_of_cho
     (hlambda_pos : 0 < lambda)
     (hlambda_lt_one : lambda < 1) :
     ∃ Centry : ℝ, 0 ≤ Centry ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (_hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {T : ℝ} {N Nstar I : ℕ} {A : ℝ},
           1 ≤ T →
@@ -200,9 +200,9 @@ theorem exists_entryScaleConstant_theta_entry_and_memoryGridScale_le_logb_of_cho
     (hlambda_pos : 0 < lambda)
     (hlambda_lt_one : lambda < 1) :
     ∃ Centry : ℝ, 0 ≤ Centry ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {N Nstar I : ℕ} {A : ℝ},
           N =
@@ -300,9 +300,9 @@ theorem exists_uniform_final_scale_decay_and_physical_scale_of_entry
     (hdelta_sc : delta_sc ≤ loc.delta0 / 2)
     (hCentry_nonneg : 0 ≤ Centry) :
     ∃ C alpha : ℝ, 0 < C ∧ 0 < alpha ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P),
         hP4.params = hc.params →
         ∀ {Nentry : ℕ},

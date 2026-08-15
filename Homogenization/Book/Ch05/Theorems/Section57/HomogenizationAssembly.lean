@@ -174,9 +174,9 @@ theorem exists_coarseGrainingHomogenizationErrorAtDepth_interpolated_expLogSq
         let ηU : ℝ := finiteQuenchedTailExponent d σ (τ / 2)
         let η : ℝ := min ηJ ηU
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
             ∃ X : RegCoeffField d → ℝ,
@@ -306,16 +306,16 @@ abbrev assemblyComparisonDatumOfScalar {d : ℕ} [NeZero d]
 
 /-- Finite-`sigma` wrapper for the scalar homogenized matrix. -/
 def assemblyConstantCoeffMatrix {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {P : Ch04.RestrictionCoeffLaw d} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct) :
     Ch03.ConstantCoeffMatrix d :=
   assemblyConstantCoeffMatrixOfScalar (barSigmaLimit hP hStruct)
     hΓ.barSigmaLimit_pos
 
 abbrev assemblyComparisonDatum {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {P : Ch04.RestrictionCoeffLaw d} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
     (m : ℕ) (g : Vec d → Vec d) : Type _ :=
@@ -395,8 +395,8 @@ def assemblyControlledFactorsConclusionOfScalar {d : ℕ} [NeZero d]
 
 /-- Finite-`sigma` wrapper for the controlled-factor conclusion. -/
 def assemblyControlledFactorsConclusion {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {P : Ch04.RestrictionCoeffLaw d} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (Ccg α τ s r : ℝ) (X : RegCoeffField d → ℝ)
     (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
@@ -434,8 +434,8 @@ def assemblyControlledFactorsTwoExponentConclusionOfScalar {d : ℕ} [NeZero d]
 /-- Finite-`sigma` wrapper for the repaired two-exponent controlled-factor
 conclusion. -/
 def assemblyControlledFactorsTwoExponentConclusion {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {P : Ch04.RestrictionCoeffLaw d} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (Ccg α τ s r r₂ : ℝ) (X : RegCoeffField d → ℝ)
     (aω : RegCoeffField d) (ha : Ch04.AELocallyUniformlyEllipticField aω)
@@ -469,9 +469,9 @@ theorem exists_homogenizationComparison_controlledFactors_interpolated_expLogSq
         let ηU : ℝ := finiteQuenchedTailExponent d σ (τ / 2)
         let η : ℝ := min ηJ ηU
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
             ∃ X : RegCoeffField d → ℝ,
@@ -784,9 +784,9 @@ theorem exists_homogenizationComparison_controlledFactors_twoExponent_interpolat
         let ηU : ℝ := finiteQuenchedTailExponent d σ (τ / 2)
         let η : ℝ := min ηJ ηU
         ∃ Cscale : ℝ, 0 < Cscale ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
             ∃ X : RegCoeffField d → ℝ,

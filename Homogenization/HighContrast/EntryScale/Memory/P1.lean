@@ -717,9 +717,9 @@ Source label `e.H0.memory`: concrete initial memory bound by the corrected
 initial contrast budget `T = widetildeTheta_0`.
 -/
 theorem initialMemory_contrastExcessAtScale_le_initialWidetildeTheta_of_P4
-    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {N Nstar : ℕ}
     (hNNstar : N ≤ Nstar) :

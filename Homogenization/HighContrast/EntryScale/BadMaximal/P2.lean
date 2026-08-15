@@ -20,9 +20,9 @@ namespace Homogenization.HighContrast.EntryScale
 noncomputable section
 
 theorem coarseBlockMatrix_upperLeft_matLoewnerLE_barSigma_mul_one_add_terminalSpectralPositivePartAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d)
@@ -92,9 +92,9 @@ theorem coarseBlockMatrix_upperLeft_matLoewnerLE_barSigma_mul_one_add_terminalSp
           rw [vecDot_matVecMul_smul_one]
 
 theorem coarseBlockMatrix_lowerRight_matLoewnerLE_barSigmaStar_inv_mul_one_add_terminalSpectralPositivePartAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d)
@@ -164,9 +164,9 @@ theorem coarseBlockMatrix_lowerRight_matLoewnerLE_barSigmaStar_inv_mul_one_add_t
           rw [vecDot_matVecMul_smul_one]
 
 theorem coarseBlockMatrix_upperLeft_matrixNorm_le_barSigma_mul_one_add_terminalSpectralPositivePartAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d)
@@ -210,9 +210,9 @@ theorem coarseBlockMatrix_upperLeft_matrixNorm_le_barSigma_mul_one_add_terminalS
           rfl
 
 theorem coarseBlockMatrix_lowerRight_matrixNorm_le_barSigmaStar_inv_mul_one_add_terminalSpectralPositivePartAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d)
@@ -270,9 +270,9 @@ positive excess is controlled by the spectral positive part of the same
 terminally normalized full-block fluctuation.
 -/
 theorem upperLeft_terminalPositiveExcess_le_barSigma_mul_terminalSpectralPositivePartAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d)
@@ -298,9 +298,9 @@ positive excess is controlled by the spectral positive part of the same
 terminally normalized full-block fluctuation.
 -/
 theorem lowerRight_terminalPositiveExcess_le_barSigmaStar_inv_mul_terminalSpectralPositivePartAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d)
@@ -326,9 +326,9 @@ matrix-norm positive excess on one block is bounded by the same block's
 spectral positive part with the exact scalar terminal normalizer prefactor.
 -/
 theorem terminalMatrixPositiveExcessWeight_le_terminalNormalizer_mul_terminalSpectralPositivePartAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d)
@@ -399,9 +399,9 @@ This is the faithful terminal normalizer `2 * sqrt(theta_m)` before weakening
 it to `2 * (1 + F_m)`.
 -/
 theorem terminalPositiveExcessNormalizer_eq_two_mul_sqrt_thetaAtScale_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) :
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
@@ -443,9 +443,9 @@ matrix-norm positive excess on one block is bounded by the terminal spectral
 positive part with the sharper faithful terminal normalizer `2 * sqrt(theta_m)`.
 -/
 theorem terminalMatrixPositiveExcessWeight_le_two_mul_sqrt_thetaAtScale_mul_terminalSpectralPositivePartAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d)
@@ -511,9 +511,9 @@ descendants of `Q`.
 -/
 noncomputable def terminalSpectralPositivePartSourceEnvelope
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (a : Ω → Homogenization.RegCoeffField d) : Ω → ENNReal :=
@@ -530,9 +530,9 @@ maximal observable.
 -/
 noncomputable def terminalSpectralPositivePartSourceMax
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (a : Ω → Homogenization.RegCoeffField d) : Ω → ℝ :=
@@ -545,13 +545,13 @@ measurability of each terminal spectral positive-part scale term.
 
 This isolates the remaining analytic input: measurability of
 `terminalSpectralPositivePartAtScale`, i.e. the CFC positive-part norm applied
-to LIH's measurable normalized fluctuation matrix.
+to the library's measurable normalized fluctuation matrix.
 -/
 theorem aemeasurable_terminalSpectralPositivePartSourceEnvelope_of_aemeasurable_terminalSpectralPositivePartAtScale
     {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (a : Ω → Homogenization.RegCoeffField d)
@@ -595,9 +595,9 @@ measurability of each terminal spectral positive-part scale term.
 -/
 theorem aestronglyMeasurable_terminalSpectralPositivePartSourceMax_of_aemeasurable_terminalSpectralPositivePartAtScale
     {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (a : Ω → Homogenization.RegCoeffField d)
@@ -614,9 +614,9 @@ theorem aestronglyMeasurable_terminalSpectralPositivePartSourceMax_of_aemeasurab
       hP hStruct hc N m Q a hterm).ennreal_toReal).aestronglyMeasurable
 
 theorem aestronglyMeasurable_terminalSpectralPositivePartSourceMax_origin
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ) :
     AEStronglyMeasurable
       (terminalSpectralPositivePartSourceMax hP hStruct hc N m
@@ -631,9 +631,9 @@ theorem aestronglyMeasurable_terminalSpectralPositivePartSourceMax_origin
 
 theorem terminalSpectralPositivePartSourceMax_nonneg
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (a : Ω → Homogenization.RegCoeffField d) :
@@ -645,9 +645,9 @@ theorem terminalSpectralPositivePartSourceMax_nonneg
 /-- The finite ENNReal source envelope is never `⊤`. -/
 theorem terminalSpectralPositivePartSourceEnvelope_ne_top
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) (N m : ℕ)
     (Q : Homogenization.TriadicCube d)
     (a : Ω → Homogenization.RegCoeffField d) (ω : Ω) :
@@ -667,9 +667,9 @@ terminal spectral positive-part ENNReal envelope.
 -/
 theorem terminalSpectralPositivePartSourceEnvelope_le_of_start_le
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) {N k m : ℕ}
     (hNk : N ≤ k)
     (Q : Homogenization.TriadicCube d)
@@ -699,9 +699,9 @@ lower endpoint of the finite source window.
 -/
 theorem terminalSpectralPositivePartSourceMax_le_of_start_le
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) {N k m : ℕ}
     (hNk : N ≤ k)
     (Q : Homogenization.TriadicCube d)
@@ -734,9 +734,9 @@ bounded by the bad-event truncation of any enlarged source window.
 -/
 theorem badEventTruncation_terminalSpectralPositivePartSourceMax_le_of_start_le
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) {N k m : ℕ}
     (hNk : N ≤ k)
     (Q : Homogenization.TriadicCube d)
@@ -755,9 +755,9 @@ in the manuscript finite source maximum is bounded by that maximum.
 -/
 theorem weighted_terminalSpectralPositivePartAtScale_le_terminalSpectralPositivePartSourceMax
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) {N m j : ℕ}
     (Q : Homogenization.TriadicCube d)
     (a : Ω → Homogenization.RegCoeffField d) (ω : Ω)
@@ -834,9 +834,9 @@ but it keeps the terminal lower-edge normalizer as `2 * sqrt(theta_m)`.
 -/
 theorem weighted_terminalMatrixPositiveExcessWeight_le_two_mul_sqrt_thetaAtScale_mul_terminalSpectralPositivePartSourceMax
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N m j : ℕ}
     (Q : Homogenization.TriadicCube d)

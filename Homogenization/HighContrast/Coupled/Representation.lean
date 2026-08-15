@@ -5,7 +5,7 @@ import Homogenization.CoarseGraining.CubeMinimizer
 # Coupled representation (Proposition 3.1, existence direction)
 
 Formalization of the EXISTENCE direction of `p.coupled.representation`
-(the high-moment paper (Armstrong–Kuusi–Loher, in preparation), §3.1) for the
+(the high-moment paper (Armstrong–Kuusi–Loher, to appear), §3.1) for the
 pair constructed from the block minimizer, on the centered open triadic
 cube `U = openCubeSet (originCube d m)`.
 
@@ -30,6 +30,7 @@ variable {d : ℕ} [NeZero d] {m : ℤ} {Θ : ℝ} {a : CoeffField d}
 
 /-! ## Weak-gradient uniqueness under a.e.-equal values -/
 
+omit [NeZero d] in
 /-- Weak partial derivatives are unique a.e. even when the scalar
 representatives agree only a.e. on the open domain (Sobolev-level restatement,
 avoiding the heavier `Book.Ch03` bridge import). -/
@@ -49,6 +50,7 @@ private theorem hasWeakPartial_ae_eq_of_toFun_ae_eq {U : Set (Vec d)} (hU : IsOp
           MeasureTheory.integral_congr_ae (huv.mono fun x hx => by simp [hx])
     _ = -∫ x in U, hi x * φ x ∂volume := hhi φ hφ_smooth hφ_compact hφ_sub
 
+omit [NeZero d] in
 /-- On an open domain, two `H¹` representatives with a.e.-equal values have
 a.e.-equal weak gradients. -/
 private theorem h1grad_ae_eq_of_toFun_ae_eq {U : Set (Vec d)} (hU : IsOpen U)
@@ -71,6 +73,7 @@ private theorem h1grad_ae_eq_of_toFun_ae_eq {U : Set (Vec d)} (hU : IsOpen U)
 
 /-! ## Solenoidality of the constructed field `h = a∇v + aᵀ∇v*` -/
 
+omit [NeZero d] in
 /-- The field `h`, being (a.e.) the first component of `𝐁 Z`, is solenoidal:
 pairing against potential-zero-trace test fields via `BlockResponseSpace`. -/
 private theorem isSolenoidalOn_of_eq_fst
@@ -157,7 +160,7 @@ private theorem coupledWeakForm_aux {P : BlockVec d}
     (hj_flux : ∀ x, x ∈ openCubeSet (originCube d m) →
       matVecMul (a x) (v.grad x) - matVecMul (matTranspose (a x)) (vstar.grad x) =
         Z.flux x) :
-    CoupledWeakForm a (openCubeSet (originCube d m)) P.1 P.2 v vstar := by
+    CoupledWeakForm a (openCubeSet (originCube d m)) P.2 v vstar := by
   intro φ φstar hMemSum
   letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
   -- abbreviations
@@ -329,7 +332,7 @@ theorem exists_coupledRepresentation
         Z.flux =ᵐ[volumeMeasureOn (openCubeSet (originCube d m))]
           (fun x => matVecMul (a x) (v.grad x) -
             matVecMul (matTranspose (a x)) (vstar.grad x)) ∧
-        CoupledWeakForm a (openCubeSet (originCube d m)) P.1 P.2 v vstar ∧
+        CoupledWeakForm a (openCubeSet (originCube d m)) P.2 v vstar ∧
         (fun x => blockVecDot (Z.eval x)
             (blockMatVecMul (blockCoeffField a x) (Z.eval x))) =ᵐ[volumeMeasureOn
               (openCubeSet (originCube d m))]

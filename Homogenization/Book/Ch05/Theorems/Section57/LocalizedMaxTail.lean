@@ -24,9 +24,9 @@ noncomputable section
 /-- Direct finite-union tail for the localized descendant maximum, for one
 fixed probe vector. -/
 theorem measureReal_localizedLimitNormalizedJMax_sub_const_tail_le_card_mul_exp
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
-    (hstat : Ch04.StationaryLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier Pμ) (hStruct : Ch04.RestrictionStructuralLaw Pμ)
+    (hstat : Ch04.RestrictionStationaryLaw Pμ)
     {σ A c lam : ℝ} (hlam : 1 ≤ lam)
     {m n : ℕ} (hnm : n < m) (e : FullBlockVec d)
     (hOrigin :
@@ -68,9 +68,9 @@ theorem measureReal_localizedLimitNormalizedJMax_sub_const_tail_le_card_mul_exp
 
 /-- Direct finite-union tail for the normalized finite-probe maximum. -/
 theorem measureReal_localizedNormalizedProbeJMax_sub_const_tail_le_card_mul_card_mul_exp
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
-    (hstat : Ch04.StationaryLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier Pμ) (hStruct : Ch04.RestrictionStructuralLaw Pμ)
+    (hstat : Ch04.RestrictionStationaryLaw Pμ)
     {σ A c lam : ℝ} (hlam : 1 ≤ lam)
     {m n : ℕ} (hnm : n < m)
     (hOrigin :
@@ -116,9 +116,9 @@ theorem measureReal_localizedNormalizedProbeJMax_sub_const_tail_le_card_mul_card
 /-- Direct finite-union tail for the localized descendant maximum, using
 symmetric `Γσ` tails. -/
 theorem measureReal_localizedLimitNormalizedJMax_tail_le_card_mul_exp_of_isBigO
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
-    (hstat : Ch04.StationaryLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier Pμ) (hStruct : Ch04.RestrictionStructuralLaw Pμ)
+    (hstat : Ch04.RestrictionStationaryLaw Pμ)
     {σ A lam : ℝ} (hlam : 1 ≤ lam)
     {m n : ℕ} (hnm : n < m) (e : FullBlockVec d)
     (hOrigin :
@@ -160,9 +160,9 @@ theorem measureReal_localizedLimitNormalizedJMax_tail_le_card_mul_exp_of_isBigO
 /-- Direct finite-union tail for the normalized finite-probe maximum, using
 symmetric `Γσ` tails and no logarithmic maximum packaging. -/
 theorem measureReal_localizedNormalizedProbeJMax_tail_le_card_mul_card_mul_exp_of_isBigO
-    {d : ℕ} [NeZero d] {Pμ : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier Pμ) (hStruct : Ch04.StructuralLaw Pμ)
-    (hstat : Ch04.StationaryLaw Pμ)
+    {d : ℕ} [NeZero d] {Pμ : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier Pμ) (hStruct : Ch04.RestrictionStructuralLaw Pμ)
+    (hstat : Ch04.RestrictionStationaryLaw Pμ)
     {σ A lam : ℝ} (hlam : 1 ≤ lam)
     {m n : ℕ} (hnm : n < m)
     (hOrigin :
@@ -213,9 +213,9 @@ theorem measureReal_localizedFirstQuenchedEstimate_normalizedProbeJMax_tail_noLo
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ Cfluct Centry alpha : ℝ,
       0 < Cfluct ∧ 0 < Centry ∧ 0 < alpha ∧
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {ell n m : ℕ} {lam : ℝ}, 1 ≤ lam → ell < n → n < m →
@@ -294,9 +294,9 @@ theorem measureReal_localizedFirstQuenchedEstimate_normalizedProbeJMax_tail_noLo
     ∃ Centry a : ℝ, 0 < Centry ∧ 0 < a ∧
       ∀ {σ : ℝ}, 0 < σ →
         ∃ Cfluct : ℝ, 0 < Cfluct ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
           ∀ {ell n m : ℕ} {lam : ℝ}, 1 ≤ lam → ell < n → n < m →

@@ -63,8 +63,8 @@ private theorem vecDot_sub_self_add_add_self {d : ℕ} (x y : Vec d) :
   ring
 
 private theorem expectedJScalarFormula_limit_pair_eq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m : ℤ) {L : ℝ} (hL_pos : 0 < L) (u : Vec d) :
     expectedJScalarFormula hP hStruct m ((√L)⁻¹ • u) (√L • u) =
       (1 / 2 : ℝ) *
@@ -96,8 +96,8 @@ theorem abs_fullBlockVec_coord_le_one_of_dotProduct_le_one
 
 namespace GammaSigmaCoarseGrainedEllipticity
 
-variable {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-variable {hP : Ch04.LawCarrier P} {hStruct : Ch04.StructuralLaw P}
+variable {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+variable {hP : Ch04.RestrictionLawCarrier P} {hStruct : Ch04.RestrictionStructuralLaw P}
 
 /-- The annealed response with limiting scalar normalizers is controlled by
 the scalar contrast at the same scale. -/
@@ -131,15 +131,15 @@ theorem integral_limitNormalizedBlockJObservable_le_thetaAtScale_sub_one
     Section52.originBlockIntegrableAtScale_from_P4 hP hStruct hP4 k
   have hJ₁ :
       Integrable
-        (Ch04.responseJObservableCubeSet (originCube d (k : ℤ))
+        (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ))
           (p - pStar) (qStar - q)) P :=
-    hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+    hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
       (originCube d (k : ℤ)) (p - pStar) (qStar - q) hBlock
   have hJ₂ :
       Integrable
-        (Ch04.responseJObservableCubeSet (originCube d (k : ℤ))
+        (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ))
           (pStar + p) (qStar + q)) P :=
-    hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+    hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
       (originCube d (k : ℤ)) (pStar + p) (qStar + q) hBlock
   have hPvec_eq :
       scalarLimitInvSqrtBlockVec hP hStruct e = (p, q) := by
@@ -205,7 +205,7 @@ theorem integral_limitNormalizedBlockJObservable_le_thetaAtScale_sub_one
       Section52.annealedResponseJAtScale_eq_expectedJScalarFormula
         hP hStruct (k : ℤ) (p - pStar) (qStar - q) hBlock
     simpa [Ch04.expectedResponseJCubeSet, Ch04.annealedResponseJAtScale,
-      Ch04.responseJAtScale, Ch04.responseJObservableCubeSet] using h
+      Ch04.responseJAtScale, Ch04.restrictionResponseJObservableCubeSet] using h
   have hResp₂ :
       Ch04.expectedResponseJCubeSet P (originCube d (k : ℤ))
           (pStar + p) (qStar + q) =
@@ -215,7 +215,7 @@ theorem integral_limitNormalizedBlockJObservable_le_thetaAtScale_sub_one
       Section52.annealedResponseJAtScale_eq_expectedJScalarFormula
         hP hStruct (k : ℤ) (pStar + p) (qStar + q) hBlock
     simpa [Ch04.expectedResponseJCubeSet, Ch04.annealedResponseJAtScale,
-      Ch04.responseJAtScale, Ch04.responseJObservableCubeSet] using h
+      Ch04.responseJAtScale, Ch04.restrictionResponseJObservableCubeSet] using h
   have hsqrt_ne : √L ≠ 0 := ne_of_gt (Real.sqrt_pos.2 hL_pos)
   have hscalar :
       (1 / 2 : ℝ) * expectedJScalarFormula hP hStruct (k : ℤ)
@@ -281,7 +281,7 @@ theorem integral_limitNormalizedBlockJObservable_le_thetaAtScale_sub_one
       (1 / 2 : ℝ) * (b * L⁻¹ + L * c⁻¹ - 2) * dotProduct e e := hIntegral_eq
     _ ≤ b * c⁻¹ - 1 := hbound
     _ = thetaAtScale hP hStruct (k : ℤ) - 1 := by
-      simp [thetaAtScale, Ch04.LawCarrier.thetaAtScale, b, c]
+      simp [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, b, c]
 
 end GammaSigmaCoarseGrainedEllipticity
 

@@ -24,8 +24,8 @@ This file contains the scalar algebra for the manuscript choices
 manuscript scalar centering subtracted, specialized to the Section 5.3 special
 vectors. -/
 theorem expectedResponseJCubeSet_sub_half_vecDot_specialCentering_eq_expectedCenteredResponseJAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
     let q_e := specialQAtScale hP hStruct (m : ℤ) e
@@ -41,10 +41,10 @@ theorem expectedResponseJCubeSet_sub_half_vecDot_specialCentering_eq_expectedCen
     Section52.originBlockIntegrableAtScale_from_P4 hP hStruct hP4 m
   have hJ :
       Integrable
-        (Ch04.responseJObservableCubeSet (originCube d (m : ℤ))
+        (Ch04.restrictionResponseJObservableCubeSet (originCube d (m : ℤ))
           (specialPAtScale hP hStruct (m : ℤ) e)
           (specialQAtScale hP hStruct (m : ℤ) e)) P :=
-    hP.integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+    hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
       (originCube d (m : ℤ))
       (specialPAtScale hP hStruct (m : ℤ) e)
       (specialQAtScale hP hStruct (m : ℤ) e) hBlock
@@ -55,7 +55,7 @@ theorem expectedResponseJCubeSet_sub_half_vecDot_specialCentering_eq_expectedCen
       (specialQAtScale hP hStruct (m : ℤ) e) hJ
   rw [hCentered]
   simp [Ch04.expectedResponseJCubeSet, Ch04.annealedResponseJAtScale,
-    Ch04.responseJAtScale, Ch04.responseJObservableCubeSet,
+    Ch04.responseJAtScale, Ch04.restrictionResponseJObservableCubeSet,
     scalarizedResponseCenteringTerm]
 
 private theorem sigma_mul_inv_star_eq_sqrt_theta {b c σ θ : ℝ}
@@ -196,16 +196,16 @@ private theorem inv_sigmaHat_mul_specialQ_centering_coeff_sq_eq {b c σ θ : ℝ
           ring
 
 private theorem barSigmaStarAtScale_pos_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 < hP.barSigmaStarAtScale hStruct (m : ℤ) := by
   have hBlock :
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (m : ℤ))) P :=
     Section52.originBlockIntegrableAtScale_from_P4 hP hStruct hP4 m
   have hInv : 0 < hP.barSigmaStarInvAtScale hStruct (m : ℤ) := by
-    simpa [Ch04.LawCarrier.barSigmaStarInvAtScale] using
-      Ch04.LawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube
+    simpa [Ch04.RestrictionLawCarrier.barSigmaStarInvAtScale] using
+      Ch04.RestrictionLawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube
         hP
         (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw
           hP hStruct (m : ℤ))
@@ -214,8 +214,8 @@ private theorem barSigmaStarAtScale_pos_of_P4
   exact inv_pos.mpr hInv
 
 private theorem barSigmaAtScale_pos_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 < hP.barSigmaAtScale hStruct (m : ℤ) := by
   have hBlock :
@@ -229,14 +229,14 @@ private theorem barSigmaAtScale_pos_of_P4
       0 < hP.barSigmaAtScale hStruct (m : ℤ) *
         (hP.barSigmaStarAtScale hStruct (m : ℤ))⁻¹ := by
     exact lt_of_lt_of_le zero_lt_one (by
-      simpa [thetaAtScale, Ch04.LawCarrier.thetaAtScale] using htheta)
+      simpa [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale] using htheta)
   exact pos_of_mul_pos_left hprod_pos (inv_pos.mpr hstar_pos).le
 
 /-- Under `(P4)`, the scalar condition number at every origin scale is at
 least one. -/
 theorem one_le_thetaAtScale_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     1 ≤ thetaAtScale hP hStruct (m : ℤ) := by
   have hBlock :
@@ -250,8 +250,8 @@ theorem one_le_thetaAtScale_of_P4
 the scalar gap `sqrt(Theta_m) - 1`, times the Euclidean square of the chosen
 direction. -/
 theorem expectedResponseJCubeSet_special_eq_sqrtTheta_sub_one_mul_vecNormSq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
     let q_e := specialQAtScale hP hStruct (m : ℤ) e
@@ -381,8 +381,8 @@ theorem expectedResponseJCubeSet_special_eq_sqrtTheta_sub_one_mul_vecNormSq
 /-- At the special vectors, the raw annealed scalar response is bounded by the
 condition-number excess, with the Euclidean square of the chosen direction. -/
 theorem expectedResponseJCubeSet_special_le_thetaAtScale_sub_one_mul_vecNormSq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
     let q_e := specialQAtScale hP hStruct (m : ℤ) e
@@ -414,8 +414,8 @@ theorem expectedResponseJCubeSet_special_le_thetaAtScale_sub_one_mul_vecNormSq
 /-- Euclidean-unit specialization of
 `expectedResponseJCubeSet_special_le_thetaAtScale_sub_one_mul_vecNormSq`. -/
 theorem expectedResponseJCubeSet_special_le_thetaAtScale_sub_one_of_vecNormSq_eq_one
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d)
     (he : vecNormSq e = 1) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
@@ -430,8 +430,8 @@ theorem expectedResponseJCubeSet_special_le_thetaAtScale_sub_one_of_vecNormSq_eq
 
 /-- The manuscript special vector `p_e` has the exact centered size. -/
 theorem sigmaHatAtScale_mul_norm_specialPCentering_sq_eq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d)
     (he : ‖e‖ = 1) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
@@ -470,8 +470,8 @@ theorem sigmaHatAtScale_mul_norm_specialPCentering_sq_eq
 direction size is left explicit and can later be specialized by
 `vecNormSq e = 1`. -/
 theorem sigmaHatAtScale_mul_vecNormSq_specialPCentering_eq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
     let q_e := specialQAtScale hP hStruct (m : ℤ) e
@@ -508,8 +508,8 @@ theorem sigmaHatAtScale_mul_vecNormSq_specialPCentering_eq
 
 /-- The manuscript special vector `q_e` has the exact centered size. -/
 theorem inv_sigmaHatAtScale_mul_norm_specialQCentering_sq_eq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d)
     (he : ‖e‖ = 1) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
@@ -546,8 +546,8 @@ theorem inv_sigmaHatAtScale_mul_norm_specialQCentering_sq_eq
 /-- Euclidean-squared form of the manuscript special-vector centered size for
 `q_e`. -/
 theorem inv_sigmaHatAtScale_mul_vecNormSq_specialQCentering_eq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) (e : Vec d) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
     let q_e := specialQAtScale hP hStruct (m : ℤ) e

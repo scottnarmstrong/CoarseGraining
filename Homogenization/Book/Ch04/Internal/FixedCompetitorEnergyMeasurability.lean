@@ -10,7 +10,7 @@ import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability.MuOb
 Pure-import umbrella for the five-file `FixedCompetitorEnergyMeasurability`
 chain.
 
-**Internal claim of the chain (read top-down):** lift `LocalSigma` scalar
+**Internal claim of the chain (read top-down):** lift `PointwiseLocalSigma` scalar
 atoms (`Measurability`) → fixed-coefficient Borel maps on `HilbertMat`
 (`LipschitzBounds`) → quantitative-slice integral algebra (`Integrals`) →
 measurable block-energy averages (`BlockEnergyAverage`) → measurability of

@@ -144,7 +144,7 @@ theorem exists_h1_max_sub_const {d : ℕ} {U : Set (Vec d)}
 compact `K ⊆ U` lies in `H¹₀(U)`.
 
 Proof: pick a smooth cutoff `χ ≡ 1` on `K` with `tsupport χ ⊆ U`; then `χ·u`
-is in `H¹₀` by the LIH cutoff-membership lemma, and `χ·u = u` since `u` vanishes
+is in `H¹₀` by the library's cutoff-membership lemma, and `χ·u = u` since `u` vanishes
 off `K`. -/
 theorem memH10_of_compactSupport {d : ℕ} {U : Set (Vec d)}
     (hU : IsOpenBoundedConvexDomain U) (u : H1Function U)
@@ -158,7 +158,7 @@ theorem memH10_of_compactSupport {d : ℕ} {U : Set (Vec d)}
   have hχ_compact : HasCompactSupport χ :=
     Metric.isCompact_of_isClosed_isBounded (isClosed_tsupport χ)
       (hU.isBoundedDomain.isBounded.subset hχ_tsupport)
-  -- `χ · u` is in `H¹₀(U)` by the LIH cutoff-membership lemma.
+  -- `χ · u` is in `H¹₀(U)` by the library's cutoff-membership lemma.
   have hmem : MemH10 U (fun x => χ x * u.toFun x) :=
     memH10_mul_of_contDiff_hasCompactSupport hU hχ_smooth hχ_compact hχ_tsupport ⟨u, rfl⟩
   -- But `χ · u = u` pointwise: `χ = 1` on `K`, and `u = 0` off `K`.

@@ -18,9 +18,9 @@ maximum after Lyapunov's inequality in the manuscript.
 -/
 theorem coarseFluctuationResponseMomentAtScale_le_two_sqrtTheta_terminalUncenteredMomentRoot_two
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d)
     (he : Homogenization.Book.Ch02.vecNorm e = 1)
@@ -47,7 +47,7 @@ theorem coarseFluctuationResponseMomentAtScale_le_two_sqrtTheta_terminalUncenter
   let T : Homogenization.RegCoeffField d → ℝ :=
     fun a => terminalUncenteredCoarseBlockNorm hP hStruct m Q a
   let X : Homogenization.RegCoeffField d → ℝ :=
-    fun a => Homogenization.Book.Ch04.responseJObservableCubeSet Q p_e q_e a
+    fun a => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet Q p_e q_e a
   let Y : Homogenization.RegCoeffField d → ℝ := fun a => c * T a
   have hζ_pos : 0 < ζ := by
     simpa [ζ] using section53CoarseFluctuationZeta_pos hP4
@@ -66,9 +66,9 @@ theorem coarseFluctuationResponseMomentAtScale_le_two_sqrtTheta_terminalUncenter
   have hX_nonneg : ∀ a, 0 ≤ X a := by
     intro a
     dsimp [X]
-    exact Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg Q p_e q_e a
+    exact Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg Q p_e q_e a
   have hX_meas : AEMeasurable X P := by
-    simpa [X] using hP.aemeasurable_responseJObservableCubeSet Q p_e q_e
+    simpa [X] using hP.aemeasurable_restrictionResponseJObservableCubeSet Q p_e q_e
   have hY_mem : MeasureTheory.MemLp Y (2 : ENNReal) P := by
     simpa [Y, T, Q] using hTerminal_mem.const_mul c
   have hXY : X ≤ᵐ[P] Y := by
@@ -134,9 +134,9 @@ private theorem responseMoment_fullBlockOperatorNorm_one_le {d : ℕ} :
 
 private theorem responseMoment_scalarFullBlockNormalizer_self_annealed_eq_one
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) :
     scalarFullBlockNormalizerMatrixAtScale hP hStruct m *
@@ -222,9 +222,9 @@ bound.
 -/
 theorem terminalUncenteredCoarseBlockNorm_le_centered_add_drift_add_one
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (Q : Homogenization.TriadicCube d)
     (a : Homogenization.RegCoeffField d) :
@@ -299,9 +299,9 @@ weight.
 -/
 theorem terminalCoarseBlockDeviation_origin_toReal_le_inv_weight_mul_stochasticMax
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hc : HighContrastExponents d) {N k m : ℕ}
     (hNk : N ≤ k) (hkm : k ≤ m)
     (a : Homogenization.RegCoeffField d) :
@@ -403,9 +403,9 @@ envelope and the deterministic no-drop drift bound.
 -/
 theorem terminalUncenteredCoarseBlockNorm_origin_le_stochasticMax_add_noDrop_drift_add_one
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {rho : ℝ} {N k m : ℕ}
     (hNk : N ≤ k) (hkm : k ≤ m)
@@ -456,9 +456,9 @@ uncentered block norm into `L^2` once the stochastic maximum is in `L^2`.
 -/
 theorem terminalUncenteredCoarseBlockNorm_origin_memLp_two_of_stochasticMax
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {rho : ℝ} {N k m : ℕ}
     (hNk : N ≤ k) (hkm : k ≤ m)
@@ -527,9 +527,9 @@ hypothesis plus no-drop normalization.
 -/
 theorem terminalUncenteredCoarseBlockNorm_origin_annealedMomentRoot_two_le_stochasticMax_add_noDrop_drift
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {rho : ℝ} {N k m : ℕ}
     (hrho_nonneg : 0 ≤ rho)
@@ -707,9 +707,9 @@ source stochastic maximum.
 -/
 theorem terminalUncenteredCoarseBlockNorm_origin_annealedMomentRoot_two_le_window_stochasticMax_add_two
     {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {rho : ℝ} {N k m L : ℕ}
     (hrho_nonneg : 0 ≤ rho) (hrho_le_one : rho ≤ 1)
@@ -797,7 +797,7 @@ second-moment estimate into the real `L^2` annealed moment root used by the
 response estimate.
 -/
 theorem memLp_two_and_annealedMomentRoot_two_le_of_lintegral_enorm_sq_le
-    {d : ℕ} {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     [MeasureTheory.IsProbabilityMeasure P]
     {X : Homogenization.RegCoeffField d → ℝ} {η : ℝ}
     (hX_meas : MeasureTheory.AEStronglyMeasurable X P)
@@ -861,9 +861,9 @@ theorem exists_bufferExponent_terminalCoarseBlockStochasticMax_annealedMomentRoo
     {d : ℕ} [NeZero d] {hc : HighContrastExponents d}
     (hm : HighCenteredMomentParameters d hc) {η_M : ℝ} (hη_M : 0 < η_M) :
     ∃ B : ℝ, 1 ≤ B ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {N m : ℕ},
           N + Nat.ceil

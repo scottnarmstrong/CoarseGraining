@@ -52,7 +52,7 @@ theorem terminalStochasticWeakWeight_inv_toReal_mul_toReal
         norm_num
 
 /--
-Convert an LIH Section 5.2 descendant at absolute scale `n` into the
+Convert an the library's Section 5.2 descendant at absolute scale `n` into the
 `descendantsAtDepth` indexing used by the terminal source maximum.
 -/
 theorem section52LargeScaleSet_mem_descendantsAtScale_to_descendantsAtDepth
@@ -419,7 +419,7 @@ exact high-scale edge-weight-loss coefficient with the P4 lower-edge exponents
 `sLower + beta` and `sUpper + beta`.
 -/
 theorem section52LargeScale_terminalPositiveExcess_edgeWeightLoss_le_discountRatio_of_P4_beta
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N m : ℕ}
     (hLowerGap :
@@ -491,9 +491,9 @@ introduced.
 -/
 theorem section52LargeScale_terminalMatrixPositiveExcessWeight_mul_le_two_mul_sqrt_thetaAtScale_mul_sourceMax_min_one_add_badEventTruncation_mul_response
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N m : ℕ}
     {n : ℤ}
@@ -590,9 +590,9 @@ stochastic weak-weight loss and the first-power source-max split.
 -/
 theorem section52LargeScale_terminalMatrixPositiveExcessWeight_mul_le_weightLoss_mul_two_mul_sqrt_thetaAtScale_mul_sourceMax_min_one_add_badEventTruncation_mul_response
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N m : ℕ}
     {n : ℤ}
@@ -683,9 +683,9 @@ weak weight.
 -/
 theorem section52LargeScaleWeight_terminalLowerPositiveExcess_sup_mul_le_weightLossSup_mul_two_mul_sqrt_thetaAtScale_mul_sourceMax_min_one_add_badEventTruncation_mul_response
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N m : ℕ} {s : ℝ}
     (hs : 0 ≤ s)
@@ -817,9 +817,9 @@ source-max split.
 -/
 theorem section52LargeScaleWeight_terminalUpperPositiveExcess_sup_mul_le_weightLossSup_mul_two_mul_sqrt_thetaAtScale_mul_sourceMax_min_one_add_badEventTruncation_mul_response
     {Ω : Type*} {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) {N m : ℕ} {s : ℝ}
     (hs : 0 ≤ s)

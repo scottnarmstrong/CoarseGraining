@@ -20,8 +20,8 @@ unit-cube ellipticity observable normalized by the limiting scalar matrix.
 noncomputable section
 
 theorem aemeasurable_limitWeightedUnitEllipticityObservableOnCube
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (Q : TriadicCube d) {sUpper sLower : ℝ}
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower) :
     AEMeasurable
@@ -36,8 +36,8 @@ theorem aemeasurable_limitWeightedUnitEllipticityObservableOnCube
 /-- The localized limiting-normalized unit ellipticity observable has the same
 law as the origin observable on every scale-zero cube. -/
 theorem map_limitWeightedUnitEllipticityObservableOnCube_eq_origin_of_scale_zero
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {U : TriadicCube d} (hUscale : U.scale = 0)
     {sUpper sLower : ℝ} (hsUpper : 0 < sUpper) (hsLower : 0 < sLower) :
     Measure.map
@@ -101,8 +101,8 @@ theorem map_limitWeightedUnitEllipticityObservableOnCube_eq_origin_of_scale_zero
 /-- The Γσ tail of the limiting-normalized unit ellipticity observable
 transfers to every scale-zero cube. -/
 theorem isBigO_limitWeightedUnitEllipticityObservableOnCube_of_scale_zero
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {U : TriadicCube d} (hUscale : U.scale = 0) :
     IsBigO P (gammaSigma hΓ.sigma)
@@ -136,8 +136,8 @@ theorem isBigO_limitWeightedUnitEllipticityObservableOnCube_of_scale_zero
 /-- Scale-zero descendant supremum of the limiting-normalized unit ellipticity
 inside `\cu_m`. -/
 noncomputable def localizedLimitWeightedUnitEllipticitySup
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (params : QuantitativeCoarseGrainedEllipticityParams d) (m : ℕ) :
     RegCoeffField d → ℝ :=
   fun a =>
@@ -152,8 +152,8 @@ noncomputable def localizedLimitWeightedUnitEllipticitySup
 supremum controls the Ch2 upper and lower unit-ellipticity suprema at any
 larger exponent. -/
 theorem scaleZero_ellipticity_sup_bounds_of_localizedLimitWeightedUnitEllipticitySup_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a)
     {m : ℕ} {t M : ℝ}
@@ -275,8 +275,8 @@ theorem scaleZero_ellipticity_sup_bounds_of_localizedLimitWeightedUnitEllipticit
   exact ⟨hupperScaled.trans hloc, hlowerScaled.trans hloc⟩
 
 theorem measureReal_localizedLimitWeightedUnitEllipticitySup_tail_le_card_mul_exp
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct)
     (m : ℕ) {lam : ℝ} (hlam : 1 ≤ lam) :
     let Q : TriadicCube d := originCube d ((m : ℕ) : ℤ);

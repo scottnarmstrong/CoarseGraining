@@ -134,7 +134,7 @@ theorem axisCubeMeanZeroCoerciveEstimate_constant
     H1CoerciveEstimate.translate_constant, H1CoerciveEstimate.dilate_constant]
   rfl
 
-/-! ## Bridges between LIH `L²` realizations and `eLpNorm` -/
+/-! ## Bridges between the library's `L²` realizations and `eLpNorm` -/
 
 /-- The `L²` realization norm of an `H¹` value is the `toReal` of its `eLpNorm`. -/
 theorem norm_toScalarL2_eq {U : Set (Homogenization.Vec d)} (h : H1Function U) :

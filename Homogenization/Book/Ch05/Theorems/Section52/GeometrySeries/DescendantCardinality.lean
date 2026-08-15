@@ -379,8 +379,8 @@ theorem translateCube_originCube_zero_eq_of_scale_zero
       simp [originCube, translateCube, Book.Ch04.scaleTranslationShift]
 
 theorem upper_unitDescendantSup_momentRoot_le_card_mul_origin
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {s : ℝ} {ξ m : ℕ} (hs : 0 < s) (hξ_one : 1 ≤ ξ)
     (hSourceInt :
       Integrable
@@ -520,8 +520,8 @@ theorem upper_unitDescendantSup_momentRoot_le_card_mul_origin
         Ch04.LambdaMomentAtScale P 0 s ξ := hsup
 
 theorem lower_unitDescendantSup_momentRoot_le_card_mul_origin
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     {s : ℝ} {ξ m : ℕ} (hs : 0 < s) (hξ_one : 1 ≤ ξ)
     (hSourceInt :
       Integrable

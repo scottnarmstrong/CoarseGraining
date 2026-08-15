@@ -20,10 +20,10 @@ source split (min/bad against the response with the `2 * sqrt(theta_m)`
 normalizer) instead of the mis-sized Holder package.
 -/
 theorem paired_lowScaleTail_add_constantTail_special_le_responseBaseline_add_sourceMax_minBad_childResponseAverage_terms_localWindow
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d)
     (hm : HighCenteredMomentParameters d hc)
@@ -47,7 +47,7 @@ theorem paired_lowScaleTail_add_constantTail_special_le_responseBaseline_add_sou
       let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
       let childAvg := fun a : Homogenization.RegCoeffField d =>
         Homogenization.descendantsAverage Q (m - k)
-          (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+          (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       let response := fun a : Homogenization.RegCoeffField d =>
         (5 * β⁻¹) ^ 2 * childAvg a
       let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -74,7 +74,7 @@ theorem paired_lowScaleTail_add_constantTail_special_le_responseBaseline_add_sou
       let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
       let childAvg := fun a : Homogenization.RegCoeffField d =>
         Homogenization.descendantsAverage Q (m - k)
-          (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+          (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       let response := fun a : Homogenization.RegCoeffField d =>
         (5 * β⁻¹) ^ 2 * childAvg a
       let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
@@ -127,7 +127,7 @@ theorem paired_lowScaleTail_add_constantTail_special_le_responseBaseline_add_sou
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
-        (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
     let response := fun a : Homogenization.RegCoeffField d =>
       (5 * β⁻¹) ^ 2 * childAvg a
     let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -242,7 +242,7 @@ theorem paired_lowScaleTail_add_constantTail_special_le_responseBaseline_add_sou
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
   let lowerSmall : Homogenization.RegCoeffField d → ℝ := fun a =>
@@ -384,10 +384,10 @@ window-moment response coefficient is assumed.
 theorem linearProductTerms_special_le_centering_add_componentIntegrals_with_sourceMax_minBad_childResponse_lowerTailBudget_localWindow
     {d : ℕ} [NeZero d] :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         (hc : HighContrastExponents d)
         (hm : HighCenteredMomentParameters d hc)
@@ -410,7 +410,7 @@ theorem linearProductTerms_special_le_centering_add_componentIntegrals_with_sour
          let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
          let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
-            (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+            (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
          let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
          let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -436,7 +436,7 @@ theorem linearProductTerms_special_le_centering_add_componentIntegrals_with_sour
          let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
          let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
-            (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+            (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
          let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
          let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
@@ -484,7 +484,7 @@ theorem linearProductTerms_special_le_centering_add_componentIntegrals_with_sour
          let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
          let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
-            (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+            (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
          let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
          let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -509,7 +509,7 @@ theorem linearProductTerms_special_le_centering_add_componentIntegrals_with_sour
          let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
          let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
-            (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+            (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
          let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
          let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
@@ -557,7 +557,7 @@ theorem linearProductTerms_special_le_centering_add_componentIntegrals_with_sour
           Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
          let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
-            (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+            (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
          let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
          let sourceMax :=
@@ -767,7 +767,7 @@ theorem linearProductTerms_special_le_centering_add_componentIntegrals_with_sour
   let localSlotsWithEdge : ℝ := localSlots + lowerEdge
   let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
   let lowerSmall : Homogenization.RegCoeffField d → ℝ := fun a =>

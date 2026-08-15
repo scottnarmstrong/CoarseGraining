@@ -22,14 +22,14 @@ entrywise annealed matrix.
 namespace Homogenization
 
 open Homogenization MeasureTheory ProbabilityTheory
-open Homogenization.Book.Ch04 (CoeffLaw LawCarrier annealedBlockMatrixAtScale)
+open Homogenization.Book.Ch04 (RestrictionCoeffLaw RestrictionLawCarrier annealedBlockMatrixAtScale)
 
 variable {d : ℕ}
 
 /-- **Entrywise integrability of the coarse block matrix.**  Uses a.s. symmetry
 plus the C4 quadratic bounds at the `blockBasis` vectors. -/
 theorem integrable_blockMatEntry_coarse [NeZero d]
-    {L : CoeffLaw d} {Θ : ℝ} (hΘ : 1 ≤ Θ) (hP : LawCarrier L)
+    {L : RestrictionCoeffLaw d} {Θ : ℝ} (hΘ : 1 ≤ Θ) (hP : RestrictionLawCarrier L)
     (hLaw : ThetaEllipticLaw Θ L) (m : ℤ) (α β : BlockCoord d) :
     Integrable
       (fun a => blockMatEntry (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) α β) L := by
@@ -76,7 +76,7 @@ theorem integrable_blockMatEntry_coarse [NeZero d]
 
 /-- **Mean-zero.**  `𝔼[w·A_m w] = w·Ā_m w`. -/
 theorem mean_zero_coarse_blockQuadratic [NeZero d]
-    {L : CoeffLaw d} {Θ : ℝ} (hΘ : 1 ≤ Θ) (hP : LawCarrier L)
+    {L : RestrictionCoeffLaw d} {Θ : ℝ} (hΘ : 1 ≤ Θ) (hP : RestrictionLawCarrier L)
     (hLaw : ThetaEllipticLaw Θ L) (m : ℤ) (w : BlockVec d) :
     (∫ a, blockVecDot w
         (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) w) ∂L)
@@ -90,8 +90,9 @@ theorem mean_zero_coarse_blockQuadratic [NeZero d]
 from `scalar_block_variance`, uniform in all parameters. -/
 theorem centered_quadratic_second_moment [NeZero d] (hd : 3 ≤ d) :
     ∃ Cd : ℝ, 0 ≤ Cd ∧
-      ∀ {m : ℤ} (_hm : 0 ≤ m) {Θ : ℝ} (_hΘ : 1 ≤ Θ) {L : CoeffLaw d}
-        [IsProbabilityMeasure L] (_hP : LawCarrier L) (_hURD : IsUnitRangeDependentR L)
+      ∀ {m : ℤ} (_hm : 0 ≤ m) {Θ : ℝ} (_hΘ : 1 ≤ Θ) {L : RestrictionCoeffLaw d}
+        [IsProbabilityMeasure L] (_hP : RestrictionLawCarrier L)
+        (_hURD : IsRestrictionUnitRangeDependentR L)
         (_hLaw : ThetaEllipticLaw Θ L) (w : BlockVec d),
       (∫ a, (blockVecDot w (blockMatVecMul (ofFullBlockMat
             (toFullBlockMat (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun)

@@ -26,9 +26,9 @@ theorem measureReal_shiftedCrudeBottomBadScaleEvent_quenchedProbeEnvelope_le_wei
     (params : QuantitativeCoarseGrainedEllipticityParams d)
     (hcrudeRaw :
       ∀ {t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {N0 q m n : ℕ},
@@ -50,9 +50,9 @@ theorem measureReal_shiftedCrudeBottomBadScaleEvent_quenchedProbeEnvelope_le_wei
         P.real (badPairEvent Hshift t αbad q m n) ≤
           (S.card : ℝ) * ((D.card : ℝ) * Real.exp (-(lam ^ σ)))) :
       ∀ {Centry a t αbad : ℝ},
-      ∀ {P : Ch04.CoeffLaw d}
-        (hP : Ch04.LawCarrier P)
-        (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+        (hP : Ch04.RestrictionLawCarrier P)
+        (hStruct : Ch04.RestrictionStructuralLaw P)
         (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ {q : ℕ},

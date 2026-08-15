@@ -5,7 +5,7 @@ import Homogenization.CoarseGraining.SharpBlockBounds.DiagonalSandwich
 # Sharp-constant pointwise block bounds (Proposition 2.1)
 
 Facade for the sharp-constant pointwise block-matrix algebra of Proposition 2.1
-of the high-moment paper (Armstrong–Kuusi–Loher, in preparation):
+of the high-moment paper (Armstrong–Kuusi–Loher, to appear):
 
 * `SharpBlockBounds.Basic` — the ellipticity-class quadratic identities and the
   upper diagonal sandwich (items A4–A8-upper);

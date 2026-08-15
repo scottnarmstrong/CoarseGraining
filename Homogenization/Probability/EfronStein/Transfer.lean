@@ -1,5 +1,5 @@
 import Homogenization.Probability.EfronStein.Fin
-import Homogenization.Book.Ch04.Theorems.IndependenceDefinitions
+import Homogenization.Book.Ch04.Theorems.RestrictionIndependence
 import Mathlib.Probability.Independence.Basic
 import Mathlib.MeasureTheory.Integral.Prod
 
@@ -7,17 +7,17 @@ import Mathlib.MeasureTheory.Integral.Prod
 # Efron–Stein transfer to coefficient-field laws
 
 This file transfers the abstract product-space Efron–Stein inequality
-(`Homogenization.efronStein_pi`) to a *single* unit-range-dependent probability
-measure `P` on the honest-fields carrier `RegCoeffField d`, resampled through a
-family of restriction endomorphisms.
+(`Homogenization.efronStein_pi`) to a *single* restriction-unit-range-dependent
+probability measure `P` on the honest-fields carrier `RegCoeffField d`,
+resampled through a family of restriction endomorphisms.
 
 Fix a `Fintype ι` and a family of pairwise `AreUnitSeparated` measurable regions
 `C : ι → Set (Vec d)` (the `MeasurableSet` side-conditions are the D7-approved
 refinement making the carrier restriction σ-algebra `RestrictionSigmaR` well
 defined).  Writing `R a i := restrictReg (C i) (hC i) a` for the joint
-restriction map, each coordinate is a local random variable for
+restriction map, each coordinate is a restriction-local random variable for
 `RestrictionSigmaR (C i) (hC i)`, so the family is independent under a
-unit-range-dependent `P` and the pushforward `P.map R` factors as the product
+restriction-unit-range-dependent `P` and the pushforward `P.map R` factors as the product
 measure `Measure.pi (fun i => P.map (restrictReg (C i) (hC i)))`.  Efron–Stein
 on that product, transported back through the map identity, yields the variance
 bound for a bounded measurable observable `G` of the restricted fields.
@@ -25,7 +25,7 @@ bound for a bounded measurable observable `G` of the restricted fields.
 The single resampling coordinate is `restrictReg (C i) (hC i) a'`: an
 independent copy of `P` re-drawn only on `C i`.
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 open scoped MeasureTheory ProbabilityTheory BigOperators
@@ -50,26 +50,27 @@ theorem measurable_restrictObservable (U : Set (Vec d)) (hU : MeasurableSet U) :
     Measurable (restrictObservable U hU) :=
   measurable_restrictReg U hU
 
-/-- The restriction observable is a local random variable on its observation
-set: it is measurable for the carrier restriction σ-algebra
+/-- The restriction observable is a restriction-local random variable on its
+observation set: it is measurable for the carrier restriction σ-algebra
 `RestrictionSigmaR U hU`. -/
-theorem isLocalRandomVariable_restrictObservable (U : Set (Vec d))
+theorem isRestrictionLocalRandomVariable_restrictObservable (U : Set (Vec d))
     (hU : MeasurableSet U) :
-    Book.Ch04.IsLocalRandomVariable U hU (restrictObservable U hU) :=
+    Book.Ch04.IsRestrictionLocalRandomVariable U hU (restrictObservable U hU) :=
   measurable_restrictReg_restrictionSigmaR U hU
 
-/-- **Efron–Stein transfer.**  For a finite family of pairwise `AreUnitSeparated`
-measurable regions `C i`, a unit-range-dependent probability measure `P` on the
-carrier `RegCoeffField d`, and a bounded measurable observable `G` of the
-jointly restricted fields `R a = fun i => restrictReg (C i) (hC i) a`, the
-variance of `G ∘ R` is controlled by the sum of single-region resampling
-energies, each an independent copy of `P` re-drawn only on `C i`. -/
-theorem efronStein_transfer
+/-- **Restriction Efron–Stein transfer.**  For a finite family of pairwise
+`AreUnitSeparated` measurable regions `C i`, a restriction-unit-range-dependent
+probability measure `P` on the carrier `RegCoeffField d`, and a bounded
+measurable observable `G` of the jointly restricted fields
+`R a = fun i => restrictReg (C i) (hC i) a`, the variance of `G ∘ R` is
+controlled by the sum of single-region resampling energies, each an independent
+copy of `P` re-drawn only on `C i`. -/
+theorem efronStein_transfer_restriction
     {ι : Type*} [Fintype ι] [DecidableEq ι]
     {C : ι → Set (Vec d)} (hC : ∀ i, MeasurableSet (C i))
     (hsep : Pairwise fun i j => AreUnitSeparated (C i) (C j))
     {P : MeasureTheory.Measure (RegCoeffField d)} [MeasureTheory.IsProbabilityMeasure P]
-    (hP : IsUnitRangeDependentR P)
+    (hP : IsRestrictionUnitRangeDependentR P)
     {G : (ι → RegCoeffField d) → ℝ} (hG : Measurable G) {M : ℝ} (hMG : ∀ x, |G x| ≤ M)
     (R : RegCoeffField d → (ι → RegCoeffField d))
     (hRdef : R = fun a i => restrictReg (C i) (hC i) a) :
@@ -93,9 +94,9 @@ theorem efronStein_transfer
   have hf : ∀ i, AEMeasurable (fun a => X i a) P :=
     fun i => (measurable_restrictObservable (C i) (hC i)).aemeasurable
   have hindep : ProbabilityTheory.iIndepFun X P :=
-    Book.Ch04.iIndepFun_of_unitRangeDependentLaw_of_pairwise_separated
+    Book.Ch04.iIndepFun_of_restrictionUnitRangeDependentLaw_of_pairwise_separated
       (P := P) (U := C) (X := X) hC hP
-      (fun i => isLocalRandomVariable_restrictObservable (C i) (hC i)) hsep
+      (fun i => isRestrictionLocalRandomVariable_restrictObservable (C i) (hC i)) hsep
   have hmap : MeasureTheory.Measure.map R P = MeasureTheory.Measure.pi μ := by
     have h := (ProbabilityTheory.iIndepFun_iff_map_fun_eq_pi_map hf).1 hindep
     rw [hRdef]; exact h

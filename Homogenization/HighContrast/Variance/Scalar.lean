@@ -27,7 +27,7 @@ optimization `scalar_opt`.  The constant is fixed *before* the field quantifiers
 namespace Homogenization
 
 open Homogenization MeasureTheory ProbabilityTheory
-open Homogenization.Book.Ch04 (CoeffLaw LawCarrier)
+open Homogenization.Book.Ch04 (RestrictionCoeffLaw RestrictionLawCarrier)
 
 variable {d : ℕ}
 
@@ -35,8 +35,9 @@ variable {d : ℕ}
 scale `m`, contrast `Θ`, law `L`, and block vector `P`. -/
 theorem scalar_block_variance [NeZero d] (hd : 3 ≤ d) :
     ∃ Cd : ℝ, 0 ≤ Cd ∧
-      ∀ {m : ℤ} (_hm : 0 ≤ m) {Θ : ℝ} (_hΘ : 1 ≤ Θ) {L : CoeffLaw d}
-        [IsProbabilityMeasure L] (_hP : LawCarrier L) (_hURD : IsUnitRangeDependentR L)
+      ∀ {m : ℤ} (_hm : 0 ≤ m) {Θ : ℝ} (_hΘ : 1 ≤ Θ) {L : RestrictionCoeffLaw d}
+        [IsProbabilityMeasure L] (_hP : RestrictionLawCarrier L)
+        (_hURD : IsRestrictionUnitRangeDependentR L)
         (_hLaw : ThetaEllipticLaw Θ L) (P : BlockVec d),
       Var[fun a => blockVecDot P
             (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P); L]
@@ -141,6 +142,6 @@ theorem scalar_block_variance [NeZero d] (hd : 3 ≤ d) :
           nlinarith [mul_nonneg (mul_nonneg hCfp0 hB0) hMsq2,
             mul_nonneg (mul_nonneg hCav0 hA0) hMsq2]
   -- rpow optimization
-  exact scalar_opt hd hΘ hL1 hMsq0 (by positivity) (variance_nonneg _ _) hdet htwo
+  exact scalar_opt hd hΘ hL1 (by positivity) hdet htwo
 
 end Homogenization

@@ -18,7 +18,8 @@ open scoped ENNReal BigOperators
 
 noncomputable section
 
-/-- Direct cutoff-product duality bound in the manuscript `s,t` form.
+/-- Direct cutoff-product duality bound in the manuscript `s,t` form, through
+Ch01's legacy disjoint-Besov compatibility lane.
 
 This is the deterministic source for the final Cauchy product: the positive
 side is Ch01's cutoff-product theorem for
@@ -44,7 +45,7 @@ theorem abs_cubeAverage_vecDot_centered_scalar_cutoff_le_scaledWeakNormProduct
     let scaledFlux := cubeBesovScaleWeight (-t) Q * fluxWeak
     let gradCoeff :=
       (2 * cubeScaleFactor Q * B + 3 * cubeLpNorm Q ∞ ξ) *
-        ((Ch01.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
+        ((Ch01.Legacy.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
           (Fintype.card (Fin d) : ℝ))
     let fluxCoeff :=
       (Fintype.card (Fin d) : ℝ) *
@@ -77,8 +78,8 @@ theorem abs_cubeAverage_vecDot_centered_scalar_cutoff_le_scaledWeakNormProduct
       (mul_nonneg (mul_nonneg (by norm_num) (cubeScaleFactor_nonneg Q)) hB)
       (mul_nonneg (by norm_num) (cubeLpNorm_nonneg Q ∞ ξ))
   have hpoincare_nonneg :
-      0 ≤ Ch01.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1) := by
-    exact mul_nonneg (Ch01.fullVectorPoincareConstant_nonneg Q)
+      0 ≤ Ch01.Legacy.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1) := by
+    exact mul_nonneg (Ch01.Legacy.fullVectorPoincareConstant_nonneg Q)
       (Real.rpow_nonneg (by norm_num : 0 ≤ (3 : ℝ)) _)
   have hgradCoeff_nonneg : 0 ≤ gradCoeff := by
     dsimp [gradCoeff]
@@ -97,17 +98,17 @@ theorem abs_cubeAverage_vecDot_centered_scalar_cutoff_le_scaledWeakNormProduct
         Q s u.grad i hgradWeak
   have hgradCircSum :
       (∑ i : Fin d,
-        Ch01.circNegativeBesovNorm Q s (2 : ℝ≥0∞) (1 : ℝ≥0∞)
+        Ch01.Legacy.circNegativeBesovNorm Q s (2 : ℝ≥0∞) (1 : ℝ≥0∞)
           (fun x => u.grad x i)) ≤
         (Fintype.card (Fin d) : ℝ) * scaledGrad := by
     calc
       (∑ i : Fin d,
-        Ch01.circNegativeBesovNorm Q s (2 : ℝ≥0∞) (1 : ℝ≥0∞)
+        Ch01.Legacy.circNegativeBesovNorm Q s (2 : ℝ≥0∞) (1 : ℝ≥0∞)
           (fun x => u.grad x i))
           ≤ ∑ _i : Fin d, scaledGrad := by
             refine Finset.sum_le_sum ?_
             intro i _hi
-            simpa [Ch01.circNegativeBesovNorm] using hgradComp i
+            simpa [Ch01.Legacy.circNegativeBesovNorm] using hgradComp i
       _ = (Fintype.card (Fin d) : ℝ) * scaledGrad := by
             simp [Finset.sum_const, nsmul_eq_mul]
   have hproductDual :
@@ -129,35 +130,38 @@ theorem abs_cubeAverage_vecDot_centered_scalar_cutoff_le_scaledWeakNormProduct
     have hch01 :
         cubeBesovPartialNormTop Q r (2 : ℝ≥0∞) N (fun x => productField x i) ≤
           (2 * cubeScaleFactor Q * B + 3 * cubeLpNorm Q ∞ ξ) *
-            ((Ch01.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
+            ((Ch01.Legacy.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
               ∑ i : Fin d,
-                Ch01.circNegativeBesovNorm Q (1 - r) (2 : ℝ≥0∞) (1 : ℝ≥0∞)
+                Ch01.Legacy.circNegativeBesovNorm Q (1 - r) (2 : ℝ≥0∞)
+                  (1 : ℝ≥0∞)
                   (fun x => u.grad x i)) := by
       simpa [productField, r, sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using
-        Ch01.cutoffProduct_component_partialNormTop_le_gradient_rhs
+        Ch01.Legacy.cutoffProduct_component_partialNormTop_le_gradient_rhs
           Q r N u ξ hB hξLp hξ hderiv hr_pos hr_lt_one i
     have hsum :
         (∑ i : Fin d,
-          Ch01.circNegativeBesovNorm Q (1 - r) (2 : ℝ≥0∞) (1 : ℝ≥0∞)
+          Ch01.Legacy.circNegativeBesovNorm Q (1 - r) (2 : ℝ≥0∞) (1 : ℝ≥0∞)
             (fun x => u.grad x i)) ≤
           (Fintype.card (Fin d) : ℝ) * scaledGrad := by
       simpa [r] using hgradCircSum
     have hmain :
         (2 * cubeScaleFactor Q * B + 3 * cubeLpNorm Q ∞ ξ) *
-            ((Ch01.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
+            ((Ch01.Legacy.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
               ∑ i : Fin d,
-                Ch01.circNegativeBesovNorm Q (1 - r) (2 : ℝ≥0∞) (1 : ℝ≥0∞)
+                Ch01.Legacy.circNegativeBesovNorm Q (1 - r) (2 : ℝ≥0∞)
+                  (1 : ℝ≥0∞)
                   (fun x => u.grad x i)) ≤
           productBound := by
       calc
         (2 * cubeScaleFactor Q * B + 3 * cubeLpNorm Q ∞ ξ) *
-            ((Ch01.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
+            ((Ch01.Legacy.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
               ∑ i : Fin d,
-                Ch01.circNegativeBesovNorm Q (1 - r) (2 : ℝ≥0∞) (1 : ℝ≥0∞)
+                Ch01.Legacy.circNegativeBesovNorm Q (1 - r) (2 : ℝ≥0∞)
+                  (1 : ℝ≥0∞)
                   (fun x => u.grad x i))
             ≤
           (2 * cubeScaleFactor Q * B + 3 * cubeLpNorm Q ∞ ξ) *
-            ((Ch01.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
+            ((Ch01.Legacy.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
               ((Fintype.card (Fin d) : ℝ) * scaledGrad)) := by
             exact mul_le_mul_of_nonneg_left
               (mul_le_mul_of_nonneg_left hsum hpoincare_nonneg) hfront_nonneg

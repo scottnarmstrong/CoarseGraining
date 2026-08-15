@@ -19,8 +19,8 @@ special-vector algebra into the manuscript-facing good-scale lemma.
 -/
 
 private theorem abs_sqrt_theta_sub_one_le_sqrt_theta_zero_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     |Real.sqrt (thetaAtScale hP hStruct (m : ℤ)) - 1| ≤
       Real.sqrt (thetaAtScale hP hStruct 0) := by
@@ -49,8 +49,8 @@ private theorem abs_sqrt_theta_sub_one_le_sqrt_theta_zero_of_P4
     _ ≤ Real.sqrt (thetaAtScale hP hStruct 0) := hsqrt_m0
 
 private theorem sigmaHat_inv_mul_barSigma_zero_le_of_good
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (m : ℕ)
     (hgood_upper :
@@ -96,8 +96,8 @@ private theorem sigmaHat_inv_mul_barSigma_zero_le_of_good
       mul_le_mul_of_nonneg_left hsqrt_m0 hfactor_nonneg
 
 private theorem sigmaHat_mul_barSigmaStar_inv_zero_le_of_good
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (m : ℕ)
     (hgood_lower :
@@ -145,8 +145,8 @@ private theorem sigmaHat_mul_barSigmaStar_inv_zero_le_of_good
 coefficient chains are nearly stationary, the special vectors have controlled
 centering, response, and additivity defect bounds. -/
 theorem goodScaleParameterBounds_homogenizationScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le : delta ≤ 1 / 2)
     (m : ℕ)

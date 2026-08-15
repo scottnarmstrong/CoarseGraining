@@ -27,7 +27,7 @@ scaffolding (dense generators, index selection, energy-gap limit) is entirely
 domain-generic and is transcribed here over a generic measurable source
 `A : Ω → RegCoeffField d`.
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 noncomputable section
@@ -51,7 +51,8 @@ include hSlice
 /-- Carrier block-pairing average measurability from `hF` (mirrors
 `measurable_blockEnergyAverage_carrier`). -/
 theorem measurable_blockPairingAverage_carrier
-    (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, IsProbeR φ → Function.support φ ⊆ cubeSet Q →
+    (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, ContDiff ℝ (⊤ : ℕ∞) φ →
+      HasCompactSupport φ → tsupport φ ⊆ cubeSet Q →
       @Measurable Ω ℝ mΩ _ (fun ω => entryTestR i j φ (A ω)))
     (X Y : BlockState d) (hX : MemBlockL2 (cubeSet Q) X.eval)
     (hY : MemBlockL2 (cubeSet Q) Y.eval) :
@@ -68,7 +69,8 @@ theorem measurable_blockPairingAverage_carrier
 /-- Carrier version of the fixed-generator energy pairing measurability: it equals
 a fixed block-pairing average of the carrier field. -/
 theorem measurable_energyBilin_fixed_generator_carrier
-    (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, IsProbeR φ → Function.support φ ⊆ cubeSet Q →
+    (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, ContDiff ℝ (⊤ : ℕ∞) φ →
+      HasCompactSupport φ → tsupport φ ⊆ cubeSet Q →
       @Measurable Ω ℝ mΩ _ (fun ω => entryTestR i j φ (A ω)))
     (P : BlockVec d) (Y : BlockState d) (hY : MemBlockL2 (cubeSet Q) Y.eval)
     (Z : canonicalMuBlockCorrectionGeneratorSubmodule (cubeSet Q)) :
@@ -122,7 +124,8 @@ theorem measurable_energyBilin_fixed_generator_carrier
 Generic re-aim of
 `stronglyMeasurable_canonicalAEEMuHilbertMinimizer_aeeQuantitativeSlice_cubeSet`. -/
 theorem stronglyMeasurable_canonicalMinimizer_carrier
-    (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, IsProbeR φ → Function.support φ ⊆ cubeSet Q →
+    (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, ContDiff ℝ (⊤ : ℕ∞) φ →
+      HasCompactSupport φ → tsupport φ ⊆ cubeSet Q →
       @Measurable Ω ℝ mΩ _ (fun ω => entryTestR i j φ (A ω)))
     (P : BlockVec d) :
     @MeasureTheory.StronglyMeasurable Ω (HilbertBlockL2 (cubeSet Q)) _ mΩ
@@ -242,7 +245,8 @@ theorem stronglyMeasurable_canonicalMinimizer_carrier
 minimizer.**  Generic re-aim of
 `measurable_energyBilin_fixed_canonicalAEEMuHilbertMinimizer_aeeQuantitativeSlice_cubeSet`. -/
 theorem measurable_energyBilin_fixed_canonicalMinimizer_carrier
-    (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, IsProbeR φ → Function.support φ ⊆ cubeSet Q →
+    (hEntry : ∀ (i j : Fin d) {φ : Vec d → ℝ}, ContDiff ℝ (⊤ : ℕ∞) φ →
+      HasCompactSupport φ → tsupport φ ⊆ cubeSet Q →
       @Measurable Ω ℝ mΩ _ (fun ω => entryTestR i j φ (A ω)))
     (P : BlockVec d) (Y : BlockState d) (hY : MemBlockL2 (cubeSet Q) Y.eval) :
     @Measurable Ω ℝ mΩ _

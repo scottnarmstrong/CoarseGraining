@@ -20,10 +20,10 @@ This is the shared response factor used by the small, low, and bad-event
 pieces of the lower-edge decomposition.
 -/
 theorem childResponseAverage_zetaRoot_le_coarseFluctuationResponseMomentAtScale_of_stationary
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d) :
     let ζ := section53CoarseFluctuationZeta hP4
@@ -34,7 +34,7 @@ theorem childResponseAverage_zetaRoot_le_coarseFluctuationResponseMomentAtScale_
       Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
     let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
-        (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
     (∫ a, childAvg a ^ ζ ∂P) ^ (1 / ζ) ≤
       coarseFluctuationResponseMomentAtScale hP hStruct hP4 k m e := by
   classical
@@ -45,7 +45,7 @@ theorem childResponseAverage_zetaRoot_le_coarseFluctuationResponseMomentAtScale_
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct (m : ℤ) e
   let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   have hk_nonneg : (0 : ℤ) ≤ (k : ℤ) := by
     exact_mod_cast Nat.zero_le k
   have hkm_int : (k : ℤ) ≤ (m : ℤ) := by
@@ -54,11 +54,11 @@ theorem childResponseAverage_zetaRoot_le_coarseFluctuationResponseMomentAtScale_
     intro a
     dsimp [childAvg]
     exact Homogenization.descendantsAverage_nonneg Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       (fun R _hR =>
-        Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg R p_e q_e a)
+        Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg R p_e q_e a)
   have hIntLe :=
-    integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_le_originCube_of_stationary
+    integral_rpow_descendantsAverage_restrictionResponseJObservableCubeSet_originCube_le_originCube_of_stationary
       hP hstat hStruct hP4 hk_nonneg hkm_int p_e q_e
   have hChildPow_nonneg :
       0 ≤ ∫ a, childAvg a ^ ζ ∂P := by
@@ -89,10 +89,10 @@ small-tail integrand with the integrable Holder envelope, so the scalar
 estimate no longer needs the separate small-tail integrability slot.
 -/
 theorem integrable_section52SmallTail_childResponseAverage_special_and_integral_le_responseMoment
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -107,7 +107,7 @@ theorem integrable_section52SmallTail_childResponseAverage_special_and_integral_
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
-        (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
     let response := fun a : Homogenization.RegCoeffField d =>
       (5 * β⁻¹) ^ 2 * childAvg a
     let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -158,7 +158,7 @@ theorem integrable_section52SmallTail_childResponseAverage_special_and_integral_
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
   let lowerSmall : Homogenization.RegCoeffField d → ℝ := fun a =>
@@ -239,9 +239,9 @@ theorem integrable_section52SmallTail_childResponseAverage_special_and_integral_
     intro a
     dsimp [childAvg]
     exact Homogenization.descendantsAverage_nonneg Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       (fun R _hR =>
-        Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg R p_e q_e a)
+        Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg R p_e q_e a)
   have hchild_nonneg : 0 ≤ᵐ[P] childAvg :=
     Filter.Eventually.of_forall hchild_nonneg_all
   have hLowerSup_nonneg_all : ∀ a, 0 ≤ lowerSup a := by
@@ -262,7 +262,7 @@ theorem integrable_section52SmallTail_childResponseAverage_special_and_integral_
       MeasureTheory.MemLp childAvg
         (ENNReal.ofReal (section53CoarseFluctuationZeta hP4)) P := by
     simpa [childAvg, Q, p_e, q_e] using
-      memLp_zeta_descendantsAverage_responseJObservableCubeSet_originCube_from_P4_of_stationary
+      memLp_zeta_descendantsAverage_restrictionResponseJObservableCubeSet_originCube_from_P4_of_stationary
         hP hstat hStruct hP4 hk_nonneg hkm_int p_e q_e
   have hLowerSupAE : AEMeasurable lowerSup P := by
     simpa [lowerSup, D, Q] using
@@ -599,10 +599,10 @@ The analytic estimate is unchanged; the response-moment factor is enlarged by
 the corrected terminal prefactor `P_{k,m}`.
 -/
 theorem integrable_section52SmallTail_childResponseAverage_special_and_integral_le_terminalPAtScales_mul_responseMoment
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -617,7 +617,7 @@ theorem integrable_section52SmallTail_childResponseAverage_special_and_integral_
     let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
     let childAvg := fun a : Homogenization.RegCoeffField d =>
       Homogenization.descendantsAverage Q (m - k)
-        (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
     let response := fun a : Homogenization.RegCoeffField d =>
       (5 * β⁻¹) ^ 2 * childAvg a
     let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -672,7 +672,7 @@ theorem integrable_section52SmallTail_childResponseAverage_special_and_integral_
   let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
   let childAvg : Homogenization.RegCoeffField d → ℝ := fun a =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let response : Homogenization.RegCoeffField d → ℝ := fun a =>
     (5 * β⁻¹) ^ 2 * childAvg a
   let lowerSmall : Homogenization.RegCoeffField d → ℝ := fun a =>

@@ -7,7 +7,7 @@ import Homogenization.Probability.RandomFieldMeasurability
 # Per-phase measurability of the corridor observable
 
 The coarse observable is only
-a.e.-measurable under a `LawCarrier` (the C3 wrap
+a.e.-measurable under a `RestrictionLawCarrier` (the C3 wrap
 `aestronglyMeasurable_coarseBlockQuadratic_cubeSet`), so `comp_measurable`
 cannot be applied against `L` directly.  Instead:
 
@@ -22,7 +22,7 @@ cannot be applied against `L` directly.  Instead:
    plus the entry test of `a` against the complementary-masked probe
    `Set.indicator (corridorSet ℓ σ)ᶜ φ` (the spatial case-split is
    `a`-independent, unlike the elliptic truncation, so both lanes are honest).
-2. The pushforward `L.map (corridorReg ℓ σ)` is again a `LawCarrier`
+2. The pushforward `L.map (corridorReg ℓ σ)` is again a `RestrictionLawCarrier`
    (`lawCarrier_map_corridorReg`): probability is preserved by measurability,
    and a.e. local uniform ellipticity is preserved by the pointwise corridor
    modification (`aeLocallyUniformlyEllipticField_corridorReg`); the a.e.
@@ -36,7 +36,7 @@ cannot be applied against `L` directly.  Instead:
 -/
 
 open Homogenization
-open Homogenization.Book.Ch04 (CoeffLaw LawCarrier AELocallyUniformlyEllipticField
+open Homogenization.Book.Ch04 (RestrictionCoeffLaw RestrictionLawCarrier AELocallyUniformlyEllipticField
   AELocallyUniformlyEllipticLaw lawCarrier_of_aeLocallyUniformlyElliptic)
 open MeasureTheory
 
@@ -254,13 +254,13 @@ theorem measurableSet_aeLocallyUniformlyEllipticField :
   exact LocalSigmaR_le (cubeSet Q) _
     (Book.Ch04.measurableSet_localSigmaR_aeeQuantitativeEllipticSlice Q k)
 
-/-! ## M1.4 — pushforward `LawCarrier` transport -/
+/-! ## M1.4 — pushforward `RestrictionLawCarrier` transport -/
 
-/-- The pushforward of a `LawCarrier` law along the corridor endomorphism is
-again a `LawCarrier` law. -/
-theorem lawCarrier_map_corridorReg {L : CoeffLaw d} (hP : LawCarrier L)
+/-- The pushforward of a `RestrictionLawCarrier` law along the corridor endomorphism is
+again a `RestrictionLawCarrier` law. -/
+theorem lawCarrier_map_corridorReg {L : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier L)
     (ℓ : ℝ) (σ : Vec d) :
-    LawCarrier (L.map (corridorReg ℓ σ)) := by
+    RestrictionLawCarrier (L.map (corridorReg ℓ σ)) := by
   have hT : Measurable (corridorReg (d := d) ℓ σ) := measurable_corridorReg ℓ σ
   haveI : IsProbabilityMeasure L := hP.isProbability
   haveI : IsProbabilityMeasure (L.map (corridorReg ℓ σ)) :=
@@ -275,16 +275,16 @@ theorem lawCarrier_map_corridorReg {L : CoeffLaw d} (hP : LawCarrier L)
 
 /-- **M1 (per-phase measurability).**  For a fixed grid phase `σ`, the coarse
 observable at the corridor-modified coefficient is a.e.-strongly-measurable under
-any `LawCarrier` law. -/
-theorem aestronglyMeasurable_phaseObservable [NeZero d] {L : CoeffLaw d}
-    (hP : LawCarrier L) (m : ℤ) (ℓ : ℝ) (σ : Vec d) (P : BlockVec d) :
+any `RestrictionLawCarrier` law. -/
+theorem aestronglyMeasurable_phaseObservable [NeZero d] {L : RestrictionCoeffLaw d}
+    (hP : RestrictionLawCarrier L) (m : ℤ) (ℓ : ℝ) (σ : Vec d) (P : BlockVec d) :
     AEStronglyMeasurable
       (fun a : RegCoeffField d =>
         blockVecDot P
           (blockMatVecMul
             (coarseBlockMatrix (cubeSet (originCube d m)) (corridorField ℓ σ a.toFun)) P)) L := by
   have hT : Measurable (corridorReg (d := d) ℓ σ) := measurable_corridorReg ℓ σ
-  have hPush : LawCarrier (L.map (corridorReg ℓ σ)) := lawCarrier_map_corridorReg hP ℓ σ
+  have hPush : RestrictionLawCarrier (L.map (corridorReg ℓ σ)) := lawCarrier_map_corridorReg hP ℓ σ
   have hG :
       AEStronglyMeasurable
         (fun b : RegCoeffField d =>

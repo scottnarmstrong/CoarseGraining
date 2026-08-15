@@ -35,9 +35,9 @@ noncomputable def lowerEdgeCurrentUpperSection52SmallTail
 
 /-- Large-scale parent-window observable in the current-baseline upper Section 5.2 split. -/
 noncomputable def lowerEdgeCurrentUpperSection52LargeScalePositiveExcess
-    {d : Nat} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : Nat} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (k : Nat) (s : Real)
     (n : {n : Int //
       n ∈ Homogenization.Book.Ch05.Section52.section52LargeScaleSet k}) :
@@ -70,9 +70,9 @@ noncomputable def lowerEdgeCurrentLowerSection52SmallTail
 
 /-- Large-scale parent-window observable in the current-baseline lower/star Section 5.2 split. -/
 noncomputable def lowerEdgeCurrentLowerSection52LargeScalePositiveExcess
-    {d : Nat} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : Nat} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (k : Nat) (s : Real)
     (n : {n : Int //
       n ∈ Homogenization.Book.Ch05.Section52.section52LargeScaleSet k}) :

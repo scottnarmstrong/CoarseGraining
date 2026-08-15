@@ -15,9 +15,9 @@ open scoped BigOperators ENNReal
 # Exponent-loss Besov bridge
 
 This file contains the pure function-space exponent-loss bridge used by the
-sharp-boundary scalar duality path: concrete/circ negative Besov control at
-exponent `s` is obtained from the genuine dual norm at a lower exponent
-`t < s`.
+sharp-boundary scalar duality path.  It consumes the Chapter 1 legacy
+finite-truncation, totalized-real, disjoint/componentwise compatibility lane;
+it is not an exact `ENNReal` source-norm bridge.
 -/
 
 /-- Geometric singular factor for the embedding
@@ -59,9 +59,9 @@ output exponent `s` and measures the localized flux defect at `s / 2`. -/
 theorem besovExponentLossGap_half_le_fiftyFive_inv_sq {s : ℝ}
     (hs : 0 < s) (hs_lt : s < 1) :
     besovExponentLossGap s (s / 2) ≤ 55 * (s⁻¹) ^ (2 : ℕ) := by
-  simpa [besovExponentLossGap, Book.Ch01.dualToCircGeometricLossCoefficient]
+  simpa [besovExponentLossGap, Book.Ch01.Legacy.dualToCircGeometricLossCoefficient]
     using
-      Book.Ch01.dualToCircGeometricLossCoefficient_half_le_fiftyFive_inv_sq
+      Book.Ch01.Legacy.dualToCircGeometricLossCoefficient_half_le_fiftyFive_inv_sq
         hs hs_lt.le
 
 /-- A zero-trace potential field has the `L²` membership supplied by its
@@ -239,13 +239,13 @@ theorem cubeScaleNormalizedDualNegativeBesovVectorNormTwo_le_card_mul_negativeBe
     (hs : 0 < s)
     (hF : MemVectorL2 (cubeSet Q) F) :
     cubeScaleNormalizedDualNegativeBesovVectorNormTwo Q s F ≤
-      (Fintype.card (Fin d) : ℝ) * Book.Ch01.negativeBesovLocalizeConstant d *
+      (Fintype.card (Fin d) : ℝ) * Book.Ch01.Legacy.negativeBesovLocalizeConstant d *
         localizedScaleNormalizedDualNegativeBesovVectorAverageTwo Q s F j := by
   classical
-  let C : ℝ := Book.Ch01.negativeBesovLocalizeConstant d
+  let C : ℝ := Book.Ch01.Legacy.negativeBesovLocalizeConstant d
   let L : ℝ := localizedScaleNormalizedDualNegativeBesovVectorAverageTwo Q s F j
   have hC_nonneg : 0 ≤ C := by
-    dsimp [C, Book.Ch01.negativeBesovLocalizeConstant]
+    dsimp [C, Book.Ch01.Legacy.negativeBesovLocalizeConstant]
     norm_num
   have hwQ_nonneg : 0 ≤ cubeBesovScaleWeight s Q :=
     cubeBesovScaleWeight_nonneg s Q
@@ -253,7 +253,7 @@ theorem cubeScaleNormalizedDualNegativeBesovVectorNormTwo_le_card_mul_negativeBe
       ∀ i : Fin d,
         MeasureTheory.MemLp (fun x => F x i) (2 : ℝ≥0∞)
           (normalizedCubeMeasure Q) :=
-    Book.Ch01.component_memLp_normalizedCubeMeasure_of_memVectorL2_cubeSet_ch1
+    Book.Ch01.Legacy.component_memLp_normalizedCubeMeasure_of_memVectorL2_cubeSet_ch1
       Q hF
   unfold cubeScaleNormalizedDualNegativeBesovVectorNormTwo
   calc
@@ -282,8 +282,8 @@ theorem cubeScaleNormalizedDualNegativeBesovVectorNormTwo_le_card_mul_negativeBe
                 (fun x => F x i) ≤
               C * S := by
           dsimp [C, S]
-          simpa [Book.Ch01.dualNegativeBesovNorm] using
-            Book.Ch01.negativeBesovFullLocalize_of_memLp
+          simpa [Book.Ch01.Legacy.dualNegativeBesovNorm] using
+            Book.Ch01.Legacy.negativeBesovFullLocalize_of_memLp
               Q s (fun x => F x i) j hs (hcomp i)
         have hlocal :
             cubeBesovScaleWeight s Q * S ≤ L := by
@@ -301,7 +301,7 @@ theorem cubeScaleNormalizedDualNegativeBesovVectorNormTwo_le_card_mul_negativeBe
           _ ≤ C * L :=
                 mul_le_mul_of_nonneg_left hlocal hC_nonneg
     _ =
-      (Fintype.card (Fin d) : ℝ) * Book.Ch01.negativeBesovLocalizeConstant d *
+      (Fintype.card (Fin d) : ℝ) * Book.Ch01.Legacy.negativeBesovLocalizeConstant d *
         localizedScaleNormalizedDualNegativeBesovVectorAverageTwo Q s F j := by
         dsimp [C, L]
         simp [Finset.sum_const, nsmul_eq_mul, mul_assoc]
@@ -333,15 +333,15 @@ theorem concreteNegativeFromDualExponentLoss_geometric
       ∀ i : Fin d,
         MeasureTheory.MemLp (fun x => F x i) (2 : ℝ≥0∞)
           (normalizedCubeMeasure Q) :=
-    Book.Ch01.component_memLp_normalizedCubeMeasure_of_memVectorL2_cubeSet_ch1
+    Book.Ch01.Legacy.component_memLp_normalizedCubeMeasure_of_memVectorL2_cubeSet_ch1
       Q hF
   have h :=
-    Book.Ch01.cubeBesovNegativeVectorSeminormTwo_le_dualToCircGeometricLossCoefficient_mul_normalizedDual
+    Book.Ch01.Legacy.cubeBesovNegativeVectorSeminormTwo_le_dualToCircGeometricLossCoefficient_mul_normalizedDual
       Q F hs ht hts hcomp
   simpa [besovExponentLossGap, cubeScaleNormalizedDualNegativeBesovVectorNormTwo,
-    Book.Ch01.dualToCircGeometricLossCoefficient,
-    Book.Ch01.normalizedDualNegativeBesovVectorNormTwo,
-    Book.Ch01.dualNegativeBesovNorm] using h
+    Book.Ch01.Legacy.dualToCircGeometricLossCoefficient,
+    Book.Ch01.Legacy.normalizedDualNegativeBesovVectorNormTwo,
+    Book.Ch01.Legacy.dualNegativeBesovNorm] using h
 
 /-- Localized concrete/circ consequence of the exponent-loss bridge and Ch1
 negative Besov localization.
@@ -355,7 +355,7 @@ theorem cubeBesovNegativeVectorSeminormTwo_le_localizedDualAverage_exponentLoss
     (ht : 0 < t) (hts : t < s) (hs_lt_one : s < 1)
     (hF : MemVectorL2 (cubeSet Q) F) :
     cubeBesovNegativeVectorSeminormTwo Q s F ≤
-      ((Fintype.card (Fin d) : ℝ) * Book.Ch01.negativeBesovLocalizeConstant d) *
+      ((Fintype.card (Fin d) : ℝ) * Book.Ch01.Legacy.negativeBesovLocalizeConstant d) *
         besovExponentLossGap s t *
           localizedScaleNormalizedDualNegativeBesovVectorAverageTwo Q t F j := by
   have hdual :=
@@ -376,11 +376,11 @@ theorem cubeBesovNegativeVectorSeminormTwo_le_localizedDualAverage_exponentLoss
             ring
     _ ≤
           besovExponentLossGap s t *
-            ((Fintype.card (Fin d) : ℝ) * Book.Ch01.negativeBesovLocalizeConstant d *
+            ((Fintype.card (Fin d) : ℝ) * Book.Ch01.Legacy.negativeBesovLocalizeConstant d *
               localizedScaleNormalizedDualNegativeBesovVectorAverageTwo Q t F j) :=
             mul_le_mul_of_nonneg_left hlocalized hgap_nonneg
     _ =
-          ((Fintype.card (Fin d) : ℝ) * Book.Ch01.negativeBesovLocalizeConstant d) *
+          ((Fintype.card (Fin d) : ℝ) * Book.Ch01.Legacy.negativeBesovLocalizeConstant d) *
             besovExponentLossGap s t *
               localizedScaleNormalizedDualNegativeBesovVectorAverageTwo Q t F j := by
             ring

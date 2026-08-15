@@ -35,7 +35,7 @@ dimensional record `hmDimParams` at the shifted entry `N`.
 
 open MeasureTheory
 open Homogenization
-open Homogenization.Book.Ch04 (CoeffLaw LawCarrier StructuralLaw)
+open Homogenization.Book.Ch04 (RestrictionCoeffLaw RestrictionLawCarrier RestrictionStructuralLaw)
 open Homogenization.Book.Ch05 (QuantitativeCoarseGrainedEllipticity)
 
 namespace Homogenization.HighContrast.EntryScale

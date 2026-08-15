@@ -24,8 +24,8 @@ zero in normalized coordinates.
 
 /-- Scale-normalize a carrier coefficient law by pulling honest fields back under
 the triadic dilation `x ↦ 3^k x` (the carrier endomorphism `dilateReg`). -/
-noncomputable def scaleNormalizedLaw {d : ℕ} (k : ℕ) (P : CoeffLaw d) :
-    CoeffLaw d :=
+noncomputable def restrictionScaleNormalizedLaw {d : ℕ} (k : ℕ) (P : RestrictionCoeffLaw d) :
+    RestrictionCoeffLaw d :=
   Measure.map (dilateReg (-(k : ℤ))) P
 
 /-- The existing probability-layer rescaling is the same map as the Ch2
@@ -61,40 +61,40 @@ theorem rescaleReg_eq_dilateReg_neg_nat {d : ℕ} (k : ℕ) :
     rw [zpow_neg, zpow_natCast, inv_inv]
   simp only [rescaleReg_apply, dilateReg_apply, hs]
 
-/-- `scaleNormalizedLaw` is the pushforward under the carrier triadic rescaling. -/
-theorem scaleNormalizedLaw_eq_map_rescaleReg {d : ℕ} (k : ℕ) (P : CoeffLaw d) :
-    scaleNormalizedLaw k P = Measure.map (rescaleReg k) P := by
-  rw [scaleNormalizedLaw, rescaleReg_eq_dilateReg_neg_nat]
+/-- `restrictionScaleNormalizedLaw` is the pushforward under the carrier triadic rescaling. -/
+theorem restrictionScaleNormalizedLaw_eq_map_rescaleReg {d : ℕ} (k : ℕ) (P : RestrictionCoeffLaw d) :
+    restrictionScaleNormalizedLaw k P = Measure.map (rescaleReg k) P := by
+  rw [restrictionScaleNormalizedLaw, rescaleReg_eq_dilateReg_neg_nat]
 
 /-- A scale-normalized probability law is again a probability law. -/
-theorem isProbabilityMeasure_scaleNormalizedLaw {d : ℕ} (k : ℕ) (P : CoeffLaw d)
+theorem isProbabilityMeasure_restrictionScaleNormalizedLaw {d : ℕ} (k : ℕ) (P : RestrictionCoeffLaw d)
     [IsProbabilityMeasure P] :
-    IsProbabilityMeasure (scaleNormalizedLaw k P) := by
-  rw [scaleNormalizedLaw]
+    IsProbabilityMeasure (restrictionScaleNormalizedLaw k P) := by
+  rw [restrictionScaleNormalizedLaw]
   exact Measure.isProbabilityMeasure_map (measurable_dilateReg (d := d) (-(k : ℤ))).aemeasurable
 
 /-- Bochner integral under a scale-normalized law. -/
-theorem integral_scaleNormalizedLaw {d : ℕ} {E : Type*}
+theorem integral_restrictionScaleNormalizedLaw {d : ℕ} {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
-    [MeasurableSpace E] [BorelSpace E] {P : CoeffLaw d} (k : ℕ)
+    [MeasurableSpace E] [BorelSpace E] {P : RestrictionCoeffLaw d} (k : ℕ)
     (X : RegCoeffField d → E)
-    (hX : AEStronglyMeasurable X (scaleNormalizedLaw k P)) :
-    ∫ a, X a ∂scaleNormalizedLaw k P =
+    (hX : AEStronglyMeasurable X (restrictionScaleNormalizedLaw k P)) :
+    ∫ a, X a ∂restrictionScaleNormalizedLaw k P =
       ∫ a, X (dilateReg (-(k : ℤ)) a) ∂P := by
-  rw [scaleNormalizedLaw]
+  rw [restrictionScaleNormalizedLaw]
   exact MeasureTheory.integral_map
     (measurable_dilateReg (d := d) (-(k : ℤ))).aemeasurable hX
 
 /-- Integrability under a scale-normalized law is integrability after
 composing with the defining dilation. -/
-theorem integrable_scaleNormalizedLaw_iff {d : ℕ} {E : Type*}
+theorem integrable_restrictionScaleNormalizedLaw_iff {d : ℕ} {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
-    [MeasurableSpace E] {P : CoeffLaw d} (k : ℕ)
+    [MeasurableSpace E] {P : RestrictionCoeffLaw d} (k : ℕ)
     {X : RegCoeffField d → E}
-    (hX : AEStronglyMeasurable X (scaleNormalizedLaw k P)) :
-    Integrable X (scaleNormalizedLaw k P) ↔
+    (hX : AEStronglyMeasurable X (restrictionScaleNormalizedLaw k P)) :
+    Integrable X (restrictionScaleNormalizedLaw k P) ↔
       Integrable (fun a => X (dilateReg (-(k : ℤ)) a)) P := by
-  simpa [scaleNormalizedLaw, Function.comp] using
+  simpa [restrictionScaleNormalizedLaw, Function.comp] using
     (integrable_map_measure
       (μ := P) (f := dilateReg (d := d) (-(k : ℤ))) (g := X)
       hX (measurable_dilateReg (d := d) (-(k : ℤ))).aemeasurable)
@@ -385,12 +385,13 @@ private theorem AreUnitSeparated.triadicDilateSet {d : ℕ} {U V : Set (Vec d)}
     exact mul_le_mul hscale hsep zero_le_one (by positivity)
   simpa using hmul
 
-namespace UnitRangeDependentLaw
+namespace RestrictionUnitRangeDependentLaw
 
-/-- Unit-range dependence is preserved by triadic scale-normalization. -/
-theorem scaleNormalized {d : ℕ} {P : CoeffLaw d}
-    (hP : UnitRangeDependentLaw P) (k : ℕ) :
-    UnitRangeDependentLaw (scaleNormalizedLaw k P) := by
+/-- Restriction-unit-range dependence is preserved by triadic
+scale-normalization. -/
+theorem scaleNormalized {d : ℕ} {P : RestrictionCoeffLaw d}
+    (hP : RestrictionUnitRangeDependentLaw P) (k : ℕ) :
+    RestrictionUnitRangeDependentLaw (restrictionScaleNormalizedLaw k P) := by
   intro U V hU hV hUV
   let e := rescaleRegMeasurableEquiv (d := d) k
   have hIndepDilated : ProbabilityTheory.Indep
@@ -416,9 +417,9 @@ theorem scaleNormalized {d : ℕ} {P : CoeffLaw d}
       (ProbabilityTheory.indep_of_indep_of_le_left hIndepDilated hU_le) hV_le
   have hmap := indep_map_measurableEquiv (μ := P) e
     (m1 := RestrictionSigmaR U hU) (m2 := RestrictionSigmaR V hV) hComap
-  simpa [scaleNormalizedLaw_eq_map_rescaleReg, e] using hmap
+  simpa [restrictionScaleNormalizedLaw_eq_map_rescaleReg, e] using hmap
 
-end UnitRangeDependentLaw
+end RestrictionUnitRangeDependentLaw
 
 private theorem dilatedCoeffFamily_coeffOn_ae_eq_rescaleCoeffField
     {d : ℕ} {a : RegCoeffField d}
@@ -477,29 +478,29 @@ namespace AELocallyUniformlyEllipticLaw
 
 /-- A locally a.e.-uniformly elliptic law remains so after triadic
 scale-normalization. -/
-theorem scaleNormalized {d : ℕ} {P : CoeffLaw d}
+theorem scaleNormalized {d : ℕ} {P : RestrictionCoeffLaw d}
     (hP : AELocallyUniformlyEllipticLaw P) (k : ℕ) :
-    AELocallyUniformlyEllipticLaw (scaleNormalizedLaw k P) := by
-  rw [scaleNormalizedLaw_eq_map_rescaleReg]
+    AELocallyUniformlyEllipticLaw (restrictionScaleNormalizedLaw k P) := by
+  rw [restrictionScaleNormalizedLaw_eq_map_rescaleReg]
   exact ((rescaleRegMeasurableEquiv (d := d) k).measurableEmbedding.ae_map_iff).2 <| by
     filter_upwards [hP] with a ha
     exact ha.of_rescaleCoeffField k
 
 end AELocallyUniformlyEllipticLaw
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 /-- The Chapter 4 law carrier is preserved by triadic scale-normalization. -/
-theorem scaleNormalized {d : ℕ} {P : CoeffLaw d}
-    (hP : LawCarrier P) (k : ℕ) :
-    LawCarrier (scaleNormalizedLaw k P) := by
+theorem scaleNormalized {d : ℕ} {P : RestrictionCoeffLaw d}
+    (hP : RestrictionLawCarrier P) (k : ℕ) :
+    RestrictionLawCarrier (restrictionScaleNormalizedLaw k P) := by
   letI : IsProbabilityMeasure P := hP.isProbability
-  letI : IsProbabilityMeasure (scaleNormalizedLaw k P) :=
-    isProbabilityMeasure_scaleNormalizedLaw k P
+  letI : IsProbabilityMeasure (restrictionScaleNormalizedLaw k P) :=
+    isProbabilityMeasure_restrictionScaleNormalizedLaw k P
   exact lawCarrier_of_aeLocallyUniformlyElliptic
     (hP.ae_locally_uniformly_elliptic.scaleNormalized k)
 
-end LawCarrier
+end RestrictionLawCarrier
 
 theorem triadicCoeffFamily_rescaleCoeffField_aeeq_dilate
     {d : ℕ} {a : RegCoeffField d}
@@ -637,21 +638,21 @@ theorem coarseBlockMatrix_originCube_rescaleCoeffField_of_aelocallyUniformlyElli
     coarseBlockMatrix (cubeSet (originCube d (m : ℤ))) (rescaleReg k a).toFun
         = Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (G.coeffOn Q) := by
           simpa [Q, G] using
-            LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+            RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
               (ha.of_rescaleCoeffField k) Q
     _ = Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (B.coeffOn Q) := hAEEq
     _ = Ch02.coarseBlockMatrix (Ch02.cubeDomain Qsrc) (F.coeffOn Qsrc) := hdilate'
     _ = coarseBlockMatrix (cubeSet Qsrc) a.toFun :=
-          (LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+          (RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
             ha Qsrc).symm
     _ = coarseBlockMatrix (cubeSet (originCube d ((k + m : ℕ) : ℤ))) a.toFun := by
           simp [Qsrc, Q]
 /-- Scalar response observables rescale by shifting the origin-cube scale. -/
-theorem responseJObservableCubeSet_originCube_rescaleCoeffField_of_aelocallyUniformlyElliptic
+theorem restrictionResponseJObservableCubeSet_originCube_rescaleCoeffField_of_aelocallyUniformlyElliptic
     {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (k m : ℕ) (p q : Vec d) :
-    responseJObservableCubeSet (originCube d (m : ℤ)) p q (rescaleReg k a) =
-      responseJObservableCubeSet (originCube d ((k + m : ℕ) : ℤ)) p q a := by
+    restrictionResponseJObservableCubeSet (originCube d (m : ℤ)) p q (rescaleReg k a) =
+      restrictionResponseJObservableCubeSet (originCube d ((k + m : ℕ) : ℤ)) p q a := by
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
   let G : Ch02.TriadicCoeffFamily d :=
@@ -676,7 +677,7 @@ theorem responseJObservableCubeSet_originCube_rescaleCoeffField_of_aelocallyUnif
     rw [htarget] at hdilate
     simpa [B] using hdilate
   calc
-    responseJObservableCubeSet (originCube d (m : ℤ)) p q (rescaleReg k a)
+    restrictionResponseJObservableCubeSet (originCube d (m : ℤ)) p q (rescaleReg k a)
         = Ch02.responseJ (Ch02.cubeDomain Q) (G.coeffOn Q) p q := by
           symm
           calc
@@ -686,14 +687,14 @@ theorem responseJObservableCubeSet_originCube_rescaleCoeffField_of_aelocallyUnif
                     coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                     Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                       (Ch02.cubeDomain Q) (G.coeffOn Q) p q
-            _ = responseJObservableCubeSet (originCube d (m : ℤ)) p q
+            _ = restrictionResponseJObservableCubeSet (originCube d (m : ℤ)) p q
                   (rescaleReg k a) := by
                   rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q p q
                     (rescaleReg k a).toFun]
                   rfl
     _ = Ch02.responseJ (Ch02.cubeDomain Q) (B.coeffOn Q) p q := hAEEq
     _ = Ch02.responseJ (Ch02.cubeDomain Qsrc) (F.coeffOn Qsrc) p q := hdilate'
-    _ = responseJObservableCubeSet Qsrc p q a := by
+    _ = restrictionResponseJObservableCubeSet Qsrc p q a := by
           calc
             Ch02.responseJ (Ch02.cubeDomain Qsrc) (F.coeffOn Qsrc) p q =
                 ResponseJ (openCubeSet Qsrc) p q a.toFun := by
@@ -701,31 +702,31 @@ theorem responseJObservableCubeSet_originCube_rescaleCoeffField_of_aelocallyUnif
                     coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                     Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                       (Ch02.cubeDomain Qsrc) (F.coeffOn Qsrc) p q
-            _ = responseJObservableCubeSet Qsrc p q a := by
+            _ = restrictionResponseJObservableCubeSet Qsrc p q a := by
                   rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Qsrc p q a.toFun]
                   rfl
-    _ = responseJObservableCubeSet (originCube d ((k + m : ℕ) : ℤ)) p q a := by
+    _ = restrictionResponseJObservableCubeSet (originCube d ((k + m : ℕ) : ℤ)) p q a := by
           simp [Qsrc, Q]
 
-/-- Scalar response observables under the dilation defining `scaleNormalizedLaw`. -/
-theorem responseJObservableCubeSet_originCube_dilateCoeffField_neg_nat_of_aelocallyUniformlyElliptic
+/-- Scalar response observables under the dilation defining `restrictionScaleNormalizedLaw`. -/
+theorem restrictionResponseJObservableCubeSet_originCube_dilateCoeffField_neg_nat_of_aelocallyUniformlyElliptic
     {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (k m : ℕ) (p q : Vec d) :
-    responseJObservableCubeSet (originCube d (m : ℤ)) p q
+    restrictionResponseJObservableCubeSet (originCube d (m : ℤ)) p q
         (dilateReg (-(k : ℤ)) a) =
-      responseJObservableCubeSet (originCube d ((k + m : ℕ) : ℤ)) p q a := by
+      restrictionResponseJObservableCubeSet (originCube d ((k + m : ℕ) : ℤ)) p q a := by
   rw [← rescaleReg_eq_dilateReg_neg_nat]
-  exact responseJObservableCubeSet_originCube_rescaleCoeffField_of_aelocallyUniformlyElliptic
+  exact restrictionResponseJObservableCubeSet_originCube_rescaleCoeffField_of_aelocallyUniformlyElliptic
     ha k m p q
 /-- Upper multiscale ellipticity moments shift under scale-normalization of the
 law. -/
-theorem LambdaMomentAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem LambdaMomentAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (k m : ℕ) {s : ℝ} (hs : 0 < s) (ξ : ℕ) :
-    LambdaMomentAtScale (scaleNormalizedLaw k P) (m : ℤ) s ξ =
+    LambdaMomentAtScale (restrictionScaleNormalizedLaw k P) (m : ℤ) s ξ =
       LambdaMomentAtScale P ((k + m : ℕ) : ℤ) s ξ := by
   unfold LambdaMomentAtScale annealedMomentRoot
-  rw [integral_scaleNormalizedLaw]
+  rw [integral_restrictionScaleNormalizedLaw]
   · apply congrArg (fun x : ℝ => x ^ (1 / (ξ : ℝ)))
     apply integral_congr_ae
     filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
@@ -737,13 +738,13 @@ theorem LambdaMomentAtScale_scaleNormalizedLaw
 
 /-- Lower inverse multiscale ellipticity moments shift under
 scale-normalization of the law. -/
-theorem lambdaInvMomentAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem lambdaInvMomentAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (k m : ℕ) {s : ℝ} (hs : 0 < s) (ξ : ℕ) :
-    lambdaInvMomentAtScale (scaleNormalizedLaw k P) (m : ℤ) s ξ =
+    lambdaInvMomentAtScale (restrictionScaleNormalizedLaw k P) (m : ℤ) s ξ =
       lambdaInvMomentAtScale P ((k + m : ℕ) : ℤ) s ξ := by
   unfold lambdaInvMomentAtScale annealedMomentRoot
-  rw [integral_scaleNormalizedLaw]
+  rw [integral_restrictionScaleNormalizedLaw]
   · apply congrArg (fun x : ℝ => x ^ (1 / (ξ : ℝ)))
     apply integral_congr_ae
     filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
@@ -755,15 +756,15 @@ theorem lambdaInvMomentAtScale_scaleNormalizedLaw
 
 /-- The enhanced ellipticity moment contrast shifts under scale-normalization
 of the law. -/
-theorem widetildeThetaAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem widetildeThetaAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (k m : ℕ) {sUpper sLower : ℝ} (hsUpper : 0 < sUpper)
     (hsLower : 0 < sLower) (ξ : ℕ) :
-    widetildeThetaAtScale (scaleNormalizedLaw k P) (m : ℤ) sUpper sLower ξ =
+    widetildeThetaAtScale (restrictionScaleNormalizedLaw k P) (m : ℤ) sUpper sLower ξ =
       widetildeThetaAtScale P ((k + m : ℕ) : ℤ) sUpper sLower ξ := by
   simp [widetildeThetaAtScale,
-    LambdaMomentAtScale_scaleNormalizedLaw hP k m hsUpper ξ,
-    lambdaInvMomentAtScale_scaleNormalizedLaw hP k m hsLower ξ]
+    LambdaMomentAtScale_restrictionScaleNormalizedLaw hP k m hsUpper ξ,
+    lambdaInvMomentAtScale_restrictionScaleNormalizedLaw hP k m hsLower ξ]
 
 private theorem smul_one_mat_eq_scalar_eq {d : ℕ} [NeZero d] {r s : ℝ}
     (h : r • (1 : Mat d) = s • (1 : Mat d)) : r = s := by
@@ -774,16 +775,16 @@ private theorem smul_one_mat_eq_scalar_eq {d : ℕ} [NeZero d] {r s : ℝ}
 
 /-- The annealed full coarse block matrix shifts under scale-normalization of
 the law. -/
-theorem annealedBlockMatrixAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem annealedBlockMatrixAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (k m : ℕ) :
-    annealedBlockMatrixAtScale (scaleNormalizedLaw k P) (m : ℤ) =
+    annealedBlockMatrixAtScale (restrictionScaleNormalizedLaw k P) (m : ℤ) =
       annealedBlockMatrixAtScale P ((k + m : ℕ) : ℤ) := by
   unfold annealedBlockMatrixAtScale annealedBlockMatrix
   rw [BlockMat.mk.injEq]
   constructor
   · ext i j
-    rw [integral_scaleNormalizedLaw]
+    rw [integral_restrictionScaleNormalizedLaw]
     · apply integral_congr_ae
       filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
       rw [← rescaleReg_eq_dilateReg_neg_nat k]
@@ -792,7 +793,7 @@ theorem annealedBlockMatrixAtScale_scaleNormalizedLaw
         (originCube d (m : ℤ)) i j).aestronglyMeasurable
   constructor
   · ext i j
-    rw [integral_scaleNormalizedLaw]
+    rw [integral_restrictionScaleNormalizedLaw]
     · apply integral_congr_ae
       filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
       rw [← rescaleReg_eq_dilateReg_neg_nat k]
@@ -801,7 +802,7 @@ theorem annealedBlockMatrixAtScale_scaleNormalizedLaw
         (originCube d (m : ℤ)) i j).aestronglyMeasurable
   constructor
   · ext i j
-    rw [integral_scaleNormalizedLaw]
+    rw [integral_restrictionScaleNormalizedLaw]
     · apply integral_congr_ae
       filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
       rw [← rescaleReg_eq_dilateReg_neg_nat k]
@@ -809,7 +810,7 @@ theorem annealedBlockMatrixAtScale_scaleNormalizedLaw
     · exact ((hP.scaleNormalized k).aemeasurable_coarseBlockMatrix_lowerLeft_apply_cubeSet
         (originCube d (m : ℤ)) i j).aestronglyMeasurable
   · ext i j
-    rw [integral_scaleNormalizedLaw]
+    rw [integral_restrictionScaleNormalizedLaw]
     · apply integral_congr_ae
       filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
       rw [← rescaleReg_eq_dilateReg_neg_nat k]
@@ -819,25 +820,25 @@ theorem annealedBlockMatrixAtScale_scaleNormalizedLaw
 
 /-- The annealed upper-left scalar block shifts under scale-normalization of
 the law. -/
-theorem annealedBAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem annealedBAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (k m : ℕ) :
-    annealedBAtScale (scaleNormalizedLaw k P) (m : ℤ) =
+    annealedBAtScale (restrictionScaleNormalizedLaw k P) (m : ℤ) =
       annealedBAtScale P ((k + m : ℕ) : ℤ) := by
   simpa [annealedBAtScale, annealedB, annealedBlockMatrixAtScale] using
-    congrArg BlockMat.upperLeft (annealedBlockMatrixAtScale_scaleNormalizedLaw hP k m)
+    congrArg BlockMat.upperLeft (annealedBlockMatrixAtScale_restrictionScaleNormalizedLaw hP k m)
 
 /-- The annealed inverse-star scalar block shifts under scale-normalization of
 the law. -/
-theorem annealedSigmaStarInvAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem annealedSigmaStarInvAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (k m : ℕ) :
-    annealedSigmaStarInvAtScale (scaleNormalizedLaw k P) (m : ℤ) =
+    annealedSigmaStarInvAtScale (restrictionScaleNormalizedLaw k P) (m : ℤ) =
       annealedSigmaStarInvAtScale P ((k + m : ℕ) : ℤ) := by
   simpa [annealedSigmaStarInvAtScale, annealedSigmaStarInv, annealedBlockMatrixAtScale] using
-    congrArg BlockMat.lowerRight (annealedBlockMatrixAtScale_scaleNormalizedLaw hP k m)
+    congrArg BlockMat.lowerRight (annealedBlockMatrixAtScale_restrictionScaleNormalizedLaw hP k m)
 
-namespace StationaryLaw
+namespace RestrictionStationaryLaw
 
 /-- Commutation of integer translation with carrier triadic rescaling: rescaling
 after translating by `z` equals translating by the `3^k`-scaled integer shift
@@ -856,20 +857,20 @@ private theorem translateReg_comp_rescaleReg {d : ℕ} (k : ℕ) (z : Fin d → 
   ring
 
 /-- Stationarity is preserved by triadic scale-normalization. -/
-theorem scaleNormalized {d : ℕ} {P : CoeffLaw d}
-    (hP : StationaryLaw P) (k : ℕ) :
-    StationaryLaw (scaleNormalizedLaw k P) := by
+theorem scaleNormalized {d : ℕ} {P : RestrictionCoeffLaw d}
+    (hP : RestrictionStationaryLaw P) (k : ℕ) :
+    RestrictionStationaryLaw (restrictionScaleNormalizedLaw k P) := by
   intro z
-  rw [scaleNormalizedLaw_eq_map_rescaleReg,
+  rw [restrictionScaleNormalizedLaw_eq_map_rescaleReg,
     Measure.map_map (measurable_translateReg (intVecToRealVec z)) (measurable_rescaleReg k),
     translateReg_comp_rescaleReg k z,
     ← Measure.map_map (measurable_rescaleReg k)
       (measurable_translateReg (intVecToRealVec (triadicScaleIntShift k z))),
     hP (triadicScaleIntShift k z)]
 
-end StationaryLaw
+end RestrictionStationaryLaw
 
-namespace IsotropicLaw
+namespace RestrictionIsotropicLaw
 
 /-- Commutation of signed-permutation rotation with carrier triadic rescaling. -/
 private theorem rotateReg_comp_rescaleReg {d : ℕ} (R : Mat d)
@@ -882,19 +883,19 @@ private theorem rotateReg_comp_rescaleReg {d : ℕ} (R : Mat d)
 
 /-- Isotropy under signed permutations is preserved by triadic
 scale-normalization. -/
-theorem scaleNormalized {d : ℕ} {P : CoeffLaw d}
-    (hP : IsotropicLaw P) (k : ℕ) :
-    IsotropicLaw (scaleNormalizedLaw k P) := by
+theorem scaleNormalized {d : ℕ} {P : RestrictionCoeffLaw d}
+    (hP : RestrictionIsotropicLaw P) (k : ℕ) :
+    RestrictionIsotropicLaw (restrictionScaleNormalizedLaw k P) := by
   intro R hR
-  rw [scaleNormalizedLaw_eq_map_rescaleReg,
+  rw [restrictionScaleNormalizedLaw_eq_map_rescaleReg,
     Measure.map_map (measurable_rotateReg R hR) (measurable_rescaleReg k),
     rotateReg_comp_rescaleReg R hR k,
     ← Measure.map_map (measurable_rescaleReg k) (measurable_rotateReg R hR),
     hP R hR]
 
-end IsotropicLaw
+end RestrictionIsotropicLaw
 
-namespace AdjointInvariantLaw
+namespace RestrictionAdjointInvariantLaw
 
 /-- Commutation of the entrywise adjoint with carrier triadic rescaling. -/
 private theorem adjointReg_comp_rescaleReg {d : ℕ} (k : ℕ) :
@@ -905,56 +906,56 @@ private theorem adjointReg_comp_rescaleReg {d : ℕ} (k : ℕ) :
   simp only [Function.comp_apply, adjointReg_apply, rescaleReg_apply]
 
 /-- Adjoint invariance is preserved by triadic scale-normalization. -/
-theorem scaleNormalized {d : ℕ} {P : CoeffLaw d}
-    (hP : AdjointInvariantLaw P) (k : ℕ) :
-    AdjointInvariantLaw (scaleNormalizedLaw k P) := by
-  show Measure.map adjointReg (scaleNormalizedLaw k P) = scaleNormalizedLaw k P
-  rw [scaleNormalizedLaw_eq_map_rescaleReg,
+theorem scaleNormalized {d : ℕ} {P : RestrictionCoeffLaw d}
+    (hP : RestrictionAdjointInvariantLaw P) (k : ℕ) :
+    RestrictionAdjointInvariantLaw (restrictionScaleNormalizedLaw k P) := by
+  show Measure.map adjointReg (restrictionScaleNormalizedLaw k P) = restrictionScaleNormalizedLaw k P
+  rw [restrictionScaleNormalizedLaw_eq_map_rescaleReg,
     Measure.map_map measurable_adjointReg (measurable_rescaleReg k),
     adjointReg_comp_rescaleReg k,
     ← Measure.map_map (measurable_rescaleReg k) measurable_adjointReg,
     hP]
 
-end AdjointInvariantLaw
+end RestrictionAdjointInvariantLaw
 
-namespace StructuralLaw
+namespace RestrictionStructuralLaw
 
 /-- The full structural law package is preserved by triadic scale-normalization. -/
-theorem scaleNormalized {d : ℕ} {P : CoeffLaw d}
-    (hP : StructuralLaw P) (k : ℕ) :
-    StructuralLaw (scaleNormalizedLaw k P) where
+theorem scaleNormalized {d : ℕ} {P : RestrictionCoeffLaw d}
+    (hP : RestrictionStructuralLaw P) (k : ℕ) :
+    RestrictionStructuralLaw (restrictionScaleNormalizedLaw k P) where
   stationary := hP.stationary.scaleNormalized k
-  unit_range := hP.unit_range.scaleNormalized k
+  unit_range := RestrictionUnitRangeDependentLaw.scaleNormalized hP.unit_range k
   isotropic := hP.isotropic.scaleNormalized k
   adjoint_invariant := hP.adjoint_invariant.scaleNormalized k
 
-end StructuralLaw
+end RestrictionStructuralLaw
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 /-- The primitive upper-left structural scalar shifts under
 scale-normalization. -/
-theorem barBAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (k m : ℕ) :
+theorem barBAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (k m : ℕ) :
     (hP.scaleNormalized k).barBAtScale (hStruct.scaleNormalized k) (m : ℤ) =
       hP.barBAtScale hStruct ((k + m : ℕ) : ℤ) := by
   apply smul_one_mat_eq_scalar_eq (d := d)
   calc
     (hP.scaleNormalized k).barBAtScale (hStruct.scaleNormalized k) (m : ℤ) • (1 : Mat d)
-        = annealedBAtScale (scaleNormalizedLaw k P) (m : ℤ) :=
+        = annealedBAtScale (restrictionScaleNormalizedLaw k P) (m : ℤ) :=
           ((hP.scaleNormalized k).annealedBAtScale_eq_barBAtScale
             (hStruct.scaleNormalized k) (m : ℤ)).symm
     _ = annealedBAtScale P ((k + m : ℕ) : ℤ) :=
-          annealedBAtScale_scaleNormalizedLaw hP k m
+          annealedBAtScale_restrictionScaleNormalizedLaw hP k m
     _ = hP.barBAtScale hStruct ((k + m : ℕ) : ℤ) • (1 : Mat d) :=
           hP.annealedBAtScale_eq_barBAtScale hStruct ((k + m : ℕ) : ℤ)
 
 /-- The primitive inverse-star structural scalar shifts under
 scale-normalization. -/
-theorem barSigmaStarInvAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (k m : ℕ) :
+theorem barSigmaStarInvAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (k m : ℕ) :
     (hP.scaleNormalized k).barSigmaStarInvAtScale
         (hStruct.scaleNormalized k) (m : ℤ) =
       hP.barSigmaStarInvAtScale hStruct ((k + m : ℕ) : ℤ) := by
@@ -962,19 +963,19 @@ theorem barSigmaStarInvAtScale_scaleNormalizedLaw
   calc
     (hP.scaleNormalized k).barSigmaStarInvAtScale
           (hStruct.scaleNormalized k) (m : ℤ) • (1 : Mat d)
-        = annealedSigmaStarInvAtScale (scaleNormalizedLaw k P) (m : ℤ) :=
+        = annealedSigmaStarInvAtScale (restrictionScaleNormalizedLaw k P) (m : ℤ) :=
           ((hP.scaleNormalized k).annealedSigmaStarInvAtScale_eq_barSigmaStarInvAtScale
             (hStruct.scaleNormalized k) (m : ℤ)).symm
     _ = annealedSigmaStarInvAtScale P ((k + m : ℕ) : ℤ) :=
-          annealedSigmaStarInvAtScale_scaleNormalizedLaw hP k m
+          annealedSigmaStarInvAtScale_restrictionScaleNormalizedLaw hP k m
     _ = hP.barSigmaStarInvAtScale hStruct ((k + m : ℕ) : ℤ) • (1 : Mat d) :=
           hP.annealedSigmaStarInvAtScale_eq_barSigmaStarInvAtScale hStruct
             ((k + m : ℕ) : ℤ)
 
 /-- The structural-law scalar `\bar\sigma` shifts under scale-normalization. -/
-theorem barSigmaAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (k m : ℕ) :
+theorem barSigmaAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (k m : ℕ) :
     (hP.scaleNormalized k).barSigmaAtScale (hStruct.scaleNormalized k) (m : ℤ) =
       hP.barSigmaAtScale hStruct ((k + m : ℕ) : ℤ) := by
   calc
@@ -983,14 +984,14 @@ theorem barSigmaAtScale_scaleNormalizedLaw
           (hP.scaleNormalized k).barSigmaAtScale_eq_barBAtScale
             (hStruct.scaleNormalized k) (m : ℤ)
     _ = hP.barBAtScale hStruct ((k + m : ℕ) : ℤ) :=
-          hP.barBAtScale_scaleNormalizedLaw hStruct k m
+          hP.barBAtScale_restrictionScaleNormalizedLaw hStruct k m
     _ = hP.barSigmaAtScale hStruct ((k + m : ℕ) : ℤ) :=
           (hP.barSigmaAtScale_eq_barBAtScale hStruct ((k + m : ℕ) : ℤ)).symm
 
 /-- The structural-law scalar `\bar\sigma_*` shifts under scale-normalization. -/
-theorem barSigmaStarAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (k m : ℕ) :
+theorem barSigmaStarAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (k m : ℕ) :
     (hP.scaleNormalized k).barSigmaStarAtScale
         (hStruct.scaleNormalized k) (m : ℤ) =
       hP.barSigmaStarAtScale hStruct ((k + m : ℕ) : ℤ) := by
@@ -1001,22 +1002,22 @@ theorem barSigmaStarAtScale_scaleNormalizedLaw
           (hP.scaleNormalized k).barSigmaStarAtScale_eq_inv_barSigmaStarInvAtScale
             (hStruct.scaleNormalized k) (m : ℤ)
     _ = (hP.barSigmaStarInvAtScale hStruct ((k + m : ℕ) : ℤ))⁻¹ := by
-          rw [hP.barSigmaStarInvAtScale_scaleNormalizedLaw hStruct k m]
+          rw [hP.barSigmaStarInvAtScale_restrictionScaleNormalizedLaw hStruct k m]
     _ = hP.barSigmaStarAtScale hStruct ((k + m : ℕ) : ℤ) :=
           (hP.barSigmaStarAtScale_eq_inv_barSigmaStarInvAtScale hStruct
             ((k + m : ℕ) : ℤ)).symm
 
 /-- The structural-law contrast `\Theta` shifts under scale-normalization. -/
-theorem thetaAtScale_scaleNormalizedLaw
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hStruct : StructuralLaw P) (k m : ℕ) :
+theorem thetaAtScale_restrictionScaleNormalizedLaw
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hStruct : RestrictionStructuralLaw P) (k m : ℕ) :
     (hP.scaleNormalized k).thetaAtScale (hStruct.scaleNormalized k) (m : ℤ) =
       hP.thetaAtScale hStruct ((k + m : ℕ) : ℤ) := by
-  simp [LawCarrier.thetaAtScale,
-    hP.barSigmaAtScale_scaleNormalizedLaw hStruct k m,
-    hP.barSigmaStarAtScale_scaleNormalizedLaw hStruct k m]
+  simp [RestrictionLawCarrier.thetaAtScale,
+    hP.barSigmaAtScale_restrictionScaleNormalizedLaw hStruct k m,
+    hP.barSigmaStarAtScale_restrictionScaleNormalizedLaw hStruct k m]
 
-end LawCarrier
+end RestrictionLawCarrier
 
 end
 

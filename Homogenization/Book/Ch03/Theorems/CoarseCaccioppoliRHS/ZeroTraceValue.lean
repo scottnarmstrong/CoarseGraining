@@ -143,7 +143,7 @@ theorem cubeBesovScaleWeight_one_mul_cubeLpNorm_fluctuation_le_grad_negativeBeso
     (ht : 0 < t) (ht_lt : t < 1 / 2) :
     cubeBesovScaleWeight (1 : ℝ) Q *
         cubeLpNorm Q (2 : ℝ≥0∞) (cubeFluctuation Q (fun x => u x)) ≤
-      ((Ch01.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
+      ((Ch01.Legacy.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
           ((d : ℝ) *
             Real.sqrt
               ((1 - Real.rpow (3 : ℝ) (-2 * ((1 / 2 : ℝ) - t)))⁻¹))) *
@@ -152,7 +152,7 @@ theorem cubeBesovScaleWeight_one_mul_cubeLpNorm_fluctuation_le_grad_negativeBeso
   let a : ℝ := 1 - s0
   let N : ℝ := cubeBesovNegativeVectorSeminormTwo Q (2 * t) (fun x => u.grad x)
   let G : ℝ := Real.sqrt ((1 - Real.rpow (3 : ℝ) (-2 * s0))⁻¹)
-  let C : ℝ := Ch01.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)
+  let C : ℝ := Ch01.Legacy.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)
   have hs0_pos : 0 < s0 := by
     dsimp [s0]
     linarith
@@ -170,7 +170,7 @@ theorem cubeBesovScaleWeight_one_mul_cubeLpNorm_fluctuation_le_grad_negativeBeso
     ring
   have hC_nonneg : 0 ≤ C := by
     dsimp [C]
-    exact mul_nonneg (Ch01.fullVectorPoincareConstant_nonneg Q)
+    exact mul_nonneg (Ch01.Legacy.fullVectorPoincareConstant_nonneg Q)
       (Real.rpow_nonneg (by norm_num : 0 ≤ (3 : ℝ)) _)
   have hdepth :
       cubeBesovScaleWeight s0 Q *
@@ -187,7 +187,7 @@ theorem cubeBesovScaleWeight_one_mul_cubeLpNorm_fluctuation_le_grad_negativeBeso
             cubeBesovCircNorm Q a (2 : ℝ≥0∞) (1 : ℝ≥0∞)
               (fun x => u.grad x i) := by
     have hp :=
-      Ch01.h1_fluctuation_partialNormTop_two_le_sum_grad_circNorm
+      Ch01.Legacy.h1_fluctuation_partialNormTop_two_le_sum_grad_circNorm
         (Q := Q) (s := s0) (M := 1) u hs0_pos hs0_lt_one
     simpa [C, a] using hp
   have hBdd :
@@ -265,7 +265,7 @@ theorem cubeBesovScaleWeight_one_mul_cubeLpNorm_fluctuation_le_grad_negativeBeso
           _ = (C * ((d : ℝ) * G)) * N := by
               ring
     _ =
-      ((Ch01.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
+      ((Ch01.Legacy.fullVectorPoincareConstant Q * (3 : ℝ) ^ ((d : ℝ) + 1)) *
           ((d : ℝ) *
             Real.sqrt
               ((1 - Real.rpow (3 : ℝ) (-2 * ((1 / 2 : ℝ) - t)))⁻¹))) *
@@ -513,7 +513,7 @@ theorem cubeBesovScaleWeight_one_mul_cubeLpNorm_h10_le_grad_negativeBesovTwo
     (ht : 0 < t) (ht_lt : t < 1 / 2) :
     cubeBesovScaleWeight (1 : ℝ) Q *
         cubeLpNorm Q (2 : ℝ≥0∞) (fun x => u.toH1Function.toFun x) ≤
-      ((((d : ℝ) * cubeNeumannW22CalderonZygmundConstant d *
+      ((((d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d *
             (3 : ℝ) ^ ((d : ℝ) + 1) * (d : ℝ)) +
           2 * (3 : ℝ) ^ ((d : ℝ) + 1)) *
           Real.sqrt ((1 - Real.rpow (3 : ℝ) (-2 * ((1 / 2 : ℝ) - t)))⁻¹)) *
@@ -527,7 +527,7 @@ theorem cubeBesovScaleWeight_one_mul_cubeLpNorm_h10_le_grad_negativeBesovTwo
   let N : ℝ :=
     cubeBesovNegativeVectorSeminormTwo Q (2 * t)
       (fun x => u.toH1Function.grad x)
-  let Kfl : ℝ := (d : ℝ) * cubeNeumannW22CalderonZygmundConstant d *
+  let Kfl : ℝ := (d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d *
       (3 : ℝ) ^ ((d : ℝ) + 1) * (d : ℝ)
   let Kav : ℝ := 2 * (3 : ℝ) ^ ((d : ℝ) + 1)
   have hv : MeasureTheory.MemLp v (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
@@ -544,17 +544,17 @@ theorem cubeBesovScaleWeight_one_mul_cubeLpNorm_h10_le_grad_negativeBesovTwo
       (Q := Q) (t := t) u.toOpenCubeSet.toH1Function ht ht_lt
   have hfluct0 :
       W * F ≤
-        (((d : ℝ) * cubeNeumannW22CalderonZygmundConstant d *
+        (((d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d *
           (3 : ℝ) ^ ((d : ℝ) + 1)) * ((d : ℝ) * G)) * N := by
     dsimp [W, F, G, N]
     simpa [v, H10Function.toOpenCubeSet_toH1Function_toFun,
       H10Function.toOpenCubeSet_toH1Function_grad,
-      Ch01.fullVectorPoincareConstant,
+      Ch01.Legacy.fullVectorPoincareConstant,
       fullVectorPoincareCubeConstant_eq_dimensionConstant] using hfluct_raw
   have hfluct : W * F ≤ (Kfl * G) * N := by
     calc
       W * F ≤
-          (((d : ℝ) * cubeNeumannW22CalderonZygmundConstant d *
+          (((d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d *
             (3 : ℝ) ^ ((d : ℝ) + 1)) * ((d : ℝ) * G)) * N := hfluct0
       _ = (Kfl * G) * N := by
           dsimp [Kfl]
@@ -606,7 +606,7 @@ theorem cubeBesovScaleWeight_one_mul_cubeLpNorm_h10_le_grad_negativeBesovTwo
     _ ≤ (Kfl * G) * N + (Kav * G) * N := add_le_add hfluct havg
     _ = (((Kfl + Kav) * G) * N) := by ring
     _ =
-      ((((d : ℝ) * cubeNeumannW22CalderonZygmundConstant d *
+      ((((d : ℝ) * Legacy.cubeNeumannW22CalderonZygmundConstant d *
             (3 : ℝ) ^ ((d : ℝ) + 1) * (d : ℝ)) +
           2 * (3 : ℝ) ^ ((d : ℝ) + 1)) *
           Real.sqrt ((1 - Real.rpow (3 : ℝ) (-2 * ((1 / 2 : ℝ) - t)))⁻¹)) *

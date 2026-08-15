@@ -115,9 +115,9 @@ regime `delta < F_{i+1}`, matching the antecedent
 `F_i > delta_sc` in `l.lyapunov`.
 -/
 theorem contrastExcessAt_memoryGridScale_entry_le_of_contraction
-    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {N Nstar L I : ℕ} {A lambda delta Y0Bound : ℝ}
     (hA_nonneg : 0 ≤ A)
@@ -207,9 +207,9 @@ Source label `e.Nentry`: rewriting the contrast-excess entry
 `Theta_m <= 1 + delta`.
 -/
 theorem thetaAtScale_le_one_add_of_contrastExcessAtScale_le
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     {m : ℕ} {delta : ℝ}
     (hentry : contrastExcessAtScale hP hStruct m ≤ delta) :
     Homogenization.Book.Ch05.thetaAtScale hP hStruct (m : ℤ) ≤ 1 + delta := by
@@ -222,9 +222,9 @@ Source label `e.Nentry`: direct displayed small-contrast conclusion at the
 memory-grid entry scale `m_I = N_* + I L`.
 -/
 theorem thetaAt_memoryGridScale_entry_le_one_add_of_contraction
-    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {N Nstar L I : ℕ} {A lambda delta Y0Bound : ℝ}
     (hA_nonneg : 0 ≤ A)
@@ -273,9 +273,9 @@ contrast below `delta0`.
 -/
 theorem shiftedWidetildeTheta_entry_shift_sub_one_le_delta0
     {d : ℕ} [NeZero d] (hc : HighContrastExponents d) (loc : LocalizationSmallContrastInput hc)
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hcparams : hP4.params = hc.params)
     {Nentry R : ℕ} {delta_sc : ℝ}
@@ -309,9 +309,9 @@ plus the localization shift gives the small-contrast decay from
 -/
 theorem thetaAtScale_le_one_add_smallContrast_decay_of_entry_localization
     {d : ℕ} [NeZero d] (hc : HighContrastExponents d) (loc : LocalizationSmallContrastInput hc)
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hcparams : hP4.params = hc.params)
     {Nentry R : ℕ} {delta_sc : ℝ}
@@ -395,9 +395,9 @@ small-contrast shift.
 -/
 theorem thetaAtScale_le_one_add_final_decay_of_entry_localization_shift
     {d : ℕ} [NeZero d] (hc : HighContrastExponents d) (loc : LocalizationSmallContrastInput hc)
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hcparams : hP4.params = hc.params)
     {Nentry R Rsc : ℕ} {delta_sc : ℝ}
@@ -692,9 +692,9 @@ Source label `e.Nentry`: the source initial Lyapunov value satisfies
 `Y_0 <= C_A T` once `C_A` dominates the fixed Lyapunov weight.
 -/
 theorem initial_lyapunovValue_le_const_mul_initialWidetildeTheta_of_P4
-    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {N Nstar L : ℕ} {A C_A : ℝ}
     (hNNstar : N ≤ Nstar)

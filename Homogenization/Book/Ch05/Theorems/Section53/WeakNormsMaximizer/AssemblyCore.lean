@@ -224,7 +224,7 @@ private theorem gradientWeakNormPartial_le_depthRHS
         (((2 * Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹)) *
             (Real.rpow (3 : ℝ) (-(s - s') * (L : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-(s - s')))⁻¹) *
-              Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)) +
+              Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)) +
           (Real.rpow (3 : ℝ) (-s * (L : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-s))⁻¹) *
             Real.sqrt (vecNormSq (-p0))) := by
@@ -270,7 +270,7 @@ private theorem gradientWeakNormPartial_le_depthRHS
     (2 * Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹)) *
       (Real.rpow (3 : ℝ) (-(s - s') * (L : ℝ)) *
         (1 - Real.rpow (3 : ℝ) (-(s - s')))⁻¹) *
-        Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)
+        Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)
   have hzero : ∀ j, zeroTerm j = 0 := by
     intro j
     dsimp [zeroTerm]
@@ -353,7 +353,7 @@ private theorem gradientWeakNormPartial_le_depthRHS
         (((2 * Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹)) *
             (Real.rpow (3 : ℝ) (-(s - s') * (L : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-(s - s')))⁻¹) *
-              Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)) +
+              Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)) +
           (Real.rpow (3 : ℝ) (-s * (L : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-s))⁻¹) *
             Real.sqrt (vecNormSq (-p0))) := by
@@ -384,7 +384,7 @@ private theorem fluxWeakNormPartial_le_depthRHS
         (((2 * Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a)) *
             (Real.rpow (3 : ℝ) (-(t - t') * (L : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-(t - t')))⁻¹) *
-              Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)) +
+              Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)) +
           (Real.rpow (3 : ℝ) (-t * (L : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-t))⁻¹) *
             Real.sqrt (vecNormSq (-q0))) := by
@@ -430,7 +430,7 @@ private theorem fluxWeakNormPartial_le_depthRHS
     (2 * Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a)) *
       (Real.rpow (3 : ℝ) (-(t - t') * (L : ℝ)) *
         (1 - Real.rpow (3 : ℝ) (-(t - t')))⁻¹) *
-        Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)
+        Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)
   have hzero : ∀ j, zeroTerm j = 0 := by
     intro j
     dsimp [zeroTerm]
@@ -513,7 +513,7 @@ private theorem fluxWeakNormPartial_le_depthRHS
         (((2 * Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a)) *
             (Real.rpow (3 : ℝ) (-(t - t') * (L : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-(t - t')))⁻¹) *
-              Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)) +
+              Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)) +
           (Real.rpow (3 : ℝ) (-t * (L : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-t))⁻¹) *
             Real.sqrt (vecNormSq (-q0))) := by
@@ -544,7 +544,7 @@ private theorem gradientWeakNorm_le_depthRHS
         (((2 * Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹)) *
             (Real.rpow (3 : ℝ) (-(s - s') * (L : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-(s - s')))⁻¹) *
-              Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)) +
+              Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)) +
           (Real.rpow (3 : ℝ) (-s * (L : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-s))⁻¹) *
             Real.sqrt (vecNormSq (-p0))) := by
@@ -565,7 +565,7 @@ private theorem gradientWeakNorm_le_depthRHS
     coeff *
       (Real.rpow (3 : ℝ) (-(s - s') * (L : ℝ)) *
         (1 - Real.rpow (3 : ℝ) (-(s - s')))⁻¹) *
-        Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)
+        Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)
   let constTail : ℝ :=
     (Real.rpow (3 : ℝ) (-s * (L : ℝ)) *
         (1 - Real.rpow (3 : ℝ) (-s))⁻¹) *
@@ -632,7 +632,7 @@ private theorem fluxWeakNorm_le_depthRHS
         (((2 * Real.sqrt (Ch04.LambdaSqCoeffField Q t' (.finite 1) a)) *
             (Real.rpow (3 : ℝ) (-(t - t') * (L : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-(t - t')))⁻¹) *
-              Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)) +
+              Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)) +
           (Real.rpow (3 : ℝ) (-t * (L : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-t))⁻¹) *
             Real.sqrt (vecNormSq (-q0))) := by
@@ -653,7 +653,7 @@ private theorem fluxWeakNorm_le_depthRHS
     coeff *
       (Real.rpow (3 : ℝ) (-(t - t') * (L : ℝ)) *
         (1 - Real.rpow (3 : ℝ) (-(t - t')))⁻¹) *
-        Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)
+        Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)
   let constTail : ℝ :=
     (Real.rpow (3 : ℝ) (-t * (L : ℝ)) *
         (1 - Real.rpow (3 : ℝ) (-t))⁻¹) *
@@ -711,7 +711,7 @@ theorem gradientWeakNorm_le_scaleGeometricRHS
               ((Ch04.lambdaSqCoeffField (originCube d m) s' (.finite 1) a)⁻¹)) *
             (Real.rpow (3 : ℝ) (-(s - s') * (Int.toNat (m - k) : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-(s - s')))⁻¹) *
-              Real.sqrt (Ch04.responseJObservableCubeSet (originCube d m) p q a)) +
+              Real.sqrt (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q a)) +
           (Real.rpow (3 : ℝ) (-s * (Int.toNat (m - k) : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-s))⁻¹) *
             Real.sqrt (vecNormSq (-p0))) := by
@@ -780,7 +780,7 @@ theorem fluxWeakNorm_le_scaleGeometricRHS
               (Ch04.LambdaSqCoeffField (originCube d m) t' (.finite 1) a)) *
             (Real.rpow (3 : ℝ) (-(t - t') * (Int.toNat (m - k) : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-(t - t')))⁻¹) *
-              Real.sqrt (Ch04.responseJObservableCubeSet (originCube d m) p q a)) +
+              Real.sqrt (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q a)) +
           (Real.rpow (3 : ℝ) (-t * (Int.toNat (m - k) : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-t))⁻¹) *
             Real.sqrt (vecNormSq (-q0))) := by
@@ -847,7 +847,7 @@ theorem gradientScaleGeometricRHS_le_two_gradientRHSAtScale
               ((Ch04.lambdaSqCoeffField (originCube d m) s' (.finite 1) a)⁻¹)) *
             (Real.rpow (3 : ℝ) (-(s - s') * (Int.toNat (m - k) : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-(s - s')))⁻¹) *
-              Real.sqrt (Ch04.responseJObservableCubeSet (originCube d m) p q a)) +
+              Real.sqrt (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q a)) +
           (Real.rpow (3 : ℝ) (-s * (Int.toNat (m - k) : ℝ)) *
               (1 - Real.rpow (3 : ℝ) (-s))⁻¹) *
             Real.sqrt (vecNormSq (-p0))) ≤
@@ -863,7 +863,7 @@ theorem gradientScaleGeometricRHS_le_two_gradientRHSAtScale
   let lam : ℝ := Real.sqrt ((Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹)
   let tailGap : ℝ := Real.rpow (3 : ℝ) (-(s - s') * (Int.toNat (m - k) : ℝ))
   let discGap : ℝ := (1 - Real.rpow (3 : ℝ) (-(s - s')))⁻¹
-  let sqrtJ : ℝ := Real.sqrt (Ch04.responseJObservableCubeSet Q p q a)
+  let sqrtJ : ℝ := Real.sqrt (Ch04.restrictionResponseJObservableCubeSet Q p q a)
   let tailS : ℝ := Real.rpow (3 : ℝ) (-s * (Int.toNat (m - k) : ℝ))
   let discS : ℝ := (1 - Real.rpow (3 : ℝ) (-s))⁻¹
   let sqrtP : ℝ := Real.sqrt (vecNormSq (-p0))

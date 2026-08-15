@@ -20,7 +20,7 @@ one-step-contraction implementation slice.
 /-- The Section 5.3 and Section 5.4 beta cores are definitionally the same
 minimum of manuscript exponent gaps. -/
 theorem section53CoarseFluctuationBetaCore_eq_section54VarianceBetaCore
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     Section53.JUpperBoundCoarseFluctuations.section53CoarseFluctuationBetaCore hP4 =
       VarianceBoundGoodScale.section54VarianceBetaCore hP4 := by
@@ -29,7 +29,7 @@ theorem section53CoarseFluctuationBetaCore_eq_section54VarianceBetaCore
 /-- The current Section 5.3 beta is a fixed fraction of the Section 5.4
 variance beta. -/
 theorem section53CoarseFluctuationBeta_eq_quarter_section54VarianceBeta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     Section53.JUpperBoundCoarseFluctuations.section53CoarseFluctuationBeta hP4 =
       VarianceBoundGoodScale.section54VarianceBeta hP4 / 4 := by
@@ -40,7 +40,7 @@ theorem section53CoarseFluctuationBeta_eq_quarter_section54VarianceBeta
 
 /-- The Section 5.3 beta is positive. -/
 theorem section53CoarseFluctuationBeta_pos
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 <
       Section53.JUpperBoundCoarseFluctuations.section53CoarseFluctuationBeta hP4 :=
@@ -48,7 +48,7 @@ theorem section53CoarseFluctuationBeta_pos
 
 /-- The Section 5.3 beta is no larger than the Section 5.4 variance beta. -/
 theorem section53CoarseFluctuationBeta_le_section54VarianceBeta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     Section53.JUpperBoundCoarseFluctuations.section53CoarseFluctuationBeta hP4 ≤
       VarianceBoundGoodScale.section54VarianceBeta hP4 := by
@@ -61,7 +61,7 @@ theorem section53CoarseFluctuationBeta_le_section54VarianceBeta
 /-- Section 5.4 variance weights are bounded by the slower Section 5.3
 coarse-fluctuation weights. -/
 theorem varianceWeight_section54VarianceBeta_le_section53CoarseFluctuationBeta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m j : ℕ) :
     VarianceBoundGoodScale.varianceWeight
         (VarianceBoundGoodScale.section54VarianceBeta hP4) m j ≤

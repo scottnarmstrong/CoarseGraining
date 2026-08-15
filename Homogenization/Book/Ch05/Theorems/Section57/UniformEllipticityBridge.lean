@@ -25,7 +25,7 @@ into the `Γ_∞` endpoint used by the public quenched theorem.
 /-- A law is supported on coefficient fields with one uniform ellipticity
 window on every triadic cube. -/
 structure UniformEllipticityBounds {d : ℕ}
-    (P : Ch04.CoeffLaw d) (lam Lam : ℝ) : Prop where
+    (P : Ch04.RestrictionCoeffLaw d) (lam Lam : ℝ) : Prop where
   lam_pos : 0 < lam
   lam_le_Lam : lam ≤ Lam
   aee_elliptic :
@@ -35,7 +35,7 @@ structure UniformEllipticityBounds {d : ℕ}
 
 namespace UniformEllipticityBounds
 
-variable {d : ℕ} {P : Ch04.CoeffLaw d} {lam Lam : ℝ}
+variable {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {lam Lam : ℝ}
 
 /-- The uniform support hypothesis implies the Chapter 4 local ellipticity
 support condition. -/
@@ -344,7 +344,7 @@ theorem lambdaSqCoeffField_finite_one_inv_le_of_uniformEllipticitySample
     _ ≤ uniformLowerInvBlockConst d lam := hsum_le
 
 private theorem integrable_pow_of_ae_nonneg_le_const
-    {d : ℕ} {P : Ch04.CoeffLaw d} {X : RegCoeffField d → ℝ}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {X : RegCoeffField d → ℝ}
     [IsFiniteMeasure P]
     {C : ℝ} (ξ : ℕ)
     (hC : 0 ≤ C) (hX_nonneg : ∀ a, 0 ≤ X a)
@@ -361,8 +361,8 @@ private theorem integrable_pow_of_ae_nonneg_le_const
     abs_of_nonneg hCpow_nonneg] using hpow_le
 
 theorem LambdaSqCoeffField_pow_integrable_of_uniformEllipticityBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    {lam Lam s : ℝ} (hP : Ch04.LawCarrier P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    {lam Lam s : ℝ} (hP : Ch04.RestrictionLawCarrier P)
     (hUE : UniformEllipticityBounds P lam Lam)
     (Q : TriadicCube d) (hs : 0 < s) (ξ : ℕ) :
     Integrable
@@ -391,8 +391,8 @@ theorem LambdaSqCoeffField_pow_integrable_of_uniformEllipticityBounds
   exact integrable_pow_of_ae_nonneg_le_const ξ hC hX_nonneg hX_aemeas hX_le
 
 theorem lambdaSqCoeffField_inv_pow_integrable_of_uniformEllipticityBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    {lam Lam s : ℝ} (hP : Ch04.LawCarrier P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    {lam Lam s : ℝ} (hP : Ch04.RestrictionLawCarrier P)
     (hUE : UniformEllipticityBounds P lam Lam)
     (Q : TriadicCube d) (hs : 0 < s) (ξ : ℕ) :
     Integrable
@@ -423,14 +423,14 @@ theorem lambdaSqCoeffField_inv_pow_integrable_of_uniformEllipticityBounds
   exact integrable_pow_of_ae_nonneg_le_const ξ hC hX_nonneg hX_aemeas hX_le
 
 private theorem annealedMomentRoot_const_one
-    {d : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {ξ : ℕ} (_hξ : 1 ≤ ξ) :
     Ch04.annealedMomentRoot P ξ (fun _ : RegCoeffField d => 1) = 1 := by
   simp [Ch04.annealedMomentRoot]
 
 theorem LambdaMomentAtScale_le_of_uniformEllipticityBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    {lam Lam s : ℝ} (hP : Ch04.LawCarrier P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    {lam Lam s : ℝ} (hP : Ch04.RestrictionLawCarrier P)
     (hUE : UniformEllipticityBounds P lam Lam)
     (n : ℤ) (hs : 0 < s) {ξ : ℕ} (hξ : 1 ≤ ξ) :
     Ch04.LambdaMomentAtScale P n s ξ ≤
@@ -471,8 +471,8 @@ theorem LambdaMomentAtScale_le_of_uniformEllipticityBounds
     _ = C := by rw [annealedMomentRoot_const_one (P := P) hξ]; ring
 
 theorem lambdaInvMomentAtScale_le_of_uniformEllipticityBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    {lam Lam s : ℝ} (hP : Ch04.LawCarrier P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    {lam Lam s : ℝ} (hP : Ch04.RestrictionLawCarrier P)
     (hUE : UniformEllipticityBounds P lam Lam)
     (n : ℤ) (hs : 0 < s) {ξ : ℕ} (hξ : 1 ≤ ξ) :
     Ch04.lambdaInvMomentAtScale P n s ξ ≤
@@ -514,8 +514,8 @@ theorem lambdaInvMomentAtScale_le_of_uniformEllipticityBounds
     _ = C := by rw [annealedMomentRoot_const_one (P := P) hξ]; ring
 
 theorem originBlockIntegrableAtScale_of_uniformEllipticityBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    {lam Lam sUpper sLower : ℝ} (hP : Ch04.LawCarrier P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    {lam Lam sUpper sLower : ℝ} (hP : Ch04.RestrictionLawCarrier P)
     (hUE : UniformEllipticityBounds P lam Lam)
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower)
     {ξ : ℕ} (hξ : 1 ≤ ξ) (n : ℕ) :
@@ -529,9 +529,9 @@ theorem originBlockIntegrableAtScale_of_uniformEllipticityBounds
         hP hUE (originCube d (n : ℤ)) hsLower ξ)
 
 theorem barSigmaAtScale_le_of_uniformEllipticityBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    {lam Lam sUpper sLower : ℝ} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    {lam Lam sUpper sLower : ℝ} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hUE : UniformEllipticityBounds P lam Lam)
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower)
     {ξ : ℕ} (hξ : 1 ≤ ξ) (n : ℕ) :
@@ -575,9 +575,9 @@ theorem barSigmaAtScale_le_of_uniformEllipticityBounds
       hP hUE (n : ℤ) hsUpper hξ)
 
 theorem barSigmaStarAtScale_inv_le_of_uniformEllipticityBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    {lam Lam sUpper sLower : ℝ} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    {lam Lam sUpper sLower : ℝ} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hUE : UniformEllipticityBounds P lam Lam)
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower)
     {ξ : ℕ} (hξ : 1 ≤ ξ) (n : ℕ) :
@@ -621,9 +621,9 @@ theorem barSigmaStarAtScale_inv_le_of_uniformEllipticityBounds
       hP hUE (n : ℤ) hsLower hξ)
 
 theorem barSigmaAtScale_pos_of_uniformEllipticityBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    {lam Lam sUpper sLower : ℝ} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    {lam Lam sUpper sLower : ℝ} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hUE : UniformEllipticityBounds P lam Lam)
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower)
     {ξ : ℕ} (hξ : 1 ≤ ξ) (n : ℕ) :
@@ -636,15 +636,15 @@ theorem barSigmaAtScale_pos_of_uniformEllipticityBounds
     hStruct hBlock
 
 private theorem barSigmaStarAtScale_pos_of_integrable_coarseFullBlockMatrixAtCube
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (n : ℕ)
     (hBlock :
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (n : ℤ))) P) :
     0 < hP.barSigmaStarAtScale hStruct (n : ℤ) := by
   have hInv : 0 < hP.barSigmaStarInvAtScale hStruct (n : ℤ) := by
-    simpa [Ch04.LawCarrier.barSigmaStarInvAtScale] using
-      Ch04.LawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube
+    simpa [Ch04.RestrictionLawCarrier.barSigmaStarInvAtScale] using
+      Ch04.RestrictionLawCarrier.Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube
         hP
         (Ch04.Internal.annealedPrimitiveScalarizationData_of_structuralLaw
           hP hStruct (n : ℤ))
@@ -653,8 +653,8 @@ private theorem barSigmaStarAtScale_pos_of_integrable_coarseFullBlockMatrixAtCub
   exact inv_pos.mpr hInv
 
 private theorem barSigmaStarAtScale_le_barSigmaAtScale_of_integrable_coarseFullBlockMatrixAtCube
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (n : ℕ)
     (hBlock :
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (n : ℤ))) P) :
@@ -667,7 +667,7 @@ private theorem barSigmaStarAtScale_le_barSigmaAtScale_of_integrable_coarseFullB
       barSigmaStarAtScale_pos_of_integrable_coarseFullBlockMatrixAtCube
         hP hStruct n hBlock
   have htheta : 1 ≤ b * c⁻¹ := by
-    simpa [thetaAtScale, Ch04.LawCarrier.thetaAtScale, b, c] using
+    simpa [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale, b, c] using
       Section52.one_le_thetaAtScale_of_integrable_coarseFullBlockMatrixAtCube
         hP hStruct (n : ℤ) hBlock
   calc
@@ -678,9 +678,9 @@ private theorem barSigmaStarAtScale_le_barSigmaAtScale_of_integrable_coarseFullB
     _ = hP.barSigmaAtScale hStruct (n : ℤ) := rfl
 
 theorem barSigmaAtScale_inv_le_of_uniformEllipticityBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    {lam Lam sUpper sLower : ℝ} (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    {lam Lam sUpper sLower : ℝ} (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hUE : UniformEllipticityBounds P lam Lam)
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower)
     {ξ : ℕ} (hξ : 1 ≤ ξ) (n : ℕ) :
@@ -736,10 +736,10 @@ theorem mainResultsThetaHat_pos {d : ℕ} {lam Lam : ℝ}
 /-- Uniform ellipticity bounds the normalized unit-cube `Γ_∞` observable
 almost surely. -/
 theorem gammaSigmaUnitEllipticityObservable_le_of_uniformEllipticityBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     {lam Lam : ℝ}
-    (hP : Ch04.LawCarrier P)
-    (hStruct : Ch04.StructuralLaw P)
+    (hP : Ch04.RestrictionLawCarrier P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hUE : UniformEllipticityBounds P lam Lam)
     {sUpper sLower : ℝ}
     (hsUpper : 0 < sUpper) (hsLower : 0 < sLower) :
@@ -804,14 +804,14 @@ theorem gammaSigmaUnitEllipticityObservable_le_of_uniformEllipticityBounds
 
 namespace UniformEllipticityBounds
 
-variable {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+variable {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
 variable {lam Lam : ℝ}
 
 /-- Uniform ellipticity supplies the older Chapter 5 `(P4)` package for any
 admissible parameter record. -/
 noncomputable def toQuantitativeCoarseGrainedEllipticity
     (hUE : UniformEllipticityBounds P lam Lam)
-    (hP : Ch04.LawCarrier P)
+    (hP : Ch04.RestrictionLawCarrier P)
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     QuantitativeCoarseGrainedEllipticity P where
   sUpper := params.sUpper
@@ -837,7 +837,7 @@ noncomputable def toQuantitativeCoarseGrainedEllipticity
 @[simp]
 theorem toQuantitativeCoarseGrainedEllipticity_params
     (hUE : UniformEllipticityBounds P lam Lam)
-    (hP : Ch04.LawCarrier P)
+    (hP : Ch04.RestrictionLawCarrier P)
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     (hUE.toQuantitativeCoarseGrainedEllipticity hP params).params = params := by
   rfl
@@ -846,7 +846,7 @@ theorem toQuantitativeCoarseGrainedEllipticity_params
 parameter record. -/
 noncomputable def toGammaInfinityCoarseGrainedEllipticity
     (hUE : UniformEllipticityBounds P lam Lam)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     GammaInfinityCoarseGrainedEllipticity P hP hStruct where
   params := params
@@ -860,7 +860,7 @@ noncomputable def toGammaInfinityCoarseGrainedEllipticity
 @[simp]
 theorem toGammaInfinityCoarseGrainedEllipticity_params
     (hUE : UniformEllipticityBounds P lam Lam)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     (hUE.toGammaInfinityCoarseGrainedEllipticity hP hStruct params).params =
       params := rfl
@@ -869,7 +869,7 @@ theorem toGammaInfinityCoarseGrainedEllipticity_params
 exposed finite moment exponent. -/
 noncomputable def toGammaInfinityCoarseGrainedEllipticityNoXi
     (hUE : UniformEllipticityBounds P lam Lam)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (params : GammaCoarseGrainedEllipticityParams d) :
     GammaInfinityCoarseGrainedEllipticityNoXi P hP hStruct where
   params := params
@@ -883,7 +883,7 @@ noncomputable def toGammaInfinityCoarseGrainedEllipticityNoXi
 @[simp]
 theorem toGammaInfinityCoarseGrainedEllipticityNoXi_params
     (hUE : UniformEllipticityBounds P lam Lam)
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (params : GammaCoarseGrainedEllipticityParams d) :
     (hUE.toGammaInfinityCoarseGrainedEllipticityNoXi hP hStruct params).params =
       params := rfl

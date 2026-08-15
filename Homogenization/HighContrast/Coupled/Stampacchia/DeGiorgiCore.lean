@@ -120,8 +120,6 @@ theorem deGiorgi_one_sided_core {d : ℕ} (hd : 3 ≤ d) :
     intro S hSU
     show (volume.restrict (axisCube z L)) S = volume S
     rw [Measure.restrict_apply' hUmeas, Set.inter_eq_left.mpr hSU]
-  have hμfin : ∀ S : Set (Vec d), (volumeMeasureOn (axisCube z L)) S ≠ ⊤ :=
-    fun S => measure_ne_top _ S
   -- Finiteness of the critical-exponent norm via the Sobolev embedding (E1).
   have hfin_2star : ∀ (u : H1Function (axisCube z L)),
       eLpNorm u.toFun p (volumeMeasureOn (axisCube z L)) ≠ ⊤ := by
@@ -259,9 +257,9 @@ theorem deGiorgi_one_sided_core {d : ℕ} (hd : 3 ≤ d) :
       intro x hx; rw [hgk_tf]; have hxlt : m₀ + l < w₂.toFun x := hx.2
       rw [le_max_iff]; left; linarith
     have hcheb1 := real_chebyshev_level hp_ne_zero hp_ne_top hfk_meas.aestronglyMeasurable
-      (hfin_2star fk) hεnn (hμfin _) hSsub1
+      (hfin_2star fk) hεnn hSsub1
     have hcheb2 := real_chebyshev_level hp_ne_zero hp_ne_top hgk_meas.aestronglyMeasurable
-      (hfin_2star gk) hεnn (hμfin _) hSsub2
+      (hfin_2star gk) hεnn hSsub2
     rw [hμvol _ (fun x hx => hx.1), ← hq_def] at hcheb1
     rw [hμvol _ (fun x hx => hx.1), ← hq_def] at hcheb2
     have hkey := sq_level_recursion_of_le (ε := l - k) (r := 1 / q)

@@ -216,9 +216,9 @@ child-average raw computation when the lower-edge slot carries **both** the
 deterministic memory payment and Layer A's `H`-linear edge-memory residual.
 The produced value is `noDropResponseRHSLinear`. -/
 theorem expectedCenteredResponseJAtScale_le_noDropResponseRHSLinear_of_split_raw_highContrast_lower_memory_linear
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     {k m : ℤ} (e : Homogenization.Vec d)
     {C C_raw_bad C_delta C_memory C_edgeMem C_S C_bad eps F_i weakNormGood T_m
       S_term P_tau_sum lowerEdge badMaximal rhoSqrt rho etaS etaSt rhoSq
@@ -285,9 +285,9 @@ Source labels `p.HC.CR`, `p.nodrop.CR`, `e.det.memory`, and Layer A's
 child-average raw computation when the lower-edge slot carries **both** the
 deterministic memory payment and Layer A's `H`-linear edge-memory residual. -/
 theorem expectedCenteredResponseJStarAtScale_le_noDropResponseRHSLinear_of_split_raw_highContrast_lower_memory_linear
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     {m : ℤ} (e : Homogenization.Vec d)
     {C C_raw_bad C_delta C_memory C_edgeMem C_S C_bad eps starSqrtTerm F_i
       weakNormGood T_m S_term P_tau_sum lowerEdge badMaximal rhoSqrt rho
@@ -356,9 +356,9 @@ theorem exists_bufferExponent_lintegral_terminalCoarseBlockStochasticMax_add_sub
     (sub : SubthresholdPolynomialMomentParameters)
     {etaSt : ℝ} (hetaSt_pos : 0 < etaSt) :
     ∃ B : ℝ, 1 ≤ B ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
         {N Nstar L i : ℕ},
           N + Nat.ceil
@@ -476,22 +476,22 @@ theorem sqrtTerm_prefactor_le_noDrop_rhoSqrt_budget
 
 /-- Expected lower-scale response nonnegativity for the square-root absorber. -/
 theorem expectedResponseJCubeSet_nonneg
-    {d : ℕ} {P : Homogenization.Book.Ch04.CoeffLaw d}
+    {d : ℕ} {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
     (Q : Homogenization.TriadicCube d) (p q : Homogenization.Vec d) :
     0 ≤ Homogenization.Book.Ch04.expectedResponseJCubeSet P Q p q := by
   dsimp [Homogenization.Book.Ch04.expectedResponseJCubeSet]
   exact
     MeasureTheory.integral_nonneg
-      (fun a => Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg Q p q a)
+      (fun a => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg Q p q a)
 
 /--
-Tau nonnegativity for the special terminal pair, derived from LIH integrability
+Tau nonnegativity for the special terminal pair, derived from the library's integrability results
 under the quantitative ellipticity package.
 -/
 theorem tauAtScale_special_nonneg_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (e : Homogenization.Vec d) :
     0 ≤
@@ -534,9 +534,9 @@ Source labels `p.nodrop.CR` and `e.sqrt.tau.absorb`: concrete square-root
 additivity contribution for the special terminal pair in `p.HC.CR`.
 -/
 theorem centeredResponseSqrtTermAtScale_prefactor_le_noDrop_rhoSqrt_budget
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (k m : ℤ) (e : Homogenization.Vec d)
     {C C_delta C_sqrt rho delta F_i : ℝ}
     (hC_nonneg : 0 ≤ C)
@@ -590,13 +590,13 @@ theorem centeredResponseSqrtTermAtScale_prefactor_le_noDrop_rhoSqrt_budget
 /--
 Source labels `p.nodrop.CR` and `e.sqrt.tau.absorb`: adjoint square-root
 additivity contribution for the special terminal pair.  The lower-scale
-annealed `J^*` response is represented by LIH through adjoint invariance using
+annealed `J^*` response is represented by the library through adjoint invariance using
 the same scalar expectation as the primal term.
 -/
 theorem centeredResponseStarSqrtTermAtScale_prefactor_le_noDrop_rhoSqrt_budget
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (k m : ℤ) (e : Homogenization.Vec d)
     {C C_delta C_sqrt rho delta F_i : ℝ}
     (hC_nonneg : 0 ≤ C)
@@ -703,9 +703,9 @@ but the lower-edge slots `h_lower`/`h_lowerStar` carry the additional
 `H`-linear edge-memory residual `C_edgeMem·eps⁻¹·linTerm`, and the produced
 value is `noDropResponseRHSLinear`. -/
 theorem expectedCenteredResponsesAtMemoryGrid_le_noDropResponseRHSLinear_of_split_raw_highContrast_lower_memory_no_bad_linear
-    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] (hc : HighContrastExponents d) {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {N Nstar L i : ℕ} (e : Homogenization.Vec d)
     {rho C C_delta C_memory C_edgeMem C_S eps etaS etaSt decay starSqrtTerm

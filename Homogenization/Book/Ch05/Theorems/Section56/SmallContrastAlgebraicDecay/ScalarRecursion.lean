@@ -26,7 +26,7 @@ special vectors at scale `m` is controlled by the drop of `Theta` from `k` to
 /-- If `\widetilde\Theta_0 - 1` is at most a parameter not exceeding one, then
 `\widetilde\Theta_0 ≤ 2`. -/
 theorem widetildeThetaAtScale_zero_le_two_of_sub_one_le_delta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     {hP4 : QuantitativeCoarseGrainedEllipticity P} {delta : ℝ}
     (hdelta_le_one : delta ≤ 1)
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 - 1 ≤ delta) :
@@ -35,8 +35,8 @@ theorem widetildeThetaAtScale_zero_le_two_of_sub_one_le_delta
 
 /-- Smallness at scale zero propagates to all scalar contrasts. -/
 theorem thetaAtScale_sub_one_le_delta_of_widetildeThetaAtScale_zero_sub_one_le_delta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ}
     (hsmall : widetildeThetaAtScale P (0 : ℤ) hP4 - 1 ≤ delta)
@@ -68,8 +68,8 @@ theorem half_sum_sub_le_product_drop
 /-- The special-vector additivity defect is controlled by the scalar contrast
 drop between scales `k` and `m`. -/
 theorem tauAtScale_special_le_thetaAtScale_sub
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (e : Vec d) (he : vecNormSq e = 1) :
     let p_e := specialPAtScale hP hStruct (m : ℤ) e

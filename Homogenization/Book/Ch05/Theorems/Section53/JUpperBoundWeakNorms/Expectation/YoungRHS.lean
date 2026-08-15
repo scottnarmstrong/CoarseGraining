@@ -26,7 +26,7 @@ noncomputable section
 /-- Manuscript expected RHS with the first square-root additivity term replaced
 by its Young envelope. -/
 noncomputable def jUpperWeakNormYoungManuscriptExpectedRHSAtScale {d : ℕ}
-    (P : Ch04.CoeffLaw d) (m k : ℤ) (s t : ℝ)
+    (P : Ch04.RestrictionCoeffLaw d) (m k : ℤ) (s t : ℝ)
     (C Cosc scaleSep BφS BφT Cprod η : ℝ)
     (p q p0 q0 : Vec d) : ℝ :=
   let Q : TriadicCube d := originCube d m
@@ -68,15 +68,15 @@ private theorem sqrt_mul_sqrt_le_young
   linarith
 
 private theorem expectedResponseJCubeSet_nonneg
-    {d : ℕ} (P : Ch04.CoeffLaw d) (Q : TriadicCube d) (p q : Vec d) :
+    {d : ℕ} (P : Ch04.RestrictionCoeffLaw d) (Q : TriadicCube d) (p q : Vec d) :
     0 ≤ Ch04.expectedResponseJCubeSet P Q p q := by
   dsimp [Ch04.expectedResponseJCubeSet]
-  exact integral_nonneg fun a => Ch04.responseJObservableCubeSet_nonneg Q p q a
+  exact integral_nonneg fun a => Ch04.restrictionResponseJObservableCubeSet_nonneg Q p q a
 
 /-- The standard manuscript RHS is bounded by the Young-envelope RHS for the
 first additivity term. -/
 theorem jUpperWeakNormManuscriptExpectedRHSAtScale_le_youngManuscriptExpectedRHSAtScale
-    {d : ℕ} {P : Ch04.CoeffLaw d} {m k : ℤ} {s t : ℝ}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} {m k : ℤ} {s t : ℝ}
     {C Cosc scaleSep BφS BφT Cprod η : ℝ}
     (p q p0 q0 : Vec d)
     (hC : 0 ≤ C) (hη : 0 < η)
@@ -119,9 +119,9 @@ theorem jUpperWeakNormManuscriptExpectedRHSAtScale_le_youngManuscriptExpectedRHS
 same normalized cutoff and P4 integrability inputs as the standard public
 surface. -/
 theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormYoungManuscriptExpectedRHSAtScale_of_normalizedCutoff_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     {s t : ℝ} (hs : 0 < s) (hs_lt_one : s < 1) (ht : 0 < t)

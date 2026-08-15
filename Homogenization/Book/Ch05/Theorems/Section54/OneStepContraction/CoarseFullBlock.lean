@@ -22,7 +22,7 @@ needs the same refined budget argument with that beta.
 open Section53.JUpperBoundCoarseFluctuations
 
 private theorem section53CoarseFluctuationBeta_lt_dim_div_two
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section53CoarseFluctuationBeta hP4 < (d : ℝ) / 2 := by
   have hbeta_le := section53CoarseFluctuationBeta_le_sUpper hP4
@@ -31,7 +31,7 @@ private theorem section53CoarseFluctuationBeta_lt_dim_div_two
   nlinarith
 
 private theorem lpVarianceDecay_gap_pos_section53
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < VarianceBoundGoodScale.lpVarianceDecay d hP4 -
       section53CoarseFluctuationBeta hP4 := by
@@ -45,7 +45,7 @@ private theorem lpVarianceDecay_gap_pos_section53
   nlinarith
 
 private theorem sqrtVarianceDecay_gap_pos_section53
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < VarianceBoundGoodScale.sqrtVarianceDecay d -
       section53CoarseFluctuationBeta hP4 := by
@@ -53,7 +53,7 @@ private theorem sqrtVarianceDecay_gap_pos_section53
     section53CoarseFluctuationBeta_lt_dim_div_two hP4
 
 private theorem widetildeThetaAtScale_zero_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ widetildeThetaAtScale P 0 hP4 := by
   simp [widetildeThetaAtScale, Ch04.widetildeThetaAtScale]
@@ -64,7 +64,7 @@ private theorem widetildeThetaAtScale_zero_nonneg
 /-- Linear constant for refined pair budgets summed with the Section 5.3
 beta. -/
 noncomputable def oneStepCoarsePairLinearBudgetConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   16 *
     (Ch04.rosenthalDescendantsAtScaleLpConst d 0 hP4.xi *
@@ -77,7 +77,7 @@ noncomputable def oneStepCoarsePairLinearBudgetConst
             section53CoarseFluctuationBeta hP4) 1)⁻¹)
 
 theorem oneStepCoarsePairLinearBudgetConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ oneStepCoarsePairLinearBudgetConst hP4 := by
   unfold oneStepCoarsePairLinearBudgetConst
@@ -105,7 +105,7 @@ theorem oneStepCoarsePairLinearBudgetConst_nonneg
   positivity
 
 theorem pairPointwiseBudgetConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ VarianceBoundGoodScale.pairPointwiseBudgetConst hP4 := by
   unfold VarianceBoundGoodScale.pairPointwiseBudgetConst
@@ -120,7 +120,7 @@ theorem pairPointwiseBudgetConst_nonneg
 
 /-- Constant controlling the Section 5.3-beta refined scalar budget. -/
 noncomputable def oneStepWeightedRefinedBudgetConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   (geometricDiscount (section53CoarseFluctuationBeta hP4) 1)⁻¹ +
     2 * oneStepCoarsePairLinearBudgetConst hP4 +
@@ -129,7 +129,7 @@ noncomputable def oneStepWeightedRefinedBudgetConst
 
 /-- The Section 5.3-beta refined scalar budget constant is nonnegative. -/
 theorem oneStepWeightedRefinedBudgetConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ oneStepWeightedRefinedBudgetConst hP4 := by
   unfold oneStepWeightedRefinedBudgetConst
@@ -146,14 +146,14 @@ theorem oneStepWeightedRefinedBudgetConst_nonneg
 
 /-- Final constant for the Section 5.3-beta full-block fluctuation sum. -/
 noncomputable def oneStepCoarseFullBlockConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   3 *
     (VarianceBoundGoodScale.refinedMatrixBudgetConst d *
       oneStepWeightedRefinedBudgetConst hP4)
 
 theorem oneStepCoarseFullBlockConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ oneStepCoarseFullBlockConst hP4 := by
   unfold oneStepCoarseFullBlockConst
@@ -165,7 +165,7 @@ theorem oneStepCoarseFullBlockConst_nonneg
   positivity
 
 theorem sum_Icc_varianceWeight_mul_pairProbeRefinedK_le_section53
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_le_half : delta ≤ 1 / 2)
     (m : ℕ) :
@@ -297,7 +297,7 @@ theorem sum_Icc_varianceWeight_mul_pairProbeRefinedK_le_section53
         ring
 
 theorem sum_Icc_varianceWeight_mul_pairProbeRefinedK_sq_le_section53
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (hdelta_le_half : delta ≤ 1 / 2)
     (m : ℕ) :
@@ -380,7 +380,7 @@ theorem sum_Icc_varianceWeight_mul_pairProbeRefinedK_sq_le_section53
         ring
 
 private theorem sum_Icc_varianceWeight_mul_refinedVarianceBasicBudget_le_section53
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le_half : delta ≤ 1 / 2)
     (m : ℕ) :
@@ -558,8 +558,8 @@ private theorem sum_Icc_varianceWeight_mul_refinedVarianceBasicBudget_le_section
 /-- The Section 5.3-beta full-block fluctuation sum is controlled by the
 refined scalar budget at a good scale. -/
 theorem oneStepCoarseFullBlockSumAtScale_le_budget
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le_half : delta ≤ 1 / 2)
     (m : ℕ)
@@ -664,8 +664,8 @@ theorem oneStepCoarseFullBlockSumAtScale_le_budget
 /-- Under the one-step logarithmic scale separation, the Section 5.3-beta
 full-block fluctuation sum is `O(sqrt(delta))`. -/
 theorem oneStepCoarseFullBlockSumAtScale_le_sqrt_delta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {C delta : ℝ} {m : ℕ}
     (hC : oneStepScaleSeparationConst hP4 ≤ C)

@@ -225,8 +225,8 @@ theorem isSymm_diagonal_mul_fullBlockMat_mul_diagonal
 /-- Scalar annealed full-block matrices remain diagonal after scalar
 normalization. -/
 theorem normalizedScalarAnnealedBlockMatrix_eq_diagonal
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center n : ℤ) :
     let b := hP.barSigmaAtScale hStruct center
     let c := hP.barSigmaStarAtScale hStruct center
@@ -270,8 +270,8 @@ theorem normalizedScalarAnnealedBlockMatrix_eq_diagonal
 /-- At the center scale, scalar normalization turns the scalar annealed block
 into the identity. -/
 theorem normalizedScalarAnnealedBlockMatrix_self_eq_one
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     let b := hP.barSigmaAtScale hStruct (m : ℤ)
     let c := hP.barSigmaStarAtScale hStruct (m : ℤ)
@@ -307,8 +307,8 @@ theorem normalizedScalarAnnealedBlockMatrix_self_eq_one
 /-- Under the structural law, the annealed full block is exactly the scalar
 block diagonal used to normalize the manuscript fluctuation observable. -/
 theorem annealedBlockMatrixAtScale_eq_scalarAnnealedBlockMatrixAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (n : ℤ) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (n : ℤ) :
     Ch04.annealedBlockMatrixAtScale P n =
       Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct n := by
   rw [Ch04.scalarAnnealedBlockMatrixAtScale, Ch04.annealedBlockMatrixAtScale,
@@ -340,7 +340,7 @@ theorem annealedBlockMatrixAtScale_eq_scalarAnnealedBlockMatrixAtScale
               Ch02.coarseBlockMatrix (Ch02.cubeDomain (originCube d n))
                 (F.coeffOn (originCube d n)) := by
           simpa [F] using
-            Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+            Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
               ha (originCube d n)
         have hSymm :=
           Ch02.isSymmetricBlockMat_coarseBlockMatrix
@@ -367,8 +367,8 @@ theorem annealedBlockMatrixAtScale_eq_scalarAnnealedBlockMatrixAtScale
 
 /-- The scalar annealed block matrix is symmetric as a doubled block matrix. -/
 theorem isSymmetricBlockMat_scalarAnnealedBlockMatrixAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P) (center : ℤ) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P) (center : ℤ) :
     IsSymmetricBlockMat (Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct center) := by
   intro α β
   cases α with
@@ -398,8 +398,8 @@ theorem isSymmetricBlockMat_scalarAnnealedBlockMatrixAtScale
 /-- At the center scale, scalar normalization turns the annealed block into
 the identity. -/
 theorem normalizedAnnealedBlockMatrix_self_eq_one
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     let b := hP.barSigmaAtScale hStruct (m : ℤ)
     let c := hP.barSigmaStarAtScale hStruct (m : ℤ)
@@ -410,8 +410,8 @@ theorem normalizedAnnealedBlockMatrix_self_eq_one
 
 /-- The normalized full-block fluctuation observable is nonnegative. -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (R : TriadicCube d) (a : RegCoeffField d) :
     0 ≤
       Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
@@ -423,8 +423,8 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_nonneg
 /-- The normalized full-block fluctuation matrix whose Euclidean operator norm
 is squared in the manuscript observable. -/
 noncomputable def fullBlockNormalizedFluctuationMatrix
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (U : Set (Vec d)) (a : CoeffField d) : FullBlockMat d :=
   let b := hP.barSigmaAtScale hStruct center
   let c := hP.barSigmaStarAtScale hStruct center
@@ -437,8 +437,8 @@ noncomputable def fullBlockNormalizedFluctuationMatrix
 /-- The normalized full-block fluctuation matrix is symmetric whenever the
 underlying coarse block matrix is symmetric. -/
 theorem fullBlockNormalizedFluctuationMatrix_isSymm_of_isSymmetricBlockMat
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) {U : Set (Vec d)} {a : CoeffField d}
     (hA : IsSymmetricBlockMat (coarseBlockMatrix U a)) :
     (fullBlockNormalizedFluctuationMatrix hP hStruct center U a).IsSymm := by
@@ -459,8 +459,8 @@ theorem fullBlockNormalizedFluctuationMatrix_isSymm_of_isSymmetricBlockMat
 
 /-- On cube sets, the public coarse block matrix is symmetric almost surely. -/
 theorem isSymmetricBlockMat_coarseBlockMatrix_cubeSet_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (Q : TriadicCube d) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (Q : TriadicCube d) :
     ∀ᵐ a ∂P, IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   let F : Ch02.TriadicCoeffFamily d :=
@@ -469,7 +469,7 @@ theorem isSymmetricBlockMat_coarseBlockMatrix_cubeSet_ae
       coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
-      Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   rw [hEq]
   exact Ch02.isSymmetricBlockMat_coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q)
@@ -477,8 +477,8 @@ theorem isSymmetricBlockMat_coarseBlockMatrix_cubeSet_ae
 /-- On cube sets, the normalized full-block fluctuation matrix is symmetric
 almost surely. -/
 theorem fullBlockNormalizedFluctuationMatrix_isSymm_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (Q : TriadicCube d) :
     ∀ᵐ a ∂P,
       (fullBlockNormalizedFluctuationMatrix hP hStruct center (cubeSet Q) a.toFun).IsSymm := by
@@ -489,8 +489,8 @@ theorem fullBlockNormalizedFluctuationMatrix_isSymm_ae
 /-- The Ch4 normalized fluctuation observable is the squared operator norm of
 `fullBlockNormalizedFluctuationMatrix`. -/
 theorem fullBlockNormalizedFluctuationOperatorNormSq_eq_norm_sq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (U : Set (Vec d)) (a : CoeffField d) :
     Ch04.fullBlockNormalizedFluctuationOperatorNormSq hP hStruct center U a =
       ‖Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ)
@@ -499,10 +499,10 @@ theorem fullBlockNormalizedFluctuationOperatorNormSq_eq_norm_sq
 
 /-- Normalized quadratic probe observable used before the finite-probe upgrade
 in the good-scale variance bound.  This is linear in the coarse block matrix;
-centering is supplied by `Ch04.centeredOriginObservable`. -/
+centering is supplied by `Ch04.restrictionCenteredOriginObservable`. -/
 noncomputable def fullBlockNormalizedQuadraticObservable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) (U : Set (Vec d))
     (a : CoeffField d) : ℝ :=
   let b := hP.barSigmaAtScale hStruct center
@@ -515,8 +515,8 @@ noncomputable def fullBlockNormalizedQuadraticObservable
 to the honest sample of a carrier field.  This is the form consumed by the
 Ch4 descendant-average machinery. -/
 noncomputable def fullBlockNormalizedQuadraticObservableR
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) (U : Set (Vec d))
     (a : RegCoeffField d) : ℝ :=
   fullBlockNormalizedQuadraticObservable hP hStruct center q U a.toFun
@@ -524,8 +524,8 @@ noncomputable def fullBlockNormalizedQuadraticObservableR
 /-- Centering a normalized quadratic probe at the center-scale annealed value
 is the quadratic form of the normalized fluctuation matrix. -/
 theorem fullBlockNormalizedQuadraticObservable_sub_dotProduct_eq_fluctuationQuadratic
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ)
     (q : FullBlockVec d) (U : Set (Vec d)) (a : CoeffField d) :
     fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q U a -
@@ -568,8 +568,8 @@ private theorem blockPosDef_quadratic_nonneg
 
 /-- Normalized quadratic probes are nonnegative on cube sets, almost surely. -/
 theorem fullBlockNormalizedQuadraticObservable_nonneg_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) (Q : TriadicCube d) :
     ∀ᵐ a ∂P,
       0 ≤ fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a.toFun := by
@@ -584,7 +584,7 @@ theorem fullBlockNormalizedQuadraticObservable_nonneg_ae
       coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
-      Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   have hPos : Ch02.BlockPosDef (coarseBlockMatrix (cubeSet Q) a.toFun) := by
     rw [hEq]
@@ -603,8 +603,8 @@ theorem fullBlockNormalizedQuadraticObservable_nonneg_ae
 
 /-- Translation covariance of the normalized quadratic probe observable. -/
 theorem fullBlockNormalizedQuadraticObservable_translation_covariant
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) :
     IsTranslationCovariant
       (fun U : Set (Vec d) => fun a : CoeffField d =>
@@ -616,8 +616,8 @@ theorem fullBlockNormalizedQuadraticObservable_translation_covariant
 /-- `(P4)` supplies integrability of the normalized full-block fluctuation on
 origin cubes. -/
 theorem integrable_origin_fullBlockNormalizedFluctuationOperatorNormSqAtScale_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (center : ℤ) (n : ℕ) :
     Integrable
       (Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
@@ -628,8 +628,8 @@ theorem integrable_origin_fullBlockNormalizedFluctuationOperatorNormSqAtScale_fr
 /-- Integer-scale version of the origin-cube integrability consequence of
 `(P4)`. -/
 theorem integrable_origin_fullBlockNormalizedFluctuationOperatorNormSqAtScale_from_P4_of_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (center n : ℤ)
     (hn : 0 ≤ n) :
     Integrable
@@ -643,8 +643,8 @@ theorem integrable_origin_fullBlockNormalizedFluctuationOperatorNormSqAtScale_fr
 /-- Under `(P4)` and stationarity, the normalized full-block fluctuation is
 integrable on every nonnegative-scale cube. -/
 theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_from_P4_of_nonneg_scale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (center : ℤ)
     (R : TriadicCube d) (hR_nonneg : 0 ≤ R.scale) :
     Integrable
@@ -664,8 +664,8 @@ theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_from_P4_o
 the corresponding origin-cube expectation, with integrability supplied by
 `(P4)`. -/
 theorem integral_fullBlockNormalizedFluctuationOperatorNormSqAtScale_eq_originCube_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (center : ℤ)
     (R : TriadicCube d) (hR_nonneg : 0 ≤ R.scale) :
     ∫ a,
@@ -687,8 +687,8 @@ theorem integral_fullBlockNormalizedFluctuationOperatorNormSqAtScale_eq_originCu
 /-- `(P4)` supplies the integrability hypothesis needed for descendant
 averages of the normalized full-block fluctuation observable. -/
 theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_of_mem_descendants_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (center : ℤ)
     {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m)
     {R : TriadicCube d} (hR : R ∈ descendantsAtScale (originCube d m) n) :
@@ -709,8 +709,8 @@ theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_of_mem_de
 collapses to the corresponding origin-cube expectation under stationarity, with
 integrability supplied by `(P4)`. -/
 theorem integral_descendantsAverage_fullBlockNormalizedFluctuationOperatorNormSqAtScale_eq_originCube_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (center : ℤ)
     {n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m) :
     ∫ a,

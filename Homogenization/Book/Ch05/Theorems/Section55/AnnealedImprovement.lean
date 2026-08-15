@@ -46,8 +46,8 @@ private theorem section53CoarseFluctuationBetaParams_pos {d : ℕ}
 Either there is a good subwindow of length `h`, or the annealed contrast has
 already contracted from scale `k` to scale `k + M`. -/
 theorem windowPigeonhole_homogenizationScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta sigma : ℝ} (hdelta_pos : 0 < delta)
     (hdelta_le : delta ≤ 1 / 2)
@@ -64,7 +64,7 @@ theorem windowPigeonhole_homogenizationScale
     thetaAtScale hP hStruct ((k + M : ℕ) : ℤ) ≤
       sigma * thetaAtScale hP hStruct (k : ℤ) := by
   classical
-  let Pk := Ch04.scaleNormalizedLaw k P
+  let Pk := Ch04.restrictionScaleNormalizedLaw k P
   let hPk := hP.scaleNormalized k
   let hStructPk := hStruct.scaleNormalized k
   let hP4k := hP4.scaleNormalized hP hStruct k
@@ -81,24 +81,24 @@ theorem windowPigeonhole_homogenizationScale
           hPk.barSigmaAtScale hStructPk ((j - h : ℕ) : ℤ) =
             hP.barSigmaAtScale hStruct (((k + (j - h : ℕ)) : ℕ) : ℤ) := by
         simpa [hPk, hStructPk] using
-          hP.barSigmaAtScale_scaleNormalizedLaw hStruct k (j - h)
+          hP.barSigmaAtScale_restrictionScaleNormalizedLaw hStruct k (j - h)
       have hright :
           hPk.barSigmaAtScale hStructPk (j : ℤ) =
             hP.barSigmaAtScale hStruct (((k + j) : ℕ) : ℤ) := by
         simpa [hPk, hStructPk] using
-          hP.barSigmaAtScale_scaleNormalizedLaw hStruct k j
+          hP.barSigmaAtScale_restrictionScaleNormalizedLaw hStruct k j
       have hsub : k + (j - h) = k + j - h := by omega
       simpa [hleft, hright, hsub] using hupper
     · have hleft :
           hPk.barSigmaStarAtScale hStructPk ((j - h : ℕ) : ℤ) =
             hP.barSigmaStarAtScale hStruct (((k + (j - h : ℕ)) : ℕ) : ℤ) := by
         simpa [hPk, hStructPk] using
-          hP.barSigmaStarAtScale_scaleNormalizedLaw hStruct k (j - h)
+          hP.barSigmaStarAtScale_restrictionScaleNormalizedLaw hStruct k (j - h)
       have hright :
           hPk.barSigmaStarAtScale hStructPk (j : ℤ) =
             hP.barSigmaStarAtScale hStruct (((k + j) : ℕ) : ℤ) := by
         simpa [hPk, hStructPk] using
-          hP.barSigmaStarAtScale_scaleNormalizedLaw hStruct k j
+          hP.barSigmaStarAtScale_restrictionScaleNormalizedLaw hStruct k j
       have hsub : k + (j - h) = k + j - h := by omega
       simpa [hleft, hright, hsub] using hlower
   · right
@@ -106,12 +106,12 @@ theorem windowPigeonhole_homogenizationScale
         hPk.thetaAtScale hStructPk (M : ℤ) =
           hP.thetaAtScale hStruct ((k + M : ℕ) : ℤ) := by
       simpa [hPk, hStructPk] using
-        hP.thetaAtScale_scaleNormalizedLaw hStruct k M
+        hP.thetaAtScale_restrictionScaleNormalizedLaw hStruct k M
     have h0 :
         hPk.thetaAtScale hStructPk (0 : ℤ) =
           hP.thetaAtScale hStruct (k : ℤ) := by
       simpa [hPk, hStructPk] using
-        hP.thetaAtScale_scaleNormalizedLaw hStruct k 0
+        hP.thetaAtScale_restrictionScaleNormalizedLaw hStruct k 0
     simpa [thetaAtScale_eq, hM, h0] using hcontract
 
 private theorem rpow_three_neg_mul_antitone_nat
@@ -123,8 +123,8 @@ private theorem rpow_three_neg_mul_antitone_nat
   exact mul_le_mul_of_nonpos_left hcast (neg_nonpos.mpr hβ.le)
 
 private theorem thetaAtScale_le_of_le_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {n m : ℕ} (hnm : n ≤ m) :
     thetaAtScale hP hStruct (m : ℤ) ≤
@@ -143,18 +143,18 @@ private theorem thetaAtScale_le_of_le_P4
       0 ≤ hP.barSigmaAtScale hStruct (n : ℤ) :=
     (Section54.Pigeonhole.barSigmaAtScale_pos_of_P4 hP hStruct hP4 n).le
   have hprod := mul_le_mul hupper hlower hlower_nonneg hupper_nonneg
-  simpa [thetaAtScale, Ch04.LawCarrier.thetaAtScale] using hprod
+  simpa [thetaAtScale, Ch04.RestrictionLawCarrier.thetaAtScale] using hprod
 
 private theorem one_le_thetaAtScale_of_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     1 ≤ thetaAtScale hP hStruct (m : ℤ) := by
   simpa [thetaAtScale_eq] using
     Section54.GoodScale.one_le_thetaAtScale_of_P4 hP hStruct hP4 m
 
 private theorem widetildeThetaAtScale_nonneg
-    {d : ℕ} [NeZero d] (P : Ch04.CoeffLaw d)
+    {d : ℕ} [NeZero d] (P : Ch04.RestrictionCoeffLaw d)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℤ) :
     0 ≤ widetildeThetaAtScale P m hP4 := by
   unfold widetildeThetaAtScale Ch04.widetildeThetaAtScale
@@ -260,8 +260,8 @@ theorem oneStepAnnealedImprovement_homogenizationScale_of_auxiliary
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ {delta sigma : ℝ}, 0 < delta → delta ≤ 1 / 2 →
@@ -490,8 +490,8 @@ theorem oneStepAnnealedImprovement_homogenizationScale_of_discrete_gap
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ {delta sigma : ℝ}, 0 < delta → delta ≤ 1 / 2 →
@@ -919,8 +919,8 @@ theorem oneStepAnnealedImprovement_homogenizationScale
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ {sigma : ℝ}, 0 < sigma → sigma ≤ 1 / 2 →

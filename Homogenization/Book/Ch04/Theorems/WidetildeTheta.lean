@@ -22,7 +22,7 @@ noncomputable section
 
 /-- The annealed `L^ξ` moment root of a nonnegative scalar observable. -/
 noncomputable def annealedMomentRoot {d : ℕ}
-    (P : CoeffLaw d) (ξ : ℕ) (X : RegCoeffField d → ℝ) : ℝ :=
+    (P : RestrictionCoeffLaw d) (ξ : ℕ) (X : RegCoeffField d → ℝ) : ℝ :=
   (∫ a, X a ^ ξ ∂P) ^ (1 / (ξ : ℝ))
 
 /-- The upper multiscale ellipticity observable on ambient coefficient fields.
@@ -93,7 +93,7 @@ private theorem coarseBlockMatrix_translateCube_descendant_eq_translateByInt
           ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn T) =
         coarseBlockMatrix (cubeSet T) a.toFun := by
     simpa [T] using
-      (LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      (RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha T).symm
   have hset : cubeSet T = translateSet (intVecToRealVec z) (cubeSet R) := by
     have hRscale := scale_eq_neg_natCast_of_mem_descendantsAtScale_originCube_zero hR
@@ -105,7 +105,7 @@ private theorem coarseBlockMatrix_translateCube_descendant_eq_translateByInt
           ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField
             (translateReg (intVecToRealVec z) a) htranslate).coeffOn R) := by
     simpa using
-      LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         htranslate R
   calc
     Ch02.coarseBlockMatrix (Ch02.cubeDomain T)
@@ -183,8 +183,8 @@ private theorem lambdaSqCoeffField_originCube_zero_translateByInt_pointwise
   simpa [lambdaSqCoeffField, ha, htranslate, F, G] using h
 
 private theorem ae_locallyUniformlyEllipticField_translateByInt
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
-    (hstat : StationaryLaw P) (z : Fin d → ℤ) :
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hstat : RestrictionStationaryLaw P) (z : Fin d → ℤ) :
     ∀ᵐ a ∂P, AELocallyUniformlyEllipticField (translateReg (intVecToRealVec z) a) := by
   have hmapSupport :
       ∀ᵐ b ∂Measure.map (translateReg (intVecToRealVec z)) P, AELocallyUniformlyEllipticField b := by
@@ -194,8 +194,8 @@ private theorem ae_locallyUniformlyEllipticField_translateByInt
 /-- Upper multiscale ellipticity on the scale-zero origin cube is covariant
 under integer translations, almost surely under a stationary law carrier. -/
 theorem LambdaSqCoeffField_originCube_zero_translateByInt_ae
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hstat : StationaryLaw P) (z : Fin d → ℤ) (s : ℝ) (q : Ch02.MultiscaleExponent) :
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hstat : RestrictionStationaryLaw P) (z : Fin d → ℤ) (s : ℝ) (q : Ch02.MultiscaleExponent) :
     (fun a => LambdaSqCoeffField (translateCube z (originCube d 0)) s q a) =ᵐ[P]
       fun a => LambdaSqCoeffField (originCube d 0) s q (translateReg (intVecToRealVec z) a) := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField,
@@ -205,8 +205,8 @@ theorem LambdaSqCoeffField_originCube_zero_translateByInt_ae
 /-- Lower multiscale ellipticity on the scale-zero origin cube is covariant
 under integer translations, almost surely under a stationary law carrier. -/
 theorem lambdaSqCoeffField_originCube_zero_translateByInt_ae
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
-    (hstat : StationaryLaw P) (z : Fin d → ℤ) (s : ℝ) (q : Ch02.MultiscaleExponent) :
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hstat : RestrictionStationaryLaw P) (z : Fin d → ℤ) (s : ℝ) (q : Ch02.MultiscaleExponent) :
     (fun a => lambdaSqCoeffField (translateCube z (originCube d 0)) s q a) =ᵐ[P]
       fun a => lambdaSqCoeffField (originCube d 0) s q (translateReg (intVecToRealVec z) a) := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField,
@@ -267,7 +267,7 @@ noncomputable def maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
     else
       0
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 theorem finsetSupReal_eq_sup' {α : Type*}
     (s : Finset α) (hs : s.Nonempty) (f : α → ℝ) :
@@ -341,7 +341,7 @@ theorem maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae
     Ch02.finsetSupReal_congr (descendantsAtScale Q k) hnorm
 
 private theorem aemeasurable_maxDescendantBMatrixNormCoeffFieldAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (n : ℕ) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -377,7 +377,7 @@ private theorem aemeasurable_maxDescendantBMatrixNormCoeffFieldAtScale
       (a := a) ha Q (Q.scale - (n : ℤ))).symm
 
 private theorem aemeasurable_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (n : ℕ) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -449,7 +449,7 @@ theorem summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
       (summable_zero : Summable (fun _n : ℕ => (0 : ℝ)))
 
 private theorem aemeasurable_tsum_weighted_maxDescendantBMatrixNormCoeffFieldAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -497,7 +497,7 @@ private theorem aemeasurable_tsum_weighted_maxDescendantBMatrixNormCoeffFieldAtS
         ((summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale Q a hs).hasSum)
 
 private theorem aemeasurable_tsum_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -596,7 +596,7 @@ theorem lambdaSqCoeffField_finite_one_eq_tsum_sq_inv
 /-- The upper all-scale coefficient observable at a deterministic triadic cube
 is a.e.-measurable under a Chapter 4 law carrier. -/
 theorem aemeasurable_LambdaSqCoeffField_finite_one
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
       (fun a : RegCoeffField d => LambdaSqCoeffField Q s (.finite 1) a) P := by
@@ -609,7 +609,7 @@ theorem aemeasurable_LambdaSqCoeffField_finite_one
 /-- The lower all-scale coefficient observable at a deterministic triadic cube
 is a.e.-measurable under a Chapter 4 law carrier. -/
 theorem aemeasurable_lambdaSqCoeffField_finite_one
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
       (fun a : RegCoeffField d => lambdaSqCoeffField Q s (.finite 1) a) P := by
@@ -622,13 +622,13 @@ theorem aemeasurable_lambdaSqCoeffField_finite_one
 /-- The inverse lower all-scale coefficient observable at a deterministic
 triadic cube is a.e.-measurable under a Chapter 4 law carrier. -/
 theorem aemeasurable_lambdaSqCoeffField_finite_one_inv
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) {s : ℝ} (hs : 0 < s) :
     AEMeasurable
       (fun a : RegCoeffField d => (lambdaSqCoeffField Q s (.finite 1) a)⁻¹) P :=
   (hP.aemeasurable_lambdaSqCoeffField_finite_one Q hs).inv
 
-end LawCarrier
+end RestrictionLawCarrier
 
 /-- The q=1 deterministic Jensen split for the ambient upper multiscale
 ellipticity observable.  This is the Ch4-facing form of the Ch2 theorem, with
@@ -682,23 +682,23 @@ theorem lambdaSqCoeffField_finite_one_inv_le_tsum_weighted_maxDescendantSigmaSta
 
 /-- Upper multiscale ellipticity moment at scale `n`. -/
 noncomputable def LambdaMomentAtScale {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ) : ℝ :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ) : ℝ :=
   annealedMomentRoot P ξ
     (fun a => LambdaSqCoeffField (originCube d n) s (.finite 1) a)
 
 /-- Lower inverse multiscale ellipticity moment at scale `n`. -/
 noncomputable def lambdaInvMomentAtScale {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ) : ℝ :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) (s : ℝ) (ξ : ℕ) : ℝ :=
   annealedMomentRoot P ξ
     (fun a => (lambdaSqCoeffField (originCube d n) s (.finite 1) a)⁻¹)
 
 /-- The moment-enhanced contrast `\widetilde\Theta_n`. -/
 noncomputable def widetildeThetaAtScale {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ) (sUpper sLower : ℝ) (ξ : ℕ) : ℝ :=
+    (P : RestrictionCoeffLaw d) (n : ℤ) (sUpper sLower : ℝ) (ξ : ℕ) : ℝ :=
   LambdaMomentAtScale P n sUpper ξ * lambdaInvMomentAtScale P n sLower ξ
 
 theorem annealedMomentRoot_nonneg_of_nonneg {d : ℕ}
-    (P : CoeffLaw d) (ξ : ℕ) {X : RegCoeffField d → ℝ}
+    (P : RestrictionCoeffLaw d) (ξ : ℕ) {X : RegCoeffField d → ℝ}
     (hX : ∀ a, 0 ≤ X a) :
     0 ≤ annealedMomentRoot P ξ X := by
   rw [annealedMomentRoot]
@@ -707,7 +707,7 @@ theorem annealedMomentRoot_nonneg_of_nonneg {d : ℕ}
 
 /-- Monotonicity of the annealed moment root under a.e. domination of
 nonnegative observables. -/
-theorem annealedMomentRoot_le_of_ae_nonneg_le {d : ℕ} {P : CoeffLaw d}
+theorem annealedMomentRoot_le_of_ae_nonneg_le {d : ℕ} {P : RestrictionCoeffLaw d}
     {ξ : ℕ} {X Y : RegCoeffField d → ℝ}
     (hξ : 1 ≤ ξ)
     (hX_nonneg : ∀ a, 0 ≤ X a)
@@ -730,14 +730,14 @@ theorem annealedMomentRoot_le_of_ae_nonneg_le {d : ℕ} {P : CoeffLaw d}
     Real.rpow_le_rpow hIntX_nonneg hInt_le hExp_nonneg
 
 theorem LambdaMomentAtScale_nonneg {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ) {s : ℝ} (ξ : ℕ)
+    (P : RestrictionCoeffLaw d) (n : ℤ) {s : ℝ} (ξ : ℕ)
     (hs : 0 < s) :
     0 ≤ LambdaMomentAtScale P n s ξ :=
   annealedMomentRoot_nonneg_of_nonneg P ξ fun a =>
     LambdaSqCoeffField_finite_nonneg (originCube d n) a hs (by norm_num : (1 : ℝ) ≤ 1)
 
 theorem lambdaInvMomentAtScale_nonneg {d : ℕ} [NeZero d]
-    (P : CoeffLaw d) (n : ℤ) {s : ℝ} (ξ : ℕ)
+    (P : RestrictionCoeffLaw d) (n : ℤ) {s : ℝ} (ξ : ℕ)
     (hs : 0 < s) :
     0 ≤ lambdaInvMomentAtScale P n s ξ :=
   annealedMomentRoot_nonneg_of_nonneg P ξ fun a =>
@@ -772,7 +772,7 @@ deterministic base plus a nonnegative error:
 This is the Ch4-owned scalar Minkowski step used in the Section 5.2 moment
 lemma. -/
 theorem annealedMomentRoot_le_const_add_of_nonneg_le
-    {d : ℕ} {P : CoeffLaw d} [IsProbabilityMeasure P]
+    {d : ℕ} {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {ξ : ℕ} {X E : RegCoeffField d → ℝ} {A : ℝ}
     (hξ : 1 ≤ ξ) (hA_nonneg : 0 ≤ A)
     (hX_nonneg : ∀ a, 0 ≤ X a)
@@ -863,7 +863,7 @@ theorem annealedMomentRoot_le_const_add_of_nonneg_le
 
 /-- Internal primitive factor bounds imply `Theta_n <= widetildeTheta_n`. -/
 theorem Internal.annealedThetaAtScaleOfPrimitive_le_widetildeThetaAtScale_of_factor_bounds
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} {n : ℤ}
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} {n : ℤ}
     {sUpper sLower : ℝ} {ξ : ℕ}
     (primitive : Internal.AnnealedPrimitiveScalarizationData (d := d) P n)
     (hsUpper : 0 < sUpper)

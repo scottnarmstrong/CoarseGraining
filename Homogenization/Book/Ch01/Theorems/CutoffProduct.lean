@@ -14,12 +14,18 @@ noncomputable section
 /-!
 # Cutoff/product estimate
 
-This is the public surface for the cutoff/product Besov estimate used later in
-the coarse Caccioppoli argument.  It is stated for a general smooth vector
-cutoff field `ξ`; in the notes this is applied to `ξ = ∇φ`.
+This file retains the legacy disjoint-positive, totalized-real,
+componentwise-circ compatibility surface for the cutoff/product Besov estimate
+used later in the coarse Caccioppoli argument. It is not the exact manuscript
+overlap/Euclidean statement. It is stated for a general smooth vector cutoff
+field `ξ`; in the notes this is applied to `ξ = ∇φ`.
 -/
 
-/-- Public finite-depth cutoff/product estimate in the positive Besov norm.
+namespace Legacy
+
+/-- Legacy finite-depth cutoff/product compatibility estimate in the
+disjoint-positive, totalized-real, componentwise-circ Besov convention; not
+an exact manuscript overlap/Euclidean statement.
 
 This is the pure product estimate.  Poincare, full-dual, and circ-budget
 inputs belong to downstream corollaries, not to the Chapter 1 product surface. -/
@@ -337,8 +343,9 @@ private theorem cutoffProduct_component_positiveBesovNormTop_le_gradient_rhs
       cutoffProduct_component_partialNormTop_le_gradient_rhs
         Q s (N + 1) u ξ hB hξLp hξ hderiv hs0 hs1 i
 
-/-- Public infinite-depth cutoff/product estimate with the corrected H1-facing
-right-hand side.
+/-- Legacy infinite-depth cutoff/product compatibility estimate with the
+disjoint-positive, totalized-real, componentwise-circ H1-facing right-hand
+side; not an exact manuscript overlap/Euclidean statement.
 
 The vector Besov norm is the componentwise public convention
 `positiveBesovVectorNormTop`.  The estimate has no finite-depth parameter and
@@ -391,6 +398,8 @@ theorem cutoffProductPositiveBesov_infinite_from_h1 {d : ℕ} [NeZero d]
               circNegativeBesovNorm Q (1 - s) (2 : ℝ≥0∞) (1 : ℝ≥0∞)
                 (fun x => u.grad x i)) := by
           simp [K, mul_assoc]
+
+end Legacy
 
 end
 

@@ -25,8 +25,8 @@ good-scale scalar hypotheses.
 /-- Upper unit-scale coefficient carried by a coordinate probe after
 normalization at scale `m`.  It is nonzero only on the upper block. -/
 noncomputable def coordinateProbeUpperCoeffAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m : ℕ) : BlockCoord d → ℝ
   | Sum.inl _ => (hP.barSigmaAtScale hStruct (m : ℤ))⁻¹
   | Sum.inr _ => 0
@@ -34,15 +34,15 @@ noncomputable def coordinateProbeUpperCoeffAtScale
 /-- Lower unit-scale coefficient carried by a coordinate probe after
 normalization at scale `m`.  It is nonzero only on the lower block. -/
 noncomputable def coordinateProbeLowerCoeffAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m : ℕ) : BlockCoord d → ℝ
   | Sum.inl _ => 0
   | Sum.inr _ => hP.barSigmaStarAtScale hStruct (m : ℤ)
 
 theorem coordinateProbeUpperCoeffAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (α : BlockCoord d) :
     0 ≤ coordinateProbeUpperCoeffAtScale hP hStruct m α := by
@@ -54,8 +54,8 @@ theorem coordinateProbeUpperCoeffAtScale_nonneg
       simp [coordinateProbeUpperCoeffAtScale]
 
 theorem coordinateProbeLowerCoeffAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (α : BlockCoord d) :
     0 ≤ coordinateProbeLowerCoeffAtScale hP hStruct m α := by
@@ -90,8 +90,8 @@ private theorem scalarFullBlockInvSqrtDiag_lower_abs_mul_self
 only the upper unit-scale factor, lower coordinates only the lower inverse
 factor. -/
 theorem fullBlockNormalizedQuadraticObservable_coordinateProbe_abs_le_weighted_factors_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (α : BlockCoord d) :
     (fun a : RegCoeffField d =>
@@ -107,7 +107,7 @@ theorem fullBlockNormalizedQuadraticObservable_coordinateProbe_abs_le_weighted_f
   cases α with
   | inl i =>
       filter_upwards
-        [Ch04.LawCarrier.upperLeft_abs_entry_le_LambdaSqCoeffField_ae
+        [Ch04.RestrictionLawCarrier.upperLeft_abs_entry_le_LambdaSqCoeffField_ae
           hP (originCube d 0) hP4.sUpper_pos i i] with a hentry
       let b := hP.barSigmaAtScale hStruct (m : ℤ)
       let c := hP.barSigmaStarAtScale hStruct (m : ℤ)
@@ -153,7 +153,7 @@ theorem fullBlockNormalizedQuadraticObservable_coordinateProbe_abs_le_weighted_f
             b, L, hcoeff]
   | inr i =>
       filter_upwards
-        [Ch04.LawCarrier.lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae
+        [Ch04.RestrictionLawCarrier.lowerRight_abs_entry_le_lambdaSqCoeffField_inv_ae
           hP (originCube d 0) hP4.sLower_pos i i] with a hentry
       let b := hP.barSigmaAtScale hStruct (m : ℤ)
       let c := hP.barSigmaStarAtScale hStruct (m : ℤ)
@@ -210,15 +210,15 @@ private theorem isSymmetricBlockMat_coarseBlockMatrix_origin_of_ae
       coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
-      Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   rw [show originCube d 0 = Q from rfl, hEq]
   exact Ch02.isSymmetricBlockMat_coarseBlockMatrix
     (Ch02.cubeDomain Q) (F.coeffOn Q)
 
 private theorem fullBlockNormalizedQuadraticObservable_plus_add_minus_eq_two_coord_sum
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (m : ℕ) {α β : BlockCoord d} (hαβ : α ≠ β)
     {a : RegCoeffField d} (ha : Ch04.AELocallyUniformlyEllipticField a) :
     fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ)
@@ -262,8 +262,8 @@ private theorem fullBlockNormalizedQuadraticObservable_plus_add_minus_eq_two_coo
             (r β * blockMatEntry A β β * r β)))
 
 private theorem fullBlockNormalizedQuadraticObservable_pairProbe_abs_le_weighted_factors_ae_aux
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) {α β : BlockCoord d} (_hαβ : α ≠ β)
     (probe otherProbe : FullBlockVec d)
@@ -365,8 +365,8 @@ private theorem fullBlockNormalizedQuadraticObservable_pairProbe_abs_le_weighted
 
 /-- Matched pointwise domination for plus probes. -/
 theorem fullBlockNormalizedQuadraticObservable_plusProbe_abs_le_weighted_factors_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) {α β : BlockCoord d} (hαβ : α ≠ β) :
     (fun a : RegCoeffField d =>
@@ -394,8 +394,8 @@ theorem fullBlockNormalizedQuadraticObservable_plusProbe_abs_le_weighted_factors
 
 /-- Matched pointwise domination for minus probes. -/
 theorem fullBlockNormalizedQuadraticObservable_minusProbe_abs_le_weighted_factors_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) {α β : BlockCoord d} (hαβ : α ≠ β) :
     (fun a : RegCoeffField d =>
@@ -423,20 +423,20 @@ theorem fullBlockNormalizedQuadraticObservable_minusProbe_abs_le_weighted_factor
   linarith
 
 private theorem fullBlockNormalizedQuadraticObservable_origin_regular'
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
         fullBlockNormalizedQuadraticObservable hP hStruct center q
           (cubeSet (originCube d 0)) a) P := by
-  rcases exists_isLocalRandomVariable_ae_eq_fullBlockNormalizedQuadraticObservable_cubeSet
+  rcases exists_isRestrictionLocalRandomVariable_ae_eq_fullBlockNormalizedQuadraticObservable_cubeSet
       hP hStruct center q (originCube d 0) with ⟨Y, hY_local, hY_eq⟩
   exact (hP.aemeasurable_of_isLocalRandomVariable hY_local).congr hY_eq.symm
 
 private theorem coordinateProbe_weighted_moments_le_one_add_delta_mul_widetildeTheta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (m : ℕ)
     (hgood_upper :
@@ -492,8 +492,8 @@ private theorem coordinateProbe_weighted_moments_le_one_add_delta_mul_widetildeT
               ring
 
 private theorem pairProbe_weighted_moments_le_four_mul_one_add_delta_mul_widetildeTheta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (m : ℕ)
     (hgood_upper :
@@ -534,8 +534,8 @@ private theorem pairProbe_weighted_moments_le_four_mul_one_add_delta_mul_widetil
 /-- Centered origin moment for coordinate probes, compressed to
 `\widetilde\Theta_0` by the good-scale hypotheses. -/
 theorem coordinateProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (m : ℕ)
     (hgood_upper :
@@ -547,12 +547,12 @@ theorem coordinateProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
     (α : BlockCoord d) :
     Integrable
         (fun a =>
-          |Ch04.centeredOriginObservable P 0
+          |Ch04.restrictionCenteredOriginObservable P 0
             (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
               (fullBlockCoordinateProbe α)) a| ^ hP4.xi) P ∧
       Ch04.annealedMomentRoot P hP4.xi
           (fun a =>
-            |Ch04.centeredOriginObservable P 0
+            |Ch04.restrictionCenteredOriginObservable P 0
               (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 (fullBlockCoordinateProbe α)) a|)
         ≤
@@ -581,26 +581,26 @@ theorem coordinateProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
           fullBlockNormalizedQuadraticObservable_coordinateProbe_abs_le_weighted_factors_ae
             hP hStruct hP4 m α)
   refine ⟨?_, ?_⟩
-  · simpa [X, Ch04.centeredOriginObservable] using hbridge.1
+  · simpa [X, Ch04.restrictionCenteredOriginObservable] using hbridge.1
   · have hweighted :=
       coordinateProbe_weighted_moments_le_one_add_delta_mul_widetildeTheta
         hP hStruct hP4 hdelta_nonneg m hgood_upper hgood_lower α
     calc
       Ch04.annealedMomentRoot P hP4.xi
           (fun a =>
-            |Ch04.centeredOriginObservable P 0
+            |Ch04.restrictionCenteredOriginObservable P 0
               (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 (fullBlockCoordinateProbe α)) a|)
           ≤ 2 *
               (Cu * Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
                 Cl * Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi) := by
-            simpa [X, Ch04.centeredOriginObservable, Cu, Cl] using hbridge.2
+            simpa [X, Ch04.restrictionCenteredOriginObservable, Cu, Cl] using hbridge.2
       _ ≤ 2 * ((1 + delta) * widetildeThetaAtScale P 0 hP4) :=
             mul_le_mul_of_nonneg_left hweighted (by norm_num)
 
 private theorem pairProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good_aux
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (m : ℕ)
     (hgood_upper :
@@ -627,12 +627,12 @@ private theorem pairProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good_au
                   (originCube d 0) hP4.sLower (.finite 1) a)⁻¹) :
     Integrable
         (fun a =>
-          |Ch04.centeredOriginObservable P 0
+          |Ch04.restrictionCenteredOriginObservable P 0
             (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
               probe) a| ^ hP4.xi) P ∧
       Ch04.annealedMomentRoot P hP4.xi
           (fun a =>
-            |Ch04.centeredOriginObservable P 0
+            |Ch04.restrictionCenteredOriginObservable P 0
               (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 probe) a|)
         ≤
@@ -669,20 +669,20 @@ private theorem pairProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good_au
       (X := X) hX_meas
       (by simpa [X, Cu, Cl] using hbound)
   refine ⟨?_, ?_⟩
-  · simpa [X, Ch04.centeredOriginObservable] using hbridge.1
+  · simpa [X, Ch04.restrictionCenteredOriginObservable] using hbridge.1
   · have hweighted :=
       pairProbe_weighted_moments_le_four_mul_one_add_delta_mul_widetildeTheta
         hP hStruct hP4 hdelta_nonneg m hgood_upper hgood_lower α β
     calc
       Ch04.annealedMomentRoot P hP4.xi
           (fun a =>
-            |Ch04.centeredOriginObservable P 0
+            |Ch04.restrictionCenteredOriginObservable P 0
               (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 probe) a|)
           ≤ 2 *
               (Cu * Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
                 Cl * Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi) := by
-            simpa [X, Ch04.centeredOriginObservable, Cu, Cl] using hbridge.2
+            simpa [X, Ch04.restrictionCenteredOriginObservable, Cu, Cl] using hbridge.2
       _ ≤ 2 * (4 * ((1 + delta) * widetildeThetaAtScale P 0 hP4)) :=
             mul_le_mul_of_nonneg_left hweighted (by norm_num)
       _ = 8 * ((1 + delta) * widetildeThetaAtScale P 0 hP4) := by ring
@@ -690,8 +690,8 @@ private theorem pairProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good_au
 /-- Centered origin moment for plus probes, compressed to
 `\widetilde\Theta_0` by the good-scale hypotheses. -/
 theorem plusProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (m : ℕ)
     (hgood_upper :
@@ -703,12 +703,12 @@ theorem plusProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
     {α β : BlockCoord d} (hαβ : α ≠ β) :
     Integrable
         (fun a =>
-          |Ch04.centeredOriginObservable P 0
+          |Ch04.restrictionCenteredOriginObservable P 0
             (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
               (fullBlockPlusProbe α β)) a| ^ hP4.xi) P ∧
       Ch04.annealedMomentRoot P hP4.xi
           (fun a =>
-            |Ch04.centeredOriginObservable P 0
+            |Ch04.restrictionCenteredOriginObservable P 0
               (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 (fullBlockPlusProbe α β)) a|)
         ≤
@@ -722,8 +722,8 @@ theorem plusProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
 /-- Centered origin moment for minus probes, compressed to
 `\widetilde\Theta_0` by the good-scale hypotheses. -/
 theorem minusProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_nonneg : 0 ≤ delta) (m : ℕ)
     (hgood_upper :
@@ -735,12 +735,12 @@ theorem minusProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
     {α β : BlockCoord d} (hαβ : α ≠ β) :
     Integrable
         (fun a =>
-          |Ch04.centeredOriginObservable P 0
+          |Ch04.restrictionCenteredOriginObservable P 0
             (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
               (fullBlockMinusProbe α β)) a| ^ hP4.xi) P ∧
       Ch04.annealedMomentRoot P hP4.xi
           (fun a =>
-            |Ch04.centeredOriginObservable P 0
+            |Ch04.restrictionCenteredOriginObservable P 0
               (fullBlockNormalizedQuadraticObservableR hP hStruct (m : ℤ)
                 (fullBlockMinusProbe α β)) a|)
         ≤

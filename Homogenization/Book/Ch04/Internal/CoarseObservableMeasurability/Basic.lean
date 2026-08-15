@@ -325,7 +325,7 @@ theorem integrable_coarseSigmaStarInvKappaMeanObservable_of_integrable_coarseFul
 
 theorem isLocalObservable_Mu {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U)
     (P : BlockVec d) :
-    IsLocalObservable U (fun a => Mu U P a) := by
+    IsRestrictionLocalObservable U (fun a => Mu U P a) := by
   intro a₁ a₂ hagree
   have hrestrict : restrictCoeffField U a₁ = restrictCoeffField U a₂ :=
     restrictCoeffField_eq_of_forall_mem_eq hagree
@@ -337,7 +337,7 @@ theorem isLocalObservable_Mu {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U)
 
 theorem isLocalObservable_coarseBlockMatrix {d : ℕ} {U : Set (Vec d)}
     (hU : MeasurableSet U) :
-    IsLocalObservable U (fun a => coarseBlockMatrix U a) := by
+    IsRestrictionLocalObservable U (fun a => coarseBlockMatrix U a) := by
   intro a₁ a₂ hagree
   have hrestrict : restrictCoeffField U a₁ = restrictCoeffField U a₂ :=
     restrictCoeffField_eq_of_forall_mem_eq hagree
@@ -350,14 +350,14 @@ theorem isLocalObservable_coarseBlockMatrix {d : ℕ} {U : Set (Vec d)}
 
 theorem isLocalObservable_coarseFullBlockMatrixObservable {d : ℕ} {U : Set (Vec d)}
     (hU : MeasurableSet U) :
-    IsLocalObservable U (coarseFullBlockMatrixObservable U) := by
+    IsRestrictionLocalObservable U (coarseFullBlockMatrixObservable U) := by
   intro a₁ a₂ hagree
   simpa [coarseFullBlockMatrixObservable] using
     congrArg toFullBlockMat (isLocalObservable_coarseBlockMatrix hU hagree)
 
 theorem isLocalObservable_coarseSigmaStarInvObservable {d : ℕ} {U : Set (Vec d)}
     (hU : MeasurableSet U) :
-    IsLocalObservable U (coarseSigmaStarInvObservable U) := by
+    IsRestrictionLocalObservable U (coarseSigmaStarInvObservable U) := by
   intro a₁ a₂ hagree
   simpa [coarseSigmaStarInvObservable, Function.comp] using
     congrArg fullBlockMatLowerRight
@@ -365,7 +365,7 @@ theorem isLocalObservable_coarseSigmaStarInvObservable {d : ℕ} {U : Set (Vec d
 
 theorem isLocalObservable_coarseBObservable {d : ℕ} {U : Set (Vec d)}
     (hU : MeasurableSet U) :
-    IsLocalObservable U (coarseBObservable U) := by
+    IsRestrictionLocalObservable U (coarseBObservable U) := by
   intro a₁ a₂ hagree
   simpa [coarseBObservable, Function.comp] using
     congrArg fullBlockMatUpperLeft
@@ -373,7 +373,7 @@ theorem isLocalObservable_coarseBObservable {d : ℕ} {U : Set (Vec d)}
 
 theorem isLocalObservable_coarseSigmaStarInvKappaMeanObservable {d : ℕ} {U : Set (Vec d)}
     (hU : MeasurableSet U) :
-    IsLocalObservable U (coarseSigmaStarInvKappaMeanObservable U) := by
+    IsRestrictionLocalObservable U (coarseSigmaStarInvKappaMeanObservable U) := by
   intro a₁ a₂ hagree
   simpa [coarseSigmaStarInvKappaMeanObservable, Function.comp] using
     congrArg fullBlockMatNegLowerLeft
@@ -534,7 +534,7 @@ theorem measurable_coarseSigmaStarInvKappaMeanObservable_of_hasMeasurableMuFamil
 
 noncomputable def measurableLocalObservable_Mu {d : ℕ} {U : Set (Vec d)}
     (hU : MeasurableSet U) (hMu : HasMeasurableMuFamily U) (P : BlockVec d) :
-    MeasurableLocalObservable d U ℝ where
+    MeasurableRestrictionLocalObservable d U ℝ where
   toFun := fun a => Mu U P a
   measurable_toFun := hMu P
   isLocal_toFun := isLocalObservable_Mu hU P
@@ -542,7 +542,7 @@ noncomputable def measurableLocalObservable_Mu {d : ℕ} {U : Set (Vec d)}
 noncomputable def measurableLocalObservable_coarseSigmaStarInvEntryObservable
     {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U) (hMu : HasMeasurableMuFamily U)
     (r c : Fin d) :
-    MeasurableLocalObservable d U ℝ where
+    MeasurableRestrictionLocalObservable d U ℝ where
   toFun := coarseSigmaStarInvEntryObservable U r c
   measurable_toFun :=
     measurable_coarseSigmaStarInvEntryObservable_of_hasMeasurableMuFamily (U := U) hMu r c
@@ -555,7 +555,7 @@ noncomputable def measurableLocalObservable_coarseSigmaStarInvEntryObservable
 noncomputable def measurableLocalObservable_coarseBEntryObservable
     {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U) (hMu : HasMeasurableMuFamily U)
     (r c : Fin d) :
-    MeasurableLocalObservable d U ℝ where
+    MeasurableRestrictionLocalObservable d U ℝ where
   toFun := coarseBEntryObservable U r c
   measurable_toFun :=
     measurable_coarseBEntryObservable_of_hasMeasurableMuFamily (U := U) hMu r c
@@ -568,7 +568,7 @@ noncomputable def measurableLocalObservable_coarseBEntryObservable
 noncomputable def measurableLocalObservable_coarseSigmaStarInvKappaMeanEntryObservable
     {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U) (hMu : HasMeasurableMuFamily U)
     (r c : Fin d) :
-    MeasurableLocalObservable d U ℝ where
+    MeasurableRestrictionLocalObservable d U ℝ where
   toFun := coarseSigmaStarInvKappaMeanEntryObservable U r c
   measurable_toFun :=
     measurable_coarseSigmaStarInvKappaMeanEntryObservable_of_hasMeasurableMuFamily
@@ -581,7 +581,7 @@ noncomputable def measurableLocalObservable_coarseSigmaStarInvKappaMeanEntryObse
 
 noncomputable def measurableLocalObservable_coarseFullBlockMatrixObservable
     {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U) (hMu : HasMeasurableMuFamily U) :
-    MeasurableLocalObservable d U (FullBlockMat d) where
+    MeasurableRestrictionLocalObservable d U (FullBlockMat d) where
   toFun := coarseFullBlockMatrixObservable U
   measurable_toFun :=
     measurable_coarseFullBlockMatrixObservable_of_hasMeasurableMuFamily (U := U) hMu
@@ -589,20 +589,23 @@ noncomputable def measurableLocalObservable_coarseFullBlockMatrixObservable
 
 noncomputable def measurableLocalObservable_coarseSigmaStarInvObservable
     {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U) (hMu : HasMeasurableMuFamily U) :
-    MeasurableLocalObservable d U (Mat d) :=
-  (measurableLocalObservable_coarseFullBlockMatrixObservable (U := U) hU hMu).comp
+    MeasurableRestrictionLocalObservable d U (Mat d) :=
+  MeasurableRestrictionLocalObservable.comp
+    (measurableLocalObservable_coarseFullBlockMatrixObservable (U := U) hU hMu)
     fullBlockMatLowerRight measurable_fullBlockMatLowerRight
 
 noncomputable def measurableLocalObservable_coarseBObservable
     {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U) (hMu : HasMeasurableMuFamily U) :
-    MeasurableLocalObservable d U (Mat d) :=
-  (measurableLocalObservable_coarseFullBlockMatrixObservable (U := U) hU hMu).comp
+    MeasurableRestrictionLocalObservable d U (Mat d) :=
+  MeasurableRestrictionLocalObservable.comp
+    (measurableLocalObservable_coarseFullBlockMatrixObservable (U := U) hU hMu)
     fullBlockMatUpperLeft measurable_fullBlockMatUpperLeft
 
 noncomputable def measurableLocalObservable_coarseSigmaStarInvKappaMeanObservable
     {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U) (hMu : HasMeasurableMuFamily U) :
-    MeasurableLocalObservable d U (Mat d) :=
-  (measurableLocalObservable_coarseFullBlockMatrixObservable (U := U) hU hMu).comp
+    MeasurableRestrictionLocalObservable d U (Mat d) :=
+  MeasurableRestrictionLocalObservable.comp
+    (measurableLocalObservable_coarseFullBlockMatrixObservable (U := U) hU hMu)
     fullBlockMatNegLowerLeft measurable_fullBlockMatNegLowerLeft
 
 

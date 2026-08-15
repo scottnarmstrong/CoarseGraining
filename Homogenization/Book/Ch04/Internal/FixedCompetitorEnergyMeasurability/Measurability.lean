@@ -22,7 +22,7 @@ open Filter
 
 ## Audit tag (Ch4 rebuild contract `CH04_REBUILD_SURFACE_2026-05-16.md`)
 
-**Internal claim:** the `LocalSigma`-measurable scalar atoms (single-vector
+**Internal claim:** the `PointwiseLocalSigma`-measurable scalar atoms (single-vector
 dot products, single-coordinate matrix-vector products, etc.) used as the
 local-σ-measurable building blocks for fixed-competitor energy observables.
 First layer of the internal `HasMeasurableMuFamily` cleanup.
@@ -63,7 +63,7 @@ theorem localTestObservable_single_single_eq_integral_entry {d : ℕ}
 theorem measurable_entryTestObservable_localSigma {d : ℕ} {U : Set (Vec d)}
     (i j : Fin d) {φ : Vec d → ℝ} (hφ_cont : ContDiff ℝ (⊤ : ℕ∞) φ)
     (hφ_compact : HasCompactSupport φ) (hφ_support : tsupport φ ⊆ U) :
-    @Measurable (CoeffField d) ℝ (LocalSigma U) (borel ℝ)
+    @Measurable (CoeffField d) ℝ (PointwiseLocalSigma U) (borel ℝ)
       (fun a : CoeffField d => ∫ x, a x i j * φ x ∂MeasureTheory.volume) := by
   rw [← localTestObservable_single_single_eq_integral_entry i j φ]
   exact measurable_localTestObservable_localSigma
@@ -83,7 +83,7 @@ theorem setIntegral_entry_mul_eq_integral_of_tsupport_subset {d : ℕ}
 theorem measurable_entryTestObservable_setIntegral_localSigma {d : ℕ} {U : Set (Vec d)}
     (i j : Fin d) {φ : Vec d → ℝ} (hφ_cont : ContDiff ℝ (⊤ : ℕ∞) φ)
     (hφ_compact : HasCompactSupport φ) (hφ_support : tsupport φ ⊆ U) :
-    @Measurable (CoeffField d) ℝ (LocalSigma U) (borel ℝ)
+    @Measurable (CoeffField d) ℝ (PointwiseLocalSigma U) (borel ℝ)
       (fun a : CoeffField d => ∫ x in U, a x i j * φ x ∂MeasureTheory.volume) := by
   rw [show
       (fun a : CoeffField d => ∫ x in U, a x i j * φ x ∂MeasureTheory.volume) =

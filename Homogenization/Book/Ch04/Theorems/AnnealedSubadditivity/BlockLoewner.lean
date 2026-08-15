@@ -25,7 +25,7 @@ noncomputable section
 /-- Integrating an a.e. quadratic-form comparison gives a matrix Löwner
 comparison. -/
 theorem matLoewnerLE_of_integral_quadratic_mono
-    {d : ℕ} {P : CoeffLaw d} {A B : Mat d}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {A B : Mat d}
     {F G : Vec d → RegCoeffField d → ℝ}
     (hFint : ∀ x : Vec d, Integrable (F x) P)
     (hGint : ∀ x : Vec d, Integrable (G x) P)
@@ -45,7 +45,7 @@ theorem matLoewnerLE_of_integral_quadratic_mono
 /-- Integrating an a.e. doubled quadratic-form comparison gives a block-matrix
 Löwner comparison. -/
 theorem blockMatLoewnerLE_of_integral_quadratic_mono
-    {d : ℕ} {P : CoeffLaw d} {A B : BlockMat d}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {A B : BlockMat d}
     {F G : BlockVec d → RegCoeffField d → ℝ}
     (hFint : ∀ X : BlockVec d, Integrable (F X) P)
     (hGint : ∀ X : BlockVec d, Integrable (G X) P)
@@ -97,7 +97,7 @@ theorem blockMatLoewnerLE_lowerRight_apply {d : ℕ} {A B : BlockMat d}
 /-- Finite-dimensional matrix quadratic forms are integrable when all entries
 are integrable. -/
 private theorem integrable_vecDot_matVecMul_of_integrable_entries
-    {d : ℕ} {P : CoeffLaw d} {M : RegCoeffField d → Mat d}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {M : RegCoeffField d → Mat d}
     (hM : ∀ i j, Integrable (fun a => M a i j) P) (x y : Vec d) :
     Integrable (fun a => vecDot x (matVecMul (M a) y)) P := by
   simp [vecDot, matVecMul]
@@ -108,7 +108,7 @@ private theorem integrable_vecDot_matVecMul_of_integrable_entries
 /-- Finite-dimensional matrix quadratic forms commute with entrywise
 expectation under entrywise integrability. -/
 private theorem integral_vecDot_matVecMul_eq_of_integrable_entries
-    {d : ℕ} {P : CoeffLaw d} {M : RegCoeffField d → Mat d}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {M : RegCoeffField d → Mat d}
     (hM : ∀ i j, Integrable (fun a => M a i j) P) (x y : Vec d) :
     ∫ a, vecDot x (matVecMul (M a) y) ∂P =
       vecDot x (matVecMul (fun i j => ∫ a, M a i j ∂P) y) := by
@@ -128,7 +128,7 @@ private theorem integral_vecDot_matVecMul_eq_of_integrable_entries
 /-- Finite-dimensional block quadratic forms are integrable when all block
 entries are integrable. -/
 theorem integrable_blockVecDot_blockMatVecMul_of_integrable_entries
-    {d : ℕ} {P : CoeffLaw d} {B : RegCoeffField d → BlockMat d}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {B : RegCoeffField d → BlockMat d}
     (hB : ∀ α β, Integrable (fun a => blockMatEntry (B a) α β) P)
     (X Y : BlockVec d) :
     Integrable (fun a => blockVecDot X (blockMatVecMul (B a) Y)) P := by
@@ -156,7 +156,7 @@ theorem integrable_blockVecDot_blockMatVecMul_of_integrable_entries
 /-- Finite-dimensional block quadratic forms commute with entrywise expectation
 under entrywise integrability. -/
 theorem integral_blockVecDot_blockMatVecMul_eq_of_integrable_entries
-    {d : ℕ} {P : CoeffLaw d} {B : RegCoeffField d → BlockMat d}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {B : RegCoeffField d → BlockMat d}
     (hB : ∀ α β, Integrable (fun a => blockMatEntry (B a) α β) P)
     (X Y : BlockVec d) :
     ∫ a, blockVecDot X (blockMatVecMul (B a) Y) ∂P =
@@ -258,13 +258,13 @@ theorem matLoewnerLE_upperLeft_of_blockMatLoewnerLE {d : ℕ} {A B : BlockMat d}
 /-- Pointwise response subadditivity for the Ch4 scalar response observable,
 with the a.e. coefficient representative handled by the Chapter 2 coefficient
 family. -/
-theorem responseJObservableCubeSet_le_descendantsAverage_of_aelocallyUniformlyEllipticField
+theorem restrictionResponseJObservableCubeSet_le_descendantsAverage_of_aelocallyUniformlyEllipticField
     {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) {n m : ℤ} (hnm : n ≤ m)
     (p q : Vec d) :
-    responseJObservableCubeSet (originCube d m) p q a ≤
+    restrictionResponseJObservableCubeSet (originCube d m) p q a ≤
       descendantsAverage (originCube d m) (Int.toNat (m - n))
-        (fun R => responseJObservableCubeSet R p q a) := by
+        (fun R => restrictionResponseJObservableCubeSet R p q a) := by
   let Q : TriadicCube d := originCube d m
   let j : ℕ := Int.toNat (m - n)
   let F : Ch02.TriadicCoeffFamily d :=
@@ -285,7 +285,7 @@ theorem responseJObservableCubeSet_le_descendantsAverage_of_aelocallyUniformlyEl
         Pcell (fun i : Pcell.Cell => F.coeffOn i.1) hcell p q
   have hParent :
       Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q) p q =
-        responseJObservableCubeSet Q p q a := by
+        restrictionResponseJObservableCubeSet Q p q a := by
     calc
       Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q) p q
           = ResponseJ (openCubeSet Q) p q a.toFun := by
@@ -293,13 +293,13 @@ theorem responseJObservableCubeSet_le_descendantsAverage_of_aelocallyUniformlyEl
                 coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                 Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                   (Ch02.cubeDomain Q) (F.coeffOn Q) p q
-      _ = responseJObservableCubeSet Q p q a := by
+      _ = restrictionResponseJObservableCubeSet Q p q a := by
             rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q p q a.toFun]
             rfl
   have hTerm :
       (fun R : TriadicCube d =>
           Ch02.responseJ (Ch02.cubeDomain R) (F.coeffOn R) p q) =
-        fun R : TriadicCube d => responseJObservableCubeSet R p q a := by
+        fun R : TriadicCube d => restrictionResponseJObservableCubeSet R p q a := by
     funext R
     calc
       Ch02.responseJ (Ch02.cubeDomain R) (F.coeffOn R) p q
@@ -308,14 +308,14 @@ theorem responseJObservableCubeSet_le_descendantsAverage_of_aelocallyUniformlyEl
                 coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                 Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                   (Ch02.cubeDomain R) (F.coeffOn R) p q
-      _ = responseJObservableCubeSet R p q a := by
+      _ = restrictionResponseJObservableCubeSet R p q a := by
             rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube R p q a.toFun]
             rfl
   have hAvg :
       Pcell.weightedAverage
           (fun i : Pcell.Cell =>
             Ch02.responseJ (Ch02.cubeDomain i.1) (F.coeffOn i.1) p q) =
-        descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a) := by
+        descendantsAverage Q j (fun R => restrictionResponseJObservableCubeSet R p q a) := by
     calc
       Pcell.weightedAverage
           (fun i : Pcell.Cell =>
@@ -328,30 +328,30 @@ theorem responseJObservableCubeSet_le_descendantsAverage_of_aelocallyUniformlyEl
               Ch02.descendantsDomainPartition_weightedAverage Q j
                 (fun R : TriadicCube d =>
                   Ch02.responseJ (Ch02.cubeDomain R) (F.coeffOn R) p q)
-      _ = descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a) := by
+      _ = descendantsAverage Q j (fun R => restrictionResponseJObservableCubeSet R p q a) := by
             rw [hTerm]
   calc
-    responseJObservableCubeSet (originCube d m) p q a
-        = responseJObservableCubeSet Q p q a := rfl
+    restrictionResponseJObservableCubeSet (originCube d m) p q a
+        = restrictionResponseJObservableCubeSet Q p q a := rfl
     _ = Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q) p q := hParent.symm
     _ ≤ Pcell.weightedAverage
           (fun i : Pcell.Cell =>
             Ch02.responseJ (Ch02.cubeDomain i.1) (F.coeffOn i.1) p q) := hsub
-    _ = descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a) := hAvg
+    _ = descendantsAverage Q j (fun R => restrictionResponseJObservableCubeSet R p q a) := hAvg
     _ =
         descendantsAverage (originCube d m) (Int.toNat (m - n))
-          (fun R => responseJObservableCubeSet R p q a) := rfl
+          (fun R => restrictionResponseJObservableCubeSet R p q a) := rfl
 
 /-- Pointwise response subadditivity on an arbitrary triadic cube for the Ch4
 scalar response observable, with the a.e. coefficient representative handled
 by the Chapter 2 coefficient family. -/
-theorem responseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUniformlyEllipticField
+theorem restrictionResponseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUniformlyEllipticField
     {d : ℕ} [NeZero d] {a : RegCoeffField d}
     (ha : AELocallyUniformlyEllipticField a) (Q : TriadicCube d) {k : ℤ}
     (hk : k ≤ Q.scale) (p q : Vec d) :
-    responseJObservableCubeSet Q p q a ≤
+    restrictionResponseJObservableCubeSet Q p q a ≤
       descendantsAverage Q (Int.toNat (Q.scale - k))
-        (fun R => responseJObservableCubeSet R p q a) := by
+        (fun R => restrictionResponseJObservableCubeSet R p q a) := by
   let j : ℕ := Int.toNat (Q.scale - k)
   let F : Ch02.TriadicCoeffFamily d :=
     triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha
@@ -371,7 +371,7 @@ theorem responseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUni
         Pcell (fun i : Pcell.Cell => F.coeffOn i.1) hcell p q
   have hParent :
       Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q) p q =
-        responseJObservableCubeSet Q p q a := by
+        restrictionResponseJObservableCubeSet Q p q a := by
     calc
       Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q) p q
           = ResponseJ (openCubeSet Q) p q a.toFun := by
@@ -379,13 +379,13 @@ theorem responseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUni
                 coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                 Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                   (Ch02.cubeDomain Q) (F.coeffOn Q) p q
-      _ = responseJObservableCubeSet Q p q a := by
+      _ = restrictionResponseJObservableCubeSet Q p q a := by
             rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q p q a.toFun]
             rfl
   have hTerm :
       (fun R : TriadicCube d =>
           Ch02.responseJ (Ch02.cubeDomain R) (F.coeffOn R) p q) =
-        fun R : TriadicCube d => responseJObservableCubeSet R p q a := by
+        fun R : TriadicCube d => restrictionResponseJObservableCubeSet R p q a := by
     funext R
     calc
       Ch02.responseJ (Ch02.cubeDomain R) (F.coeffOn R) p q
@@ -394,14 +394,14 @@ theorem responseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUni
                 coeffOnOfAEEllipticOn_toCoeffField, Ch02.cubeDomain_coe] using
                 Homogenization.Internal.Ch02.book_responseJ_eq_ResponseJ
                   (Ch02.cubeDomain R) (F.coeffOn R) p q
-      _ = responseJObservableCubeSet R p q a := by
+      _ = restrictionResponseJObservableCubeSet R p q a := by
             rw [← responseJ_cubeSet_eq_openCubeSet_of_triadicCube R p q a.toFun]
             rfl
   have hAvg :
       Pcell.weightedAverage
           (fun i : Pcell.Cell =>
             Ch02.responseJ (Ch02.cubeDomain i.1) (F.coeffOn i.1) p q) =
-        descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a) := by
+        descendantsAverage Q j (fun R => restrictionResponseJObservableCubeSet R p q a) := by
     calc
       Pcell.weightedAverage
           (fun i : Pcell.Cell =>
@@ -414,18 +414,18 @@ theorem responseJObservableCubeSet_le_descendantsAverage_cubeSet_of_aelocallyUni
               Ch02.descendantsDomainPartition_weightedAverage Q j
                 (fun R : TriadicCube d =>
                   Ch02.responseJ (Ch02.cubeDomain R) (F.coeffOn R) p q)
-      _ = descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a) := by
+      _ = descendantsAverage Q j (fun R => restrictionResponseJObservableCubeSet R p q a) := by
             rw [hTerm]
   calc
-    responseJObservableCubeSet Q p q a
+    restrictionResponseJObservableCubeSet Q p q a
         = Ch02.responseJ (Ch02.cubeDomain Q) (F.coeffOn Q) p q := hParent.symm
     _ ≤ Pcell.weightedAverage
           (fun i : Pcell.Cell =>
             Ch02.responseJ (Ch02.cubeDomain i.1) (F.coeffOn i.1) p q) := hsub
-    _ = descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a) := hAvg
+    _ = descendantsAverage Q j (fun R => restrictionResponseJObservableCubeSet R p q a) := hAvg
     _ =
         descendantsAverage Q (Int.toNat (Q.scale - k))
-          (fun R => responseJObservableCubeSet R p q a) := rfl
+          (fun R => restrictionResponseJObservableCubeSet R p q a) := rfl
 
 /-- Pointwise block coarse-matrix subadditivity on an arbitrary triadic cube
 for a locally a.e.-elliptic coefficient field, with the a.e. representative
@@ -459,7 +459,7 @@ theorem coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_of_aelocallyUnif
       coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
-      LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   have hTerm :
       (fun R : TriadicCube d =>
@@ -467,7 +467,7 @@ theorem coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_of_aelocallyUnif
         fun R : TriadicCube d => coarseBlockMatrix (cubeSet R) a.toFun := by
     funext R
     simpa [F] using
-      (LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      (RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha R).symm
   have hAvg :
       Pcell.weightedBlockAverage

@@ -33,12 +33,12 @@ private theorem responseDefectAverageAtScale_eq_responseJAdditivityDefectAtScale
 /-- Integrability of the response defect in the notation of the weak-norm
 maximizer RHS. -/
 private theorem integrable_responseDefectAverageAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     {n m : ℤ} (hnm : n ≤ m) (p q : Vec d)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hDesc : ∀ R, R ∈ descendantsAtScale (originCube d m) n →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     Integrable (WeakNormsMaximizer.responseDefectAverageAtScale m n p q) P := by
   simpa [responseDefectAverageAtScale_eq_responseJAdditivityDefectAtScale] using
     JUpperBoundWeakNorms.integrable_responseJAdditivityDefectAtScale
@@ -47,8 +47,8 @@ private theorem integrable_responseDefectAverageAtScale
 /-- A.e. nonnegativity of the response defect in the notation of the
 weak-norm maximizer RHS. -/
 private theorem responseDefectAverageAtScale_nonneg_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) {n m : ℤ} (hnm : n ≤ m) (p q : Vec d) :
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) {n m : ℤ} (hnm : n ≤ m) (p q : Vec d) :
     0 ≤ᵐ[P] WeakNormsMaximizer.responseDefectAverageAtScale m n p q := by
   simpa [responseDefectAverageAtScale_eq_responseJAdditivityDefectAtScale] using
     JUpperBoundWeakNorms.responseJAdditivityDefectAtScale_nonneg_ae
@@ -57,13 +57,13 @@ private theorem responseDefectAverageAtScale_nonneg_ae
 /-- Law-facing tau conversion for the response defect as it appears in the
 weak-norm maximizer RHS. -/
 private theorem integral_responseDefectAverageAtScale_eq_tauAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {n m : ℤ} (hn_nonneg : 0 ≤ n) (hnm : n ≤ m) (p q : Vec d)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hDesc : ∀ R, R ∈ descendantsAtScale (originCube d m) n →
-      Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+      Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     ∫ a, WeakNormsMaximizer.responseDefectAverageAtScale m n p q a ∂P =
       tauAtScale P m n p q := by
   simpa [responseDefectAverageAtScale_eq_responseJAdditivityDefectAtScale] using
@@ -166,17 +166,17 @@ private theorem sum_Icc_betaWeight_le_geometric_inv
 square-root sum.  This is the integrability part of the Cauchy/tau estimate
 below, exposed proof-internally for the final paired-square assembly. -/
 theorem integrable_sq_weighted_sqrt_responseDefectAverageAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k)
     (w : ℤ → ℝ) (p q : Vec d)
     (hw : ∀ n ∈ Finset.Icc (k + 1) m, 0 ≤ w n)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hDesc :
       ∀ n ∈ Finset.Icc (k + 1) m,
         ∀ R, R ∈ descendantsAtScale (originCube d m) n →
-          Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+          Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     Integrable
       (fun a : RegCoeffField d =>
         (∑ n ∈ Finset.Icc (k + 1) m,
@@ -247,17 +247,17 @@ theorem integrable_sq_weighted_sqrt_responseDefectAverageAtScale
 /-- Finite weighted Cauchy plus stationarity converts the square of a weighted
 sum of response-defect square roots into the corresponding weighted tau sum. -/
 theorem integral_sq_weighted_sqrt_responseDefectAverageAtScale_le_sum_weights_mul_tauAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k)
     (w : ℤ → ℝ) (p q : Vec d)
     (hw : ∀ n ∈ Finset.Icc (k + 1) m, 0 ≤ w n)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hDesc :
       ∀ n ∈ Finset.Icc (k + 1) m,
         ∀ R, R ∈ descendantsAtScale (originCube d m) n →
-          Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+          Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     ∫ a,
         (∑ n ∈ Finset.Icc (k + 1) m,
           w n * Real.sqrt
@@ -365,16 +365,16 @@ theorem integral_sq_weighted_sqrt_responseDefectAverageAtScale_le_sum_weights_mu
 /-- The beta-weighted response-defect baseline term is bounded by the geometric
 series factor times the beta-weighted tau sum. -/
 theorem integral_sq_beta_weighted_sqrt_responseDefectAverageAtScale_le_geometric_tauSum
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     {β : ℝ} (hβ : 0 < β) (p q : Vec d)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hDesc :
       ∀ n ∈ Finset.Icc (k + 1) m,
         ∀ R, R ∈ descendantsAtScale (originCube d m) n →
-          Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+          Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     ∫ a,
         (∑ n ∈ Finset.Icc (k + 1) m,
           Real.rpow (3 : ℝ) (-β * (Int.toNat (m - n) : ℝ)) *
@@ -425,16 +425,16 @@ theorem integral_sq_beta_weighted_sqrt_responseDefectAverageAtScale_le_geometric
 /-- The beta-weighted response-defect baseline term with the geometric factor
 absorbed into the standard `5 * beta^{-1}` loss. -/
 theorem integral_sq_beta_weighted_sqrt_responseDefectAverageAtScale_le_beta_inv_tauSum
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     {β : ℝ} (hβ : 0 < β) (hβ_le : β ≤ 1) (p q : Vec d)
     (hParent :
-      Integrable (Ch04.responseJObservableCubeSet (originCube d m) p q) P)
+      Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P)
     (hDesc :
       ∀ n ∈ Finset.Icc (k + 1) m,
         ∀ R, R ∈ descendantsAtScale (originCube d m) n →
-          Integrable (Ch04.responseJObservableCubeSet R p q) P) :
+          Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     ∫ a,
         (∑ n ∈ Finset.Icc (k + 1) m,
           Real.rpow (3 : ℝ) (-β * (Int.toNat (m - n) : ℝ)) *

@@ -4,18 +4,18 @@ import Homogenization.Probability.RegCoeffField.Endomorphisms
 # The restriction σ-algebra on the carrier
 
 The restriction σ-algebra `RestrictionSigmaR U hU` is the σ-algebra of carrier
-events determined by the values of the field on the measurable set `U`: the comap
-of the canonical carrier σ-algebra along the restriction endomorphism
-`restrictReg U hU`.  It is the measurable local σ-algebra used for the unit-range
-dependence of carrier laws (see `Laws.lean`).
+events determined by the values of the field on the measurable set `U`: the
+comap of the canonical carrier σ-algebra along the restriction endomorphism
+`restrictReg U hU`.  It is the measurable local σ-algebra used in the explicit
+pointwise-restriction law lane (see `Laws.lean`).
 
 `RestrictionSigmaR` is coarser than the canonical carrier σ-algebra, and monotone
 under set inclusion (with the `MeasurableSet` discipline that both restriction
 maps be well defined, matching the D7-approved coarsening interface).  The
-separation predicate `AreUnitSeparated` is the raw-set predicate of
-`Homogenization.Probability.RandomField`, reused unchanged.
+separation predicate `AreUnitSeparated` is the ambient sup-norm raw-set
+predicate of `Homogenization.Probability.RandomField`, reused unchanged.
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 namespace Homogenization
@@ -36,6 +36,20 @@ def RestrictionSigmaR (U : Set (Vec d)) (hU : MeasurableSet U) :
 theorem measurable_restrictReg_restrictionSigmaR (U : Set (Vec d)) (hU : MeasurableSet U) :
     @Measurable _ _ (RestrictionSigmaR U hU) _ (restrictReg U hU) :=
   measurable_iff_comap_le.mpr le_rfl
+
+/-- Point evaluation inside `U` remains observable for the restriction
+σ-algebra: it factors through the restricted field. -/
+theorem measurable_apply_entry_restrictionSigmaR_of_mem {U : Set (Vec d)}
+    (hU : MeasurableSet U) {x : Vec d} (hx : x ∈ U) (i j : Fin d) :
+    @Measurable (RegCoeffField d) ℝ (RestrictionSigmaR U hU) _
+      (fun a : RegCoeffField d => a x i j) := by
+  have hfactor : (fun a : RegCoeffField d => a x i j) =
+      fun a => restrictReg U hU a x i j := by
+    funext a
+    rw [restrictReg_apply_entry, Set.indicator_of_mem hx]
+  rw [hfactor]
+  exact (measurable_apply_entry x i j).comp
+    (measurable_restrictReg_restrictionSigmaR U hU)
 
 /-- The restriction σ-algebra is coarser than the canonical carrier σ-algebra. -/
 theorem restrictionSigmaR_le (U : Set (Vec d)) (hU : MeasurableSet U) :

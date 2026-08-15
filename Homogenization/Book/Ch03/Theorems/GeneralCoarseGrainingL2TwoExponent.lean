@@ -398,7 +398,7 @@ private theorem generalCoarseGrainingL2TwoExponentTheory_of_coordinateBridge
     {d : ℕ} [NeZero d] {Cbridge : ℝ}
     (hbridge : UnitFullDualCoordinateOverlappingBridgeSharpLoss d Cbridge) :
     GeneralCoarseGrainingL2TwoExponentTheory d := by
-  rcases Homogenization.exists_constantCoefficientDirichletBesovFunctionSpacesUniform d with
+  rcases Homogenization.exists_discreteConstantCoefficientDirichletBesovFunctionSpacesUniform d with
     ⟨Cdir, hdir⟩
   let Cpair : ℝ :=
     (1 + (d : ℝ) * Real.rpow (3 : ℝ) ((d : ℝ) + 1)) *

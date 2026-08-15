@@ -13,7 +13,7 @@ open scoped Matrix.Norms.Elementwise
 noncomputable section
 
 private theorem memLp_two_of_nonneg_pow_integrable
-    {d : ℕ} {P : Ch04.CoeffLaw d} [IsProbabilityMeasure P]
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {ξ : ℕ} {X : RegCoeffField d → ℝ}
     (hξ : 2 ≤ ξ) (hX_meas : AEMeasurable X P)
     (hX_nonneg : ∀ᵐ a ∂P, 0 ≤ X a)
@@ -31,7 +31,7 @@ private theorem memLp_two_of_nonneg_pow_integrable
   exact hmem_ξ.mono_exponent (by exact_mod_cast hξ)
 
 private theorem integrable_abs_sq_of_ae_abs_le_nonneg_memLp_two
-    {d : ℕ} {P : Ch04.CoeffLaw d}
+    {d : ℕ} {P : Ch04.RestrictionCoeffLaw d}
     {X Y : RegCoeffField d → ℝ}
     (hX_meas : AEMeasurable X P)
     (hY_nonneg : ∀ a, 0 ≤ Y a)
@@ -80,8 +80,8 @@ private theorem blockBasis_sub_pairing'
   ring
 
 private theorem aemeasurable_blockMatEntry_coarseBlockMatrix_cubeSet
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (Q : TriadicCube d)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (Q : TriadicCube d)
     (α β : BlockCoord d) :
     AEMeasurable
       (fun a : RegCoeffField d => blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β) P := by
@@ -177,8 +177,8 @@ private theorem abs_cross_blockMatEntry_le_diag_sum_of_blockPosDef'
   constructor <;> nlinarith
 
 private theorem blockMatEntry_abs_le_factor_sum_ae
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (Q : TriadicCube d)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (Q : TriadicCube d)
     {sUpper sLower : ℝ} (hsUpper : 0 < sUpper) (hsLower : 0 < sLower)
     (α β : BlockCoord d) :
     (fun a : RegCoeffField d =>
@@ -193,7 +193,7 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
       coarseBlockMatrix (cubeSet Q) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain Q) (F.coeffOn Q) := by
     simpa [F] using
-      Ch04.LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+      Ch04.RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
         ha Q
   have hSymm : IsSymmetricBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) := by
     rw [hEq]
@@ -290,8 +290,8 @@ private theorem blockMatEntry_abs_le_factor_sum_ae
           exact (hLowerEntry i j).trans (by linarith)
 
 private theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (n : ℕ) (α β : BlockCoord d) :
     MemLp
@@ -366,13 +366,13 @@ private theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
     (by norm_num : (2 : ENNReal) ≠ 0) (by simp)]
   simpa [Real.norm_eq_abs] using hEntry_abs_sq
 
-theorem memLp_two_responseJObservableCubeSet_originCube_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem memLp_two_restrictionResponseJObservableCubeSet_originCube_from_P4
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k : ℕ) (p q : Vec d) :
     MemLp
-      (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p q)
+      (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p q)
       (2 : ENNReal) P := by
   classical
   letI : IsProbabilityMeasure P := hP.isProbability
@@ -455,20 +455,20 @@ theorem memLp_two_responseJObservableCubeSet_originCube_from_P4
         (hUL.const_mul (1 / 2 : ℝ))
   have hformula :
       (fun a : RegCoeffField d =>
-        Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p q a) =ᵐ[P]
+        Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p q a) =ᵐ[P]
         quad := by
     simpa [quad, M, Q] using
-      Ch04.responseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarrier
+      Ch04.restrictionResponseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarrier
         hP (originCube d (k : ℤ)) p q
   exact MemLp.ae_eq hformula.symm hquad
 
-theorem memLp_two_responseJObservableCubeSet_cubeSet_from_P4_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+theorem memLp_two_restrictionResponseJObservableCubeSet_cubeSet_from_P4_of_stationary
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (R : TriadicCube d) (hR_nonneg : 0 ≤ R.scale) (p q : Vec d) :
-    MemLp (Ch04.responseJObservableCubeSet R p q) (2 : ENNReal) P := by
+    MemLp (Ch04.restrictionResponseJObservableCubeSet R p q) (2 : ENNReal) P := by
   let n : ℕ := Int.toNat R.scale
   let z : Fin d → ℤ := Ch04.scaleTranslationShift R.scale R
   let X : RegCoeffField d → ℝ :=
@@ -476,11 +476,11 @@ theorem memLp_two_responseJObservableCubeSet_cubeSet_from_P4_of_stationary
   have hOrigin :
       MemLp X (2 : ENNReal) P := by
     have hbase :=
-      memLp_two_responseJObservableCubeSet_originCube_from_P4
+      memLp_two_restrictionResponseJObservableCubeSet_originCube_from_P4
         hP hStruct hP4 n p q
     have hn : ((n : ℕ) : ℤ) = R.scale := by
       simpa [n] using Int.toNat_of_nonneg hR_nonneg
-    simpa [X, Ch04.responseJObservableCubeSet, hn] using hbase
+    simpa [X, Ch04.restrictionResponseJObservableCubeSet, hn] using hbase
   have hOrigin_map :
       MemLp X (2 : ENNReal) (Measure.map (translateReg (intVecToRealVec z)) P) := by
     simpa [hstat z] using hOrigin
@@ -492,21 +492,21 @@ theorem memLp_two_responseJObservableCubeSet_cubeSet_from_P4_of_stationary
     simpa [z] using
       Ch04.cubeSet_eq_translateSet_originCube_of_nonneg_scale (R := R) hR_nonneg
   have hEq :
-      Ch04.responseJObservableCubeSet R p q =ᵐ[P] X ∘ translateReg (intVecToRealVec z) := by
+      Ch04.restrictionResponseJObservableCubeSet R p q =ᵐ[P] X ∘ translateReg (intVecToRealVec z) := by
     filter_upwards with a
-    dsimp [X, Ch04.responseJObservableCubeSet, Function.comp]
+    dsimp [X, Ch04.restrictionResponseJObservableCubeSet, Function.comp]
     rw [hshift, Ch04.translateReg_toFun]
     exact Ch04.responseJCubeSet_translation_covariant p q
       (cubeSet (originCube d R.scale)) z a.toFun
   exact MemLp.ae_eq hEq.symm hComp
 
-theorem memLp_zeta_responseJObservableCubeSet_cubeSet_from_P4_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+theorem memLp_zeta_restrictionResponseJObservableCubeSet_cubeSet_from_P4_of_stationary
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (R : TriadicCube d) (hR_nonneg : 0 ≤ R.scale) (p q : Vec d) :
-    MemLp (Ch04.responseJObservableCubeSet R p q)
+    MemLp (Ch04.restrictionResponseJObservableCubeSet R p q)
       (ENNReal.ofReal (section53CoarseFluctuationZeta hP4)) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let ζ := section53CoarseFluctuationZeta hP4
@@ -515,33 +515,33 @@ theorem memLp_zeta_responseJObservableCubeSet_cubeSet_from_P4_of_stationary
     exact ENNReal.ofReal_le_ofReal (by
       simpa [ζ] using section53CoarseFluctuationZeta_le_two hP4)
   exact
-    (memLp_two_responseJObservableCubeSet_cubeSet_from_P4_of_stationary
+    (memLp_two_restrictionResponseJObservableCubeSet_cubeSet_from_P4_of_stationary
       hP hstat hStruct hP4 R hR_nonneg p q).mono_exponent hζ_le_two
 
-theorem memLp_zeta_descendantsAverage_responseJObservableCubeSet_originCube_from_P4_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+theorem memLp_zeta_descendantsAverage_restrictionResponseJObservableCubeSet_originCube_from_P4_of_stationary
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m)
     (p q : Vec d) :
     MemLp
       (fun a : RegCoeffField d =>
         descendantsAverage (originCube d m) (Int.toNat (m - k))
-          (fun R => Ch04.responseJObservableCubeSet R p q a))
+          (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a))
       (ENNReal.ofReal (section53CoarseFluctuationZeta hP4)) P := by
-  refine Ch04.memLp_descendantsAverage_responseJObservableCubeSet ?_
+  refine Ch04.memLp_descendantsAverage_restrictionResponseJObservableCubeSet ?_
   intro R hR
   have hRscaleMem : R ∈ descendantsAtScale (originCube d m) k := by
     simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR
   have hRscale : R.scale = k := scale_eq_of_mem_descendantsAtScale hRscaleMem
   exact
-    memLp_zeta_responseJObservableCubeSet_cubeSet_from_P4_of_stationary
+    memLp_zeta_restrictionResponseJObservableCubeSet_cubeSet_from_P4_of_stationary
       hP hstat hStruct hP4 R (by simpa [hRscale] using hk_nonneg) p q
 
-private theorem responseJObservableCubeSet_rpow_translation_covariant
+private theorem restrictionResponseJObservableCubeSet_rpow_translation_covariant
     {d : ℕ} (ζ : ℝ) (p q : Vec d) :
-    Ch04.IsTranslationCovariantR
+    Ch04.IsRestrictionTranslationCovariant
       (fun U : Set (Vec d) => fun a : RegCoeffField d =>
         Real.rpow (ResponseJ U p q a.toFun) ζ) := by
   have hraw : IsTranslationCovariant
@@ -550,22 +550,22 @@ private theorem responseJObservableCubeSet_rpow_translation_covariant
     intro U z a
     exact congrArg (fun x : ℝ => Real.rpow x ζ)
       (Ch04.responseJCubeSet_translation_covariant p q U z a)
-  exact Ch04.isTranslationCovariantR_comp_toFun hraw
+  exact Ch04.isRestrictionTranslationCovariant_comp_toFun hraw
 
-theorem integral_rpow_responseJObservableCubeSet_cubeSet_eq_originCube_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
+theorem integral_rpow_restrictionResponseJObservableCubeSet_cubeSet_eq_originCube_of_stationary
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
     (R : TriadicCube d) (hR_nonneg : 0 ≤ R.scale)
     {ζ : ℝ} (hζ_nonneg : 0 ≤ ζ) (p q : Vec d) :
     ∫ a,
-        Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ ∂P =
+        Real.rpow (Ch04.restrictionResponseJObservableCubeSet R p q a) ζ ∂P =
       ∫ a,
         Real.rpow
-          (Ch04.responseJObservableCubeSet (originCube d R.scale) p q a) ζ ∂P := by
+          (Ch04.restrictionResponseJObservableCubeSet (originCube d R.scale) p q a) ζ ∂P := by
   have hshift :=
     Ch04.cubeSet_eq_translateSet_originCube_of_nonneg_scale (R := R) hR_nonneg
   calc
-    ∫ a, Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ ∂P
+    ∫ a, Real.rpow (Ch04.restrictionResponseJObservableCubeSet R p q a) ζ ∂P
         =
       ∫ a, Real.rpow (ResponseJ (cubeSet R) p q a.toFun) ζ ∂P := by
         rfl
@@ -579,22 +579,22 @@ theorem integral_rpow_responseJObservableCubeSet_cubeSet_eq_originCube_of_statio
     _ =
       ∫ a, Real.rpow (ResponseJ (cubeSet (originCube d R.scale)) p q a.toFun) ζ ∂P := by
         exact
-          Ch04.integral_eq_of_isTranslationCovariantR_of_stationary_aestronglyMeasurable
+          Ch04.integral_eq_of_isRestrictionTranslationCovariant_of_stationary_aestronglyMeasurable
             (P := P) hstat
             (U := cubeSet (originCube d R.scale))
             (by
               exact
                 ((Real.continuous_rpow_const hζ_nonneg).measurable.comp_aemeasurable
                   (by
-                    simpa [Ch04.responseJObservableCubeSet] using
-                      hP.aemeasurable_responseJObservableCubeSet
+                    simpa [Ch04.restrictionResponseJObservableCubeSet] using
+                      hP.aemeasurable_restrictionResponseJObservableCubeSet
                         (originCube d R.scale) p q)).aestronglyMeasurable)
-            (responseJObservableCubeSet_rpow_translation_covariant ζ p q)
+            (restrictionResponseJObservableCubeSet_rpow_translation_covariant ζ p q)
             (Ch04.scaleTranslationShift R.scale R)
     _ =
       ∫ a,
         Real.rpow
-          (Ch04.responseJObservableCubeSet (originCube d R.scale) p q a) ζ ∂P := by
+          (Ch04.restrictionResponseJObservableCubeSet (originCube d R.scale) p q a) ζ ∂P := by
         rfl
 
 private theorem rpow_descendantsAverage_le_descendantsAverage_rpow
@@ -641,21 +641,21 @@ private theorem rpow_descendantsAverage_le_descendantsAverage_rpow
     _ ≤ ∑ R ∈ D, w R • (fun x : ℝ => x ^ ζ) (F R) := hJensen
     _ = descendantsAverage Q j (fun R => Real.rpow (F R) ζ) := hright
 
-theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_le_originCube_of_stationary
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hstat : Ch04.StationaryLaw P)
-    (hStruct : Ch04.StructuralLaw P)
+theorem integral_rpow_descendantsAverage_restrictionResponseJObservableCubeSet_originCube_le_originCube_of_stationary
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hstat : Ch04.RestrictionStationaryLaw P)
+    (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℤ} (hk_nonneg : 0 ≤ k) (hkm : k ≤ m) (p q : Vec d) :
     let ζ := section53CoarseFluctuationZeta hP4
     ∫ a,
         Real.rpow
           (descendantsAverage (originCube d m) (Int.toNat (m - k))
-            (fun R => Ch04.responseJObservableCubeSet R p q a)) ζ ∂P
+            (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)) ζ ∂P
       ≤
         ∫ a,
           Real.rpow
-            (Ch04.responseJObservableCubeSet (originCube d k) p q a) ζ ∂P := by
+            (Ch04.restrictionResponseJObservableCubeSet (originCube d k) p q a) ζ ∂P := by
   dsimp only
   letI : IsProbabilityMeasure P := hP.isProbability
   let ζ := section53CoarseFluctuationZeta hP4
@@ -664,7 +664,7 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
   let childAvg : RegCoeffField d → ℝ :=
     fun a =>
       descendantsAverage Q j
-        (fun R => Ch04.responseJObservableCubeSet R p q a)
+        (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)
   have hζ_pos : 0 < ζ := by
     simpa [ζ] using section53CoarseFluctuationZeta_pos hP4
   have hζ_one : 1 ≤ ζ := by
@@ -672,7 +672,7 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
   have hchild_mem :
       MemLp childAvg (ENNReal.ofReal ζ) P := by
     simpa [childAvg, Q, j, ζ] using
-      memLp_zeta_descendantsAverage_responseJObservableCubeSet_originCube_from_P4_of_stationary
+      memLp_zeta_descendantsAverage_restrictionResponseJObservableCubeSet_originCube_from_P4_of_stationary
         hP hstat hStruct hP4 hk_nonneg hkm p q
   have hchild_int :
       Integrable (fun a : RegCoeffField d => Real.rpow (childAvg a) ζ) P := by
@@ -688,25 +688,25 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
     have hnonneg : 0 ≤ childAvg a := by
       dsimp [childAvg]
       exact descendantsAverage_nonneg Q j
-        (fun R => Ch04.responseJObservableCubeSet R p q a)
-        (fun R hR => Ch04.responseJObservableCubeSet_nonneg R p q a)
+        (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)
+        (fun R hR => Ch04.restrictionResponseJObservableCubeSet_nonneg R p q a)
     rw [ENNReal.toReal_ofReal hζ_pos.le, Real.norm_of_nonneg hnonneg,
       Real.rpow_eq_pow]
   have horigin_int :
       Integrable
         (fun a : RegCoeffField d =>
-          Real.rpow (Ch04.responseJObservableCubeSet (originCube d k) p q a) ζ) P := by
+          Real.rpow (Ch04.restrictionResponseJObservableCubeSet (originCube d k) p q a) ζ) P := by
     have hknat : ((Int.toNat k : ℕ) : ℤ) = k :=
       Int.toNat_of_nonneg hk_nonneg
     let J : RegCoeffField d → ℝ :=
-      Ch04.responseJObservableCubeSet (originCube d k) p q
+      Ch04.restrictionResponseJObservableCubeSet (originCube d k) p q
     have hζ_le_two : ENNReal.ofReal ζ ≤ (2 : ENNReal) := by
       rw [← ENNReal.ofReal_ofNat]
       exact ENNReal.ofReal_le_ofReal (by
         simpa [ζ] using section53CoarseFluctuationZeta_le_two hP4)
     have hJ_mem2 : MemLp J (2 : ENNReal) P := by
       have hbase :=
-        memLp_two_responseJObservableCubeSet_originCube_from_P4
+        memLp_two_restrictionResponseJObservableCubeSet_originCube_from_P4
           hP hStruct hP4 (Int.toNat k) p q
       simpa [J, hknat] using hbase
     have hJ_memζ : MemLp J (ENNReal.ofReal ζ) P :=
@@ -721,36 +721,36 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
     refine hint.congr ?_
     filter_upwards with a
     have hJ_nonneg : 0 ≤ J a := by
-      simpa [J] using Ch04.responseJObservableCubeSet_nonneg (originCube d k) p q a
+      simpa [J] using Ch04.restrictionResponseJObservableCubeSet_nonneg (originCube d k) p q a
     rw [ENNReal.toReal_ofReal hζ_pos.le, Real.norm_of_nonneg hJ_nonneg,
       Real.rpow_eq_pow]
   have hpoint :
       (fun a : RegCoeffField d => Real.rpow (childAvg a) ζ) ≤ᵐ[P]
         fun a => descendantsAverage Q j
-          (fun R => Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ) := by
+          (fun R => Real.rpow (Ch04.restrictionResponseJObservableCubeSet R p q a) ζ) := by
     filter_upwards with a
     dsimp [childAvg]
     exact
       rpow_descendantsAverage_le_descendantsAverage_rpow Q j hζ_one
-        (fun R hR => Ch04.responseJObservableCubeSet_nonneg R p q a)
+        (fun R hR => Ch04.restrictionResponseJObservableCubeSet_nonneg R p q a)
   have hdesc_int :
       Integrable
         (fun a : RegCoeffField d =>
           descendantsAverage Q j
-            (fun R => Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ)) P := by
+            (fun R => Real.rpow (Ch04.restrictionResponseJObservableCubeSet R p q a) ζ)) P := by
     refine Ch04.integrable_descendantsAverage ?_
     intro R hR
     have hRscaleMem : R ∈ descendantsAtScale (originCube d m) k := by
       simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR
     have hRscale : R.scale = k := scale_eq_of_mem_descendantsAtScale hRscaleMem
     have hstat_eq :=
-      integral_rpow_responseJObservableCubeSet_cubeSet_eq_originCube_of_stationary
+      integral_rpow_restrictionResponseJObservableCubeSet_cubeSet_eq_originCube_of_stationary
         hP hstat R (by simpa [hRscale] using hk_nonneg) hζ_pos.le p q
     have hR_mem :
-        MemLp (Ch04.responseJObservableCubeSet R p q)
+        MemLp (Ch04.restrictionResponseJObservableCubeSet R p q)
           (ENNReal.ofReal ζ) P := by
       simpa [ζ] using
-        memLp_zeta_responseJObservableCubeSet_cubeSet_from_P4_of_stationary
+        memLp_zeta_restrictionResponseJObservableCubeSet_cubeSet_from_P4_of_stationary
           hP hstat hStruct hP4 R (by simpa [hRscale] using hk_nonneg) p q
     have hζ_ne_zero : ENNReal.ofReal ζ ≠ 0 := by
       simp [ENNReal.ofReal_eq_zero, not_le.mpr hζ_pos]
@@ -758,44 +758,44 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
     have hint :
         Integrable
           (fun a : RegCoeffField d =>
-            ‖Ch04.responseJObservableCubeSet R p q a‖ ^
+            ‖Ch04.restrictionResponseJObservableCubeSet R p q a‖ ^
               (ENNReal.ofReal ζ).toReal) P :=
       hR_mem.integrable_norm_rpow hζ_ne_zero hζ_ne_top
     refine hint.congr ?_
     filter_upwards with a
-    have hnonneg : 0 ≤ Ch04.responseJObservableCubeSet R p q a :=
-      Ch04.responseJObservableCubeSet_nonneg R p q a
+    have hnonneg : 0 ≤ Ch04.restrictionResponseJObservableCubeSet R p q a :=
+      Ch04.restrictionResponseJObservableCubeSet_nonneg R p q a
     rw [ENNReal.toReal_ofReal hζ_pos.le, Real.norm_of_nonneg hnonneg,
       Real.rpow_eq_pow]
   have hmono :
       ∫ a, Real.rpow (childAvg a) ζ ∂P ≤
         ∫ a,
           descendantsAverage Q j
-            (fun R => Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ) ∂P :=
+            (fun R => Real.rpow (Ch04.restrictionResponseJObservableCubeSet R p q a) ζ) ∂P :=
     integral_mono_ae hchild_int hdesc_int hpoint
   have hdesc_eq :
       ∫ a,
           descendantsAverage Q j
-            (fun R => Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ) ∂P =
+            (fun R => Real.rpow (Ch04.restrictionResponseJObservableCubeSet R p q a) ζ) ∂P =
         ∫ a,
           Real.rpow
-            (Ch04.responseJObservableCubeSet (originCube d k) p q a) ζ ∂P := by
+            (Ch04.restrictionResponseJObservableCubeSet (originCube d k) p q a) ζ ∂P := by
     classical
     let D : Finset (TriadicCube d) := descendantsAtDepth Q j
     have hFint :
         ∀ R, R ∈ descendantsAtDepth Q j →
           Integrable
             (fun a : RegCoeffField d =>
-              Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ) P := by
+              Real.rpow (Ch04.restrictionResponseJObservableCubeSet R p q a) ζ) P := by
       intro R hR
       have hRscaleMem : R ∈ descendantsAtScale (originCube d m) k := by
         simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR
       have hRscale : R.scale = k := scale_eq_of_mem_descendantsAtScale hRscaleMem
       have hR_mem :
-          MemLp (Ch04.responseJObservableCubeSet R p q)
+          MemLp (Ch04.restrictionResponseJObservableCubeSet R p q)
             (ENNReal.ofReal ζ) P := by
         simpa [ζ] using
-          memLp_zeta_responseJObservableCubeSet_cubeSet_from_P4_of_stationary
+          memLp_zeta_restrictionResponseJObservableCubeSet_cubeSet_from_P4_of_stationary
             hP hstat hStruct hP4 R (by simpa [hRscale] using hk_nonneg) p q
       have hζ_ne_zero : ENNReal.ofReal ζ ≠ 0 := by
         simp [ENNReal.ofReal_eq_zero, not_le.mpr hζ_pos]
@@ -803,32 +803,32 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
       have hint :
           Integrable
             (fun a : RegCoeffField d =>
-              ‖Ch04.responseJObservableCubeSet R p q a‖ ^
+              ‖Ch04.restrictionResponseJObservableCubeSet R p q a‖ ^
                 (ENNReal.ofReal ζ).toReal) P :=
         hR_mem.integrable_norm_rpow hζ_ne_zero hζ_ne_top
       refine hint.congr ?_
       filter_upwards with a
-      have hnonneg : 0 ≤ Ch04.responseJObservableCubeSet R p q a :=
-        Ch04.responseJObservableCubeSet_nonneg R p q a
+      have hnonneg : 0 ≤ Ch04.restrictionResponseJObservableCubeSet R p q a :=
+        Ch04.restrictionResponseJObservableCubeSet_nonneg R p q a
       rw [ENNReal.toReal_ofReal hζ_pos.le, Real.norm_of_nonneg hnonneg,
         Real.rpow_eq_pow]
     calc
       ∫ a,
           descendantsAverage Q j
-            (fun R => Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ) ∂P
+            (fun R => Real.rpow (Ch04.restrictionResponseJObservableCubeSet R p q a) ζ) ∂P
           =
         descendantsAverage Q j
           (fun R => ∫ a,
-            Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ ∂P) :=
+            Real.rpow (Ch04.restrictionResponseJObservableCubeSet R p q a) ζ ∂P) :=
           Ch04.integral_descendantsAverage_eq_descendantsAverage_integral
             (P := P) (Q := Q) (j := j)
             (F := fun R a =>
-              Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ) hFint
+              Real.rpow (Ch04.restrictionResponseJObservableCubeSet R p q a) ζ) hFint
       _ =
         descendantsAverage Q j
           (fun _R => ∫ a,
             Real.rpow
-              (Ch04.responseJObservableCubeSet (originCube d k) p q a) ζ ∂P) := by
+              (Ch04.restrictionResponseJObservableCubeSet (originCube d k) p q a) ζ ∂P) := by
           unfold descendantsAverage
           refine congrArg (fun t : ℝ => ((D.card : ℝ)⁻¹) * t) ?_
           refine Finset.sum_congr rfl ?_
@@ -838,38 +838,38 @@ theorem integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_l
           have hRscale : R.scale = k := scale_eq_of_mem_descendantsAtScale hRscaleMem
           have hR_nonneg : 0 ≤ R.scale := by simpa [hRscale] using hk_nonneg
           calc
-            ∫ a, Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ ∂P
+            ∫ a, Real.rpow (Ch04.restrictionResponseJObservableCubeSet R p q a) ζ ∂P
                 =
               ∫ a,
                 Real.rpow
-                  (Ch04.responseJObservableCubeSet (originCube d R.scale) p q a) ζ ∂P :=
-                integral_rpow_responseJObservableCubeSet_cubeSet_eq_originCube_of_stationary
+                  (Ch04.restrictionResponseJObservableCubeSet (originCube d R.scale) p q a) ζ ∂P :=
+                integral_rpow_restrictionResponseJObservableCubeSet_cubeSet_eq_originCube_of_stationary
                   hP hstat R hR_nonneg hζ_pos.le p q
             _ =
               ∫ a,
                 Real.rpow
-                  (Ch04.responseJObservableCubeSet (originCube d k) p q a) ζ ∂P := by
+                  (Ch04.restrictionResponseJObservableCubeSet (originCube d k) p q a) ζ ∂P := by
                 rw [hRscale]
       _ =
         ∫ a,
           Real.rpow
-            (Ch04.responseJObservableCubeSet (originCube d k) p q a) ζ ∂P := by
+            (Ch04.restrictionResponseJObservableCubeSet (originCube d k) p q a) ζ ∂P := by
           simp [descendantsAverage_const, Q, j]
   calc
     ∫ a,
         Real.rpow
           (descendantsAverage (originCube d m) (Int.toNat (m - k))
-            (fun R => Ch04.responseJObservableCubeSet R p q a)) ζ ∂P
+            (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)) ζ ∂P
         =
       ∫ a, Real.rpow (childAvg a) ζ ∂P := rfl
     _ ≤
       ∫ a,
         descendantsAverage Q j
-          (fun R => Real.rpow (Ch04.responseJObservableCubeSet R p q a) ζ) ∂P := hmono
+          (fun R => Real.rpow (Ch04.restrictionResponseJObservableCubeSet R p q a) ζ) ∂P := hmono
     _ =
       ∫ a,
         Real.rpow
-          (Ch04.responseJObservableCubeSet (originCube d k) p q a) ζ ∂P := hdesc_eq
+          (Ch04.restrictionResponseJObservableCubeSet (originCube d k) p q a) ζ ∂P := hdesc_eq
 
 
 end

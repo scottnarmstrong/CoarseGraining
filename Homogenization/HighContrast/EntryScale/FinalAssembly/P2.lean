@@ -23,9 +23,9 @@ theorem exists_bufferExponent_lowTailBelowStartCoeff_le_eta_of_Nstar
       Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticityParams d)
     {eta : ℝ} (heta : 0 < eta) :
     ∃ B : ℝ, 1 ≤ B ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P),
         hP4.params = params →
         ∀ {N m : ℕ},
@@ -815,10 +815,9 @@ theorem exists_bufferExponent_sourceEnvelopeRoot_le_of_Nstar
     (hm : HighCenteredMomentParameters d hc)
     {polyRootBound : ℝ} (hpos : 0 < polyRootBound) :
     ∃ B : ℝ, 1 ≤ B ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P),
+        1 ≤ Homogenization.Book.Ch05.widetildeThetaAtScale P (0 : ℤ) hP4 →
         ∀ {N m : ℕ},
           N + Nat.ceil
               (B * Real.logb 3
@@ -849,11 +848,11 @@ theorem exists_bufferExponent_sourceEnvelopeRoot_le_of_Nstar
       (c := min (hm.Q * hc.rhoM - (d : ℝ)) (hm.Q * hm.gamma))
       (η := polyRootBound ^ hm.Q) hm.C_Q_nonneg hc_min_pos htarget_pos
   refine ⟨B, hB_one, ?_⟩
-  intro P hP hStruct hP4 N m hNstar
+  intro P hP4 hTheta N m hNstar
   set T : ℝ := Homogenization.Book.Ch05.widetildeThetaAtScale P (0 : ℤ) hP4
     with hT_def
   have hT_one : 1 ≤ T := by
-    simpa only [hT_def] using one_le_initialWidetildeTheta_of_P4 hP hStruct hP4
+    simpa only [hT_def] using hTheta
   have hT_nonneg : 0 ≤ T := by linarith only [hT_one]
   have hceil_gap : Nat.ceil (B * Real.logb 3 (2 + T)) ≤ m - N := by
     have hNstarT :

@@ -20,8 +20,8 @@ The Holder/P4 source estimates remain in `EllipticityMoments.lean`.
 noncomputable section
 
 private theorem ellipticityPositiveExcessContribution_expectation_le_of_integrable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Vec d)
     (hLowerPowInt :
@@ -51,7 +51,7 @@ private theorem ellipticityPositiveExcessContribution_expectation_le_of_integrab
       Integrable
         (fun a : RegCoeffField d =>
           Real.rpow
-            (Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ) P) :
+            (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a) ζ) P) :
     ∃ C : ℝ, 0 ≤ C ∧
       let β := section53CoarseFluctuationBeta hP4
       let rLower := hP4.sLower + β
@@ -60,7 +60,7 @@ private theorem ellipticityPositiveExcessContribution_expectation_le_of_integrab
       let p_e := specialPAtScale hP hStruct (m : ℤ) e
       let q_e := specialQAtScale hP hStruct (m : ℤ) e
       let J : RegCoeffField d → ℝ :=
-        fun a => Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a
+        fun a => Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a
       σ *
           (∫ a,
             (max
@@ -88,7 +88,7 @@ private theorem ellipticityPositiveExcessContribution_expectation_le_of_integrab
   let p_e := specialPAtScale hP hStruct (m : ℤ) e
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
   let J : RegCoeffField d → ℝ :=
-    fun a => Ch04.responseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a
+    fun a => Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p_e q_e a
   let lowerExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
@@ -208,7 +208,7 @@ private theorem ellipticityPositiveExcessContribution_expectation_le_of_integrab
       ∀ a, 0 ≤ Real.rpow (J a) ζ := by
     intro a
     exact Real.rpow_nonneg
-      (Ch04.responseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a) _
+      (Ch04.restrictionResponseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a) _
   have hJpow_integral_nonneg :
       0 ≤ ∫ a, Real.rpow (J a) ζ ∂P :=
     integral_nonneg hJpow_nonneg
@@ -362,9 +362,9 @@ theorem ellipticityPositiveExcess_childResponseAverage_expectation_le_uniform
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 ≤ C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (_hstat : Ch04.StationaryLaw P)
-      (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (_hstat : Ch04.RestrictionStationaryLaw P)
+      (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ {k m : ℕ}, k < m → ∀ e : Vec d,
@@ -378,7 +378,7 @@ theorem ellipticityPositiveExcess_childResponseAverage_expectation_le_uniform
           fun a =>
             descendantsAverage (originCube d (m : ℤ))
               (Int.toNat ((m : ℤ) - (k : ℤ)))
-              (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
+              (fun R => Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
         σ *
             (∫ a,
               (max
@@ -458,7 +458,7 @@ theorem ellipticityPositiveExcess_childResponseAverage_expectation_le_uniform
     fun a =>
       descendantsAverage (originCube d (m : ℤ))
         (Int.toNat ((m : ℤ) - (k : ℤ)))
-        (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
+        (fun R => Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let lowerExcess : RegCoeffField d → ℝ :=
     fun a =>
       max
@@ -562,24 +562,24 @@ theorem ellipticityPositiveExcess_childResponseAverage_expectation_le_uniform
       hUpper_nonneg hUpperPowInt
   have hChild_aemeas : AEMeasurable childAvg P := by
     simpa [childAvg] using
-      hP.aemeasurable_descendantsAverage_responseJObservableCubeSet
+      hP.aemeasurable_descendantsAverage_restrictionResponseJObservableCubeSet
         (originCube d (m : ℤ)) (Int.toNat ((m : ℤ) - (k : ℤ))) p_e q_e
   have hChild_nonneg : ∀ᵐ a ∂P, 0 ≤ childAvg a := by
     filter_upwards with a
     dsimp [childAvg]
     exact descendantsAverage_nonneg (originCube d (m : ℤ))
       (Int.toNat ((m : ℤ) - (k : ℤ)))
-      (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
-      (fun R hR => Ch04.responseJObservableCubeSet_nonneg R p_e q_e a)
+      (fun R => Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
+      (fun R hR => Ch04.restrictionResponseJObservableCubeSet_nonneg R p_e q_e a)
   have hChild_mem :
       MemLp childAvg (ENNReal.ofReal ζ) P := by
     simpa [childAvg, ζ, p_e, q_e] using
-      memLp_zeta_descendantsAverage_responseJObservableCubeSet_originCube_from_P4_of_stationary
+      memLp_zeta_descendantsAverage_restrictionResponseJObservableCubeSet_originCube_from_P4_of_stationary
         hP hstat hStruct hP4 hk_nonneg hkm_int p_e q_e
   have hChildMomentRoot_le :
       (∫ a, childAvg a ^ ζ ∂P) ^ (1 / ζ) ≤ responseMoment := by
     have hIntLe :=
-      integral_rpow_descendantsAverage_responseJObservableCubeSet_originCube_le_originCube_of_stationary
+      integral_rpow_descendantsAverage_restrictionResponseJObservableCubeSet_originCube_le_originCube_of_stationary
         hP hstat hStruct hP4 hk_nonneg hkm_int p_e q_e
     have hChildPow_nonneg :
         0 ≤ ∫ a, childAvg a ^ ζ ∂P := by
@@ -589,8 +589,8 @@ theorem ellipticityPositiveExcess_childResponseAverage_expectation_le_uniform
         dsimp [childAvg]
         exact descendantsAverage_nonneg (originCube d (m : ℤ))
           (Int.toNat ((m : ℤ) - (k : ℤ)))
-          (fun R => Ch04.responseJObservableCubeSet R p_e q_e a)
-          (fun R hR => Ch04.responseJObservableCubeSet_nonneg R p_e q_e a)
+          (fun R => Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
+          (fun R hR => Ch04.restrictionResponseJObservableCubeSet_nonneg R p_e q_e a)
       exact Real.rpow_nonneg hnonneg _
     have hroot_nonneg : 0 ≤ 1 / ζ := by positivity
     have hroot :=
@@ -653,7 +653,7 @@ theorem ellipticityPositiveExcess_childResponseAverage_expectation_le_uniform
     refine integral_nonneg ?_
     intro a
     exact Real.rpow_nonneg
-      (Ch04.responseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a) _
+      (Ch04.restrictionResponseJObservableCubeSet_nonneg (originCube d (k : ℤ)) p_e q_e a) _
   have hLowerMomentBound :
       lambdaInvPositiveExcessMomentAtScale P (m : ℤ) rLower hP4.xi hP hStruct ≤
         lowerCoeff * Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi := by

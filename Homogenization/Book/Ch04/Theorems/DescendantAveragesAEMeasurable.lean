@@ -123,15 +123,15 @@ private theorem inv_mul_const_sum_sqrt_scale_le
             rw [div_eq_mul_inv]
             ring
 
-theorem isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw_aemeasurable
+theorem isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_restrictionUnitRangeDependentLaw_aemeasurable
     {d : ℕ} {Q : TriadicCube d} {k : ℤ} {c : ScaleColor d k}
-    {P : CoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
-    (hP : UnitRangeDependentLaw P)
+    {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
+    (hP : RestrictionUnitRangeDependentLaw P)
     (hσ₀ : 0 < σ) (hσ₂ : σ ≤ 2) (hK : 0 < K)
     (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c,
-        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
+        IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_aemeas :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c, AEMeasurable (X R) P)
     (hX :
@@ -148,7 +148,7 @@ theorem isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRan
   · let Y : {R : TriadicCube d // R ∈ S} → RegCoeffField d → ℝ :=
       fun R => X R.1
     have h_indep : ProbabilityTheory.iIndepFun Y P := by
-      exact iIndepFun_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw
+      exact iIndepFun_descendantsAtScaleScaleColorClass_of_restrictionUnitRangeDependentLaw
         (Q := Q) (k := k) (c := c) (P := P) hP
         (fun R => hX_local R.1 R.2)
     have h_aemeas : ∀ R, AEMeasurable (Y R) P := by
@@ -240,15 +240,15 @@ theorem isBigO_finsetAverage_colorClassSums_gammaSigma_aemeasurable
       (colorCount := colorCount) (totalCount := totalCount)
       (classCount := classCount) hGamma_nonneg hC.le hK.le hTotal hSqrt
 
-theorem isBigO_gammaSigma_descendantAverage_of_unitRangeDependentLaw_aemeasurable
+theorem isBigO_gammaSigma_restrictionDescendantAverage_of_restrictionUnitRangeDependentLaw_aemeasurable
     {d : ℕ} {Q : TriadicCube d} {k : ℤ}
-    {P : CoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
+    {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P] {σ K : ℝ}
     (hk : k ≤ Q.scale)
-    (hP : UnitRangeDependentLaw P)
+    (hP : RestrictionUnitRangeDependentLaw P)
     (hσ₀ : 0 < σ) (hσ₂ : σ ≤ 2) (hK : 0 < K)
     (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
-      ∀ R ∈ descendantsAtScale Q k, IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
+      ∀ R ∈ descendantsAtScale Q k, IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_aemeas : ∀ R ∈ descendantsAtScale Q k, AEMeasurable (X R) P)
     (hX : ∀ R ∈ descendantsAtScale Q k, IsBigO P (gammaSigma σ) (X R) K)
     (h_mean : ∀ R ∈ descendantsAtScale Q k, ∫ a, X R a ∂P = 0) :
@@ -283,7 +283,7 @@ theorem isBigO_gammaSigma_descendantAverage_of_unitRangeDependentLaw_aemeasurabl
           (gammaSigmaIndependentSumConst σ * Real.sqrt (classCount c) * K) := by
     intro c hc
     have hcolor :=
-      isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw_aemeasurable
+      isBigO_gammaSigma_finsetSum_descendantsAtScaleScaleColorClass_of_restrictionUnitRangeDependentLaw_aemeasurable
         (Q := Q) (k := k) (c := c) (P := P) hP hσ₀ hσ₂ hK X
         (fun R hR => hX_local R (mem_descendantsAtScaleScaleColorClass_iff.mp hR).1)
         (fun R hR => hX_aemeas R (mem_descendantsAtScaleScaleColorClass_iff.mp hR).1)

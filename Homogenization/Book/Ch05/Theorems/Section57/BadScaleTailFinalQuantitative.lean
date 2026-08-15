@@ -63,9 +63,9 @@ theorem exists_quantitative_threshold_shiftedBadScaleEvent_quenchedProbeEnvelope
           (∀ q : ℕ, R ≤ q →
             C₀ * (q : ℝ) ≤
               Real.exp ((Real.log ρgap / 2) * (q : ℝ))) ∧
-          ∀ {P : Ch04.CoeffLaw d}
-            (hP : Ch04.LawCarrier P)
-            (hStruct : Ch04.StructuralLaw P)
+          ∀ {P : Ch04.RestrictionCoeffLaw d}
+            (hP : Ch04.RestrictionLawCarrier P)
+            (hStruct : Ch04.RestrictionStructuralLaw P)
             (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
             hΓ.sigma = σ → hΓ.params = params →
             let N0 : ℕ :=
@@ -269,9 +269,9 @@ theorem exists_quantitative_threshold_shiftedBadScaleEvent_quenchedProbeEnvelope
               (∀ q : ℕ, R ≤ q →
                 C₀ * (q : ℝ) ≤
                   Real.exp ((Real.log ρgap / 2) * (q : ℝ))) ∧
-              ∀ {P : Ch04.CoeffLaw d}
-                (hP : Ch04.LawCarrier P)
-                (hStruct : Ch04.StructuralLaw P)
+              ∀ {P : Ch04.RestrictionCoeffLaw d}
+                (hP : Ch04.RestrictionLawCarrier P)
+                (hStruct : Ch04.RestrictionStructuralLaw P)
                 (hΓ : GammaSigmaCoarseGrainedEllipticity P hP hStruct),
                 hΓ.sigma = σ → hΓ.params = params →
                 let N0 : ℕ :=

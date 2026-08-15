@@ -552,7 +552,7 @@ noncomputable def interiorCaccioppoliCoreEnergy {d : ℕ} (Q : TriadicCube d)
 noncomputable def interiorCaccioppoliParentOscillationL2Sq {d : ℕ}
     (Q : TriadicCube d) (a : CoeffFamily d) (u : CubeSolution Q a) : ℝ :=
   normalizedL2SqOnSet (openCubeSet Q) fun x =>
-    u.toH1.toFun x - Ch01.normalizedAverage Q u.toH1.toFun
+    u.toH1.toFun x - Ch01.Legacy.normalizedAverage Q u.toH1.toFun
 
 /-- The Caccioppoli prefactor in
 `e.coarse.grained.Caccioppoli.*.deterministic.theory`, excluding the final

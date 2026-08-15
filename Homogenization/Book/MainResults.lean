@@ -22,9 +22,9 @@ The two results are:
 * `annealedConvergence_uniformEllipticity` — the annealed contrast `Θ` converges
   to `1` at an algebraic rate beyond an explicit entry scale.
 * `homogenizationComparison_uniformEllipticity` — above a random minimal scale
-  `𝒳`, the heterogeneous solution agrees with the homogenized solution in a
-  negative Sobolev norm, at algebraic rate `(3ᵐ / 𝒳)^(-α)`, with fixed public
-  exponents and constants chosen before the law.
+  `𝒳`, the legacy dual-Besov compatibility defect between the heterogeneous and
+  homogenized solutions decays at algebraic rate `(3ᵐ / 𝒳)^(-α)`, with fixed
+  public exponents and constants chosen before the law.
 
 Both are proved in full, with no remaining proof obligations, from the general
 theorems `Ch05.Section51.annealedConvergence_homogenizationScale` and
@@ -38,17 +38,19 @@ file**, each with a docstring giving its mathematical meaning. They are thin
 views on objects defined elsewhere (paths relative to the repository root; in an
 editor every name is clickable and hovers its own docstring):
 
-* ambient hypotheses `Ch04.LawCarrier` (probability/measurability/local
-  ellipticity) and `Ch04.StructuralLaw` (stationarity, unit-range dependence,
+* ambient hypotheses `Ch04.RestrictionLawCarrier` (probability/measurability/local
+  ellipticity) and `Ch04.RestrictionStructuralLaw` (stationarity, unit-range dependence,
   isotropy, adjoint invariance), and `Ch04.AELocallyUniformlyEllipticField`:
   `Homogenization/Book/Ch04/Law.lean`;
 * `UniformEllipticityBounds`, the bridge to the coarse-grained inputs, and
   `mainResultsThetaHat`:
   `Homogenization/Book/Ch05/Theorems/Section57/UniformEllipticityBridge.lean`;
-* the Sobolev-facing comparison `homogenizationComparisonNegativeSobolevLHS`,
-  force seminorm `scaleNormalizedPositiveSobolevVectorSeminormTwo`, and
-  `ForceSobolevRegularity`, together with the bridges to the internal Besov
-  theorem:
+* the legacy dual-Besov comparison
+  `Ch03.Legacy.homogenizationComparisonNegativeSobolevLHS`, legacy
+  fractional-Sobolev force seminorm
+  `Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo`, and
+  `Ch03.Legacy.ForceSobolevRegularity`, together with the bridges to the
+  internal Besov theorem:
   `Homogenization/Book/Ch03/Theorems/SobolevPublic.lean`;
   the energy norm `h1EnergyNormOnCube`:
   `Homogenization/Book/Ch03/Definitions.lean`;
@@ -75,7 +77,7 @@ noncomputable section
 /-- Almost-sure uniform ellipticity of the law `P` with deterministic constants
 `lam`, `Lam` (`lam I ≤ a ≤ Lam I` a.s. on every triadic cube). -/
 abbrev UniformEllipticityBounds {d : ℕ}
-    (P : Ch04.CoeffLaw d) (lam Lam : ℝ) : Prop :=
+    (P : Ch04.RestrictionCoeffLaw d) (lam Lam : ℝ) : Prop :=
   Ch05.Section57.UniformEllipticityBounds P lam Lam
 
 /-- The triadic cube `□ₘ` of side `3ᵐ` at the origin, on which the comparison is
@@ -89,7 +91,8 @@ The value is chosen only for a clean manuscript-facing corollary with no
 remaining exponent parameters. -/
 noncomputable abbrev fixedComparisonT : ℝ := 1 / 8
 
-/-- Fixed public Sobolev exponent for the law-independent comparison theorem.
+/-- Fixed exponent used by the legacy fractional-Sobolev compatibility lane of
+the law-independent comparison theorem.
 
 It satisfies `4 * fixedComparisonT < fixedComparisonS < 1`. -/
 noncomputable abbrev fixedComparisonS : ℝ := 3 / 4
@@ -116,12 +119,12 @@ structure Setup (d : ℕ) [NeZero d] where
   /-- The dimension is at least two. -/
   two_le_dim : 2 ≤ d
   /-- The probability law on coefficient fields. -/
-  P : Ch04.CoeffLaw d
+  P : Ch04.RestrictionCoeffLaw d
   /-- Probability/measurability/local-ellipticity data carried by the law. -/
-  hP : Ch04.LawCarrier P
+  hP : Ch04.RestrictionLawCarrier P
   /-- Stationarity, unit-range dependence, isotropy, and adjoint invariance of
   the law. -/
-  hStruct : Ch04.StructuralLaw P
+  hStruct : Ch04.RestrictionStructuralLaw P
   /-- Lower ellipticity constant. -/
   lam : ℝ
   /-- Upper ellipticity constant. -/
@@ -187,23 +190,24 @@ abbrev ComparisonPair (aω : RegCoeffField d)
   Ch05.Section57.assemblyComparisonDatumOfScalar
     (Ch05.Section57.barSigmaLimit S.hP S.hStruct) S.barSigmaLimit_pos aω ha m g
 
-/-- The negative-Sobolev comparison defect at exponent `s`,
-`3^{-sm} ( ‖ā(∇u - ∇v)‖_{H^{-s}(□ₘ)} + ‖a∇u - ā∇v‖_{H^{-s}(□ₘ)} )`.
-Wraps `Ch03.homogenizationComparisonNegativeSobolevLHS`. -/
+/-- The legacy dual-Besov compatibility defect at exponent `s`.
+
+This wraps `Ch03.Legacy.homogenizationComparisonNegativeSobolevLHS`; it is not
+an identification with either Chapter 1 negative-Sobolev primitive. -/
 noncomputable def comparisonDefect (s : ℝ)
     {aω : RegCoeffField d} {ha : Ch04.AELocallyUniformlyEllipticField aω}
     {m : ℕ} {g : Vec d → Vec d}
     (pair : S.ComparisonPair aω ha m g) : ℝ :=
-  Ch03.homogenizationComparisonNegativeSobolevLHS
+  Ch03.Legacy.homogenizationComparisonNegativeSobolevLHS
     (originCube d m)
     (Ch05.Section57.assemblyCoeffFamily aω ha)
     S.homogenizedMatrix s pair.u pair.v
 
-/-- The data norm controlling the defect,
-`√σ̄ · ‖σ^{1/2} ∇u‖_{L²(□ₘ)} + 3^{sm} ∑ᵢ [gᵢ]_{H^s(□ₘ)}`, where the Sobolev force
-seminorm is taken componentwise over `i = 1, …, d`.  Wraps
-`Ch03.h1EnergyNormOnCube` and
-`Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo`. -/
+/-- The data norm controlling the compatibility defect.
+
+Its force term is the componentwise legacy fractional-Sobolev seminorm; it
+wraps `Ch03.h1EnergyNormOnCube` and
+`Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo`. -/
 noncomputable def comparisonData (s : ℝ)
     {aω : RegCoeffField d} {ha : Ch04.AELocallyUniformlyEllipticField aω}
     {m : ℕ} {g : Vec d → Vec d}
@@ -211,7 +215,7 @@ noncomputable def comparisonData (s : ℝ)
   Real.sqrt (Ch05.Section57.barSigmaLimit S.hP S.hStruct) *
       Ch03.h1EnergyNormOnCube (originCube d m)
         (Ch05.Section57.assemblyCoeffFamily aω ha) pair.u +
-    Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo
+    Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo
       (originCube d m) s g
 
 /-- `𝒳` is a minimal scale: it is bounded below by `1` and has `Γ_d`
@@ -270,11 +274,12 @@ For a stationary, unit-range, isotropic, adjoint-invariant, uniformly elliptic
 law `S`, and exponents `t, s` with `0 < t`, `4t < s`, `s < 1`, there is a
 random minimal scale `𝒳` (with `Γ_d` tails) such that, almost surely, on every
 triadic cube `□ₘ` with `𝒳 ≤ 3ᵐ`, for every comparison pair `u, v` and every
-force `g ∈ H^s`, the negative-Sobolev comparison defect is controlled by the data
+force satisfying the legacy fractional-Sobolev compatibility condition, the
+legacy dual-Besov compatibility defect is controlled by the corresponding data
 norm at the algebraic rate `(3ᵐ / 𝒳)^(-α)`.
 
 This theorem keeps the exponents variable, so its constants are selected after
-`S`, `t`, and `s`.  The public manuscript-facing theorem below fixes the
+`S`, `t`, and `s`. The public compatibility theorem below fixes the
 exponents and chooses the constants before the law. -/
 theorem homogenizationComparison_uniformEllipticity_variableExponents
     {d : ℕ} [NeZero d] (S : Setup d) :
@@ -288,7 +293,7 @@ theorem homogenizationComparison_uniformEllipticity_variableExponents
               {m : ℕ} {g : Vec d → Vec d}
               (pair : S.ComparisonPair aω ha m g),
               𝒳 aω ≤ (3 : ℝ) ^ m →
-              Ch03.ForceSobolevRegularity (originCube d m) s g →
+              Ch03.Legacy.ForceSobolevRegularity (originCube d m) s g →
               S.comparisonDefect s pair ≤
                 C * ((3 : ℝ) ^ m / 𝒳 aω) ^ (-α) * S.comparisonData s pair := by
   intro t s ht hts hs
@@ -301,7 +306,7 @@ theorem homogenizationComparison_uniformEllipticity_variableExponents
     linarith
   obtain ⟨C0, Cscale, hC0, hCscale, hlaw⟩ := hendpoint hmax hts hs
   let Kneg : ℝ := (d : ℝ) * Real.rpow (3 : ℝ) ((d : ℝ) + s)
-  let Kpos : ℝ := (3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.wspVsBsppConstant d
+  let Kpos : ℝ := (3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.Legacy.wspVsBsppConstant d
   let Kdata : ℝ := 1 + Kpos
   let C : ℝ := Kneg * Kdata * C0
   have hd_pos_nat : 0 < d := Nat.pos_of_ne_zero (NeZero.ne d)
@@ -311,7 +316,7 @@ theorem homogenizationComparison_uniformEllipticity_variableExponents
   have hKpos_nonneg : 0 ≤ Kpos := by
     exact mul_nonneg
       (Real.rpow_nonneg (by norm_num : 0 ≤ (3 : ℝ)) _)
-      (le_of_lt (Ch01.wspVsBsppConstant_pos d))
+      (le_of_lt (Ch01.Legacy.wspVsBsppConstant_pos d))
   have hKdata_pos : 0 < Kdata := by
     dsimp [Kdata]
     nlinarith
@@ -349,7 +354,7 @@ theorem homogenizationComparison_uniformEllipticity_variableExponents
       Ch03.scaleNormalizedPositiveBesovVectorSeminormTwo
         (originCube d m) s g
     let H : ℝ :=
-      Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo
+      Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo
         (originCube d m) s g
     have hrate_nonneg : 0 ≤ rate := by
       have hX_pos : 0 < X aω := lt_of_lt_of_le zero_lt_one (hX_one aω)
@@ -365,11 +370,11 @@ theorem homogenizationComparison_uniformEllipticity_variableExponents
           exact Real.sqrt_nonneg _)
     have hH_nonneg : 0 ≤ H := by
       dsimp [H]
-      exact Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo_nonneg
+      exact Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo_nonneg
         (originCube d m) s g
     have hB_le_H : B ≤ Kpos * H := by
       dsimp [B, H, Kpos]
-      exact Ch03.scaleNormalizedPositiveBesovVectorSeminormTwo_le_const_mul_sobolev
+      exact Ch03.Legacy.scaleNormalizedPositiveBesovVectorSeminormTwo_le_const_mul_sobolev
         (originCube d m) (s := s) g hs_pos hs_le_one hg
     have hdata : E + B ≤ Kdata * (E + H) := by
       have hE_le : E ≤ Kdata * E := by
@@ -402,7 +407,7 @@ theorem homogenizationComparison_uniformEllipticity_variableExponents
       simpa [Setup.comparisonDefect, Kneg, Setup.homogenizedMatrix,
         Setup.ComparisonPair, Setup.barSigmaLimit_pos]
         using
-          Ch03.homogenizationComparisonNegativeSobolevLHS_le_const_mul_negativeBesovLHS
+          Ch03.Legacy.homogenizationComparisonNegativeSobolevLHS_le_const_mul_negativeBesovLHS
             (originCube d m)
             (Ch05.Section57.assemblyCoeffFamily aω ha)
             S.homogenizedMatrix s pair.u pair.v hs_pos
@@ -431,9 +436,9 @@ theorem homogenizationComparison_uniformEllipticity_variableExponents
 
 /-- **Quenched homogenization above the minimal scale, fixed-exponent form.**
 
-This is the law-independent-constant public corollary used by the comparator
-audit.  The Sobolev exponents are fixed to `t = 1/8` and `s = 3/4`; consequently
-the constants `C`, `α`, and `Cscale` are chosen before the probability law
+This is the law-independent-constant public compatibility corollary used by the
+comparator audit. The compatibility exponents are fixed to `t = 1/8` and
+`s = 3/4`; consequently the constants `C`, `α`, and `Cscale` are chosen before the probability law
 `S : Setup d`.  In particular they do not depend on the law, on the ellipticity
 constants, on the realization, or on any solution data. -/
 theorem homogenizationComparison_uniformEllipticity
@@ -450,7 +455,7 @@ theorem homogenizationComparison_uniformEllipticity
                 {m : ℕ} {g : Vec d → Vec d}
                 (pair : S.ComparisonPair aω ha m g),
                 X aω ≤ (3 : ℝ) ^ m →
-                Ch03.ForceSobolevRegularity (originCube d m) fixedComparisonS g →
+                Ch03.Legacy.ForceSobolevRegularity (originCube d m) fixedComparisonS g →
                 S.comparisonDefect fixedComparisonS pair ≤
                   C * ((3 : ℝ) ^ m / X aω) ^ (-α) *
                     S.comparisonData fixedComparisonS pair := by
@@ -468,7 +473,7 @@ theorem homogenizationComparison_uniformEllipticity
       norm_num [fixedComparisonS]
     obtain ⟨C0, Cscale, hC0, hCscale, hlaw⟩ := hendpoint hmax hts hs
     let Kneg : ℝ := (d : ℝ) * Real.rpow (3 : ℝ) ((d : ℝ) + fixedComparisonS)
-    let Kpos : ℝ := (3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.wspVsBsppConstant d
+    let Kpos : ℝ := (3 : ℝ) ^ ((d : ℝ) / 2) * Ch01.Legacy.wspVsBsppConstant d
     let Kdata : ℝ := 1 + Kpos
     let C : ℝ := Kneg * Kdata * C0
     have hd_pos_nat : 0 < d := Nat.pos_of_ne_zero (NeZero.ne d)
@@ -478,7 +483,7 @@ theorem homogenizationComparison_uniformEllipticity
     have hKpos_nonneg : 0 ≤ Kpos := by
       exact mul_nonneg
         (Real.rpow_nonneg (by norm_num : 0 ≤ (3 : ℝ)) _)
-        (le_of_lt (Ch01.wspVsBsppConstant_pos d))
+        (le_of_lt (Ch01.Legacy.wspVsBsppConstant_pos d))
     have hKdata_pos : 0 < Kdata := by
       dsimp [Kdata]
       nlinarith
@@ -525,7 +530,7 @@ theorem homogenizationComparison_uniformEllipticity
         Ch03.scaleNormalizedPositiveBesovVectorSeminormTwo
           (originCube d m) fixedComparisonS g
       let H : ℝ :=
-        Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo
+        Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo
           (originCube d m) fixedComparisonS g
       have hrate_nonneg : 0 ≤ rate := by
         have hX_pos : 0 < X aω := lt_of_lt_of_le zero_lt_one (hX_one aω)
@@ -541,11 +546,11 @@ theorem homogenizationComparison_uniformEllipticity
             exact Real.sqrt_nonneg _)
       have hH_nonneg : 0 ≤ H := by
         dsimp [H]
-        exact Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo_nonneg
+        exact Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo_nonneg
           (originCube d m) fixedComparisonS g
       have hB_le_H : B ≤ Kpos * H := by
         dsimp [B, H, Kpos]
-        exact Ch03.scaleNormalizedPositiveBesovVectorSeminormTwo_le_const_mul_sobolev
+        exact Ch03.Legacy.scaleNormalizedPositiveBesovVectorSeminormTwo_le_const_mul_sobolev
           (originCube d m) (s := fixedComparisonS) g hs_pos hs_le_one hg
       have hdata : E + B ≤ Kdata * (E + H) := by
         have hE_le : E ≤ Kdata * E := by
@@ -578,7 +583,7 @@ theorem homogenizationComparison_uniformEllipticity
         simpa [Setup.comparisonDefect, Kneg, Setup.homogenizedMatrix,
           Setup.ComparisonPair, Setup.barSigmaLimit_pos]
           using
-            Ch03.homogenizationComparisonNegativeSobolevLHS_le_const_mul_negativeBesovLHS
+            Ch03.Legacy.homogenizationComparisonNegativeSobolevLHS_le_const_mul_negativeBesovLHS
               (originCube d m)
               (Ch05.Section57.assemblyCoeffFamily aω ha)
               S.homogenizedMatrix fixedComparisonS pair.u pair.v hs_pos

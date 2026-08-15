@@ -21,7 +21,7 @@ support events used by the Examples layer:
 
 These are the measurable witness sets through which pushforward and Dirac laws
 of honest fields verify `UniformEllipticityBounds` and `ThetaEllipticLaw`
-(the paper, Armstrong–Kuusi–Loher, in prep).
+(the paper, Armstrong–Kuusi–Loher, to appear).
 -/
 
 namespace Homogenization

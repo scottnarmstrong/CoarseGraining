@@ -203,15 +203,15 @@ noncomputable def classicalComparisonFluxField {d : ℕ}
   fun x => matVecMul (a x) (euclideanGradient u x) -
     matVecMul abar (euclideanGradient v x)
 
-/-- The negative-Sobolev classical comparison defect appearing in the smooth
+/-- The legacy dual-Besov classical compatibility defect appearing in the smooth
 periodic corollary. -/
 noncomputable def classicalComparisonDefect {d : ℕ} [NeZero d]
     (abar : Mat d) (s : ℝ) (a : CoeffField d) (m : ℕ)
     (u v : Vec d → ℝ) : ℝ :=
-  Book.Ch03.scaleNormalizedNegativeSobolevVectorNormTwo
+  Book.Ch03.Legacy.scaleNormalizedNegativeSobolevVectorNormTwo
       (Book.MainResults.originCube d m) s
       (classicalComparisonConstantGradientField abar u v) +
-    Book.Ch03.scaleNormalizedNegativeSobolevVectorNormTwo
+    Book.Ch03.Legacy.scaleNormalizedNegativeSobolevVectorNormTwo
       (Book.MainResults.originCube d m) s
       (classicalComparisonFluxField a abar u v)
 
@@ -223,14 +223,14 @@ noncomputable def classicalH1EnergyNormOnCube {d : ℕ}
       vecDot (euclideanGradient u x)
         (matVecMul (symmPart (a x)) (euclideanGradient u x))
 
-/-- The classical data norm controlling the smooth periodic comparison
-defect. -/
+/-- The classical data norm controlling the smooth periodic compatibility
+defect; its force term is legacy fractional-Sobolev. -/
 noncomputable def classicalComparisonData {d : ℕ} [NeZero d]
     (sigmaBar : ℝ) (s : ℝ) (a : CoeffField d) (m : ℕ)
     (g : Vec d → Vec d) (u : Vec d → ℝ) : ℝ :=
   Real.sqrt sigmaBar *
       classicalH1EnergyNormOnCube (Book.MainResults.originCube d m) a u +
-    Book.Ch03.scaleNormalizedPositiveSobolevVectorSeminormTwo
+    Book.Ch03.Legacy.scaleNormalizedPositiveSobolevVectorSeminormTwo
       (Book.MainResults.originCube d m) s g
 
 /--
@@ -276,7 +276,7 @@ theorem periodicSmooth_comparison {d : ℕ} [NeZero d] :
                         matVecMul (scalarMatrix (d := d) sigmaBar) (euclideanGradient v y)) x =
                     euclideanDivergence g x),
                 X aω ≤ (3 : ℝ) ^ m →
-                Book.Ch03.ForceSobolevRegularity
+                Book.Ch03.Legacy.ForceSobolevRegularity
                   (Book.MainResults.originCube d m) Book.MainResults.fixedComparisonS g →
                 classicalComparisonDefect (scalarMatrix (d := d) sigmaBar)
                     Book.MainResults.fixedComparisonS aω.toFun m u v ≤
@@ -315,7 +315,7 @@ theorem periodicSmooth_comparison {d : ℕ} [NeZero d] :
   have hstep := hmain_aω ha pair hXm hgsob
   simpa [pair, Book.MainResults.Setup.comparisonDefect,
     Book.MainResults.Setup.comparisonData, Book.MainResults.Setup.homogenizedMatrix,
-    Book.Ch03.homogenizationComparisonNegativeSobolevLHS,
+    Book.Ch03.Legacy.homogenizationComparisonNegativeSobolevLHS,
     Book.Ch03.homogenizationComparisonConstantGradientField,
     Book.Ch03.homogenizationComparisonFluxField,
     Book.Ch03.h1EnergyNormOnCube, Book.Ch03.localizedCoeffEnergyValue,

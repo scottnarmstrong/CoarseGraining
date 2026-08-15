@@ -18,7 +18,7 @@ weight used in the beta-weighted fluctuation sum.
 /-- The minimum quantity whose half is the exponent `β` in the Section 5.4
 variance bound at a good scale. -/
 noncomputable def section54VarianceBetaCore {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   min (1 - hP4.sUpper - hP4.sLower)
     (min hP4.sUpper
       (min hP4.sLower
@@ -28,11 +28,11 @@ noncomputable def section54VarianceBetaCore {d : ℕ} [NeZero d]
 /-- The exponent `β` used in
 `l.variance.bound.good.scale.homogenization.scale`. -/
 noncomputable def section54VarianceBeta {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   section54VarianceBetaCore hP4 / 2
 
 private theorem section54VarianceBetaCore_pos {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < section54VarianceBetaCore hP4 := by
   have hgap : 0 < 1 - hP4.sUpper - hP4.sLower := by
     linarith [hP4.sum_lt_one]
@@ -48,31 +48,31 @@ private theorem section54VarianceBetaCore_pos {d : ℕ} [NeZero d]
 
 /-- The Section 5.4 variance exponent is positive. -/
 theorem section54VarianceBeta_pos {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 < section54VarianceBeta hP4 := by
   unfold section54VarianceBeta
   nlinarith [section54VarianceBetaCore_pos hP4]
 
 /-- The Section 5.4 variance exponent is nonnegative. -/
 theorem section54VarianceBeta_nonneg {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ section54VarianceBeta hP4 :=
   (section54VarianceBeta_pos hP4).le
 
 private theorem section54VarianceBetaCore_le_sUpper {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section54VarianceBetaCore hP4 ≤ hP4.sUpper := by
   unfold section54VarianceBetaCore
   exact (min_le_right _ _).trans (min_le_left _ _)
 
 private theorem section54VarianceBetaCore_le_sLower {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section54VarianceBetaCore hP4 ≤ hP4.sLower := by
   unfold section54VarianceBetaCore
   exact (min_le_right _ _).trans ((min_le_right _ _).trans (min_le_left _ _))
 
 private theorem section54VarianceBetaCore_le_sUpper_sub_dim_div_xi {d : ℕ}
-    [NeZero d] {P : Ch04.CoeffLaw d}
+    [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section54VarianceBetaCore hP4 ≤
       hP4.sUpper - (d : ℝ) / (hP4.xi : ℝ) := by
@@ -81,7 +81,7 @@ private theorem section54VarianceBetaCore_le_sUpper_sub_dim_div_xi {d : ℕ}
     ((min_le_right _ _).trans ((min_le_right _ _).trans (min_le_left _ _)))
 
 private theorem section54VarianceBetaCore_le_sLower_sub_dim_div_xi {d : ℕ}
-    [NeZero d] {P : Ch04.CoeffLaw d}
+    [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section54VarianceBetaCore hP4 ≤
       hP4.sLower - (d : ℝ) / (hP4.xi : ℝ) := by
@@ -91,7 +91,7 @@ private theorem section54VarianceBetaCore_le_sLower_sub_dim_div_xi {d : ℕ}
 
 /-- The variance exponent is no larger than the upper regularity exponent. -/
 theorem section54VarianceBeta_le_sUpper {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section54VarianceBeta hP4 ≤ hP4.sUpper := by
   unfold section54VarianceBeta
   have hcore_nonneg : 0 ≤ section54VarianceBetaCore hP4 :=
@@ -101,7 +101,7 @@ theorem section54VarianceBeta_le_sUpper {d : ℕ} [NeZero d]
 
 /-- The variance exponent is no larger than the lower regularity exponent. -/
 theorem section54VarianceBeta_le_sLower {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section54VarianceBeta hP4 ≤ hP4.sLower := by
   unfold section54VarianceBeta
   have hcore_nonneg : 0 ≤ section54VarianceBetaCore hP4 :=
@@ -111,7 +111,7 @@ theorem section54VarianceBeta_le_sLower {d : ℕ} [NeZero d]
 
 /-- The variance exponent fits inside the upper positive-excess gain. -/
 theorem section54VarianceBeta_le_sUpper_sub_dim_div_xi {d : ℕ}
-    [NeZero d] {P : Ch04.CoeffLaw d}
+    [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section54VarianceBeta hP4 ≤
       hP4.sUpper - (d : ℝ) / (hP4.xi : ℝ) := by
@@ -123,7 +123,7 @@ theorem section54VarianceBeta_le_sUpper_sub_dim_div_xi {d : ℕ}
 
 /-- The variance exponent fits inside the lower positive-excess gain. -/
 theorem section54VarianceBeta_le_sLower_sub_dim_div_xi {d : ℕ}
-    [NeZero d] {P : Ch04.CoeffLaw d}
+    [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section54VarianceBeta hP4 ≤
       hP4.sLower - (d : ℝ) / (hP4.xi : ℝ) := by
@@ -136,7 +136,7 @@ theorem section54VarianceBeta_le_sLower_sub_dim_div_xi {d : ℕ}
 /-- The variance exponent is strictly below `d / 2`, which leaves room in the
 geometric sums. -/
 theorem section54VarianceBeta_lt_dim_div_two {d : ℕ} [NeZero d]
-    {P : Ch04.CoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
+    {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     section54VarianceBeta hP4 < (d : ℝ) / 2 := by
   have hbeta_le := section54VarianceBeta_le_sUpper hP4
   have hupper_lt : hP4.sUpper < 1 := hP4.sUpper_lt_one

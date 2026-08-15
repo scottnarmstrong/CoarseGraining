@@ -10,7 +10,7 @@ open scoped ENNReal NNReal BigOperators
 # Matched-pair Poincaré on axis cubes
 
 Assembles the zero-set lower bound and the matched-pair Poincaré inequality (the
-high-moment paper's `e.doubled.poincare`, Armstrong–Kuusi–Loher, in preparation)
+high-moment paper's `e.doubled.poincare`, Armstrong–Kuusi–Loher, to appear)
 from the scaled Poincaré inequalities of `ScaledPoincare`.  All `L²` bookkeeping
 is carried out on the Lebesgue `L²` realizations `H1Function.toScalarL2`, whose
 triangle inequality is free, and converted to the `eLpNorm` spelling at the

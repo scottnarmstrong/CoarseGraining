@@ -4,7 +4,7 @@ import Homogenization.CoarseGraining.CoarseBounds.Sandwich
 /-!
 # The globally bounded clamped observable
 
-`efronStein_transfer_ae` requires the product observable to be **globally**
+`efronStein_transfer_ae_restriction` requires the product observable to be **globally**
 bounded (`∀ y, |G y| ≤ M`), not merely a.e. bounded.  The raw product observable
 `rawPhaseObservable` is only bounded on the a.e. event where the recombined field
 is elliptic, so we clamp it to `[0, C]` with `C := 2(Θ‖p‖² + ‖q‖²)` — the exact
@@ -82,8 +82,7 @@ theorem phaseObservable_eq_blockVecDot_glueField {ℓ : ℝ} {σ : Vec d} {Θ : 
           (blockMatVecMul
             (coarseBlockMatrix (cubeSet (originCube d m)) (glueField ℓ σ Θ b)) P) := by
   unfold phaseObservable
-  rw [coarseBlockMatrix_congr_of_ae_eq (measurableSet_cubeSet (originCube d m))
-    (glueField_ae_eq_corridorField hΘ hbell).symm]
+  rw [coarseBlockMatrix_congr_of_ae_eq (glueField_ae_eq_corridorField hΘ hbell).symm]
 
 /-- **C1′ bounds for the fixed-phase observable.**  For any measurable, a.e.
 `(1,Θ)`-elliptic field, the observable lands in `[0, 2(Θ‖p‖² + ‖q‖²)]`. -/

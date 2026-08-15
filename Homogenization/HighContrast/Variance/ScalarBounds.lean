@@ -28,7 +28,7 @@ namespace Homogenization
 
 open Homogenization MeasureTheory
 open Homogenization.Book.Ch04
-  (CoeffLaw LawCarrier StructuralLaw annealedBlockMatrixAtScale
+  (RestrictionCoeffLaw RestrictionLawCarrier RestrictionStructuralLaw annealedBlockMatrixAtScale
     scalarAnnealedBlockMatrixAtScale scalarFullBlockInvSqrtDiag)
 open Homogenization.Book.Ch05.Section54.VarianceBoundGoodScale
   (annealedBlockMatrixAtScale_eq_scalarAnnealedBlockMatrixAtScale)
@@ -41,7 +41,7 @@ block observable a.s. dominates the lower diagonal quadratic form
 truncation bridge to an everywhere-`(1,Θ)`-elliptic representative and applying
 the deterministic lower Loewner sandwich, exactly as
 `ae_coarseBlockQuadratic_bounds_of_thetaEllipticLaw` does for the upper bound. -/
-theorem ae_coarseBlockQuadratic_lower_of_thetaEllipticLaw [NeZero d] {L : CoeffLaw d}
+theorem ae_coarseBlockQuadratic_lower_of_thetaEllipticLaw [NeZero d] {L : RestrictionCoeffLaw d}
     {Θ : ℝ} (hΘ : 1 ≤ Θ) (hell : ThetaEllipticLaw Θ L) (m : ℤ) (P : BlockVec d) :
     ∀ᵐ a ∂L,
       (1 / 2 : ℝ) * vecNormSq P.1 + (2 * Θ)⁻¹ * vecNormSq P.2 ≤
@@ -66,8 +66,8 @@ theorem ae_coarseBlockQuadratic_lower_of_thetaEllipticLaw [NeZero d] {L : CoeffL
 
 /-- Integrability of the coarse block quadratic form for a fixed probe vector,
 under any `ThetaEllipticLaw` on a probability law. -/
-theorem integrable_coarseBlockQuadratic_of_thetaEllipticLaw [NeZero d] {L : CoeffLaw d}
-    {Θ : ℝ} (hΘ : 1 ≤ Θ) (hP : LawCarrier L) (hLaw : ThetaEllipticLaw Θ L)
+theorem integrable_coarseBlockQuadratic_of_thetaEllipticLaw [NeZero d] {L : RestrictionCoeffLaw d}
+    {Θ : ℝ} (hΘ : 1 ≤ Θ) (hP : RestrictionLawCarrier L) (hLaw : ThetaEllipticLaw Θ L)
     (m : ℤ) (P : BlockVec d) :
     Integrable
       (fun a => blockVecDot P
@@ -89,8 +89,8 @@ private theorem vecNormSq_single_one (i : Fin d) :
 /-- **`1/2 ≤ b`.**  The structural-law scalar `\bar\sigma_m` is at least `1/2`:
 it is the annealed diagonal upper-left entry, which the integrated lower `C1`
 sandwich bounds below by `1/2`. -/
-theorem half_le_barSigmaAtScale [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
-    (hΘ : 1 ≤ Θ) (hP : LawCarrier L) (hStruct : StructuralLaw L)
+theorem half_le_barSigmaAtScale [NeZero d] {L : RestrictionCoeffLaw d} {Θ : ℝ}
+    (hΘ : 1 ≤ Θ) (hP : RestrictionLawCarrier L) (hStruct : RestrictionStructuralLaw L)
     (hLaw : ThetaEllipticLaw Θ L) (m : ℤ) :
     (1 / 2 : ℝ) ≤ hP.barSigmaAtScale hStruct m := by
   haveI : IsProbabilityMeasure L := hP.isProbability
@@ -122,8 +122,8 @@ theorem half_le_barSigmaAtScale [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
 
 /-- The annealed diagonal lower-right entry equals `c⁻¹`, and is sandwiched in
 `[(2Θ)⁻¹, 2]` by the integrated `C1′` bounds. -/
-private theorem barSigmaStarInv_mem [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
-    (hΘ : 1 ≤ Θ) (hP : LawCarrier L) (hStruct : StructuralLaw L)
+private theorem barSigmaStarInv_mem [NeZero d] {L : RestrictionCoeffLaw d} {Θ : ℝ}
+    (hΘ : 1 ≤ Θ) (hP : RestrictionLawCarrier L) (hStruct : RestrictionStructuralLaw L)
     (hLaw : ThetaEllipticLaw Θ L) (m : ℤ) :
     (2 * Θ)⁻¹ ≤ (hP.barSigmaStarAtScale hStruct m)⁻¹ ∧
       (hP.barSigmaStarAtScale hStruct m)⁻¹ ≤ 2 := by
@@ -167,8 +167,8 @@ private theorem barSigmaStarInv_mem [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
       _ = 2 := by simp
 
 /-- **`0 < c`.** -/
-theorem barSigmaStarAtScale_pos [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
-    (hΘ : 1 ≤ Θ) (hP : LawCarrier L) (hStruct : StructuralLaw L)
+theorem barSigmaStarAtScale_pos [NeZero d] {L : RestrictionCoeffLaw d} {Θ : ℝ}
+    (hΘ : 1 ≤ Θ) (hP : RestrictionLawCarrier L) (hStruct : RestrictionStructuralLaw L)
     (hLaw : ThetaEllipticLaw Θ L) (m : ℤ) :
     0 < hP.barSigmaStarAtScale hStruct m := by
   have hΘ0 : (0 : ℝ) < Θ := lt_of_lt_of_le one_pos hΘ
@@ -178,8 +178,8 @@ theorem barSigmaStarAtScale_pos [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
   exact inv_pos.mp hpos_inv
 
 /-- **`c ≤ 2Θ`.** -/
-theorem barSigmaStarAtScale_le_two_mul_Theta [NeZero d] {L : CoeffLaw d} {Θ : ℝ}
-    (hΘ : 1 ≤ Θ) (hP : LawCarrier L) (hStruct : StructuralLaw L)
+theorem barSigmaStarAtScale_le_two_mul_Theta [NeZero d] {L : RestrictionCoeffLaw d} {Θ : ℝ}
+    (hΘ : 1 ≤ Θ) (hP : RestrictionLawCarrier L) (hStruct : RestrictionStructuralLaw L)
     (hLaw : ThetaEllipticLaw Θ L) (m : ℤ) :
     hP.barSigmaStarAtScale hStruct m ≤ 2 * Θ := by
   have hΘ0 : (0 : ℝ) < Θ := lt_of_lt_of_le one_pos hΘ

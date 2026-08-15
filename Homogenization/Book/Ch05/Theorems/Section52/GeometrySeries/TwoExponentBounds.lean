@@ -325,7 +325,7 @@ theorem upperSmallSqrtTailCoeffField_le_two_exponent_unitCube_source
     simpa [source, Q] using upper_unitCube_source_rpow_half_nonneg m hs a
   have hfSummable : Summable f := by
     have hbase :=
-      Ch04.LawCarrier.summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale
+      Ch04.RestrictionLawCarrier.summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale
         (Q := Q) a hr_pos
     have htail := (summable_nat_add_iff m).2 hbase
     refine htail.congr ?_
@@ -462,7 +462,7 @@ theorem lowerSmallSqrtTailCoeffField_le_two_exponent_unitCube_source
     simpa [source, Q] using lower_unitCube_source_rpow_half_nonneg m hs a
   have hfSummable : Summable f := by
     have hbase :=
-      Ch04.LawCarrier.summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
+      Ch04.RestrictionLawCarrier.summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
         (Q := Q) a hr_pos
     have htail := (summable_nat_add_iff m).2 hbase
     refine htail.congr ?_

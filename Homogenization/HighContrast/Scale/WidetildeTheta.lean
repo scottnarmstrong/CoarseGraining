@@ -44,7 +44,8 @@ private theorem le_finsetSupReal {α : Type*} (s : Finset α) (f : α → ℝ) {
 
 /-! ## Deterministic per-cube operator-norm bounds -/
 
-/-- Translate-ellipticity (local rebuild of the private LIH lemma): pointwise
+omit [NeZero d] in
+/-- Translate-ellipticity (local reconstruction of the supporting lemma): pointwise
 ellipticity on `translateSet z U` transfers to the translated coefficient
 field on `U`. -/
 private theorem isEllipticFieldOn_translateCoeffField_of_translateSet
@@ -112,7 +113,7 @@ private theorem coarseBlockMatrix_upperLeft_posSemidef
       coarseBlockMatrix (cubeSet R) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain R)
           ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn R) :=
-    LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+    RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
       ha R
   rw [hEqR]
   simpa using
@@ -128,13 +129,14 @@ private theorem coarseBlockMatrix_lowerRight_posSemidef
       coarseBlockMatrix (cubeSet R) a.toFun =
         Ch02.coarseBlockMatrix (Ch02.cubeDomain R)
           ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn R) :=
-    LawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
+    RestrictionLawCarrier.coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniformlyEllipticField
       ha R
   rw [hEqR]
   exact
     (Ch02.sigmaStarInvCoarse_posDef (Ch02.cubeDomain R)
       ((triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn R)).posSemidef
 
+omit [NeZero d] in
 /-- The `cubeSet R`-truncated coefficient field is entrywise measurable. -/
 private theorem measurable_ite_cubeSet
     {R : TriadicCube d} {a : CoeffField d}
@@ -199,7 +201,7 @@ theorem matrixNorm_upperLeft_cubeSet_le
   have hM :
       coarseBlockMatrix (cubeSet R) a.toFun =
         coarseBlockMatrix (cubeSet R) (ellipticTruncate Θ a.toFun) :=
-    coarseBlockMatrix_congr_of_ae_eq (measurableSet_cubeSet R) hae_eq
+    coarseBlockMatrix_congr_of_ae_eq hae_eq
   have hEll' : IsEllipticFieldOn 1 Θ (cubeSet R) (ellipticTruncate Θ a.toFun) :=
     isEllipticFieldOn_ellipticTruncate (measurableSet_cubeSet R) hΘ
       (measurable_ite_cubeSet (fun i j => a.entry_measurable i j))
@@ -220,7 +222,7 @@ theorem matrixNorm_lowerRight_cubeSet_le
   have hM :
       coarseBlockMatrix (cubeSet R) a.toFun =
         coarseBlockMatrix (cubeSet R) (ellipticTruncate Θ a.toFun) :=
-    coarseBlockMatrix_congr_of_ae_eq (measurableSet_cubeSet R) hae_eq
+    coarseBlockMatrix_congr_of_ae_eq hae_eq
   have hEll' : IsEllipticFieldOn 1 Θ (cubeSet R) (ellipticTruncate Θ a.toFun) :=
     isEllipticFieldOn_ellipticTruncate (measurableSet_cubeSet R) hΘ
       (measurable_ite_cubeSet (fun i j => a.entry_measurable i j))
@@ -232,6 +234,7 @@ theorem matrixNorm_lowerRight_cubeSet_le
 
 /-! ## `ThetaEllipticLaw` data → `AELocallyUniformlyEllipticField` -/
 
+omit [NeZero d] in
 /-- Witness plumbing: an entrywise-measurable, a.e.-`(1,Θ)`-elliptic field is
 locally a.e.-uniformly elliptic (uniform constants `(1,Θ)`). -/
 theorem aeLocallyUniformlyEllipticField_of_ae_isEllipticMatrix
@@ -280,7 +283,7 @@ theorem LambdaSqCoeffField_originCube_zero_le_of_ae
     have hk : Q.scale - (n : ℤ) ≤ Q.scale := by
       have : (0 : ℤ) ≤ (n : ℤ) := by exact_mod_cast Nat.zero_le n
       linarith
-    rw [LawCarrier.maxDescendantBMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae ha Q
+    rw [RestrictionLawCarrier.maxDescendantBMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae ha Q
       (Q.scale - (n : ℤ))]
     refine Ch02.finsetSupReal_le _ (descendantsAtScale_nonempty Q hk) ?_
     intro R _hR
@@ -291,7 +294,7 @@ theorem LambdaSqCoeffField_originCube_zero_le_of_ae
     have hk : Q.scale - (n : ℤ) ≤ Q.scale := by
       have : (0 : ℤ) ≤ (n : ℤ) := by exact_mod_cast Nat.zero_le n
       linarith
-    rw [LawCarrier.maxDescendantBMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae ha Q
+    rw [RestrictionLawCarrier.maxDescendantBMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae ha Q
       (Q.scale - (n : ℤ))]
     obtain ⟨R, hR⟩ := descendantsAtScale_nonempty Q hk
     exact le_trans (Ch02.matrixNorm_nonneg (coarseBlockMatrix (cubeSet R) a.toFun).upperLeft)
@@ -318,7 +321,7 @@ theorem LambdaSqCoeffField_originCube_zero_le_of_ae
         Ch02.geometricWeight s 1 n *
           Real.rpow (maxDescendantBMatrixNormCoeffFieldAtScale Q (Q.scale - (n : ℤ)) a)
             (1 / 2)) :=
-    LawCarrier.summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale Q a hs
+    RestrictionLawCarrier.summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale Q a hs
   have hsummR : Summable (fun n : ℕ => Ch02.geometricWeight s 1 n * C) := by
     simpa [Ch02.geometricWeight_eq_old] using
       (summable_geometricWeight_one (s := s) hs).mul_right C
@@ -346,7 +349,7 @@ theorem LambdaSqCoeffField_originCube_zero_le_of_ae
       simpa [Ch02.geometricWeight_eq_old] using
         geometricWeight_nonneg (s := s) (q := 1) n (by positivity)
     exact mul_nonneg hw (Real.rpow_nonneg (hMaxNonneg n) _)
-  rw [LawCarrier.LambdaSqCoeffField_finite_one_eq_tsum_sq Q a s]
+  rw [RestrictionLawCarrier.LambdaSqCoeffField_finite_one_eq_tsum_sq Q a s]
   calc
     (∑' n : ℕ, Ch02.geometricWeight s 1 n *
         Real.rpow (maxDescendantBMatrixNormCoeffFieldAtScale Q (Q.scale - (n : ℤ)) a)
@@ -368,7 +371,7 @@ theorem lambdaSqCoeffField_originCube_zero_inv_le_of_ae
     have hk : Q.scale - (n : ℤ) ≤ Q.scale := by
       have : (0 : ℤ) ≤ (n : ℤ) := by exact_mod_cast Nat.zero_le n
       linarith
-    rw [LawCarrier.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae ha Q
+    rw [RestrictionLawCarrier.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae ha Q
       (Q.scale - (n : ℤ))]
     refine Ch02.finsetSupReal_le _ (descendantsAtScale_nonempty Q hk) ?_
     intro R _hR
@@ -379,7 +382,7 @@ theorem lambdaSqCoeffField_originCube_zero_inv_le_of_ae
     have hk : Q.scale - (n : ℤ) ≤ Q.scale := by
       have : (0 : ℤ) ≤ (n : ℤ) := by exact_mod_cast Nat.zero_le n
       linarith
-    rw [LawCarrier.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae ha Q
+    rw [RestrictionLawCarrier.maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale_eq_finsetSupReal_ae ha Q
       (Q.scale - (n : ℤ))]
     obtain ⟨R, hR⟩ := descendantsAtScale_nonempty Q hk
     exact le_trans (Ch02.matrixNorm_nonneg (coarseBlockMatrix (cubeSet R) a.toFun).lowerRight)
@@ -406,7 +409,7 @@ theorem lambdaSqCoeffField_originCube_zero_inv_le_of_ae
         Ch02.geometricWeight s 1 n *
           Real.rpow (maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale Q (Q.scale - (n : ℤ)) a)
             (1 / 2)) :=
-    LawCarrier.summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale Q a hs
+    RestrictionLawCarrier.summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale Q a hs
   have hsummR : Summable (fun n : ℕ => Ch02.geometricWeight s 1 n * C) := by
     simpa [Ch02.geometricWeight_eq_old] using
       (summable_geometricWeight_one (s := s) hs).mul_right C
@@ -435,7 +438,7 @@ theorem lambdaSqCoeffField_originCube_zero_inv_le_of_ae
       simpa [Ch02.geometricWeight_eq_old] using
         geometricWeight_nonneg (s := s) (q := 1) n (by positivity)
     exact mul_nonneg hw (Real.rpow_nonneg (hMaxNonneg n) _)
-  rw [LawCarrier.lambdaSqCoeffField_finite_one_eq_tsum_sq_inv Q a hs, inv_inv]
+  rw [RestrictionLawCarrier.lambdaSqCoeffField_finite_one_eq_tsum_sq_inv Q a hs, inv_inv]
   calc
     (∑' n : ℕ, Ch02.geometricWeight s 1 n *
         Real.rpow (maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale Q (Q.scale - (n : ℤ)) a)
@@ -445,10 +448,11 @@ theorem lambdaSqCoeffField_originCube_zero_inv_le_of_ae
 
 /-! ## Moment-root bounds -/
 
+omit [NeZero d] in
 /-- The annealed moment root of a constant is that constant, on a probability
 law (`ξ ≥ 1`, constant `≥ 0`). -/
 private theorem annealedMomentRoot_const
-    {P : CoeffLaw d} [IsProbabilityMeasure P] {ξ : ℕ} {c : ℝ}
+    {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P] {ξ : ℕ} {c : ℝ}
     (hξ : 1 ≤ ξ) (hc : 0 ≤ c) :
     annealedMomentRoot P ξ (fun _ => c) = c := by
   have hξ0 : (ξ : ℝ) ≠ 0 := by
@@ -461,7 +465,7 @@ private theorem annealedMomentRoot_const
 
 /-- **P4-upper.** `LambdaMomentAtScale P 0 sUpper ξ ≤ 2 * Θ`. -/
 theorem LambdaMomentAtScale_le
-    {P : CoeffLaw d} {Θ sUpper : ℝ} {ξ : ℕ}
+    {P : RestrictionCoeffLaw d} {Θ sUpper : ℝ} {ξ : ℕ}
     (hΘ : 1 ≤ Θ) (hsU : 0 < sUpper) (hξ : 1 ≤ ξ)
     (hEllLaw : ThetaEllipticLaw Θ P) [IsProbabilityMeasure P]
     (hUpperInt :
@@ -487,7 +491,7 @@ theorem LambdaMomentAtScale_le
 
 /-- **P4-lower.** `lambdaInvMomentAtScale P 0 sLower ξ ≤ 2`. -/
 theorem lambdaInvMomentAtScale_le
-    {P : CoeffLaw d} {Θ sLower : ℝ} {ξ : ℕ}
+    {P : RestrictionCoeffLaw d} {Θ sLower : ℝ} {ξ : ℕ}
     (hΘ : 1 ≤ Θ) (hsL : 0 < sLower) (hξ : 1 ≤ ξ)
     (hEllLaw : ThetaEllipticLaw Θ P) [IsProbabilityMeasure P]
     (hLowerInt :
@@ -513,9 +517,10 @@ theorem lambdaInvMomentAtScale_le
 
 /-! ## `1 ≤ Θ` from the law -/
 
+omit [NeZero d] in
 /-- On a probability law, `ThetaEllipticLaw Θ P` forces `1 ≤ Θ`. -/
 theorem one_le_Theta_of_thetaEllipticLaw
-    {P : CoeffLaw d} {Θ : ℝ} [IsProbabilityMeasure P]
+    {P : RestrictionCoeffLaw d} {Θ : ℝ} [IsProbabilityMeasure P]
     (hEllLaw : ThetaEllipticLaw Θ P) :
     1 ≤ Θ := by
   obtain ⟨a, hae⟩ := hEllLaw.exists
@@ -527,7 +532,7 @@ theorem one_le_Theta_of_thetaEllipticLaw
 /-- **Main.** Uniform ellipticity controls the moment-enhanced contrast:
 `widetildeThetaAtScale P 0 sUpper sLower ξ ≤ 4 * Θ`.  Constants `C = 4`, `k = 1`. -/
 theorem widetildeThetaAtScale_le
-    {P : CoeffLaw d} {Θ sUpper sLower : ℝ} {ξ : ℕ}
+    {P : RestrictionCoeffLaw d} {Θ sUpper sLower : ℝ} {ξ : ℕ}
     (hsU : 0 < sUpper) (hsL : 0 < sLower) (hξ : 1 ≤ ξ)
     (hEllLaw : ThetaEllipticLaw Θ P) [IsProbabilityMeasure P]
     (hUpperInt :
@@ -561,7 +566,7 @@ record's `dim_div_xi_lt_min` field (with `two_le_dim`, `xi_gt_two_mul_dim`)
 forces `sUpper, sLower` strictly positive, and its integrability fields supply
 the moment hypotheses. -/
 theorem widetildeThetaAtScale_le_of_quantitativeCoarseGrainedEllipticity
-    {P : CoeffLaw d} {Θ : ℝ}
+    {P : RestrictionCoeffLaw d} {Θ : ℝ}
     (hEllLaw : ThetaEllipticLaw Θ P) [IsProbabilityMeasure P]
     (hP4 : Ch05.QuantitativeCoarseGrainedEllipticity P) :
     widetildeThetaAtScale P 0 hP4.sUpper hP4.sLower hP4.xi ≤ 4 * Θ := by

@@ -418,7 +418,7 @@ theorem measurable_energyBilin_fixed_canonicalAEEMuHilbertMinimizer_aeeQuantitat
 theorem measurable_Mu_comp_aeeQuantitativeSlice_canonical_cubeSet
     {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} (Q : TriadicCube d) {k : ℕ}
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A (cubeSet Q))
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A (cubeSet Q))
     (hSlice : ∀ ω : Ω, AEEQuantitativeEllipticSlice (cubeSet Q) k (A ω))
     (P : BlockVec d) :
     Measurable fun ω => Mu (cubeSet Q) P (A ω) := by
@@ -445,7 +445,7 @@ theorem measurable_Mu_comp_aeeQuantitativeSlice_canonical_cubeSet
 theorem measurable_Mu_comp_countable_aeeQuantitativeSlice_canonical_cubeSet_cover
     {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} (Q : TriadicCube d)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A (cubeSet Q))
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A (cubeSet Q))
     (t : ℕ → Set Ω) (ht : ∀ k : ℕ, MeasurableSet (t k))
     (hcover : ⋃ k : ℕ, t k = Set.univ)
     (hSlice : ∀ k : ℕ, ∀ ω : Ω, ω ∈ t k →
@@ -457,9 +457,9 @@ theorem measurable_Mu_comp_countable_aeeQuantitativeSlice_canonical_cubeSet_cove
     fun k ω => Mu (cubeSet Q) P (A ω.1)
   have hfm : ∀ k : ℕ, Measurable (f k) := by
     intro k
-    have hA_sub : IsLocalSigmaMeasurableOn
+    have hA_sub : IsPointwiseLocalSigmaMeasurableOn
         (fun ω : t k => A ω.1) (cubeSet Q) := by
-      simpa [IsLocalSigmaMeasurableOn, Function.comp] using hA.comp measurable_subtype_coe
+      simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp] using hA.comp measurable_subtype_coe
     have hSlice_sub :
         ∀ ω : t k,
           AEEQuantitativeEllipticSlice (cubeSet Q) k
@@ -490,7 +490,7 @@ theorem measurable_Mu_comp_countable_aeeQuantitativeSlice_canonical_cubeSet_cove
 theorem aemeasurable_Mu_comp_countable_aeeQuantitativeSlice_canonical_cubeSet_cover
     {Ω : Type*} [MeasurableSpace Ω] (μ : MeasureTheory.Measure Ω)
     {d : ℕ} (Q : TriadicCube d)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A (cubeSet Q))
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A (cubeSet Q))
     (t : ℕ → Set Ω) (ht : ∀ k : ℕ, MeasurableSet (t k))
     (hcover_ae : ∀ᵐ ω ∂μ, ω ∈ ⋃ k : ℕ, t k)
     (hSlice : ∀ k : ℕ, ∀ ω : Ω, ω ∈ t k →
@@ -515,9 +515,9 @@ theorem aemeasurable_Mu_comp_countable_aeeQuantitativeSlice_canonical_cubeSet_co
     cases i with
     | none => exact measurable_const
     | some k =>
-        have hA_sub : IsLocalSigmaMeasurableOn
+        have hA_sub : IsPointwiseLocalSigmaMeasurableOn
             (fun ω : cover (some k) => A ω.1) (cubeSet Q) := by
-          simpa [IsLocalSigmaMeasurableOn, Function.comp, cover] using
+          simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp, cover] using
             hA.comp measurable_subtype_coe
         have hSlice_sub :
             ∀ ω : cover (some k),
@@ -577,7 +577,7 @@ theorem aemeasurable_Mu_comp_countable_aeeQuantitativeSlice_canonical_cubeSet_co
 theorem measurable_Mu_comp_aeeQuantitativeSlice_canonical_cubeSet_sets
     {Ω : Type*} [MeasurableSpace Ω]
     {d : ℕ} (Q : TriadicCube d)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A (cubeSet Q))
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A (cubeSet Q))
     (hSliceMeas :
       ∀ k : ℕ,
         MeasurableSet {ω : Ω | AEEQuantitativeEllipticSlice (cubeSet Q) k (A ω)})
@@ -603,7 +603,7 @@ theorem measurable_Mu_comp_aeeQuantitativeSlice_canonical_cubeSet_sets
 theorem aemeasurable_Mu_comp_aeeQuantitativeSlice_canonical_cubeSet_sets
     {Ω : Type*} [MeasurableSpace Ω] (μ : MeasureTheory.Measure Ω)
     {d : ℕ} (Q : TriadicCube d)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A (cubeSet Q))
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A (cubeSet Q))
     (hSliceMeas :
       ∀ k : ℕ,
         MeasurableSet {ω : Ω | AEEQuantitativeEllipticSlice (cubeSet Q) k (A ω)})
@@ -625,7 +625,7 @@ theorem aemeasurable_Mu_comp_aeeQuantitativeSlice_canonical_cubeSet_sets
 cover. -/
 theorem hasMeasurableMuFamily_of_measurable_aeeQuantitativeSlice_sets_canonical_cubeSet
     {d : ℕ} (Q : TriadicCube d)
-    (hLocal : IsLocalSigmaMeasurableOn (fun a : CoeffField d => a) (cubeSet Q))
+    (hLocal : IsPointwiseLocalSigmaMeasurableOn (fun a : CoeffField d => a) (cubeSet Q))
     (hSliceMeas :
       ∀ k : ℕ,
         MeasurableSet {a : CoeffField d |
@@ -642,7 +642,7 @@ theorem hasMeasurableMuFamily_of_measurable_aeeQuantitativeSlice_sets_canonical_
 theorem aemeasurable_Mu_family_of_aeeQuantitativeSlice_sets_canonical_cubeSet
     {d : ℕ} (Q : TriadicCube d)
     (μ : MeasureTheory.Measure (CoeffField d))
-    (hLocal : IsLocalSigmaMeasurableOn (fun a : CoeffField d => a) (cubeSet Q))
+    (hLocal : IsPointwiseLocalSigmaMeasurableOn (fun a : CoeffField d => a) (cubeSet Q))
     (hSliceMeas :
       ∀ k : ℕ,
         MeasurableSet {a : CoeffField d |
@@ -664,7 +664,7 @@ theorem measurable_Mu_comp_aeeQuantitativeSlice
         (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
         (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel _)
         AEEQuantitativeEllipticSlice.toHilbertMatrixL2)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (hSlice : ∀ ω : Ω, AEEQuantitativeEllipticSlice U k (A ω))
     (R : MuCorrectionSpaceRecoveryData U)
     [TopologicalSpace.SeparableSpace ↥R.correctionSpace]
@@ -703,7 +703,7 @@ theorem measurable_Mu_comp_countable_aeeQuantitativeSlice_cover
           (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
           (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel _)
           AEEQuantitativeEllipticSlice.toHilbertMatrixL2)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (t : ℕ → Set Ω) (ht : ∀ k : ℕ, MeasurableSet (t k))
     (hcover : ⋃ k : ℕ, t k = Set.univ)
     (hSlice : ∀ k : ℕ, ∀ ω : Ω, ω ∈ t k →
@@ -726,8 +726,8 @@ theorem measurable_Mu_comp_countable_aeeQuantitativeSlice_cover
     fun k ω => Mu U P (A ω.1)
   have hfm : ∀ k : ℕ, Measurable (f k) := by
     intro k
-    have hA_sub : IsLocalSigmaMeasurableOn (fun ω : t k => A ω.1) U := by
-      simpa [IsLocalSigmaMeasurableOn, Function.comp] using hA.comp measurable_subtype_coe
+    have hA_sub : IsPointwiseLocalSigmaMeasurableOn (fun ω : t k => A ω.1) U := by
+      simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp] using hA.comp measurable_subtype_coe
     have hSlice_sub :
         ∀ ω : t k,
           AEEQuantitativeEllipticSlice U k ((fun ω : t k => A ω.1) ω) := by
@@ -764,7 +764,7 @@ theorem aemeasurable_Mu_comp_countable_aeeQuantitativeSlice_cover
           (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
           (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel _)
           AEEQuantitativeEllipticSlice.toHilbertMatrixL2)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (t : ℕ → Set Ω) (ht : ∀ k : ℕ, MeasurableSet (t k))
     (hcover_ae : ∀ᵐ ω ∂μ, ω ∈ ⋃ k : ℕ, t k)
     (hSlice : ∀ k : ℕ, ∀ ω : Ω, ω ∈ t k →
@@ -800,8 +800,8 @@ theorem aemeasurable_Mu_comp_countable_aeeQuantitativeSlice_cover
     cases i with
     | none => exact measurable_const
     | some k =>
-        have hA_sub : IsLocalSigmaMeasurableOn (fun ω : cover (some k) => A ω.1) U := by
-          simpa [IsLocalSigmaMeasurableOn, Function.comp, cover] using
+        have hA_sub : IsPointwiseLocalSigmaMeasurableOn (fun ω : cover (some k) => A ω.1) U := by
+          simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp, cover] using
             hA.comp measurable_subtype_coe
         have hSlice_sub :
             ∀ ω : cover (some k),
@@ -867,7 +867,7 @@ theorem measurable_Mu_comp_aeeQuantitativeSlice_sets
           (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
           (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel _)
           AEEQuantitativeEllipticSlice.toHilbertMatrixL2)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (hSliceMeas :
       ∀ k : ℕ, MeasurableSet {ω : Ω | AEEQuantitativeEllipticSlice U k (A ω)})
     (hcover : ∀ ω : Ω, ∃ k : ℕ, AEEQuantitativeEllipticSlice U k (A ω))
@@ -908,7 +908,7 @@ theorem aemeasurable_Mu_comp_aeeQuantitativeSlice_sets
           (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
           (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel _)
           AEEQuantitativeEllipticSlice.toHilbertMatrixL2)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (hSliceMeas :
       ∀ k : ℕ, MeasurableSet {ω : Ω | AEEQuantitativeEllipticSlice U k (A ω)})
     (hcover_ae : ∀ᵐ ω ∂μ, ∃ k : ℕ, AEEQuantitativeEllipticSlice U k (A ω))
@@ -940,7 +940,7 @@ theorem aemeasurable_Mu_comp_aeeQuantitativeSlice_sets_of_isOpen_volume_ne_top
     {d : ℕ} {U : Set (Vec d)}
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
     (hUopen : IsOpen U) (hUfinite : MeasureTheory.volume U ≠ ⊤)
-    (A : Ω → CoeffField d) (hA : IsLocalSigmaMeasurableOn A U)
+    (A : Ω → CoeffField d) (hA : IsPointwiseLocalSigmaMeasurableOn A U)
     (hSliceMeas :
       ∀ k : ℕ, MeasurableSet {ω : Ω | AEEQuantitativeEllipticSlice U k (A ω)})
     (hcover_ae : ∀ᵐ ω ∂μ, ∃ k : ℕ, AEEQuantitativeEllipticSlice U k (A ω))
@@ -977,7 +977,7 @@ theorem hasMeasurableMuFamily_of_measurable_aeeQuantitativeSlice_sets
           (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
           (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel _)
           AEEQuantitativeEllipticSlice.toHilbertMatrixL2)
-    (hLocal : IsLocalSigmaMeasurableOn (fun a : CoeffField d => a) U)
+    (hLocal : IsPointwiseLocalSigmaMeasurableOn (fun a : CoeffField d => a) U)
     (hSliceMeas :
       ∀ k : ℕ, MeasurableSet {a : CoeffField d | AEEQuantitativeEllipticSlice U k a})
     (hcover : ∀ a : CoeffField d, ∃ k : ℕ, AEEQuantitativeEllipticSlice U k a)
@@ -1007,7 +1007,7 @@ theorem hasMeasurableMuFamily_of_measurable_aeeQuantitativeSlice_sets_of_isOpen_
     {d : ℕ} {U : Set (Vec d)}
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
     (hUopen : IsOpen U) (hUfinite : MeasureTheory.volume U ≠ ⊤)
-    (hLocal : IsLocalSigmaMeasurableOn (fun a : CoeffField d => a) U)
+    (hLocal : IsPointwiseLocalSigmaMeasurableOn (fun a : CoeffField d => a) U)
     (hSliceMeas :
       ∀ k : ℕ, MeasurableSet {a : CoeffField d | AEEQuantitativeEllipticSlice U k a})
     (hcover : ∀ a : CoeffField d, ∃ k : ℕ, AEEQuantitativeEllipticSlice U k a)
@@ -1040,7 +1040,7 @@ theorem aemeasurable_Mu_family_of_aeeQuantitativeSlice_sets
           (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
           (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel _)
           AEEQuantitativeEllipticSlice.toHilbertMatrixL2)
-    (hLocal : IsLocalSigmaMeasurableOn (fun a : CoeffField d => a) U)
+    (hLocal : IsPointwiseLocalSigmaMeasurableOn (fun a : CoeffField d => a) U)
     (hSliceMeas :
       ∀ k : ℕ, MeasurableSet {a : CoeffField d | AEEQuantitativeEllipticSlice U k a})
     (hcover_ae :
@@ -1071,7 +1071,7 @@ theorem aemeasurable_Mu_family_of_aeeQuantitativeSlice_sets_of_isOpen_volume_ne_
     (μ : MeasureTheory.Measure (CoeffField d))
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
     (hUopen : IsOpen U) (hUfinite : MeasureTheory.volume U ≠ ⊤)
-    (hLocal : IsLocalSigmaMeasurableOn (fun a : CoeffField d => a) U)
+    (hLocal : IsPointwiseLocalSigmaMeasurableOn (fun a : CoeffField d => a) U)
     (hSliceMeas :
       ∀ k : ℕ, MeasurableSet {a : CoeffField d | AEEQuantitativeEllipticSlice U k a})
     (hcover_ae :

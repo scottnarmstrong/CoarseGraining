@@ -13,13 +13,18 @@ noncomputable section
 /-!
 # From gradient control to function control
 
-This file exposes the public surface behind the note's `\nabla u` to `u`
-Besov-scale estimate.  The corrected route is vector-valued: oscillation is
-controlled by a sum over gradient components, not by a single scalar projected
-partial derivative.
+This file retains the legacy disjoint-positive, totalized-real,
+componentwise-circ compatibility surface behind the note's `\nabla u` to `u`
+Besov-scale estimate. It is not the exact manuscript overlap/Euclidean
+statement.
 -/
 
-/-- Public H1-facing infinite-depth `\nabla u`-to-`u` Besov-scale estimate.
+namespace Legacy
+
+/-- Legacy H1-facing infinite-depth `\nabla u`-to-`u` Besov-scale
+compatibility estimate, using the disjoint-positive, totalized-real,
+componentwise-circ conventions rather than the exact manuscript
+overlap/Euclidean statement.
 
 The full-dual/H1 Poincare theorem supplies the local full-circ bounds
 internally, so this statement has no explicit `hlocal` contract. -/
@@ -49,6 +54,8 @@ theorem gradientToFunctionBesovScale_from_h1 {d : ℕ} [NeZero d]
         (Q := Q) (s := s) (C := C) (u := fun x => u x)
         (G := fun x => u.grad x) (M := N + 1)
         (fun i => u.grad_coord_memL2_normalizedCubeMeasure i) hs0.le hs1 hC
+
+end Legacy
 
 end
 

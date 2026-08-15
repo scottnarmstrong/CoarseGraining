@@ -25,13 +25,13 @@ def weakNormContribution
 
 /--
 Source label `e.raw.CR.energy`: square-root additivity term for the terminal
-pair `p_e,q_e`, using the concrete LeanIntoHomogenization Ch05 response
+pair `p_e,q_e`, using the concrete Chapter 5 response
 surface.
 -/
 noncomputable def centeredResponseSqrtTermAtScale {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (k m : ℤ) (e : Homogenization.Vec d) : ℝ :=
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct m e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct m e
@@ -42,14 +42,14 @@ noncomputable def centeredResponseSqrtTermAtScale {d : ℕ} [NeZero d]
 
 /--
 Source label `e.raw.CR.energy`: adjoint square-root additivity term for the
-terminal pair.  LeanIntoHomogenization represents the annealed lower-scale
+terminal pair.  The library represents the annealed lower-scale
 `J^*` response through adjoint invariance by the same
 `expectedResponseJCubeSet` scalar used for `J`.
 -/
 noncomputable def centeredResponseStarSqrtTermAtScale {d : ℕ} [NeZero d]
-    {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (k m : ℤ) (e : Homogenization.Vec d) : ℝ :=
   let p_e := Homogenization.Book.Ch05.specialPAtScale hP hStruct m e
   let q_e := Homogenization.Book.Ch05.specialQAtScale hP hStruct m e
@@ -59,14 +59,14 @@ noncomputable def centeredResponseStarSqrtTermAtScale {d : ℕ} [NeZero d]
         (Homogenization.originCube d k) p_e q_e)
 
 /--
-Source label `e.centered.identity`: LIH-centered primal and adjoint responses
+Source label `e.centered.identity`: library-centered primal and adjoint responses
 for the special vectors add to the scalar contrast excess `Theta_m - 1`, the
 Lean version of the paper's `F_m`.
 -/
 theorem expectedCenteredResponses_special_add_eq_contrast
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Homogenization.Vec d)
     (he : Homogenization.Book.Ch02.vecNorm e = 1) :
@@ -83,7 +83,7 @@ theorem expectedCenteredResponses_special_add_eq_contrast
     (Homogenization.Book.Ch05.Section54.OneStepContraction.thetaAtScale_sub_one_eq_centeredResponses_special
         hP hStruct hP4 m e he).symm
 
-/-- First-term coefficient in the special-vector LIH weak-norm RHS. -/
+/-- First-term coefficient in the special-vector library weak-norm RHS. -/
 noncomputable def specialWeakNormEnergyFirstCoeffAtScale (d : ℕ) (m : ℕ) : ℝ :=
   2 *
     (1 +
@@ -92,7 +92,7 @@ noncomputable def specialWeakNormEnergyFirstCoeffAtScale (d : ℕ) (m : ℕ) : �
 
 /--
 The first weak-norm coefficient is bounded by a uniform dimensional constant.
-This is the LIH cutoff estimate `section53CutoffBound_le_two_pow_card`
+This is the library's cutoff estimate `section53CutoffBound_le_two_pow_card`
 specialized to the entry-scale special-vector coefficient.
 -/
 theorem specialWeakNormEnergyFirstCoeffAtScale_le_dimensional
@@ -106,11 +106,11 @@ theorem specialWeakNormEnergyFirstCoeffAtScale_le_dimensional
         (Homogenization.originCube d (m : ℤ))
   nlinarith
 
-/-- The non-additivity part of the special-vector LIH weak-norm RHS. -/
+/-- The non-additivity part of the special-vector library weak-norm RHS. -/
 noncomputable def specialWeakNormEnergyRemainderAtScale
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d) : ℝ :=
   let β :=
@@ -155,12 +155,12 @@ noncomputable def specialWeakNormEnergyRemainderAtScale
         Q s t *
         (Real.sqrt G * Real.sqrt F))
 
-/-- Concrete decomposition of LIH's special weak-norm RHS into the square-root
+/-- Concrete decomposition of the library's special weak-norm RHS into the square-root
 additivity term plus the remaining weak-norm scalar terms. -/
 theorem specialWeakNormManuscriptRHSAtScale_eq_firstCoeff_mul_sqrtTerm_add_remainder
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (k m : ℕ) (e : Homogenization.Vec d) :
     Homogenization.Book.Ch05.Section53.JUpperBoundCoarseFluctuations.specialWeakNormManuscriptRHSAtScale
@@ -176,16 +176,16 @@ theorem specialWeakNormManuscriptRHSAtScale_eq_firstCoeff_mul_sqrtTerm_add_remai
   ring
 
 /--
-Scalar conversion from LIH's special weak-norm RHS to the raw-energy RHS
+Scalar conversion from the library's special weak-norm RHS to the raw-energy RHS
 when the non-additivity remainder has already been bounded by the intended
 centering and weak-norm slots.  This keeps the analytic remainder estimate
 outside the raw-energy wrapper: downstream files must prove `hremainder` from
 the concrete weak-norm decomposition, not assume it at the final theorem.
 -/
 theorem specialWeakNormManuscriptRHSAtScale_le_rawEnergyRHS_of_remainder_bound_atScales
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {C eps weakNorm : ℝ} {k m : ℕ} (e : Homogenization.Vec d)
     (hfirst_le : specialWeakNormEnergyFirstCoeffAtScale d m ≤ C)
@@ -224,12 +224,12 @@ theorem specialWeakNormManuscriptRHSAtScale_le_rawEnergyRHS_of_remainder_bound_a
           ring
 
 /-- Concrete primal raw-energy estimate whose weak-norm slot is supplied by a
-proved bound for LIH's non-additivity remainder. -/
+proved bound for the library's non-additivity remainder. -/
 theorem expectedCenteredResponseJAtScale_le_rawEnergyRHS_of_remainder_bound_atScales_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d)
     {C eps weakNorm : ℝ}
@@ -286,12 +286,12 @@ theorem expectedCenteredResponseJAtScale_le_rawEnergyRHS_of_remainder_bound_atSc
   exact hLIH.trans hscalar
 
 /-- Concrete adjoint raw-energy estimate whose weak-norm slot is supplied by a
-proved bound for LIH's non-additivity remainder. -/
+proved bound for the library's non-additivity remainder. -/
 theorem expectedCenteredResponseJStarAtScale_le_rawEnergyRHS_of_remainder_bound_atScales_of_P4
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hstat : Homogenization.Book.Ch04.StationaryLaw P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k < m) (e : Homogenization.Vec d)
     {C eps weakNorm : ℝ}

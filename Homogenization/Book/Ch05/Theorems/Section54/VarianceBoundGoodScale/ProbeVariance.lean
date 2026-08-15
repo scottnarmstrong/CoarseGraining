@@ -21,19 +21,19 @@ quadratic probe.
 -/
 
 private theorem fullBlockNormalizedQuadraticObservable_cubeSet_regular
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
         fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a) P := by
-  rcases exists_isLocalRandomVariable_ae_eq_fullBlockNormalizedQuadraticObservable_cubeSet
+  rcases exists_isRestrictionLocalRandomVariable_ae_eq_fullBlockNormalizedQuadraticObservable_cubeSet
       hP hStruct center q Q with ⟨Y, hY_local, hY_eq⟩
   exact (hP.aemeasurable_of_isLocalRandomVariable hY_local).congr hY_eq.symm
 
 private theorem fullBlockNormalizedQuadraticObservable_descendants_regular
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center : ℤ) (q : FullBlockVec d) (Q : TriadicCube d) (n : ℤ) :
     ∀ R ∈ descendantsAtScale Q n,
       AEMeasurable
@@ -44,12 +44,12 @@ private theorem fullBlockNormalizedQuadraticObservable_descendants_regular
     fullBlockNormalizedQuadraticObservable_cubeSet_regular
       hP hStruct center q R
 
-private theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_regular
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+private theorem fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_regular
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (center n m : ℤ) (q : FullBlockVec d) :
     AEMeasurable
-      (Ch04.centeredDescendantAverage P n m
+      (Ch04.restrictionCenteredDescendantAverage P n m
         (fullBlockNormalizedQuadraticObservableR hP hStruct center q)) P := by
   let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fullBlockNormalizedQuadraticObservableR hP hStruct center q
@@ -73,17 +73,17 @@ private theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage
     filter_upwards with a
     simp [S, Finset.sum_apply]
   have hcenter :
-      Ch04.centeredDescendantAverage P n m X =
+      Ch04.restrictionCenteredDescendantAverage P n m X =
         fun a => ((descendantsAtScale (originCube d m) n).card : ℝ)⁻¹ * S a := by
     funext a
-    simp [Ch04.centeredDescendantAverage, S, μ0]
+    simp [Ch04.restrictionCenteredDescendantAverage, S, μ0]
   simpa [X, hcenter] using aemeasurable_const.mul hS
 
 /-- `(P4)` gives the L2 integrability of a centered normalized scalar
 quadratic probe on an origin cube. -/
 theorem integrable_abs_sub_dotProduct_sq_fullBlockNormalizedQuadraticObservable_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m j : ℕ) (q : FullBlockVec d) :
     Integrable
@@ -134,8 +134,8 @@ theorem integrable_abs_sub_dotProduct_sq_fullBlockNormalizedQuadraticObservable_
 /-- `(P4)` also gives the L1 integrability inputs for one normalized scalar
 quadratic probe on an origin cube. -/
 theorem integrable_fullBlockNormalizedQuadraticObservable_and_abs_sub_dotProduct_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m j : ℕ) (q : FullBlockVec d) :
     Integrable
@@ -183,34 +183,34 @@ theorem integrable_fullBlockNormalizedQuadraticObservable_and_abs_sub_dotProduct
 /-- Convert the Section 5.4 Rosenthal root bound for a normalized quadratic
 probe descendant average into the L1 and L2 estimates used by the scalar
 variance reduction. -/
-theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and_sq_le_of_root
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_abs_and_sq_le_of_root
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {center n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m) (q : FullBlockVec d) {K : ℝ}
     (hOriginMoment_int :
       Integrable
         (fun a =>
-          |Ch04.centeredOriginObservable P n
+          |Ch04.restrictionCenteredOriginObservable P n
             (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^
               hP4.xi) P)
     (hroot :
       (∫ a,
-        |Ch04.centeredDescendantAverage P n m
+        |Ch04.restrictionCenteredDescendantAverage P n m
           (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^
           hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤ K) :
     (∫ a,
-        |Ch04.centeredDescendantAverage P n m
+        |Ch04.restrictionCenteredDescendantAverage P n m
           (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ∂P ≤ K) ∧
       (∫ a,
-        |Ch04.centeredDescendantAverage P n m
+        |Ch04.restrictionCenteredDescendantAverage P n m
           (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^ (2 : ℕ) ∂P
           ≤ K ^ (2 : ℕ)) := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fullBlockNormalizedQuadraticObservableR hP hStruct center q
-  let Z : RegCoeffField d → ℝ := Ch04.centeredDescendantAverage P n m X
+  let Z : RegCoeffField d → ℝ := Ch04.restrictionCenteredDescendantAverage P n m X
   have hX0 :
       AEMeasurable (fun a : RegCoeffField d => X (cubeSet (originCube d n)) a) P := by
     simpa [X] using
@@ -224,16 +224,16 @@ theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and
         hP hStruct center q (originCube d m) n
   have hZ_regular : AEMeasurable Z P := by
     simpa [Z, X] using
-      fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_regular
+      fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_regular
         hP hStruct center n m q
   have hxi_one : 1 ≤ hP4.xi :=
     Nat.le_trans (by norm_num : 1 ≤ 2) hP4.two_le_xi
   have hZξ_int : Integrable (fun a => |Z a| ^ hP4.xi) P := by
     simpa [Z, X] using
-      Ch04.integrable_abs_pow_centeredDescendantAverage_of_stationary
+      Ch04.integrable_abs_pow_restrictionCenteredDescendantAverage_of_stationary
         (d := d) (n := n) (m := m) (P := P) (p := hP4.xi)
         hn hnm hStruct.stationary X
-        (Ch04.isTranslationCovariantR_comp_toFun
+        (Ch04.isRestrictionTranslationCovariant_comp_toFun
       (fullBlockNormalizedQuadraticObservable_translation_covariant hP hStruct center q))
         hX0 hXdesc hxi_one
         (by simpa [X] using hOriginMoment_int)
@@ -245,30 +245,30 @@ theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and
 /-- Integrability of the L1 and L2 sizes of the normalized quadratic-probe
 descendant average, derived internally from the origin `L^ξ` moment supplied by
 `(P4)`. -/
-theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and_sq_integrable
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_abs_and_sq_integrable
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {center n m : ℤ} (hn : 0 ≤ n) (hnm : n ≤ m) (q : FullBlockVec d)
     (hOriginMoment_int :
       Integrable
         (fun a =>
-          |Ch04.centeredOriginObservable P n
+          |Ch04.restrictionCenteredOriginObservable P n
             (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^
               hP4.xi) P) :
     Integrable
         (fun a =>
-          |Ch04.centeredDescendantAverage P n m
+          |Ch04.restrictionCenteredDescendantAverage P n m
             (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a|) P ∧
       Integrable
         (fun a =>
-          |Ch04.centeredDescendantAverage P n m
+          |Ch04.restrictionCenteredDescendantAverage P n m
             (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^
               (2 : ℕ)) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
   let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fullBlockNormalizedQuadraticObservableR hP hStruct center q
-  let Z : RegCoeffField d → ℝ := Ch04.centeredDescendantAverage P n m X
+  let Z : RegCoeffField d → ℝ := Ch04.restrictionCenteredDescendantAverage P n m X
   have hX0 :
       AEMeasurable (fun a : RegCoeffField d => X (cubeSet (originCube d n)) a) P := by
     simpa [X] using
@@ -282,16 +282,16 @@ theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and
         hP hStruct center q (originCube d m) n
   have hZ_regular : AEMeasurable Z P := by
     simpa [Z, X] using
-      fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_regular
+      fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_regular
         hP hStruct center n m q
   have hxi_one : 1 ≤ hP4.xi :=
     Nat.le_trans (by norm_num : 1 ≤ 2) hP4.two_le_xi
   have hZξ_int : Integrable (fun a => |Z a| ^ hP4.xi) P := by
     simpa [Z, X] using
-      Ch04.integrable_abs_pow_centeredDescendantAverage_of_stationary
+      Ch04.integrable_abs_pow_restrictionCenteredDescendantAverage_of_stationary
         (d := d) (n := n) (m := m) (P := P) (p := hP4.xi)
         hn hnm hStruct.stationary X
-        (Ch04.isTranslationCovariantR_comp_toFun
+        (Ch04.isRestrictionTranslationCovariant_comp_toFun
       (fullBlockNormalizedQuadraticObservable_translation_covariant hP hStruct center q))
         hX0 hXdesc hxi_one
         (by simpa [X] using hOriginMoment_int)
@@ -310,9 +310,9 @@ theorem fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and
     by simpa [Z, X] using hZ_sq_int⟩
 
 /-- L1/L2 descendant-average bounds for normalized coordinate probes. -/
-theorem coordinateProbe_centeredDescendantAverage_abs_and_sq_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem coordinateProbe_restrictionCenteredDescendantAverage_abs_and_sq_le
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {center m : ℤ} (hm : 0 ≤ m) (α : BlockCoord d) :
     let K :=
@@ -329,11 +329,11 @@ theorem coordinateProbe_centeredDescendantAverage_abs_and_sq_le
                 (Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
                   Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi)))
     (∫ a,
-        |Ch04.centeredDescendantAverage P 0 m
+        |Ch04.restrictionCenteredDescendantAverage P 0 m
           (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockCoordinateProbe α)) a| ∂P ≤ K) ∧
       (∫ a,
-        |Ch04.centeredDescendantAverage P 0 m
+        |Ch04.restrictionCenteredDescendantAverage P 0 m
           (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockCoordinateProbe α)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) := by
   classical
@@ -355,23 +355,23 @@ theorem coordinateProbe_centeredDescendantAverage_abs_and_sq_le
     coordinateProbe_centeredOrigin_momentRoot_le_factorSum hP hStruct hP4 center α
   have hroot :
       (∫ a,
-        |Ch04.centeredDescendantAverage P 0 m
+        |Ch04.restrictionCenteredDescendantAverage P 0 m
           (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockCoordinateProbe α)) a| ^
           hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤ K := by
     simpa [K] using
-      coordinateProbe_centeredDescendantAverage_pow_rpow_inv_le
+      coordinateProbe_restrictionCenteredDescendantAverage_pow_rpow_inv_le
         hP hStruct hP4 hm α
   exact
-    fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and_sq_le_of_root
+    fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_abs_and_sq_le_of_root
       hP hStruct hP4 (q := fullBlockCoordinateProbe α)
       (center := center) (n := 0) (m := m) (by norm_num) hm hOrigin.1 hroot
 
 /-- L1/L2 descendant-average bounds for normalized plus-pair probes. -/
-theorem plusProbe_centeredDescendantAverage_abs_and_sq_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem plusProbe_restrictionCenteredDescendantAverage_abs_and_sq_le
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {center m : ℤ} (hm : 0 ≤ m) {α β : BlockCoord d} (hαβ : α ≠ β) :
     let K :=
@@ -388,11 +388,11 @@ theorem plusProbe_centeredDescendantAverage_abs_and_sq_le
                 (Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
                   Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi)))
     (∫ a,
-        |Ch04.centeredDescendantAverage P 0 m
+        |Ch04.restrictionCenteredDescendantAverage P 0 m
           (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockPlusProbe α β)) a| ∂P ≤ K) ∧
       (∫ a,
-        |Ch04.centeredDescendantAverage P 0 m
+        |Ch04.restrictionCenteredDescendantAverage P 0 m
           (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockPlusProbe α β)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) := by
   classical
@@ -414,23 +414,23 @@ theorem plusProbe_centeredDescendantAverage_abs_and_sq_le
     plusProbe_centeredOrigin_momentRoot_le_factorSum hP hStruct hP4 center hαβ
   have hroot :
       (∫ a,
-        |Ch04.centeredDescendantAverage P 0 m
+        |Ch04.restrictionCenteredDescendantAverage P 0 m
           (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockPlusProbe α β)) a| ^
           hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤ K := by
     simpa [K] using
-      plusProbe_centeredDescendantAverage_pow_rpow_inv_le
+      plusProbe_restrictionCenteredDescendantAverage_pow_rpow_inv_le
         hP hStruct hP4 hm hαβ
   exact
-    fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and_sq_le_of_root
+    fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_abs_and_sq_le_of_root
       hP hStruct hP4 (q := fullBlockPlusProbe α β)
       (center := center) (n := 0) (m := m) (by norm_num) hm hOrigin.1 hroot
 
 /-- L1/L2 descendant-average bounds for normalized minus-pair probes. -/
-theorem minusProbe_centeredDescendantAverage_abs_and_sq_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem minusProbe_restrictionCenteredDescendantAverage_abs_and_sq_le
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {center m : ℤ} (hm : 0 ≤ m) {α β : BlockCoord d} (hαβ : α ≠ β) :
     let K :=
@@ -447,11 +447,11 @@ theorem minusProbe_centeredDescendantAverage_abs_and_sq_le
                 (Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
                   Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi)))
     (∫ a,
-        |Ch04.centeredDescendantAverage P 0 m
+        |Ch04.restrictionCenteredDescendantAverage P 0 m
           (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockMinusProbe α β)) a| ∂P ≤ K) ∧
       (∫ a,
-        |Ch04.centeredDescendantAverage P 0 m
+        |Ch04.restrictionCenteredDescendantAverage P 0 m
           (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockMinusProbe α β)) a| ^ (2 : ℕ) ∂P ≤ K ^ (2 : ℕ)) := by
   classical
@@ -473,16 +473,16 @@ theorem minusProbe_centeredDescendantAverage_abs_and_sq_le
     minusProbe_centeredOrigin_momentRoot_le_factorSum hP hStruct hP4 center hαβ
   have hroot :
       (∫ a,
-        |Ch04.centeredDescendantAverage P 0 m
+        |Ch04.restrictionCenteredDescendantAverage P 0 m
           (fullBlockNormalizedQuadraticObservableR hP hStruct center
             (fullBlockMinusProbe α β)) a| ^
           hP4.xi ∂P) ^
         (1 / (hP4.xi : ℝ)) ≤ K := by
     simpa [K] using
-      minusProbe_centeredDescendantAverage_pow_rpow_inv_le
+      minusProbe_restrictionCenteredDescendantAverage_pow_rpow_inv_le
         hP hStruct hP4 hm hαβ
   exact
-    fullBlockNormalizedQuadraticObservable_centeredDescendantAverage_abs_and_sq_le_of_root
+    fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAverage_abs_and_sq_le_of_root
       hP hStruct hP4 (q := fullBlockMinusProbe α β)
       (center := center) (n := 0) (m := m) (by norm_num) hm hOrigin.1 hroot
 

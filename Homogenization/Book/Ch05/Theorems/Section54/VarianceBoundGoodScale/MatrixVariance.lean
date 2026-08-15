@@ -62,8 +62,8 @@ theorem fullBlockQuadratic_minusProbe_self
   simp [dotProduct, Matrix.mulVec]
 
 theorem integral_fluctuationQuadratic_sq_eq_integral_abs_sub_dotProduct_sq
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m j : ℕ) (q : FullBlockVec d) :
     ∫ a,
@@ -83,8 +83,8 @@ theorem integral_fluctuationQuadratic_sq_eq_integral_abs_sub_dotProduct_sq
   rw [hquad, sq_abs]
 
 theorem integrable_fluctuationQuadratic_sq_from_P4
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m j : ℕ) (q : FullBlockVec d) :
     Integrable
@@ -105,8 +105,8 @@ theorem integrable_fluctuationQuadratic_sq_from_P4
 /-- Integrating the finite-probe pointwise bound reduces the full-block matrix
 variance to scalar quadratic-probe variances. -/
 theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_probeBounds
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m j : ℕ)
     (Ccoord : BlockCoord d → ℝ)

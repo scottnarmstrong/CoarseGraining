@@ -24,7 +24,7 @@ element and is measurable for the *pointwise* lane; its entry-test lane is a
 nonlinear integral functional that is not a transported generator (see the note
 at that declaration).
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 namespace Homogenization

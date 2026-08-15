@@ -6,7 +6,7 @@ namespace Book
 namespace Ch04
 
 /-!
-# Public partition-average moment estimates: Rosenthal bounds
+# Restriction-local partition-average moment estimates: Rosenthal bounds
 -/
 
 open MeasureTheory
@@ -15,17 +15,17 @@ open scoped BigOperators
 noncomputable section
 
 /-- Rosenthal's `L^p` bound on a single scale-color class of descendants under
-the public unit-range dependence and local-random-variable assumptions. -/
-theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw
+the restriction-unit-range and restriction-local-random-variable assumptions. -/
+theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtScaleScaleColorClass_of_restrictionUnitRangeDependentLaw
     {d : ℕ} {Q : TriadicCube d} {k : ℤ} {c : ScaleColor d k}
-    {P : CoeffLaw d} [IsProbabilityMeasure P]
+    {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {p : ℕ} {K : ℝ}
-    (hP : UnitRangeDependentLaw P)
+    (hP : RestrictionUnitRangeDependentLaw P)
     (hp : 2 ≤ p) (hK_nonneg : 0 ≤ K)
     (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c,
-        IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
+        IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_aemeas :
       ∀ R ∈ descendantsAtScaleScaleColorClass Q k c, AEMeasurable (X R) P)
     (hLp_int :
@@ -49,7 +49,7 @@ theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtSc
   · let Y : {R : TriadicCube d // R ∈ S} → RegCoeffField d → ℝ :=
       fun R => X R.1
     have h_indep : ProbabilityTheory.iIndepFun Y P := by
-      exact iIndepFun_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw
+      exact iIndepFun_descendantsAtScaleScaleColorClass_of_restrictionUnitRangeDependentLaw
         (Q := Q) (k := k) (c := c) (P := P) hP
         (fun R => hX_local R.1 R.2)
     have hLp_int' :
@@ -105,16 +105,16 @@ theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtSc
     simpa [S, hS_empty, one_div] using hrhs_nonneg
 
 /-- Rosenthal's `L^p` bound for sums over all descendants at a fixed scale,
-using the public local-random-variable and unit-range dependence interfaces. -/
-theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtScale_of_unitRangeDependentLaw
+using the restriction-local and restriction-unit-range interfaces. -/
+theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtScale_of_restrictionUnitRangeDependentLaw
     {d : ℕ} {Q : TriadicCube d} {k : ℤ}
-    {P : CoeffLaw d} [IsProbabilityMeasure P]
+    {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     {p : ℕ} {K : ℝ}
-    (hP : UnitRangeDependentLaw P)
+    (hP : RestrictionUnitRangeDependentLaw P)
     (hp : 2 ≤ p) (hK_nonneg : 0 ≤ K)
     (X : TriadicCube d → RegCoeffField d → ℝ)
     (hX_local :
-      ∀ R ∈ descendantsAtScale Q k, IsLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
+      ∀ R ∈ descendantsAtScale Q k, IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (X R))
     (hX_aemeas : ∀ R ∈ descendantsAtScale Q k, AEMeasurable (X R) P)
     (hLp_int :
       ∀ R ∈ descendantsAtScale Q k, Integrable (fun a => |X R a| ^ p) P)
@@ -194,7 +194,7 @@ theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtSc
                   (Real.sqrt ((descendantsAtScaleScaleColorClass Q k c).card : ℝ) * K)) := by
       intro c hc
       exact
-        integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtScaleScaleColorClass_of_unitRangeDependentLaw
+        integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtScaleScaleColorClass_of_restrictionUnitRangeDependentLaw
           (d := d) (Q := Q) (k := k) (c := c) hP hp hK_nonneg X
           (fun R hR => hX_local R (mem_descendantsAtScaleScaleColorClass_iff.mp hR).1)
           (fun R hR => hX_aemeas R (mem_descendantsAtScaleScaleColorClass_iff.mp hR).1)

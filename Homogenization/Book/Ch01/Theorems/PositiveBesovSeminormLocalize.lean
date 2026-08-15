@@ -9,11 +9,14 @@ noncomputable section
 open scoped BigOperators ENNReal
 
 /-!
-# Positive Besov seminorm localization
+# Legacy positive Besov seminorm localization
 
-This file keeps the seminorm-only companions to the note-facing positive Besov
-localization theorem out of the main manuscript lemma file.
+This file keeps the seminorm-only companions for the legacy disjoint,
+finite-truncation/real-`sSup` compatibility lane.  These are not statements
+about the manuscript's exact overlapping `ENNReal` definitions.
 -/
+
+namespace Legacy
 
 theorem positiveBesovPartialSeminormTwo_le_seminormTwo_of_bddAbove {d : ℕ}
     (Q : Cube d) (s : ℝ) (u : Vec d → ℝ)
@@ -146,8 +149,9 @@ theorem tendsto_descendantsAverage_sq_positiveBesovPartialSeminormTwo_atTop {d :
           tendsto_sq_positiveBesovPartialSeminormTwo_atTop
             R s u (hLocalBdd R hR)))
 
-/-- Infinite-depth scalar `q = 2` positive Besov seminorms localize over
-descendants, provided the parent and local `sSup`s are bounded above. -/
+/-- In the legacy real-`sSup` lane, infinite-depth scalar `q = 2` positive
+Besov seminorms localize over descendants, provided the parent and local
+`sSup`s are bounded above. -/
 theorem descendantsAverage_sq_positiveBesovSeminormTwo_le {d : ℕ}
     (Q : Cube d) (s : ℝ) (u : Vec d → ℝ) (j : ℕ)
     (hParentBdd :
@@ -188,6 +192,8 @@ theorem descendantsAverage_sq_positiveBesovSeminormTwo_le {d : ℕ}
     tendsto_descendantsAverage_sq_positiveBesovPartialSeminormTwo_atTop
       Q s u j hLocalBdd
   exact le_of_tendsto' hlim hbound
+
+end Legacy
 
 end
 

@@ -27,7 +27,7 @@ open scoped Matrix.Norms.Elementwise
 /-- Finite-dimensional matrix quadratic forms commute with entrywise
 expectation under entrywise integrability. -/
 theorem integral_vecDot_matVecMul_eq_entrywise_integral
-    {d : ℕ} {P : CoeffLaw d} {M : RegCoeffField d → Mat d}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {M : RegCoeffField d → Mat d}
     (hM : ∀ i j, Integrable (fun a => M a i j) P) (x y : Vec d) :
     ∫ a, vecDot x (matVecMul (M a) y) ∂P =
       vecDot x (matVecMul (fun i j => ∫ a, M a i j ∂P) y) := by
@@ -47,7 +47,7 @@ theorem integral_vecDot_matVecMul_eq_entrywise_integral
 /-- Full coarse-block integrability gives entrywise integrability of the
 corresponding doubled coarse matrix. -/
 private theorem integrable_blockMatEntry_of_integrable_coarseFullBlockMatrixAtCube
-    {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {Q : TriadicCube d}
     (hInt : Integrable (coarseFullBlockMatrixAtCube Q) P) :
     ∀ α β,
       Integrable
@@ -61,26 +61,26 @@ private theorem integrable_blockMatEntry_of_integrable_coarseFullBlockMatrixAtCu
     blockMatEntry] using hαβ
 
 /-- Scalar response observable on a deterministic triadic cube. -/
-noncomputable def responseJObservableCubeSet {d : ℕ}
+noncomputable def restrictionResponseJObservableCubeSet {d : ℕ}
     (Q : TriadicCube d) (p q : Vec d) : RegCoeffField d → ℝ :=
   fun a => ResponseJ (cubeSet Q) p q a.toFun
 
 @[simp]
-theorem responseJObservableCubeSet_apply {d : ℕ}
+theorem restrictionResponseJObservableCubeSet_apply {d : ℕ}
     (Q : TriadicCube d) (p q : Vec d) (a : RegCoeffField d) :
-    responseJObservableCubeSet Q p q a = ResponseJ (cubeSet Q) p q a.toFun :=
+    restrictionResponseJObservableCubeSet Q p q a = ResponseJ (cubeSet Q) p q a.toFun :=
   rfl
 
 /-- The scalar response observable is pointwise nonnegative. -/
-theorem responseJObservableCubeSet_nonneg {d : ℕ}
+theorem restrictionResponseJObservableCubeSet_nonneg {d : ℕ}
     (Q : TriadicCube d) (p q : Vec d) (a : RegCoeffField d) :
-    0 ≤ responseJObservableCubeSet Q p q a := by
-  simpa [responseJObservableCubeSet] using responseJ_nonneg (cubeSet Q) p q a.toFun
+    0 ≤ restrictionResponseJObservableCubeSet Q p q a := by
+  simpa [restrictionResponseJObservableCubeSet] using responseJ_nonneg (cubeSet Q) p q a.toFun
 
-theorem responseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarrier
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem restrictionResponseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarrier
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
-    (fun a : RegCoeffField d => responseJObservableCubeSet Q p q a) =ᵐ[P]
+    (fun a : RegCoeffField d => restrictionResponseJObservableCubeSet Q p q a) =ᵐ[P]
       (fun a : RegCoeffField d =>
         (1 / 2 : ℝ) * vecDot q (matVecMul (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight q) -
           vecDot p q -
@@ -93,7 +93,7 @@ theorem responseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarri
       IsCoarseBlockMatrix (openCubeSet Q) a.toFun (coarseBlockMatrix (openCubeSet Q) a.toFun) :=
     isCoarseBlockMatrix_coarseBlockMatrix hex
   calc
-    responseJObservableCubeSet Q p q a = ResponseJ (cubeSet Q) p q a.toFun := rfl
+    restrictionResponseJObservableCubeSet Q p q a = ResponseJ (cubeSet Q) p q a.toFun := rfl
     _ = Mu (cubeSet Q) (-p, q) a.toFun - vecDot p q := hResponse
     _ = Mu (openCubeSet Q) (-p, q) a.toFun - vecDot p q := by
       rw [Mu_cubeSet_eq_openCubeSet_of_triadicCube (Q := Q) (P := (-p, q)) (a := a.toFun)]
@@ -122,7 +122,7 @@ theorem responseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarri
         rw [coarseBlockMatrix_cubeSet_eq_openCubeSet_of_triadicCube Q a.toFun]
 
 private theorem integrable_responseJQuadratic_coarseBlockMatrix_of_integrable_coarseFullBlockMatrixAtCube
-    {d : ℕ} {P : CoeffLaw d} [IsFiniteMeasure P] {Q : TriadicCube d} (p q : Vec d)
+    {d : ℕ} {P : RestrictionCoeffLaw d} [IsFiniteMeasure P] {Q : TriadicCube d} (p q : Vec d)
     (hBlock : Integrable (coarseFullBlockMatrixAtCube Q) P) :
     Integrable
       (fun a : RegCoeffField d =>
@@ -163,35 +163,35 @@ private theorem integrable_responseJQuadratic_coarseBlockMatrix_of_integrable_co
     (((hTermLR.const_mul (1 / 2 : ℝ)).sub (integrable_const _)).sub hTermLL).add
       (hTermUL.const_mul (1 / 2 : ℝ))
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 /-- Full coarse-block integrability makes the scalar response integrable.
 
 The law carrier supplies the a.s. elliptic support and the deterministic
 `ResponseJ = Mu(-p,q) - p·q` identity; the only remaining analytic input is
 integrability of the finite-dimensional coarse block. -/
-theorem integrable_responseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d)
     (hBlock : Integrable (coarseFullBlockMatrixAtCube Q) P) :
-    Integrable (responseJObservableCubeSet Q p q) P := by
+    Integrable (restrictionResponseJObservableCubeSet Q p q) P := by
   letI : IsProbabilityMeasure P := hP.isProbability
   exact
     (integrable_responseJQuadratic_coarseBlockMatrix_of_integrable_coarseFullBlockMatrixAtCube
       (P := P) (Q := Q) p q hBlock).congr
-        (responseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarrier
+        (restrictionResponseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarrier
           hP Q p q).symm
 
 /-- Expected scalar response expressed through the annealed coarse block
-matrix, with the stochastic hypotheses packaged in `LawCarrier`.
+matrix, with the stochastic hypotheses packaged in `RestrictionLawCarrier`.
 
 This is the note-facing Chapter 4 source identity: Ch5 should call this rather
 than passing deterministic coarse-data witnesses. -/
-theorem integral_responseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem integral_restrictionResponseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d)
     (hBlock : Integrable (coarseFullBlockMatrixAtCube Q) P) :
-    ∫ a, responseJObservableCubeSet Q p q a ∂P =
+    ∫ a, restrictionResponseJObservableCubeSet Q p q a ∂P =
       (1 / 2 : ℝ) * vecDot q (matVecMul (annealedBlockMatrix P (cubeSet Q)).lowerRight q) -
         vecDot p q -
         vecDot q (matVecMul (annealedBlockMatrix P (cubeSet Q)).lowerLeft p) +
@@ -209,12 +209,12 @@ theorem integral_responseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
     intro i j
     simpa [M, blockMatEntry] using hEntry (Sum.inl i) (Sum.inl j)
   have hFormula :=
-    responseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarrier hP Q p q
+    restrictionResponseJObservableCubeSet_ae_eq_quadratic_coarseBlockMatrix_of_lawCarrier hP Q p q
   have hLRint := integral_vecDot_matVecMul_eq_entrywise_integral (P := P) hLR q q
   have hLLint := integral_vecDot_matVecMul_eq_entrywise_integral (P := P) hLL q p
   have hULint := integral_vecDot_matVecMul_eq_entrywise_integral (P := P) hUL p p
   calc
-    ∫ a, responseJObservableCubeSet Q p q a ∂P
+    ∫ a, restrictionResponseJObservableCubeSet Q p q a ∂P
         =
       ∫ a,
         (1 / 2 : ℝ) * vecDot q (matVecMul (M a).lowerRight q) -
@@ -266,24 +266,24 @@ theorem integral_responseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
         rw [hLRint, hLLint, hULint]
         rfl
 
-end LawCarrier
+end RestrictionLawCarrier
 
 /-- Centered scalar response observable on a deterministic triadic cube. -/
-noncomputable def centeredResponseJObservableCubeSet {d : ℕ}
+noncomputable def restrictionCenteredResponseJObservableCubeSet {d : ℕ}
     (Q : TriadicCube d) (p q p0 q0 : Vec d) : RegCoeffField d → ℝ :=
-  fun a => responseJObservableCubeSet Q p q a - (1 / 2 : ℝ) * vecDot p0 q0
+  fun a => restrictionResponseJObservableCubeSet Q p q a - (1 / 2 : ℝ) * vecDot p0 q0
 
 @[simp]
-theorem centeredResponseJObservableCubeSet_apply {d : ℕ}
+theorem restrictionCenteredResponseJObservableCubeSet_apply {d : ℕ}
     (Q : TriadicCube d) (p q p0 q0 : Vec d) (a : RegCoeffField d) :
-    centeredResponseJObservableCubeSet Q p q p0 q0 a =
-      responseJObservableCubeSet Q p q a - (1 / 2 : ℝ) * vecDot p0 q0 :=
+    restrictionCenteredResponseJObservableCubeSet Q p q p0 q0 a =
+      restrictionResponseJObservableCubeSet Q p q a - (1 / 2 : ℝ) * vecDot p0 q0 :=
   rfl
 
 /-- Annealed scalar response on a deterministic triadic cube. -/
 noncomputable def expectedResponseJCubeSet {d : ℕ}
-    (P : CoeffLaw d) (Q : TriadicCube d) (p q : Vec d) : ℝ :=
-  ∫ a, responseJObservableCubeSet Q p q a ∂P
+    (P : RestrictionCoeffLaw d) (Q : TriadicCube d) (p q : Vec d) : ℝ :=
+  ∫ a, restrictionResponseJObservableCubeSet Q p q a ∂P
 
 /-- Expected scalar response expressed through the annealed coarse block matrix.
 
@@ -291,12 +291,12 @@ The only stochastic hypotheses are the deterministic coarse-data identity
 almost surely and integrability of the full coarse block.  Scalarization is
 not used here; Ch5 gets its scalar formula by specializing this source
 identity. -/
-theorem integral_responseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} [IsProbabilityMeasure P]
+theorem integral_restrictionResponseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     (Q : TriadicCube d) (p q : Vec d)
     (hData : ∀ᵐ a ∂P, OpenCubeDeterministicCoarseData Q a.toFun)
     (hBlock : Integrable (coarseFullBlockMatrixAtCube Q) P) :
-    ∫ a, responseJObservableCubeSet Q p q a ∂P =
+    ∫ a, restrictionResponseJObservableCubeSet Q p q a ∂P =
       (1 / 2 : ℝ) * vecDot q (matVecMul (annealedBlockMatrix P (cubeSet Q)).lowerRight q) -
         vecDot p q -
         vecDot q (matVecMul (annealedBlockMatrix P (cubeSet Q)).lowerLeft p) +
@@ -331,7 +331,7 @@ theorem integral_responseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
       (MeasureTheory.integrable_finset_sum Finset.univ fun j _ =>
         (hUL i j).mul_const (p j)).const_mul (p i)
   have hFormula :
-      (fun a : RegCoeffField d => responseJObservableCubeSet Q p q a) =ᵐ[P]
+      (fun a : RegCoeffField d => restrictionResponseJObservableCubeSet Q p q a) =ᵐ[P]
         (fun a : RegCoeffField d =>
           (1 / 2 : ℝ) * vecDot q (matVecMul (M a).lowerRight q) -
             vecDot p q -
@@ -339,7 +339,7 @@ theorem integral_responseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
             (1 / 2 : ℝ) * vecDot p (matVecMul (M a).upperLeft p)) := by
     filter_upwards [hData] with a ha
     calc
-      responseJObservableCubeSet Q p q a = ResponseJ (cubeSet Q) p q a.toFun := rfl
+      restrictionResponseJObservableCubeSet Q p q a = ResponseJ (cubeSet Q) p q a.toFun := rfl
       _ = ResponseJ (openCubeSet Q) p q a.toFun :=
         responseJ_cubeSet_eq_openCubeSet_of_triadicCube Q p q a.toFun
       _ =
@@ -360,7 +360,7 @@ theorem integral_responseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
   have hLLint := integral_vecDot_matVecMul_eq_entrywise_integral (P := P) hLL q p
   have hULint := integral_vecDot_matVecMul_eq_entrywise_integral (P := P) hUL p p
   calc
-    ∫ a, responseJObservableCubeSet Q p q a ∂P
+    ∫ a, restrictionResponseJObservableCubeSet Q p q a ∂P
         =
       ∫ a,
         (1 / 2 : ℝ) * vecDot q (matVecMul (M a).lowerRight q) -
@@ -396,17 +396,17 @@ theorem integral_responseJObservableCubeSet_eq_quadratic_annealedBlockMatrix
 
 /-- Annealed finite descendant average of scalar responses. -/
 noncomputable def expectedDescendantsAverageResponseJCubeSet {d : ℕ}
-    (P : CoeffLaw d) (Q : TriadicCube d) (j : ℕ) (p q : Vec d) : ℝ :=
+    (P : RestrictionCoeffLaw d) (Q : TriadicCube d) (j : ℕ) (p q : Vec d) : ℝ :=
   descendantsAverage Q j (fun R => expectedResponseJCubeSet P R p q)
 
 /-- Difference of two annealed scalar responses, the basic `τ`-type quantity. -/
 noncomputable def tauResponseJCubeSet {d : ℕ}
-    (P : CoeffLaw d) (Qchild Qparent : TriadicCube d) (p q : Vec d) : ℝ :=
+    (P : RestrictionCoeffLaw d) (Qchild Qparent : TriadicCube d) (p q : Vec d) : ℝ :=
   expectedResponseJCubeSet P Qchild p q - expectedResponseJCubeSet P Qparent p q
 
 /-- Finite descendant averages preserve integrability. -/
 theorem integrable_descendantsAverage
-    {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {j : ℕ}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {Q : TriadicCube d} {j : ℕ}
     {F : TriadicCube d → RegCoeffField d → ℝ}
     (hF : ∀ R, R ∈ descendantsAtDepth Q j → Integrable (F R) P) :
     Integrable
@@ -422,7 +422,7 @@ theorem integrable_descendantsAverage
 /-- Finite descendant averages commute with expectation under childwise
 integrability. -/
 theorem integral_descendantsAverage_eq_descendantsAverage_integral
-    {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {j : ℕ}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {Q : TriadicCube d} {j : ℕ}
     {F : TriadicCube d → RegCoeffField d → ℝ}
     (hF : ∀ R, R ∈ descendantsAtDepth Q j → Integrable (F R) P) :
     ∫ a, descendantsAverage Q j (fun R => F R a) ∂P =
@@ -449,7 +449,7 @@ theorem integral_descendantsAverage_eq_descendantsAverage_integral
 
 /-- Finite descendant averages preserve `MemLp`. -/
 theorem memLp_descendantsAverage
-    {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {j : ℕ} {r : ℝ≥0∞}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {Q : TriadicCube d} {j : ℕ} {r : ℝ≥0∞}
     {F : TriadicCube d → RegCoeffField d → ℝ}
     (hF : ∀ R, R ∈ descendantsAtDepth Q j → MemLp (F R) r P) :
     MemLp
@@ -464,46 +464,46 @@ theorem memLp_descendantsAverage
 
 /-- Finite descendant averages of response observables are integrable if the
 child responses are integrable. -/
-theorem integrable_descendantsAverage_responseJObservableCubeSet
-    {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {j : ℕ} {p q : Vec d}
+theorem integrable_descendantsAverage_restrictionResponseJObservableCubeSet
+    {d : ℕ} {P : RestrictionCoeffLaw d} {Q : TriadicCube d} {j : ℕ} {p q : Vec d}
     (hJ : ∀ R, R ∈ descendantsAtDepth Q j →
-      Integrable (responseJObservableCubeSet R p q) P) :
+      Integrable (restrictionResponseJObservableCubeSet R p q) P) :
     Integrable
       (fun a : RegCoeffField d =>
-        descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a)) P :=
+        descendantsAverage Q j (fun R => restrictionResponseJObservableCubeSet R p q a)) P :=
   integrable_descendantsAverage
     (P := P) (Q := Q) (j := j)
-    (F := fun R a => responseJObservableCubeSet R p q a) hJ
+    (F := fun R a => restrictionResponseJObservableCubeSet R p q a) hJ
 
 /-- Finite descendant averages of response observables are in `L^r` if the
 child responses are in `L^r`. -/
-theorem memLp_descendantsAverage_responseJObservableCubeSet
-    {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {j : ℕ} {r : ℝ≥0∞}
+theorem memLp_descendantsAverage_restrictionResponseJObservableCubeSet
+    {d : ℕ} {P : RestrictionCoeffLaw d} {Q : TriadicCube d} {j : ℕ} {r : ℝ≥0∞}
     {p q : Vec d}
     (hJ : ∀ R, R ∈ descendantsAtDepth Q j →
-      MemLp (responseJObservableCubeSet R p q) r P) :
+      MemLp (restrictionResponseJObservableCubeSet R p q) r P) :
     MemLp
       (fun a : RegCoeffField d =>
-        descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a)) r P :=
+        descendantsAverage Q j (fun R => restrictionResponseJObservableCubeSet R p q a)) r P :=
   memLp_descendantsAverage
     (P := P) (Q := Q) (j := j) (r := r)
-    (F := fun R a => responseJObservableCubeSet R p q a) hJ
+    (F := fun R a => restrictionResponseJObservableCubeSet R p q a) hJ
 
 /-- Centering by a deterministic scalar preserves integrability. -/
-theorem integrable_centeredResponseJObservableCubeSet
-    {d : ℕ} {P : CoeffLaw d} [IsFiniteMeasure P]
+theorem integrable_restrictionCenteredResponseJObservableCubeSet
+    {d : ℕ} {P : RestrictionCoeffLaw d} [IsFiniteMeasure P]
     (Q : TriadicCube d) (p q p0 q0 : Vec d)
-    (hJ : Integrable (responseJObservableCubeSet Q p q) P) :
-    Integrable (centeredResponseJObservableCubeSet Q p q p0 q0) P := by
-  simpa [centeredResponseJObservableCubeSet] using hJ.sub (integrable_const _)
+    (hJ : Integrable (restrictionResponseJObservableCubeSet Q p q) P) :
+    Integrable (restrictionCenteredResponseJObservableCubeSet Q p q p0 q0) P := by
+  simpa [restrictionCenteredResponseJObservableCubeSet] using hJ.sub (integrable_const _)
 
 /-- Centering by a deterministic scalar preserves `MemLp` under a finite
 measure. -/
-theorem memLp_centeredResponseJObservableCubeSet
-    {d : ℕ} {P : CoeffLaw d} {r : ℝ≥0∞} [IsFiniteMeasure P]
+theorem memLp_restrictionCenteredResponseJObservableCubeSet
+    {d : ℕ} {P : RestrictionCoeffLaw d} {r : ℝ≥0∞} [IsFiniteMeasure P]
     (Q : TriadicCube d) (p q p0 q0 : Vec d)
-    (hJ : MemLp (responseJObservableCubeSet Q p q) r P) :
-    MemLp (centeredResponseJObservableCubeSet Q p q p0 q0) r P := by
+    (hJ : MemLp (restrictionResponseJObservableCubeSet Q p q) r P) :
+    MemLp (restrictionCenteredResponseJObservableCubeSet Q p q p0 q0) r P := by
   convert
     hJ.sub
       (MeasureTheory.memLp_const
@@ -511,22 +511,22 @@ theorem memLp_centeredResponseJObservableCubeSet
 
 /-- The integral of the centered response is the annealed response minus the
 deterministic centering scalar. -/
-theorem integral_centeredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_sub_half_dot
-    {d : ℕ} {P : CoeffLaw d} [IsProbabilityMeasure P]
+theorem integral_restrictionCenteredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_sub_half_dot
+    {d : ℕ} {P : RestrictionCoeffLaw d} [IsProbabilityMeasure P]
     (Q : TriadicCube d) (p q p0 q0 : Vec d)
-    (hJ : Integrable (responseJObservableCubeSet Q p q) P) :
-    ∫ a, centeredResponseJObservableCubeSet Q p q p0 q0 a ∂P =
+    (hJ : Integrable (restrictionResponseJObservableCubeSet Q p q) P) :
+    ∫ a, restrictionCenteredResponseJObservableCubeSet Q p q p0 q0 a ∂P =
       expectedResponseJCubeSet P Q p q - (1 / 2 : ℝ) * vecDot p0 q0 := by
   have hConst :
       Integrable (fun _ : RegCoeffField d => (1 / 2 : ℝ) * vecDot p0 q0) P :=
     integrable_const _
   calc
-    ∫ a, centeredResponseJObservableCubeSet Q p q p0 q0 a ∂P
+    ∫ a, restrictionCenteredResponseJObservableCubeSet Q p q p0 q0 a ∂P
         = ∫ a,
-            responseJObservableCubeSet Q p q a -
+            restrictionResponseJObservableCubeSet Q p q a -
               (1 / 2 : ℝ) * vecDot p0 q0 ∂P := by
           rfl
-    _ = ∫ a, responseJObservableCubeSet Q p q a ∂P -
+    _ = ∫ a, restrictionResponseJObservableCubeSet Q p q a ∂P -
           ∫ _a : RegCoeffField d, (1 / 2 : ℝ) * vecDot p0 q0 ∂P := by
           rw [integral_sub hJ hConst]
     _ = expectedResponseJCubeSet P Q p q - (1 / 2 : ℝ) * vecDot p0 q0 := by
@@ -535,92 +535,92 @@ theorem integral_centeredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_
 
 /-- Finite descendant response averages commute with expectation, assuming
 childwise integrability. -/
-theorem integral_descendantsAverage_responseJObservableCubeSet_eq_expectedDescendantsAverageResponseJCubeSet
-    {d : ℕ} {P : CoeffLaw d}
+theorem integral_descendantsAverage_restrictionResponseJObservableCubeSet_eq_expectedDescendantsAverageResponseJCubeSet
+    {d : ℕ} {P : RestrictionCoeffLaw d}
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d)
     (hJ : ∀ R, R ∈ descendantsAtDepth Q j →
-      Integrable (responseJObservableCubeSet R p q) P) :
+      Integrable (restrictionResponseJObservableCubeSet R p q) P) :
     ∫ a,
-        descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a) ∂P =
+        descendantsAverage Q j (fun R => restrictionResponseJObservableCubeSet R p q a) ∂P =
       expectedDescendantsAverageResponseJCubeSet P Q j p q := by
   classical
   let D : Finset (TriadicCube d) := descendantsAtDepth Q j
   calc
     ∫ a,
-        descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a) ∂P
+        descendantsAverage Q j (fun R => restrictionResponseJObservableCubeSet R p q a) ∂P
         =
       ∫ a,
         (D.card : ℝ)⁻¹ *
-          (∑ R ∈ D, responseJObservableCubeSet R p q a) ∂P := by
+          (∑ R ∈ D, restrictionResponseJObservableCubeSet R p q a) ∂P := by
           rfl
     _ =
       (D.card : ℝ)⁻¹ *
-        ∫ a, ∑ R ∈ D, responseJObservableCubeSet R p q a ∂P := by
+        ∫ a, ∑ R ∈ D, restrictionResponseJObservableCubeSet R p q a ∂P := by
           rw [integral_const_mul]
     _ =
       (D.card : ℝ)⁻¹ *
-        (∑ R ∈ D, ∫ a, responseJObservableCubeSet R p q a ∂P) := by
+        (∑ R ∈ D, ∫ a, restrictionResponseJObservableCubeSet R p q a ∂P) := by
           rw [MeasureTheory.integral_finset_sum D
             (fun R hR => hJ R (by simpa [D] using hR))]
     _ = expectedDescendantsAverageResponseJCubeSet P Q j p q := by
           simp [expectedDescendantsAverageResponseJCubeSet, expectedResponseJCubeSet,
             descendantsAverage, D]
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 /-- The named response observable is a.e.-measurable under a law carrier. -/
-theorem aemeasurable_responseJObservableCubeSet
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem aemeasurable_restrictionResponseJObservableCubeSet
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
-    AEMeasurable (responseJObservableCubeSet Q p q) P := by
-  simpa [responseJObservableCubeSet] using hP.aemeasurable_ResponseJ_cubeSet Q p q
+    AEMeasurable (restrictionResponseJObservableCubeSet Q p q) P := by
+  simpa [restrictionResponseJObservableCubeSet] using hP.aemeasurable_ResponseJ_cubeSet Q p q
 
 /-- The named response observable is a.e.-strongly-measurable under a law
 carrier. -/
-theorem aestronglyMeasurable_responseJObservableCubeSet
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem aestronglyMeasurable_restrictionResponseJObservableCubeSet
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
-    AEStronglyMeasurable (responseJObservableCubeSet Q p q) P :=
-  (hP.aemeasurable_responseJObservableCubeSet Q p q).aestronglyMeasurable
+    AEStronglyMeasurable (restrictionResponseJObservableCubeSet Q p q) P :=
+  (hP.aemeasurable_restrictionResponseJObservableCubeSet Q p q).aestronglyMeasurable
 
 /-- Centered response observables are a.e.-measurable under a law carrier. -/
-theorem aemeasurable_centeredResponseJObservableCubeSet
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem aemeasurable_restrictionCenteredResponseJObservableCubeSet
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q p0 q0 : Vec d) :
-    AEMeasurable (centeredResponseJObservableCubeSet Q p q p0 q0) P := by
-  simpa [centeredResponseJObservableCubeSet] using
-    (hP.aemeasurable_responseJObservableCubeSet Q p q).sub aemeasurable_const
+    AEMeasurable (restrictionCenteredResponseJObservableCubeSet Q p q p0 q0) P := by
+  simpa [restrictionCenteredResponseJObservableCubeSet] using
+    (hP.aemeasurable_restrictionResponseJObservableCubeSet Q p q).sub aemeasurable_const
 
 /-- Centered response observables are a.e.-strongly-measurable under a law
 carrier. -/
-theorem aestronglyMeasurable_centeredResponseJObservableCubeSet
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem aestronglyMeasurable_restrictionCenteredResponseJObservableCubeSet
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q p0 q0 : Vec d) :
-    AEStronglyMeasurable (centeredResponseJObservableCubeSet Q p q p0 q0) P :=
-  (hP.aemeasurable_centeredResponseJObservableCubeSet Q p q p0 q0).aestronglyMeasurable
+    AEStronglyMeasurable (restrictionCenteredResponseJObservableCubeSet Q p q p0 q0) P :=
+  (hP.aemeasurable_restrictionCenteredResponseJObservableCubeSet Q p q p0 q0).aestronglyMeasurable
 
 /-- Finite descendant averages of the named response observables are
 a.e.-measurable under a law carrier. -/
-theorem aemeasurable_descendantsAverage_responseJObservableCubeSet
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem aemeasurable_descendantsAverage_restrictionResponseJObservableCubeSet
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
-        descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a)) P := by
-  simpa [responseJObservableCubeSet] using
+        descendantsAverage Q j (fun R => restrictionResponseJObservableCubeSet R p q a)) P := by
+  simpa [restrictionResponseJObservableCubeSet] using
     hP.aemeasurable_descendantsAverage_ResponseJ_cubeSet Q j p q
 
 /-- Finite descendant averages of the named response observables are
 a.e.-strongly-measurable under a law carrier. -/
-theorem aestronglyMeasurable_descendantsAverage_responseJObservableCubeSet
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+theorem aestronglyMeasurable_descendantsAverage_restrictionResponseJObservableCubeSet
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEStronglyMeasurable
       (fun a : RegCoeffField d =>
-        descendantsAverage Q j (fun R => responseJObservableCubeSet R p q a)) P :=
-  (hP.aemeasurable_descendantsAverage_responseJObservableCubeSet Q j p q).aestronglyMeasurable
+        descendantsAverage Q j (fun R => restrictionResponseJObservableCubeSet R p q a)) P :=
+  (hP.aemeasurable_descendantsAverage_restrictionResponseJObservableCubeSet Q j p q).aestronglyMeasurable
 
-end LawCarrier
+end RestrictionLawCarrier
 
 end
 

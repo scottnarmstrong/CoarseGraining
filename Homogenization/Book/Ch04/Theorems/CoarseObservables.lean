@@ -13,7 +13,7 @@ open MeasureTheory
 # Coarse-observable measurability from `Mu`
 
 This file is the public Chapter 4 handoff for the finite algebraic
-consequences of `LawCarrier.aemeasurable_Mu_cubeSet`.
+consequences of `RestrictionLawCarrier.aemeasurable_Mu_cubeSet`.
 
 The surface is deliberately law-facing and definition-facing: downstream code
 gets measurability of `Mu`, the coarse block matrices, and response/block
@@ -23,7 +23,7 @@ no section-local wrapper tracks here.
 
 /-- Finite descendant averages preserve a.e.-measurability. -/
 theorem aemeasurable_descendantsAverage
-    {d : ℕ} {P : CoeffLaw d} {Q : TriadicCube d} {j : ℕ}
+    {d : ℕ} {P : RestrictionCoeffLaw d} {Q : TriadicCube d} {j : ℕ}
     {F : TriadicCube d → RegCoeffField d → ℝ}
     (hF : ∀ R, R ∈ descendantsAtDepth Q j → AEMeasurable (F R) P) :
     AEMeasurable
@@ -36,7 +36,7 @@ theorem aemeasurable_descendantsAverage
         (fun R hR => hF R (by simpa [D] using hR)))
   simpa [descendantsAverage, D] using hsum.const_mul ((D.card : ℝ)⁻¹)
 
-namespace LawCarrier
+namespace RestrictionLawCarrier
 
 /-- A locally a.e.-elliptic field has a deterministic coarse block matrix on
 each triadic open cube, with the a.e. coefficient representative handled by the
@@ -99,15 +99,15 @@ theorem coarseBlockMatrix_cubeSet_eq_ch02_coarseBlockMatrix_of_aelocallyUniforml
 /-- A law carrier almost surely supplies deterministic coarse block matrix
 existence on every fixed triadic open cube. -/
 theorem ae_exists_coarseBlockMatrix_openCubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P) (Q : TriadicCube d) :
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P) (Q : TriadicCube d) :
     ∀ᵐ a ∂P, ∃ Abar : BlockMat d, IsCoarseBlockMatrix (openCubeSet Q) a.toFun Abar := by
   filter_upwards [hP.ae_locallyUniformlyEllipticField] with a ha
   exact exists_coarseBlockMatrix_openCubeSet_of_aelocallyUniformlyEllipticField ha Q
 
 /-- Origin-cube specialization of
-`LawCarrier.ae_exists_coarseBlockMatrix_openCubeSet`. -/
+`RestrictionLawCarrier.ae_exists_coarseBlockMatrix_openCubeSet`. -/
 theorem ae_exists_coarseBlockMatrix_openCubeSet_originCube
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P) (n : ℤ) :
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P) (n : ℤ) :
     ∀ᵐ a ∂P,
       ∃ Abar : BlockMat d, IsCoarseBlockMatrix (openCubeSet (originCube d n)) a.toFun Abar :=
   hP.ae_exists_coarseBlockMatrix_openCubeSet (originCube d n)
@@ -115,7 +115,7 @@ theorem ae_exists_coarseBlockMatrix_openCubeSet_originCube
 /-- The lower-right coarse entry `σ_*⁻¹(U; a)ᵢⱼ` is a.e.-measurable on a
 deterministic triadic cube. -/
 theorem aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
     AEMeasurable
       (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j) P := by
@@ -153,7 +153,7 @@ theorem aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet
 /-- The upper-left coarse entry `b(U; a)ᵢⱼ` is a.e.-measurable on a
 deterministic triadic cube. -/
 theorem aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
     AEMeasurable
       (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j) P := by
@@ -191,16 +191,16 @@ theorem aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet
 /-- Law-relative local-test representative for an upper-left coarse block
 entry on a fixed triadic cube.  The representative is constructed from the
 canonical `Mu` representatives and agrees a.e. with the raw coarse entry. -/
-theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_upperLeft_apply_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+theorem exists_isRestrictionLocalRandomVariable_ae_eq_coarseBlockMatrix_upperLeft_apply_cubeSet
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
     ∃ Y : RegCoeffField d → ℝ,
-      IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+      IsRestrictionLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
         (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j)
           =ᵐ[P] Y := by
   by_cases hij : i = j
   · subst j
-    rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
+    rcases hP.exists_isRestrictionLocalRandomVariable_ae_eq_Mu_cubeSet
         Q (Pi.single i 1, 0) with ⟨Y, hY_local, hY_eq⟩
     refine ⟨fun a => (2 : ℝ) * Y a, measurable_const.mul hY_local, ?_⟩
     filter_upwards [hY_eq] with a ha
@@ -209,12 +209,12 @@ theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_upperLeft_apply_cub
           (2 : ℝ) * Mu (cubeSet Q) (Pi.single i 1, 0) a.toFun := by
             simp [coarseBlockMatrix_upperLeft_apply]
       _ = (2 : ℝ) * Y a := by rw [ha]
-  · rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
+  · rcases hP.exists_isRestrictionLocalRandomVariable_ae_eq_Mu_cubeSet
         Q ((Pi.single i 1, 0) + (Pi.single j 1, 0)) with
       ⟨Ysum, hYsum_local, hYsum_eq⟩
-    rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
+    rcases hP.exists_isRestrictionLocalRandomVariable_ae_eq_Mu_cubeSet
         Q (Pi.single i 1, 0) with ⟨Yi, hYi_local, hYi_eq⟩
-    rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
+    rcases hP.exists_isRestrictionLocalRandomVariable_ae_eq_Mu_cubeSet
         Q (Pi.single j 1, 0) with ⟨Yj, hYj_local, hYj_eq⟩
     refine ⟨fun a => Ysum a - Yi a - Yj a,
       (hYsum_local.sub hYi_local).sub hYj_local, ?_⟩
@@ -230,16 +230,16 @@ theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_upperLeft_apply_cub
 /-- Law-relative local-test representative for a lower-right coarse block
 entry on a fixed triadic cube.  The representative is constructed from the
 canonical `Mu` representatives and agrees a.e. with the raw coarse entry. -/
-theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerRight_apply_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+theorem exists_isRestrictionLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerRight_apply_cubeSet
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
     ∃ Y : RegCoeffField d → ℝ,
-      IsLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
+      IsRestrictionLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q) Y ∧
         (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j)
           =ᵐ[P] Y := by
   by_cases hij : i = j
   · subst j
-    rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
+    rcases hP.exists_isRestrictionLocalRandomVariable_ae_eq_Mu_cubeSet
         Q (0, Pi.single i 1) with ⟨Y, hY_local, hY_eq⟩
     refine ⟨fun a => (2 : ℝ) * Y a, measurable_const.mul hY_local, ?_⟩
     filter_upwards [hY_eq] with a ha
@@ -248,12 +248,12 @@ theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerRight_apply_cu
           (2 : ℝ) * Mu (cubeSet Q) (0, Pi.single i 1) a.toFun := by
             simp [coarseBlockMatrix_lowerRight_apply]
       _ = (2 : ℝ) * Y a := by rw [ha]
-  · rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
+  · rcases hP.exists_isRestrictionLocalRandomVariable_ae_eq_Mu_cubeSet
         Q ((0, Pi.single i 1) + (0, Pi.single j 1)) with
       ⟨Ysum, hYsum_local, hYsum_eq⟩
-    rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
+    rcases hP.exists_isRestrictionLocalRandomVariable_ae_eq_Mu_cubeSet
         Q (0, Pi.single i 1) with ⟨Yi, hYi_local, hYi_eq⟩
-    rcases hP.exists_isLocalRandomVariable_ae_eq_Mu_cubeSet
+    rcases hP.exists_isRestrictionLocalRandomVariable_ae_eq_Mu_cubeSet
         Q (0, Pi.single j 1) with ⟨Yj, hYj_local, hYj_eq⟩
     refine ⟨fun a => Ysum a - Yi a - Yj a,
       (hYsum_local.sub hYi_local).sub hYj_local, ?_⟩
@@ -269,7 +269,7 @@ theorem exists_isLocalRandomVariable_ae_eq_coarseBlockMatrix_lowerRight_apply_cu
 /-- The upper-right mixed coarse entry is a.e.-measurable on a deterministic
 triadic cube. -/
 theorem aemeasurable_coarseBlockMatrix_upperRight_apply_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
     AEMeasurable
       (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight i j) P := by
@@ -298,7 +298,7 @@ theorem aemeasurable_coarseBlockMatrix_upperRight_apply_cubeSet
 /-- The lower-left mixed coarse entry is a.e.-measurable on a deterministic
 triadic cube. -/
 theorem aemeasurable_coarseBlockMatrix_lowerLeft_apply_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (i j : Fin d) :
     AEMeasurable
       (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft i j) P := by
@@ -326,7 +326,7 @@ theorem aemeasurable_coarseBlockMatrix_lowerLeft_apply_cubeSet
 
 /-- The full unfolded coarse block matrix is a.e.-measurable. -/
 theorem aemeasurable_coarseFullBlockMatrix_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P := by
@@ -355,7 +355,7 @@ theorem aemeasurable_coarseFullBlockMatrix_cubeSet
 /-- The upper-left block `b(U; a)` is a.e.-measurable as a matrix-valued
 observable. -/
 theorem aemeasurable_coarseB_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft) P := by
@@ -367,7 +367,7 @@ theorem aemeasurable_coarseB_cubeSet
 
 /-- The upper-right block of the doubled coarse matrix is a.e.-measurable. -/
 theorem aemeasurable_coarseBlockMatrix_upperRight_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight) P := by
@@ -379,7 +379,7 @@ theorem aemeasurable_coarseBlockMatrix_upperRight_cubeSet
 
 /-- The lower-left block of the doubled coarse matrix is a.e.-measurable. -/
 theorem aemeasurable_coarseBlockMatrix_lowerLeft_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft) P := by
@@ -392,7 +392,7 @@ theorem aemeasurable_coarseBlockMatrix_lowerLeft_cubeSet
 /-- The lower-right block `σ_*⁻¹(U; a)` is a.e.-measurable as a matrix-valued
 observable. -/
 theorem aemeasurable_coarseSigmaStarInv_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight) P := by
@@ -405,7 +405,7 @@ theorem aemeasurable_coarseSigmaStarInv_cubeSet
 /-- The mixed observable `σ_*⁻¹(U; a)κ(U; a)`, represented as the negative
 lower-left block, is a.e.-measurable as a matrix-valued observable. -/
 theorem aemeasurable_coarseSigmaStarInvKappaMean_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => -((coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft)) P := by
@@ -417,7 +417,7 @@ theorem aemeasurable_coarseSigmaStarInvKappaMean_cubeSet
 
 /-- The full unfolded starred inverse coarse block matrix is a.e.-measurable. -/
 theorem aemeasurable_coarseStarredFullBlockMatrixInv_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => toFullBlockMat (coarseStarredBlockMatrixInv (cubeSet Q) a.toFun)) P := by
@@ -445,7 +445,7 @@ theorem aemeasurable_coarseStarredFullBlockMatrixInv_cubeSet
 
 /-- Finite descendant averages of `Mu` over child cubes are a.e.-measurable. -/
 theorem aemeasurable_descendantsAverage_Mu_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (P0 : BlockVec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -458,7 +458,7 @@ theorem aemeasurable_descendantsAverage_Mu_cubeSet
 /-- Finite descendant averages of upper-left coarse entries are
 a.e.-measurable. -/
 theorem aemeasurable_descendantsAverage_coarseBlockMatrix_upperLeft_apply_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (i k : Fin d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -472,7 +472,7 @@ theorem aemeasurable_descendantsAverage_coarseBlockMatrix_upperLeft_apply_cubeSe
 /-- Finite descendant averages of upper-right coarse entries are
 a.e.-measurable. -/
 theorem aemeasurable_descendantsAverage_coarseBlockMatrix_upperRight_apply_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (i k : Fin d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -486,7 +486,7 @@ theorem aemeasurable_descendantsAverage_coarseBlockMatrix_upperRight_apply_cubeS
 /-- Finite descendant averages of lower-left coarse entries are
 a.e.-measurable. -/
 theorem aemeasurable_descendantsAverage_coarseBlockMatrix_lowerLeft_apply_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (i k : Fin d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -500,7 +500,7 @@ theorem aemeasurable_descendantsAverage_coarseBlockMatrix_lowerLeft_apply_cubeSe
 /-- Finite descendant averages of lower-right coarse entries are
 a.e.-measurable. -/
 theorem aemeasurable_descendantsAverage_coarseBlockMatrix_lowerRight_apply_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (i k : Fin d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -514,9 +514,9 @@ theorem aemeasurable_descendantsAverage_coarseBlockMatrix_lowerRight_apply_cubeS
 /-- Compose an a.e.-measurable observable with adjointing the coefficient
 field when the law is adjoint-invariant. -/
 theorem aemeasurable_comp_adjointCoeffField_of_adjointInvariantLaw
-    {d : ℕ} {P : CoeffLaw d} {β : Type*} [MeasurableSpace β]
+    {d : ℕ} {P : RestrictionCoeffLaw d} {β : Type*} [MeasurableSpace β]
     {F : RegCoeffField d → β}
-    (hAdj : AdjointInvariantLaw P) (hF : AEMeasurable F P) :
+    (hAdj : RestrictionAdjointInvariantLaw P) (hF : AEMeasurable F P) :
     AEMeasurable (fun a : RegCoeffField d => F (adjointReg a)) P := by
   have hFMap :
       AEMeasurable F (Measure.map (adjointReg (d := d)) P) := by
@@ -527,8 +527,8 @@ theorem aemeasurable_comp_adjointCoeffField_of_adjointInvariantLaw
 /-- The adjointed `Mu` observable is a.e.-measurable under an adjoint-invariant
 law. -/
 theorem aemeasurable_Mu_adjointCoeffField_cubeSet
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
-    (hAdj : AdjointInvariantLaw P) (Q : TriadicCube d) (P0 : BlockVec d) :
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hAdj : RestrictionAdjointInvariantLaw P) (Q : TriadicCube d) (P0 : BlockVec d) :
     AEMeasurable
       (fun a : RegCoeffField d => Mu (cubeSet Q) P0 (adjointReg a).toFun) P :=
   aemeasurable_comp_adjointCoeffField_of_adjointInvariantLaw hAdj
@@ -537,7 +537,7 @@ theorem aemeasurable_Mu_adjointCoeffField_cubeSet
 /-- `ResponseJ` is a.e.-measurable whenever the manuscript identity expressing
 it as `Mu(U; (-p,q)) - p·q` holds almost surely. -/
 theorem aemeasurable_ResponseJ_cubeSet_of_ae_eq_mu
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d)
     (hEq :
       (fun a : RegCoeffField d => ResponseJ (cubeSet Q) p q a.toFun) =ᵐ[P]
@@ -553,7 +553,7 @@ theorem aemeasurable_ResponseJ_cubeSet_of_ae_eq_mu
 `ResponseJ = Mu(-p,q) - p·q` holds almost surely on each deterministic
 triadic cube. -/
 theorem ResponseJ_cubeSet_eq_Mu_neg_left_sub_vecDot_ae
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
     (fun a : RegCoeffField d => ResponseJ (cubeSet Q) p q a.toFun) =ᵐ[P]
       (fun a : RegCoeffField d => Mu (cubeSet Q) (-p, q) a.toFun - vecDot p q) := by
@@ -565,7 +565,7 @@ theorem ResponseJ_cubeSet_eq_Mu_neg_left_sub_vecDot_ae
 
 /-- The scalar response observable is a.e.-measurable under a law carrier. -/
 theorem aemeasurable_ResponseJ_cubeSet
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (p q : Vec d) :
     AEMeasurable (fun a : RegCoeffField d => ResponseJ (cubeSet Q) p q a.toFun) P :=
   hP.aemeasurable_ResponseJ_cubeSet_of_ae_eq_mu Q p q
@@ -575,7 +575,7 @@ theorem aemeasurable_ResponseJ_cubeSet
 child response is almost surely identified with the corresponding `Mu`
 observable. -/
 theorem aemeasurable_descendantsAverage_ResponseJ_cubeSet_of_ae_eq_mu
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d)
     (hEq :
       ∀ R, R ∈ descendantsAtDepth Q j →
@@ -592,7 +592,7 @@ theorem aemeasurable_descendantsAverage_ResponseJ_cubeSet_of_ae_eq_mu
 /-- Finite descendant averages of scalar response observables are
 a.e.-measurable under a law carrier. -/
 theorem aemeasurable_descendantsAverage_ResponseJ_cubeSet
-    {d : ℕ} [NeZero d] {P : CoeffLaw d} (hP : LawCarrier P)
+    {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (Q : TriadicCube d) (j : ℕ) (p q : Vec d) :
     AEMeasurable
       (fun a : RegCoeffField d =>
@@ -605,8 +605,8 @@ theorem aemeasurable_descendantsAverage_ResponseJ_cubeSet
 /-- The adjointed `ResponseJ` observable is a.e.-measurable whenever the
 manuscript identity expressing it through adjointed `Mu` holds almost surely. -/
 theorem aemeasurable_ResponseJ_adjointCoeffField_cubeSet_of_ae_eq_mu
-    {d : ℕ} {P : CoeffLaw d} (hP : LawCarrier P)
-    (hAdj : AdjointInvariantLaw P) (Q : TriadicCube d) (p q : Vec d)
+    {d : ℕ} {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
+    (hAdj : RestrictionAdjointInvariantLaw P) (Q : TriadicCube d) (p q : Vec d)
     (hEq :
       (fun a : RegCoeffField d => ResponseJ (cubeSet Q) p q (adjointReg a).toFun) =ᵐ[P]
         (fun a : RegCoeffField d =>
@@ -620,7 +620,7 @@ theorem aemeasurable_ResponseJ_adjointCoeffField_cubeSet_of_ae_eq_mu
     (hP.aemeasurable_Mu_adjointCoeffField_cubeSet hAdj Q (-p, q)).sub aemeasurable_const
   exact hMu.congr hEq.symm
 
-end LawCarrier
+end RestrictionLawCarrier
 
 end Ch04
 end Book

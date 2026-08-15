@@ -25,12 +25,12 @@ variable {d : ℕ}
 
 /-! ## G0 — the weak-form predicate -/
 
-/-- **G0.**  The weak form of the coupled boundary problem
-`e.coupled.weak`.  A pair `(v, v*)` of `H¹(U)` functions solves the coupled
-problem for data `(p, q)` when, for every test pair `(φ, φ*)` of `H¹(U)`
-functions whose sum lies in `H¹₀(U)`,
+/-- **G0.**  The variational-identity component of the coupled boundary problem
+`e.coupled.weak`, to be paired with its affine trace condition.  For flux data
+`q`, the identity requires that every test pair `(φ, φ*)` of `H¹(U)` functions
+whose sum lies in `H¹₀(U)` satisfy
 `∫_U ∇φ·(a ∇v) + ∫_U ∇φ*·(aᵗ ∇v*) = ∫_U q·∇φ`. -/
-def CoupledWeakForm (a : CoeffField d) (U : Set (Vec d)) (p q : Vec d)
+def CoupledWeakForm (a : CoeffField d) (U : Set (Vec d)) (q : Vec d)
     (v vstar : H1Function U) : Prop :=
   ∀ (φ φstar : H1Function U), MemH10 U (fun x => φ.toFun x + φstar.toFun x) →
     (∫ x in U, vecDot (φ.grad x) (matVecMul (a x) (v.grad x)) ∂volume)
@@ -77,7 +77,7 @@ theorem H1Function.sum_toFun {ι : Type*} {U : Set (Vec d)} (s : Finset ι)
 
 /-- The affine map `x ↦ p·x` as an `H¹` function on the centered open cube, with
 constant gradient `p`.  This is the coordinate construction assembled from
-the LIH coordinate projections `coordOnOpenCubeSetOriginCube`. -/
+the library's coordinate projections `coordOnOpenCubeSetOriginCube`. -/
 def affineH1 (m : ℤ) (p : Vec d) : H1Function (openCubeSet (originCube d m)) :=
   ∑ i : Fin d, p i • H1Function.coordOnOpenCubeSetOriginCube (n := m) i
 

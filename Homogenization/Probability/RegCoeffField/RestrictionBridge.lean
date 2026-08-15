@@ -15,7 +15,7 @@ the missing link between the two local carrier σ-algebras:
   (`SliceMeasurability.lean`);
 * `RestrictionSigmaR U hU` — the comap along the restriction endomorphism
   `restrictReg U hU` — is the measurable local σ-algebra defining
-  `IsLocalRandomVariable`.
+  `IsRestrictionLocalRandomVariable`.
 
 The comparison holds because a localized entry-test generator factors through the
 restriction endomorphism: for a probe supported in `U`, the restriction leaves the
@@ -32,7 +32,7 @@ machinery expresses its dense-probe inner products
 `LocalSigmaR U`-measurable — hence restriction-local — functions of the carrier
 field.
 
-Reference: the paper (Armstrong–Kuusi–Loher, in prep).
+Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
 
 namespace Homogenization
@@ -85,7 +85,7 @@ theorem localSigmaR_le_restrictionSigmaR (U : Set (Vec d)) (hU : MeasurableSet U
 
 /-- A carrier observable that is `LocalSigmaR U`-measurable is
 `RestrictionSigmaR U hU`-measurable.  (For `β = ℝ` this is exactly the
-`IsLocalRandomVariable` predicate of Chapter 4.) -/
+`IsRestrictionLocalRandomVariable` predicate of Chapter 4.) -/
 theorem measurable_restrictionSigmaR_of_measurable_localSigmaR {β : Type*} [MeasurableSpace β]
     {U : Set (Vec d)} (hU : MeasurableSet U) {X : RegCoeffField d → β}
     (hX : @Measurable (RegCoeffField d) β (LocalSigmaR U) _ X) :

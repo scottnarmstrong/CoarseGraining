@@ -45,8 +45,8 @@ ellipticity coefficients are the shifted coefficients
 `sLower + beta` and `sUpper + beta`, as required for the Section 5.2 moment
 input. -/
 theorem paired_lowScaleTailSquares_special_le_baseline_add_positiveExcess
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {k m : ℕ} (hkm : k ≤ m) (e : Vec d) (a : RegCoeffField d) :
     let β := section53CoarseFluctuationBeta hP4
@@ -58,7 +58,7 @@ theorem paired_lowScaleTailSquares_special_le_baseline_add_positiveExcess
     let p_e := specialPAtScale hP hStruct (m : ℤ) e
     let q_e := specialQAtScale hP hStruct (m : ℤ) e
     let σ := sigmaHatAtScale hP hStruct (m : ℤ)
-    let Jm := Ch04.responseJObservableCubeSet Q p_e q_e a
+    let Jm := Ch04.restrictionResponseJObservableCubeSet Q p_e q_e a
     let lowerCoeff := (Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹
     let upperCoeff := Ch04.LambdaSqCoeffField Q t' (.finite 1) a
     let lowerBase := (hP.barSigmaStarAtScale hStruct 0)⁻¹
@@ -88,7 +88,7 @@ theorem paired_lowScaleTailSquares_special_le_baseline_add_positiveExcess
   let p_e := specialPAtScale hP hStruct (m : ℤ) e
   let q_e := specialQAtScale hP hStruct (m : ℤ) e
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
-  let Jm := Ch04.responseJObservableCubeSet Q p_e q_e a
+  let Jm := Ch04.restrictionResponseJObservableCubeSet Q p_e q_e a
   let lowerCoeff := (Ch04.lambdaSqCoeffField Q s' (.finite 1) a)⁻¹
   let upperCoeff := Ch04.LambdaSqCoeffField Q t' (.finite 1) a
   let lowerBase := (hP.barSigmaStarAtScale hStruct 0)⁻¹
@@ -116,7 +116,7 @@ theorem paired_lowScaleTailSquares_special_le_baseline_add_positiveExcess
     exact Ch04.LambdaSqCoeffField_finite_nonneg Q a ht'_pos (by norm_num)
   have hJ_nonneg : 0 ≤ Jm := by
     dsimp [Jm]
-    exact Ch04.responseJObservableCubeSet_nonneg Q p_e q_e a
+    exact Ch04.restrictionResponseJObservableCubeSet_nonneg Q p_e q_e a
   have hσ_nonneg : 0 ≤ σ := by
     dsimp [σ, sigmaHatAtScale]
     exact Real.sqrt_nonneg _

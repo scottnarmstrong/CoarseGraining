@@ -21,14 +21,14 @@ namespace Homogenization
 open MeasureTheory Filter Topology
 open scoped ENNReal NNReal
 
-/-- **Real Chebyshev level bound.**  If `S ⊆ {x | ε ≤ h x}` with `ε ≥ 0`, the
-measure `μ S` is finite and `‖h‖_{L^p(μ)} < ∞`, then
+/-- **Real Chebyshev level bound.**  If `S ⊆ {x | ε ≤ h x}` with `ε ≥ 0` and
+`‖h‖_{L^p(μ)} < ∞`, then
 `ε · (μ S)^{1/p} ≤ ‖h‖_{L^p(μ)}` in real numbers. -/
 theorem real_chebyshev_level {α : Type*} {m0 : MeasurableSpace α} {μ : Measure α}
     {p : ℝ≥0∞} (hp0 : p ≠ 0) (hptop : p ≠ ⊤)
     {h : α → ℝ} (hmeas : AEStronglyMeasurable h μ)
     (hfin : eLpNorm h p μ ≠ ⊤)
-    {ε : ℝ} (hε : 0 ≤ ε) {S : Set α} (hμS : μ S ≠ ⊤)
+    {ε : ℝ} (hε : 0 ≤ ε) {S : Set α}
     (hSsub : ∀ x ∈ S, ε ≤ h x) :
     ε * (μ S).toReal ^ (1 / p.toReal) ≤ (eLpNorm h p μ).toReal := by
   set q : ℝ := p.toReal with hq_def
@@ -44,7 +44,7 @@ theorem real_chebyshev_level {α : Type*} {m0 : MeasurableSpace α} {μ : Measur
   have hcombined :
       (ENNReal.ofReal ε) ^ q * μ S ≤ eLpNorm h p μ ^ q := by
     refine le_trans ?_ hstep
-    exact mul_le_mul_left' (measure_mono hSsub') _
+    exact mul_le_mul_right (measure_mono hSsub') _
   -- Move to reals.
   have hNfin : eLpNorm h p μ ^ q ≠ ⊤ := by
     simpa using ENNReal.rpow_ne_top_of_nonneg hq.le hfin

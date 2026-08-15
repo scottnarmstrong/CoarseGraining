@@ -7,7 +7,7 @@ import Homogenization.HighContrast.Corridor.PhaseComparison.Averaging
 # Phase comparison (Prop 4.4, discrete-grid variant): facade
 
 Formalization of Proposition `p.phase.comparison` of the high-moment paper
-(Armstrong–Kuusi–Loher, in preparation), §4.4, with the continuum `σ`-average
+(Armstrong–Kuusi–Loher, to appear), §4.4, with the continuum `σ`-average
 over `[0, ℓ)^d` replaced by the finite uniform grid `gridPhase ℓ N j`,
 `j : Fin d → Fin N`.
 

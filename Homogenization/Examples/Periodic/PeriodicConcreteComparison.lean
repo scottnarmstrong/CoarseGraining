@@ -52,7 +52,7 @@ theorem periodicConcrete_comparison {d : ℕ} [NeZero d] :
                 {m : ℕ} {g : Vec d → Vec d}
                 (pair : S.ComparisonPair aω ha m g),
                 X aω ≤ (3 : ℝ) ^ m →
-                Book.Ch03.ForceSobolevRegularity
+                Book.Ch03.Legacy.ForceSobolevRegularity
                   (Book.MainResults.originCube d m) Book.MainResults.fixedComparisonS g →
                 S.comparisonDefect Book.MainResults.fixedComparisonS pair ≤
                   C * ((3 : ℝ) ^ m / X aω) ^ (-alpha) *

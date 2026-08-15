@@ -30,9 +30,9 @@ remaining linear memory term is folded into the canonical lower-tail budget
 plus the quadratic deterministic memory channel `Hprev^2 / (1 + F_i)`.
 -/
 theorem sourceMaxResizedBudgetOfGrid_le_canonicalLowerTailBudget_add_memory_of_grid_noDrop
-    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.CoeffLaw d}
-    (hP : Homogenization.Book.Ch04.LawCarrier P)
-    (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+    (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+    (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
     (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
     (hc : HighContrastExponents d) (hcparams : hP4.params = hc.params) {N Nstar L i : ℕ}
     {rho stochRoot polyRoot etaSrc polyRootBound C_resp c_fold decay : ℝ}
@@ -321,10 +321,10 @@ window response-tail coefficient is exposed.
 theorem specialWeakNormEnergy_componentBudget_childTail_le_weakNormContribution_with_terminalLowerEdgeBudget_atScales
     {d : ℕ} [NeZero d] :
     ∃ C_high : ℝ, 0 ≤ C_high ∧
-    ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-      (hP : Homogenization.Book.Ch04.LawCarrier P)
-      (_hstat : Homogenization.Book.Ch04.StationaryLaw P)
-      (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+    ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+      (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+      (_hstat : Homogenization.Book.Ch04.RestrictionStationaryLaw P)
+      (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
       (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P)
       {k m : ℕ}, k < m → ∀ e : Homogenization.Vec d,
       Homogenization.Book.Ch02.vecNorm e = 1 →
@@ -662,9 +662,9 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
       Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C_osc C_lin C_high : ℝ,
       0 ≤ C_osc ∧ 0 ≤ C_lin ∧ 0 ≤ C_high ∧
-      ∀ {P : Homogenization.Book.Ch04.CoeffLaw d}
-        (hP : Homogenization.Book.Ch04.LawCarrier P)
-        (hStruct : Homogenization.Book.Ch04.StructuralLaw P)
+      ∀ {P : Homogenization.Book.Ch04.RestrictionCoeffLaw d}
+        (hP : Homogenization.Book.Ch04.RestrictionLawCarrier P)
+        (hStruct : Homogenization.Book.Ch04.RestrictionStructuralLaw P)
         (hP4 : Homogenization.Book.Ch05.QuantitativeCoarseGrainedEllipticity P),
         hP4.params = params →
         (hc : HighContrastExponents d) →
@@ -741,7 +741,7 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
          let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
          let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
-            (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+            (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
          let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
          let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -766,7 +766,7 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
          let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
          let childAvg := fun a : Homogenization.RegCoeffField d =>
           Homogenization.descendantsAverage Q (m - k)
-            (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+            (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
          let response := fun a : Homogenization.RegCoeffField d =>
           (5 * β⁻¹) ^ 2 * childAvg a
          let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
@@ -932,7 +932,7 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
       (1 + contrastExcessAtScale hP hStruct m) * 0
   let childAvg := fun a : Homogenization.RegCoeffField d =>
     Homogenization.descendantsAverage Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
   let response := fun a : Homogenization.RegCoeffField d =>
     (5 * β⁻¹) ^ 2 * childAvg a
   let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -1018,9 +1018,9 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
     intro a
     dsimp [childAvg]
     exact Homogenization.descendantsAverage_nonneg Q (m - k)
-      (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+      (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       (fun R _hR =>
-        Homogenization.Book.Ch04.responseJObservableCubeSet_nonneg R p_e q_e a)
+        Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_nonneg R p_e q_e a)
   have hsrc_nonneg_pb : ∀ a, 0 ≤ sourceMax a :=
     terminalSpectralPositivePartSourceMax_nonneg hP hStruct hc k m Q
       (fun x : Homogenization.RegCoeffField d => x)
@@ -1217,7 +1217,7 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
       let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
       let childAvg := fun a : Homogenization.RegCoeffField d =>
         Homogenization.descendantsAverage Q (m - k)
-          (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+          (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       let response := fun a : Homogenization.RegCoeffField d =>
         (5 * β⁻¹) ^ 2 * childAvg a
       let lowerSmall := fun a : Homogenization.RegCoeffField d =>
@@ -1231,7 +1231,7 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
       MeasureTheory.Integrable
         (fun a : Homogenization.RegCoeffField d =>
           (σ * lowerSmall a + σ⁻¹ * upperSmall a) * response a) P := by
-    simpa only [Homogenization.Book.Ch05.sigmaHatAtScale_eq, Homogenization.Book.Ch05.specialPAtScale_eq, one_div, Real.rpow_eq_pow, Homogenization.Book.Ch05.specialQAtScale_eq, Homogenization.Book.Ch04.responseJObservableCubeSet_apply] using
+    simpa only [Homogenization.Book.Ch05.sigmaHatAtScale_eq, Homogenization.Book.Ch05.specialPAtScale_eq, one_div, Real.rpow_eq_pow, Homogenization.Book.Ch05.specialQAtScale_eq, Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_apply] using
       (integrable_section52SmallTail_childResponseAverage_special_and_integral_le_responseMoment
         hP hStruct.stationary hStruct hP4 hkm e).1
   have hLowInt_term :
@@ -1247,7 +1247,7 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
       let σ := Homogenization.Book.Ch05.sigmaHatAtScale hP hStruct (m : ℤ)
       let childAvg := fun a : Homogenization.RegCoeffField d =>
         Homogenization.descendantsAverage Q (m - k)
-          (fun R => Homogenization.Book.Ch04.responseJObservableCubeSet R p_e q_e a)
+          (fun R => Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet R p_e q_e a)
       let response := fun a : Homogenization.RegCoeffField d =>
         (5 * β⁻¹) ^ 2 * childAvg a
       let lowerSlot : Homogenization.RegCoeffField d → {n : ℤ // n ∈ S} → ℝ := fun a n =>
@@ -1284,7 +1284,7 @@ theorem rawHighContrastResponseEnergy_atScales_of_P4_with_weakNormContribution_l
         S.attach.sum fun n =>
           if k ≤ Int.toNat n.1 then 0 else lowerSlot a n + upperSlot a n
       MeasureTheory.Integrable lowSum P := by
-    simpa only [Homogenization.Book.Ch05.sigmaHatAtScale_eq, Homogenization.Book.Ch05.specialPAtScale_eq, one_div, Real.rpow_eq_pow, Homogenization.Book.Ch05.specialQAtScale_eq, Homogenization.Book.Ch04.responseJObservableCubeSet_apply] using
+    simpa only [Homogenization.Book.Ch05.sigmaHatAtScale_eq, Homogenization.Book.Ch05.specialPAtScale_eq, one_div, Real.rpow_eq_pow, Homogenization.Book.Ch05.specialQAtScale_eq, Homogenization.Book.Ch04.restrictionResponseJObservableCubeSet_apply] using
       (integrable_section52LowTail_childResponseAverage_special_and_integral_le_responseMoment
         hP hStruct.stationary hStruct hP4 hkm e).1
   have htailBudget_terminal :

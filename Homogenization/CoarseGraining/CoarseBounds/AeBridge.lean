@@ -35,7 +35,7 @@ variable {d : ℕ} {Θ : ℝ} {a a' : CoeffField d}
 
 /-- The block energy density only depends on the coefficient field pointwise, so
 it is insensitive to changing `a` on a null set. -/
-theorem Mu_congr_of_ae_eq {U : Set (Vec d)} (hU : MeasurableSet U)
+theorem Mu_congr_of_ae_eq {U : Set (Vec d)}
     (hae : a =ᵐ[volume.restrict U] a') (P : BlockVec d) :
     Mu U P a = Mu U P a' := by
   have hset : muValueSet U P a = muValueSet U P a' := by
@@ -56,10 +56,10 @@ theorem Mu_congr_of_ae_eq {U : Set (Vec d)} (hU : MeasurableSet U)
 
 /-- Corollary of C2(i): the coarse block matrix is insensitive to a null-set
 change of the coefficient field. -/
-theorem coarseBlockMatrix_congr_of_ae_eq {U : Set (Vec d)} (hU : MeasurableSet U)
+theorem coarseBlockMatrix_congr_of_ae_eq {U : Set (Vec d)}
     (hae : a =ᵐ[volume.restrict U] a') :
     coarseBlockMatrix U a = coarseBlockMatrix U a' :=
-  coarseBlockMatrix_eq_of_mu_eq (fun P => Mu_congr_of_ae_eq hU hae P)
+  coarseBlockMatrix_eq_of_mu_eq (fun P => Mu_congr_of_ae_eq hae P)
 
 /-! ## C2(ii) — measurability of the elliptic locus
 
@@ -265,7 +265,7 @@ theorem exists_ellipticFieldOn_ae_eq {U : Set (Vec d)} (hU : MeasurableSet U)
         (∀ᵐ x ∂(volume.restrict U), blockCoeffField a' x = blockCoeffField a x) := by
   refine ⟨ellipticTruncate Θ a, isEllipticFieldOn_ellipticTruncate hU hΘ hmeasA,
     ellipticTruncate_ae_eq hae, ?_, ?_⟩
-  · exact coarseBlockMatrix_congr_of_ae_eq hU (ellipticTruncate_ae_eq hae)
+  · exact coarseBlockMatrix_congr_of_ae_eq (ellipticTruncate_ae_eq hae)
   · filter_upwards [ellipticTruncate_ae_eq (Θ := Θ) (a := a) hae] with x hx
     simp [blockCoeffField, hx]
 

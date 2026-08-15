@@ -22,8 +22,8 @@ scale this term is `O(delta * Theta_0)`, hence also
 /-- The Section 5.4 beta-weighted additivity-defect sum used in the one-step
 contraction proof. -/
 noncomputable def oneStepTauSumAtScale
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     (m : ℕ) (e : Vec d) : ℝ :=
   let β := VarianceBoundGoodScale.section54VarianceBeta hP4
@@ -35,13 +35,13 @@ noncomputable def oneStepTauSumAtScale
 
 /-- The harmless geometric constant for the one-step tau-sum absorption. -/
 noncomputable def oneStepTauSumConst
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) : ℝ :=
   3 * (geometricDiscount (VarianceBoundGoodScale.section54VarianceBeta hP4) 1)⁻¹
 
 /-- The tau-sum constant is nonnegative. -/
 theorem oneStepTauSumConst_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     0 ≤ oneStepTauSumConst hP4 := by
   unfold oneStepTauSumConst
@@ -53,8 +53,8 @@ theorem oneStepTauSumConst_nonneg
 
 /-- The scalar weight multiplying the tau sum is nonnegative. -/
 theorem oneStepScalarWeightAtScale_nonneg
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℕ) :
     0 ≤ oneStepScalarWeightAtScale hP hStruct m := by
   have hσ : 0 < sigmaHatAtScale hP hStruct (m : ℤ) :=
@@ -69,8 +69,8 @@ theorem oneStepScalarWeightAtScale_nonneg
 /-- At a good scale, the weighted tau sum is bounded by the geometric tail
 times `delta * sqrt(Theta_0)`. -/
 theorem oneStepTauSumAtScale_le
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le : delta ≤ 1 / 2)
     {m : ℕ}
@@ -134,8 +134,8 @@ theorem oneStepTauSumAtScale_le
 /-- At a good scale, the scalar-weighted tau sum is
 `O(delta * Theta_0)`. -/
 theorem oneStepScalarWeight_mul_tauSum_le_delta_theta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le : delta ≤ 1 / 2)
     {m : ℕ}
@@ -200,8 +200,8 @@ theorem oneStepScalarWeight_mul_tauSum_le_delta_theta
 /-- At a good scale, the scalar-weighted tau sum is also
 `O(sqrt(delta) * Theta_0)`. -/
 theorem oneStepScalarWeight_mul_tauSum_le_sqrt_delta_theta
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P)
     {delta : ℝ} (hdelta_pos : 0 < delta) (hdelta_le : delta ≤ 1 / 2)
     {m : ℕ}

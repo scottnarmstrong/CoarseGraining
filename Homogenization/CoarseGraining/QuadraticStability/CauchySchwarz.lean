@@ -8,7 +8,7 @@ namespace Homogenization
 # Quadratic stability, items B′1 and B′2
 
 Pure-algebra half of Lemma 4.1 (`l.quadratic.stability`) of the high-moment
-paper (Armstrong–Kuusi–Loher, in preparation).  This file proves the two
+paper (Armstrong–Kuusi–Loher, to appear).  This file proves the two
 pointwise (matrix-level) inequalities, phrased entirely through
 `blockVecDot`/`blockMatVecMul` on `BlockVec d`/`BlockMat d`:
 

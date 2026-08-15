@@ -27,18 +27,24 @@ theorem restrictCoeffField_eq_of_forall_mem_eq {d : ℕ} {U : Set (Vec d)}
   · simp [restrictCoeffField, hx, h x hx]
   · simp [restrictCoeffField, hx]
 
-theorem comp_restrictCoeffField_eq_of_isLocalObservable {β : Type*} {d : ℕ}
-    {U : Set (Vec d)} {X : CoeffField d → β} (hX : IsLocalObservable U X) :
+theorem comp_restrictCoeffField_eq_of_isRestrictionLocalObservable {β : Type*} {d : ℕ}
+    {U : Set (Vec d)} {X : CoeffField d → β} (hX : IsRestrictionLocalObservable U X) :
     X ∘ restrictCoeffField U = X := by
   funext a
   exact hX (by
     intro x hx
     simp [restrictCoeffField, hx])
 
-theorem map_eq_map_restrictCoeffField_of_isLocalObservable
+/-- Compatibility spelling for the restriction-local restriction identity. -/
+theorem comp_restrictCoeffField_eq_of_isLocalObservable {β : Type*} {d : ℕ}
+    {U : Set (Vec d)} {X : CoeffField d → β} (hX : IsLocalObservable U X) :
+    X ∘ restrictCoeffField U = X :=
+  comp_restrictCoeffField_eq_of_isRestrictionLocalObservable hX
+
+theorem map_eq_map_restrictCoeffField_of_isRestrictionLocalObservable
     {β : Type*} [MeasurableSpace β] {d : ℕ} {U : Set (Vec d)}
     {P : MeasureTheory.Measure (CoeffField d)} {X : CoeffField d → β}
-    (hX_meas : Measurable X) (hX_local : IsLocalObservable U X) :
+    (hX_meas : Measurable X) (hX_local : IsRestrictionLocalObservable U X) :
     MeasureTheory.Measure.map X (MeasureTheory.Measure.map (restrictCoeffField U) P) =
       MeasureTheory.Measure.map X P := by
   calc
@@ -47,12 +53,21 @@ theorem map_eq_map_restrictCoeffField_of_isLocalObservable
           simpa [Function.comp] using
             (MeasureTheory.Measure.map_map hX_meas (measurable_restrictCoeffField U) (μ := P))
     _ = MeasureTheory.Measure.map X P := by
-      rw [comp_restrictCoeffField_eq_of_isLocalObservable hX_local]
+      rw [comp_restrictCoeffField_eq_of_isRestrictionLocalObservable hX_local]
 
-theorem map_eq_of_map_restrictCoeffField_eq_of_isLocalObservable
+/-- Compatibility spelling for the restriction-local map identity. -/
+theorem map_eq_map_restrictCoeffField_of_isLocalObservable
+    {β : Type*} [MeasurableSpace β] {d : ℕ} {U : Set (Vec d)}
+    {P : MeasureTheory.Measure (CoeffField d)} {X : CoeffField d → β}
+    (hX_meas : Measurable X) (hX_local : IsRestrictionLocalObservable U X) :
+    MeasureTheory.Measure.map X (MeasureTheory.Measure.map (restrictCoeffField U) P) =
+      MeasureTheory.Measure.map X P :=
+  map_eq_map_restrictCoeffField_of_isRestrictionLocalObservable hX_meas hX_local
+
+theorem map_eq_of_map_restrictCoeffField_eq_of_isRestrictionLocalObservable
     {β : Type*} [MeasurableSpace β] {d : ℕ} {U : Set (Vec d)}
     {P Q : MeasureTheory.Measure (CoeffField d)} {X : CoeffField d → β}
-    (hX_meas : Measurable X) (hX_local : IsLocalObservable U X)
+    (hX_meas : Measurable X) (hX_local : IsRestrictionLocalObservable U X)
     (hPQ : MeasureTheory.Measure.map (restrictCoeffField U) P =
       MeasureTheory.Measure.map (restrictCoeffField U) Q) :
     MeasureTheory.Measure.map X P = MeasureTheory.Measure.map X Q := by
@@ -60,27 +75,68 @@ theorem map_eq_of_map_restrictCoeffField_eq_of_isLocalObservable
     MeasureTheory.Measure.map X P =
         MeasureTheory.Measure.map X (MeasureTheory.Measure.map (restrictCoeffField U) P) := by
           symm
-          exact map_eq_map_restrictCoeffField_of_isLocalObservable
+          exact map_eq_map_restrictCoeffField_of_isRestrictionLocalObservable
             (P := P) hX_meas hX_local
     _ = MeasureTheory.Measure.map X (MeasureTheory.Measure.map (restrictCoeffField U) Q) := by
       rw [hPQ]
     _ = MeasureTheory.Measure.map X Q :=
-      map_eq_map_restrictCoeffField_of_isLocalObservable
+      map_eq_map_restrictCoeffField_of_isRestrictionLocalObservable
         (P := Q) hX_meas hX_local
 
+/-- Compatibility spelling for the restriction-local map comparison. -/
+theorem map_eq_of_map_restrictCoeffField_eq_of_isLocalObservable
+    {β : Type*} [MeasurableSpace β] {d : ℕ} {U : Set (Vec d)}
+    {P Q : MeasureTheory.Measure (CoeffField d)} {X : CoeffField d → β}
+    (hX_meas : Measurable X) (hX_local : IsLocalObservable U X)
+    (hPQ : MeasureTheory.Measure.map (restrictCoeffField U) P =
+      MeasureTheory.Measure.map (restrictCoeffField U) Q) :
+    MeasureTheory.Measure.map X P = MeasureTheory.Measure.map X Q :=
+  map_eq_of_map_restrictCoeffField_eq_of_isRestrictionLocalObservable hX_meas hX_local hPQ
+
+theorem integral_map_restrictCoeffField_eq_of_isRestrictionLocalObservable
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E] [SecondCountableTopology E]
+    {d : ℕ} {U : Set (Vec d)} {P : MeasureTheory.Measure (CoeffField d)}
+    {X : CoeffField d → E}
+    (hX_meas : Measurable X) (hX_local : IsRestrictionLocalObservable U X) :
+    ∫ a, X a ∂(MeasureTheory.Measure.map (restrictCoeffField U) P) = ∫ a, X a ∂P := by
+  rw [MeasureTheory.integral_map (measurable_restrictCoeffField U).aemeasurable]
+  · apply MeasureTheory.integral_congr_ae
+    exact Filter.Eventually.of_forall <| fun a =>
+      congrFun (comp_restrictCoeffField_eq_of_isRestrictionLocalObservable hX_local) a
+  · exact hX_meas.aestronglyMeasurable
+
+/-- Compatibility spelling for the restriction-local integral identity. -/
 theorem integral_map_restrictCoeffField_eq_of_isLocalObservable
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     [MeasurableSpace E] [BorelSpace E] [SecondCountableTopology E]
     {d : ℕ} {U : Set (Vec d)} {P : MeasureTheory.Measure (CoeffField d)}
     {X : CoeffField d → E}
     (hX_meas : Measurable X) (hX_local : IsLocalObservable U X) :
-    ∫ a, X a ∂(MeasureTheory.Measure.map (restrictCoeffField U) P) = ∫ a, X a ∂P := by
-  rw [MeasureTheory.integral_map (measurable_restrictCoeffField U).aemeasurable]
-  · apply MeasureTheory.integral_congr_ae
-    exact Filter.Eventually.of_forall <| fun a =>
-      congrFun (comp_restrictCoeffField_eq_of_isLocalObservable hX_local) a
-  · exact hX_meas.aestronglyMeasurable
+    ∫ a, X a ∂(MeasureTheory.Measure.map (restrictCoeffField U) P) = ∫ a, X a ∂P :=
+  integral_map_restrictCoeffField_eq_of_isRestrictionLocalObservable hX_meas hX_local
 
+theorem integral_eq_of_map_restrictCoeffField_eq_of_isRestrictionLocalObservable
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    [MeasurableSpace E] [BorelSpace E] [SecondCountableTopology E]
+    {d : ℕ} {U : Set (Vec d)}
+    {P Q : MeasureTheory.Measure (CoeffField d)} {X : CoeffField d → E}
+    (hX_meas : Measurable X) (hX_local : IsRestrictionLocalObservable U X)
+    (hPQ : MeasureTheory.Measure.map (restrictCoeffField U) P =
+      MeasureTheory.Measure.map (restrictCoeffField U) Q) :
+    ∫ a, X a ∂P = ∫ a, X a ∂Q := by
+  calc
+    ∫ a, X a ∂P = ∫ a, X a ∂(MeasureTheory.Measure.map (restrictCoeffField U) P) := by
+      symm
+      exact integral_map_restrictCoeffField_eq_of_isRestrictionLocalObservable
+        (P := P) hX_meas hX_local
+    _ = ∫ a, X a ∂(MeasureTheory.Measure.map (restrictCoeffField U) Q) := by
+      rw [hPQ]
+    _ = ∫ a, X a ∂Q :=
+      integral_map_restrictCoeffField_eq_of_isRestrictionLocalObservable
+        (P := Q) hX_meas hX_local
+
+/-- Compatibility spelling for the restriction-local integral comparison. -/
 theorem integral_eq_of_map_restrictCoeffField_eq_of_isLocalObservable
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     [MeasurableSpace E] [BorelSpace E] [SecondCountableTopology E]
@@ -89,38 +145,51 @@ theorem integral_eq_of_map_restrictCoeffField_eq_of_isLocalObservable
     (hX_meas : Measurable X) (hX_local : IsLocalObservable U X)
     (hPQ : MeasureTheory.Measure.map (restrictCoeffField U) P =
       MeasureTheory.Measure.map (restrictCoeffField U) Q) :
-    ∫ a, X a ∂P = ∫ a, X a ∂Q := by
-  calc
-    ∫ a, X a ∂P = ∫ a, X a ∂(MeasureTheory.Measure.map (restrictCoeffField U) P) := by
-      symm
-      exact integral_map_restrictCoeffField_eq_of_isLocalObservable
-        (P := P) hX_meas hX_local
-    _ = ∫ a, X a ∂(MeasureTheory.Measure.map (restrictCoeffField U) Q) := by
-      rw [hPQ]
-    _ = ∫ a, X a ∂Q :=
-      integral_map_restrictCoeffField_eq_of_isLocalObservable
-        (P := Q) hX_meas hX_local
+    ∫ a, X a ∂P = ∫ a, X a ∂Q :=
+  integral_eq_of_map_restrictCoeffField_eq_of_isRestrictionLocalObservable hX_meas hX_local hPQ
 
+theorem measurable_of_isRestrictionLocalObservable_restrictionSigma
+    {β : Type*} [MeasurableSpace β] {d : ℕ} {U : Set (Vec d)}
+    {X : CoeffField d → β}
+    (hX_meas : Measurable X) (hX_local : IsRestrictionLocalObservable U X) :
+    @Measurable (CoeffField d) β (RestrictionSigma U) _ X := by
+  simpa [Function.comp, comp_restrictCoeffField_eq_of_isRestrictionLocalObservable hX_local] using
+    hX_meas.comp (measurable_restrictCoeffField_restrictionSigma (d := d) U)
+
+theorem IsRestrictionLocalObservable.mono {β : Type*} {d : ℕ} {U V : Set (Vec d)}
+    {X : CoeffField d → β} (hX : IsRestrictionLocalObservable U X) (hUV : U ⊆ V) :
+    IsRestrictionLocalObservable V X := by
+  intro a₁ a₂ hagree
+  exact hX fun x hx => hagree x (hUV hx)
+
+/-- Compatibility spelling for `IsRestrictionLocalObservable.mono`. -/
+theorem IsLocalObservable.mono {β : Type*} {d : ℕ} {U V : Set (Vec d)}
+    {X : CoeffField d → β} (hX : IsLocalObservable U X) (hUV : U ⊆ V) :
+    IsLocalObservable V X :=
+  IsRestrictionLocalObservable.mono hX hUV
+
+/-- Compatibility spelling for the restriction-local measurability theorem. -/
 theorem measurable_of_isLocalObservable_restrictionSigma
     {β : Type*} [MeasurableSpace β] {d : ℕ} {U : Set (Vec d)}
     {X : CoeffField d → β}
     (hX_meas : Measurable X) (hX_local : IsLocalObservable U X) :
-    @Measurable (CoeffField d) β (RestrictionSigma U) _ X := by
-  simpa [Function.comp, comp_restrictCoeffField_eq_of_isLocalObservable hX_local] using
-    hX_meas.comp (measurable_restrictCoeffField_restrictionSigma (d := d) U)
+    @Measurable (CoeffField d) β (RestrictionSigma U) _ X :=
+  measurable_of_isRestrictionLocalObservable_restrictionSigma hX_meas hX_local
 
-theorem IsLocalObservable.mono {β : Type*} {d : ℕ} {U V : Set (Vec d)}
-    {X : CoeffField d → β} (hX : IsLocalObservable U X) (hUV : U ⊆ V) :
-    IsLocalObservable V X := by
-  intro a₁ a₂ hagree
-  exact hX fun x hx => hagree x (hUV hx)
+theorem measurable_of_isRestrictionLocalObservable_restrictionSigma_mono
+    {β : Type*} [MeasurableSpace β] {d : ℕ} {U V : Set (Vec d)}
+    {X : CoeffField d → β} (hX_meas : Measurable X) (hX_local : IsRestrictionLocalObservable U X)
+    (hUV : U ⊆ V) :
+    @Measurable (CoeffField d) β (RestrictionSigma V) _ X :=
+  measurable_of_isRestrictionLocalObservable_restrictionSigma hX_meas (hX_local.mono hUV)
 
+/-- Compatibility spelling for the monotone restriction-local measurability theorem. -/
 theorem measurable_of_isLocalObservable_restrictionSigma_mono
     {β : Type*} [MeasurableSpace β] {d : ℕ} {U V : Set (Vec d)}
     {X : CoeffField d → β} (hX_meas : Measurable X) (hX_local : IsLocalObservable U X)
     (hUV : U ⊆ V) :
     @Measurable (CoeffField d) β (RestrictionSigma V) _ X :=
-  measurable_of_isLocalObservable_restrictionSigma hX_meas (hX_local.mono hUV)
+  measurable_of_isRestrictionLocalObservable_restrictionSigma_mono hX_meas hX_local hUV
 
 theorem comp_translateByInt_eq_of_isTranslationCovariant
     {β : Type*} {d : ℕ} {X : Set (Vec d) → CoeffField d → β}
@@ -196,12 +265,13 @@ theorem integral_eq_of_isTranslationCovariant_of_isStationary_aestronglyMeasurab
   exact integral_comp_eq_of_map_eq
     (measurable_translateByInt z) (hP z) (X U) hX_aemeas
 
-/-- A coefficient-space observable that is both measurable and local on `U`. -/
+/-- A coefficient-space observable that is both measurable and pointwise
+restriction-local on `U`. -/
 structure MeasurableLocalObservable (d : ℕ) (U : Set (Vec d)) (β : Type*)
     [MeasurableSpace β] where
   toFun : CoeffField d → β
   measurable_toFun : Measurable toFun
-  isLocal_toFun : IsLocalObservable U toFun
+  isLocal_toFun : IsRestrictionLocalObservable U toFun
 
 namespace MeasurableLocalObservable
 
@@ -215,20 +285,25 @@ theorem measurable (X : MeasurableLocalObservable d U β) : Measurable X :=
 theorem isLocal (X : MeasurableLocalObservable d U β) : IsLocalObservable U X :=
   X.isLocal_toFun
 
+/-- The explicit restriction-local spelling of the bundled locality field. -/
+theorem isRestrictionLocal (X : MeasurableLocalObservable d U β) :
+    IsRestrictionLocalObservable U X :=
+  X.isLocal_toFun
+
 theorem measurable_restrictionSigma (X : MeasurableLocalObservable d U β) :
     @Measurable (CoeffField d) β (RestrictionSigma U) _ X :=
-  measurable_of_isLocalObservable_restrictionSigma X.measurable X.isLocal
+  measurable_of_isRestrictionLocalObservable_restrictionSigma X.measurable X.isRestrictionLocal
 
 theorem measurable_restrictionSigma_mono {V : Set (Vec d)}
     (X : MeasurableLocalObservable d U β) (hUV : U ⊆ V) :
     @Measurable (CoeffField d) β (RestrictionSigma V) _ X :=
-  measurable_of_isLocalObservable_restrictionSigma_mono X.measurable X.isLocal hUV
+  measurable_of_isRestrictionLocalObservable_restrictionSigma_mono X.measurable X.isRestrictionLocal hUV
 
 def mono {V : Set (Vec d)} (X : MeasurableLocalObservable d U β) (hUV : U ⊆ V) :
     MeasurableLocalObservable d V β where
   toFun := X
   measurable_toFun := X.measurable
-  isLocal_toFun := X.isLocal.mono hUV
+  isLocal_toFun := X.isRestrictionLocal.mono hUV
 
 @[simp] theorem mono_apply {V : Set (Vec d)} (X : MeasurableLocalObservable d U β)
     (hUV : U ⊆ V) (a : CoeffField d) :
@@ -246,7 +321,7 @@ def comp {γ : Type*} [MeasurableSpace γ] (X : MeasurableLocalObservable d U β
   measurable_toFun := hf.comp X.measurable
   isLocal_toFun := by
     intro a₁ a₂ hagree
-    simpa [Function.comp] using congrArg f (X.isLocal hagree)
+    simpa [Function.comp] using congrArg f (X.isRestrictionLocal hagree)
 
 def prod {γ : Type*} [MeasurableSpace γ]
     (X : MeasurableLocalObservable d U β) (Y : MeasurableLocalObservable d U γ) :
@@ -256,7 +331,7 @@ def prod {γ : Type*} [MeasurableSpace γ]
     simpa using (X.measurable).prodMk Y.measurable
   isLocal_toFun := by
     intro a₁ a₂ hagree
-    simp [X.isLocal hagree, Y.isLocal hagree]
+    simp [X.isRestrictionLocal hagree, Y.isRestrictionLocal hagree]
 
 def pi {ι : Type*} {γ : ι → Type*} [∀ i, MeasurableSpace (γ i)]
     (X : ∀ i, MeasurableLocalObservable d U (γ i)) :
@@ -269,7 +344,7 @@ def pi {ι : Type*} {γ : ι → Type*} [∀ i, MeasurableSpace (γ i)]
   isLocal_toFun := by
     intro a₁ a₂ hagree
     funext i
-    exact (X i).isLocal hagree
+    exact (X i).isRestrictionLocal hagree
 
 def neg {β : Type*} [MeasurableSpace β] [Neg β] [MeasurableNeg β]
     (X : MeasurableLocalObservable d U β) :
@@ -283,7 +358,7 @@ def add {β : Type*} [MeasurableSpace β] [Add β] [MeasurableAdd₂ β]
   measurable_toFun := X.measurable.add Y.measurable
   isLocal_toFun := by
     intro a₁ a₂ hagree
-    simp [X.isLocal hagree, Y.isLocal hagree]
+    simp [X.isRestrictionLocal hagree, Y.isRestrictionLocal hagree]
 
 def sub {β : Type*} [MeasurableSpace β] [Sub β] [MeasurableSub₂ β]
     (X Y : MeasurableLocalObservable d U β) :
@@ -292,7 +367,7 @@ def sub {β : Type*} [MeasurableSpace β] [Sub β] [MeasurableSub₂ β]
   measurable_toFun := X.measurable.sub Y.measurable
   isLocal_toFun := by
     intro a₁ a₂ hagree
-    simp [X.isLocal hagree, Y.isLocal hagree]
+    simp [X.isRestrictionLocal hagree, Y.isRestrictionLocal hagree]
 
 def const_smul {M : Type*} [SMul M β] [MeasurableConstSMul M β]
     (c : M) (X : MeasurableLocalObservable d U β) :
@@ -301,7 +376,7 @@ def const_smul {M : Type*} [SMul M β] [MeasurableConstSMul M β]
   measurable_toFun := X.measurable.const_smul c
   isLocal_toFun := by
     intro a₁ a₂ hagree
-    simp [X.isLocal hagree]
+    simp [X.isRestrictionLocal hagree]
 
 def finsetPi {ι : Type*} [DecidableEq ι] {γ : ι → Type*} [∀ i, MeasurableSpace (γ i)]
     (s : Finset ι) {V : ι → Set (Vec d)}
@@ -315,7 +390,7 @@ def finsetPi {ι : Type*} [DecidableEq ι] {γ : ι → Type*} [∀ i, Measurabl
   isLocal_toFun := by
     intro a₁ a₂ hagree
     funext i
-    exact (X i).isLocal fun x hx => hagree x <| by
+    exact (X i).isRestrictionLocal fun x hx => hagree x <| by
       refine Set.mem_iUnion.2 ?_
       refine ⟨(i : ι), ?_⟩
       refine Set.mem_iUnion.2 ?_
@@ -344,14 +419,14 @@ noncomputable def finsetAverage {ι : Type*} [DecidableEq ι] {γ : Type*}
 
 theorem comp_restrictCoeffField_eq (X : MeasurableLocalObservable d U β) :
     X ∘ restrictCoeffField U = X :=
-  comp_restrictCoeffField_eq_of_isLocalObservable X.isLocal
+  comp_restrictCoeffField_eq_of_isRestrictionLocalObservable X.isRestrictionLocal
 
 theorem map_eq_map_restrictCoeffField
     (X : MeasurableLocalObservable d U β)
     {P : MeasureTheory.Measure (CoeffField d)} :
     MeasureTheory.Measure.map X (MeasureTheory.Measure.map (restrictCoeffField U) P) =
       MeasureTheory.Measure.map X P :=
-  map_eq_map_restrictCoeffField_of_isLocalObservable X.measurable X.isLocal
+  map_eq_map_restrictCoeffField_of_isRestrictionLocalObservable X.measurable X.isRestrictionLocal
 
 theorem map_eq_of_map_restrictCoeffField_eq
     (X : MeasurableLocalObservable d U β)
@@ -359,7 +434,8 @@ theorem map_eq_of_map_restrictCoeffField_eq
     (hPQ : MeasureTheory.Measure.map (restrictCoeffField U) P =
       MeasureTheory.Measure.map (restrictCoeffField U) Q) :
     MeasureTheory.Measure.map X P = MeasureTheory.Measure.map X Q :=
-  map_eq_of_map_restrictCoeffField_eq_of_isLocalObservable X.measurable X.isLocal hPQ
+  map_eq_of_map_restrictCoeffField_eq_of_isRestrictionLocalObservable
+    X.measurable X.isRestrictionLocal hPQ
 
 theorem measurable_comp_randomCoeffField
     {Ω : Type*} [MeasurableSpace Ω] (X : MeasurableLocalObservable d U β)
@@ -392,7 +468,7 @@ theorem integral_map_restrictCoeffField_eq
     {U : Set (Vec d)} (X : MeasurableLocalObservable d U E)
     {P : MeasureTheory.Measure (CoeffField d)} :
     ∫ a, X a ∂(MeasureTheory.Measure.map (restrictCoeffField U) P) = ∫ a, X a ∂P :=
-  integral_map_restrictCoeffField_eq_of_isLocalObservable X.measurable X.isLocal
+  integral_map_restrictCoeffField_eq_of_isRestrictionLocalObservable X.measurable X.isRestrictionLocal
 
 theorem integral_eq_of_map_restrictCoeffField_eq
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
@@ -402,7 +478,8 @@ theorem integral_eq_of_map_restrictCoeffField_eq
     (hPQ : MeasureTheory.Measure.map (restrictCoeffField U) P =
       MeasureTheory.Measure.map (restrictCoeffField U) Q) :
     ∫ a, X a ∂P = ∫ a, X a ∂Q :=
-  integral_eq_of_map_restrictCoeffField_eq_of_isLocalObservable X.measurable X.isLocal hPQ
+  integral_eq_of_map_restrictCoeffField_eq_of_isRestrictionLocalObservable
+    X.measurable X.isRestrictionLocal hPQ
 
 theorem iIndepFun_of_isRestrictionUnitRangeDependent
     {ι : Type*} [DecidableEq ι] {γ : ι → Type*} [∀ i, MeasurableSpace (γ i)]
@@ -625,6 +702,42 @@ theorem indepFun_finsetAverage_descendantsAtScaleScaleColorClass_of_isRestrictio
 
 end MeasurableLocalObservable
 
+/-- Explicit restriction-local spelling for the unchanged raw coefficient-field
+observable bundle. -/
+abbrev MeasurableRestrictionLocalObservable (d : ℕ) (U : Set (Vec d)) (β : Type*)
+    [MeasurableSpace β] :=
+  MeasurableLocalObservable d U β
+
+namespace MeasurableRestrictionLocalObservable
+
+export MeasurableLocalObservable (measurable measurable_restrictionSigma
+  measurable_restrictionSigma_mono mono mono_apply const comp prod pi neg add sub const_smul
+  finsetPi measurable_subtypeFinsetSum finsetSum finsetAverage comp_restrictCoeffField_eq
+  map_eq_map_restrictCoeffField map_eq_of_map_restrictCoeffField_eq
+  measurable_comp_randomCoeffField measurable_comp_randomCoeffField_restrictionSigma
+  indepFun_of_indep_restrictionSigma integral_map_restrictCoeffField_eq
+  integral_eq_of_map_restrictCoeffField_eq iIndepFun_of_isRestrictionUnitRangeDependent
+  indepFun_finset_of_isRestrictionUnitRangeDependent
+  indepFun_finsetSum_of_isRestrictionUnitRangeDependent
+  indepFun_finsetAverage_of_isRestrictionUnitRangeDependent
+  iIndepFun_descendantsAtScaleColorClass_of_isRestrictionUnitRangeDependent
+  indepFun_finset_descendantsAtScaleColorClass_of_isRestrictionUnitRangeDependent
+  indepFun_finsetSum_descendantsAtScaleColorClass_of_isRestrictionUnitRangeDependent
+  indepFun_finsetAverage_descendantsAtScaleColorClass_of_isRestrictionUnitRangeDependent
+  iIndepFun_descendantsAtScaleScaleColorClass_of_isRestrictionUnitRangeDependent
+  indepFun_finset_descendantsAtScaleScaleColorClass_of_isRestrictionUnitRangeDependent
+  indepFun_finsetSum_descendantsAtScaleScaleColorClass_of_isRestrictionUnitRangeDependent
+  indepFun_finsetAverage_descendantsAtScaleScaleColorClass_of_isRestrictionUnitRangeDependent)
+
+variable {β : Type*} [MeasurableSpace β] {d : ℕ} {U : Set (Vec d)}
+
+/-- The explicit restriction-local spelling of the bundled locality field. -/
+theorem isRestrictionLocal (X : MeasurableRestrictionLocalObservable d U β) :
+    IsRestrictionLocalObservable U X :=
+  MeasurableLocalObservable.isRestrictionLocal X
+
+end MeasurableRestrictionLocalObservable
+
 namespace RandomCoeffField
 
 variable {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (A : RandomCoeffField Ω d)
@@ -636,32 +749,32 @@ variable {Ω : Type*} [MeasurableSpace Ω] {d : ℕ} (A : RandomCoeffField Ω d)
 theorem law_eq_law_restrictSet_of_isLocalObservable
     {β : Type*} [MeasurableSpace β] (μ : MeasureTheory.Measure Ω)
     {U : Set (Vec d)} {X : CoeffField d → β}
-    (hX_meas : Measurable X) (hX_local : IsLocalObservable U X) :
+    (hX_meas : Measurable X) (hX_local : IsRestrictionLocalObservable U X) :
     MeasureTheory.Measure.map X ((A.restrictSet U).law μ) =
       MeasureTheory.Measure.map X (A.law μ) := by
   rw [A.law_restrictSet μ U]
-  exact map_eq_map_restrictCoeffField_of_isLocalObservable
+  exact map_eq_map_restrictCoeffField_of_isRestrictionLocalObservable
     (P := A.law μ) hX_meas hX_local
 
 theorem integral_comp_restrictSet_eq_of_isLocalObservable
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     [MeasurableSpace E] [BorelSpace E] [SecondCountableTopology E]
     (μ : MeasureTheory.Measure Ω) {U : Set (Vec d)} {X : CoeffField d → E}
-    (hX_local : IsLocalObservable U X) :
+    (hX_local : IsRestrictionLocalObservable U X) :
     ∫ ω, X ((A.restrictSet U) ω) ∂μ = ∫ ω, X (A ω) ∂μ := by
   apply MeasureTheory.integral_congr_ae
   exact Filter.Eventually.of_forall <| fun ω => by
-    have h := congrFun (comp_restrictCoeffField_eq_of_isLocalObservable hX_local) (A ω)
+    have h := congrFun (comp_restrictCoeffField_eq_of_isRestrictionLocalObservable hX_local) (A ω)
     simpa [A.restrictSet_apply] using h
 
 theorem integral_law_restrictSet_eq_of_isLocalObservable
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     [MeasurableSpace E] [BorelSpace E] [SecondCountableTopology E]
     (μ : MeasureTheory.Measure Ω) {U : Set (Vec d)} {X : CoeffField d → E}
-    (hX_meas : Measurable X) (hX_local : IsLocalObservable U X) :
+    (hX_meas : Measurable X) (hX_local : IsRestrictionLocalObservable U X) :
     ∫ a, X a ∂((A.restrictSet U).law μ) = ∫ a, X a ∂(A.law μ) := by
   rw [A.law_restrictSet μ U]
-  exact integral_map_restrictCoeffField_eq_of_isLocalObservable
+  exact integral_map_restrictCoeffField_eq_of_isRestrictionLocalObservable
     (P := A.law μ) hX_meas hX_local
 
 theorem law_eq_law_restrictSet

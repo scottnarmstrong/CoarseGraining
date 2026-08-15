@@ -95,8 +95,8 @@ def betaShiftedParams {d : ℕ}
         section53CoarseFluctuationBetaParams_pos params]
 
 @[simp]
-theorem betaShiftedP4_params {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+theorem betaShiftedP4_params {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     (betaShiftedP4 hP hStruct hP4).params = betaShiftedParams hP4.params := rfl
 
@@ -110,8 +110,8 @@ theorem shiftedOneStepContraction_homogenizationScale_of_local_shifted_budget
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ {delta : ℝ}, 0 < delta → delta ≤ 1 / 2 →
@@ -134,7 +134,7 @@ theorem shiftedOneStepContraction_homogenizationScale_of_local_shifted_budget
   refine ⟨C, hC_pos, ?_⟩
   intro P hP hStruct hP4 hparams delta hdelta_pos hdelta_le k n hkn hsep
     hgood_upper hgood_lower
-  let Pk := Ch04.scaleNormalizedLaw k P
+  let Pk := Ch04.restrictionScaleNormalizedLaw k P
   let hPk := hP.scaleNormalized k
   let hStructPk := hStruct.scaleNormalized k
   let hP4k := hP4.scaleNormalized hP hStruct k
@@ -159,7 +159,7 @@ theorem shiftedOneStepContraction_homogenizationScale_of_local_shifted_budget
           section53CoarseFluctuationBetaParams params := by
       simpa [hP4k, QuantitativeCoarseGrainedEllipticity.scaleNormalized] using hβeq
     have hshift :=
-      shiftedWidetildeThetaAtScale_scaleNormalizedLaw hP hStruct hP4
+      shiftedWidetildeThetaAtScale_restrictionScaleNormalizedLaw hP hStruct hP4
         (η := section53CoarseFluctuationBetaParams params)
         (by
           have hβpos : 0 < section53CoarseFluctuationBetaParams params := by
@@ -185,12 +185,12 @@ theorem shiftedOneStepContraction_homogenizationScale_of_local_shifted_budget
         hPk.barSigmaAtScale hStructPk (0 : ℤ) =
           hP.barSigmaAtScale hStruct (k : ℤ) := by
       simpa [hPk, hStructPk] using
-        hP.barSigmaAtScale_scaleNormalizedLaw hStruct k 0
+        hP.barSigmaAtScale_restrictionScaleNormalizedLaw hStruct k 0
     have hm :
         hPk.barSigmaAtScale hStructPk (m : ℤ) =
           hP.barSigmaAtScale hStruct (n : ℤ) := by
       simpa [hPk, hStructPk, m, Nat.add_sub_of_le hkn] using
-        hP.barSigmaAtScale_scaleNormalizedLaw hStruct k m
+        hP.barSigmaAtScale_restrictionScaleNormalizedLaw hStruct k m
     simpa [h0, hm] using hgood_upper
   have hgood_lower_k :
       (hPk.barSigmaStarAtScale hStructPk (0 : ℤ))⁻¹ ≤
@@ -199,12 +199,12 @@ theorem shiftedOneStepContraction_homogenizationScale_of_local_shifted_budget
         hPk.barSigmaStarAtScale hStructPk (0 : ℤ) =
           hP.barSigmaStarAtScale hStruct (k : ℤ) := by
       simpa [hPk, hStructPk] using
-        hP.barSigmaStarAtScale_scaleNormalizedLaw hStruct k 0
+        hP.barSigmaStarAtScale_restrictionScaleNormalizedLaw hStruct k 0
     have hm :
         hPk.barSigmaStarAtScale hStructPk (m : ℤ) =
           hP.barSigmaStarAtScale hStruct (n : ℤ) := by
       simpa [hPk, hStructPk, m, Nat.add_sub_of_le hkn] using
-        hP.barSigmaStarAtScale_scaleNormalizedLaw hStruct k m
+        hP.barSigmaStarAtScale_restrictionScaleNormalizedLaw hStruct k m
     simpa [h0, hm] using hgood_lower
   have hlocal :=
     hC hPk hStructPk hP4kβ hparamsβ hdelta_pos hdelta_le
@@ -213,16 +213,16 @@ theorem shiftedOneStepContraction_homogenizationScale_of_local_shifted_budget
       hPk.thetaAtScale hStructPk (0 : ℤ) =
         hP.thetaAtScale hStruct (k : ℤ) := by
     simpa [hPk, hStructPk] using
-      hP.thetaAtScale_scaleNormalizedLaw hStruct k 0
+      hP.thetaAtScale_restrictionScaleNormalizedLaw hStruct k 0
   have hthetam :
       hPk.thetaAtScale hStructPk (m : ℤ) =
         hP.thetaAtScale hStruct (n : ℤ) := by
     simpa [hPk, hStructPk, m, Nat.add_sub_of_le hkn] using
-      hP.thetaAtScale_scaleNormalizedLaw hStruct k m
+      hP.thetaAtScale_restrictionScaleNormalizedLaw hStruct k m
   simpa [htheta0, hthetam] using hlocal
 
 private theorem widetildeThetaAtScale_nonneg
-    {d : ℕ} [NeZero d] (P : Ch04.CoeffLaw d)
+    {d : ℕ} [NeZero d] (P : Ch04.RestrictionCoeffLaw d)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) (m : ℤ) :
     0 ≤ widetildeThetaAtScale P m hP4 := by
   unfold widetildeThetaAtScale Ch04.widetildeThetaAtScale
@@ -231,8 +231,8 @@ private theorem widetildeThetaAtScale_nonneg
     (Ch04.lambdaInvMomentAtScale_nonneg P m hP4.xi hP4.sLower_pos)
 
 private theorem thetaAtScale_zero_le_widetildeThetaAtScale_zero
-    {d : ℕ} [NeZero d] {P : Ch04.CoeffLaw d}
-    (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+    {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
+    (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
     (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     thetaAtScale hP hStruct 0 ≤ widetildeThetaAtScale P 0 hP4 := by
   have hBlock :
@@ -310,8 +310,8 @@ theorem shiftedOneStepContraction_homogenizationScale
     {d : ℕ} [NeZero d]
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {P : Ch04.CoeffLaw d}
-      (hP : Ch04.LawCarrier P) (hStruct : Ch04.StructuralLaw P)
+      ∀ {P : Ch04.RestrictionCoeffLaw d}
+      (hP : Ch04.RestrictionLawCarrier P) (hStruct : Ch04.RestrictionStructuralLaw P)
       (hP4 : QuantitativeCoarseGrainedEllipticity P),
       hP4.params = params →
       ∀ {delta : ℝ}, 0 < delta → delta ≤ 1 / 2 →
@@ -547,7 +547,7 @@ theorem shiftedOneStepContraction_homogenizationScale
       Section54.GoodScale.one_le_thetaAtScale_of_P4
         (hP.scaleNormalized k) (hStruct.scaleNormalized k)
         (hP4.scaleNormalized hP hStruct k) 0
-    have hrewrite := thetaAtScale_zero_scaleNormalizedLaw hP hStruct k
+    have hrewrite := thetaAtScale_zero_restrictionScaleNormalizedLaw hP hStruct k
     have : 1 ≤ thetaAtScale hP hStruct (k : ℤ) := by
       rw [thetaAtScale_eq] at hθ
       change

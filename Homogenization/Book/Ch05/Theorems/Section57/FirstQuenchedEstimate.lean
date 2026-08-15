@@ -30,9 +30,9 @@ theorem firstQuenchedEstimate_concentrationStep
     {d : ℕ} [NeZero d] {σ : ℝ}
     (hσ_pos : 0 < σ) (hσ_le_two : σ ≤ 2) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {Pμ : Ch04.CoeffLaw d} [IsProbabilityMeasure Pμ],
-        Ch04.LawCarrier Pμ → Ch04.StationaryLaw Pμ →
-        Ch04.UnitRangeDependentLaw Pμ →
+      ∀ {Pμ : Ch04.RestrictionCoeffLaw d} [IsProbabilityMeasure Pμ],
+        Ch04.RestrictionLawCarrier Pμ → Ch04.RestrictionStationaryLaw Pμ →
+        Ch04.RestrictionUnitRangeDependentLaw Pμ →
       ∀ (P Qv : BlockVec d) {θ : ℝ},
         0 < θ →
         IsBigO Pμ (gammaSigma σ)
@@ -72,9 +72,9 @@ theorem firstQuenchedEstimate_limitNormalized_concentration
     {d : ℕ} [NeZero d] {σ : ℝ}
     (hσ_pos : 0 < σ) :
     ∃ C : ℝ, 0 < C ∧
-      ∀ {Pμ : Ch04.CoeffLaw d}
-        (hPμ : Ch04.LawCarrier Pμ)
-        (hStruct : Ch04.StructuralLaw Pμ)
+      ∀ {Pμ : Ch04.RestrictionCoeffLaw d}
+        (hPμ : Ch04.RestrictionLawCarrier Pμ)
+        (hStruct : Ch04.RestrictionStructuralLaw Pμ)
         (hΓ : GammaSigmaCoarseGrainedEllipticity Pμ hPμ hStruct),
         hΓ.sigma = σ →
       ∀ (e : FullBlockVec d),
@@ -168,9 +168,9 @@ theorem firstQuenchedEstimate_limitNormalized
     (hσ_pos : 0 < σ)
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     ∃ Cfluct Centry α : ℝ, 0 < Cfluct ∧ 0 < Centry ∧ 0 < α ∧
-      ∀ {Pμ : Ch04.CoeffLaw d}
-        (hPμ : Ch04.LawCarrier Pμ)
-        (hStruct : Ch04.StructuralLaw Pμ)
+      ∀ {Pμ : Ch04.RestrictionCoeffLaw d}
+        (hPμ : Ch04.RestrictionLawCarrier Pμ)
+        (hStruct : Ch04.RestrictionStructuralLaw Pμ)
         (hΓ : GammaSigmaCoarseGrainedEllipticity Pμ hPμ hStruct),
         hΓ.sigma = σ → hΓ.params = params →
       ∀ (e : FullBlockVec d), dotProduct e e ≤ 1 →
@@ -289,9 +289,9 @@ theorem firstQuenchedEstimate_limitNormalized_uniformAnnealedExponent
     ∃ Centry a : ℝ, 0 < Centry ∧ 0 < a ∧
       ∀ {σ : ℝ}, 0 < σ →
         ∃ Cfluct : ℝ, 0 < Cfluct ∧
-          ∀ {Pμ : Ch04.CoeffLaw d}
-            (hPμ : Ch04.LawCarrier Pμ)
-            (hStruct : Ch04.StructuralLaw Pμ)
+          ∀ {Pμ : Ch04.RestrictionCoeffLaw d}
+            (hPμ : Ch04.RestrictionLawCarrier Pμ)
+            (hStruct : Ch04.RestrictionStructuralLaw Pμ)
             (hΓ : GammaSigmaCoarseGrainedEllipticity Pμ hPμ hStruct),
             hΓ.sigma = σ → hΓ.params = params →
           ∀ (e : FullBlockVec d), dotProduct e e ≤ 1 →
@@ -412,9 +412,9 @@ theorem firstQuenchedEstimate_limitNormalized_uniformAnnealedExponent_noXi
     ∃ Centry a : ℝ, 0 < Centry ∧ 0 < a ∧
       ∀ {σ : ℝ}, 0 < σ →
         ∃ Cfluct : ℝ, 0 < Cfluct ∧
-          ∀ {Pμ : Ch04.CoeffLaw d}
-            (hPμ : Ch04.LawCarrier Pμ)
-            (hStruct : Ch04.StructuralLaw Pμ)
+          ∀ {Pμ : Ch04.RestrictionCoeffLaw d}
+            (hPμ : Ch04.RestrictionLawCarrier Pμ)
+            (hStruct : Ch04.RestrictionStructuralLaw Pμ)
             (hΓ : GammaSigmaCoarseGrainedEllipticityNoXi Pμ hPμ hStruct),
             hΓ.sigma = σ → hΓ.params = params →
           ∀ (e : FullBlockVec d), dotProduct e e ≤ 1 →
