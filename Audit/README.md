@@ -66,7 +66,11 @@ permit only:
 ["propext", "Quot.sound", "Classical.choice"]
 ```
 
-and set `enable_nanoda: false`.
+and set `enable_nanoda: false`: the baseline check uses the comparator's
+builtin Lean kernel replay and needs only three tools (comparator,
+`lean4export`, `landrun`).  The independent `nanoda` kernel is an optional
+additional check — the CI workflow runs it on every commit (see below), and it
+can be enabled locally by flipping the flag or via `COMPARATOR_NANODA`.
 
 ## What Is Checked
 
@@ -78,30 +82,34 @@ every case the theorem has the shape
 ∃ C alpha Cscale : ℝ, 0 < C ∧ 0 < alpha ∧ 0 < Cscale ∧
   ∀ <law parameters>,
     ∃ sigmaBar : ℝ, 0 < sigmaBar ∧
-      ∃ X : RegCoeffField d → ℝ, <X is a minimal scale> ∧
+      ∃ X : CoefficientField d → ℝ, <X is a minimal scale> ∧
         ∀ᵐ a ∂<law>, ∀ <solution data> <forcing g>,
-          X a ≤ 3 ^ m → ForceSobolevRegularity (originCube d m) (3/4) g →
+          X a ≤ 3 ^ m → ForceInH34 (originCube d m) g →
             comparisonDefect ≤ C * (3 ^ m / X a) ^ (-alpha) * comparisonData
 ```
 
-Following the carrier redesign, every law is a measure on the local mirror of
-the *regular-fields carrier* `RegCoeffField d` (entrywise Borel-measurable,
-locally integrable coefficient fields, carrying the join of the pointwise and
-entry-test σ-algebras), the minimal scale `X` is a function on the carrier, and
-the structural hypotheses use the carrier endomorphisms
-(`translateReg`/`rotateReg`/`adjointReg`) and the restriction σ-algebras
-`RestrictionSigmaR U hU` of measurable sets.  The audit `LawCarrier` consists
-of the probability instance and the a.s. local-uniform-ellipticity support
-alone: the former local-observable and slice measurability fields are
-law-independent free theorems on the carrier and are gone from the statement
-surface.
+Following the 2026-08-19 readability redesign, every law is a measure on the
+honest-fields carrier `CoefficientField d` (entrywise Borel-measurable,
+locally integrable coefficient fields), whose σ-algebra is the pullback along
+`toFun` of the observable σ-algebra on raw fields (point evaluations joined
+with compactly supported bounded entry integrals); the bare function type
+`RawCoeffField d` deliberately carries no global `MeasurableSpace` instance.
+The minimal scale `X` is a function on the carrier, its stretched-exponential
+tail is stated directly, structural hypotheses are stated as equality of
+observable raw-field distributions (`LawInvariantUnder` via `rawLawAfter`,
+which pins the σ-algebra in its type) under integer translations,
+signed-coordinate permutations (`SignedPermutation` data), and adjoints, and
+unit-range dependence uses the restriction σ-algebras `restrictionSigma U` of
+measurable sets.  All hypotheses on a law are collected in one flat `Setup`
+structure; measurability clauses that are free theorems on the carrier are
+gone from the statement surface.
 
 and asserts: there are universal constants `C, alpha, Cscale > 0` (chosen before
 the law) such that the law has a homogenized scalar `sigmaBar > 0` and a random
 *minimal scale* `X` (a positive field with a `Cscale`-controlled
 stretched-exponential tail) for which, almost surely in the field `a` and for
 every cube scale `3 ^ m ≥ X a` and forcing `g` with componentwise `H^s`
-regularity (`s = fixedComparisonS = 3 / 4`),
+regularity (`s = comparisonS = 3 / 4`),
 
 > `comparisonDefect ≤ C · (3 ^ m / X a) ^ (-alpha) · comparisonData`.
 
@@ -130,9 +138,9 @@ solution pair is presented:
   `Setup d`, with `C, alpha, Cscale` uniform over all laws and ellipticity
   bounds.  The other four feed a specific law into it.
 - **`PeriodicGeneral`** takes the law to be the Dirac mass at an arbitrary
-  deterministic periodic field `a₀`; the periodicity, isotropy,
-  adjoint-invariance, and ellipticity requirements are the explicit hypotheses
-  `_hper`, `_hiso`, `_hadj`, `_hlam`, `_hle`, `_hell`.
+  deterministic periodic field `a₀`; the periodicity, signed-coordinate
+  invariance, adjoint-invariance, and ellipticity requirements are pointwise
+  field identities collected in the flat `Setup` structure.
 - **`PeriodicConcrete`** pins `a₀` to the explicit cosine field, whose
   ellipticity bounds `2 ≤ m(x) ≤ 2 d + 2` are discharged inside the proof, so the
   only remaining hypothesis is `2 ≤ d`.
@@ -157,9 +165,9 @@ definitions needed to state the theorem surfaces.
 
 | Challenge declaration | Repository source |
 | --- | --- |
-| `Vec`, `Mat`, `CoeffField`, matrix/vector operations | `Homogenization/Ambient/*` |
-| `RegCoeffField`, probes, `entryTestR`, the carrier σ-algebra | `Homogenization/Probability/RegCoeffField.lean` and `Homogenization/Probability/RegCoeffField/Sigma.lean` |
-| carrier endomorphisms and `RestrictionSigmaR` | `Homogenization/Probability/RegCoeffField/{Endomorphisms,Restriction}.lean` |
+| `Vec`, `Mat`, `RawCoeffField`, matrix/vector operations | `Homogenization/Ambient/*` |
+| `CoefficientField`, probes, `entryTest`, `observableFieldSigma`, the carrier σ-algebra | `Homogenization/Probability/RegCoeffField.lean` and `Homogenization/Probability/RegCoeffField/Sigma.lean` |
+| raw-field transformations, `rawLawAfter`/`LawInvariantUnder`, `restrictionSigma` (the carrier-endomorphism machinery itself now lives in the solutions) | `Homogenization/Probability/RegCoeffField/{Endomorphisms,Restriction}.lean` |
 | `TriadicCube`, `cubeSet`, `openCubeSet`, descendants, cube measures | `Homogenization/Geometry/*` and `Homogenization/Book/Ch02` |
 | coefficient laws and law hypotheses | `Homogenization/Book/Ch04/*` |
 | weak solution pairs and comparison quantities | `Homogenization/Book/MainResults.lean` and `Homogenization/Book/Ch05/Theorems/Section57/*` |
@@ -209,7 +217,9 @@ lake env comparator Audit/PolynomialScale/comparator.json
 lake env comparator Audit/CheckerboardScale/comparator.json
 ```
 
-Expected final output for each run:
+Point the comparator at the tools via `PATH` or the environment variables
+`COMPARATOR_LANDRUN` and `COMPARATOR_LEAN4EXPORT`.  Expected final output for
+each run:
 
 ```text
 Running Lean default kernel on solution.
@@ -217,17 +227,56 @@ Lean default kernel accepts the solution
 Your solution is okay!
 ```
 
+Any other outcome falls into one of two very different classes.  **Audit
+verdicts** are the comparator's own messages: `Const does not match between
+challenge and target …`, an axiom-check complaint, or `… kernel rejected the
+solution` — these mean the check genuinely failed.  **Setup problems** are
+everything else: `unknown olean version` or import errors from `lean4export`
+(its build must use the toolchain in `./lean-toolchain`, byte for byte),
+`GLIBC`/spawn errors from `landrun` (build it from source), missing binaries,
+or `lake` errors from a missing Mathlib cache (`lake exe cache get` first).
+A setup problem says nothing about the mathematics; the reference environment
+is the CI workflow.
+
+Optionally, each solution can additionally be checked with the independent
+`nanoda` kernel (a from-scratch Rust implementation of the Lean 4 kernel):
+set `"enable_nanoda": true` in a comparator config and have `nanoda_bin` in
+`PATH` (or set `COMPARATOR_NANODA`).  Two extra lines then precede the
+verdict: `Running nanoda kernel on solution` / `nanoda kernel accepts the
+solution`.  All seven pairs pass this two-kernel variant (verified
+2026-08-19).
+
+The GitHub Actions workflow `.github/workflows/comparator.yml` runs the sweep
+on every push to `main` — all seven pairs, with the nanoda check enabled on
+its own working copy of the configs, so the committed baseline stays
+three-tool while CI always exercises the stronger two-kernel variant — and
+uploads the per-pair logs as an artifact.
+
 ## Comparator Tools Used
 
-The successful local runs used:
+The successful local runs (2026-08-19, all seven pairs, both kernels) used:
 
 | Tool | Version |
 | --- | --- |
 | Lean / Mathlib | `v4.26.0` |
-| comparator | commit `5fb6e55e87cc2308e29e0916a3cb39522dbfebfd` |
-| lean4export | commit `3e1cdfe206ec3f54bae4a548d814ce9b2c1bb43d` |
-| landrun | `0.1.15` |
+| comparator | commit `575674928e239f5bc452aab72d1dd7b0f1326494` (built on its own pinned toolchain; it is version-agnostic toward this project since it orchestrates `lake`/`lean4export` subprocesses) |
+| lean4export | tag `v4.26.0` (commit `3e1cdfe206ec3f54bae4a548d814ce9b2c1bb43d`) — must be built on the SAME toolchain as this repository, since it loads the project's oleans |
+| landrun | `0.1.18` (commit `811cfff51ceaf3d9843708aa6d22e9b84ccac8b4`), built from source with `CGO_ENABLED=0 go build ./cmd/landrun` (Go >= 1.24; the release binaries require glibc 2.38) |
+| nanoda (optional; CI enables it) | `nanoda_lib` 0.4.15 (commit `6ae1f0cd962f081f6c423454c5da729d841236a7`), `cargo build --release` (recent Rust; the binary is `target/release/nanoda_bin`) |
 
 If a comparator binary was built against a different Lean version, point it at a
 matching `lean4export` binary for this repository's pinned toolchain before
 running the commands above.
+
+### Maintenance invariant
+
+Each pair's statement-vocabulary module (`SolutionBasic.lean`) must import
+`Mathlib` and nothing else.  A repository import there changes instance
+elaboration inside the vocabulary copy (the repository's private head-class
+instance caches leak through oleans), which fails the comparator's
+constant-by-constant closure comparison while every other check — `lake
+build`, `#print axioms`, byte-diffs, `pp.all` statement printing — still
+passes.  Repository imports and `attribute [-instance]` erasures belong in
+`Solution.lean` (or a dedicated bridge module) only.  After any solution-side
+edit or toolchain bump, re-run the comparator; the proxy checks are not
+sufficient.

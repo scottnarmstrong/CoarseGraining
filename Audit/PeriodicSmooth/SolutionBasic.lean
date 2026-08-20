@@ -1,40 +1,40 @@
 import Mathlib
 
 /-!
-# Periodic homogenization for one explicit oscillating coefficient field
+# Statement vocabulary for the smooth periodic comparison solution
 
-This is a Mathlib-only comparator challenge for the deterministic periodic
-specialization of the quenched homogenization comparison theorem.  The
-coefficient field is the explicit field
+This file carries the statement-level vocabulary of the comparator challenge
+`Audit/PeriodicSmooth/Challenge.lean`, copied verbatim (the block below is a
+byte-for-byte copy of the challenge file with only its header docstring and its
+final theorem removed).  `Audit/PeriodicSmooth/Solution.lean` imports this file,
+adds the solution-only bridges to the repository theorem, and proves the
+challenge theorem itself.
 
-  `a(x) = m(x) • I`,   `m(x) = d + 2 + ∑ i, cos (2 π xᵢ)`,
+The solution must not import the challenge — the two modules declare the same
+theorem name — so the vocabulary is re-declared here instead.  Keeping the copy
+verbatim is what makes the comparator's statement comparison succeed.
 
-which is periodic with respect to the integer lattice, and the coefficient law
-is the Dirac point mass at it.  The multiplier obeys `2 ≤ m ≤ 2 d + 2`, so the
-field is uniformly elliptic with the constants `lam = 2` and `Lam = 2 d + 2`;
-those two numbers are the only ellipticity data entering the statement.
+This file imports **only Mathlib**, exactly like the challenge.  That is not a
+stylistic choice: the comparator compares the entire dependency closure of the
+audited theorem constant by constant, and instance resolution inside the
+vocabulary (for instance the `Module ℝ (Fin d → ℝ)` selected under `fderiv` in
+`euclideanCoordDeriv`) depends on which instances are in scope.  Importing the
+repository here would let repository instances win and make the elaborated
+vocabulary constants differ from the challenge's.  The repository import and the
+instance erasures it needs live in `Solution.lean` instead, downstream of the
+vocabulary.
 
-The mathematical content is the following.  In every dimension `d ≥ 2` there
-are constants `C, α, Cscale > 0`, depending only on `d`, such that this law has
+The main source correspondences on the repository side are:
 
-* a positive scalar homogenized coefficient `sigmaBar`, and
-* a minimal scale `X ≥ 1` with the prescribed stretched-exponential tail,
-  whose deterministic prefactor is built from `lam = 2` and `Lam = 2 d + 2`,
-
-for which the heterogeneous and homogenized weak solutions on the origin cube
-of sidelength `3^m` satisfy the quantitative `H⁻³ᐟ⁴` comparison estimate as
-soon as `X ≤ 3^m`.
-
-Only definitions needed to read that assertion occur below.  In particular:
-
-* the explicit field is displayed by its formula, together with the two bounds
-  on its multiplier that produce the ellipticity constants;
-* all Sobolev definitions are specialized to the one exponent used by the
-  theorem, namely `s = 3/4` and `p = 2`;
-* the minimal-scale tail is written out rather than wrapped in a generic
-  big-`O` vocabulary.
-
-The sole intentional `sorry` is the proof of the final theorem.
+* ambient fields and ellipticity: `Homogenization/Ambient/CoefficientField.lean`;
+* the regular-fields carrier: `Homogenization/Probability/RegCoeffField.lean`
+  and `Homogenization/Probability/RegCoeffField/Sigma.lean`;
+* cubes and normalized averages: `Homogenization/Geometry/TriadicCube.lean`,
+  `Homogenization/Multiscale/NormalizedNorms.lean`;
+* positive and negative Sobolev quantities: `Homogenization/Besov/*` and
+  `Homogenization/Book/Ch03/Theorems/SobolevPublic.lean`;
+* the public theorem surface:
+  `Homogenization/Examples/Periodic/PeriodicSmoothComparison.lean`.
 -/
 
 namespace Homogenization
@@ -102,7 +102,12 @@ noncomputable def entryTest {d : ℕ} (i j : Fin d) (φ : Vec d → ℝ)
   ∫ x, a x i j * φ x ∂volume
 
 /-- The observable σ-algebra on raw fields: point evaluations together with
-all compactly supported bounded entry integrals. -/
+all compactly supported bounded entry integrals.
+
+The bare function type `RawCoeffField d` deliberately carries no global
+`MeasurableSpace` instance: Mathlib's product instance would also apply to it,
+and the meaning of the statement must not depend on which instance wins.  The
+σ-algebra is used only through the explicit pullback below. -/
 def pointwiseFieldSigma (d : ℕ) : MeasurableSpace (RawCoeffField d) := by
   exact @MeasurableSpace.pi (Vec d) (fun _ => Mat d)
     (fun _ => instMeasurableSpaceMat d)
@@ -121,86 +126,38 @@ instance instMeasurableSpaceCoefficientField (d : ℕ) :
 
 abbrev CoefficientLaw (d : ℕ) := Measure (CoefficientField d)
 
-/-! ## 3. The explicit periodic field and its law -/
+/-! ## 3. The explicit periodic medium -/
 
-/-- The scalar multiplier `m(x) = d + 2 + ∑ i, cos (2 π xᵢ)`.  It is invariant
-under translation by any integer vector. -/
+/-- The scalar multiplier `m(x) = d + 2 + ∑ i, cos (2 π xᵢ)`.  It is `1`-periodic
+in every coordinate and satisfies `2 ≤ m ≤ 2 d + 2` everywhere. -/
 noncomputable def periodicMultiplier {d : ℕ} (x : Vec d) : ℝ :=
   ((d : ℝ) + 2) + ∑ i : Fin d, Real.cos (2 * Real.pi * x i)
 
-theorem two_le_periodicMultiplier {d : ℕ} (x : Vec d) :
-    (2 : ℝ) ≤ periodicMultiplier x := by
-  have hsum : -((d : ℝ)) ≤ ∑ i : Fin d, Real.cos (2 * Real.pi * x i) := by
-    calc -((d : ℝ)) = ∑ _i : Fin d, (-1 : ℝ) := by simp
-      _ ≤ ∑ i : Fin d, Real.cos (2 * Real.pi * x i) :=
-          Finset.sum_le_sum fun i _hi => Real.neg_one_le_cos _
-  simp only [periodicMultiplier]
-  linarith
+/-- The explicit periodic coefficient field `a(x) = m(x) • I`. -/
+noncomputable def periodicRawField {d : ℕ} : RawCoeffField d :=
+  fun x => scalarMatrix (periodicMultiplier x)
 
-theorem periodicMultiplier_le {d : ℕ} (x : Vec d) :
-    periodicMultiplier x ≤ 2 * (d : ℝ) + 2 := by
-  have hsum : (∑ i : Fin d, Real.cos (2 * Real.pi * x i)) ≤ (d : ℝ) := by
-    calc (∑ i : Fin d, Real.cos (2 * Real.pi * x i)) ≤ ∑ _i : Fin d, (1 : ℝ) :=
-          Finset.sum_le_sum fun i _hi => Real.cos_le_one _
-      _ = (d : ℝ) := by simp
-  simp only [periodicMultiplier]
-  linarith
-
-theorem abs_periodicMultiplier_le {d : ℕ} (x : Vec d) :
-    |periodicMultiplier x| ≤ 2 * (d : ℝ) + 2 := by
-  have hd : (0 : ℝ) ≤ (d : ℝ) := by positivity
-  have hlo := two_le_periodicMultiplier (d := d) x
-  have hhi := periodicMultiplier_le (d := d) x
-  rw [abs_le]
-  constructor <;> linarith
-
-theorem measurable_periodicMultiplier {d : ℕ} :
-    Measurable (periodicMultiplier (d := d)) := by
+theorem continuous_periodicMultiplier {d : ℕ} :
+    Continuous (periodicMultiplier (d := d)) := by
   unfold periodicMultiplier
   fun_prop
 
-/-- The explicit periodic field `a(x) = m(x) • I`, as a raw matrix field. -/
-noncomputable def periodicRawField (d : ℕ) : RawCoeffField d :=
-  fun x => scalarMatrix (periodicMultiplier x)
+theorem continuous_periodicRawField_entry {d : ℕ} (i j : Fin d) :
+    Continuous fun x : Vec d => periodicRawField (d := d) x i j := by
+  have h : (fun x : Vec d => periodicRawField (d := d) x i j)
+      = fun x : Vec d => periodicMultiplier x * (1 : Mat d) i j := rfl
+  rw [h]
+  exact continuous_periodicMultiplier.mul continuous_const
 
-/-- A bounded measurable scalar field is locally integrable. -/
-theorem locallyIntegrable_of_bounded {d : ℕ} {f : Vec d → ℝ}
-    (hf : Measurable f) {C : ℝ} (hC : ∀ x, |f x| ≤ C) :
-    LocallyIntegrable f volume := by
-  rw [MeasureTheory.locallyIntegrable_iff]
-  intro k hk
-  refine MeasureTheory.Measure.integrableOn_of_bounded (hk.measure_lt_top).ne
-    hf.aestronglyMeasurable (M := C) ?_
-  filter_upwards with x
-  simpa [Real.norm_eq_abs] using hC x
-
-/-- The explicit periodic field as an element of the coefficient carrier. -/
+/-- The periodic field as an element of the carrier. -/
 noncomputable def periodicField (d : ℕ) : CoefficientField d where
-  toFun := periodicRawField d
-  entry_measurable := fun i j => by
-    by_cases hij : i = j
-    · subst hij
-      simpa [periodicRawField, scalarMatrix] using
-        measurable_periodicMultiplier (d := d)
-    · simp [periodicRawField, scalarMatrix, hij]
-  entry_locallyIntegrable := fun i j => by
-    by_cases hij : i = j
-    · subst hij
-      have hmeas : Measurable fun x : Vec d => periodicRawField d x i i := by
-        simpa [periodicRawField, scalarMatrix] using
-          measurable_periodicMultiplier (d := d)
-      refine locallyIntegrable_of_bounded hmeas (C := 2 * (d : ℝ) + 2) fun x => ?_
-      simpa [periodicRawField, scalarMatrix] using
-        abs_periodicMultiplier_le (d := d) x
-    · have hzero : (fun x : Vec d => periodicRawField d x i j)
-          = fun _ : Vec d => (0 : ℝ) := by
-        funext x
-        simp [periodicRawField, scalarMatrix, hij]
-      rw [hzero]
-      exact locallyIntegrable_const (0 : ℝ)
+  toFun := periodicRawField
+  entry_measurable i j := (continuous_periodicRawField_entry i j).measurable
+  entry_locallyIntegrable i j :=
+    (continuous_periodicRawField_entry i j).locallyIntegrable
 
-/-- The deterministic coefficient law of this challenge: the Dirac point mass
-at the explicit periodic field. -/
+/-- The medium is deterministic: its law is the Dirac mass at the periodic
+field. -/
 noncomputable def periodicLaw (d : ℕ) : CoefficientLaw d :=
   Measure.dirac (periodicField d)
 
@@ -228,6 +185,24 @@ def interior {d : ℕ} (Q : TriadicCube d) : Set (Vec d) :=
   {x | ∀ i,
     (((Q.index i : ℝ) - (1 / 2 : ℝ)) * Q.side < x i) ∧
     (x i < ((Q.index i : ℝ) + (1 / 2 : ℝ)) * Q.side)}
+
+/-- The `i`-th coordinate of the lower `i`-normal face of `Q`. -/
+def lowerFaceCoord {d : ℕ} (Q : TriadicCube d) (i : Fin d) : ℝ :=
+  ((Q.index i : ℝ) - (1 / 2 : ℝ)) * Q.side
+
+/-- The `i`-th coordinate of the upper `i`-normal face of `Q`. -/
+def upperFaceCoord {d : ℕ} (Q : TriadicCube d) (i : Fin d) : ℝ :=
+  ((Q.index i : ℝ) + (1 / 2 : ℝ)) * Q.side
+
+/-- Projection onto the lower `i`-normal face, changing only coordinate `i`. -/
+def lowerFaceProjection {d : ℕ} (Q : TriadicCube d) (i : Fin d) (x : Vec d) :
+    Vec d :=
+  Function.update x i (Q.lowerFaceCoord i)
+
+/-- Projection onto the upper `i`-normal face, changing only coordinate `i`. -/
+def upperFaceProjection {d : ℕ} (Q : TriadicCube d) (i : Fin d) (x : Vec d) :
+    Vec d :=
+  Function.update x i (Q.upperFaceCoord i)
 
 def children {d : ℕ} (Q : TriadicCube d) : Finset (TriadicCube d) :=
   Finset.univ.image fun digits : Fin d → Fin 3 =>
@@ -276,22 +251,21 @@ noncomputable def volumeAverage {d : ℕ} (U : Set (Vec d))
     (f : Vec d → ℝ) : ℝ :=
   (MeasureTheory.volume U).toReal⁻¹ * ∫ x in U, f x ∂MeasureTheory.volume
 
-/-! ## 5. Local ellipticity and the minimal scale -/
+/-! ## 5. Ellipticity of a realization, and the minimal scale -/
 
-/-- On every triadic cube the field is elliptic almost everywhere, with a pair
-of constants that may depend on the cube. -/
+/-- On every triadic cube some pair of ellipticity constants works almost
+everywhere.  The periodic field itself satisfies this with the fixed constants
+`lam = 2` and `Lam = 2 d + 2` used below. -/
 def LocallyUniformlyElliptic {d : ℕ} (a : CoefficientField d) : Prop :=
   ∀ Q : TriadicCube d,
-    ∃ lam Lam : ℝ,
-      0 < lam ∧ lam ≤ Lam ∧
-        ∀ᵐ x ∂volumeOn Q.interior, IsEllipticMatrix lam Lam (a x)
+    ∃ lam Lam : ℝ, 0 < lam ∧ lam ≤ Lam ∧
+      ∀ᵐ x ∂volumeOn Q.interior, IsEllipticMatrix lam Lam (a x)
 
-/-- The coarse upper ellipticity ratio at the ellipticity constants of the
-explicit field, `lam = 2` and `Lam = 2 d + 2`. -/
+/-- Coarse ellipticity size of the periodic medium, at `lam = 2`,
+`Lam = 2 d + 2`. -/
 noncomputable def coarseUpperBound (d : ℕ) : ℝ :=
   4 * (Fintype.card (Fin d) : ℝ) * (2 : ℝ)⁻¹ * (2 * (d : ℝ) + 2) ^ (2 : ℕ)
 
-/-- The coarse lower ellipticity ratio at `lam = 2`. -/
 noncomputable def coarseInverseLowerBound (d : ℕ) : ℝ :=
   4 * (Fintype.card (Fin d) : ℝ) * (2 : ℝ)⁻¹
 
@@ -303,90 +277,59 @@ noncomputable def thetaHat (d : ℕ) : ℝ :=
 noncomputable def minimalScaleTailSize (d : ℕ) (Cscale : ℝ) : ℝ :=
   Real.exp (Cscale * (Real.log (2 + thetaHat d)) ^ (2 : ℕ))
 
-/-- `X` is at least one and has the required `Gamma_d` tail under the law. -/
-structure IsMinimalScale {d : ℕ} (X : CoefficientField d → ℝ)
-    (Cscale : ℝ) : Prop where
+/-- `X` is at least one and has the required `Gamma_d` tail under the law `P`. -/
+structure IsMinimalScale {d : ℕ} (P : CoefficientLaw d)
+    (X : CoefficientField d → ℝ) (Cscale : ℝ) : Prop where
   one_le : ∀ a, 1 ≤ X a
   tail : ∀ ⦃t : ℝ⦄, 1 ≤ t →
-    (periodicLaw d).real {a | minimalScaleTailSize d Cscale * t < |X a|} ≤
+    P.real {a | minimalScaleTailSize d Cscale * t < |X a|} ≤
       (Real.exp (t ^ (d : ℝ)))⁻¹
 
-/-! ## 6. Weak `H¹` solutions -/
-
-noncomputable def weakFDeriv {d : ℕ} (φ : Vec d → ℝ) (x : Vec d) :=
-  fderiv ℝ φ x
+/-! ## 6. Smooth solutions of the two equations -/
 
 def basisVec {d : ℕ} (i : Fin d) : Vec d :=
   Pi.single i (1 : ℝ)
 
-def HasWeakPartialDerivativeOn {d : ℕ} (U : Set (Vec d)) (i : Fin d)
-    (u gi : Vec d → ℝ) : Prop :=
-  ∀ φ : Vec d → ℝ,
-    ContDiff ℝ (⊤ : ℕ∞) φ →
-    HasCompactSupport φ →
-    tsupport φ ⊆ U →
-    ∫ x in U, u x * (weakFDeriv φ x) (basisVec i) ∂volume =
-      -∫ x in U, gi x * φ x ∂volume
+/-- The classical `i`-th partial derivative. -/
+noncomputable def euclideanCoordDeriv {d : ℕ} (i : Fin d)
+    (f : Vec d → ℝ) (x : Vec d) : ℝ :=
+  (fderiv ℝ f x) (basisVec i)
 
-def HasWeakGradientOn {d : ℕ} (U : Set (Vec d)) (u : Vec d → ℝ)
-    (Du : Vec d → Vec d) : Prop :=
-  ∀ i : Fin d, HasWeakPartialDerivativeOn U i u (fun x => Du x i)
+noncomputable def euclideanGradient {d : ℕ} (f : Vec d → ℝ) : Vec d → Vec d :=
+  fun x i => euclideanCoordDeriv i f x
 
-abbrev MemL2On {d : ℕ} (U : Set (Vec d)) (u : Vec d → ℝ) : Prop :=
-  MemLp u 2 (volumeOn U)
+noncomputable def euclideanDivergence {d : ℕ} (F : Vec d → Vec d) : Vec d → ℝ :=
+  fun x => ∑ i : Fin d, euclideanCoordDeriv i (fun y => F y i) x
 
-def GradientMemL2On {d : ℕ} (U : Set (Vec d))
-    (Du : Vec d → Vec d) : Prop :=
-  ∀ i : Fin d, MemL2On U (fun x => Du x i)
+/-- The flux `A ∇u` of `u` in the medium `A`. -/
+noncomputable def fluxField {d : ℕ} (A : RawCoeffField d) (u : Vec d → ℝ) :
+    Vec d → Vec d :=
+  fun x => matVecMul (A x) (euclideanGradient u x)
 
-/-- A function together with a chosen weak gradient. -/
-structure WeakH1 {d : ℕ} (U : Set (Vec d)) where
-  toFun : Vec d → ℝ
-  grad : Vec d → Vec d
-  memL2 : MemL2On U toFun
-  gradMemL2 : GradientMemL2On U grad
-  hasWeakGradient : HasWeakGradientOn U toFun grad
+/-- Classical (pointwise) form of `∇ · (A ∇u) = ∇ · g`. -/
+def SolvesEquation {d : ℕ} (A : RawCoeffField d) (u : Vec d → ℝ)
+    (g : Vec d → Vec d) : Prop :=
+  ∀ x : Vec d, euclideanDivergence (fluxField A u) x = euclideanDivergence g x
 
-instance {d : ℕ} {U : Set (Vec d)} : CoeFun (WeakH1 U)
-    (fun _ => Vec d → ℝ) :=
-  ⟨WeakH1.toFun⟩
-
-/-- The closure of smooth compactly supported functions in the `H¹` norm. -/
-structure WeakH10 {d : ℕ} (U : Set (Vec d)) extends WeakH1 U where
-  approx : ℕ → Vec d → ℝ
-  approx_smooth : ∀ n, ContDiff ℝ (⊤ : ℕ∞) (approx n)
-  approx_compactSupport : ∀ n, HasCompactSupport (approx n)
-  approx_supportedIn : ∀ n, tsupport (approx n) ⊆ U
-  tendsto_approx :
-    Filter.Tendsto
-      (fun n => eLpNorm (fun x => approx n x - toWeakH1.toFun x) 2 (volumeOn U))
-      Filter.atTop (nhds 0)
-  tendsto_approx_grad :
-    ∀ i : Fin d,
-      Filter.Tendsto
-        (fun n => eLpNorm
-          (fun x => (weakFDeriv (approx n) x) (basisVec i) - toWeakH1.grad x i)
-          2 (volumeOn U))
-        Filter.atTop (nhds 0)
-
-/-- Weak formulation of `-div(A grad u) = -div g` on `Q`. -/
-def SolvesEquation {d : ℕ} (Q : TriadicCube d) (A : RawCoeffField d)
-    (u : WeakH1 Q.interior) (g : Vec d → Vec d) : Prop :=
-  ∀ φ : WeakH10 Q.interior,
-    ∫ x in Q.interior,
-        vecDot (matVecMul (A x) (u.grad x)) (φ.toWeakH1.grad x) ∂volume =
-      ∫ x in Q.interior, vecDot (g x) (φ.toWeakH1.grad x) ∂volume
-
-/-- The two weak solutions being compared: same force and same boundary data. -/
+/-- The two smooth solutions being compared on `Q`: same force `g`, and the same
+values on every face of `Q`.  The smoothness fields are exactly what is needed
+to integrate the two equations by parts against `H¹` test functions. -/
 structure ComparisonPair {d : ℕ} (sigmaBar : ℝ) (a : CoefficientField d)
     (Q : TriadicCube d) (g : Vec d → Vec d) where
-  u : WeakH1 Q.interior
-  v : WeakH1 Q.interior
-  u_solves : SolvesEquation Q a.toFun u g
-  v_solves : SolvesEquation Q (fun _ => scalarMatrix sigmaBar) v g
-  sameBoundaryData :
-    ∃ w : WeakH10 Q.interior,
-      w.toWeakH1.toFun =ᵐ[volumeOn Q.interior] fun x => u.toFun x - v.toFun x
+  u : Vec d → ℝ
+  v : Vec d → ℝ
+  u_smooth : ContDiff ℝ (⊤ : ℕ∞) u
+  v_smooth : ContDiff ℝ (⊤ : ℕ∞) v
+  force_smooth : ContDiff ℝ 1 g
+  flux_smooth : ContDiff ℝ 1 (fluxField a.toFun u)
+  homogenizedFlux_smooth :
+    ContDiff ℝ 1 (fluxField (fun _ => scalarMatrix (d := d) sigmaBar) v)
+  u_solves : SolvesEquation a.toFun u g
+  v_solves : SolvesEquation (fun _ => scalarMatrix (d := d) sigmaBar) v g
+  agree_on_lowerFaces : ∀ (i : Fin d) (x : Vec d),
+    u (Q.lowerFaceProjection i x) - v (Q.lowerFaceProjection i x) = 0
+  agree_on_upperFaces : ∀ (i : Fin d) (x : Vec d),
+    u (Q.upperFaceProjection i x) - v (Q.upperFaceProjection i x) = 0
 
 /-! ## 7. The fixed `H^{3/4}` and `H^{-3/4}` quantities -/
 
@@ -470,18 +413,20 @@ noncomputable def scaledForceH34Seminorm {d : ℕ} (Q : TriadicCube d)
 /-! ## 8. Error, data size, and the theorem -/
 
 noncomputable def energyNorm {d : ℕ} (Q : TriadicCube d)
-    (a : RawCoeffField d) (u : WeakH1 Q.interior) : ℝ :=
+    (a : RawCoeffField d) (u : Vec d → ℝ) : ℝ :=
   Real.sqrt <| volumeAverage Q.interior fun x =>
-    vecDot (u.grad x) (matVecMul (symmPart (a x)) (u.grad x))
+    vecDot (euclideanGradient u x)
+      (matVecMul (symmPart (a x)) (euclideanGradient u x))
 
-noncomputable def constantGradientMismatch {d : ℕ} {Q : TriadicCube d}
-    (sigmaBar : ℝ) (u v : WeakH1 Q.interior) : Vec d → Vec d :=
-  fun x => matVecMul (scalarMatrix (d := d) sigmaBar) (u.grad x - v.grad x)
+noncomputable def constantGradientMismatch {d : ℕ} (sigmaBar : ℝ)
+    (u v : Vec d → ℝ) : Vec d → Vec d :=
+  fun x => matVecMul (scalarMatrix (d := d) sigmaBar)
+    (euclideanGradient u x - euclideanGradient v x)
 
 noncomputable def fluxMismatch {d : ℕ} (a : RawCoeffField d) (sigmaBar : ℝ)
-    {Q : TriadicCube d} (u v : WeakH1 Q.interior) : Vec d → Vec d :=
-  fun x => matVecMul (a x) (u.grad x) -
-    matVecMul (scalarMatrix (d := d) sigmaBar) (v.grad x)
+    (u v : Vec d → ℝ) : Vec d → Vec d :=
+  fun x => matVecMul (a x) (euclideanGradient u x) -
+    matVecMul (scalarMatrix (d := d) sigmaBar) (euclideanGradient v x)
 
 noncomputable def comparisonDefect {d : ℕ} {sigmaBar : ℝ}
     {a : CoefficientField d} {Q : TriadicCube d} {g : Vec d → Vec d}
@@ -496,35 +441,6 @@ noncomputable def comparisonData {d : ℕ} {sigmaBar : ℝ}
     (pair : ComparisonPair sigmaBar a Q g) : ℝ :=
   Real.sqrt sigmaBar * energyNorm Q a.toFun pair.u +
     scaledForceH34Seminorm Q g
-
-namespace PeriodicConcrete
-
-/-- Fixed-exponent homogenization comparison for the Dirac law at the explicit
-periodic field `a(x) = m(x) • I`, `m(x) = d + 2 + ∑ i, cos (2 π xᵢ)`.
-
-The constants `C`, `alpha`, `Cscale` are chosen before the dimension datum
-`2 ≤ d`, hence depend only on `d`.  The Sobolev exponent is fixed to `3/4`
-throughout (`comparisonS`). -/
-theorem periodicConcrete_comparison
-    {d : ℕ} [NeZero d] :
-    ∃ C alpha Cscale : ℝ,
-      0 < C ∧ 0 < alpha ∧ 0 < Cscale ∧
-      ∀ (_two_le_dim : 2 ≤ d),
-        ∃ sigmaBar : ℝ,
-          0 < sigmaBar ∧
-          ∃ X : CoefficientField d → ℝ,
-            IsMinimalScale X Cscale ∧
-            ∀ᵐ a ∂periodicLaw d,
-              ∀ (_locallyElliptic : LocallyUniformlyElliptic a)
-                {m : ℕ} {g : Vec d → Vec d}
-                (pair : ComparisonPair sigmaBar a (originCube d m) g),
-                X a ≤ (3 : ℝ) ^ m →
-                ForceInH34 (originCube d m) g →
-                comparisonDefect pair ≤
-                  C * ((3 : ℝ) ^ m / X a) ^ (-alpha) * comparisonData pair := by
-  sorry
-
-end PeriodicConcrete
 
 end
 

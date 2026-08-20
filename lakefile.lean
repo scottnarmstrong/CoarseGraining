@@ -8,6 +8,7 @@ require mathlib from git
 
 @[default_target]
 lean_lib «Homogenization» where
+  globs := #[.submodules `Homogenization]
   leanOptions := #[
     ⟨`autoImplicit, false⟩,
     ⟨`relaxedAutoImplicit, false⟩,

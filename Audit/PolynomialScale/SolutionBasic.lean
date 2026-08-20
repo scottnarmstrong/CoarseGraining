@@ -1,23 +1,36 @@
 import Mathlib
 
 /-!
-# Statement-level audit vocabulary for the polynomial homogenization-scale capstone
+# Statement-level audit vocabulary for the polynomial homogenization scale
 
-This Mathlib-only file holds the statement vocabulary shared by the
-comparator solution: the local mirrors of the ambient fields, the
-regular-fields carrier and its σ-algebra, the carrier endomorphisms, cubes,
-law hypotheses, Sobolev objects, the block formalism with the coarse-graining
-variational quantity `Mu`, the annealed coarse matrices, and the scalar
-contrast selector `thetaAtScale`.  It is split out of `Solution.lean` to keep
-each file within the repository line budget; `Solution.lean` imports it and
-adds the private bridges to the repository theorem together with the audited
-theorem itself.
+This Mathlib-only file holds the statement vocabulary of the comparator
+challenge `Audit/PolynomialScale/Challenge.lean`: the ambient vectors and
+matrices, the honest coefficient-field carrier with its observable σ-algebra,
+the geometric actions and law invariances, triadic cubes and volume averages,
+the flat `Setup` of assumptions on the random medium, weak `H¹` and `H¹₀`, the
+block formalism with the coarse-graining variational quantity `Mu`, and the
+annealed coarse matrices together with the scalar contrast `thetaAtScale`.
 
-The audited theorem carries the explicit dimension restriction `hd : 3 ≤ d`
-(`d > 2`), and its ellipticity hypothesis enters only through the
-quadratic-form class `IsEllipticMatrix 1 Θ` (coercivity together with the
-inverse quadratic-form bound); the coefficient fields are general
-(non-symmetric) matrices.
+Every declaration below is a **verbatim** copy of the corresponding
+declaration of `Challenge.lean`; only the file header (the import and this
+docstring) differs, and the final theorem — together with its section
+header — is omitted.  Byte-identity of these bodies is what makes the theorem
+statement in `Solution.lean` match the challenge statement, so the copy must
+not be edited: any change to it is a change to the audited statement.
+
+The file is deliberately **self-contained** and Mathlib-only: it imports
+nothing from the repository.  That is not cosmetic.  The comparator compares
+the whole dependency closure of the audited theorem constant by constant, and
+a repository import in scope changes which instances the elaborator picks
+inside the vocabulary — for instance the `Module ℝ (Fin d → ℝ)` instance
+buried in `fderiv` inside `weakFDeriv`, hence in
+`HasWeakPartialDerivativeOn`.  Elaborating the copy in a Mathlib-only
+environment, identical to the challenge's, is what makes those constants
+match.
+
+The repository bridges live in `Audit/PolynomialScale/SolutionBridge.lean`,
+which imports this file together with the repository; `Solution.lean` imports
+that bridge module and states the audited theorem.
 -/
 
 namespace Homogenization
@@ -27,22 +40,19 @@ open MeasureTheory
 open scoped BigOperators ENNReal
 
 noncomputable section
-/-! ## Ambient fields and matrices -/
+
+/-! ## 1. Euclidean vectors, matrices, and ellipticity -/
 
 abbrev Vec (d : ℕ) := Fin d → ℝ
 
 abbrev Mat (d : ℕ) := Matrix (Fin d) (Fin d) ℝ
 
+abbrev RawCoeffField (d : ℕ) := Vec d → Mat d
+
 instance instMeasurableSpaceMat (d : ℕ) : MeasurableSpace (Mat d) := by
   exact @MeasurableSpace.pi (Fin d) (fun _ => Fin d → ℝ)
     (fun _ => @MeasurableSpace.pi (Fin d) (fun _ => ℝ)
       (fun _ => (RCLike.measurableSpace : MeasurableSpace ℝ)))
-
-abbrev CoeffField (d : ℕ) := Vec d → Mat d
-
-def pointwiseCoeffFieldMeasurableSpace (d : ℕ) : MeasurableSpace (CoeffField d) := by
-  exact @MeasurableSpace.pi (Vec d) (fun _ => Mat d)
-    (fun _ => instMeasurableSpaceMat d)
 
 def vecDot {d : ℕ} (x y : Vec d) : ℝ :=
   ∑ i, x i * y i
@@ -53,593 +63,270 @@ def vecNormSq {d : ℕ} (x : Vec d) : ℝ :=
 def matVecMul {d : ℕ} (A : Mat d) (x : Vec d) : Vec d :=
   fun i => ∑ j, A i j * x j
 
-def matTranspose {d : ℕ} (A : Mat d) : Mat d :=
-  Matrix.transpose A
-
-abbrev scalarMatrix {d : ℕ} (sigma : ℝ) : Mat d :=
-  sigma • (1 : Mat d)
-
+/-- The symmetric part of a possibly non-symmetric matrix. -/
 noncomputable def symmPart {d : ℕ} (A : Mat d) : Mat d :=
   fun i j => (A i j + A j i) / 2
 
+/-- The antisymmetric part of a possibly non-symmetric matrix. -/
+noncomputable def skewPart {d : ℕ} (A : Mat d) : Mat d :=
+  fun i j => (A i j - A j i) / 2
+
+/-- Quadratic-form ellipticity for a possibly non-symmetric matrix. -/
 def IsEllipticMatrix {d : ℕ} (lam Lam : ℝ) (A : Mat d) : Prop :=
   0 < lam ∧
     lam ≤ Lam ∧
     (∀ ξ : Vec d, lam * vecNormSq ξ ≤ vecDot ξ (matVecMul A ξ)) ∧
     (∀ ξ : Vec d, Lam⁻¹ * vecNormSq ξ ≤ vecDot ξ (matVecMul A⁻¹ ξ))
 
-noncomputable def restrictCoeffField {d : ℕ} (U : Set (Vec d))
-    (a : CoeffField d) : CoeffField d := by
-  classical
-  exact fun x => if x ∈ U then a x else 0
+/-! ## 2. Coefficient fields and their observable law -/
 
-def translateCoeffField {d : ℕ} (z : Vec d) (a : CoeffField d) : CoeffField d :=
+/-- An honest coefficient field: every matrix entry is Borel measurable and
+locally integrable. -/
+structure CoefficientField (d : ℕ) where
+  toFun : RawCoeffField d
+  entry_measurable : ∀ i j : Fin d, Measurable (fun x => toFun x i j)
+  entry_locallyIntegrable : ∀ i j : Fin d,
+    LocallyIntegrable (fun x => toFun x i j) volume
+
+instance {d : ℕ} : CoeFun (CoefficientField d) (fun _ => RawCoeffField d) :=
+  ⟨CoefficientField.toFun⟩
+
+/-- Compactly supported bounded probes used to observe a coefficient field. -/
+structure IsProbe {d : ℕ} (φ : Vec d → ℝ) : Prop where
+  measurable : Measurable φ
+  bounded : ∃ C : ℝ, ∀ x, |φ x| ≤ C
+  compactSupport : HasCompactSupport φ
+
+noncomputable def entryTest {d : ℕ} (i j : Fin d) (φ : Vec d → ℝ)
+    (a : RawCoeffField d) : ℝ :=
+  ∫ x, a x i j * φ x ∂volume
+
+/-- The observable σ-algebra on raw fields: point evaluations together with
+all compactly supported bounded entry integrals. -/
+def pointwiseFieldSigma (d : ℕ) : MeasurableSpace (RawCoeffField d) := by
+  exact @MeasurableSpace.pi (Vec d) (fun _ => Mat d)
+    (fun _ => instMeasurableSpaceMat d)
+
+def probeFieldSigma (d : ℕ) : MeasurableSpace (RawCoeffField d) :=
+  MeasurableSpace.generateFrom
+    {s | ∃ (i j : Fin d) (φ : Vec d → ℝ), IsProbe φ ∧
+      ∃ t : Set ℝ, MeasurableSet t ∧ s = entryTest i j φ ⁻¹' t}
+
+def observableFieldSigma (d : ℕ) : MeasurableSpace (RawCoeffField d) :=
+  pointwiseFieldSigma d ⊔ probeFieldSigma d
+
+instance instMeasurableSpaceCoefficientField (d : ℕ) :
+    MeasurableSpace (CoefficientField d) :=
+  MeasurableSpace.comap CoefficientField.toFun (observableFieldSigma d)
+
+abbrev CoefficientLaw (d : ℕ) := Measure (CoefficientField d)
+
+/-! ### Geometric actions on raw fields -/
+
+noncomputable def restrictCoeffField {d : ℕ} (U : Set (Vec d))
+    (a : RawCoeffField d) : RawCoeffField d := by
+  classical
+  exact Set.indicator U a
+
+def translateCoeffField {d : ℕ} (z : Vec d)
+    (a : RawCoeffField d) : RawCoeffField d :=
   fun x => a (fun i => x i + z i)
 
 def intVecToRealVec {d : ℕ} (z : Fin d → ℤ) : Vec d :=
   fun i => (z i : ℝ)
 
-def translateByInt {d : ℕ} (z : Fin d → ℤ) : CoeffField d → CoeffField d :=
-  translateCoeffField (intVecToRealVec z)
+/-- One of the two signs `+1` and `-1`. -/
+abbrev Sign := {r : ℝ // r = 1 ∨ r = -1}
 
-def rotateCoeffField {d : ℕ} (R : Mat d) (a : CoeffField d) : CoeffField d :=
-  fun x => (matTranspose R) * (a (matVecMul R x)) * R
+/-- A permutation of the coordinate axes, followed by independent sign flips. -/
+structure SignedPermutation (d : ℕ) where
+  perm : Equiv.Perm (Fin d)
+  axisSign : Fin d → Sign
 
-def adjointCoeffField {d : ℕ} (a : CoeffField d) : CoeffField d :=
-  fun x => matTranspose (a x)
+namespace SignedPermutation
 
-/-! ## The regular-fields carrier
+def matrix {d : ℕ} (R : SignedPermutation d) : Mat d :=
+  fun i j => if i = R.perm j then (R.axisSign j : ℝ) else 0
 
-Following the carrier redesign, the probability layer lives on the carrier of
-*honest* coefficient fields: entrywise Borel-measurable, locally integrable
-maps `Vec d → Mat d`.  On the carrier, entrywise regularity is free by type.
-The carrier σ-algebra is the join of the pointwise (product) σ-algebra and the
-σ-algebra generated by the linear entry integrals against bounded, measurable,
-compactly supported probes.  These are statement-level copies of
-`Homogenization/Probability/RegCoeffField.lean` and
-`Homogenization/Probability/RegCoeffField/Sigma.lean`. -/
+end SignedPermutation
 
-structure RegCoeffField (d : ℕ) where
-  toFun : Vec d → Mat d
-  entry_measurable : ∀ i j : Fin d, Measurable (fun x : Vec d => toFun x i j)
-  entry_locInt : ∀ i j : Fin d,
-    MeasureTheory.LocallyIntegrable (fun x : Vec d => toFun x i j)
-      MeasureTheory.volume
+def rotateCoeffField {d : ℕ} (R : SignedPermutation d)
+    (a : RawCoeffField d) : RawCoeffField d :=
+  fun x => (R.matrix.transpose) * (a (matVecMul R.matrix x)) * R.matrix
 
-instance {d : ℕ} : CoeFun (RegCoeffField d) (fun _ => Vec d → Mat d) :=
-  ⟨RegCoeffField.toFun⟩
+def adjointCoeffField {d : ℕ} (a : RawCoeffField d) : RawCoeffField d :=
+  fun x => (a x).transpose
 
-structure IsProbeR {d : ℕ} (φ : Vec d → ℝ) : Prop where
-  measurable : Measurable φ
-  bounded : ∃ C : ℝ, ∀ x, |φ x| ≤ C
-  hasCompactSupport : HasCompactSupport φ
+/-! ### Equality in distribution and restrictions -/
 
-noncomputable def entryTestR {d : ℕ} (i j : Fin d) (φ : Vec d → ℝ)
-    (a : RegCoeffField d) : ℝ :=
-  ∫ x, a.toFun x i j * φ x ∂MeasureTheory.volume
+/-- Observable distribution of the transformed raw field `T a`.
 
-def pointwiseSigmaR (d : ℕ) : MeasurableSpace (RegCoeffField d) :=
-  MeasurableSpace.comap RegCoeffField.toFun (pointwiseCoeffFieldMeasurableSpace d)
+The σ-algebra on raw fields is pinned to `observableFieldSigma d` in the type
+itself.  The bare function type `RawCoeffField d` deliberately carries no
+global `MeasurableSpace` instance: Mathlib's product instance would also apply
+to it, and the meaning of the invariance assumptions below must not depend on
+which instance wins. -/
+noncomputable def rawLawAfter {d : ℕ} (P : CoefficientLaw d)
+    (T : RawCoeffField d → RawCoeffField d) :
+    @Measure (RawCoeffField d) (observableFieldSigma d) :=
+  letI : MeasurableSpace (RawCoeffField d) := observableFieldSigma d
+  Measure.map (fun a : CoefficientField d => T a.toFun) P
 
-def entryTestSigmaR (d : ℕ) : MeasurableSpace (RegCoeffField d) :=
-  MeasurableSpace.generateFrom
-    {s | ∃ (i j : Fin d) (φ : Vec d → ℝ), IsProbeR φ ∧
-      ∃ t : Set ℝ, MeasurableSet t ∧ s = entryTestR i j φ ⁻¹' t}
+/-- `T a` has the same observable law as `a`. -/
+def LawInvariantUnder {d : ℕ} (P : CoefficientLaw d)
+    (T : RawCoeffField d → RawCoeffField d) : Prop :=
+  rawLawAfter P T = rawLawAfter P id
 
-instance instMeasurableSpaceRegCoeffField (d : ℕ) :
-    MeasurableSpace (RegCoeffField d) :=
-  pointwiseSigmaR d ⊔ entryTestSigmaR d
+/-- The σ-algebra generated by observing the field only inside `U`. -/
+def restrictionSigma {d : ℕ} (U : Set (Vec d)) :
+    MeasurableSpace (CoefficientField d) :=
+  MeasurableSpace.comap
+    (fun a : CoefficientField d => restrictCoeffField U a.toFun)
+    (observableFieldSigma d)
 
-/-- A coefficient law on the carrier (mirrors `Book.Ch04.RestrictionCoeffLaw`). -/
-abbrev RestrictionCoeffLaw (d : ℕ) := Measure (RegCoeffField d)
+/-! ## 3. Triadic cubes and volume averages -/
 
-/-! ## Signed permutations and carrier endomorphisms
-
-Statement-level copies of the carrier endomorphisms of
-`Homogenization/Probability/RegCoeffField/Endomorphisms.lean` (translation,
-signed-permutation rotation, adjoint, restriction), together with the
-signed-permutation matrix algebra needed to define them.  Each map preserves
-the carrier: entrywise Borel measurability and local integrability are stable
-under the corresponding change of variables. -/
-
-def IsSignedPermutationMatrix {d : ℕ} (R : Mat d) : Prop :=
-  ∃ sigma : Equiv.Perm (Fin d), ∃ signs : Fin d → ℝ,
-    (∀ i, signs i = 1 ∨ signs i = -1) ∧
-      ∀ i j, R i j = if i = sigma j then signs j else 0
-
-theorem matVecMul_one {d : ℕ} (x : Vec d) :
-    matVecMul (1 : Mat d) x = x := by
-  ext i
-  unfold matVecMul
-  rw [Finset.sum_eq_single i]
-  · simp
-  · intro j _ hji
-    have hij : i ≠ j := fun h => hji h.symm
-    simp [hij]
-  · intro hi
-    exact (hi (Finset.mem_univ i)).elim
-
-theorem matVecMul_mul {d : ℕ} (A B : Mat d) (x : Vec d) :
-    matVecMul A (matVecMul B x) = matVecMul (A * B) x := by
-  change A.mulVec (B.mulVec x) = (A * B).mulVec x
-  exact Matrix.mulVec_mulVec x A B
-
-theorem IsSignedPermutationMatrix.transpose_mul_self {d : ℕ} {R : Mat d}
-    (hR : IsSignedPermutationMatrix R) :
-    matTranspose R * R = 1 := by
-  classical
-  rcases hR with ⟨σ, s, hs, hR⟩
-  ext i j
-  by_cases hij : i = j
-  · subst j
-    rw [Matrix.mul_apply]
-    calc
-      ∑ k, matTranspose R i k * R k i =
-          matTranspose R i (σ i) * R (σ i) i := by
-        refine Finset.sum_eq_single (a := σ i)
-          (f := fun k : Fin d => matTranspose R i k * R k i) ?_ ?_
-        · intro k _ hk
-          change R k i * R k i = 0
-          rw [hR k i]
-          simp [hk]
-        · intro hnot
-          exact (hnot (Finset.mem_univ _)).elim
-      _ = s i * s i := by
-        change R (σ i) i * R (σ i) i = s i * s i
-        rw [hR (σ i) i]
-        simp
-      _ = 1 := by
-        rcases hs i with hsi | hsi <;> simp [hsi]
-      _ = (1 : Mat d) i i := by simp
-  · rw [Matrix.mul_apply]
-    calc
-      ∑ k, matTranspose R i k * R k j = 0 := by
-        refine Finset.sum_eq_zero fun k _ => ?_
-        rw [matTranspose, Matrix.transpose_apply, hR k i, hR k j]
-        have hσij : σ i ≠ σ j := fun h => hij (σ.injective h)
-        by_cases hki : k = σ i
-        · have hkj : k ≠ σ j := by
-            intro h
-            apply hij
-            exact σ.injective (hki.symm.trans h)
-          simp [hki, hσij]
-        · simp [hki]
-      _ = (1 : Mat d) i j := by simp [hij]
-
-theorem IsSignedPermutationMatrix.mul_transpose_self {d : ℕ} {R : Mat d}
-    (hR : IsSignedPermutationMatrix R) :
-    R * matTranspose R = 1 := by
-  classical
-  rcases hR with ⟨σ, s, hs, hR⟩
-  ext i j
-  by_cases hij : i = j
-  · subst j
-    rw [Matrix.mul_apply]
-    calc
-      ∑ k, R i k * matTranspose R k i =
-          R i (σ.symm i) * matTranspose R (σ.symm i) i := by
-        refine Finset.sum_eq_single (a := σ.symm i)
-          (f := fun k : Fin d => R i k * matTranspose R k i) ?_ ?_
-        · intro k _ hk
-          change R i k * R i k = 0
-          rw [hR i k]
-          have hik : i ≠ σ k := by
-            intro h
-            apply hk
-            have hsymm : σ.symm i = k := by
-              rw [h]
-              simp
-            exact hsymm.symm
-          rw [if_neg hik]
-          simp
-        · intro hnot
-          exact (hnot (Finset.mem_univ _)).elim
-      _ = s (σ.symm i) * s (σ.symm i) := by
-        change R i (σ.symm i) * R i (σ.symm i) =
-          s (σ.symm i) * s (σ.symm i)
-        rw [hR i (σ.symm i)]
-        have hi : i = σ (σ.symm i) := by simp
-        rw [if_pos hi]
-      _ = 1 := by
-        rcases hs (σ.symm i) with hsi | hsi <;> simp [hsi]
-      _ = (1 : Mat d) i i := by simp
-  · rw [Matrix.mul_apply]
-    calc
-      ∑ k, R i k * matTranspose R k j = 0 := by
-        refine Finset.sum_eq_zero fun k _ => ?_
-        rw [matTranspose, Matrix.transpose_apply, hR i k, hR j k]
-        by_cases hik : i = σ k
-        · have hjk : j ≠ σ k := by
-            intro h
-            exact hij (hik.trans h.symm)
-          simp [hik, hjk]
-        · simp [hik]
-      _ = (1 : Mat d) i j := by simp [hij]
-
-theorem IsSignedPermutationMatrix.det_ne_zero {d : ℕ} {R : Mat d}
-    (hR : IsSignedPermutationMatrix R) :
-    Matrix.det R ≠ 0 := by
-  have hdet := congrArg Matrix.det hR.transpose_mul_self
-  have hprod : Matrix.det R * Matrix.det R = 1 := by
-    simpa [matTranspose, Matrix.det_mul, Matrix.det_transpose] using hdet
-  intro hzero
-  simp [hzero] at hprod
-
-theorem IsSignedPermutationMatrix.abs_det_eq_one {d : ℕ} {R : Mat d}
-    (hR : IsSignedPermutationMatrix R) :
-    |Matrix.det R| = 1 := by
-  have hdet := congrArg Matrix.det hR.transpose_mul_self
-  have hsquare : Matrix.det R * Matrix.det R = 1 := by
-    simpa [matTranspose, Matrix.det_mul, Matrix.det_transpose] using hdet
-  have hnonneg : 0 ≤ |Matrix.det R| := abs_nonneg _
-  have habs_square : |Matrix.det R| * |Matrix.det R| = 1 := by
-    rw [← abs_mul, hsquare, abs_one]
-  nlinarith
-
-theorem continuous_matVecMul {d : ℕ} (R : Mat d) :
-    Continuous (fun x : Vec d => matVecMul R x) := by
-  change Continuous fun x : Fin d → ℝ => fun i => ∑ j, R i j * x j
-  exact continuous_pi fun i =>
-    continuous_finset_sum Finset.univ fun j _ => continuous_const.mul (continuous_apply j)
-
-/-- A signed permutation acts as a homeomorphism of the base space. -/
-noncomputable def matVecMulHomeomorph {d : ℕ} (R : Mat d)
-    (hR : IsSignedPermutationMatrix R) : Vec d ≃ₜ Vec d where
-  toEquiv :=
-    { toFun := matVecMul R
-      invFun := matVecMul (matTranspose R)
-      left_inv := fun x => by
-        rw [matVecMul_mul, hR.transpose_mul_self, matVecMul_one]
-      right_inv := fun x => by
-        rw [matVecMul_mul, hR.mul_transpose_self, matVecMul_one] }
-  continuous_toFun := continuous_matVecMul R
-  continuous_invFun := continuous_matVecMul (matTranspose R)
-
-/-- The signed-permutation action preserves Lebesgue measure. -/
-theorem measurePreserving_matVecMul {d : ℕ} (R : Mat d)
-    (hR : IsSignedPermutationMatrix R) :
-    MeasureTheory.MeasurePreserving (fun x : Vec d => matVecMul R x)
-      MeasureTheory.volume MeasureTheory.volume := by
-  refine ⟨(continuous_matVecMul R).measurable, ?_⟩
-  have hscale : ENNReal.ofReal |(Matrix.det R)⁻¹| = 1 := by
-    rw [abs_inv, hR.abs_det_eq_one]
-    norm_num
-  change Measure.map (Matrix.toLin' R) MeasureTheory.volume = MeasureTheory.volume
-  rw [Real.map_matrix_volume_pi_eq_smul_volume_pi hR.det_ne_zero, hscale, one_smul]
-
-/-- Local-integrability transport under a measure-preserving homeomorphism. -/
-theorem locallyIntegrable_comp_homeomorph_of_measurePreserving {d : ℕ}
-    {f : Vec d → ℝ}
-    (hf : MeasureTheory.LocallyIntegrable f MeasureTheory.volume)
-    (e : Vec d ≃ₜ Vec d)
-    (hmp : MeasureTheory.MeasurePreserving e MeasureTheory.volume MeasureTheory.volume) :
-    MeasureTheory.LocallyIntegrable (fun x => f (e x)) MeasureTheory.volume := by
-  have hmapInt : MeasureTheory.LocallyIntegrable f
-      (Measure.map e MeasureTheory.volume) := by
-    rw [hmp.map_eq]; exact hf
-  exact (MeasureTheory.locallyIntegrable_map_homeomorph e).mp hmapInt
-
-/-- Spatial translation is a carrier endomorphism (mirrors `translateReg`). -/
-noncomputable def translateReg {d : ℕ} (z : Vec d) (a : RegCoeffField d) :
-    RegCoeffField d where
-  toFun := fun x => a.toFun (x + z)
-  entry_measurable := fun i j =>
-    (a.entry_measurable i j).comp (measurable_id.add measurable_const)
-  entry_locInt := fun i j =>
-    locallyIntegrable_comp_homeomorph_of_measurePreserving (a.entry_locInt i j)
-      (Homeomorph.addRight z) (by
-        simpa [Homeomorph.coe_addRight] using
-          MeasureTheory.measurePreserving_add_right
-            (MeasureTheory.volume : Measure (Vec d)) z)
-
-/-- The conjugation collapse for a signed permutation:
-`(Rᵀ M R)_{ij} = s_i s_j M_{σ i, σ j}`. -/
-theorem matTranspose_mul_mul_apply {d : ℕ} {R : Mat d} {σ : Equiv.Perm (Fin d)}
-    {s : Fin d → ℝ}
-    (hRdef : ∀ i j, R i j = if i = σ j then s j else 0) (M : Mat d) (i j : Fin d) :
-    (matTranspose R * M * R) i j = s i * s j * M (σ i) (σ j) := by
-  classical
-  rw [Matrix.mul_apply, Finset.sum_eq_single (σ j)]
-  · rw [hRdef (σ j) j, if_pos rfl, Matrix.mul_apply, Finset.sum_eq_single (σ i)]
-    · rw [matTranspose, Matrix.transpose_apply, hRdef (σ i) i, if_pos rfl]
-      ring
-    · intro l _ hl
-      rw [matTranspose, Matrix.transpose_apply, hRdef l i, if_neg hl, zero_mul]
-    · intro hnot
-      exact absurd (Finset.mem_univ (σ i)) hnot
-  · intro k _ hk
-    rw [hRdef k j, if_neg hk, mul_zero]
-  · intro hnot
-    exact absurd (Finset.mem_univ (σ j)) hnot
-
-/-- Signed-permutation rotation is a carrier endomorphism (mirrors
-`rotateReg`). -/
-noncomputable def rotateReg {d : ℕ} (R : Mat d) (hR : IsSignedPermutationMatrix R)
-    (a : RegCoeffField d) : RegCoeffField d where
-  toFun := fun x => (matTranspose R) * (a.toFun (matVecMul R x)) * R
-  entry_measurable := fun i j => by
-    obtain ⟨σ, s, _hs, hRdef⟩ := id hR
-    have hcollapse :
-        (fun x => (matTranspose R * a.toFun (matVecMul R x) * R) i j)
-          = fun x => s i * s j * a.toFun (matVecMul R x) (σ i) (σ j) :=
-      funext fun x => matTranspose_mul_mul_apply hRdef _ i j
-    rw [hcollapse]
-    exact (((a.entry_measurable (σ i) (σ j)).comp
-      (continuous_matVecMul R).measurable).const_mul _)
-  entry_locInt := fun i j => by
-    obtain ⟨σ, s, _hs, hRdef⟩ := id hR
-    have hcollapse :
-        (fun x => (matTranspose R * a.toFun (matVecMul R x) * R) i j)
-          = fun x => s i * s j * a.toFun (matVecMul R x) (σ i) (σ j) :=
-      funext fun x => matTranspose_mul_mul_apply hRdef _ i j
-    rw [hcollapse]
-    have hg : MeasureTheory.LocallyIntegrable
-        (fun x => a.toFun (matVecMul R x) (σ i) (σ j)) MeasureTheory.volume :=
-      locallyIntegrable_comp_homeomorph_of_measurePreserving
-        (a.entry_locInt (σ i) (σ j))
-        (matVecMulHomeomorph R hR) (measurePreserving_matVecMul R hR)
-    simpa [smul_eq_mul] using hg.smul (s i * s j)
-
-/-- The adjoint (entrywise transpose) is a carrier endomorphism (mirrors
-`adjointReg`). -/
-def adjointReg {d : ℕ} (a : RegCoeffField d) : RegCoeffField d where
-  toFun := fun x => (a.toFun x).transpose
-  entry_measurable := fun i j => by
-    simpa [Matrix.transpose_apply] using a.entry_measurable j i
-  entry_locInt := fun i j => by
-    simpa [Matrix.transpose_apply] using a.entry_locInt j i
-
-/-- Restriction of a carrier field to a measurable set (mirrors
-`restrictReg`). -/
-noncomputable def restrictReg {d : ℕ} (U : Set (Vec d)) (hU : MeasurableSet U)
-    (a : RegCoeffField d) : RegCoeffField d where
-  toFun := Set.indicator U a.toFun
-  entry_measurable := fun i j => by
-    have hEq : (fun x => Set.indicator U a.toFun x i j)
-        = Set.indicator U (fun x => a.toFun x i j) := by
-      funext x
-      by_cases hx : x ∈ U
-      · simp [Set.indicator_of_mem hx]
-      · simp [Set.indicator_of_notMem hx]
-    rw [hEq]
-    exact (a.entry_measurable i j).indicator hU
-  entry_locInt := fun i j => by
-    have hEq : (fun x => Set.indicator U a.toFun x i j)
-        = Set.indicator U (fun x => a.toFun x i j) := by
-      funext x
-      by_cases hx : x ∈ U
-      · simp [Set.indicator_of_mem hx]
-      · simp [Set.indicator_of_notMem hx]
-    rw [hEq, MeasureTheory.locallyIntegrable_iff]
-    intro K hK
-    exact ((a.entry_locInt i j).integrableOn_isCompact hK).indicator hU
-
-/-- The pointwise-restriction σ-algebra used by this copied sup-metric law
-lane: the comap of the canonical carrier σ-algebra along `restrictReg U hU`. -/
-def restrictionSigma {d : ℕ} (U : Set (Vec d)) (hU : MeasurableSet U) :
-    MeasurableSpace (RegCoeffField d) :=
-  MeasurableSpace.comap (restrictReg U hU) inferInstance
-
-/-! ## Cubes and normalized cube averages -/
-
-noncomputable abbrev volumeMeasureOn {d : ℕ} (U : Set (Vec d)) :=
-  MeasureTheory.volume.restrict U
+noncomputable abbrev volumeOn {d : ℕ} (U : Set (Vec d)) :=
+  volume.restrict U
 
 structure TriadicCube (d : ℕ) where
   scale : ℤ
   index : Fin d → ℤ
 deriving DecidableEq, Repr
 
-noncomputable def cubeScaleFactor {d : ℕ} (Q : TriadicCube d) : ℝ :=
+namespace TriadicCube
+
+noncomputable def side {d : ℕ} (Q : TriadicCube d) : ℝ :=
   (3 : ℝ) ^ Q.scale
 
-def cubeSet {d : ℕ} (Q : TriadicCube d) : Set (Vec d) :=
-  { x | ∀ i,
-      (((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q ≤ x i) ∧
-      (x i < (((Q.index i : ℝ) + (1 / 2 : ℝ)) * cubeScaleFactor Q)) }
+def set {d : ℕ} (Q : TriadicCube d) : Set (Vec d) :=
+  {x | ∀ i,
+    (((Q.index i : ℝ) - (1 / 2 : ℝ)) * Q.side ≤ x i) ∧
+    (x i < ((Q.index i : ℝ) + (1 / 2 : ℝ)) * Q.side)}
 
-def openCubeSet {d : ℕ} (Q : TriadicCube d) : Set (Vec d) :=
-  { x | ∀ i,
-      (((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q < x i) ∧
-      (x i < (((Q.index i : ℝ) + (1 / 2 : ℝ)) * cubeScaleFactor Q)) }
+end TriadicCube
 
-/-- The triadic cube centered at the origin with integer scale `m`. -/
-def triadicOriginCube (d : ℕ) (m : ℤ) : TriadicCube d :=
+/-- The triadic cube centered at the origin with sidelength `3 ^ m`. -/
+def originCube (d : ℕ) (m : ℤ) : TriadicCube d :=
   { scale := m
     index := 0 }
 
-/-- The public theorem uses natural scales, coerced to integer triadic scales. -/
-abbrev originCube (d : ℕ) [NeZero d] (m : ℕ) : TriadicCube d :=
-  triadicOriginCube d ((m : ℕ) : ℤ)
-
-/-- Fixed public Sobolev exponent used by the comparator-audited theorem. -/
-noncomputable abbrev fixedComparisonS : ℝ := 3 / 4
-
-def childCubes {d : ℕ} (Q : TriadicCube d) : Finset (TriadicCube d) :=
-  Finset.univ.image fun digits : Fin d → Fin 3 =>
-    { scale := Q.scale - 1
-      index := fun i => 3 * Q.index i + (digits i : ℤ) - 1 }
-
-def descendantsAtDepth {d : ℕ} (Q : TriadicCube d) : ℕ → Finset (TriadicCube d)
-  | 0 => {Q}
-  | n + 1 => (descendantsAtDepth Q n).biUnion childCubes
-
-noncomputable def cubeVolume {d : ℕ} (Q : TriadicCube d) : ℝ :=
-  (cubeScaleFactor Q) ^ d
-
-noncomputable def cubeMeasure {d : ℕ} (Q : TriadicCube d) :
-    Measure (Vec d) :=
-  MeasureTheory.volume.restrict (cubeSet Q)
-
-noncomputable def normalizedCubeMeasure {d : ℕ} (Q : TriadicCube d) :
-    Measure (Vec d) :=
-  ENNReal.ofReal ((cubeVolume Q)⁻¹) • cubeMeasure Q
-
-noncomputable def cubeAverage {d : ℕ} (Q : TriadicCube d) (f : Vec d → ℝ) : ℝ :=
-  (cubeVolume Q)⁻¹ * ∫ x in cubeSet Q, f x ∂MeasureTheory.volume
-
-noncomputable def volumeAverage {d : ℕ} (U : Set (Vec d)) (f : Vec d → ℝ) : ℝ :=
+noncomputable def volumeAverage {d : ℕ} (U : Set (Vec d))
+    (f : Vec d → ℝ) : ℝ :=
   (MeasureTheory.volume U).toReal⁻¹ * ∫ x in U, f x ∂MeasureTheory.volume
 
-noncomputable def cubeLpNorm {d : ℕ} {E : Type*} [NormedAddCommGroup E]
-    (Q : TriadicCube d) (p : ℝ≥0∞) (f : Vec d → E) : ℝ :=
-  (MeasureTheory.eLpNorm f p (normalizedCubeMeasure Q)).toReal
+/-! ## 4. Assumptions on the random medium -/
 
-noncomputable def cubeFluctuation {d : ℕ} (Q : TriadicCube d)
-    (f : Vec d → ℝ) : Vec d → ℝ :=
-  fun x => f x - cubeAverage Q f
-
-/-! ## Law assumptions -/
-
-/-- Stationarity in the pointwise-restriction/sup-metric law lane: invariance
-under every integer translation. -/
-def RestrictionStationaryLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
-  ∀ z : Fin d → ℤ, Measure.map (translateReg (intVecToRealVec z)) P = P
-
-def RestrictionUnitSeparated {d : ℕ} (U V : Set (Vec d)) : Prop :=
+/-- The restrictions to `U` and `V` are independent whenever the sets are at
+least unit distance apart. -/
+def UnitSeparated {d : ℕ} (U V : Set (Vec d)) : Prop :=
   ∀ ⦃x y : Vec d⦄, x ∈ U → y ∈ V → 1 ≤ dist x y
 
-/-- Unit-range dependence in the pointwise-restriction/sup-metric law lane:
-independence of the restriction σ-algebras of unit-separated measurable sets;
-the `MeasurableSet` side-conditions make `restrictionSigma` well defined. -/
-def RestrictionUnitRangeDependentLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
-  ∀ (U V : Set (Vec d)) (hU : MeasurableSet U) (hV : MeasurableSet V),
-    RestrictionUnitSeparated U V →
-      ProbabilityTheory.Indep (restrictionSigma U hU) (restrictionSigma V hV) P
+def IntegerStationary {d : ℕ} (P : CoefficientLaw d) : Prop :=
+  ∀ z : Fin d → ℤ,
+    LawInvariantUnder P (translateCoeffField (intVecToRealVec z))
 
-/-- Isotropy of a carrier law: invariance under every signed-permutation
-rotation (mirrors `IsIsotropicInLawR`). -/
-def IsIsotropicInLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
-  ∀ (R : Mat d) (hR : IsSignedPermutationMatrix R),
-    Measure.map (rotateReg R hR) P = P
+def UnitRangeDependent {d : ℕ} (P : CoefficientLaw d) : Prop :=
+  ∀ (U V : Set (Vec d)), MeasurableSet U → MeasurableSet V →
+    UnitSeparated U V →
+      ProbabilityTheory.Indep (restrictionSigma U) (restrictionSigma V) P
 
-/-- Adjoint invariance of a carrier law (mirrors
-`IsAdjointInvariantInLawR`). -/
-def IsAdjointInvariantInLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
-  Measure.map adjointReg P = P
+def SignedCoordinateInvariant {d : ℕ} (P : CoefficientLaw d) : Prop :=
+  ∀ R : SignedPermutation d, LawInvariantUnder P (rotateCoeffField R)
 
-def IsAEEllipticFieldOn {d : ℕ} (lam Lam : ℝ) (U : Set (Vec d))
-    (a : CoeffField d) : Prop :=
-  MeasurableSet U ∧
-    (∀ i j : Fin d,
-      AEStronglyMeasurable
-        (fun x : Vec d => restrictCoeffField U a x i j) (volumeMeasureOn U)) ∧
-      ∀ᵐ x ∂ volumeMeasureOn U, IsEllipticMatrix lam Lam (a x)
+def AdjointInvariant {d : ℕ} (P : CoefficientLaw d) : Prop :=
+  LawInvariantUnder P adjointCoeffField
 
-/-- Spatial a.e. ellipticity of a carrier field, evaluated on the honest
-sample (mirrors `Book.Ch04.AEEllipticOn`). -/
-def AEEllipticOn {d : ℕ} (lam Lam : ℝ) (U : Set (Vec d))
-    (a : RegCoeffField d) : Prop :=
-  IsAEEllipticFieldOn lam Lam U a.toFun
+/-- `Θ`-ellipticity of one realization: the quadratic form is bounded below by
+`1` and the inverse quadratic form by `Θ⁻¹`, at almost every point of space. -/
+def ThetaEllipticRealization {d : ℕ} (Θ : ℝ) (a : CoefficientField d) : Prop :=
+  ∀ᵐ x ∂(volume : Measure (Vec d)), IsEllipticMatrix 1 Θ (a x)
 
-def AELocallyUniformlyEllipticField {d : ℕ} (a : RegCoeffField d) : Prop :=
-  ∀ Q : TriadicCube d,
-    ∃ lam Lam : ℝ,
-      0 < lam ∧ lam ≤ Lam ∧
-        AEEllipticOn lam Lam (openCubeSet Q) a
-
-def AELocallyUniformlyEllipticLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop :=
-  ∀ᵐ a ∂P, AELocallyUniformlyEllipticField a
-
-/-- The Chapter 4 law carrier (mirrors `Book.Ch04.RestrictionLawCarrier`).  On the
-honest-fields carrier the former measurability fields are law-independent free
-theorems, so the carrier consists of the probability instance and the a.s.
-local uniform ellipticity support alone. -/
-structure RestrictionLawCarrier {d : ℕ} (P : RestrictionCoeffLaw d) : Prop where
+/-- All data describing the random coefficient field.  The structure is flat
+so that a reader sees the complete list of hypotheses in one place. -/
+structure Setup (d : ℕ) [NeZero d] where
+  Θ : ℝ
+  one_le_theta : 1 ≤ Θ
+  P : CoefficientLaw d
   isProbability : IsProbabilityMeasure P
-  ae_locally_uniformly_elliptic : AELocallyUniformlyEllipticLaw P
+  integerStationary : IntegerStationary P
+  unitRange : UnitRangeDependent P
+  signedCoordinateInvariant : SignedCoordinateInvariant P
+  adjointInvariant : AdjointInvariant P
+  thetaElliptic : ∀ᵐ a ∂P, ThetaEllipticRealization Θ a
 
-structure RestrictionStructuralLaw {d : ℕ} (P : RestrictionCoeffLaw d) : Prop where
-  stationary : RestrictionStationaryLaw P
-  unit_range : RestrictionUnitRangeDependentLaw P
-  isotropic : IsIsotropicInLaw P
-  adjoint_invariant : IsAdjointInvariantInLaw P
+/-! ## 5. Weak `H¹` and `H¹₀` -/
 
-structure UniformEllipticityBounds {d : ℕ}
-    (P : RestrictionCoeffLaw d) (lam Lam : ℝ) : Prop where
-  lam_pos : 0 < lam
-  lam_le_Lam : lam ≤ Lam
-  aee_elliptic :
-    ∀ᵐ a ∂P,
-      ∀ Q : TriadicCube d,
-        AEEllipticOn lam Lam (openCubeSet Q) a
-
-
-/-! ## Sobolev weak solutions -/
-
-noncomputable def vecModule (d : ℕ) : Module ℝ (Vec d) :=
-  @Pi.Function.module (Fin d) ℝ ℝ _ _ _
-
-noncomputable def weakFDeriv {d : ℕ} (phi : Vec d → ℝ) (x : Vec d) :=
-  @fderiv ℝ _ (Vec d) _ (vecModule d) _ ℝ _ _ _ phi x
+noncomputable def weakFDeriv {d : ℕ} (φ : Vec d → ℝ) (x : Vec d) :=
+  fderiv ℝ φ x
 
 def basisVec {d : ℕ} (i : Fin d) : Vec d :=
   Pi.single i (1 : ℝ)
 
-def HasWeakPartialDerivOn {d : ℕ} (U : Set (Vec d)) (i : Fin d)
+def HasWeakPartialDerivativeOn {d : ℕ} (U : Set (Vec d)) (i : Fin d)
     (u gi : Vec d → ℝ) : Prop :=
-  ∀ phi : Vec d → ℝ,
-    ContDiff ℝ (⊤ : ℕ∞) phi →
-    HasCompactSupport phi →
-    tsupport phi ⊆ U →
-    ∫ x in U, u x * (weakFDeriv phi x) (basisVec i) ∂MeasureTheory.volume =
-      -∫ x in U, gi x * phi x ∂MeasureTheory.volume
+  ∀ φ : Vec d → ℝ,
+    ContDiff ℝ (⊤ : ℕ∞) φ →
+    HasCompactSupport φ →
+    tsupport φ ⊆ U →
+    ∫ x in U, u x * (weakFDeriv φ x) (basisVec i) ∂volume =
+      -∫ x in U, gi x * φ x ∂volume
 
 def HasWeakGradientOn {d : ℕ} (U : Set (Vec d)) (u : Vec d → ℝ)
     (Du : Vec d → Vec d) : Prop :=
-  ∀ i : Fin d, HasWeakPartialDerivOn U i u (fun x => Du x i)
+  ∀ i : Fin d, HasWeakPartialDerivativeOn U i u (fun x => Du x i)
 
 abbrev MemL2On {d : ℕ} (U : Set (Vec d)) (u : Vec d → ℝ) : Prop :=
-  MemLp u 2 (MeasureTheory.volume.restrict U)
+  MemLp u 2 (volumeOn U)
 
-def GradMemL2On {d : ℕ} (U : Set (Vec d)) (Du : Vec d → Vec d) : Prop :=
+abbrev MemVectorL2On {d : ℕ} (U : Set (Vec d)) (f : Vec d → Vec d) : Prop :=
+  MemLp f 2 (volumeOn U)
+
+def GradientMemL2On {d : ℕ} (U : Set (Vec d))
+    (Du : Vec d → Vec d) : Prop :=
   ∀ i : Fin d, MemL2On U (fun x => Du x i)
 
-structure H1Function {d : ℕ} (U : Set (Vec d)) where
+/-- A function together with a chosen weak gradient. -/
+structure WeakH1 {d : ℕ} (U : Set (Vec d)) where
   toFun : Vec d → ℝ
   grad : Vec d → Vec d
   memL2 : MemL2On U toFun
-  gradMemL2 : GradMemL2On U grad
+  gradMemL2 : GradientMemL2On U grad
   hasWeakGradient : HasWeakGradientOn U toFun grad
 
-instance {d : ℕ} {U : Set (Vec d)} : CoeFun (H1Function U)
-    (fun _ => Vec d → ℝ) where
-  coe u := u.toFun
+instance {d : ℕ} {U : Set (Vec d)} : CoeFun (WeakH1 U)
+    (fun _ => Vec d → ℝ) :=
+  ⟨WeakH1.toFun⟩
 
-structure H10Function {d : ℕ} (U : Set (Vec d)) extends H1Function U where
+/-- The closure of smooth compactly supported functions in the `H¹` norm. -/
+structure WeakH10 {d : ℕ} (U : Set (Vec d)) extends WeakH1 U where
   approx : ℕ → Vec d → ℝ
   approx_smooth : ∀ n, ContDiff ℝ (⊤ : ℕ∞) (approx n)
-  approx_hasCompactSupport : ∀ n, HasCompactSupport (approx n)
-  approx_support_subset : ∀ n, tsupport (approx n) ⊆ U
+  approx_compactSupport : ∀ n, HasCompactSupport (approx n)
+  approx_supportedIn : ∀ n, tsupport (approx n) ⊆ U
   tendsto_approx :
     Filter.Tendsto
-      (fun n => eLpNorm (fun x => approx n x - toH1Function.toFun x) 2
-        (MeasureTheory.volume.restrict U))
+      (fun n => eLpNorm (fun x => approx n x - toWeakH1.toFun x) 2 (volumeOn U))
       Filter.atTop (nhds 0)
   tendsto_approx_grad :
     ∀ i : Fin d,
       Filter.Tendsto
         (fun n => eLpNorm
-          (fun x => (weakFDeriv (approx n) x) (basisVec i) - toH1Function.grad x i) 2
-          (MeasureTheory.volume.restrict U))
+          (fun x => (weakFDeriv (approx n) x) (basisVec i) - toWeakH1.grad x i)
+          2 (volumeOn U))
         Filter.atTop (nhds 0)
 
 namespace PolynomialScale
 
-/-! ## Block formalism, `Mu`, coarse/annealed matrices, and the contrast
-selector (statement-level copies of
-`Homogenization/Ambient/{Basic,BlockMatrix}.lean`,
-`Homogenization/CoarseGraining/BlockFormalism/{Structures,Properties}.lean`,
-`Homogenization/CoarseGraining/Definitions.lean`,
-`Homogenization/Book/Ch04/AnnealedDefinitions.lean`, and
-`Homogenization/Book/Ch05/Definitions.lean`). -/
+/-! ## 6. Block states and the coarse-graining quantity `Mu` -/
 
-/-! ### Block vectors and block matrices -/
-
+/-- A pair of vector fields: a potential slot and a flux slot. -/
 abbrev BlockVec (d : ℕ) := Vec d × Vec d
 
+/-- The `2d` coordinates of a block vector. -/
 abbrev BlockCoord (d : ℕ) := Sum (Fin d) (Fin d)
 
+/-- A `2d × 2d` matrix, written as four `d × d` blocks. -/
 structure BlockMat (d : ℕ) where
   upperLeft : Mat d
   upperRight : Mat d
@@ -653,29 +340,27 @@ def blockMatVecMul {d : ℕ} (A : BlockMat d) (X : BlockVec d) : BlockVec d :=
   ( matVecMul A.upperLeft X.1 + matVecMul A.upperRight X.2
   , matVecMul A.lowerLeft X.1 + matVecMul A.lowerRight X.2 )
 
-noncomputable def skewPart {d : ℕ} (A : Mat d) : Mat d :=
-  fun i j => (A i j - A j i) / 2
-
 def blockBasis {d : ℕ} : BlockCoord d → BlockVec d
-  | Sum.inl i => (Pi.single i 1, 0)
-  | Sum.inr i => (0, Pi.single i 1)
+  | Sum.inl i => (basisVec i, 0)
+  | Sum.inr i => (0, basisVec i)
 
-/-! ### L² membership and the potential/solenoidal trace predicates -/
+/-- The `2d × 2d` coefficient of the doubled variational problem, built from
+the symmetric part `s` and the antisymmetric part `k` of `A`. -/
+noncomputable def blockMatrixOfCoeff {d : ℕ} (A : Mat d) : BlockMat d :=
+  let s := symmPart A
+  let k := skewPart A
+  let sInv := s⁻¹
+  { upperLeft := s + k.transpose * sInv * k
+    upperRight := -(k.transpose * sInv)
+    lowerLeft := -(sInv * k)
+    lowerRight := sInv }
 
-noncomputable abbrev MemVectorL2 {d : ℕ} (U : Set (Vec d))
-    (f : Vec d → Vec d) : Prop :=
-  MemLp f 2 (volumeMeasureOn U)
+noncomputable def blockCoeffField {d : ℕ} (a : RawCoeffField d) :
+    Vec d → BlockMat d :=
+  fun x => blockMatrixOfCoeff (a x)
 
-def IsPotentialZeroTraceOn {d : ℕ} (U : Set (Vec d)) (f : Vec d → Vec d) : Prop :=
-  ∃ u : H10Function U, u.toH1Function.grad = f
-
-noncomputable def IsSolenoidalZeroNormalTraceOn {d : ℕ} (U : Set (Vec d))
-    (g : Vec d → Vec d) : Prop :=
-  ∀ φ : H1Function U,
-    ∫ x in U, vecDot (g x) (φ.grad x) ∂MeasureTheory.volume = 0
-
-/-! ### Block states, the doubled coefficient, and the energy density -/
-
+/-- A candidate for the doubled variational problem: a potential field and a
+flux field. -/
 structure BlockState (d : ℕ) where
   potential : Vec d → Vec d
   flux : Vec d → Vec d
@@ -683,120 +368,120 @@ structure BlockState (d : ℕ) where
 def BlockState.eval {d : ℕ} (X : BlockState d) (x : Vec d) : BlockVec d :=
   (X.potential x, X.flux x)
 
-noncomputable def blockMatrixOfCoeff {d : ℕ} (A : Mat d) : BlockMat d :=
-  let s := symmPart A
-  let k := skewPart A
-  let sInv := s⁻¹
-  { upperLeft := s + (matTranspose k) * sInv * k
-    upperRight := -((matTranspose k) * sInv)
-    lowerLeft := -(sInv * k)
-    lowerRight := sInv }
+/-- `f` is the gradient of a weak `H¹₀` function on `U`. -/
+def IsPotentialZeroTraceOn {d : ℕ} (U : Set (Vec d))
+    (f : Vec d → Vec d) : Prop :=
+  ∃ u : WeakH10 U, u.toWeakH1.grad = f
 
-noncomputable def blockCoeffField {d : ℕ} (a : CoeffField d) : Vec d → BlockMat d :=
-  fun x => blockMatrixOfCoeff (a x)
+/-- `g` is divergence free on `U` with vanishing normal trace: it is
+orthogonal to every weak `H¹` gradient. -/
+def IsSolenoidalZeroNormalTraceOn {d : ℕ} (U : Set (Vec d))
+    (g : Vec d → Vec d) : Prop :=
+  ∀ φ : WeakH1 U,
+    ∫ x in U, vecDot (g x) (φ.grad x) ∂volume = 0
 
-def IsBlockMuAdmissible {d : ℕ} (U : Set (Vec d)) (P : BlockVec d)
+/-- Block states admissible for the block parameter `p = (p₁, p₂)`: the
+potential part has mean-`p₁` fluctuation in `H¹₀` and the flux part has
+mean-`p₂` fluctuation which is solenoidal with zero normal trace. -/
+def IsBlockMuAdmissible {d : ℕ} (U : Set (Vec d)) (p : BlockVec d)
     (X : BlockState d) : Prop :=
-  MemVectorL2 U (fun x => X.potential x - P.1) ∧
-    IsPotentialZeroTraceOn U (fun x => X.potential x - P.1) ∧
-      MemVectorL2 U (fun x => X.flux x - P.2) ∧
-        IsSolenoidalZeroNormalTraceOn U (fun x => X.flux x - P.2)
+  MemVectorL2On U (fun x => X.potential x - p.1) ∧
+    IsPotentialZeroTraceOn U (fun x => X.potential x - p.1) ∧
+    MemVectorL2On U (fun x => X.flux x - p.2) ∧
+    IsSolenoidalZeroNormalTraceOn U (fun x => X.flux x - p.2)
 
-noncomputable def blockEnergyDensity {d : ℕ} (a : CoeffField d)
+noncomputable def blockEnergyDensity {d : ℕ} (a : RawCoeffField d)
     (X : BlockState d) (x : Vec d) : ℝ :=
-  (1 / 2 : ℝ) * blockVecDot (X.eval x) (blockMatVecMul (blockCoeffField a x) (X.eval x))
+  (1 / 2 : ℝ) *
+    blockVecDot (X.eval x) (blockMatVecMul (blockCoeffField a x) (X.eval x))
 
-/-! ### The coarse-graining variational quantity `Mu` -/
+noncomputable def muValueSet {d : ℕ} (U : Set (Vec d)) (p : BlockVec d)
+    (a : RawCoeffField d) : Set ℝ :=
+  {m | ∃ X : BlockState d,
+    IsBlockMuAdmissible U p X ∧ m = volumeAverage U (blockEnergyDensity a X)}
 
-noncomputable def muValueSet {d : ℕ} (U : Set (Vec d)) (P : BlockVec d)
-    (a : CoeffField d) : Set ℝ :=
-  { m | ∃ X : BlockState d,
-      IsBlockMuAdmissible U P X ∧ m = volumeAverage U (blockEnergyDensity a X) }
+/-- The coarse-graining variational quantity: the infimum of the averaged
+block energy over the admissible block states. -/
+noncomputable def Mu {d : ℕ} (U : Set (Vec d)) (p : BlockVec d)
+    (a : RawCoeffField d) : ℝ :=
+  sInf (muValueSet U p a)
 
-noncomputable def Mu {d : ℕ} (U : Set (Vec d)) (P : BlockVec d)
-    (a : CoeffField d) : ℝ :=
-  sInf (muValueSet U P a)
+/-! ## 7. Coarse and annealed matrices, and the scalar contrast -/
 
-/-! ### The coarse block matrix (polarization of `Mu`) -/
-
-noncomputable def coarseBlockEntry {d : ℕ} (U : Set (Vec d)) (a : CoeffField d)
-    (α β : BlockCoord d) : ℝ :=
-  if _h : α = β then
+/-- The `(α, β)` entry of the coarse block matrix, obtained by polarizing the
+quantity `Mu` in its block parameter. -/
+noncomputable def coarseBlockEntry {d : ℕ} (U : Set (Vec d))
+    (a : RawCoeffField d) (α β : BlockCoord d) : ℝ :=
+  if α = β then
     2 * Mu U (blockBasis α) a
   else
-    Mu U (blockBasis α + blockBasis β) a - Mu U (blockBasis α) a - Mu U (blockBasis β) a
+    Mu U (blockBasis α + blockBasis β) a - Mu U (blockBasis α) a -
+      Mu U (blockBasis β) a
 
-noncomputable def coarseBlockMatrix {d : ℕ} (U : Set (Vec d)) (a : CoeffField d) :
-    BlockMat d :=
+noncomputable def coarseBlockMatrix {d : ℕ} (U : Set (Vec d))
+    (a : RawCoeffField d) : BlockMat d :=
   { upperLeft := fun i j => coarseBlockEntry U a (Sum.inl i) (Sum.inl j)
     upperRight := fun i j => coarseBlockEntry U a (Sum.inl i) (Sum.inr j)
     lowerLeft := fun i j => coarseBlockEntry U a (Sum.inr i) (Sum.inl j)
     lowerRight := fun i j => coarseBlockEntry U a (Sum.inr i) (Sum.inr j) }
 
-/-! ### Annealed coarse matrices at scale -/
-
-noncomputable def annealedBlockMatrix {d : ℕ} (P : RestrictionCoeffLaw d)
+/-- The entrywise expectation of the coarse block matrix under the law `P`. -/
+noncomputable def annealedBlockMatrix {d : ℕ} (P : CoefficientLaw d)
     (U : Set (Vec d)) : BlockMat d :=
   { upperLeft := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).upperLeft i j ∂P
     upperRight := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).upperRight i j ∂P
     lowerLeft := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).lowerLeft i j ∂P
-    lowerRight := fun i j => ∫ a, (coarseBlockMatrix U a.toFun).lowerRight i j ∂P }
+    lowerRight := fun i j =>
+      ∫ a, (coarseBlockMatrix U a.toFun).lowerRight i j ∂P }
 
-noncomputable def annealedSigmaStarInv {d : ℕ} (P : RestrictionCoeffLaw d)
+/-- `σ*⁻¹`: the lower-right block of the annealed block matrix. -/
+noncomputable def annealedSigmaStarInv {d : ℕ} (P : CoefficientLaw d)
     (U : Set (Vec d)) : Mat d :=
   (annealedBlockMatrix P U).lowerRight
 
-noncomputable def annealedSigmaStar {d : ℕ} (P : RestrictionCoeffLaw d)
+/-- `σ*`: the inverse of the lower-right block. -/
+noncomputable def annealedSigmaStar {d : ℕ} (P : CoefficientLaw d)
     (U : Set (Vec d)) : Mat d :=
   (annealedSigmaStarInv P U)⁻¹
 
+/-- `σ*⁻¹κ`: minus the lower-left block of the annealed block matrix. -/
 noncomputable def annealedSigmaStarInvKappaMean {d : ℕ}
-    (P : RestrictionCoeffLaw d) (U : Set (Vec d)) : Mat d :=
+    (P : CoefficientLaw d) (U : Set (Vec d)) : Mat d :=
   -((annealedBlockMatrix P U).lowerLeft)
 
-noncomputable def annealedKappa {d : ℕ} (P : RestrictionCoeffLaw d)
+/-- `κ`: the annealed drift block, `σ*` applied to `σ*⁻¹κ`. -/
+noncomputable def annealedKappa {d : ℕ} (P : CoefficientLaw d)
     (U : Set (Vec d)) : Mat d :=
   annealedSigmaStar P U * annealedSigmaStarInvKappaMean P U
 
-noncomputable def annealedB {d : ℕ} (P : RestrictionCoeffLaw d)
+/-- `b`: the upper-left block of the annealed block matrix. -/
+noncomputable def annealedB {d : ℕ} (P : CoefficientLaw d)
     (U : Set (Vec d)) : Mat d :=
   (annealedBlockMatrix P U).upperLeft
 
-noncomputable def annealedSigma {d : ℕ} (P : RestrictionCoeffLaw d)
+/-- `σ = b - κᵀ σ*⁻¹ κ`: the annealed conductivity matrix. -/
+noncomputable def annealedSigma {d : ℕ} (P : CoefficientLaw d)
     (U : Set (Vec d)) : Mat d :=
   annealedB P U
-    - matTranspose (annealedKappa P U) * annealedSigmaStarInv P U * annealedKappa P U
+    - (annealedKappa P U).transpose * annealedSigmaStarInv P U *
+      annealedKappa P U
 
 noncomputable def annealedSigmaAtScale {d : ℕ}
-    (P : RestrictionCoeffLaw d) (n : ℤ) : Mat d :=
-  annealedSigma P (cubeSet (triadicOriginCube d n))
+    (P : CoefficientLaw d) (n : ℤ) : Mat d :=
+  annealedSigma P (originCube d n).set
 
 noncomputable def annealedSigmaStarAtScale {d : ℕ}
-    (P : RestrictionCoeffLaw d) (n : ℤ) : Mat d :=
-  annealedSigmaStar P (cubeSet (triadicOriginCube d n))
+    (P : CoefficientLaw d) (n : ℤ) : Mat d :=
+  annealedSigmaStar P (originCube d n).set
 
-/-! ### The total scalar contrast selector
+/-- The scalar contrast at scale `n`.
 
-The repository's `Book.Ch05.thetaAtScale hP hStruct n` selects, via
-`Classical.choice`/`Classical.choose` on the scalarization witnesses built from
-the structural law, the scalars `barSigma`, `barSigmaStar` with
-`annealedSigmaAtScale P n = barSigma • 1` and
-`annealedSigmaStarAtScale P n = barSigmaStar • 1`, and returns
-`barSigma * barSigmaStar⁻¹`.  Both records are `Prop`s and are consumed only
-through `Classical.choice` on `Prop`-valued nonemptiness, so by proof
-irrelevance the value depends on `(P, n)` alone.  Since scalar matrices are
-determined by their `(0,0)` entry (`NeZero d`), the Mathlib-only mirror is the
-*total* function below; under the structural hypotheses the Solution bridges it
-to the repository selector. -/
-
-noncomputable def thetaAtScale {d : ℕ} [NeZero d] (P : RestrictionCoeffLaw d) (n : ℤ) : ℝ :=
+Under the structural hypotheses both annealed matrices are scalar multiples of
+the identity, and a scalar matrix is determined by its `(0,0)` entry, so this
+total function is the ratio of those two scalars. -/
+noncomputable def thetaAtScale {d : ℕ} [NeZero d] (P : CoefficientLaw d)
+    (n : ℤ) : ℝ :=
   annealedSigmaAtScale P n 0 0 * (annealedSigmaStarAtScale P n 0 0)⁻¹
-
-/-! ### The `Θ`-ellipticity class (quadratic-form form ONLY, per directive) -/
-
-def ThetaEllipticLaw {d : ℕ} (Θ : ℝ) (P : RestrictionCoeffLaw d) : Prop :=
-  ∀ᵐ a ∂P, ∀ᵐ x ∂(MeasureTheory.volume : Measure (Vec d)),
-    IsEllipticMatrix 1 Θ (a.toFun x)
 
 
 end PolynomialScale

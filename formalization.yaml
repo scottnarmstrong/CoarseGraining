@@ -109,13 +109,18 @@ automation:
         - "claude-opus-4-7"
         - "claude-opus-4-8"
         - "claude-fable-5"
+        - "claude-opus-5"
         - "gpt-5.5"
       framework: "Claude Code (Anthropic) and Codex (OpenAI) agentic coding harnesses"
       tool_setup: >-
         Lake builds under leanprover/lean4:v4.26.0 with Mathlib v4.26.0. The Lean
-        comparator was run locally (comparator commit
-        5fb6e55e87cc2308e29e0916a3cb39522dbfebfd, lean4export commit
-        3e1cdfe206ec3f54bae4a548d814ce9b2c1bb43d, landrun 0.1.15). Multiple
+        comparator was run locally on all seven pairs (comparator commit
+        575674928e239f5bc452aab72d1dd7b0f1326494, lean4export tag v4.26.0 =
+        commit 3e1cdfe206ec3f54bae4a548d814ce9b2c1bb43d, landrun 0.1.18 =
+        commit 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4), and additionally with
+        the independent nanoda kernel (nanoda_lib 0.4.15 = commit
+        6ae1f0cd962f081f6c423454c5da729d841236a7), which the
+        .github/workflows/comparator.yml workflow enables on every push. Multiple
         read-only subagents were used for internal audit of theorem dependency
         order, definition faithfulness, challenge/solution alignment, and release
         documentation. Release preparation additionally enforced a tracked-file

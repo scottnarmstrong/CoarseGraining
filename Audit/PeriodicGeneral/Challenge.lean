@@ -1,35 +1,42 @@
 import Mathlib
 
 /-!
-# Mathlib-only challenge: periodic homogenization comparison (general field)
+# Periodic homogenization for a general periodic coefficient field
 
-This file is the comparator challenge surface for the deterministic periodic
-specialization of the quenched homogenization comparison theorem.  The
-coefficient law is the Dirac point mass concentrated at an *arbitrary* periodic,
-isotropic, adjoint-invariant, uniformly elliptic deterministic field `a₀`.
+This is a Mathlib-only comparator challenge for the deterministic periodic
+specialization of the uniformly elliptic quenched comparison theorem.
 
-It imports only Mathlib.  The theorem does not expose the project's internal
-construction of the homogenized coefficient.  Instead it is the Mathlib-only
-existential-scalar corollary of the public theorem: it asserts existence of a
-positive scalar homogenized coefficient `sigmaBar`, and states the comparison
-estimate directly for weak solutions of the heterogeneous equation and the
-constant-coefficient equation with matrix `sigmaBar • I`.
+The mathematical content is the following.  In every dimension `d ≥ 2`, there
+are dimensional constants `C, α, Cscale > 0` such that every uniformly elliptic
+coefficient field `a₀` which is
 
-The definitions below are statement-level copies of the objects needed to state
-this corollary.  The main source correspondences are:
+* periodic under all integer translations,
+* invariant under signed coordinate changes, and
+* equal to its own adjoint
 
-* ambient fields and ellipticity: `Homogenization/Ambient/CoefficientField.lean`;
-* the regular-fields carrier `RegCoeffField` and its σ-algebra:
-  `Homogenization/Probability/RegCoeffField.lean` and
-  `Homogenization/Probability/RegCoeffField/Sigma.lean`;
-* coefficient laws and uniform ellipticity: `Homogenization/Book/Ch04/Law.lean`
-  and `Homogenization/Book/Ch04/Theorems/UniformEllipticityBridge.lean`;
-* cubes, weak equations, and energy quantities: `Homogenization/Book/Ch02` and
-  `Homogenization/Book/Ch03`;
-* positive and negative Sobolev quantities: `Homogenization/Book/Ch03/Theorems`;
-* the public theorem surface: `Homogenization/Book/MainResults.lean`.
+has:
 
-The only proof omitted in this challenge file is the final theorem proof.
+* a positive scalar homogenized coefficient `sigmaBar`, and
+* a minimal scale `X ≥ 1` with the prescribed stretched-exponential tail under
+  the Dirac point mass `δ_{a₀}`,
+
+for which the heterogeneous and homogenized weak solutions on the origin cube
+of sidelength `3^m` satisfy the quantitative `H⁻³ᐟ⁴` comparison estimate as soon
+as `X ≤ 3^m`.
+
+The coefficient law of this specialization is the Dirac point mass at `a₀`, so
+the three symmetry assumptions are *pointwise identities of the field itself*,
+not merely equalities in law.
+
+Only definitions needed to read that assertion occur below.  In particular:
+
+* all Sobolev definitions are specialized to the one exponent used by the
+  theorem, namely `s = 3/4` and `p = 2`;
+* the deterministic-medium assumptions are presented in one flat structure;
+* the minimal-scale tail is written out rather than routed through a generic
+  `IsBigO` wrapper.
+
+The sole intentional `sorry` is the proof of the final theorem.
 -/
 
 namespace Homogenization
@@ -40,22 +47,16 @@ open scoped BigOperators ENNReal
 
 noncomputable section
 
-/-! ## Ambient fields and matrices -/
+/-! ## 1. Euclidean vectors, matrices, and ellipticity -/
 
 abbrev Vec (d : ℕ) := Fin d → ℝ
-
 abbrev Mat (d : ℕ) := Matrix (Fin d) (Fin d) ℝ
+abbrev RawCoeffField (d : ℕ) := Vec d → Mat d
 
 instance instMeasurableSpaceMat (d : ℕ) : MeasurableSpace (Mat d) := by
   exact @MeasurableSpace.pi (Fin d) (fun _ => Fin d → ℝ)
     (fun _ => @MeasurableSpace.pi (Fin d) (fun _ => ℝ)
       (fun _ => (RCLike.measurableSpace : MeasurableSpace ℝ)))
-
-abbrev CoeffField (d : ℕ) := Vec d → Mat d
-
-def pointwiseCoeffFieldMeasurableSpace (d : ℕ) : MeasurableSpace (CoeffField d) := by
-  exact @MeasurableSpace.pi (Vec d) (fun _ => Mat d)
-    (fun _ => instMeasurableSpaceMat d)
 
 def vecDot {d : ℕ} (x y : Vec d) : ℝ :=
   ∑ i, x i * y i
@@ -66,522 +67,455 @@ def vecNormSq {d : ℕ} (x : Vec d) : ℝ :=
 def matVecMul {d : ℕ} (A : Mat d) (x : Vec d) : Vec d :=
   fun i => ∑ j, A i j * x j
 
-def matTranspose {d : ℕ} (A : Mat d) : Mat d :=
-  Matrix.transpose A
-
 abbrev scalarMatrix {d : ℕ} (sigma : ℝ) : Mat d :=
   sigma • (1 : Mat d)
 
 noncomputable def symmPart {d : ℕ} (A : Mat d) : Mat d :=
   fun i j => (A i j + A j i) / 2
 
+/-- Quadratic-form ellipticity for a possibly non-symmetric matrix. -/
 def IsEllipticMatrix {d : ℕ} (lam Lam : ℝ) (A : Mat d) : Prop :=
   0 < lam ∧
     lam ≤ Lam ∧
     (∀ ξ : Vec d, lam * vecNormSq ξ ≤ vecDot ξ (matVecMul A ξ)) ∧
     (∀ ξ : Vec d, Lam⁻¹ * vecNormSq ξ ≤ vecDot ξ (matVecMul A⁻¹ ξ))
 
-noncomputable def restrictCoeffField {d : ℕ} (U : Set (Vec d))
-    (a : CoeffField d) : CoeffField d := by
-  classical
-  exact fun x => if x ∈ U then a x else 0
+/-! ## 2. Coefficient fields and their observable σ-algebra -/
 
-def translateCoeffField {d : ℕ} (z : Vec d) (a : CoeffField d) : CoeffField d :=
+/-- An honest coefficient field: every matrix entry is Borel measurable and
+locally integrable. -/
+structure CoefficientField (d : ℕ) where
+  toFun : RawCoeffField d
+  entry_measurable : ∀ i j : Fin d, Measurable (fun x => toFun x i j)
+  entry_locallyIntegrable : ∀ i j : Fin d,
+    LocallyIntegrable (fun x => toFun x i j) volume
+
+instance {d : ℕ} : CoeFun (CoefficientField d) (fun _ => RawCoeffField d) :=
+  ⟨CoefficientField.toFun⟩
+
+/-- Compactly supported bounded probes used to observe a coefficient field. -/
+structure IsProbe {d : ℕ} (φ : Vec d → ℝ) : Prop where
+  measurable : Measurable φ
+  bounded : ∃ C : ℝ, ∀ x, |φ x| ≤ C
+  compactSupport : HasCompactSupport φ
+
+noncomputable def entryTest {d : ℕ} (i j : Fin d) (φ : Vec d → ℝ)
+    (a : RawCoeffField d) : ℝ :=
+  ∫ x, a x i j * φ x ∂volume
+
+/-- The observable σ-algebra on raw fields: point evaluations together with
+all compactly supported bounded entry integrals. -/
+def pointwiseFieldSigma (d : ℕ) : MeasurableSpace (RawCoeffField d) := by
+  exact @MeasurableSpace.pi (Vec d) (fun _ => Mat d)
+    (fun _ => instMeasurableSpaceMat d)
+
+def probeFieldSigma (d : ℕ) : MeasurableSpace (RawCoeffField d) :=
+  MeasurableSpace.generateFrom
+    {s | ∃ (i j : Fin d) (φ : Vec d → ℝ), IsProbe φ ∧
+      ∃ t : Set ℝ, MeasurableSet t ∧ s = entryTest i j φ ⁻¹' t}
+
+def observableFieldSigma (d : ℕ) : MeasurableSpace (RawCoeffField d) :=
+  pointwiseFieldSigma d ⊔ probeFieldSigma d
+
+/-- The carrier σ-algebra, pinned as the pullback of the observable σ-algebra.
+
+The bare function type `RawCoeffField d` deliberately carries no global
+`MeasurableSpace` instance: Mathlib's product instance would also apply to it,
+and the meaning of the statement below must not depend on which instance
+wins. -/
+instance instMeasurableSpaceCoefficientField (d : ℕ) :
+    MeasurableSpace (CoefficientField d) :=
+  MeasurableSpace.comap CoefficientField.toFun (observableFieldSigma d)
+
+/-! ### Geometric actions on raw fields -/
+
+def translateCoeffField {d : ℕ} (z : Vec d)
+    (a : RawCoeffField d) : RawCoeffField d :=
   fun x => a (fun i => x i + z i)
 
 def intVecToRealVec {d : ℕ} (z : Fin d → ℤ) : Vec d :=
   fun i => (z i : ℝ)
 
-def translateByInt {d : ℕ} (z : Fin d → ℤ) : CoeffField d → CoeffField d :=
-  translateCoeffField (intVecToRealVec z)
+/-- One of the two signs `+1` and `-1`. -/
+abbrev Sign := {r : ℝ // r = 1 ∨ r = -1}
 
-def rotateCoeffField {d : ℕ} (R : Mat d) (a : CoeffField d) : CoeffField d :=
-  fun x => (matTranspose R) * (a (matVecMul R x)) * R
+/-- A permutation of the coordinate axes, followed by independent sign flips. -/
+structure SignedPermutation (d : ℕ) where
+  perm : Equiv.Perm (Fin d)
+  axisSign : Fin d → Sign
 
-def adjointCoeffField {d : ℕ} (a : CoeffField d) : CoeffField d :=
-  fun x => matTranspose (a x)
+namespace SignedPermutation
 
-/-! ## The regular-fields carrier
+def matrix {d : ℕ} (R : SignedPermutation d) : Mat d :=
+  fun i j => if i = R.perm j then (R.axisSign j : ℝ) else 0
 
-Following the carrier redesign, the probability layer lives on the carrier of
-*honest* coefficient fields: entrywise Borel-measurable, locally integrable
-maps `Vec d → Mat d`.  On the carrier, entrywise regularity is free by type.
-The carrier σ-algebra is the join of the pointwise (product) σ-algebra and the
-σ-algebra generated by the linear entry integrals against bounded, measurable,
-compactly supported probes.  These are statement-level copies of
-`Homogenization/Probability/RegCoeffField.lean` and
-`Homogenization/Probability/RegCoeffField/Sigma.lean`. -/
+end SignedPermutation
 
-structure RegCoeffField (d : ℕ) where
-  toFun : Vec d → Mat d
-  entry_measurable : ∀ i j : Fin d, Measurable (fun x : Vec d => toFun x i j)
-  entry_locInt : ∀ i j : Fin d,
-    MeasureTheory.LocallyIntegrable (fun x : Vec d => toFun x i j)
-      MeasureTheory.volume
+def rotateCoeffField {d : ℕ} (R : SignedPermutation d)
+    (a : RawCoeffField d) : RawCoeffField d :=
+  fun x => (R.matrix.transpose) * (a (matVecMul R.matrix x)) * R.matrix
 
-instance {d : ℕ} : CoeFun (RegCoeffField d) (fun _ => Vec d → Mat d) :=
-  ⟨RegCoeffField.toFun⟩
+def adjointCoeffField {d : ℕ} (a : RawCoeffField d) : RawCoeffField d :=
+  fun x => (a x).transpose
 
-structure IsProbeR {d : ℕ} (φ : Vec d → ℝ) : Prop where
-  measurable : Measurable φ
-  bounded : ∃ C : ℝ, ∀ x, |φ x| ≤ C
-  hasCompactSupport : HasCompactSupport φ
+/-! ## 3. Triadic cubes and normalized averages -/
 
-noncomputable def entryTestR {d : ℕ} (i j : Fin d) (φ : Vec d → ℝ)
-    (a : RegCoeffField d) : ℝ :=
-  ∫ x, a.toFun x i j * φ x ∂MeasureTheory.volume
-
-def pointwiseSigmaR (d : ℕ) : MeasurableSpace (RegCoeffField d) :=
-  MeasurableSpace.comap RegCoeffField.toFun (pointwiseCoeffFieldMeasurableSpace d)
-
-def entryTestSigmaR (d : ℕ) : MeasurableSpace (RegCoeffField d) :=
-  MeasurableSpace.generateFrom
-    {s | ∃ (i j : Fin d) (φ : Vec d → ℝ), IsProbeR φ ∧
-      ∃ t : Set ℝ, MeasurableSet t ∧ s = entryTestR i j φ ⁻¹' t}
-
-instance instMeasurableSpaceRegCoeffField (d : ℕ) :
-    MeasurableSpace (RegCoeffField d) :=
-  pointwiseSigmaR d ⊔ entryTestSigmaR d
-
-/-! ## Cubes and normalized cube averages -/
-
-noncomputable abbrev volumeMeasureOn {d : ℕ} (U : Set (Vec d)) :=
-  MeasureTheory.volume.restrict U
+noncomputable abbrev volumeOn {d : ℕ} (U : Set (Vec d)) :=
+  volume.restrict U
 
 structure TriadicCube (d : ℕ) where
   scale : ℤ
   index : Fin d → ℤ
 deriving DecidableEq, Repr
 
-noncomputable def cubeScaleFactor {d : ℕ} (Q : TriadicCube d) : ℝ :=
+namespace TriadicCube
+
+noncomputable def side {d : ℕ} (Q : TriadicCube d) : ℝ :=
   (3 : ℝ) ^ Q.scale
 
-def cubeSet {d : ℕ} (Q : TriadicCube d) : Set (Vec d) :=
-  { x | ∀ i,
-      (((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q ≤ x i) ∧
-      (x i < (((Q.index i : ℝ) + (1 / 2 : ℝ)) * cubeScaleFactor Q)) }
+def set {d : ℕ} (Q : TriadicCube d) : Set (Vec d) :=
+  {x | ∀ i,
+    (((Q.index i : ℝ) - (1 / 2 : ℝ)) * Q.side ≤ x i) ∧
+    (x i < ((Q.index i : ℝ) + (1 / 2 : ℝ)) * Q.side)}
 
-def openCubeSet {d : ℕ} (Q : TriadicCube d) : Set (Vec d) :=
-  { x | ∀ i,
-      (((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q < x i) ∧
-      (x i < (((Q.index i : ℝ) + (1 / 2 : ℝ)) * cubeScaleFactor Q)) }
+def interior {d : ℕ} (Q : TriadicCube d) : Set (Vec d) :=
+  {x | ∀ i,
+    (((Q.index i : ℝ) - (1 / 2 : ℝ)) * Q.side < x i) ∧
+    (x i < ((Q.index i : ℝ) + (1 / 2 : ℝ)) * Q.side)}
 
-/-- The triadic cube centered at the origin with integer scale `m`. -/
-def triadicOriginCube (d : ℕ) (m : ℤ) : TriadicCube d :=
-  { scale := m
-    index := 0 }
-
-/-- The public theorem uses natural scales, coerced to integer triadic scales. -/
-abbrev originCube (d : ℕ) [NeZero d] (m : ℕ) : TriadicCube d :=
-  triadicOriginCube d ((m : ℕ) : ℤ)
-
-/-- Fixed public Sobolev exponent used by the comparator-audited theorem. -/
-noncomputable abbrev fixedComparisonS : ℝ := 3 / 4
-
-def childCubes {d : ℕ} (Q : TriadicCube d) : Finset (TriadicCube d) :=
+def children {d : ℕ} (Q : TriadicCube d) : Finset (TriadicCube d) :=
   Finset.univ.image fun digits : Fin d → Fin 3 =>
     { scale := Q.scale - 1
       index := fun i => 3 * Q.index i + (digits i : ℤ) - 1 }
 
-def descendantsAtDepth {d : ℕ} (Q : TriadicCube d) : ℕ → Finset (TriadicCube d)
+def descendants {d : ℕ} (Q : TriadicCube d) : ℕ → Finset (TriadicCube d)
   | 0 => {Q}
-  | n + 1 => (descendantsAtDepth Q n).biUnion childCubes
+  | n + 1 => (Q.descendants n).biUnion children
 
-noncomputable def cubeVolume {d : ℕ} (Q : TriadicCube d) : ℝ :=
-  (cubeScaleFactor Q) ^ d
+noncomputable def volume {d : ℕ} (Q : TriadicCube d) : ℝ :=
+  Q.side ^ d
 
-noncomputable def cubeMeasure {d : ℕ} (Q : TriadicCube d) :
+noncomputable def measure {d : ℕ} (Q : TriadicCube d) : Measure (Vec d) :=
+  MeasureTheory.volume.restrict Q.set
+
+noncomputable def normalizedMeasure {d : ℕ} (Q : TriadicCube d) :
     Measure (Vec d) :=
-  MeasureTheory.volume.restrict (cubeSet Q)
+  ENNReal.ofReal Q.volume⁻¹ • Q.measure
 
-noncomputable def normalizedCubeMeasure {d : ℕ} (Q : TriadicCube d) :
-    Measure (Vec d) :=
-  ENNReal.ofReal ((cubeVolume Q)⁻¹) • cubeMeasure Q
+noncomputable def average {d : ℕ} (Q : TriadicCube d)
+    (f : Vec d → ℝ) : ℝ :=
+  Q.volume⁻¹ * ∫ x in Q.set, f x ∂MeasureTheory.volume
 
-noncomputable def cubeAverage {d : ℕ} (Q : TriadicCube d) (f : Vec d → ℝ) : ℝ :=
-  (cubeVolume Q)⁻¹ * ∫ x in cubeSet Q, f x ∂MeasureTheory.volume
+noncomputable def fluctuation {d : ℕ} (Q : TriadicCube d)
+    (f : Vec d → ℝ) : Vec d → ℝ :=
+  fun x => f x - Q.average f
 
-noncomputable def volumeAverage {d : ℕ} (U : Set (Vec d)) (f : Vec d → ℝ) : ℝ :=
+noncomputable def l2Norm {d : ℕ} (Q : TriadicCube d)
+    (f : Vec d → ℝ) : ℝ :=
+  (eLpNorm f (2 : ℝ≥0∞) Q.normalizedMeasure).toReal
+
+noncomputable def descendantAverage {d : ℕ} (Q : TriadicCube d) (j : ℕ)
+    (F : TriadicCube d → ℝ) : ℝ := by
+  let D := Q.descendants j
+  exact (D.card : ℝ)⁻¹ * D.sum F
+
+end TriadicCube
+
+/-- The triadic cube centered at the origin with sidelength `3^m`. -/
+def originCube (d : ℕ) [NeZero d] (m : ℕ) : TriadicCube d :=
+  { scale := (m : ℤ)
+    index := 0 }
+
+noncomputable def volumeAverage {d : ℕ} (U : Set (Vec d))
+    (f : Vec d → ℝ) : ℝ :=
   (MeasureTheory.volume U).toReal⁻¹ * ∫ x in U, f x ∂MeasureTheory.volume
 
-noncomputable def cubeLpNorm {d : ℕ} {E : Type*} [NormedAddCommGroup E]
-    (Q : TriadicCube d) (p : ℝ≥0∞) (f : Vec d → E) : ℝ :=
-  (MeasureTheory.eLpNorm f p (normalizedCubeMeasure Q)).toReal
+/-! ## 4. Assumptions on the periodic medium -/
 
-noncomputable def cubeFluctuation {d : ℕ} (Q : TriadicCube d)
-    (f : Vec d → ℝ) : Vec d → ℝ :=
-  fun x => f x - cubeAverage Q f
+/-- Invariance of the field itself under every integer translation. -/
+def IsPeriodic {d : ℕ} (a : RawCoeffField d) : Prop :=
+  ∀ z : Fin d → ℤ, translateCoeffField (intVecToRealVec z) a = a
 
-/-! ## Deterministic periodic field assumptions -/
+/-- Invariance of the field itself under every signed coordinate change. -/
+def IsSignedCoordinateInvariant {d : ℕ} (a : RawCoeffField d) : Prop :=
+  ∀ R : SignedPermutation d, rotateCoeffField R a = a
 
-def IsSignedPermutationMatrix {d : ℕ} (R : Mat d) : Prop :=
-  ∃ sigma : Equiv.Perm (Fin d), ∃ signs : Fin d → ℝ,
-    (∀ i, signs i = 1 ∨ signs i = -1) ∧
-      ∀ i j, R i j = if i = sigma j then signs j else 0
+/-- The field is equal to its own pointwise transpose. -/
+def IsAdjointInvariant {d : ℕ} (a : RawCoeffField d) : Prop :=
+  adjointCoeffField a = a
 
-def IsPeriodicCoeffField {d : ℕ} (a₀ : CoeffField d) : Prop :=
-  ∀ z : Fin d → ℤ, translateByInt z a₀ = a₀
+/-- The ellipticity bounds `lam, Lam` hold almost everywhere on `Q`. -/
+def EllipticOnCube {d : ℕ} (lam Lam : ℝ) (Q : TriadicCube d)
+    (a : CoefficientField d) : Prop :=
+  ∀ᵐ x ∂volumeOn Q.interior, IsEllipticMatrix lam Lam (a x)
 
-def IsIsotropicCoeffField {d : ℕ} (a₀ : CoeffField d) : Prop :=
-  ∀ R : Mat d, IsSignedPermutationMatrix R → rotateCoeffField R a₀ = a₀
+/-- The same fixed ellipticity bounds hold almost everywhere on every
+triadic cube. -/
+def UniformlyEllipticRealization {d : ℕ} (lam Lam : ℝ)
+    (a : CoefficientField d) : Prop :=
+  ∀ Q : TriadicCube d, EllipticOnCube lam Lam Q a
 
-def IsAdjointInvariantCoeffField {d : ℕ} (a₀ : CoeffField d) : Prop :=
-  adjointCoeffField a₀ = a₀
-
-def IsAEEllipticFieldOn {d : ℕ} (lam Lam : ℝ) (U : Set (Vec d))
-    (a : CoeffField d) : Prop :=
-  MeasurableSet U ∧
-    (∀ i j : Fin d,
-      AEStronglyMeasurable
-        (fun x : Vec d => restrictCoeffField U a x i j) (volumeMeasureOn U)) ∧
-      ∀ᵐ x ∂ volumeMeasureOn U, IsEllipticMatrix lam Lam (a x)
-
-/-- Spatial a.e. ellipticity of a carrier field, evaluated on the honest
-sample (mirrors `Book.Ch04.AEEllipticOn`). -/
-def AEEllipticOn {d : ℕ} (lam Lam : ℝ) (U : Set (Vec d))
-    (a : RegCoeffField d) : Prop :=
-  IsAEEllipticFieldOn lam Lam U a.toFun
-
-def AELocallyUniformlyEllipticField {d : ℕ} (a : RegCoeffField d) : Prop :=
+/-- Every triadic cube carries *some* pair of ellipticity bounds. -/
+def LocallyUniformlyElliptic {d : ℕ} (a : CoefficientField d) : Prop :=
   ∀ Q : TriadicCube d,
-    ∃ lam Lam : ℝ,
-      0 < lam ∧ lam ≤ Lam ∧
-        AEEllipticOn lam Lam (openCubeSet Q) a
+    ∃ lam Lam : ℝ, 0 < lam ∧ lam ≤ Lam ∧ EllipticOnCube lam Lam Q a
 
-/-! ## Weak-tail notation for the random minimal scale -/
+/-- All data describing the periodic coefficient field.  The structure is flat
+so that a reader sees the complete list of hypotheses in one place. -/
+structure Setup (d : ℕ) [NeZero d] where
+  two_le_dim : 2 ≤ d
+  a₀ : CoefficientField d
+  periodic : IsPeriodic a₀.toFun
+  signedCoordinateInvariant : IsSignedCoordinateInvariant a₀.toFun
+  adjointInvariant : IsAdjointInvariant a₀.toFun
+  lam : ℝ
+  Lam : ℝ
+  lam_pos : 0 < lam
+  lam_le_Lam : lam ≤ Lam
+  uniformlyElliptic : UniformlyEllipticRealization lam Lam a₀
 
-namespace IndependentSums
+namespace Setup
 
-variable {Omega : Type*} [MeasurableSpace Omega]
+variable {d : ℕ} [NeZero d] (S : Setup d)
 
-def upperTailEvent (X : Omega → ℝ) (a : ℝ) : Set Omega :=
-  {omega | a < X omega}
+noncomputable def coarseUpperBound : ℝ :=
+  4 * (Fintype.card (Fin d) : ℝ) * S.lam⁻¹ * S.Lam ^ (2 : ℕ)
 
-def IsBigOWith (mu : Measure Omega) (Psi : ℝ → ℝ) (X : Omega → ℝ)
-    (A : ℝ) : Prop :=
-  ∀ ⦃t : ℝ⦄, 1 ≤ t → mu.real (upperTailEvent X (A * t)) ≤ (Psi t)⁻¹
+noncomputable def coarseInverseLowerBound : ℝ :=
+  4 * (Fintype.card (Fin d) : ℝ) * S.lam⁻¹
 
-def IsBigO (mu : Measure Omega) (Psi : ℝ → ℝ) (X : Omega → ℝ)
-    (A : ℝ) : Prop :=
-  IsBigOWith mu Psi (fun omega => |X omega|) A
+/-- The deterministic coarse ellipticity size entering the tail estimate. -/
+noncomputable def thetaHat : ℝ :=
+  1 + S.coarseInverseLowerBound * S.coarseUpperBound +
+    S.coarseUpperBound * S.coarseInverseLowerBound
 
-noncomputable def gammaSigma (sigma : ℝ) : ℝ → ℝ :=
-  fun t => Real.exp (t ^ sigma)
+noncomputable def minimalScaleTailSize (Cscale : ℝ) : ℝ :=
+  Real.exp (Cscale * (Real.log (2 + S.thetaHat)) ^ (2 : ℕ))
 
-end IndependentSums
+/-- `X` is at least one and has the required `Gamma_d` tail under the Dirac
+point mass at the periodic field. -/
+structure IsMinimalScale (X : CoefficientField d → ℝ) (Cscale : ℝ) : Prop where
+  one_le : ∀ a, 1 ≤ X a
+  tail : ∀ ⦃t : ℝ⦄, 1 ≤ t →
+    (Measure.dirac S.a₀).real {a | S.minimalScaleTailSize Cscale * t < |X a|} ≤
+      (Real.exp (t ^ (d : ℝ)))⁻¹
 
-open IndependentSums
+end Setup
 
-/-! ## Sobolev weak solutions -/
+/-! ## 5. Weak `H¹` solutions -/
 
-noncomputable def vecModule (d : ℕ) : Module ℝ (Vec d) :=
-  @Pi.Function.module (Fin d) ℝ ℝ _ _ _
-
-noncomputable def weakFDeriv {d : ℕ} (phi : Vec d → ℝ) (x : Vec d) :=
-  @fderiv ℝ _ (Vec d) _ (vecModule d) _ ℝ _ _ _ phi x
+noncomputable def weakFDeriv {d : ℕ} (φ : Vec d → ℝ) (x : Vec d) :=
+  fderiv ℝ φ x
 
 def basisVec {d : ℕ} (i : Fin d) : Vec d :=
   Pi.single i (1 : ℝ)
 
-def HasWeakPartialDerivOn {d : ℕ} (U : Set (Vec d)) (i : Fin d)
+def HasWeakPartialDerivativeOn {d : ℕ} (U : Set (Vec d)) (i : Fin d)
     (u gi : Vec d → ℝ) : Prop :=
-  ∀ phi : Vec d → ℝ,
-    ContDiff ℝ (⊤ : ℕ∞) phi →
-    HasCompactSupport phi →
-    tsupport phi ⊆ U →
-    ∫ x in U, u x * (weakFDeriv phi x) (basisVec i) ∂MeasureTheory.volume =
-      -∫ x in U, gi x * phi x ∂MeasureTheory.volume
+  ∀ φ : Vec d → ℝ,
+    ContDiff ℝ (⊤ : ℕ∞) φ →
+    HasCompactSupport φ →
+    tsupport φ ⊆ U →
+    ∫ x in U, u x * (weakFDeriv φ x) (basisVec i) ∂volume =
+      -∫ x in U, gi x * φ x ∂volume
 
 def HasWeakGradientOn {d : ℕ} (U : Set (Vec d)) (u : Vec d → ℝ)
     (Du : Vec d → Vec d) : Prop :=
-  ∀ i : Fin d, HasWeakPartialDerivOn U i u (fun x => Du x i)
+  ∀ i : Fin d, HasWeakPartialDerivativeOn U i u (fun x => Du x i)
 
 abbrev MemL2On {d : ℕ} (U : Set (Vec d)) (u : Vec d → ℝ) : Prop :=
-  MemLp u 2 (MeasureTheory.volume.restrict U)
+  MemLp u 2 (volumeOn U)
 
-def GradMemL2On {d : ℕ} (U : Set (Vec d)) (Du : Vec d → Vec d) : Prop :=
+def GradientMemL2On {d : ℕ} (U : Set (Vec d))
+    (Du : Vec d → Vec d) : Prop :=
   ∀ i : Fin d, MemL2On U (fun x => Du x i)
 
-structure H1Function {d : ℕ} (U : Set (Vec d)) where
+/-- A function together with a chosen weak gradient. -/
+structure WeakH1 {d : ℕ} (U : Set (Vec d)) where
   toFun : Vec d → ℝ
   grad : Vec d → Vec d
   memL2 : MemL2On U toFun
-  gradMemL2 : GradMemL2On U grad
+  gradMemL2 : GradientMemL2On U grad
   hasWeakGradient : HasWeakGradientOn U toFun grad
 
-instance {d : ℕ} {U : Set (Vec d)} : CoeFun (H1Function U)
-    (fun _ => Vec d → ℝ) where
-  coe u := u.toFun
+instance {d : ℕ} {U : Set (Vec d)} : CoeFun (WeakH1 U)
+    (fun _ => Vec d → ℝ) :=
+  ⟨WeakH1.toFun⟩
 
-structure H10Function {d : ℕ} (U : Set (Vec d)) extends H1Function U where
+/-- The closure of smooth compactly supported functions in the `H¹` norm. -/
+structure WeakH10 {d : ℕ} (U : Set (Vec d)) extends WeakH1 U where
   approx : ℕ → Vec d → ℝ
   approx_smooth : ∀ n, ContDiff ℝ (⊤ : ℕ∞) (approx n)
-  approx_hasCompactSupport : ∀ n, HasCompactSupport (approx n)
-  approx_support_subset : ∀ n, tsupport (approx n) ⊆ U
+  approx_compactSupport : ∀ n, HasCompactSupport (approx n)
+  approx_supportedIn : ∀ n, tsupport (approx n) ⊆ U
   tendsto_approx :
     Filter.Tendsto
-      (fun n => eLpNorm (fun x => approx n x - toH1Function.toFun x) 2
-        (MeasureTheory.volume.restrict U))
+      (fun n => eLpNorm (fun x => approx n x - toWeakH1.toFun x) 2 (volumeOn U))
       Filter.atTop (nhds 0)
   tendsto_approx_grad :
     ∀ i : Fin d,
       Filter.Tendsto
         (fun n => eLpNorm
-          (fun x => (weakFDeriv (approx n) x) (basisVec i) - toH1Function.grad x i) 2
-          (MeasureTheory.volume.restrict U))
+          (fun x => (weakFDeriv (approx n) x) (basisVec i) - toWeakH1.grad x i)
+          2 (volumeOn U))
         Filter.atTop (nhds 0)
 
-def IsForcedEquation {d : ℕ} (Q : TriadicCube d) (a : CoeffField d)
-    (u : H1Function (openCubeSet Q)) (g : Vec d → Vec d) : Prop :=
-  ∀ phi : H10Function (openCubeSet Q),
-    ∫ x in openCubeSet Q,
-        vecDot (matVecMul (a x) (u.grad x)) (phi.toH1Function.grad x)
-          ∂MeasureTheory.volume =
-      ∫ x in openCubeSet Q,
-        vecDot (g x) (phi.toH1Function.grad x) ∂MeasureTheory.volume
+/-- Weak formulation of `-div(A grad u) = -div g` on `Q`. -/
+def SolvesEquation {d : ℕ} (Q : TriadicCube d) (A : RawCoeffField d)
+    (u : WeakH1 Q.interior) (g : Vec d → Vec d) : Prop :=
+  ∀ φ : WeakH10 Q.interior,
+    ∫ x in Q.interior,
+        vecDot (matVecMul (A x) (u.grad x)) (φ.toWeakH1.grad x) ∂volume =
+      ∫ x in Q.interior, vecDot (g x) (φ.toWeakH1.grad x) ∂volume
 
-def IsConstantCoeffForcedEquation {d : ℕ} (Q : TriadicCube d) (sigmaBar : ℝ)
-    (v : H1Function (openCubeSet Q)) (g : Vec d → Vec d) : Prop :=
-  ∀ phi : H10Function (openCubeSet Q),
-    ∫ x in openCubeSet Q,
-        vecDot (matVecMul (scalarMatrix (d := d) sigmaBar) (v.grad x))
-          (phi.toH1Function.grad x) ∂MeasureTheory.volume =
-      ∫ x in openCubeSet Q,
-        vecDot (g x) (phi.toH1Function.grad x) ∂MeasureTheory.volume
+/-- The two weak solutions being compared: same force and same boundary data. -/
+structure ComparisonPair {d : ℕ} (sigmaBar : ℝ) (a : CoefficientField d)
+    (Q : TriadicCube d) (g : Vec d → Vec d) where
+  u : WeakH1 Q.interior
+  v : WeakH1 Q.interior
+  u_solves : SolvesEquation Q a.toFun u g
+  v_solves : SolvesEquation Q (fun _ => scalarMatrix sigmaBar) v g
+  sameBoundaryData :
+    ∃ w : WeakH10 Q.interior,
+      w.toWeakH1.toFun =ᵐ[volumeOn Q.interior] fun x => u.toFun x - v.toFun x
 
-/--
-The unfolded comparison datum used in the theorem.
+/-! ## 6. The fixed `H^{3/4}` and `H^{-3/4}` quantities -/
 
-In the repository, the public comparison pair is built from an almost-sure
-ellipticity witness and an assembled coefficient family.  In the uniformly
-elliptic scalar challenge, that assembled field evaluates to the raw field
-`a`; the witness is still an explicit parameter so the theorem surface has the
-same dependency shape as the public result.
--/
-structure ComparisonPair {d : ℕ} [NeZero d] (sigmaBar : ℝ)
-    (a : RegCoeffField d) (_ha : AELocallyUniformlyEllipticField a)
-    (m : ℕ) (g : Vec d → Vec d) where
-  u : H1Function (openCubeSet (originCube d m))
-  v : H1Function (openCubeSet (originCube d m))
-  uWeakSolution : IsForcedEquation (originCube d m) a.toFun u g
-  vWeakSolution : IsConstantCoeffForcedEquation (originCube d m) sigmaBar v g
-  zeroTraceDifference :
-    ∃ w : H10Function (openCubeSet (originCube d m)),
-      w.toH1Function.toFun =ᵐ[volumeMeasureOn (openCubeSet (originCube d m))]
-        fun x => u.toFun x - v.toFun x
+noncomputable abbrev comparisonS : ℝ := 3 / 4
 
-/-! ## Fractional Sobolev and dual negative norms -/
+namespace Sobolev34
 
-noncomputable def cubeBesovOscillation {d : ℕ} (Q : TriadicCube d)
-    (p : ℝ≥0∞) (u : Vec d → ℝ) : ℝ :=
-  cubeLpNorm Q p (cubeFluctuation Q u)
+/-! ### The negative norm, represented as the dual of `B^{3/4}_{2,2}` -/
 
-noncomputable def cubeBesovScaleWeight {d : ℕ} (s : ℝ) (Q : TriadicCube d) : ℝ :=
-  (cubeScaleFactor Q) ^ (-s)
+noncomputable def depthAverage {d : ℕ} (Q : TriadicCube d)
+    (φ : Vec d → ℝ) (j : ℕ) : ℝ :=
+  Q.descendantAverage j fun R => (R.l2Norm (R.fluctuation φ)) ^ (2 : ℝ)
 
-noncomputable def descendantsAverage {d : ℕ} (Q : TriadicCube d) (j : ℕ)
-    (F : TriadicCube d → ℝ) : ℝ := by
-  let D := descendantsAtDepth Q j
-  exact ((D.card : ℝ)⁻¹) * D.sum F
+noncomputable def depthSeminorm {d : ℕ} (Q : TriadicCube d)
+    (φ : Vec d → ℝ) (j : ℕ) : ℝ :=
+  (Q.side / (3 : ℝ) ^ j) ^ (-comparisonS) *
+    (depthAverage Q φ j) ^ (1 / (2 : ℝ))
 
-noncomputable def cubeBesovDepthAverage {d : ℕ} (Q : TriadicCube d)
-    (p : ℝ≥0∞) (u : Vec d → ℝ) (j : ℕ) : ℝ :=
-  descendantsAverage Q j fun R => (cubeBesovOscillation R p u) ^ p.toReal
-
-noncomputable def cubeBesovDepthWeight {d : ℕ} (Q : TriadicCube d)
-    (s : ℝ) (j : ℕ) : ℝ :=
-  (cubeScaleFactor Q / (3 : ℝ) ^ j) ^ (-s)
-
-noncomputable def cubeBesovDepthSeminorm {d : ℕ} (Q : TriadicCube d)
-    (s : ℝ) (p : ℝ≥0∞) (u : Vec d → ℝ) (j : ℕ) : ℝ :=
-  cubeBesovDepthWeight Q s j * (cubeBesovDepthAverage Q p u j) ^ (1 / p.toReal)
-
-noncomputable def cubeBesovPartialSeminorm {d : ℕ} (Q : TriadicCube d)
-    (s : ℝ) (p q : ℝ≥0∞) (N : ℕ) (u : Vec d → ℝ) : ℝ :=
+noncomputable def partialTestNorm {d : ℕ} (Q : TriadicCube d)
+    (N : ℕ) (φ : Vec d → ℝ) : ℝ :=
   (Finset.sum (Finset.range (N + 1))
-    (fun j => (cubeBesovDepthSeminorm Q s p u j) ^ q.toReal)) ^ (1 / q.toReal)
+      (fun j => (depthSeminorm Q φ j) ^ (2 : ℝ))) ^ (1 / (2 : ℝ)) +
+    Q.side ^ (-comparisonS) * ‖Q.average φ‖
 
-noncomputable def cubeBesovPartialSeminormTop {d : ℕ} (Q : TriadicCube d)
-    (s : ℝ) (p : ℝ≥0∞) (N : ℕ) (u : Vec d → ℝ) : ℝ :=
-  (Finset.range (N + 1)).sup' ⟨0, by simp⟩
-    (fun j => cubeBesovDepthSeminorm Q s p u j)
+def LocallyL2OnDescendants {d : ℕ} (Q : TriadicCube d)
+    (φ : Vec d → ℝ) : Prop :=
+  ∀ j : ℕ, ∀ R ∈ Q.descendants j,
+    MemLp (R.fluctuation φ) (2 : ℝ≥0∞) R.normalizedMeasure
 
-noncomputable def cubeBesovPartialNorm {d : ℕ} (Q : TriadicCube d)
-    (s : ℝ) (p q : ℝ≥0∞) (N : ℕ) (u : Vec d → ℝ) : ℝ :=
-  cubeBesovPartialSeminorm Q s p q N u + cubeBesovScaleWeight s Q * ‖cubeAverage Q u‖
+def IsDualTest {d : ℕ} (Q : TriadicCube d) (φ : Vec d → ℝ) : Prop :=
+  (∀ N : ℕ, partialTestNorm Q N φ ≤ 1) ∧ LocallyL2OnDescendants Q φ
 
-noncomputable def cubeBesovPartialNormTop {d : ℕ} (Q : TriadicCube d)
-    (s : ℝ) (p : ℝ≥0∞) (N : ℕ) (u : Vec d → ℝ) : ℝ :=
-  cubeBesovPartialSeminormTop Q s p N u + cubeBesovScaleWeight s Q * ‖cubeAverage Q u‖
+noncomputable def pairing {d : ℕ} (Q : TriadicCube d)
+    (f φ : Vec d → ℝ) : ℝ :=
+  Q.average fun x => f x * φ x
 
-noncomputable def cubeBesovConjExponent (p : ℝ≥0∞) : ℝ≥0∞ :=
-  ENNReal.conjExponent p
+noncomputable def negativeNorm {d : ℕ} (Q : TriadicCube d)
+    (f : Vec d → ℝ) : ℝ :=
+  sSup {r | ∃ φ : Vec d → ℝ, IsDualTest Q φ ∧ r = |pairing Q f φ|}
 
-noncomputable def cubeBesovDualTestNorm {d : ℕ} (Q : TriadicCube d) (s : ℝ)
-    (p q : ℝ≥0∞) (N : ℕ) (g : Vec d → ℝ) : ℝ :=
-  if cubeBesovConjExponent q = ∞ then
-    cubeBesovPartialNormTop Q s (cubeBesovConjExponent p) N g
-  else
-    cubeBesovPartialNorm Q s (cubeBesovConjExponent p) (cubeBesovConjExponent q) N g
+noncomputable def negativeScaleFactor {d : ℕ} (Q : TriadicCube d) : ℝ :=
+  Real.rpow 3 (-comparisonS * (Q.scale : ℝ))
 
-noncomputable def CubeBesovDualLocalMemLpGlobal {d : ℕ} (Q : TriadicCube d)
-    (p : ℝ≥0∞) (g : Vec d → ℝ) : Prop :=
-  ∀ j : ℕ, ∀ R ∈ descendantsAtDepth Q j,
-    MemLp (cubeFluctuation R g) (cubeBesovConjExponent p) (normalizedCubeMeasure R)
+noncomputable def scaledNegativeVectorNorm {d : ℕ} (Q : TriadicCube d)
+    (F : Vec d → Vec d) : ℝ :=
+  negativeScaleFactor Q * ∑ i : Fin d, negativeNorm Q (fun x => F x i)
 
-def CubeBesovDualFullTest {d : ℕ} (Q : TriadicCube d) (s : ℝ)
-    (p q : ℝ≥0∞) (g : Vec d → ℝ) : Prop :=
-  (∀ N : ℕ, cubeBesovDualTestNorm Q s p q N g ≤ 1) ∧
-    CubeBesovDualLocalMemLpGlobal Q p g
+/-! ### The positive `H^{3/4}` seminorm of the force -/
 
-noncomputable def cubeBesovPairing {d : ℕ} (Q : TriadicCube d)
-    (f g : Vec d → ℝ) : ℝ :=
-  cubeAverage Q (fun x => f x * g x)
+def kernelExponent (d : ℕ) : ℝ :=
+  comparisonS + (d : ℝ) / 2
 
-noncomputable def cubeBesovDualFullNormValueSet {d : ℕ} (Q : TriadicCube d)
-    (s : ℝ) (p q : ℝ≥0∞) (f : Vec d → ℝ) : Set ℝ :=
-  {r | ∃ g : Vec d → ℝ, CubeBesovDualFullTest Q s p q g ∧
-    r = |cubeBesovPairing Q f g|}
+noncomputable def kernel {d : ℕ} (u : Vec d → ℝ) :
+    Vec d × Vec d → ℝ :=
+  fun z => dist z.1 z.2 ^ (-kernelExponent d) * (u z.1 - u z.2)
 
-noncomputable def cubeBesovDualFullNorm {d : ℕ} (Q : TriadicCube d) (s : ℝ)
-    (p q : ℝ≥0∞) (f : Vec d → ℝ) : ℝ :=
-  sSup (cubeBesovDualFullNormValueSet Q s p q f)
-
-noncomputable def scaleNormalizedNegativeSobolevVectorNormTwo {d : ℕ}
-    (Q : TriadicCube d) (s : ℝ) (F : Vec d → Vec d) : ℝ :=
-  Real.rpow (3 : ℝ) (-s * (((Q.scale : ℤ) : ℝ))) *
-    ∑ i : Fin d,
-      cubeBesovDualFullNorm Q s (2 : ℝ≥0∞) (2 : ℝ≥0∞)
-        (fun x => F x i)
-
-namespace Gagliardo
-
-variable {d : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-
-def kernelExponent (d : ℕ) (s : ℝ) (p : ℝ≥0∞) : ℝ :=
-  s + (d : ℝ) / p.toReal
-
-noncomputable def gagliardoKernel (s : ℝ) (p : ℝ≥0∞) (u : Vec d → E) :
-    Vec d × Vec d → E :=
-  fun z => (dist z.1 z.2 ^ (-kernelExponent d s p)) • (u z.1 - u z.2)
-
-noncomputable def gagliardoCubeMeasure (Q : TriadicCube d) :
+noncomputable def productMeasure {d : ℕ} (Q : TriadicCube d) :
     Measure (Vec d × Vec d) :=
-  (normalizedCubeMeasure Q).prod (cubeMeasure Q)
+  Q.normalizedMeasure.prod Q.measure
 
-noncomputable def cubeGagliardoESeminorm (Q : TriadicCube d) (s : ℝ)
-    (p : ℝ≥0∞) (u : Vec d → E) : ℝ≥0∞ :=
-  eLpNorm (gagliardoKernel s p u) p (gagliardoCubeMeasure Q)
+/-- Membership in the fixed fractional Sobolev space on `Q`. -/
+def MemH34 {d : ℕ} (Q : TriadicCube d) (u : Vec d → ℝ) : Prop :=
+  MemLp u (2 : ℝ≥0∞) Q.normalizedMeasure ∧
+    MemLp (kernel u) (2 : ℝ≥0∞) (productMeasure Q)
 
-noncomputable def cubeGagliardoSeminorm (Q : TriadicCube d) (s : ℝ)
-    (p : ℝ≥0∞) (u : Vec d → E) : ℝ :=
-  (cubeGagliardoESeminorm Q s p u).toReal
+noncomputable def seminorm {d : ℕ} (Q : TriadicCube d)
+    (u : Vec d → ℝ) : ℝ :=
+  (eLpNorm (kernel u) (2 : ℝ≥0∞) (productMeasure Q)).toReal
 
-def MemWsp (Q : TriadicCube d) (s : ℝ) (p : ℝ≥0∞) (u : Vec d → E) : Prop :=
-  MemLp (gagliardoKernel s p u) p (gagliardoCubeMeasure Q)
+end Sobolev34
 
-end Gagliardo
+/-- Componentwise `H^{3/4}` regularity of the vector force. -/
+def ForceInH34 {d : ℕ} (Q : TriadicCube d) (g : Vec d → Vec d) : Prop :=
+  ∀ i : Fin d, Sobolev34.MemH34 Q (fun x => g x i)
 
-noncomputable abbrev fractionalSobolevSeminorm {d : ℕ} (Q : TriadicCube d)
-    (s : ℝ) (p : ℝ≥0∞) (u : Vec d → ℝ) : ℝ :=
-  Gagliardo.cubeGagliardoSeminorm Q s p u
+noncomputable def scaledForceH34Seminorm {d : ℕ} (Q : TriadicCube d)
+    (g : Vec d → Vec d) : ℝ :=
+  Q.side ^ comparisonS *
+    ∑ i : Fin d, Sobolev34.seminorm Q (fun x => g x i)
 
-def MemFractionalSobolev {d : ℕ} (Q : TriadicCube d) (s : ℝ) (p : ℝ≥0∞)
-    (u : Vec d → ℝ) : Prop :=
-  MemLp u p (normalizedCubeMeasure Q) ∧ Gagliardo.MemWsp Q s p u
+/-! ## 7. Error, data size, and the theorem -/
 
-def ForceSobolevRegularity {d : ℕ} (Q : TriadicCube d)
-    (s : ℝ) (g : Vec d → Vec d) : Prop :=
-  ∀ i : Fin d, MemFractionalSobolev Q s (2 : ℝ≥0∞) (fun x => g x i)
+noncomputable def energyNorm {d : ℕ} (Q : TriadicCube d)
+    (a : RawCoeffField d) (u : WeakH1 Q.interior) : ℝ :=
+  Real.sqrt <| volumeAverage Q.interior fun x =>
+    vecDot (u.grad x) (matVecMul (symmPart (a x)) (u.grad x))
 
-noncomputable def scaleNormalizedPositiveSobolevVectorSeminormTwo {d : ℕ}
-    (Q : TriadicCube d) (s : ℝ) (g : Vec d → Vec d) : ℝ :=
-  cubeBesovScaleWeight (-s) Q *
-    ∑ i : Fin d, fractionalSobolevSeminorm Q s (2 : ℝ≥0∞) (fun x => g x i)
-
-/-! ## Comparison estimate quantities -/
-
-noncomputable def h1EnergyNormOnCube {d : ℕ} (Q : TriadicCube d)
-    (a : CoeffField d) (u : H1Function (openCubeSet Q)) : ℝ :=
-  Real.sqrt <|
-    volumeAverage (openCubeSet Q) fun x =>
-      vecDot (u.grad x) (matVecMul (symmPart (a x)) (u.grad x))
-
-noncomputable def comparisonConstantGradientField {d : ℕ} {Q : TriadicCube d}
-    (sigmaBar : ℝ) (u v : H1Function (openCubeSet Q)) : Vec d → Vec d :=
+noncomputable def constantGradientMismatch {d : ℕ} {Q : TriadicCube d}
+    (sigmaBar : ℝ) (u v : WeakH1 Q.interior) : Vec d → Vec d :=
   fun x => matVecMul (scalarMatrix (d := d) sigmaBar) (u.grad x - v.grad x)
 
-noncomputable def comparisonFluxField {d : ℕ} (Q : TriadicCube d)
-    (a : CoeffField d) (sigmaBar : ℝ)
-    (u v : H1Function (openCubeSet Q)) : Vec d → Vec d :=
+noncomputable def fluxMismatch {d : ℕ} (a : RawCoeffField d) (sigmaBar : ℝ)
+    {Q : TriadicCube d} (u v : WeakH1 Q.interior) : Vec d → Vec d :=
   fun x => matVecMul (a x) (u.grad x) -
     matVecMul (scalarMatrix (d := d) sigmaBar) (v.grad x)
 
-noncomputable def comparisonDefect {d : ℕ} [NeZero d] (sigmaBar : ℝ)
-    (s : ℝ) {a : RegCoeffField d} {ha : AELocallyUniformlyEllipticField a}
-    {m : ℕ} {g : Vec d → Vec d} (pair : ComparisonPair sigmaBar a ha m g) : ℝ :=
-  scaleNormalizedNegativeSobolevVectorNormTwo (originCube d m) s
-      (comparisonConstantGradientField sigmaBar pair.u pair.v) +
-    scaleNormalizedNegativeSobolevVectorNormTwo (originCube d m) s
-      (comparisonFluxField (originCube d m) a.toFun sigmaBar pair.u pair.v)
+noncomputable def comparisonDefect {d : ℕ} {sigmaBar : ℝ}
+    {a : CoefficientField d} {Q : TriadicCube d} {g : Vec d → Vec d}
+    (pair : ComparisonPair sigmaBar a Q g) : ℝ :=
+  Sobolev34.scaledNegativeVectorNorm Q
+      (constantGradientMismatch sigmaBar pair.u pair.v) +
+    Sobolev34.scaledNegativeVectorNorm Q
+      (fluxMismatch a.toFun sigmaBar pair.u pair.v)
 
-noncomputable def comparisonData {d : ℕ} [NeZero d] (sigmaBar : ℝ)
-    (s : ℝ) {a : RegCoeffField d} {ha : AELocallyUniformlyEllipticField a}
-    {m : ℕ} {g : Vec d → Vec d} (pair : ComparisonPair sigmaBar a ha m g) : ℝ :=
-  Real.sqrt sigmaBar * h1EnergyNormOnCube (originCube d m) a.toFun pair.u +
-    scaleNormalizedPositiveSobolevVectorSeminormTwo (originCube d m) s g
-
-/-- The deterministic endpoint size used by the periodic Dirac specialization. -/
-noncomputable def periodicThetaHat (d : ℕ) (lam Lam : ℝ) : ℝ :=
-  let upper := 4 * (Fintype.card (Fin d) : ℝ) * lam⁻¹ * Lam ^ (2 : ℕ)
-  let lower := 4 * (Fintype.card (Fin d) : ℝ) * lam⁻¹
-  1 + lower * upper + upper * lower
-
-def IsPeriodicMinimalScale {d : ℕ} (a₀ : RegCoeffField d) (lam Lam : ℝ)
-    (X : RegCoeffField d → ℝ) (Cscale : ℝ) : Prop :=
-  (∀ a, 1 ≤ X a) ∧
-    IsBigO (Measure.dirac a₀) (gammaSigma ((d : ℕ) : ℝ)) X
-      (Real.exp (Cscale * (Real.log (2 + periodicThetaHat d lam Lam)) ^ (2 : ℕ)))
+noncomputable def comparisonData {d : ℕ} {sigmaBar : ℝ}
+    {a : CoefficientField d} {Q : TriadicCube d} {g : Vec d → Vec d}
+    (pair : ComparisonPair sigmaBar a Q g) : ℝ :=
+  Real.sqrt sigmaBar * energyNorm Q a.toFun pair.u +
+    scaledForceH34Seminorm Q g
 
 namespace PeriodicGeneral
 
 /-- Fixed-exponent homogenization comparison for a deterministic periodic
 coefficient field, stated for the Dirac law concentrated at that field.
 
-The estimate bounds the comparison defect (a scale-normalized negative-Sobolev
-distance between the heterogeneous and homogenized flux/gradient pairs) by the
-energy data times the algebraic rate `(3 ^ m / X a) ^ (-alpha)`, where `3 ^ m` is
-the cube sidelength and `X a` the random minimal scale.
-
-The Sobolev exponent is fixed to `s = 3/4` (`fixedComparisonS`); the decay
-exponent `alpha` and the constants `C`, `Cscale` are existential and chosen
-before the periodic field and its ellipticity bounds.  (An auxiliary internal
-exponent `t = 1/8` with `4 t < s < 1` is used in the proof but does not appear
-here.) -/
+The constants `C`, `alpha`, `Cscale` are chosen before the field and its
+ellipticity bounds, hence depend only on `d`.  The estimate bounds the
+comparison defect (a scale-normalized `H⁻³ᐟ⁴` distance between the
+heterogeneous and homogenized flux/gradient pairs) by the energy data times the
+algebraic rate `(3 ^ m / X a) ^ (-alpha)`, where `3 ^ m` is the cube sidelength
+and `X a` the minimal scale. -/
 theorem periodicGeneral_comparison
     {d : ℕ} [NeZero d] :
     ∃ C alpha Cscale : ℝ,
       0 < C ∧ 0 < alpha ∧ 0 < Cscale ∧
-      ∀ (_two_le_dim : 2 ≤ d) (a₀ : RegCoeffField d) (lam Lam : ℝ)
-        (_hper : IsPeriodicCoeffField a₀.toFun)
-        (_hiso : IsIsotropicCoeffField a₀.toFun)
-        (_hadj : IsAdjointInvariantCoeffField a₀.toFun)
-        (_hlam : 0 < lam) (_hle : lam ≤ Lam)
-        (_hell : ∀ Q : TriadicCube d,
-          AEEllipticOn lam Lam (openCubeSet Q) a₀),
+      ∀ S : Setup d,
         ∃ sigmaBar : ℝ,
           0 < sigmaBar ∧
-          ∃ X : RegCoeffField d → ℝ,
-            IsPeriodicMinimalScale a₀ lam Lam X Cscale ∧
-            ∀ᵐ aω ∂Measure.dirac a₀,
-              ∀ (ha : AELocallyUniformlyEllipticField aω)
+          ∃ X : CoefficientField d → ℝ,
+            S.IsMinimalScale X Cscale ∧
+            ∀ᵐ a ∂Measure.dirac S.a₀,
+              ∀ (_ha : LocallyUniformlyElliptic a)
                 {m : ℕ} {g : Vec d → Vec d}
-                (pair : ComparisonPair sigmaBar aω ha m g),
-                X aω ≤ (3 : ℝ) ^ m →
-                ForceSobolevRegularity (originCube d m) fixedComparisonS g →
-                comparisonDefect sigmaBar fixedComparisonS pair ≤
-                  C * ((3 : ℝ) ^ m / X aω) ^ (-alpha) *
-                    comparisonData sigmaBar fixedComparisonS pair := by
+                (pair : ComparisonPair sigmaBar a (originCube d m) g),
+                X a ≤ (3 : ℝ) ^ m →
+                ForceInH34 (originCube d m) g →
+                comparisonDefect pair ≤
+                  C * ((3 : ℝ) ^ m / X a) ^ (-alpha) * comparisonData pair := by
   sorry
 
 end PeriodicGeneral

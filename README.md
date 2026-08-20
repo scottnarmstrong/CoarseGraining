@@ -5,6 +5,7 @@ A machine-checked **Lean 4** formalization of the manuscript
 Kuusi), built on [`mathlib`](https://github.com/leanprover-community/mathlib4).
 
 [![CI](https://github.com/scottnarmstrong/CoarseGraining/actions/workflows/build.yml/badge.svg)](https://github.com/scottnarmstrong/CoarseGraining/actions/workflows/build.yml)
+[![Comparator audit](https://github.com/scottnarmstrong/CoarseGraining/actions/workflows/comparator.yml/badge.svg)](https://github.com/scottnarmstrong/CoarseGraining/actions/workflows/comparator.yml)
 
 ## What this is
 
@@ -25,7 +26,7 @@ below. The supporting analytic library now also includes finite-exponent cube
 Calderón–Zygmund estimates, finite-exponent Sobolev and fractional-Sobolev
 infrastructure, and a finite-exponent local coarse-graining theorem.
 
-- **1,693 Lean source files, 616,164 lines** (including the comparator audit
+- **1,695 Lean source files, 613,252 lines** (including the comparator audit
   surface; the production library is 1,672 files and 600,084 lines).
 - **No `sorry`** anywhere in the library. (Each Mathlib-only comparator
   challenge in `Audit/` contains its single intentional statement-level
@@ -159,23 +160,23 @@ theorem homogenizationComparison_uniformEllipticity
       ∀ S : Setup d,
         ∃ sigmaBar : ℝ,
           0 < sigmaBar ∧
-          ∃ X : RegCoeffField d → ℝ,
+          ∃ X : CoefficientField d → ℝ,
             S.IsMinimalScale X Cscale ∧
             ∀ᵐ a ∂S.P,
-              ∀ (ha : AELocallyUniformlyEllipticField a)
-                {m : ℕ} {g : Vec d → Vec d}
-                (pair : ComparisonPair sigmaBar a ha m g),
+              ∀ {m : ℕ} {g : Vec d → Vec d}
+                (pair : ComparisonPair sigmaBar a (originCube d m) g),
                 X a ≤ (3 : ℝ) ^ m →
-                ForceSobolevRegularity (originCube d m) fixedComparisonS g →
-                comparisonDefect sigmaBar fixedComparisonS pair ≤
-                  C * ((3 : ℝ) ^ m / X a) ^ (-alpha) *
-                    comparisonData sigmaBar fixedComparisonS pair
+                ForceInH34 (originCube d m) g →
+                comparisonDefect pair ≤
+                  C * ((3 : ℝ) ^ m / X a) ^ (-alpha) * comparisonData pair
 ```
 
-`Setup`, `ComparisonPair`, `comparisonDefect`, `comparisonData`, `IsMinimalScale`,
-`ForceSobolevRegularity`, and `originCube` are all defined from Mathlib primitives
-in the challenge file itself; `comparisonDefect`/`comparisonData` are the
-negative-Sobolev defect and data norm of the **Main result** section above. The
+`Setup`, `CoefficientField`, `TriadicCube`, `ComparisonPair`, `comparisonDefect`,
+`comparisonData`, `IsMinimalScale`, `ForceInH34`, and `originCube` are all defined
+from Mathlib primitives in the challenge file itself; `comparisonDefect`/`comparisonData`
+are the negative-Sobolev defect and data norm of the **Main result** section above.
+Uniform ellipticity is carried by the almost-sure `uniformlyElliptic` field of
+`Setup`, so it is not a separate hypothesis of the theorem. The
 project-wide disclosure (scope, models, cost, review status, statement map)
 follows the [`formalization.yaml`](formalization.yaml) standard.
 
@@ -196,13 +197,17 @@ lake build           # compile the project
 which pins the exact dependency revisions.
 
 On an 8-core / 32 GB machine, with Mathlib supplied by `lake exe cache get`, the
-project itself elaborates in roughly half an hour (4,624 build jobs for the
-default `Homogenization` target; `lake build Audit` additionally elaborates the
-comparator surface and its semantic regression). Continuous
+project itself elaborates in roughly half an hour (4,732 build jobs for the
+default `Homogenization` target, which globs every module under
+`Homogenization/`; `lake build Audit` additionally elaborates the comparator
+surface and its semantic regression). Continuous
 integration rebuilds the entire tree on every push; the live pass/fail status and
 GitHub's own measured build time for each run are shown in the
 [Actions tab](https://github.com/scottnarmstrong/CoarseGraining/actions) and in the
-badge at the top of this file.
+badges at the top of this file. A second workflow,
+[`.github/workflows/comparator.yml`](.github/workflows/comparator.yml), re-runs
+the full comparator sweep described below on every push, checking each of the
+seven pairs with both the Lean kernel and the independent `nanoda` kernel.
 
 To use the library, `import Homogenization` (the root module
 [`Homogenization.lean`](Homogenization.lean)) pulls in the whole development; the
@@ -224,7 +229,7 @@ Homogenization/
   HighContrast/    block-variance decay and the polynomial homogenization scale
   Renormalization/ renormalization-group iteration
   Internal/        internal support material
-  Book/            chapter-by-chapter theorem surfaces (Ch02–Ch05)
+  Book/            chapter-by-chapter theorem surfaces (Ch01–Ch05)
   Meta/            AxiomsAudit.lean
   Examples/        instantiated laws (random checkerboard, periodic media)
 Homogenization.lean   the root module (imports the whole library)
