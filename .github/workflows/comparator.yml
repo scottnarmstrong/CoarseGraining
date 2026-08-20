@@ -109,7 +109,8 @@ jobs:
         # The committed configs set enable_nanoda: false so that local
         # reproduction needs only three tools; CI always exercises the
         # stronger two-kernel variant on its throwaway checkout.
-        run: sed -i 's/"enable_nanoda": false/"enable_nanoda": true/' Audit/*/comparator.json
+        run: |
+          sed -i 's/"enable_nanoda": false/"enable_nanoda": true/' Audit/*/comparator.json
 
       - name: Run the comparator on all seven pairs
         env:
