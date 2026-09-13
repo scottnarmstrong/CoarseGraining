@@ -220,7 +220,7 @@ theorem exists_quantitative_threshold_smallBottomBadTail_quenchedProbeEnvelope_l
   refine ⟨R, ?_, ?_⟩
   · simpa [K, S, η, w, W, ρgap, C₀] using hR
   intro P hP hStruct hΓ hσ_eq hparams Nentry
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let H : ℕ → ℕ → RegCoeffField d → ℝ :=
     quenchedProbeEnvelope hP hStruct
   let scale : ℝ := K * (Ccrude * hΓ.thetaHat ^ (2 : ℕ))

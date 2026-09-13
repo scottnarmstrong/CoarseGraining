@@ -59,7 +59,7 @@ private theorem fullBlockNormalizedQuadraticObservable_restrictionCenteredDescen
   have hdesc :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
         AEMeasurable (fun a : RegCoeffField d => X (cubeSet R) a) P := by
-    simpa [X] using
+    simpa [X] using!
       fullBlockNormalizedQuadraticObservable_descendants_regular
         hP hStruct center q (originCube d m) n
   have hS : AEMeasurable S P := by
@@ -77,7 +77,7 @@ private theorem fullBlockNormalizedQuadraticObservable_restrictionCenteredDescen
         fun a => ((descendantsAtScale (originCube d m) n).card : ℝ)⁻¹ * S a := by
     funext a
     simp [Ch04.restrictionCenteredDescendantAverage, S, μ0]
-  simpa [X, hcenter] using aemeasurable_const.mul hS
+  simpa [X, hcenter] using! aemeasurable_const.mul hS
 
 /-- `(P4)` gives the L2 integrability of a centered normalized scalar
 quadratic probe on an origin cube. -/
@@ -150,7 +150,7 @@ theorem integrable_fullBlockNormalizedQuadraticObservable_and_abs_sub_dotProduct
         (fun a : RegCoeffField d =>
           |fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q
             (cubeSet (originCube d (j : ℤ))) a - dotProduct q q| ^ (2 : ℕ)) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : RegCoeffField d → ℝ := fun a =>
     fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q
       (cubeSet (originCube d (j : ℤ))) a
@@ -207,19 +207,19 @@ theorem fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAver
         |Ch04.restrictionCenteredDescendantAverage P n m
           (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^ (2 : ℕ) ∂P
           ≤ K ^ (2 : ℕ)) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fullBlockNormalizedQuadraticObservableR hP hStruct center q
   let Z : RegCoeffField d → ℝ := Ch04.restrictionCenteredDescendantAverage P n m X
   have hX0 :
       AEMeasurable (fun a : RegCoeffField d => X (cubeSet (originCube d n)) a) P := by
-    simpa [X] using
+    simpa [X] using!
       fullBlockNormalizedQuadraticObservable_cubeSet_regular
         hP hStruct center q (originCube d n)
   have hXdesc :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
         AEMeasurable (fun a : RegCoeffField d => X (cubeSet R) a) P := by
-    simpa [X] using
+    simpa [X] using!
       fullBlockNormalizedQuadraticObservable_descendants_regular
         hP hStruct center q (originCube d m) n
   have hZ_regular : AEMeasurable Z P := by
@@ -265,19 +265,19 @@ theorem fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAver
           |Ch04.restrictionCenteredDescendantAverage P n m
             (fullBlockNormalizedQuadraticObservableR hP hStruct center q) a| ^
               (2 : ℕ)) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fullBlockNormalizedQuadraticObservableR hP hStruct center q
   let Z : RegCoeffField d → ℝ := Ch04.restrictionCenteredDescendantAverage P n m X
   have hX0 :
       AEMeasurable (fun a : RegCoeffField d => X (cubeSet (originCube d n)) a) P := by
-    simpa [X] using
+    simpa [X] using!
       fullBlockNormalizedQuadraticObservable_cubeSet_regular
         hP hStruct center q (originCube d n)
   have hXdesc :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
         AEMeasurable (fun a : RegCoeffField d => X (cubeSet R) a) P := by
-    simpa [X] using
+    simpa [X] using!
       fullBlockNormalizedQuadraticObservable_descendants_regular
         hP hStruct center q (originCube d m) n
   have hZ_regular : AEMeasurable Z P := by

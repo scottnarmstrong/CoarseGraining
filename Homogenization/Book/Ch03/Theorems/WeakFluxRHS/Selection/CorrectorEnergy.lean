@@ -384,7 +384,7 @@ theorem weakFluxCorrectorEnergyExpandedRHS_le_weakFluxWithRHSRHS_of_constant
         rw [show s ^ (2 : ℕ) = Real.rpow s (2 : ℝ) by
           simp]
         rw [show (Real.rpow s (2 : ℝ))⁻¹ = Real.rpow s (-(2 : ℝ)) by
-          simpa using (Real.rpow_neg hs.le (2 : ℝ)).symm]
+          simp]
       _ ≤ Real.rpow s (-(5 / 2 : ℝ)) :=
         Real.rpow_le_rpow_of_exponent_ge hs hs_le (by norm_num)
   have hA_nonneg : 0 ≤ 50 * (s⁻¹) ^ 2 * L * E := by

@@ -269,7 +269,7 @@ private theorem eventually_abs_integralAverage_convexApproxSmoothH1_le
     ∃ A : ℝ, 0 ≤ A ∧ ∀ᶠ n : ℕ in atTop,
       |integralAverage U (convexApproxSmoothH1 hU u x0 hr n)| ≤ A := by
   let A : ℝ := |integralAverage U u| + 1
-  letI : IsFiniteMeasure (volumeMeasureOn U) := by
+  let : IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   have hA : 0 ≤ A := by
     dsimp [A]
@@ -298,7 +298,7 @@ private theorem eventually_valueLpSeminorm_convexApproxSmoothH1W1p_le
     {x0 : Vec d} {r : ℝ} (hball : Metric.closedBall x0 r ⊆ U) (hr : 0 < r) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ᶠ n : ℕ in atTop,
       (convexApproxSmoothH1W1p hU u p x0 hr n).valueLpSeminorm ≤ B := by
-  letI : IsFiniteMeasure (volumeMeasureOn U) := by
+  let : IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   obtain ⟨C, hC, hPoincare⟩ :=
     W1pFunction.exists_subAverage_poincare_constant_of_isOpenBoundedConvexDomain
@@ -382,7 +382,7 @@ private theorem memLp_of_gradMemLp_on_isOpenBoundedConvexDomain
     (u : H1Function U) (p : FiniteLpExponent)
     (hgrad : GradMemLpOn U p.exponent u.grad) :
     MemLpOn U p.exponent u.toFun := by
-  letI : IsFiniteMeasure (volumeMeasureOn U) := by
+  let : IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   by_cases hnonempty : U.Nonempty
   · rcases hnonempty with ⟨x0, hx0⟩
@@ -409,7 +409,7 @@ private theorem memLp_of_gradMemLp_on_isOpenBoundedConvexDomain
     have hLp2 : Tendsto (fun n => (convexApproxSmoothH1 hU u x0 hr n).toScalarL2)
         atTop (nhds u.toScalarL2) :=
       tendsto_convexApproxSmoothH1_toScalarL2 hU u hball hr
-    letI : Fact (1 ≤ (2 : ENNReal)) := ⟨by norm_num⟩
+    let : Fact (1 ≤ (2 : ENNReal)) := ⟨by norm_num⟩
     have hmeasureLp : TendstoInMeasure (volume.restrict U)
         (fun n => ((convexApproxSmoothH1 hU u x0 hr n).toScalarL2 : Vec d → ℝ)) atTop
         (u.toScalarL2 : Vec d → ℝ) :=
@@ -425,7 +425,7 @@ private theorem memLp_of_gradMemLp_on_isOpenBoundedConvexDomain
         (fun n => ?_) hmeasure
       filter_upwards with x
       simp [ψ, convexApproxSmoothH1W1p_toFun]
-    have hnorm := eLpNorm_le_of_tendstoInMeasure p.exponent hbound' hmeasureψ
+    have hnorm := eLpNorm_le_of_tendstoInMeasure (p := p.exponent) hbound' hmeasureψ
       (fun n => (ψ n).memLp.aestronglyMeasurable)
     refine ⟨u.memL2.aestronglyMeasurable, ?_⟩
     exact lt_of_le_of_lt hnorm ENNReal.ofReal_lt_top

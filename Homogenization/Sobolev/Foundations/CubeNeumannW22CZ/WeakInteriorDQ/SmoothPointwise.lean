@@ -164,7 +164,7 @@ theorem exists_bound_fderiv_euclideanCoordDeriv_of_contDiff_hasCompactSupport
 private theorem contDiff_h1WeakTest_deriv
     {d : ℕ} {U : Set (Vec d)} (φ : H1WeakTestFunction U) (j : Fin d) :
     ContDiff ℝ (⊤ : ℕ∞) (fun x => φ.deriv j x) := by
-  simpa [H1WeakTestFunction.deriv, euclideanCoordDeriv] using
+  simpa [H1WeakTestFunction.deriv, euclideanCoordDeriv] using!
     contDiff_euclideanCoordDeriv φ.smooth j
 
 private theorem hasCompactSupport_h1WeakTest_deriv

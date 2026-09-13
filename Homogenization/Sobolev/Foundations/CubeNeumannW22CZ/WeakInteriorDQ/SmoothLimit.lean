@@ -144,7 +144,7 @@ private theorem support_h1WeakTest_deriv_subset
 private theorem contDiff_h1WeakTest_deriv
     {U : Set (Vec d)} (φ : H1WeakTestFunction U) (j : Fin d) :
     ContDiff ℝ (⊤ : ℕ∞) (fun x => φ.deriv j x) := by
-  simpa [H1WeakTestFunction.deriv, euclideanCoordDeriv] using
+  simpa [H1WeakTestFunction.deriv, euclideanCoordDeriv] using!
     contDiff_euclideanCoordDeriv φ.smooth j
 
 private theorem hasCompactSupport_h1WeakTest_deriv
@@ -160,7 +160,7 @@ private theorem tsupport_h1WeakTest_deriv_subset
       tsupport (euclideanCoordDeriv j (φ : Vec d → ℝ)) ⊆
         tsupport (φ : Vec d → ℝ) :=
     tsupport_euclideanCoordDeriv_subset_tsupport j (φ : Vec d → ℝ)
-  simpa [H1WeakTestFunction.deriv, euclideanCoordDeriv] using
+  simpa [H1WeakTestFunction.deriv, euclideanCoordDeriv] using!
     hsub.trans φ.support_subset
 
 /-- Smooth test derivatives have `L²` backward difference quotients on any

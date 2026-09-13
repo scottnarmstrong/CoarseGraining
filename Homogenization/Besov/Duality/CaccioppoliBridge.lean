@@ -259,7 +259,7 @@ theorem cubeBesovDualLocalMemLpGlobal_two_const_mul {d : ℕ} {Q : TriadicCube d
     (hg : CubeBesovDualLocalMemLpGlobal Q (2 : ℝ≥0∞) g) :
     CubeBesovDualLocalMemLpGlobal Q (2 : ℝ≥0∞) (fun x => c * g x) := by
   intro j R hR
-  simpa [Pi.smul_apply, smul_eq_mul, cubeFluctuation_const_mul] using
+  simpa [Pi.smul_apply, smul_eq_mul, cubeFluctuation_const_mul] using!
     (hg j R hR).const_smul c
 
 theorem cubeBesovPairing_const_mul_right {d : ℕ} (Q : TriadicCube d)

@@ -793,7 +793,7 @@ theorem limitNormalizedBlockJObservable_unit_isBigO
       (limitNormalizedBlockJObservable hP hStruct (originCube d 0) e)
       ((Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ) *
         (thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat)) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let C : ℝ := (Fintype.card (BlockCoord d) : ℝ) ^ (2 : ℕ)
   let Y : RegCoeffField d → ℝ :=
     limitWeightedUnitEllipticityObservable hP hStruct

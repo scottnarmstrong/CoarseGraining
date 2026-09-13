@@ -180,7 +180,7 @@ theorem coarseFluxResponseRHS_negativeDual_le {d : ℕ} [NeZero d]
     exact
       coarseFluxResponseRHSBound_publicCoeffField_le_dim_sq_mul_public_of_homogenizationErrorOnCube_eq
         C₀ Q a a0 u hC₀_nonneg hs hBsemi_nonneg hH_nonneg herror
-  simpa [C] using hbounded.trans hrhs_le
+  simpa [C] using! hbounded.trans hrhs_le
 
 /-- Fully proved public coarse-grained flux-response theorem package with RHS. -/
 theorem coarseFluxResponseRHSTheory {d : ℕ} [NeZero d] :

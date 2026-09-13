@@ -428,7 +428,7 @@ lemma integrable_gammaExpSeriesTerm_of_one_le
       (μ := μ) (X := X) (σ := σ) (M := M) (n := n) hn hXmom with
     ⟨hpow_int, _⟩
   have hterm_meas : AEStronglyMeasurable (gammaExpSeriesTerm l X n) μ := by
-    simpa [gammaExpSeriesTerm, div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc] using
+    simpa [gammaExpSeriesTerm, div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc] using!
       (((hXm.aestronglyMeasurable.const_mul l).pow n).const_mul
         ((Nat.factorial n : ℝ)⁻¹))
   have hnorm_eq :
@@ -518,7 +518,7 @@ lemma ae_summable_norm_gammaExpSeriesTerm
   have hlin' : ∫⁻ ω : Ω, ∑' n : ℕ, ‖F n ω‖ₑ ∂μ ≠ (⊤ : ENNReal) := by
     rw [lintegral_tsum hF_meas]
     exact hlin
-  refine (ae_lt_top' (AEMeasurable.ennreal_tsum hF_meas) hlin').mono ?_
+  refine (ae_lt_top' (AEMeasurable.tsum hF_meas) hlin').mono ?_
   intro ω hω
   have hωsum : Summable (fun n : ℕ => ((‖F n ω‖₊ : NNReal) : ℝ)) := by
     rw [← ENNReal.tsum_coe_ne_top_iff_summable_coe]
@@ -562,7 +562,7 @@ lemma integrable_tsum_norm_gammaExpSeriesTerm
   · rw [hG_real]
     rw [aestronglyMeasurable_iff_aemeasurable]
     apply AEMeasurable.coe_nnreal_real
-    apply AEMeasurable.nnreal_tsum
+    apply AEMeasurable.tsum
     intro n
     exact (hF_int n).1.nnnorm.aemeasurable
   · rw [hG_real]
@@ -629,7 +629,7 @@ theorem integrable_exp_mul_of_gammaMomentGrowth_small
   have hsum_exp :
       HasSum (fun n : ℕ => F n ω) (Real.exp (l * X ω)) := by
     simpa [F, gammaExpSeriesTerm, Real.exp_eq_exp_ℝ] using
-      (NormedSpace.expSeries_div_hasSum_exp ℝ (l * X ω))
+      (NormedSpace.expSeries_div_hasSum_exp (l * X ω))
   calc
     ‖Real.exp (l * X ω)‖ = ‖∑' n : ℕ, F n ω‖ := by
           rw [hsum_exp.tsum_eq]

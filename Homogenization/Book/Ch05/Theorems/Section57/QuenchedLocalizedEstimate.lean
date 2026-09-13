@@ -134,7 +134,7 @@ theorem quenchedLocalizedEstimate_shifted_from_badTailBounds
                     (Nentry + m) (Nentry + n) e aω ≤
                 ((3 : ℝ) ^ m / X aω) ^ (-α) := by
   intro Hshift Bad X
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hgoodAE : ∀ᵐ aω ∂P, hasGoodTailFrom Nmin Bad aω := by
     exact ae_hasGoodTailFrom
       (μ := P) (N0 := Nmin) (Bad := Bad) (by simpa [Hshift, Bad] using hsmall)
@@ -196,7 +196,7 @@ theorem quenchedLocalizedEstimate_shifted_from_badScaleBounds
                     (Nentry + m) (Nentry + n) e aω ≤
                 ((3 : ℝ) ^ m / X aω) ^ (-α) := by
   intro Hshift Bad X
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hsmall_tail :
       ∀ ε : ℝ, 0 < ε →
         ∃ N : ℕ, Nmin ≤ N ∧ P.real (badTailEvent Bad N) ≤ ε := by

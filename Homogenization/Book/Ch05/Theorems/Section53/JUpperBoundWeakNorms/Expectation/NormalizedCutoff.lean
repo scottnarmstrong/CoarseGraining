@@ -727,7 +727,7 @@ theorem expectedResponseJCubeSet_sub_half_dot_le_jUpperWeakNormManuscriptExpecte
         p q p0 q0 := by
   let Q : TriadicCube d := originCube d m
   let j : ℕ := Int.toNat (m - k)
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hbasic := normalized_quantitativeCubeCutoff_canonicalFun_basic_controls Q
   rcases hbasic with ⟨hMean, hφ_meas, hφ_bound, hφ_smooth, hφ_compact, hφ_sub⟩
   have hosc :=

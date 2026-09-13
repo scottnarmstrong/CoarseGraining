@@ -141,7 +141,7 @@ theorem transpose_blockSub_posSemidef_of_blockMatLoewnerLE
     (hA : IsSymmetricBlockMat A) (hB : IsSymmetricBlockMat B) :
     (Matrix.transpose S * (toFullBlockMat B - toFullBlockMat A) * S).PosSemidef := by
   have hPSD := blockSub_posSemidef_of_blockMatLoewnerLE hAB hA hB
-  simpa [Matrix.conjTranspose] using hPSD.conjTranspose_mul_mul_same S
+  simpa [Matrix.conjTranspose] using! hPSD.conjTranspose_mul_mul_same S
 
 theorem diagonal_blockSub_posSemidef_of_blockMatLoewnerLE
     {d : ℕ} {A B : BlockMat d} (r : BlockCoord d → ℝ)

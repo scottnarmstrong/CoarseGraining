@@ -28,7 +28,7 @@ theorem matLoewnerLE_matrixOrder_of_posSemidef
   have hAB' :
       (1 / 2 : ℝ) * dotProduct x (Matrix.mulVec A x) ≤
         (1 / 2 : ℝ) * dotProduct x (Matrix.mulVec B x) := by
-    simpa [vecDot, matVecMul] using hAB x
+    simpa [vecDot, matVecMul, dotProduct, Matrix.mulVec_apply] using hAB x
   nlinarith
 
 theorem matLoewnerLE_of_matrixOrder_of_posSemidef

@@ -194,8 +194,7 @@ theorem coarseCaccioppoliLocalEnergyRadiusProfile_cubeCenter_one_third_le_locali
   have hsub :
       coarseCaccioppoliLocalClosedCube Q (cubeCenter Q) (1 / 3 : ℝ) ⊆
         scaledClosedCubeSet Q (1 / 3 : ℝ) := by
-    intro y hy
-    intro i
+    intro y hy i
     have hrad :
         coarseCaccioppoliLocalPatchRadius Q (1 / 3 : ℝ) ≤
           (1 / 3 : ℝ) * cubeRadius Q := by
@@ -243,7 +242,7 @@ theorem
               u.toPointwiseAHarmonic y) (1 / 3 : ℝ) ≤
         coarseCaccioppoliInteriorNoteRhs Q (pointwiseCoeffFor Q a) s t Cnote
           (interiorCaccioppoliParentOscillationL2Sq Q a u) := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   rcases
@@ -860,7 +859,7 @@ theorem deterministic_interiorNoteRhs_pointwiseCoeffFor_le_publicRHS_dim_sq_mul_
     coarseCaccioppoliInteriorNoteRhs Q (pointwiseCoeffFor Q a) s t C
         (interiorCaccioppoliParentOscillationL2Sq Q a u) ≤
       interiorCaccioppoliRHS (((d : ℝ) ^ (2 : ℕ)) * C) Q a s t u := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   have hu :

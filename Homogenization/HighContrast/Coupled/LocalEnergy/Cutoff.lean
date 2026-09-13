@@ -56,7 +56,7 @@ theorem fderiv_sqCutoff {η : Vec d → ℝ} (hη : ContDiff ℝ (⊤ : ℕ∞) 
     have hrw : sqCutoff η = fun y => η y * η y := by funext y; rw [sqCutoff_apply, pow_two]
     rw [hrw]; exact hd.mul hd
   rw [hsq.fderiv]
-  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
+  simp only [add_apply, smul_apply, smul_eq_mul]
   ring
 
 /-- The support of `η²` equals the support of `η`. -/

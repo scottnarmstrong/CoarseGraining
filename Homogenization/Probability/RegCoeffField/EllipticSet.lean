@@ -97,7 +97,7 @@ theorem isEllipticMatrix_iff_isEllipticEntryLU {lam Lam : ℝ} (A : Mat d) :
       have hnn : lam * vecNormSq (x - y) ≤ 0 := hcz
       have hznn : vecNormSq (x - y) ≤ 0 := by
         by_contra hcon
-        push_neg at hcon
+        push Not at hcon
         exact absurd hnn (not_le.mpr (mul_pos hlam hcon))
       have hzero : vecNormSq (x - y) = 0 := le_antisymm hznn (vecNormSq_nonneg _)
       exact sub_eq_zero.mp (vecNormSq_eq_zero hzero)
@@ -122,14 +122,14 @@ theorem isClosed_isEllipticEntryLU {lam Lam : ℝ} :
     IsClosed {v : Mat d | IsEllipticEntryLU lam Lam v} := by
   have h1 : IsClosed
       {v : Mat d | ∀ ξ : Vec d, lam * vecNormSq ξ ≤ vecDot ξ (matVecMul v ξ)} := by
-    rw [Set.setOf_forall]
+    rw [Set.ofPred_forall]
     refine isClosed_iInter (fun ξ => ?_)
     simp only [vecNormSq, vecDot, matVecMul]
     exact isClosed_le continuous_const (by fun_prop)
   have h2 : IsClosed
       {v : Mat d |
         ∀ η : Vec d, vecNormSq (matVecMul v η) ≤ Lam * vecDot η (matVecMul v η)} := by
-    rw [Set.setOf_forall]
+    rw [Set.ofPred_forall]
     refine isClosed_iInter (fun η => ?_)
     simp only [vecNormSq, vecDot, matVecMul]
     exact isClosed_le (by fun_prop) (by fun_prop)
@@ -214,14 +214,14 @@ locus is exactly the inverse-free `IsEllipticEntryLU` locus. -/
 private theorem isEllipticMatrix_setOf_eq {lam Lam : ℝ} (h : 0 < lam ∧ lam ≤ Lam) :
     {A : Mat d | IsEllipticMatrix lam Lam A} = {v : Mat d | IsEllipticEntryLU lam Lam v} := by
   ext A
-  simp only [Set.mem_setOf_eq]
+  simp only [Set.mem_ofPred_eq]
   rw [isEllipticMatrix_iff_isEllipticEntryLU]
   exact ⟨fun hA => hA.2.2, fun hA => ⟨h.1, h.2, hA⟩⟩
 
 private theorem isEllipticMatrix_setOf_eq_empty {lam Lam : ℝ} (h : ¬ (0 < lam ∧ lam ≤ Lam)) :
     {A : Mat d | IsEllipticMatrix lam Lam A} = ∅ := by
   ext A
-  simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+  simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
   intro hA
   exact h ⟨hA.1, hA.2.1⟩
 

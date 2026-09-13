@@ -98,7 +98,7 @@ theorem compl_corridorSet_eq_iUnion_coreBox {ℓ : ℝ} (hℓ : 0 < ℓ) (σ : V
     (corridorSet ℓ σ)ᶜ = ⋃ k : Fin d → ℤ, coreBox ℓ σ k := by
   ext x
   simp only [Set.mem_compl_iff, mem_corridorSet, Set.mem_iUnion, mem_coreBox]
-  push_neg
+  push Not
   have key : ∀ i : Fin d,
       (∀ n : ℤ, 1 ≤ |x i - σ i - n * ℓ|) ↔
         ∃ m : ℤ, σ i + m * ℓ + 1 ≤ x i ∧ x i ≤ σ i + (m + 1) * ℓ - 1 := by
@@ -180,7 +180,7 @@ theorem finite_coreBox_meets {ℓ : ℝ} (hℓ : 0 < ℓ) (σ : Vec d) {U : Set 
     rw [hA, Int.ceil_le]
     have hstep : -R - σ i + 1 ≤ (k i + 1) * ℓ := by nlinarith
     have : (-R - σ i + 1) / ℓ ≤ (k i : ℝ) + 1 := by
-      rw [div_le_iff₀ hℓ]; push_cast at hstep ⊢; linarith
+      rw [div_le_iff₀ hℓ]; linarith
     linarith
   · -- upper bound `k i ≤ B i`
     rw [hB, Int.le_floor]

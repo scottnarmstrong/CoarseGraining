@@ -163,7 +163,7 @@ noncomputable def toCubeSetOriginCube {d : ℕ} [NeZero d] {n : ℤ}
     exact hφ_smooth.comp hshift_smooth
   have hψn_compact : ∀ n : ℕ, HasCompactSupport (ψn n) := by
     intro n
-    simpa [ψn] using
+    simpa [ψn] using!
       hφ_compact.comp_homeomorph
         (Homeomorph.subRight (diagonalShift (d := d) (ε₀ / ((n : ℝ) + 2))))
   have hψn_sub : ∀ n : ℕ, tsupport (ψn n) ⊆ Uo := by
@@ -300,7 +300,7 @@ noncomputable def coordOnOpenCubeSetOriginCube {d : ℕ} {n : ℤ} (i : Fin d) :
     let π : Vec d →L[ℝ] ℝ := ContinuousLinearMap.proj i
     have hproj :
         HasFDerivAt (fun y : Vec d => y i) π x := by
-      simpa [π] using π.hasFDerivAt (x := x)
+      simpa [π] using! π.hasFDerivAt (x := x)
     have hlin : fderiv ℝ (fun y : Vec d => y i) x = π := hproj.fderiv
     simpa [π, basisVec_apply, eq_comm] using
       (congrArg (fun L : Vec d →L[ℝ] ℝ => L (basisVec j)) hlin).symm
@@ -326,12 +326,12 @@ noncomputable def toCubeSetOriginCube {d : ℕ} [NeZero d] {n : ℤ}
   tendsto_approx := by
     simpa
       [volume_restrict_cubeSet_originCube_eq_volume_restrict_openCubeSet_originCube (d := d) n]
-      using u.tendsto_approx
+      using! u.tendsto_approx
   tendsto_approx_grad := by
     intro i
     simpa
       [volume_restrict_cubeSet_originCube_eq_volume_restrict_openCubeSet_originCube (d := d) n]
-      using u.tendsto_approx_grad i
+      using! u.tendsto_approx_grad i
 
 @[simp] theorem toCubeSetOriginCube_toH1Function_toFun {d : ℕ} [NeZero d] {n : ℤ}
     (u : H10Function (openCubeSet (originCube d n))) :
@@ -473,10 +473,10 @@ noncomputable def toOpenCubeSetOriginCube {d : ℕ} [NeZero d] {n : ℤ}
         ContDiff ℝ (⊤ : ℕ∞)
           (fun x : Vec d => x - diagonalShift (d := d) (εShift m)) := by
       simpa [diagonalShift] using contDiff_id.sub contDiff_const
-    simpa [approx'] using (u.approx_smooth m).comp hshift_smooth
+    simpa [approx'] using! (u.approx_smooth m).comp hshift_smooth
   have happrox'_compact : ∀ m : ℕ, HasCompactSupport (approx' m) := by
     intro m
-    simpa [approx'] using
+    simpa [approx'] using!
       (u.approx_hasCompactSupport m).comp_homeomorph
         (Homeomorph.subRight (diagonalShift (d := d) (εShift m)))
   have horigRestrict :
@@ -562,7 +562,7 @@ noncomputable def toOpenCubeSetOriginCube {d : ℕ} [NeZero d] {n : ℤ}
         convert hdenCast using 1
         ext m
         simp [Nat.cast_add]
-      simpa [one_div] using tendsto_inv_atTop_zero.comp hden
+      simpa [one_div] using! tendsto_inv_atTop_zero.comp hden
     have hbound_tendsto :
         Filter.Tendsto
           (fun m : ℕ => ENNReal.ofReal ((1 / ((m : ℝ) + 1)) * cμ))
@@ -622,7 +622,7 @@ noncomputable def toOpenCubeSetOriginCube {d : ℕ} [NeZero d] {n : ℤ}
         convert hdenCast using 1
         ext m
         simp [Nat.cast_add]
-      simpa [one_div] using tendsto_inv_atTop_zero.comp hden
+      simpa [one_div] using! tendsto_inv_atTop_zero.comp hden
     have hbound_tendsto :
         Filter.Tendsto
           (fun m : ℕ => ENNReal.ofReal ((1 / ((m : ℝ) + 1)) * cμ))

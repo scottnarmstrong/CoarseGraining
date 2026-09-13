@@ -35,13 +35,13 @@ theorem cubeAverage_vecDot_eq_vecDot_cubeAverageVec_add_cubeAverage_vecDot_fluct
       ∀ i : Fin d,
         MeasureTheory.Integrable (fun x => u x i * g x i) (normalizedCubeMeasure Q) := by
     intro i
-    simpa [Pi.mul_apply, mul_comm] using (hu_comp i).integrable_mul (hg_comp i)
+    simpa [Pi.mul_apply, mul_comm] using! (hu_comp i).integrable_mul (hg_comp i)
   have hIntFluct :
       ∀ i : Fin d,
         MeasureTheory.Integrable (fun x => u x i * cubeFluctuationVec Q g x i)
           (normalizedCubeMeasure Q) := by
     intro i
-    simpa [Pi.mul_apply, mul_comm] using (hu_comp i).integrable_mul (hgFluct_comp i)
+    simpa [Pi.mul_apply, mul_comm] using! (hu_comp i).integrable_mul (hgFluct_comp i)
   calc
     cubeAverage Q (fun x => vecDot (u x) (g x))
         = ∑ i, cubeBesovPairing Q (fun x => u x i) (fun x => g x i) := by

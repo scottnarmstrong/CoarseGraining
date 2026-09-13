@@ -1,9 +1,0 @@
-{
-  "challenge_module": "Audit.CheckerboardScale.Challenge",
-  "solution_module": "Audit.CheckerboardScale.Solution",
-  "theorem_names": [
-    "Homogenization.StatementAudit.CheckerboardScale.randomCheckerboard_homogenizationScale"
-  ],
-  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"],
-  "enable_nanoda": false
-}

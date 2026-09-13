@@ -121,7 +121,7 @@ theorem
         (scalarCutoffGradientField (QuantitativeCubeCutoff.canonicalFun Q ρ₁ ρ₂)) ≤
           coarseCaccioppoliQuantitativeCutoffGradientBound Q ρ₁ ρ₂ := by
     simpa [ηρ, coarseCaccioppoliCanonicalQuantitativeCutoff,
-      QuantitativeCubeCutoff.canonical] using
+      QuantitativeCubeCutoff.canonical] using!
       quantitativeCubeCutoff_cubeLpNorm_infty_gradientField_le Q ηρ
   exact
     ⟨htest, henergyAvg, hfluxMem, huMem, hgMem, hξ_mem,

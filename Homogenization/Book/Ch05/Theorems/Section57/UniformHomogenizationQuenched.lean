@@ -229,7 +229,7 @@ theorem exists_shifted_quenchedLocalizedEstimate_uniformEndpoint_expLogSq
       hCfluct hCcrude ha ht (by simpa [b] using htb)
   refine ⟨Cscale, hCscale_pos, ?_⟩
   intro P hP hStruct hInf hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hInf.toQuantitativeCoarseGrainedEllipticity Centry
@@ -386,7 +386,7 @@ theorem exists_aboveEntry_quenchedLocalizedEstimate_uniformEndpoint_expLogSq_par
     positivity
   refine ⟨Ctotal, hCtotal_pos, ?_⟩
   intro P hP hStruct hInf hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hInf.toQuantitativeCoarseGrainedEllipticity Centry
@@ -399,7 +399,7 @@ theorem exists_aboveEntry_quenchedLocalizedEstimate_uniformEndpoint_expLogSq_par
         Real.exp
           (CentryEntry * (Real.log (2 + hInf.thetaHat)) ^ (2 : ℕ)) := by
     simpa [N0, GammaInfinityCoarseGrainedEllipticity.toQuantitativeCoarseGrainedEllipticity]
-      using
+      using!
         hentry hP hStruct (hInf.toGammaSigma 1 zero_lt_one)
           rfl hparams
   have hOabs_raw :
@@ -551,7 +551,7 @@ theorem exists_quenchedLocalizedEstimate_uniformEndpoint_expLogSq_parameterAlpha
     nlinarith
   refine ⟨Cscale, hCscale_pos, ?_⟩
   intro P hP hStruct hInf hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hInf.toQuantitativeCoarseGrainedEllipticity Centry
@@ -569,7 +569,7 @@ theorem exists_quenchedLocalizedEstimate_uniformEndpoint_expLogSq_parameterAlpha
           (CentryEntry * (Real.log (2 + θ)) ^ (2 : ℕ)) := by
     simpa [N0, θ,
       GammaInfinityCoarseGrainedEllipticity.toQuantitativeCoarseGrainedEllipticity]
-      using
+      using!
         hentry hP hStruct (hInf.toGammaSigma 1 zero_lt_one)
           rfl hparams
   have hDsmall_one : 1 ≤ Dsmall := by

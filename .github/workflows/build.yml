@@ -30,21 +30,35 @@ jobs:
       - name: Enforce warning-free production build
         shell: bash
         run: |
-          set -o pipefail
+          set -euo pipefail
           lake build 2>&1 | tee production-build.log
           if grep -iE '^warning:|declaration uses .sorry' production-build.log; then
             echo "Production build emitted a warning."
             exit 1
           fi
 
-      # Build the axiom audit and surface its `#print axioms` output in the log,
-      # confirming the public theorems use only the standard mathlib axioms.
+      # Re-run the axiom commands even on a cache hit and enforce their allowlist.
       - name: Axiom audit
         shell: bash
         run: |
-          set -o pipefail
-          lake build Homogenization.Meta.AxiomsAudit 2>&1 | tee axioms-audit.log
+          set -euo pipefail
+          lake env lean Homogenization/Meta/AxiomsAudit.lean 2>&1 | tee axioms-audit.log
           if grep -iE '^warning:|declaration uses .sorry' axioms-audit.log; then
             echo "Axiom audit build emitted a warning."
             exit 1
           fi
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          source = Path('Homogenization/Meta/AxiomsAudit.lean').read_text()
+          expected = set(re.findall(r'^#print axioms ([\w.]+)$', source, re.M))
+          blocks = re.findall(r"'([^']+)' depends on axioms: \[([^\]]*)\]",
+                              Path('axioms-audit.log').read_text(), re.S)
+          if not expected or {name for name, _ in blocks} != expected or len(blocks) != len(expected):
+              raise SystemExit('Missing or duplicate public-theorem axiom evidence')
+          allowed = {'propext', 'Classical.choice', 'Quot.sound'}
+          for name, body in blocks:
+              unexpected = {item.strip() for item in body.split(',') if item.strip()} - allowed
+              if unexpected:
+                  raise SystemExit(f'{name}: unapproved axioms {sorted(unexpected)}')
+          PY

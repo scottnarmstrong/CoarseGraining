@@ -16,8 +16,7 @@ noncomputable section
 /-- The function `x ↦ |x|^p` is convex on `ℝ` for `p ≥ 1`. -/
 lemma convexOn_abs_rpow {p : ℝ} (hp : 1 ≤ p) :
     ConvexOn ℝ Set.univ (fun x : ℝ => |x| ^ p) := by
-  have h1 : ConvexOn ℝ Set.univ (fun x : ℝ => |x|) := by
-    simpa using (convexOn_univ_norm : ConvexOn ℝ Set.univ (fun x : ℝ => ‖x‖))
+  have h1 : ConvexOn ℝ Set.univ (fun x : ℝ => |x|) := convexOn_univ_norm
   have h2 : ConvexOn ℝ (Set.Ici 0) (fun t : ℝ => t ^ p) := convexOn_rpow hp
   have h3 : MonotoneOn (fun t : ℝ => t ^ p) (Set.Ici 0) := by
     intro a ha b hb hab
@@ -159,10 +158,10 @@ theorem young_convolution_nonneg_integral_one
     rw [← ENNReal.toReal_one]
     exact (ENNReal.toReal_le_toReal ENNReal.one_ne_top hp').mpr hp
   let μ : Measure (Vec d) := volume.withDensity fun t => ENNReal.ofReal (ρ t)
-  letI : IsProbabilityMeasure μ :=
+  let : IsProbabilityMeasure μ :=
     isProbabilityMeasure_withDensity_ofReal hρ_nonneg hρ_int hρ_one
-  rw [eLpNorm_eq_lintegral_rpow_enorm hp_ne_zero hp']
-  rw [eLpNorm_eq_lintegral_rpow_enorm hp_ne_zero hp']
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal hp_ne_zero hp']
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal hp_ne_zero hp']
   apply ENNReal.rpow_le_rpow _ (by positivity : 0 ≤ 1 / p.toReal)
   have hfubini :=
     fubini_translation_key (d := d) (fun t => ENNReal.ofReal (ρ t)) g p.toReal
@@ -229,6 +228,7 @@ theorem young_convolution_nonneg_integral_one
             convert
               lintegral_withDensity_eq_lintegral_mul volume hρ_meas.ennreal_ofReal h_meas_pow
               using 2
+            simp only [Pi.mul_apply]
           rw [h_eq]
           have habs_rpow_nonneg : ∀ t, 0 ≤ |g (x - t)| ^ p.toReal :=
             fun t => Real.rpow_nonneg (abs_nonneg _) _
@@ -240,7 +240,7 @@ theorem young_convolution_nonneg_integral_one
           have h_top : ∫⁻ t, (ENNReal.ofReal |g (x - t)|) ^ p.toReal ∂μ = ⊤ := by
             rw [← lintegral_ofReal_ne_top_iff_integrable habs_rpow_meas.aestronglyMeasurable
                 (ae_of_all _ habs_rpow_nonneg)] at hgpow_int_μ
-            push_neg at hgpow_int_μ
+            push Not at hgpow_int_μ
             convert hgpow_int_μ using 1
             congr 1
             ext t
@@ -251,7 +251,7 @@ theorem young_convolution_nonneg_integral_one
       rw [integral_undef hg_int_μ]
       simp only [abs_zero, ENNReal.ofReal_zero]
       rw [ENNReal.zero_rpow_of_pos hp_pos]
-      exact zero_le _
+      exact zero_le
   calc
     ∫⁻ x, ‖convolution ρ g (ContinuousLinearMap.lsmul ℝ ℝ) volume x‖ₑ ^ p.toReal ∂volume
         ≤ ∫⁻ x, ∫⁻ t,

@@ -143,7 +143,7 @@ theorem normalizedPositiveError_trace_le_two_upperBlockJTraceAverage
               Ch02.doubledResponseJ (Ch02.cubeDomain R) (F.coeffOn R)
                 ((Real.sqrt b)⁻¹ • (Pi.single l 1 : Vec d), (0 : Vec d))
                 (Real.sqrt b • (Pi.single l 1 : Vec d), (0 : Vec d))) := by
-            simpa [Pcell] using
+            simpa [Pcell] using!
               Ch02.descendantsDomainPartition_weightedAverage Q j
                 (fun R : TriadicCube d =>
                   ∑ l : Fin d,
@@ -244,7 +244,7 @@ theorem positiveErrorWithNormalizer_trace_le_two_blockJTraceAverageWithNormalize
             ∑ α : BlockCoord d,
               Ch02.doubledResponseJ (Ch02.cubeDomain R) (F.coeffOn R)
                 (fullBlockMatrixProbe S α) (fullBlockMatrixProbe T α)) := by
-            simpa [Pcell] using
+            simpa [Pcell] using!
               Ch02.descendantsDomainPartition_weightedAverage Q j
                 (fun R : TriadicCube d =>
                   ∑ α : BlockCoord d,

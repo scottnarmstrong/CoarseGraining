@@ -1,2 +1,0 @@
-import Homogenization.HighContrast.EntryScale.LocalTailTransport.P1
-import Homogenization.HighContrast.EntryScale.LocalTailTransport.P2

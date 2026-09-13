@@ -256,7 +256,7 @@ private theorem localMemLp_toRepo {d : ℕ} (Q : TriadicCube d) (φ : Vec d → 
       refine (mem_descendants_toRepo Q (ofRepoCube R) j).1 ?_
       simpa [toRepo_ofRepoCube] using hR
     have := h j (ofRepoCube R) hR'
-    simpa [toRepo_ofRepoCube] using this
+    simpa [toRepo_ofRepoCube] using! this
 
 private theorem isDualTest_toRepo {d : ℕ} (Q : TriadicCube d) (φ : Vec d → ℝ) :
     _root_.Homogenization.CubeBesovDualFullTest (toRepoCube Q) comparisonS
@@ -677,7 +677,7 @@ private theorem conductance_eq_scalarAt {d : ℕ} (lam Lam : ℝ) (ω : Sample d
             _root_.Homogenization.Examples.RandomCheckerboard.openUnitCell_unique
               hxw hz
           subst hwz
-          simp only [Set.mem_setOf_eq] at hw
+          simp only [Set.mem_ofPred_eq] at hw
           rw [hw] at hz'
           exact Bool.noConfusion hz'
         simp [conductance, hnot,

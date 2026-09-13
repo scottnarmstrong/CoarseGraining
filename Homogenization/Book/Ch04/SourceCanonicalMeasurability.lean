@@ -59,10 +59,10 @@ theorem measurable_sourceLocal_canonicalMuHilbertMinimizerCubeSet {d : ℕ}
       (fun a : Source.Coarse.Carrier d =>
         canonicalMuHilbertMinimizerCubeSet Q P0 a.1) := by
   classical
-  letI : MeasurableSpace (Source.Coarse.Carrier d) :=
+  let : MeasurableSpace (Source.Coarse.Carrier d) :=
     Source.Coarse.localSigma (cubeSet Q) (measurableSet_cubeSet Q)
-  letI : MeasurableSpace (HilbertBlockL2 (cubeSet Q)) := borel _
-  haveI : BorelSpace (HilbertBlockL2 (cubeSet Q)) := ⟨rfl⟩
+  let : MeasurableSpace (HilbertBlockL2 (cubeSet Q)) := borel _
+  have : BorelSpace (HilbertBlockL2 (cubeSet Q)) := ⟨rfl⟩
   let slice : ℕ → Set (Source.Coarse.Carrier d) :=
     fun k => {a | AEEQuantitativeEllipticSlice (cubeSet Q) k a.1}
   let firstSlice : ℕ → Set (Source.Coarse.Carrier d) :=
@@ -182,7 +182,8 @@ theorem measurable_sourceLocal_canonicalMuHilbertMinimizerCubeSet {d : ℕ}
         simpa [slice] using hnot
     rw [Set.liftCover_of_mem
       (S := firstSlice) (f := piece) (i := k0) hak0]
-    simp [canonicalMuHilbertMinimizerCubeSet, hcover_a, k0, piece]
+    simp only [piece, canonicalMuHilbertMinimizerCubeSet, hcover_a, k0]
+    rfl
   rw [← hEq]
   exact hLift
 
@@ -194,8 +195,8 @@ theorem aestronglyMeasurable_sourceLocal_canonicalMuHilbertMinimizerCubeSet
       (fun a : Source.Coarse.Carrier d => canonicalMuHilbertMinimizerCubeSet Q P0 a.1) P := by
   classical
   let U : Set (Vec d) := cubeSet Q
-  letI : MeasurableSpace (HilbertBlockL2 U) := borel _
-  haveI : BorelSpace (HilbertBlockL2 U) := ⟨rfl⟩
+  let : MeasurableSpace (HilbertBlockL2 U) := borel _
+  have : BorelSpace (HilbertBlockL2 U) := ⟨rfl⟩
   let f : Source.Coarse.Carrier d → HilbertBlockL2 U :=
     fun a => canonicalMuHilbertMinimizerCubeSet Q P0 a.1
   have hLocalMeas :
@@ -222,7 +223,7 @@ theorem aestronglyMeasurable_sourceLocal_canonicalMuHilbertMinimizerCubeSet
     have hSlices : TopologicalSpace.IsSeparable (⋃ k : ℕ, sliceRange k) := by
       refine .iUnion ?_
       intro k
-      letI : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
+      let : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
         AEEQuantitativeEllipticSlice.localMeasurableSpace U k
       have hslice : StronglyMeasurable
           (fun a : {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} =>
@@ -239,9 +240,9 @@ theorem aestronglyMeasurable_sourceLocal_canonicalMuHilbertMinimizerCubeSet
     let k0 : ℕ := Nat.find ha
     have hslice0 : AEEQuantitativeEllipticSlice (cubeSet Q) k0 a.1 := Nat.find_spec ha
     right
-    exact Set.mem_iUnion.mpr
-      ⟨k0, ⟨⟨a.1, by simpa [U] using hslice0⟩,
-        by simp [f, canonicalMuHilbertMinimizerCubeSet, U, ha, k0]⟩⟩
+    refine Set.mem_iUnion.mpr ⟨k0, ⟨⟨a.1, by simpa [U] using hslice0⟩, ?_⟩⟩
+    simp only [f, canonicalMuHilbertMinimizerCubeSet, U, ha, k0]
+    rfl
   exact (aestronglyMeasurable_iff_nullMeasurable_separable).2
     ⟨hNull, ⟨sepSet, hSep, hMemSep⟩⟩
 
@@ -254,7 +255,7 @@ theorem isSourceLocalRandomVariable_canonicalMuHilbertEnergyBilinFixedCubeSet
       (fun a : Source.Coarse.Carrier d =>
         canonicalMuHilbertEnergyBilinFixedCubeSet Q P0 Y hY a.1) := by
   classical
-  letI : MeasurableSpace (Source.Coarse.Carrier d) :=
+  let : MeasurableSpace (Source.Coarse.Carrier d) :=
     Source.Coarse.localSigma (cubeSet Q) (measurableSet_cubeSet Q)
   let slice : ℕ → Set (Source.Coarse.Carrier d) :=
     fun k => {a | AEEQuantitativeEllipticSlice (cubeSet Q) k a.1}

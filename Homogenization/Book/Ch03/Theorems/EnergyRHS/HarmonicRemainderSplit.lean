@@ -85,7 +85,7 @@ theorem dirichletHarmonicRemainder_zeroTrace_boundaryDifference_of_split
     have hsum :
         IsPotentialZeroTraceOn (cubeSet Q) (zgrad + (-1 : ℝ) • rhograd) :=
       isPotentialZeroTraceOn_add hzpot (isPotentialZeroTraceOn_smul hrhopot (-1))
-    simpa [Pi.add_apply, Pi.smul_apply, sub_eq_add_neg] using hsum
+    simpa [Pi.add_apply, Pi.smul_apply, sub_eq_add_neg] using! hsum
   have hz_ae :
       zgrad =ᵐ[MeasureTheory.volume.restrict (cubeSet Q)]
         fun x => v.toH1.grad x - hgradBoundary x := by

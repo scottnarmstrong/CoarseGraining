@@ -80,8 +80,7 @@ theorem parentResponseSolutionOnDependentFamilyRestrictedToCube_grad
         ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn Q)
         p q := by
   funext x
-  simp [parentResponseSolutionOnDependentFamilyRestrictedToCube,
-    canonicalMaximizerGradientOnCube]
+  rfl
 
 /--
 One-child diff-energy identity with the restricted parent solution supplied by

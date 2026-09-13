@@ -281,7 +281,7 @@ theorem isCoarseBlockMatrix_of_mu_eq_half_quadraticForm {d : ℕ} {U : Set (Vec 
     {a : CoeffField d} {Q : QuadraticForm ℝ (FullBlockVec d)}
     (hmu : ∀ P : BlockVec d, Mu U P a = (1 / 2 : ℝ) * Q (toFullBlockVec P)) :
     IsCoarseBlockMatrix U a (ofFullBlockMat Q.toMatrix') := by
-  refine ⟨isSymmetricBlockMat_of_isSymm (QuadraticMap.isSymm_toMatrix' Q), ?_⟩
+  refine ⟨isSymmetricBlockMat_of_isSymm (QuadraticForm.isSymm_toMatrix' Q), ?_⟩
   intro P
   rw [hmu P]
   congr 1
@@ -291,7 +291,7 @@ theorem isCoarseBlockMatrix_of_mu_eq_half_quadraticForm {d : ℕ} {U : Set (Vec 
           symm
           exact QuadraticMap.associated_eq_self_apply (S := ℝ) (Q := Q) (toFullBlockVec P)
     _ = Matrix.toLinearMap₂' ℝ Q.toMatrix' (toFullBlockVec P) (toFullBlockVec P) := by
-          rw [QuadraticMap.toMatrix', Matrix.toLinearMap₂'_toMatrix']
+          rw [QuadraticForm.toMatrix', Matrix.toLinearMap₂'_toMatrix']
     _ = blockVecDot P (blockMatVecMul (ofFullBlockMat Q.toMatrix') P) := by
           symm
           simpa using

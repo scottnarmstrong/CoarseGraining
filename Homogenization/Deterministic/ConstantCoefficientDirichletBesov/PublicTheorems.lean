@@ -155,7 +155,7 @@ theorem isEllipticFieldOn_identityCoeffField {d : ℕ} {U : Set (Vec d)}
           (fun _ : Vec d => scalarMatrix (d := d) (1 : ℝ) i j)
           (fun _ : Vec d => (0 : ℝ))) :=
       measurable_const.piecewise hU measurable_const
-    simpa [identityCoeffField, Set.piecewise] using hpiece
+    simpa [identityCoeffField, Set.piecewise] using! hpiece
   · intro x _hx
     simpa [identityCoeffField] using
       (isEllipticMatrix_scalarMatrix (d := d) (by norm_num : (0 : ℝ) < 1))
@@ -176,7 +176,7 @@ theorem cubeVectorH1DivergencePoissonRealization
   intro Q G
   let U : Set (Vec d) := openCubeSet Q
   let a : CoeffField d := identityCoeffField d
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [U, volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   have hRealize :
@@ -187,7 +187,7 @@ theorem cubeVectorH1DivergencePoissonRealization
     simpa [a] using isEllipticFieldOn_identityCoeffField
       (d := d) (U := U) (by simpa [U] using measurableSet_openCubeSet Q)
   have hGneg : MemVectorL2 U (fun x => -G.toField x) := by
-    simpa [U, Pi.neg_apply] using G.memVectorL2_toField_openCubeSet.neg
+    simpa [U, Pi.neg_apply] using! G.memVectorL2_toField_openCubeSet.neg
   rcases
       exists_isZeroTraceDirichletRhsWeakSolution_of_potentialZeroTraceClosureRealization
         (a := a) (U := U) (g := fun x => -G.toField x)

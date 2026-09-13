@@ -131,7 +131,7 @@ theorem integral_sourceResponseJDescendantAverage_eq_origin_of_sourceStationaryL
       Integrable (fun a : Source.Coarse.Carrier d => ResponseJ (cubeSet R) p q a.1) P := by
     intro R hR
     rw [← sourceTranslatedObservable_responseJ_eq hn hnm p q (by simpa [D] using hR)]
-    simpa [X] using
+    simpa [X] using!
       (integrable_comp_sourceCarrier_translate_of_sourceStationaryLaw
         (P := P) hPstat (scaleTranslationShift n R) X hJ_int)
   have hJ_expect_child : ∀ R ∈ D,
@@ -142,7 +142,7 @@ theorem integral_sourceResponseJDescendantAverage_eq_origin_of_sourceStationaryL
       (P := P) hPstat (scaleTranslationShift n R) X hX_meas
   change ∫ a, ((D.card : ℝ)⁻¹ * ∑ R ∈ D, ResponseJ (cubeSet R) p q a.1) ∂P =
     ∫ a, X a ∂P
-  rw [integral_const_mul, integral_finset_sum D hJ_int_child]
+  rw [integral_const_mul, integral_finsetSum D hJ_int_child]
   calc
     ((D.card : ℝ)⁻¹ * ∑ R ∈ D, ∫ a, ResponseJ (cubeSet R) p q a.1 ∂P) =
         ((D.card : ℝ)⁻¹ * ∑ R ∈ D, ∫ a, X a ∂P) := by

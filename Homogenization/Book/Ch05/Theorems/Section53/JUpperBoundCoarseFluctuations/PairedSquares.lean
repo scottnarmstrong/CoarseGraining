@@ -399,16 +399,16 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
       (section53CoarseFluctuationZeta hP4).HolderConjugate (hP4.xi : ℝ) := by
     simpa using
       (holderConjugate_xi_section53CoarseFluctuationZeta hP4).symm
-  letI : ENNReal.HolderTriple
+  let : ENNReal.HolderTriple
       (ENNReal.ofReal (section53CoarseFluctuationZeta hP4))
       (ENNReal.ofReal (hP4.xi : ℝ)) 1 := by
     simpa using Real.HolderTriple.ennrealOfReal hHolderReal
   have hLowerChildInt :
       Integrable (fun a : RegCoeffField d => lowerExcess a * childAvg a) P := by
-    simpa [mul_comm] using hChildMem.integrable_mul hLowerMem
+    simpa [mul_comm] using! hChildMem.integrable_mul hLowerMem
   have hUpperChildInt :
       Integrable (fun a : RegCoeffField d => upperExcess a * childAvg a) P := by
-    simpa [mul_comm] using hChildMem.integrable_mul hUpperMem
+    simpa [mul_comm] using! hChildMem.integrable_mul hUpperMem
   have hPosInt :
       Integrable
         (fun a : RegCoeffField d =>
@@ -434,7 +434,7 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
           (fun a : RegCoeffField d =>
             WeakNormsMaximizer.responseDefectAverageAtScale
               (m : ℤ) n p_e q_e a) P := by
-      simpa [WeakNormsMaximizer.responseDefectAverageAtScale, Q] using
+      simpa [WeakNormsMaximizer.responseDefectAverageAtScale, Q] using!
         (hP.aemeasurable_descendantsAverage_restrictionResponseJObservableCubeSet
           Q (Int.toNat ((m : ℤ) - n)) p_e q_e).sub
           (hP.aemeasurable_restrictionResponseJObservableCubeSet Q p_e q_e)
@@ -460,7 +460,7 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
           (fun a : RegCoeffField d =>
             WeakNormsMaximizer.responseDefectAverageAtScale
               (m : ℤ) n p_e q_e a) P := by
-      simpa [WeakNormsMaximizer.responseDefectAverageAtScale, Q] using
+      simpa [WeakNormsMaximizer.responseDefectAverageAtScale, Q] using!
         (hP.aemeasurable_descendantsAverage_restrictionResponseJObservableCubeSet
           Q (Int.toNat ((m : ℤ) - n)) p_e q_e).sub
           (hP.aemeasurable_restrictionResponseJObservableCubeSet Q p_e q_e)
@@ -486,13 +486,13 @@ theorem integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_un
           (fun a : RegCoeffField d =>
             WeakNormsMaximizer.responseDefectAverageAtScale
               (m : ℤ) n p_e q_e a) P := by
-      simpa [WeakNormsMaximizer.responseDefectAverageAtScale, Q] using
+      simpa [WeakNormsMaximizer.responseDefectAverageAtScale, Q] using!
         (hP.aemeasurable_descendantsAverage_restrictionResponseJObservableCubeSet
           Q (Int.toNat ((m : ℤ) - n)) p_e q_e).sub
           (hP.aemeasurable_restrictionResponseJObservableCubeSet Q p_e q_e)
     exact aemeasurable_const.mul hDefAE.sqrt
   have hXAE : AEMeasurable X P := by
-    simpa [X, pow_two] using
+    simpa [X, pow_two] using!
       (aemeasurable_const.mul (hGradMismatchAE.mul hGradMismatchAE)).add
         (aemeasurable_const.mul (hFluxMismatchAE.mul hFluxMismatchAE))
   have hXNonneg : ∀ᵐ a ∂P, 0 ≤ X a := by

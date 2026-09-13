@@ -602,7 +602,7 @@ theorem upperLargeScaleFiniteParentFluctuation
         ((parents.card : ℝ) ^ (1 / (hP4.xi : ℝ)) * B) := by
   classical
   intro parents hparents K B
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hn_nonneg : (0 : ℤ) ≤ 0 := le_rfl
   have hparent_scale : ∀ Q ∈ parents, (0 : ℤ) ≤ Q.scale := by
     intro Q hQ
@@ -683,7 +683,7 @@ theorem lowerLargeScaleFiniteParentFluctuation
         ((parents.card : ℝ) ^ (1 / (hP4.xi : ℝ)) * B) := by
   classical
   intro parents hparents K B
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hn_nonneg : (0 : ℤ) ≤ 0 := le_rfl
   have hparent_scale : ∀ Q ∈ parents, (0 : ℤ) ≤ Q.scale := by
     intro Q hQ

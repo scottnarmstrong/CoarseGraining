@@ -12,7 +12,8 @@ domain geometry and boundary conditions.
 
 namespace Homogenization
 
-open Function Filter MeasureTheory Topology
+open Function MeasureTheory Topology
+open _root_.Filter
 open scoped Convolution ENNReal Pointwise
 
 noncomputable section
@@ -46,7 +47,7 @@ private theorem memLp_inwardMollification
     ⟨hmollified_cont.aestronglyMeasurable,
       hmollified_norm.trans_lt hg.eLpNorm_lt_top⟩
   have hcomp := MemLp.comp_globalAffineExpansion hmollified_mem x0 hε.le
-  simpa only [inwardMollification, mollified, globalAffineExpansion] using hcomp
+  simpa only [inwardMollification, mollified, globalAffineExpansion] using! hcomp
 
 /-- Inward mollification converges strongly to its input in every finite
 `L^p`, `1 ≤ p < ∞`, on the whole Euclidean space. -/
@@ -67,7 +68,7 @@ theorem tendsto_eLpNorm_inwardMollification_sub_zero
       ContinuousLinearMap.lsmul ℝ ℝ, volume] g
   have hmollifier : Filter.Tendsto
       (fun n => eLpNorm (mollified n - g) p volume) Filter.atTop (nhds 0) := by
-    simpa only [mollified, Pi.sub_apply] using
+    simpa only [mollified, Pi.sub_apply] using!
       tendsto_eLpNorm_sub_zero_convolution_scaledConvexApproxKernel
         hρ hp1 hp hg hr hε hε_pos
   have haffine : Filter.Tendsto
@@ -145,7 +146,7 @@ theorem tendsto_eLpNorm_inwardMollification_sub_zero
             eLpNorm (g ∘ globalAffineExpansion x0 (ε n) - g) p volume :=
         add_le_add hcomp_le (le_refl _)
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le'
-    tendsto_const_nhds hsum (Filter.Eventually.of_forall fun _ => zero_le _) hupper
+    tendsto_const_nhds hsum (Filter.Eventually.of_forall fun _ => zero_le) hupper
 
 /-- The scalar factor produced by differentiating the affine pullback does not
 alter strong finite-`L^p` convergence of inward mollification. -/
@@ -169,13 +170,13 @@ theorem tendsto_eLpNorm_one_add_mul_inwardMollification_sub_zero
     simpa [c] using (tendsto_const_nhds : Filter.Tendsto
       (fun _ : ℕ => (1 : ℝ)) Filter.atTop (nhds 1)).add hε
   have hcnorm : Filter.Tendsto (fun n => ‖c n‖ₑ) Filter.atTop (nhds 1) := by
-    simpa using (continuous_enorm.tendsto (1 : ℝ)).comp hc
+    simpa using! (continuous_enorm.tendsto (1 : ℝ)).comp hc
   have hdiffnorm : Filter.Tendsto (fun n => ‖c n - 1‖ₑ)
       Filter.atTop (nhds 0) := by
     have hreal : Filter.Tendsto (fun n => c n - 1) Filter.atTop (nhds 0) := by
       simpa using hc.sub (tendsto_const_nhds : Filter.Tendsto
         (fun _ : ℕ => (1 : ℝ)) Filter.atTop (nhds 1))
-    simpa using (continuous_enorm.tendsto (0 : ℝ)).comp hreal
+    simpa using! (continuous_enorm.tendsto (0 : ℝ)).comp hreal
   have hfirst : Filter.Tendsto
       (fun n => eLpNorm
         (c n • (inwardMollification ρ g x0 r (ε n) - g)) p volume)
@@ -219,7 +220,7 @@ theorem tendsto_eLpNorm_one_add_mul_inwardMollification_sub_zero
     rw [hdecomp]
     exact eLpNorm_add_le hfirst_meas hsecond_meas hp1
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le'
-    tendsto_const_nhds hsum (Filter.Eventually.of_forall fun _ => zero_le _) hupper
+    tendsto_const_nhds hsum (Filter.Eventually.of_forall fun _ => zero_le) hupper
 
 end
 

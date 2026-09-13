@@ -256,7 +256,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_soft_max
   dsimp only
   intro hnm hqm ht hαt
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let x : ℝ :=
     αbad * ((m - q : ℕ) : ℝ) - t * ((m - n : ℕ) : ℝ)
@@ -489,7 +489,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_interpol
   dsimp only
   intro ht htb hαt hDen hDen_high hDen_crude
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -540,7 +540,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_interpol
             Real.exp
               (1 - max ((max 1 highA) ^ τ) ((max 1 crudeA) ^ σ)) := by
       simpa [K, N0, Hshift, D, S, b, L, τ, pref, highA, crudeA,
-        Dhigh, Dcrude] using
+        Dhigh, Dcrude] using!
         hx hnm hqm ht hαt
     have hη_pos : 0 < η := by
       simpa [η] using
@@ -777,7 +777,7 @@ theorem measureReal_shiftedHighBottomBadScaleEvent_quenchedProbeEnvelope_le_inte
   dsimp only
   intro ht htb hαt hDen hDen_high hDen_crude hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P

@@ -342,7 +342,7 @@ private theorem isBlockMuAdmissible_openCubeSet_of_isDoubledMuAdmissible
   · simpa [Ch02.cubeDomain_coe] using
       isPotentialZeroTraceOn_of_potentialZeroTraceFieldOn hX.1
   · simpa [Ch02.cubeDomain_coe] using hX.2.1
-  · simpa [Ch02.cubeDomain_coe] using hX.2.2
+  · simpa [Ch02.cubeDomain_coe] using! hX.2.2
 
 /-- A pointwise Ch2 doubled-`Mu` minimizer on the open cube represents the
 canonical Ch4 Hilbert minimizer selected on the corresponding half-open cube.

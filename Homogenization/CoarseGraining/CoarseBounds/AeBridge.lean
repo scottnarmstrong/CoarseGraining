@@ -118,14 +118,14 @@ theorem isClosed_isEllipticEntry :
     IsClosed {v : Fin d → Fin d → ℝ | IsEllipticEntry Θ v} := by
   have h1 : IsClosed
       {v : Fin d → Fin d → ℝ | ∀ ξ : Vec d, vecNormSq ξ ≤ vecDot ξ (matVecMul v ξ)} := by
-    rw [Set.setOf_forall]
+    rw [Set.ofPred_forall]
     refine isClosed_iInter (fun ξ => ?_)
     simp only [vecNormSq, vecDot, matVecMul]
     exact isClosed_le continuous_const (by fun_prop)
   have h2 : IsClosed
       {v : Fin d → Fin d → ℝ |
         ∀ η : Vec d, vecNormSq (matVecMul v η) ≤ Θ * vecDot η (matVecMul v η)} := by
-    rw [Set.setOf_forall]
+    rw [Set.ofPred_forall]
     refine isClosed_iInter (fun η => ?_)
     simp only [vecNormSq, vecDot, matVecMul]
     exact isClosed_le (by fun_prop) (by fun_prop)
@@ -150,7 +150,7 @@ theorem measurableSet_isEllipticMatrix_inter {U : Set (Vec d)}
         U ∩ {x | IsEllipticMatrix 1 Θ (a x)} =
           U ∩ (ê ⁻¹' {v : Fin d → Fin d → ℝ | IsEllipticEntry Θ v}) := by
       ext x
-      simp only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_preimage]
+      simp only [Set.mem_inter_iff, Set.mem_ofPred_eq, Set.mem_preimage]
       constructor
       · rintro ⟨hxU, hell⟩
         refine ⟨hxU, ?_⟩
@@ -167,7 +167,7 @@ theorem measurableSet_isEllipticMatrix_inter {U : Set (Vec d)}
   · -- when `Θ < 1` the locus is empty
     have hempty : U ∩ {x | IsEllipticMatrix 1 Θ (a x)} = ∅ := by
       ext x
-      simp only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false,
+      simp only [Set.mem_inter_iff, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false,
         not_and]
       intro _ hell
       exact hΘ hell.2.1

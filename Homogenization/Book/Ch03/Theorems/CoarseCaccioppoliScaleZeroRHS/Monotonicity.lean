@@ -135,7 +135,7 @@ theorem interiorCaccioppoliRHS_mul_const_le_of_mul_constant_le
     (hs : 0 < s) (ht : 0 < t) (hst : s + t < 1) :
     M * interiorCaccioppoliRHS C₁ Q a s t u ≤
       interiorCaccioppoliRHS C₂ Q a s t u := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   have hu :

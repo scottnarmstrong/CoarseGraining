@@ -23,7 +23,7 @@ theorem exists_meanZeroL2PoincareConstant {d : ℕ}
     {U : Set (Vec d)} (hU : IsOpenBoundedConvexDomain U) :
     ∃ C : ℝ, 0 ≤ C ∧
       ∀ u : H1MeanZeroFunction U, u.valueL2Norm ≤ C * u.gradientL2Norm := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
     hU.isFiniteMeasure_restrict_volume
   exact Homogenization.exists_poincare_constant_of_isOpenBoundedConvexDomain hU
 

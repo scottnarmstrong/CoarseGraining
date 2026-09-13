@@ -94,7 +94,7 @@ theorem integrable_restrictionScaleNormalizedLaw_iff {d : ℕ} {E : Type*}
     (hX : AEStronglyMeasurable X (restrictionScaleNormalizedLaw k P)) :
     Integrable X (restrictionScaleNormalizedLaw k P) ↔
       Integrable (fun a => X (dilateReg (-(k : ℤ)) a)) P := by
-  simpa [restrictionScaleNormalizedLaw, Function.comp] using
+  simpa [restrictionScaleNormalizedLaw, Function.comp] using!
     (integrable_map_measure
       (μ := P) (f := dilateReg (d := d) (-(k : ℤ))) (g := X)
       hX (measurable_dilateReg (d := d) (-(k : ℤ))).aemeasurable)
@@ -295,7 +295,8 @@ private theorem nullMeasurableSet_map_of_preimage_measurableEquiv
     NullMeasurableSet s (Measure.map e μ) := by
   rcases hs with ⟨t, ht, hst⟩
   refine ⟨e '' t, e.measurableEmbedding.measurableSet_image' ht, ?_⟩
-  rw [Filter.EventuallyEq, e.measurableEmbedding.ae_map_iff]
+  unfold Filter.EventuallyEq
+  rw [e.measurableEmbedding.ae_map_iff]
   filter_upwards [hst] with a ha
   apply propext
   constructor
@@ -417,7 +418,7 @@ theorem scaleNormalized {d : ℕ} {P : RestrictionCoeffLaw d}
       (ProbabilityTheory.indep_of_indep_of_le_left hIndepDilated hU_le) hV_le
   have hmap := indep_map_measurableEquiv (μ := P) e
     (m1 := RestrictionSigmaR U hU) (m2 := RestrictionSigmaR V hV) hComap
-  simpa [restrictionScaleNormalizedLaw_eq_map_rescaleReg, e] using hmap
+  simpa [restrictionScaleNormalizedLaw_eq_map_rescaleReg, e] using! hmap
 
 end RestrictionUnitRangeDependentLaw
 
@@ -494,8 +495,8 @@ namespace RestrictionLawCarrier
 theorem scaleNormalized {d : ℕ} {P : RestrictionCoeffLaw d}
     (hP : RestrictionLawCarrier P) (k : ℕ) :
     RestrictionLawCarrier (restrictionScaleNormalizedLaw k P) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
-  letI : IsProbabilityMeasure (restrictionScaleNormalizedLaw k P) :=
+  let : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure (restrictionScaleNormalizedLaw k P) :=
     isProbabilityMeasure_restrictionScaleNormalizedLaw k P
   exact lawCarrier_of_aeLocallyUniformlyElliptic
     (hP.ae_locally_uniformly_elliptic.scaleNormalized k)
@@ -781,7 +782,7 @@ theorem annealedBlockMatrixAtScale_restrictionScaleNormalizedLaw
     annealedBlockMatrixAtScale (restrictionScaleNormalizedLaw k P) (m : ℤ) =
       annealedBlockMatrixAtScale P ((k + m : ℕ) : ℤ) := by
   unfold annealedBlockMatrixAtScale annealedBlockMatrix
-  rw [BlockMat.mk.injEq]
+  refine Eq.mpr (BlockMat.mk.injEq _ _ _ _ _ _ _ _) ?_
   constructor
   · ext i j
     rw [integral_restrictionScaleNormalizedLaw]

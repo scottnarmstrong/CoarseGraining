@@ -183,7 +183,7 @@ theorem widetildeThetaAtScale_zero_scaleNormalized_twoBetaShiftedP4
         have hβpos := section53CoarseFluctuationBeta_pos hP4
         nlinarith [hP4.sLower_pos])
       k 0
-  simpa [widetildeThetaAtScale_twoBetaShiftedP4, hβ] using hshift
+  simpa [widetildeThetaAtScale_twoBetaShiftedP4, hβ] using! hshift
 
 end
 

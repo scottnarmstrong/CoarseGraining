@@ -18,6 +18,15 @@ open Filter
 
 namespace Homogenization.HighContrast.EntryScale
 
+/-- File-level typeclass cache: `Matrix` is a plain `def`, so blind instance
+search for `PseudoMetrizableSpace (FullBlockMat d)` does not unfold it under
+mathlib 4.33; the a.e.-measurability lemmas below need this instance directly. -/
+private instance instPseudoMetrizableSpaceFullBlockMat (d : ℕ) :
+    TopologicalSpace.PseudoMetrizableSpace (Homogenization.FullBlockMat d) :=
+  inferInstanceAs
+    (TopologicalSpace.PseudoMetrizableSpace
+      (Homogenization.BlockCoord d → Homogenization.BlockCoord d → ℝ))
+
 /--
 Source label `M_m^st`: for a positive exponent, raising a finite ENNReal
 maximum to that exponent commutes with the finite maximum.
@@ -41,7 +50,7 @@ theorem finset_sup_le_sum_ennreal {ι : Type*} (s : Finset ι) (x : ι → ENNRe
     s.sup x ≤ ∑ i ∈ s, x i := by
   refine Finset.sup_le ?_
   intro i hi
-  exact Finset.single_le_sum (fun j _hj => zero_le (x j)) hi
+  exact Finset.single_le_sum (fun j _hj => zero_le) hi
 
 /--
 Source label `l.union.bound`: a.e. measurability of the finite maximum
@@ -63,7 +72,7 @@ theorem aemeasurable_finset_sup_ennreal
         intro i hi
         exact hX i (Finset.mem_insert_of_mem hi)
       have hsup : AEMeasurable (fun ω => s.sup (fun i => X i ω)) μ := ih hs
-      simpa [Finset.sup_insert] using ha.sup hsup
+      simpa [Finset.sup_insert] using! ha.sup hsup
 
 /--
 Source label `l.union.bound`: finite-max lintegral bound, the measure-theoretic
@@ -82,7 +91,7 @@ theorem lintegral_finset_sup_le_sum_of_lintegral_le
       MeasureTheory.lintegral_mono fun ω =>
         finset_sup_le_sum_ennreal s fun i => X i ω
     _ = ∑ i ∈ s, ∫⁻ ω, X i ω ∂ μ :=
-      MeasureTheory.lintegral_finset_sum' s hX
+      MeasureTheory.lintegral_finsetSum' s hX
     _ ≤ ∑ i ∈ s, B i :=
       Finset.sum_le_sum hB
 
@@ -843,7 +852,7 @@ theorem aemeasurable_terminalCoarseBlockDeviation_origin_descendant
   have hcomp :=
     (measurable_terminalDeviationFunctional hP hStruct j m).comp_aemeasurable hbase
   simpa [terminalCoarseBlockDeviation, terminalCenteredFullBlockDeviation,
-    coarseFullBlockMatrixAtCubeProcess] using hcomp
+    coarseFullBlockMatrixAtCubeProcess, Function.comp_def] using! hcomp
 
 /--
 Source labels `M_m^st` and `l.S.and.J`: the source-weighted terminal ENNReal
@@ -892,8 +901,8 @@ theorem aestronglyMeasurable_terminalCoarseBlockStochasticMax_origin
   have henv :=
     aemeasurable_terminalCoarseBlockStochasticEnvelope_origin hP hStruct hP4 hc N m
   have hreal := henv.ennreal_toReal
-  simpa [terminalCoarseBlockStochasticMax, terminalCoarseBlockStochasticMaxOfWeak] using
-    hreal.aestronglyMeasurable
+  unfold terminalCoarseBlockStochasticMax terminalCoarseBlockStochasticMaxOfWeak
+  exact hreal.aestronglyMeasurable
 
 theorem finset_sup_ne_top_of_forall_ne_top {ι : Type*} (s : Finset ι)
     (f : ι → ENNReal) (h : ∀ i ∈ s, f i ≠ ⊤) :

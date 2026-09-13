@@ -35,7 +35,7 @@ theorem exists_h1_max_sub_const {d : ℕ} {U : Set (Vec d)}
       v.toFun = (fun x => max (u.toFun x - c) 0) ∧
       (∀ᵐ x ∂(volumeMeasureOn U),
         v.grad x = {y | c < u.toFun y}.indicator u.grad x) := by
-  haveI : IsFiniteMeasure (volumeMeasureOn U) :=
+  have : IsFiniteMeasure (volumeMeasureOn U) :=
     hU.isBoundedDomain.isFiniteMeasure_restrict_volume
   set δ : ℕ → ℝ := fun n => 1 / (n + 1) with hδ_def
   have hδpos : ∀ n, 0 < δ n := fun n => by positivity

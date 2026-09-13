@@ -25,7 +25,7 @@ private theorem integrable_sum_abs_pow
       have hi_int : Integrable (fun ω => |X i ω| ^ p) μ := hLp_int i (by simp)
       have hs_int : Integrable (fun ω => ∑ j ∈ s, |X j ω| ^ p) μ := by
         exact hs (fun j hj => hLp_int j (by simp [hj]))
-      simpa [Finset.sum_insert, hi] using hi_int.add hs_int
+      simpa [Finset.sum_insert, hi] using! hi_int.add hs_int
 
 omit [MeasurableSpace Ω] in
 private theorem sup'_abs_pow_le_sum_abs_pow
@@ -91,7 +91,7 @@ private theorem integral_sup'_abs_pow_le_sum_integral_abs_pow
             intro ω
             exact sup'_abs_pow_le_sum_abs_pow (X := X) (s := s) hs (p := p) ω
     _ = ∑ i ∈ s, ∫ ω, |X i ω| ^ p ∂μ := by
-          simpa using integral_finset_sum (μ := μ) s hLp_int
+          simpa using integral_finsetSum (μ := μ) s hLp_int
 
 private theorem abs_le_one_add_abs_pow {x : ℝ} {p : ℕ} (hp : 1 ≤ p) :
     |x| ≤ 1 + |x| ^ p := by
@@ -431,7 +431,7 @@ private theorem integrable_sum_abs_rpow
       have hi_int : Integrable (fun ω => |X i ω| ^ p) μ := hLp_int i (by simp)
       have hs_int : Integrable (fun ω => ∑ j ∈ s, |X j ω| ^ p) μ := by
         exact hs (fun j hj => hLp_int j (by simp [hj]))
-      simpa [Finset.sum_insert, hi] using hi_int.add hs_int
+      simpa [Finset.sum_insert, hi] using! hi_int.add hs_int
 
 omit [MeasurableSpace Ω] in
 private theorem sup'_abs_rpow_le_sum_abs_rpow
@@ -494,7 +494,7 @@ private theorem integral_sup'_abs_rpow_le_sum_integral_abs_rpow
             intro ω
             exact sup'_abs_rpow_le_sum_abs_rpow (X := X) (s := s) hs ω
     _ = ∑ i ∈ s, ∫ ω, |X i ω| ^ p ∂μ := by
-          simpa using integral_finset_sum (μ := μ) s hLp_int
+          simpa using integral_finsetSum (μ := μ) s hLp_int
 
 private theorem memLp_of_integrable_abs_rpow
     {X : Ω → ℝ} {p : ℝ} (hp : 0 < p)

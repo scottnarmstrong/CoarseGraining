@@ -45,7 +45,7 @@ theorem cubeProjection_abs_le_of_abs_le_on_cubeSet {d : ℕ} (Q : TriadicCube d)
   rcases exists_mem_descendantsAtDepth_of_mem_cubeSet (Q := Q) (n := j) hx with ⟨R, hR, hxR⟩
   rw [cubeProjection_eq_cubeAverage_of_mem_descendantsAtDepth (Q := Q) (R := R) (j := j) g hR hxR]
   let μR : MeasureTheory.Measure (Vec d) := MeasureTheory.volume.restrict (cubeSet R)
-  letI : MeasureTheory.IsFiniteMeasure μR := by
+  let : MeasureTheory.IsFiniteMeasure μR := by
     refine ⟨by
       simpa [μR] using lt_top_iff_ne_top.mpr (by
         intro htop
@@ -94,7 +94,7 @@ theorem cubeBesovPairing_projection_comm {d : ℕ} (Q : TriadicCube d) (j : ℕ)
     have hconst :
         MeasureTheory.IntegrableOn (fun x => cubeAverage R u * g x) (cubeSet R)
           MeasureTheory.volume := by
-      simpa [mul_comm] using hgIntR.const_mul (cubeAverage R u)
+      simpa [mul_comm] using! hgIntR.const_mul (cubeAverage R u)
     refine hconst.congr_fun ?_ (measurableSet_cubeSet R)
     intro x hx
     simp [hleft, cubeProjection_eq_cubeAverage_of_mem_descendantsAtDepth
@@ -286,7 +286,7 @@ theorem cubeBesovCircDepthAverage_le_cubeLpNorm_rpow {d : ℕ}
     cubeBesovCircDepthAverage Q p u j ≤ (cubeLpNorm Q p u) ^ p.toReal := by
   classical
   let q : ℝ≥0∞ := cubeBesovConjExponent p
-  letI : ENNReal.HolderConjugate p q := by
+  let : ENNReal.HolderConjugate p q := by
     simpa [q, cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hp
   have hp0 : p ≠ 0 := by
     exact ne_of_gt (lt_of_lt_of_le zero_lt_one hp)
@@ -311,7 +311,7 @@ theorem cubeBesovCircDepthAverage_le_cubeLpNorm_rpow {d : ℕ}
               MeasureTheory.memLp_const (1 : ℝ)
             have havg :
                 ‖cubeAverage R u‖ ≤ cubeLpNorm R p u * cubeLpNorm R q (fun _ => (1 : ℝ)) := by
-              simpa [q] using
+              simpa [q] using!
                 abs_cubeAverage_mul_le_mul_cubeLpNorm_conjExponent
                   (Q := R) (p := p) (f := u) (g := fun _ => (1 : ℝ)) huR hconst hp
             have hnorm_one : cubeLpNorm R q (fun _ => (1 : ℝ)) = 1 := by
@@ -339,7 +339,7 @@ theorem cubeProjection_memLp {d : ℕ} (Q : TriadicCube d) (j : ℕ) (p : ℝ≥
     MeasureTheory.MemLp (cubeProjection Q j u) p (normalizedCubeMeasure Q) := by
   classical
   unfold cubeProjection
-  refine MeasureTheory.memLp_finset_sum
+  refine MeasureTheory.memLp_finsetSum
     (s := descendantsAtDepth Q j)
     (f := fun R : TriadicCube d => fun x : Vec d =>
       if x ∈ cubeSet R then cubeAverage R u else 0) ?_
@@ -349,7 +349,7 @@ theorem cubeProjection_memLp {d : ℕ} (Q : TriadicCube d) (j : ℕ) (p : ℝ≥
       MeasureTheory.measure_mono (Set.subset_univ (cubeSet R))
     have hUniv_lt : normalizedCubeMeasure Q Set.univ < ∞ := by simp
     exact ne_of_lt (lt_of_le_of_lt hR_le hUniv_lt)
-  simpa [Set.indicator] using
+  simpa [Set.indicator] using!
     (MeasureTheory.memLp_indicator_const (μ := normalizedCubeMeasure Q)
       (p := p) (s := cubeSet R) (hs := measurableSet_cubeSet R)
       (c := cubeAverage R u) (Or.inr hR_ne_top))
@@ -434,7 +434,7 @@ theorem tendsto_cubeBesovPairing_projection_left_of_memLp {d : ℕ}
     Filter.Tendsto (fun n => cubeBesovPairing Q (cubeProjection Q (n + 1) u) g)
       Filter.atTop (𝓝 (cubeBesovPairing Q u g)) := by
   let q : ℝ≥0∞ := cubeBesovConjExponent p
-  letI : ENNReal.HolderConjugate p q := by
+  let : ENNReal.HolderConjugate p q := by
     simpa [q, cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hp
   have hq : 1 ≤ q := by
     simpa [q] using (ENNReal.HolderConjugate.one_le (p := q) (q := p))
@@ -557,13 +557,13 @@ theorem tendsto_cubeBesovPairing_projection_left_of_memLp {d : ℕ}
     simpa [B, C, D, sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using
       (abs_add_le (B - C) (C - D))
   have hmid : |B - C| < ε / 2 := by
-    simpa [B, C] using hN n hn
+    simpa [B, C] using! hN n hn
   have huErr' : |C - D| ≤ ε / 4 := by
     simpa [C, D, abs_sub_comm] using huErr
   have hprojErr' : |A - B| ≤ ε / 4 := by
     simpa [A, B] using hprojErr
   have : |A - D| < ε := by
     nlinarith [hAD, hBD, hmid, hprojErr', huErr']
-  simpa [A, D] using this
+  simpa [A, D] using! this
 
 end Homogenization

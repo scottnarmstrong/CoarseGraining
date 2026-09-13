@@ -167,12 +167,12 @@ private theorem measurePreserving_signFlipVecContinuousLinearEquiv {d : ℕ} (i 
     MeasureTheory.MeasurePreserving (signFlipVecContinuousLinearEquiv i) MeasureTheory.volume
       MeasureTheory.volume := by
   classical
-  simpa [signFlipVecContinuousLinearEquiv_apply] using
+  simpa [signFlipVecContinuousLinearEquiv_apply] using!
     (MeasureTheory.volume_preserving_pi fun j : Fin d =>
       by
         by_cases h : j = i
         · subst h
-          simpa using
+          simpa using!
             (MeasureTheory.Measure.measurePreserving_neg
               (MeasureTheory.volume : MeasureTheory.Measure ℝ))
         · simpa [h] using
@@ -182,7 +182,7 @@ private theorem measurePreserving_signFlipVecContinuousLinearEquiv {d : ℕ} (i 
 private theorem measurePreserving_swapVecContinuousLinearEquiv {d : ℕ} (i j : Fin d) :
     MeasureTheory.MeasurePreserving (swapVecContinuousLinearEquiv i j) MeasureTheory.volume
       MeasureTheory.volume := by
-  simpa [swapVecContinuousLinearEquiv] using
+  simpa [swapVecContinuousLinearEquiv] using!
     (MeasureTheory.volume_measurePreserving_piCongrLeft
       (fun _ : Fin d => ℝ) (Equiv.swap i j))
 
@@ -292,7 +292,7 @@ theorem blockEnergyDensity_rotateCoeffField_signFlip
       (a := fun y => a (signFlipVecContinuousLinearEquiv i y)) (X := Y) (i := i) (x := x)
   simpa [rotateCoeffField, blockEnergyDensity, blockCoeffField, BlockState.signFlip,
     BlockState.eval, Y, signFlipVecContinuousLinearEquiv_apply, matTranspose_signFlipMatrix]
-    using h
+    using! h
 
 theorem blockEnergyDensity_rotateCoeffField_swap
     {d : ℕ} (a : CoeffField d) (X : BlockState d) (i j : Fin d) (x : Vec d) :
@@ -305,7 +305,7 @@ theorem blockEnergyDensity_rotateCoeffField_swap
     blockEnergyDensity_mapMatrix_swap_conj
       (a := fun y => a (swapVecContinuousLinearEquiv i j y)) (X := Y) (i := i) (j := j) (x := x)
   simpa [rotateCoeffField, blockEnergyDensity, blockCoeffField, BlockState.swap,
-    BlockState.eval, Y, swapVecContinuousLinearEquiv_apply, matTranspose] using h
+    BlockState.eval, Y, swapVecContinuousLinearEquiv_apply, matTranspose] using! h
 
 theorem volumeAverage_blockEnergyDensity_signFlip_openCubeSet_originCube
     {d : ℕ} (n : ℤ) (a : CoeffField d) (X : BlockState d) (i : Fin d) :
@@ -427,16 +427,16 @@ private theorem isSymmetricBlockMat_blockMatConj_of_transpose_eq_self {d : ℕ}
     IsSymmetricBlockMat (blockMatConj R Abar) := by
   have hul : matTranspose Abar.upperLeft = Abar.upperLeft := by
     ext i j
-    simpa [matTranspose] using hA (Sum.inl j) (Sum.inl i)
+    simpa [matTranspose] using! hA (Sum.inl j) (Sum.inl i)
   have hur : matTranspose Abar.upperRight = Abar.lowerLeft := by
     ext i j
-    simpa [matTranspose] using hA (Sum.inl j) (Sum.inr i)
+    simpa [matTranspose] using! hA (Sum.inl j) (Sum.inr i)
   have hll : matTranspose Abar.lowerLeft = Abar.upperRight := by
     ext i j
-    simpa [matTranspose] using hA (Sum.inr j) (Sum.inl i)
+    simpa [matTranspose] using! hA (Sum.inr j) (Sum.inl i)
   have hlr : matTranspose Abar.lowerRight = Abar.lowerRight := by
     ext i j
-    simpa [matTranspose] using hA (Sum.inr j) (Sum.inr i)
+    simpa [matTranspose] using! hA (Sum.inr j) (Sum.inr i)
   intro α β
   cases α with
   | inl i =>

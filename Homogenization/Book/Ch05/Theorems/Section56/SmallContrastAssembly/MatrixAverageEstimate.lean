@@ -222,7 +222,7 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_sq_inte
           (descendantsAverageNormalizedFluctuationMatrix
             hP hStruct (child : ℤ) (originCube d (parent : ℤ))
               (parent - child) a) q) ^ (2 : ℕ)) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q
   have hZ_int :
@@ -239,10 +239,10 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_sq_inte
     · exact Ch04.isRestrictionTranslationCovariant_comp_toFun
         (fullBlockNormalizedQuadraticObservable_translation_covariant
           hP hStruct (child : ℤ) q)
-    · simpa [X] using
+    · simpa [X] using!
         aemeasurable_fullBlockNormalizedQuadraticObservable_cubeSet_of_P4
           hP hStruct (child : ℤ) q (originCube d (child : ℤ))
-    · simpa [X] using
+    · simpa [X] using!
         aemeasurable_fullBlockNormalizedQuadraticObservable_descendants_of_P4
           hP hStruct (child : ℤ) q (originCube d (parent : ℤ)) (child : ℤ)
     · simpa [X] using
@@ -269,7 +269,7 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_integra
             hP hStruct (child : ℤ) (originCube d (parent : ℤ))
               (parent - child) a) q) ^ (2 : ℕ) ∂P ≤
       (normalizedQuadraticProbeAverageRootBound hP hStruct child parent q) ^ (2 : ℕ) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fullBlockNormalizedQuadraticObservableR hP hStruct (child : ℤ) q
   let K : ℝ :=
@@ -291,18 +291,18 @@ theorem fullBlockQuadratic_descendantsAverageNormalizedFluctuationMatrix_integra
         (by exact_mod_cast Nat.zero_le child)
         (by exact_mod_cast hchild_parent) hStruct.stationary hStruct.unit_range X
         (by
-          simpa [X] using
+          simpa [X] using!
             fullBlockNormalizedQuadraticObservable_descendants_localRep
               hP hStruct (child : ℤ) q (originCube d (parent : ℤ)) (child : ℤ))
         (Ch04.isRestrictionTranslationCovariant_comp_toFun
           (fullBlockNormalizedQuadraticObservable_translation_covariant
             hP hStruct (child : ℤ) q))
         (by
-          simpa [X] using
+          simpa [X] using!
             aemeasurable_fullBlockNormalizedQuadraticObservable_cubeSet_of_P4
               hP hStruct (child : ℤ) q (originCube d (child : ℤ)))
         (by
-          simpa [X] using
+          simpa [X] using!
             aemeasurable_fullBlockNormalizedQuadraticObservable_descendants_of_P4
               hP hStruct (child : ℤ) q (originCube d (parent : ℤ)) (child : ℤ))
         (by norm_num) hK_nonneg
@@ -512,9 +512,9 @@ theorem descendantsAverageNormalizedFluctuationOperatorNormSq_integral_le_probeR
         Integrable
           (fun a : RegCoeffField d => fullBlockProbeSqBudget (M a)) P := by
     unfold fullBlockProbeSqBudget
-    refine (MeasureTheory.integrable_finset_sum _ ?_).const_mul _
+    refine (MeasureTheory.integrable_finsetSum _ ?_).const_mul _
     intro α _hα
-    refine (MeasureTheory.integrable_finset_sum _ ?_).const_mul _
+    refine (MeasureTheory.integrable_finsetSum _ ?_).const_mul _
     intro β _hβ
     simpa [M] using hterm_int α β
   have hpoint :
@@ -555,12 +555,12 @@ theorem descendantsAverageNormalizedFluctuationOperatorNormSq_integral_le_probeR
     unfold fullBlockProbeSqBudget
     rw [integral_const_mul]
     congr 1
-    rw [integral_finset_sum]
+    rw [integral_finsetSum]
     · congr
       ext α
       rw [integral_const_mul]
       congr 1
-      rw [integral_finset_sum]
+      rw [integral_finsetSum]
       · congr
         ext β
         let f : RegCoeffField d → ℝ :=
@@ -591,7 +591,7 @@ theorem descendantsAverageNormalizedFluctuationOperatorNormSq_integral_le_probeR
       · intro β _hβ
         exact hterm_int α β
     · intro α _hα
-      exact (MeasureTheory.integrable_finset_sum _ fun β _hβ =>
+      exact (MeasureTheory.integrable_finsetSum _ fun β _hβ =>
         hterm_int α β).const_mul _
   have hbudget_bound :
       ∫ a, fullBlockProbeSqBudget (M a) ∂P ≤

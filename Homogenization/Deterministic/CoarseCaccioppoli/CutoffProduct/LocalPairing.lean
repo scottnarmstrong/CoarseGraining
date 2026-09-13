@@ -25,10 +25,10 @@ theorem abs_cubeAverage_vecDot_scalar_smul_le_collapsed_average_note_terms_of_pa
           ((((3 : ℝ) ^ ((d : ℝ) + s) * (cubeBesovScaleWeight (-s) Q * Bu) +
             cubeBesovScaleWeight s Q * Bavg) *
             (cubeBesovScaleWeight s Q * Bg))) := by
-  letI : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
+  let : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
   have hprod :
       MeasureTheory.MemLp (fun x => u x • ξ x) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    simpa using hξLp.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hu
+    simpa using! hξLp.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hu
   have hmain :=
     abs_cubeAverage_vecDot_le_sum_average_terms_add_note_terms_of_partialBounds
       Q s flux (fun x => u x • ξ x) hs hflux hprod hBg hneg hpos
@@ -142,10 +142,10 @@ theorem abs_cubeAverage_vecDot_scalar_smul_le_collapsed_sharp_average_note_terms
         (d : ℝ) *
           ((((3 : ℝ) ^ ((d : ℝ) + s) * (cubeBesovScaleWeight (-s) Q * Bu)) *
             (cubeBesovScaleWeight s Q * Bg))) := by
-  letI : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
+  let : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
   have hprod :
       MeasureTheory.MemLp (fun x => u x • ξ x) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    simpa using hξLp.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hu
+    simpa using! hξLp.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hu
   have hmain :=
     abs_cubeAverage_vecDot_le_sum_average_terms_add_sharp_note_terms_of_partialBounds
       Q s flux (fun x => u x • ξ x) hs hflux hprod hBg hneg hpos
@@ -217,11 +217,11 @@ theorem abs_cubeAverage_vecDot_scalar_smul_le_collapsed_sharp_average_note_terms
         (d : ℝ) *
           ((((3 : ℝ) ^ ((d : ℝ) + s) * (cubeBesovScaleWeight (-s) Q * Bu)) *
             (cubeBesovScaleWeight s Q * Bg))) := by
-  letI : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
+  let : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
   let prod : Vec d → Vec d := fun x => u x • ξ x
   have hprod :
       MeasureTheory.MemLp prod (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    simpa [prod] using hξLp.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hu
+    simpa [prod] using! hξLp.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hu
   have hdecomp :
       cubeAverage Q (fun x => vecDot (flux x) (prod x)) =
         vecDot (cubeAverageVec Q flux) (cubeAverageVec Q prod) +
@@ -468,7 +468,7 @@ theorem abs_cubeAverage_vecDot_cubeAverage_scalar_smul_le_collapsed_note_terms_o
           cubeBesovScaleWeight 1 Q * Bavg) * Bg)) := by
   have hξScaled_infty :
       MeasureTheory.MemLp (fun x => (cubeAverage Q u) • ξ x) ∞ (normalizedCubeMeasure Q) := by
-    simpa [Pi.smul_apply] using hξLp.const_smul (cubeAverage Q u)
+    simpa [Pi.smul_apply] using! hξLp.const_smul (cubeAverage Q u)
   have hξScaled_two :
       MeasureTheory.MemLp (fun x => (cubeAverage Q u) • ξ x) (2 : ℝ≥0∞)
         (normalizedCubeMeasure Q) :=
@@ -537,7 +537,7 @@ theorem abs_cubeAverage_vecDot_cubeAverage_scalar_smul_le_collapsed_sharp_note_t
           Bg) := by
   have hξScaled_infty :
       MeasureTheory.MemLp (fun x => (cubeAverage Q u) • ξ x) ∞ (normalizedCubeMeasure Q) := by
-    simpa [Pi.smul_apply] using hξLp.const_smul (cubeAverage Q u)
+    simpa [Pi.smul_apply] using! hξLp.const_smul (cubeAverage Q u)
   have hξScaled_two :
       MeasureTheory.MemLp (fun x => (cubeAverage Q u) • ξ x) (2 : ℝ≥0∞)
         (normalizedCubeMeasure Q) :=

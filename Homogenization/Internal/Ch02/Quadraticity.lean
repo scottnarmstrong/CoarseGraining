@@ -37,12 +37,8 @@ private theorem responseJ_zero_zero_of_isEllipticFieldOn {d : ℕ}
 private theorem scalarVariationEnergyIntegrand_addOfIntegrable {d : ℕ}
     (a : CoeffField d) {U : Set (Vec d)}
     (u v : AHarmonicFunction a U)
-    (hu_int : ∀ φ : H10Function U,
-      MeasureTheory.IntegrableOn
-        (fun x => vecDot (matVecMul (a x) (u.toH1.grad x)) (φ.toH1Function.grad x)) U)
-    (hv_int : ∀ φ : H10Function U,
-      MeasureTheory.IntegrableOn
-        (fun x => vecDot (matVecMul (a x) (v.toH1.grad x)) (φ.toH1Function.grad x)) U) :
+    (hu_int : weakFluxIntegrable U a u)
+    (hv_int : weakFluxIntegrable U a v) :
     scalarVariationEnergyIntegrand a
         (AHarmonicFunction.addOfIntegrable u v hu_int hv_int) =
       scalarVariationEnergyIntegrand a u + scalarVariationEnergyIntegrand a v +

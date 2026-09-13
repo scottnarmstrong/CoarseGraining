@@ -264,7 +264,11 @@ private theorem finite_holder_weight_le_inv_discount
         have hq_nonneg : 0 ≤ r / (r - 2) := le_trans zero_le_one hq
         have htwoq : 1 ≤ 2 * (r / (r - 2)) := by nlinarith
         have hmul := mul_le_mul_of_nonneg_left htwoq hc
-        convert neg_le_neg hmul using 1 <;> ring
+        have hneg := neg_le_neg hmul
+        calc (-2 * delta * (j : ℝ)) * (r / (r - 2))
+            = -(delta * (j : ℝ) * (2 * (r / (r - 2)))) := by ring
+          _ ≤ -(delta * (j : ℝ) * 1) := hneg
+          _ = -delta * (j : ℝ) := by ring
   calc
     ∑ j ∈ Finset.range (N + 1),
         ((Real.rpow 3 (-delta * (j : ℝ))) ^ 2) ^ (r / (r - 2)) ≤
@@ -362,7 +366,7 @@ private theorem cubeLpNorm_two_le_eLpNorm_finite_of_memLp
       (MeasureTheory.eLpNorm (fun x => HilbertVec.ofVec (f x)) p.exponent
         (normalizedCubeMeasure Q)).toReal := by
   let μ := normalizedCubeMeasure Q
-  letI : MeasureTheory.IsProbabilityMeasure μ := ⟨by simp [μ]⟩
+  let : MeasureTheory.IsProbabilityMeasure μ := ⟨by simp [μ]⟩
   have hle : MeasureTheory.eLpNorm (fun x => HilbertVec.ofVec (f x)) 2 μ ≤
       MeasureTheory.eLpNorm (fun x => HilbertVec.ofVec (f x)) p.exponent μ :=
     MeasureTheory.eLpNorm_le_eLpNorm_of_exponent_le hp hf.aestronglyMeasurable
@@ -408,7 +412,7 @@ private theorem memLp_hilbert_cubeFluctuationVec
       (fun _ : Vec d => HilbertVec.ofVec (cubeAverageVec R g)) p.exponent
       (normalizedCubeMeasure R) :=
     MeasureTheory.memLp_const _
-  simpa only [cubeFluctuationVec_apply, map_sub] using hg.sub hconst
+  simpa only [cubeFluctuationVec_apply, map_sub] using! hg.sub hconst
 
 /-- A parent finite Euclidean `L^p` witness supplies the same witness on any
 ordinary triadic descendant. -/
@@ -874,7 +878,7 @@ private theorem cubeBesovPositiveVectorDepthSeminorm_sq_le_weighted_eLpNorm
   apply sq_le_weighted_rpow_of_rpow_le
     (cubeBesovPositiveVectorDepthSeminorm_nonneg Q s.1 g j) hw hE hr
   rw [← hfactor]
-  simpa [r] using hdepth
+  simpa [r] using! hdepth
 
 /-- Finite legacy partial seminorms reduce to a weighted finite-`p` energy
 sum.  The only remaining task in the global forcing proof is to bound the

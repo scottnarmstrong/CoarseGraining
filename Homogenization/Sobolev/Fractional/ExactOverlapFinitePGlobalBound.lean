@@ -52,7 +52,7 @@ private theorem eLpNorm_overlap_residual_le_two_mul {d : ℕ}
   let μ : Measure (Vec d) := ScalarOverlap.normalizedCubeMeasure S
   let f : Vec d → HilbertVec d := fun x => HilbertVec.ofVec (F x)
   let m : HilbertVec d := HilbertVec.ofVec (ScalarOverlap.cubeAverageVec S F)
-  letI : IsProbabilityMeasure μ := ⟨by simp [μ]⟩
+  let : IsProbabilityMeasure μ := ⟨by simp [μ]⟩
   have hp_one : 1 ≤ p.exponent := p.one_lt.le
   have hp0 : p.exponent ≠ 0 := (zero_lt_one.trans p.one_lt).ne'
   have htop : p.exponent ≠ ∞ := p.lt_top.ne
@@ -95,7 +95,7 @@ private theorem eLpNorm_rpow_eq_lintegral_enorm {α E : Type*}
     {f : α → E} (p : FiniteLpExponent) :
     (eLpNorm f p.exponent μ) ^ p.exponent.toReal =
       ∫⁻ x, ‖f x‖ₑ ^ p.exponent.toReal ∂μ := by
-  rw [eLpNorm_eq_lintegral_rpow_enorm
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
     (zero_lt_one.trans p.one_lt).ne' p.lt_top.ne, ← ENNReal.rpow_mul]
   have hp : p.exponent.toReal ≠ 0 :=
     ENNReal.toReal_pos (zero_lt_one.trans p.one_lt).ne' p.lt_top.ne |>.ne'
@@ -193,7 +193,7 @@ theorem cubeEuclideanPositiveBesovOverlapDepthENorm_le_global {d : ℕ}
       ((D.card : ℝ≥0∞)⁻¹) *
         D.sum (fun S => ∫⁻ x, g x ∂ScalarOverlap.normalizedCubeMeasure S) ≤
       (3 ^ d : ℝ≥0∞) * ∫⁻ x, g x ∂normalizedCubeMeasure Q := by
-    simpa [D, g] using
+    simpa [D, g] using!
       overlapCentersAtDepth_average_lintegral_normalizedOverlapCubeMeasure_le
         Q j
         (aemeasurable_hilbert_enorm_rpow_of_memLp (Q := Q) p hF)

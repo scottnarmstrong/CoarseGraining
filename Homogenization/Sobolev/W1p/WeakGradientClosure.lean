@@ -28,8 +28,8 @@ private theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp
       atTop (nhds 0)) :
     Tendsto (fun n => ∫ x in U, f n x * h x ∂volume)
       atTop (nhds (∫ x in U, g x * h x ∂volume)) := by
-  letI : ENNReal.HolderConjugate p.exponent p.conjugate.exponent := p.holderConjugate
-  letI : ENNReal.HolderConjugate p.conjugate.exponent p.exponent := inferInstance
+  let : ENNReal.HolderConjugate p.exponent p.conjugate.exponent := p.holderConjugate
+  let : ENNReal.HolderConjugate p.conjugate.exponent p.exponent := inferInstance
   set μ : Measure (Vec d) := volume.restrict U with hμ
   have hfh_int : ∀ n, Integrable (fun x => f n x * h x) μ := by
     intro n
@@ -54,7 +54,7 @@ private theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp
         tendsto_const_nhds (Or.inr (by simp))
     rw [zero_mul] at hprod
     have hreal := (ENNReal.tendsto_toReal (by simp : (0 : ℝ≥0∞) ≠ ⊤)).comp hprod
-    simpa using hreal
+    simpa using! hreal
   refine squeeze_zero_norm ?_ hBtend
   intro n
   rw [hdiff_eq n]
@@ -65,14 +65,14 @@ private theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp
     have h := eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm
       (p := p.exponent) (q := p.conjugate.exponent) (r := 1)
       ((hf n).sub hg).1 hh.1 (fun a b => a * b) 1 hbound
-    simpa [B] using h
+    simpa [B] using! h
   calc
     ‖∫ x, (f n x - g x) * h x ∂μ‖
       ≤ (∫⁻ x, ENNReal.ofReal ‖(f n x - g x) * h x‖ ∂μ).toReal :=
         norm_integral_le_lintegral_norm _
     _ = (eLpNorm (fun x => (f n x - g x) * h x) 1 μ).toReal := by
       rw [eLpNorm_one_eq_lintegral_enorm]
-      simp_rw [ofReal_norm_eq_enorm]
+      simp_rw [ofReal_norm]
     _ ≤ (B n).toReal := by
       apply ENNReal.toReal_mono _ hHolder
       exact ENNReal.mul_ne_top ((hf n).sub hg).2.ne hh.2.ne

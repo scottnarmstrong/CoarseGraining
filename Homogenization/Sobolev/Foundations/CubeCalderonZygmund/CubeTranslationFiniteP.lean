@@ -62,7 +62,7 @@ theorem memLp_pullbackToOrigin {E : Type*} [NormedAddCommGroup E]
     (hF : MemLp F p (normalizedCubeMeasure Q)) :
     MemLp (pullbackToOrigin Q F) p
       (normalizedCubeMeasure (originCube d Q.scale)) := by
-  simpa [pullbackToOrigin] using
+  simpa [pullbackToOrigin] using!
     hF.comp_measurePreserving
       (measurePreserving_addRight_normalizedCubeMeasure_originCube Q)
 
@@ -71,7 +71,7 @@ theorem memLp_pushforwardFromOrigin {E : Type*} [NormedAddCommGroup E]
     (Q : TriadicCube d) {p : ℝ≥0∞} {F : Vec d → E}
     (hF : MemLp F p (normalizedCubeMeasure (originCube d Q.scale))) :
     MemLp (pushforwardFromOrigin Q F) p (normalizedCubeMeasure Q) := by
-  simpa [pushforwardFromOrigin] using
+  simpa [pushforwardFromOrigin] using!
     hF.comp_measurePreserving
       (measurePreserving_subRight_normalizedCubeMeasure_originCube Q)
 
@@ -82,7 +82,7 @@ theorem eLpNorm_pullbackToOrigin_eq {E : Type*} [NormedAddCommGroup E]
     eLpNorm (pullbackToOrigin Q F) p
         (normalizedCubeMeasure (originCube d Q.scale)) =
       eLpNorm F p (normalizedCubeMeasure Q) := by
-  simpa [pullbackToOrigin, Function.comp_def] using
+  simpa [pullbackToOrigin, Function.comp_def] using!
     (eLpNorm_comp_measurePreserving
       (g := F) (p := p) hF
       (measurePreserving_addRight_normalizedCubeMeasure_originCube Q))
@@ -94,7 +94,7 @@ theorem eLpNorm_pushforwardFromOrigin_eq {E : Type*} [NormedAddCommGroup E]
       (normalizedCubeMeasure (originCube d Q.scale))) :
     eLpNorm (pushforwardFromOrigin Q F) p (normalizedCubeMeasure Q) =
       eLpNorm F p (normalizedCubeMeasure (originCube d Q.scale)) := by
-  simpa [pushforwardFromOrigin, Function.comp_def] using
+  simpa [pushforwardFromOrigin, Function.comp_def] using!
     (eLpNorm_comp_measurePreserving
       (g := F) (p := p) hF
       (measurePreserving_subRight_normalizedCubeMeasure_originCube Q))

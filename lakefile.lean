@@ -4,11 +4,11 @@ open Lake DSL
 package «CoarseGraining» where
 
 require mathlib from git
-  "https://github.com/leanprover-community/mathlib4.git" @ "v4.26.0"
+  "https://github.com/leanprover-community/mathlib4.git" @ "v4.33.0"
 
 @[default_target]
 lean_lib «Homogenization» where
-  globs := #[.submodules `Homogenization]
+  globs := #[.andSubmodules `Homogenization]
   leanOptions := #[
     ⟨`autoImplicit, false⟩,
     ⟨`relaxedAutoImplicit, false⟩,

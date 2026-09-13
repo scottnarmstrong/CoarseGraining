@@ -52,7 +52,7 @@ theorem isOpen_corridorSet (ℓ : ℝ) (σ : Vec d) : IsOpen (corridorSet ℓ σ
   have hset : corridorSet ℓ σ
       = ⋃ i : Fin d, ⋃ n : ℤ, {x : Vec d | |x i - σ i - n * ℓ| < 1} := by
     ext x
-    simp only [mem_corridorSet, Set.mem_iUnion, Set.mem_setOf_eq]
+    simp only [mem_corridorSet, Set.mem_iUnion, Set.mem_ofPred_eq]
   rw [hset]
   refine isOpen_iUnion fun i => isOpen_iUnion fun n => ?_
   have hcont : Continuous (fun x : Vec d => |x i - σ i - n * ℓ|) :=
@@ -234,7 +234,7 @@ theorem measurableSet_aeLocallyUniformlyEllipticField :
       = ⋂ Q : TriadicCube d, ⋃ k : ℕ,
           {b : RegCoeffField d | AEEQuantitativeEllipticSlice (cubeSet Q) k b.toFun} := by
     ext b
-    simp only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_iUnion]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_iUnion]
     constructor
     · intro hb Q
       exact hb.exists_aeeQuantitativeEllipticSlice_cubeSet Q
@@ -262,8 +262,8 @@ theorem lawCarrier_map_corridorReg {L : RestrictionCoeffLaw d} (hP : Restriction
     (ℓ : ℝ) (σ : Vec d) :
     RestrictionLawCarrier (L.map (corridorReg ℓ σ)) := by
   have hT : Measurable (corridorReg (d := d) ℓ σ) := measurable_corridorReg ℓ σ
-  haveI : IsProbabilityMeasure L := hP.isProbability
-  haveI : IsProbabilityMeasure (L.map (corridorReg ℓ σ)) :=
+  have : IsProbabilityMeasure L := hP.isProbability
+  have : IsProbabilityMeasure (L.map (corridorReg ℓ σ)) :=
     L.isProbabilityMeasure_map hT.aemeasurable
   refine lawCarrier_of_aeLocallyUniformlyElliptic ?_
   rw [AELocallyUniformlyEllipticLaw,

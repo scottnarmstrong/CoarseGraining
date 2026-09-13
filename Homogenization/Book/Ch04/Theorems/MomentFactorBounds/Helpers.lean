@@ -220,7 +220,7 @@ theorem aemeasurable_upperLeft_matrixNorm_positiveExcess_finsetSup
         AEMeasurable
           (fun a : RegCoeffField d =>
             Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft) P := by
-      simpa [Ch02.matrixNorm, Real.norm_eq_abs] using
+      simpa [Ch02.matrixNorm, Real.norm_eq_abs] using!
         (hP.aemeasurable_coarseB_cubeSet Q).norm
     exact (hNorm.sub aemeasurable_const).max aemeasurable_const
   convert h using 1
@@ -260,7 +260,7 @@ theorem aemeasurable_lowerRight_matrixNorm_positiveExcess_finsetSup
         AEMeasurable
           (fun a : RegCoeffField d =>
             Ch02.matrixNorm (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight) P := by
-      simpa [Ch02.matrixNorm, Real.norm_eq_abs] using
+      simpa [Ch02.matrixNorm, Real.norm_eq_abs] using!
         (hP.aemeasurable_coarseSigmaStarInv_cubeSet Q).norm
     exact (hNorm.sub aemeasurable_const).max aemeasurable_const
   convert h using 1
@@ -324,7 +324,7 @@ private theorem integrable_abs_pow_excess_of_ae_nonneg_le_entry_sum
     simpa [Real.norm_eq_abs] using hentryPair_int ij hij
   have hentrySum_memLp : MemLp entrySum (ξ : ENNReal) P := by
     have hsum : MemLp (fun a => ∑ ij ∈ s, entryPair ij a) (ξ : ENNReal) P :=
-      memLp_finset_sum s hentryPair_memLp
+      memLp_finsetSum s hentryPair_memLp
     simpa [entrySum] using hsum
   have hentrySum_abs_int :
       Integrable (fun a => |entrySum a| ^ ξ) P := by
@@ -407,7 +407,7 @@ theorem momentRoot_excess_le_card_mul_entryRootBound
     simpa [Real.norm_eq_abs] using hentryPair_int ij hij
   have hentrySum_memLp : MemLp entrySum (ξ : ENNReal) P := by
     have hsum : MemLp (fun a => ∑ ij ∈ s, entryPair ij a) (ξ : ENNReal) P :=
-      memLp_finset_sum s hentryPair_memLp
+      memLp_finsetSum s hentryPair_memLp
     simpa [entrySum] using hsum
   have hentrySum_abs_int :
       Integrable (fun a => |entrySum a| ^ ξ) P := by
@@ -509,7 +509,7 @@ theorem upperLeft_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_stat
                   Ch02.matrixNorm center)
                 0))‖ ^ ξ) P := by
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let excess : RegCoeffField d → ℝ :=
     fun a =>
       parents.sup' hparents
@@ -632,7 +632,7 @@ theorem upperLeft_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_restricti
       ((Fintype.card (Fin d) : ℝ) * (Fintype.card (Fin d) : ℝ)) *
         ((parents.card : ℝ) ^ (1 / (ξ : ℝ)) * B) := by
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let C : ℝ := (parents.card : ℝ) ^ (1 / (ξ : ℝ)) * B
   let excess : RegCoeffField d → ℝ :=
     fun a =>
@@ -770,7 +770,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_integrable_abs_pow_of_sta
                   Ch02.matrixNorm center)
                 0))‖ ^ ξ) P := by
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let excess : RegCoeffField d → ℝ :=
     fun a =>
       parents.sup' hparents

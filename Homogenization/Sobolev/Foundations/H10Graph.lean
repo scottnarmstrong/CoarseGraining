@@ -154,7 +154,7 @@ theorem h10GraphClosedSubmodule_norm_value_le_of_forall_h10
         (ScalarL2 U × HilbertVectorL2 U)) : Set
           (ScalarL2 U × HilbertVectorL2 U))) ⊆ K :=
     closure_minimal hsubset hclosed
-  exact hclosure (by simpa [h10GraphClosedSubmodule] using hz)
+  exact hclosure (by simpa [h10GraphClosedSubmodule] using! hz)
 
 /-- On bounded open convex domains, the zero-trace Poincare estimate extends
 to the closed `H¹₀` graph. -/
@@ -299,7 +299,7 @@ theorem exists_h10Function_of_mem_h10GraphClosedSubmodule
       z ∈ closure ((h10GraphSubmodule U : Submodule ℝ
         (ScalarL2 U × HilbertVectorL2 U)) : Set (ScalarL2 U × HilbertVectorL2 U)) := by
     have hzSub : z ∈ (h10GraphSubmodule U).topologicalClosure := hz
-    simpa [Submodule.topologicalClosure_coe] using hzSub
+    simpa [Submodule.topologicalClosure_coe] using! hzSub
   obtain ⟨ψ, hψ_mem, hψ_tendsto⟩ := mem_closure_iff_seq_limit.mp hz_closure
   choose φ hφ_val hφ_grad using hψ_mem
   -- (3) Component-wise convergence.
@@ -514,7 +514,7 @@ theorem exists_h10Function_of_mem_h10GraphClosedSubmodule
 namespace H10GraphClosed
 
 noncomputable instance : CompleteSpace (H10GraphClosedSpace (d := d) U) := by
-  simpa [H10GraphClosedSpace] using
+  simpa [H10GraphClosedSpace] using!
     (h10GraphClosedSubmodule U).isClosed.completeSpace_coe
 
 /-- Scalar value component of a closed `H¹₀` graph point. -/
@@ -590,7 +590,7 @@ theorem exists_antilipschitzWith_gradientCLM
   refine ⟨⟨M, hM⟩, ?_⟩
   apply (gradientCLM (d := d) (U := U)).antilipschitz_of_bound
   intro z
-  simpa using hbound z
+  simpa using! hbound z
 
 /-- The range of the gradient projection from the closed `H¹₀` graph is closed. -/
 theorem isClosed_range_gradientCLM

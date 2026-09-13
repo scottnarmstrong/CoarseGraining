@@ -90,8 +90,9 @@ private theorem ae_restrictedVolume_of_ae_normalizedVolume {d : ℕ}
     (hFG : F =ᵐ[(unitCenteredCubeDomain d).normalizedVolume] G) :
     F =ᵐ[(unitCenteredCubeDomain d).restrictedVolume] G := by
   rw [BoundedMeasurableDomain.normalizedVolume] at hFG
-  exact (Measure.ae_smul_measure_iff
-    (ENNReal.inv_ne_zero.mpr (unitCenteredCubeDomain d).volume_ne_top)).mp hFG
+  have hc := ENNReal.inv_ne_zero.mpr (unitCenteredCubeDomain d).volume_ne_top
+  unfold Filter.EventuallyEq at hFG ⊢
+  rwa [ae_iff, Measure.smul_apply, smul_eq_mul, mul_eq_zero, or_iff_right hc, ← ae_iff] at hFG
 
 /-- Altering a datum on a normalized-volume null set does not alter the
 literal double-integral integrand except on a product-measure null set. -/

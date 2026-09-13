@@ -273,7 +273,7 @@ theorem exists_homogenizationErrorOnOriginCube_interpolated_expLogSq
     nlinarith
   refine ⟨Cscale, hCscale_pos, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   obtain ⟨XJ, hOJ_raw, hXJ_one, hJpoint⟩ :=
     hJlaw hP hStruct hΓ hσ_eq hparams
   obtain ⟨XU, hOU_raw, hXU_one, hUpoint⟩ :=
@@ -511,7 +511,7 @@ theorem exists_homogenizationErrorOnOriginCube_uniformEndpoint_expLogSq
     nlinarith
   refine ⟨Cscale, hCscale_pos, ?_⟩
   intro P hP hStruct hInf hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   obtain ⟨XJ, hOJ, hXJ_one, hJpoint⟩ :=
     hJlaw hP hStruct hInf hparams
   let θ : ℝ := hInf.thetaHat
@@ -623,7 +623,7 @@ theorem exists_homogenizationErrorOnOriginCube_uniformEndpoint_expLogSq
           Kunit * θ ^ (2 : ℕ) := by
     rw [MeasureTheory.ae_all_iff]
     intro m
-    simpa [Kunit, θ, hparams] using
+    simpa [Kunit, θ, hparams] using!
       hInf.localizedLimitWeightedUnitEllipticitySup_le_thetaHat_sq_ae
         (m := m)
   filter_upwards [hJprobeAE, hUnitAE] with aω hJprobe hUnit

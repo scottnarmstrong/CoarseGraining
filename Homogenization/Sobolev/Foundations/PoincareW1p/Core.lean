@@ -13,7 +13,7 @@ private theorem subAverageLpSeminorm_le_smoothPoincareLpConst_mul_gradientCoordL
     (u : W1pFunction U (ENNReal.ofReal q)) :
     u.subAverageLpSeminorm ≤
       smoothPoincareLpConst (d := d) (U := U) hU * u.gradientCoordLpSeminormSum := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   let pE : ENNReal := ENNReal.ofReal q
   let hp1 : 1 ≤ pE := by
@@ -90,7 +90,7 @@ theorem exists_subAverage_poincare_constant_of_isOpenBoundedConvexDomain
       ∀ u : W1pFunction U (ENNReal.ofReal q),
         u.subAverageLpSeminorm ≤ C * u.gradientCoordLpSeminormSum := by
   classical
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   by_cases hvol0 : (MeasureTheory.volume U).toReal = 0
   · refine ⟨0, le_rfl, ?_⟩

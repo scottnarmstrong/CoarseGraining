@@ -81,7 +81,7 @@ private theorem blockJ_homogeneous {d : ℕ} (U : Set (Vec d)) (P Q : BlockVec d
     (a : CoeffField d) {c : ℝ} (hc : c ≠ 0) :
     BlockJ U (c • P) (c • Q) a = c ^ 2 * BlockJ U P Q a := by
   rw [BlockJ, blockJValueSet_homogeneous U P Q a hc]
-  simpa [smul_eq_mul] using
+  simpa [smul_eq_mul] using!
     (Real.sSup_smul_of_nonneg (show 0 ≤ (c ^ 2 : ℝ) by positivity)
       (blockJValueSet U P Q a))
 

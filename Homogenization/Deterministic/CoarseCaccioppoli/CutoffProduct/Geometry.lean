@@ -73,9 +73,7 @@ theorem norm_sub_le_cubeScaleFactor_mul_of_contDiff_bound {d : ℕ} (Q : Triadic
   have hγ_cont : Continuous γ := by
     simpa [γ, segmentBlend] using (AffineMap.lineMap_continuous (p := y) (q := x))
   have hfderiv_cont : Continuous (fderiv ℝ u) := by
-    exact hu.continuous_fderiv (by
-      have htop : (1 : ℕ∞) ≤ ⊤ := by simp
-      exact_mod_cast htop)
+    exact hu.continuous_fderiv (by simp)
   have hint :
       IntervalIntegrable (fun t => ‖fderiv ℝ u (γ t)‖ * ‖x - y‖)
         MeasureTheory.volume 0 1 := by
@@ -122,7 +120,7 @@ theorem cubeLpNorm_component_le_cubeLpNorm {d : ℕ} (Q : TriadicCube d) (p : �
     (hu : MeasureTheory.MemLp u p (normalizedCubeMeasure Q)) :
     cubeLpNorm Q p (fun x => u x i) ≤ cubeLpNorm Q p u := by
   have hui : MeasureTheory.MemLp (fun x => u x i) p (normalizedCubeMeasure Q) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
   have hpoint :
       ∀ᵐ x ∂ normalizedCubeMeasure Q, ‖u x i‖ ≤ (1 : ℝ) * ‖u x‖ := by
     exact Filter.Eventually.of_forall fun x => by
@@ -157,7 +155,7 @@ theorem norm_cubeAverageVec_le_cubeLpNorm_two {d : ℕ} (Q : TriadicCube d)
   refine (pi_norm_le_iff_of_nonneg (cubeLpNorm_nonneg Q (2 : ℝ≥0∞) u)).2 ?_
   intro i
   have hui : MeasureTheory.MemLp (fun x => u x i) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
   have hconst : MeasureTheory.MemLp (fun _ : Vec d => (1 : ℝ))
       (ENNReal.conjExponent (2 : ℝ≥0∞)) (normalizedCubeMeasure Q) := by
     simpa [hconj_two] using
@@ -194,7 +192,7 @@ theorem norm_cubeAverageVec_le_cubeLpNorm_infty {d : ℕ} (Q : TriadicCube d)
   refine (pi_norm_le_iff_of_nonneg (cubeLpNorm_nonneg Q ∞ u)).2 ?_
   intro i
   have hui : MeasureTheory.MemLp (fun x => u x i) ∞ (normalizedCubeMeasure Q) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
   have hconst : MeasureTheory.MemLp (fun _ : Vec d => (1 : ℝ))
       (ENNReal.conjExponent (∞ : ℝ≥0∞)) (normalizedCubeMeasure Q) := by
     simpa [hconj_top] using
@@ -381,7 +379,7 @@ theorem cubeLpNorm_two_le_cubeLpNorm_infty_of_memLp_infty {d : ℕ}
     (Q : TriadicCube d) (u : Vec d → ℝ)
     (hu : MeasureTheory.MemLp u ∞ (normalizedCubeMeasure Q)) :
     cubeLpNorm Q (2 : ℝ≥0∞) u ≤ cubeLpNorm Q ∞ u := by
-  letI : MeasureTheory.IsProbabilityMeasure (normalizedCubeMeasure Q) := by
+  let : MeasureTheory.IsProbabilityMeasure (normalizedCubeMeasure Q) := by
     refine ⟨?_⟩
     simp [normalizedCubeMeasure_apply_univ Q]
   have hle :
@@ -707,7 +705,7 @@ theorem cubeBesovDualTestNorm_one_two_component_le_of_contDiff_component_bound {
     cubeBesovDualTestNorm Q 1 (2 : ℝ≥0∞) (1 : ℝ≥0∞) N (fun x => ξ x i) ≤
       B + cubeBesovScaleWeight 1 Q * cubeLpNorm Q ∞ ξ := by
   have hcompLp : MeasureTheory.MemLp (fun x => ξ x i) ∞ (normalizedCubeMeasure Q) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hξLp
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hξLp
   calc
     cubeBesovDualTestNorm Q 1 (2 : ℝ≥0∞) (1 : ℝ≥0∞) N (fun x => ξ x i)
         ≤ B + cubeBesovScaleWeight 1 Q * cubeLpNorm Q ∞ (fun x => ξ x i) := by

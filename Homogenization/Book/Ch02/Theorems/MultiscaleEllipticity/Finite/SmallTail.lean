@@ -77,7 +77,7 @@ theorem smallTail_exists_scale_zero_ancestor_of_mem_descendantsAtScale_originCub
         omega
       rw [hdiff]
       simpa [Int.natCast_add] using (Int.toNat_natCast (m + j))
-    simpa [htoNat] using hR
+    simpa [htoNat] using! hR
   rcases smallTail_exists_descendant_ancestor_at_depth
       (Q := Q) (R := R) m j hdepth with
     ⟨U, hUdepth, hRUdepth⟩
@@ -93,7 +93,7 @@ theorem smallTail_exists_scale_zero_ancestor_of_mem_descendantsAtScale_originCub
     have htoNat : Int.toNat (Q.scale - 0) = m := by
       dsimp [Q, originCube]
       simp
-    simpa [htoNat] using hUdepth
+    simpa [htoNat] using! hUdepth
   have hRUscale : R ∈ descendantsAtScale U (-(j : ℤ)) := by
     have hle : -(j : ℤ) ≤ U.scale := by omega
     rw [descendantsAtScale_eq_descendantsAtDepth U hle]
@@ -751,7 +751,7 @@ theorem upperSmallSqrtTailTerm_le_scale_factor_mul_scale_zero_LambdaSq_sup'_rpow
               geometricWeight s 1 j * D.sup' hD localRoot =
                 Real.rpow (3 : ℝ) (-s * (m : ℝ)) *
                   (geometricWeight s 1 j * D.sup' hD localRoot) by ring]
-          rw [Finset.mul₀_sup' hwj_pos localRoot D hD]
+          rw [Finset.mul₀_sup' hwj_pos.le localRoot D hD]
     _ ≤ Real.rpow (3 : ℝ) (-s * (m : ℝ)) * D.sup' hD rootUpper := by
           exact mul_le_mul_of_nonneg_left hlocal_le
             (Real.rpow_nonneg (by norm_num : (0 : ℝ) ≤ 3) _)
@@ -850,7 +850,7 @@ theorem lowerSmallSqrtTailTerm_le_scale_factor_mul_scale_zero_lambdaSq_inv_sup'_
               geometricWeight s 1 j * D.sup' hD localRoot =
                 Real.rpow (3 : ℝ) (-s * (m : ℝ)) *
                   (geometricWeight s 1 j * D.sup' hD localRoot) by ring]
-          rw [Finset.mul₀_sup' hwj_pos localRoot D hD]
+          rw [Finset.mul₀_sup' hwj_pos.le localRoot D hD]
     _ ≤ Real.rpow (3 : ℝ) (-s * (m : ℝ)) * D.sup' hD rootLower := by
           exact mul_le_mul_of_nonneg_left hlocal_le
             (Real.rpow_nonneg (by norm_num : (0 : ℝ) ≤ 3) _)

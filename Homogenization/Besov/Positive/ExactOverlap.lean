@@ -112,8 +112,7 @@ structure ExactOverlapIntegrable {d : ℕ} (Q : TriadicCube d) (u : Vec d → �
     MeasureTheory.Integrable u (ScalarOverlap.normalizedCubeMeasure S)
 
 /-- Canonical root and overlap-local integrability data for the zero function. -/
-@[nolint defLemma]
-def exactOverlapZeroIntegrable {d : ℕ} (Q : TriadicCube d) :
+theorem exactOverlapZeroIntegrable {d : ℕ} (Q : TriadicCube d) :
     ExactOverlapIntegrable Q (fun _ : Vec d => (0 : ℝ)) where
   root := MeasureTheory.integrable_zero _ _ _
   overlap := fun _ _ _ => MeasureTheory.integrable_zero _ _ _
@@ -248,7 +247,7 @@ theorem exactOverlapLocalOscillation_zero {d : ℕ} (S : TriadicCube d) (p : ℝ
     exactOverlapLocalOscillation S p (fun _ => (0 : ℝ)) hu = 0 := by
   unfold exactOverlapLocalOscillation
   rw [exactOverlapLocalMean_zero]
-  simpa only [zero_sub, neg_zero] using
+  simpa only [zero_sub, neg_zero] using!
     (MeasureTheory.eLpNorm_zero (α := Vec d) (ε := ℝ) (p := p)
       (μ := ScalarOverlap.normalizedCubeMeasure S))
 

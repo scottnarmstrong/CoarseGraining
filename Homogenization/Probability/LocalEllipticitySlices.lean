@@ -395,7 +395,7 @@ theorem memVectorL2_matVecMul {d : ℕ} {lam Lam : ℝ}
   rw [MemVectorL2] at hf ⊢
   refine (MeasureTheory.memLp_pi_iff).2 ?_
   intro i
-  refine MeasureTheory.memLp_finset_sum
+  refine MeasureTheory.memLp_finsetSum
     (s := Finset.univ)
     (f := fun j : Fin d => fun x : Vec d => a x i j * f x j) ?_
   intro j _hj
@@ -532,6 +532,7 @@ theorem eqOn_saturated_of_measurableSet_localSigma {d : ℕ} {U : Set (Vec d)}
       (U := U) (s := {c : CoeffField d | QuantitativeEllipticSlice U k c})
       hmeas h)
 
+set_option warn.classDefReducibility false in
 /-- The subtype sigma algebra inherited from the local coefficient-field sigma
 algebra. We keep this as an explicit definition, rather than an instance, so
 theorem statements choose the local lane deliberately. -/
@@ -557,8 +558,9 @@ theorem memLp_restrictCoeffField {d : ℕ} {U : Set (Vec d)} {k : ℕ}
   have hmeas :
       Measurable fun x : Vec d => restrictCoeffField U a x i j := by
     convert (measurable_pi_iff.1 (measurable_pi_iff.1 h.1 i) j) using 1
-    funext x
-    by_cases hx : x ∈ U <;> simp [restrictCoeffField, hx]
+    all_goals first
+      | rfl
+      | (funext x; by_cases hx : x ∈ U <;> simp [restrictCoeffField, hx])
   have hbound :
       ∀ᵐ x ∂ volumeMeasureOn U,
         ‖restrictCoeffField U a x i j‖ ≤ (k + 1 : ℝ) := by
@@ -583,7 +585,7 @@ theorem memLp_hilbertMatrix_restrictCoeffField {d : ℕ} {U : Set (Vec d)} {k : 
       (fun x => HilbertMat.ofMat (restrictCoeffField U a x)) 2 (volumeMeasureOn U) := by
   let T : Mat d →L[ℝ] HilbertMat d :=
     ((HilbertMat.continuousLinearEquivMat d).symm).toContinuousLinearMap
-  simpa [T] using T.comp_memLp' h.memLp_restrictCoeffField
+  simpa [T] using! T.comp_memLp' h.memLp_restrictCoeffField
 
 noncomputable def toHilbertMatrixL2 {d : ℕ} {U : Set (Vec d)} {k : ℕ}
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
@@ -608,10 +610,10 @@ theorem measurable_toHilbertMatrixL2_of_norm_eq_iSup_abs_inner {d : ℕ} {U : Se
     @Measurable {a : CoeffField d // QuantitativeEllipticSlice U k a}
       (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
       (localMeasurableSpace U k) (borel _) toHilbertMatrixL2 := by
-  haveI : Fact ((2 : ENNReal) ≠ ⊤) := ⟨ENNReal.ofNat_ne_top⟩
+  have : Fact ((2 : ENNReal) ≠ ⊤) := ⟨ENNReal.ofNat_ne_top⟩
   let H := MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U)
-  letI : MeasurableSpace H := borel H
-  haveI : BorelSpace H := ⟨rfl⟩
+  let : MeasurableSpace H := borel H
+  have : BorelSpace H := ⟨rfl⟩
   exact
     @measurable_of_measurable_inner_denseRange_of_norm_eq_iSup_abs_inner
       {a : CoeffField d // QuantitativeEllipticSlice U k a} H
@@ -632,10 +634,10 @@ theorem measurable_toHilbertMatrixL2_of_dense_inner {d : ℕ} {U : Set (Vec d)}
     @Measurable {a : CoeffField d // QuantitativeEllipticSlice U k a}
       (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U))
       (localMeasurableSpace U k) (borel _) toHilbertMatrixL2 := by
-  haveI : Fact ((2 : ENNReal) ≠ ⊤) := ⟨ENNReal.ofNat_ne_top⟩
+  have : Fact ((2 : ENNReal) ≠ ⊤) := ⟨ENNReal.ofNat_ne_top⟩
   let H := MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U)
-  letI : MeasurableSpace H := borel H
-  haveI : BorelSpace H := ⟨rfl⟩
+  let : MeasurableSpace H := borel H
+  have : BorelSpace H := ⟨rfl⟩
   exact
     @measurable_of_measurable_inner_denseRange_polish
       {a : CoeffField d // QuantitativeEllipticSlice U k a} H
@@ -790,14 +792,14 @@ theorem integrable_hilbertMatrix_entry_mul {d : ℕ} {U : Set (Vec d)}
       (volumeMeasureOn U) := by
     simpa [Function.comp_def] using
       (HilbertMat.entryL i j).comp_memLp' (MeasureTheory.Lp.memLp A)
-  simpa using hgij.integrable_mul hAij
+  simpa using! hgij.integrable_mul hAij
 
 theorem integrable_hilbertMatrix_entry_sum {d : ℕ} {U : Set (Vec d)}
     {g : Vec d → HilbertMat d} (hg : MeasureTheory.MemLp g 2 (volumeMeasureOn U))
     (A : MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U)) (i : Fin d) :
     MeasureTheory.Integrable (fun x => ∑ j : Fin d, g x i j * A x i j)
       (volumeMeasureOn U) := by
-  exact MeasureTheory.integrable_finset_sum _ fun j _ =>
+  exact MeasureTheory.integrable_finsetSum _ fun j _ =>
     integrable_hilbertMatrix_entry_mul hg A i j
 
 theorem inner_hilbertMatrixL2_eq_sum_entry_inner {d : ℕ} {U : Set (Vec d)}
@@ -820,12 +822,12 @@ theorem inner_hilbertMatrixL2_eq_sum_entry_inner {d : ℕ} {U : Set (Vec d)}
           filter_upwards with x
           simp [HilbertMat.inner_def]
     _ = ∑ i : Fin d, ∫ x, ∑ j : Fin d, g x i j * A x i j ∂volumeMeasureOn U := by
-          rw [MeasureTheory.integral_finset_sum]
+          rw [MeasureTheory.integral_finsetSum]
           intro i _
           exact integrable_hilbertMatrix_entry_sum hg A i
     _ = ∑ i : Fin d, ∑ j : Fin d, ∫ x, g x i j * A x i j ∂volumeMeasureOn U := by
           congr with i
-          rw [MeasureTheory.integral_finset_sum]
+          rw [MeasureTheory.integral_finsetSum]
           intro j _
           exact integrable_hilbertMatrix_entry_mul hg A i j
     _ = ∑ i : Fin d, ∑ j : Fin d,
@@ -860,6 +862,7 @@ theorem of_quantitative {d : ℕ} {U : Set (Vec d)} {k : ℕ} {a : CoeffField d}
     EssentialQuantitativeEllipticSlice U k a :=
   IsEssentiallyEllipticFieldOn.of_isEllipticFieldOn h
 
+set_option warn.classDefReducibility false in
 /-- The subtype sigma algebra inherited from the local coefficient-field sigma
 algebra, now for essential/a.e. quantitative slices. -/
 def localMeasurableSpace {d : ℕ} (U : Set (Vec d)) (k : ℕ) :
@@ -916,7 +919,7 @@ theorem memLp_hilbertMatrix_restrictCoeffField {d : ℕ} {U : Set (Vec d)} {k : 
       (fun x => HilbertMat.ofMat (restrictCoeffField U a x)) 2 (volumeMeasureOn U) := by
   let T : Mat d →L[ℝ] HilbertMat d :=
     ((HilbertMat.continuousLinearEquivMat d).symm).toContinuousLinearMap
-  simpa [T] using T.comp_memLp' h.memLp_restrictCoeffField
+  simpa [T] using! T.comp_memLp' h.memLp_restrictCoeffField
 
 noncomputable def toHilbertMatrixL2 {d : ℕ} {U : Set (Vec d)} {k : ℕ}
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
@@ -952,6 +955,7 @@ end EssentialQuantitativeEllipticSlice
 
 namespace AEEQuantitativeEllipticSlice
 
+set_option warn.classDefReducibility false in
 /-- The subtype sigma algebra inherited from the local coefficient-field sigma
 algebra, for the boundary-stable AEE quantitative slices. -/
 def localMeasurableSpace {d : ℕ} (U : Set (Vec d)) (k : ℕ) :
@@ -1048,7 +1052,7 @@ theorem memLp_hilbertMatrix_restrictCoeffField {d : ℕ} {U : Set (Vec d)} {k : 
       (fun x => HilbertMat.ofMat (restrictCoeffField U a x)) 2 (volumeMeasureOn U) := by
   let T : Mat d →L[ℝ] HilbertMat d :=
     ((HilbertMat.continuousLinearEquivMat d).symm).toContinuousLinearMap
-  simpa [T] using T.comp_memLp' h.memLp_restrictCoeffField
+  simpa [T] using! T.comp_memLp' h.memLp_restrictCoeffField
 
 noncomputable def toHilbertMatrixL2 {d : ℕ} {U : Set (Vec d)} {k : ℕ}
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]

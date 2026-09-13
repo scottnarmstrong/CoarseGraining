@@ -86,7 +86,7 @@ theorem normalized_quantitativeCubeCutoff_canonicalFun_descendant_average_oscill
     have hraw : ‖fderiv ℝ η z‖ ≤ rawD := by
       simpa [η, rawD, ηq, QuantitativeCubeCutoff.canonical] using ηq.gradient_bound z
     rw [hφ_eq]
-    rw [fderiv_const_smul_of_field (𝕜 := ℝ) (f := η) B]
+    rw [fderiv_const_smul_field (𝕜 := ℝ) (f := η) B]
     calc
       ‖B • fderiv ℝ η z‖ = ‖B‖ * ‖fderiv ℝ η z‖ := by rw [norm_smul]
       _ = B * ‖fderiv ℝ η z‖ := by rw [Real.norm_eq_abs, abs_of_nonneg hB_nonneg]
@@ -198,7 +198,7 @@ theorem cubeBesovDualTestNorm_normalized_quantitativeCubeCutoff_canonicalFun_le
     have hraw : ‖fderiv ℝ η z‖ ≤ rawD := by
       simpa [η, rawD, ηq, QuantitativeCubeCutoff.canonical] using ηq.gradient_bound z
     rw [hφ_eq]
-    rw [fderiv_const_smul_of_field (𝕜 := ℝ) (f := η) B]
+    rw [fderiv_const_smul_field (𝕜 := ℝ) (f := η) B]
     calc
       ‖B • fderiv ℝ η z‖ = ‖B‖ * ‖fderiv ℝ η z‖ := by rw [norm_smul]
       _ = B * ‖fderiv ℝ η z‖ := by rw [Real.norm_eq_abs, abs_of_nonneg hB_nonneg]
@@ -388,7 +388,7 @@ theorem normalized_quantitativeCubeCutoff_canonicalFun_gradient_controls
     change (fderiv ℝ φ x) (basisVec i) =
       (A⁻¹ • scalarCutoffGradientField η x) i
     rw [hφ_eq]
-    rw [fderiv_const_smul_of_field (𝕜 := ℝ) (f := η) A⁻¹]
+    rw [fderiv_const_smul_field (𝕜 := ℝ) (f := η) A⁻¹]
     simp [scalarCutoffGradientField]
   have hraw_mem : MeasureTheory.MemLp (scalarCutoffGradientField η) ∞ (normalizedCubeMeasure Q) := by
     simpa [η, ηq, QuantitativeCubeCutoff.canonical] using
@@ -418,7 +418,7 @@ theorem normalized_quantitativeCubeCutoff_canonicalFun_gradient_controls
       simpa [η, ηq, QuantitativeCubeCutoff.canonical] using
         quantitativeCubeCutoff_component_fderiv_bound_on_cubeSet Q ηq i z hz
     rw [hcomponent_eq, hfun_eq]
-    rw [fderiv_const_smul_of_field (𝕜 := ℝ)
+    rw [fderiv_const_smul_field (𝕜 := ℝ)
       (f := fun x => scalarCutoffGradientField η x i) A⁻¹]
     calc
       ‖A⁻¹ • fderiv ℝ (fun x => scalarCutoffGradientField η x i) z‖
@@ -479,7 +479,7 @@ theorem cubeLpNorm_infty_scalarCutoffGradientField_normalized_quantitativeCubeCu
       simpa [η, ηq, QuantitativeCubeCutoff.canonical] using
         (ηq.gradient_bound z)
     rw [hφ_eq]
-    rw [fderiv_const_smul_of_field (𝕜 := ℝ) (f := η) A⁻¹]
+    rw [fderiv_const_smul_field (𝕜 := ℝ) (f := η) A⁻¹]
     calc
       ‖A⁻¹ • fderiv ℝ η z‖
           = ‖A⁻¹‖ * ‖fderiv ℝ η z‖ := by

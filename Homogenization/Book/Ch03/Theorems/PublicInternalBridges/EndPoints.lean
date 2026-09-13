@@ -404,7 +404,7 @@ theorem homogenizationComparisonNegativeBesovLHS_le_note_constant_mul_solutionCo
     constantCoeffMatrix_isEllipticFieldOn_constantCoeffField a0
       (measurableSet_cubeSet Q)
   have hGc_mem : MemVectorL2 (cubeSet Q) Gc := by
-    simpa [Gc, constantGradientComparison, constantCoeffField] using
+    simpa [Gc, constantGradientComparison, constantCoeffField] using!
       memVectorL2_matVecMul_of_isEllipticFieldOn hEll0 hgradDiff
   have hfluxA : MemVectorL2 (cubeSet Q)
       (fun x => matVecMul (publicCoeffField Q a x) (u.grad x)) :=
@@ -472,7 +472,7 @@ theorem localizedHomogenizationFluxDefectAverage_eq_localizedFluxDefectNegativeB
     let D : Finset (TriadicCube d) := descendantsAtDepth Q j
     change ((D.card : ℝ)⁻¹) * D.sum Fpublic =
       ((D.card : ℝ)⁻¹) * D.sum Finternal
-    congr 1
+    refine congrArg (HMul.hMul _) ?_
     refine Finset.sum_congr rfl ?_
     intro R hR
     have hseminorm :

@@ -102,7 +102,7 @@ theorem isAHarmonicGradient_zero {d : ℕ} {a : CoeffField d} {U : Set (Vec d)} 
     IsAHarmonicGradient a U (0 : Vec d → Vec d) := by
   constructor
   · exact isPotentialOn_zero
-  · simpa [matVecMul_zero] using (isSolenoidalOn_zero (U := U))
+  · simpa [matVecMul_zero] using! (isSolenoidalOn_zero (U := U))
 
 theorem isAHarmonicGradient_smul {d : ℕ} {a : CoeffField d} {U : Set (Vec d)}
     {f : Vec d → Vec d} (hf : IsAHarmonicGradient a U f) (c : ℝ) :
@@ -110,7 +110,7 @@ theorem isAHarmonicGradient_smul {d : ℕ} {a : CoeffField d} {U : Set (Vec d)}
   rcases hf with ⟨hpot, hsol⟩
   constructor
   · exact isPotentialOn_smul hpot c
-  · simpa [Pi.smul_apply, matVecMul_smul] using isSolenoidalOn_smul hsol c
+  · simpa [Pi.smul_apply, matVecMul_smul] using! isSolenoidalOn_smul hsol c
 
 theorem isAHarmonicGradient_add_of_integrable {d : ℕ} {a : CoeffField d} {U : Set (Vec d)}
     {f g : Vec d → Vec d} (hf : IsAHarmonicGradient a U f) (hg : IsAHarmonicGradient a U g)
@@ -125,7 +125,7 @@ theorem isAHarmonicGradient_add_of_integrable {d : ℕ} {a : CoeffField d} {U : 
         IsSolenoidalOn U
           ((fun x => matVecMul (a x) (f x)) + fun x => matVecMul (a x) (g x)) :=
         isSolenoidalOn_add_of_integrable hsolf hsolg hf_int hg_int
-    simpa [Pi.add_apply, matVecMul_add] using hsum
+    simpa [Pi.add_apply, matVecMul_add] using! hsum
 
 theorem isAHarmonicPair_zero {d : ℕ} {a : CoeffField d} {U : Set (Vec d)} :
     IsAHarmonicPair a U (0 : Vec d → Vec d) 0 := by

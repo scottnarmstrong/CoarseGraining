@@ -90,8 +90,8 @@ theorem measurable_normalizedBlockCoeffOperator_of_isEllipticFieldOn
         fullEntriesToHilbertOperator d
           (toFullBlockMat (blockCoeffField (restrictCoeffField U a) x))) := by
     exact measurable_fullEntriesToHilbertOperator hfull
-  simpa [normalizedBlockCoeffOperator, fullEntriesToHilbertOperator_toFullBlockMat] using
-    measurable_const.smul hop
+  simpa [normalizedBlockCoeffOperator, fullEntriesToHilbertOperator_toFullBlockMat] using!
+    (measurable_const : Measurable (fun _ : Vec d => (MeasureTheory.volume U).toReal⁻¹)).smul hop
 
 theorem le_normalizedBlockCoeffOperatorNormBound_of_isEllipticFieldOn
     {lam Lam : ℝ} (hEll : IsEllipticFieldOn lam Lam U a) (x : Vec d) :
@@ -173,7 +173,7 @@ theorem normalizedBlockCoeffOperator_inner_comm (x : Vec d)
   have hcomm :
       blockVecDot Y.toBlockVec (blockMatVecMul B X.toBlockVec) =
         blockVecDot X.toBlockVec (blockMatVecMul B Y.toBlockVec) := by
-    simpa using
+    simpa [B, blockCoeffField] using!
       (blockVecDot_blockMatVecMul_blockMatrixOfCoeff_comm ((restrictCoeffField U a) x)
         Y.toBlockVec X.toBlockVec)
   have htoBlockX :
@@ -430,7 +430,7 @@ theorem blockEnergyDensity_integrableOn_of_memBlockL2_of_isEllipticFieldOn
       fun x => (1 / 2 : ℝ) • blockPairingIntegrand a X X x by
         funext x
         simp [blockEnergyDensity, blockPairingIntegrand]]
-  simpa [MeasureTheory.IntegrableOn, smul_eq_mul] using hPair.smul (1 / 2 : ℝ)
+  simpa [MeasureTheory.IntegrableOn] using! hPair.smul (1 / 2 : ℝ)
 
 /--
 Concrete `L²(U; \R^{2d})` data for the note's averaged doubled coefficient
@@ -531,7 +531,7 @@ theorem energyBilin_eq_blockPairingAverage_of_blockState
       (toHilbertBlockL2OfBlockField (U := U) hY)
       (toHilbertBlockL2OfBlockField (U := U) hX) =
         blockPairingAverage U a X Y := by
-  simpa [blockPairingAverage, blockPairingIntegrand] using
+  simpa [energyBilinOfOperator, blockPairingAverage, blockPairingIntegrand] using!
     M.energyBilin_eq_volumeAverage_swap_of_memBlockL2
       (X := X.eval) (Y := Y.eval) hX hY
 

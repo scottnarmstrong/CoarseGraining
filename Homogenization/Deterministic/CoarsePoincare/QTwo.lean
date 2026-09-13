@@ -209,7 +209,7 @@ theorem coarsePoincare_gradient_qtwo_partial_of_cubeAverageEnergyControl {d : â„
   have hpartial_nonneg := cubeBesovNegativeVectorPartialSeminormTwo_nonneg Q s N g
   have habs : |cubeBesovNegativeVectorPartialSeminormTwo Q s N g| â‰¤ |B| := by
     exact sq_le_sq.mp hsq
-  simpa [abs_of_nonneg hpartial_nonneg, abs_of_nonneg hB_nonneg] using habs
+  simpa [abs_of_nonneg hpartial_nonneg, abs_of_nonneg hB_nonneg] using! habs
 
 /-- Note-facing `q = 2` gradient coarse Poincare inequality under descendant
 cube-average energy control. -/

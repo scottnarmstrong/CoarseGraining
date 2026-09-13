@@ -227,7 +227,7 @@ theorem responseJ_homogeneous {d : ℕ} (U : Set (Vec d)) (p q : Vec d)
     (a : CoeffField d) {c : ℝ} (hc : c ≠ 0) :
     ResponseJ U (c • p) (c • q) a = c ^ 2 * ResponseJ U p q a := by
   rw [ResponseJ, responseJValueSet_homogeneous U p q a hc]
-  simpa [smul_eq_mul] using
+  simpa [smul_eq_mul] using!
     (Real.sSup_smul_of_nonneg (show 0 ≤ (c ^ 2 : ℝ) by positivity) (responseJValueSet U p q a))
 
 theorem responseJ_homogeneous_zero_left {d : ℕ} (U : Set (Vec d)) (q : Vec d)

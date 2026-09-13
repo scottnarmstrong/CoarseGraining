@@ -39,7 +39,7 @@ theorem cubeEuclideanWspExactOverlapFullControlConstant_lt_top (d : ℕ) :
           (ENNReal.mul_lt_top (by finiteness) (lt_top_iff_ne_top.mpr hlower))
           hpower)⟩
 
-private def exactOverlapIntegrableOfEuclideanWspField {d : ℕ}
+private theorem exactOverlapIntegrableOfEuclideanWspField {d : ℕ}
     {s : FractionalOrder} (Q : TriadicCube d) (p : FiniteLpExponent)
     (F : CubeEuclideanWspField Q s p) (i : Fin d) :
     ExactOverlapIntegrable Q (fun x => F.toField x i) where
@@ -58,7 +58,7 @@ private theorem exactOverlapRootMean_enorm_le_normalizedEuclideanLp
       (cubeBoundedMeasurableDomain Q).normalizedEuclideanLpENorm p.exponent
         F.toField := by
   let μ := normalizedCubeMeasure Q
-  letI : IsProbabilityMeasure μ := ⟨by simp [μ]⟩
+  let : IsProbabilityMeasure μ := ⟨by simp [μ]⟩
   have hcoord : MemLp (fun x => F.toField x i) p.exponent μ := by
     simpa only [μ] using cubeEuclideanLp_coordinate_memLp F.toCubeEuclideanLpField i
   have hcoord_meas : AEStronglyMeasurable (fun x => F.toField x i) μ :=

@@ -177,9 +177,9 @@ theorem map_diagonalConvexApproxJointSample_le {d : ℕ}
   let ν := convexApproxKernelMeasure ρ
   let J : ℝ≥0∞ := ENNReal.ofReal (((1 - ε) ^ d)⁻¹) ^ 2
   let T := diagonalConvexApproxJointSample x0 r ε
-  letI : IsProbabilityMeasure ν := by
+  let : IsProbabilityMeasure ν := by
     simpa only [ν] using isProbabilityMeasure_convexApproxKernelMeasure hρ
-  letI : SFinite ν := inferInstance
+  let : SFinite ν := inferInstance
   have hT : Measurable T := by
     exact measurable_diagonalConvexApproxJointSample x0 r ε
   apply Measure.le_iff.2
@@ -208,7 +208,7 @@ theorem map_diagonalConvexApproxJointSample_le {d : ℕ}
     have hrewrite : (fun xy => f (xy, z)) =
         (A ⁻¹' s).indicator (fun _ => (1 : ℝ≥0∞)) := by
       funext xy
-      simpa only [f, T, A, diagonalConvexApproxJointSample, Function.comp_apply] using
+      simpa only [f, T, A, diagonalConvexApproxJointSample, Function.comp_apply] using!
         (Set.indicator_comp_right A (g := fun _ => (1 : ℝ≥0∞)) (x := xy)).symm
     rw [hrewrite]
     calc
@@ -247,12 +247,12 @@ theorem lintegral_diagonalConvexApproxAverage_rpow_le_of_memLp
   let ν := convexApproxKernelMeasure ρ
   let J : ℝ≥0∞ := ENNReal.ofReal (((1 - ε) ^ d)⁻¹) ^ 2
   let T := diagonalConvexApproxJointSample x0 r ε
-  letI : IsProbabilityMeasure ν := by
+  let : IsProbabilityMeasure ν := by
     simpa only [ν] using isProbabilityMeasure_convexApproxKernelMeasure hρ
-  letI : SFinite ν := inferInstance
-  letI : IsFiniteMeasure ν := inferInstance
-  letI : IsFiniteMeasure μ := inferInstance
-  letI : IsFiniteMeasure (μ.prod ν) := inferInstance
+  let : SFinite ν := inferInstance
+  let : IsFiniteMeasure ν := inferInstance
+  let : IsFiniteMeasure μ := inferInstance
+  let : IsFiniteMeasure (μ.prod ν) := inferInstance
   have hT : Measurable T := measurable_diagonalConvexApproxJointSample x0 r ε
   have hmap : Measure.map T (μ.prod ν) ≤ J • μ := by
     simpa only [μ, ν, J, T] using
@@ -277,7 +277,7 @@ theorem lintegral_diagonalConvexApproxAverage_rpow_le_of_memLp
       (fun xyz : (Vec d × Vec d) × Vec d =>
         ‖K (diagonalConvexApproxSample x0 xyz.2 r ε xyz.1)‖ₑ ^ p.exponent.toReal)
       (μ.prod ν) := by
-    simpa only [T, diagonalConvexApproxJointSample, Function.comp_apply] using
+    simpa only [T, diagonalConvexApproxJointSample, Function.comp_apply] using!
       (ENNReal.continuous_rpow_const.measurable.comp_aemeasurable
         hKT.aestronglyMeasurable.enorm)
   have hp_one_le_toReal : 1 ≤ p.exponent.toReal := by
@@ -331,9 +331,9 @@ theorem eLpNorm_diagonalConvexApproxAverage_le_of_memLp
     Q p K hK hρ hε hball hr hε0 hε1
   have hp_inv : (1 / p.exponent).toReal = 1 / p.exponent.toReal := by
     simpa only [one_div] using ENNReal.toReal_inv p.exponent
-  rw [eLpNorm_eq_lintegral_rpow_enorm (finiteLpExponent_ne_zero p)
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal (finiteLpExponent_ne_zero p)
       (finiteLpExponent_ne_top p),
-    eLpNorm_eq_lintegral_rpow_enorm (finiteLpExponent_ne_zero p)
+    eLpNorm_eq_lintegral_rpow_enorm_toReal (finiteLpExponent_ne_zero p)
       (finiteLpExponent_ne_top p)]
   rw [← hp_inv, ← ENNReal.mul_rpow_of_nonneg _ _ (by positivity)]
   exact ENNReal.rpow_le_rpow hpow (by positivity)

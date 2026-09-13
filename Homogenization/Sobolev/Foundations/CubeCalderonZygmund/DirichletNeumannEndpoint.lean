@@ -38,7 +38,7 @@ theorem exists_cubeDirichletNeumannDivergence_cz
                   (openCubeSet Q) u (fun x => -f x) →
                 MemLp u.toH1Function.grad p (normalizedCubeMeasure Q) ∧
                   cubeLpNorm Q p u.toH1Function.grad ≤ C * cubeLpNorm Q p f) := by
-  letI : NeZero d := ⟨by omega⟩
+  let : NeZero d := ⟨by omega⟩
   let q : FiniteLpExponent :=
     { exponent := p
       one_lt := one_lt_p

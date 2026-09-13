@@ -14,7 +14,7 @@ approximants built into `H10Function`, and then applies the affine chain rule.
 
 namespace Homogenization
 
-open Function MeasureTheory Filter Set Topology
+open Function MeasureTheory _root_.Filter Set Topology
 open scoped ENNReal Convolution Pointwise
 
 noncomputable section
@@ -48,7 +48,7 @@ private theorem H10Function.fderiv_approx_sub_zeroExtensionGrad_eq_indicator_sub
         (fun y hy => image_eq_zero_of_notMem_tsupport hy)
     have hderiv_zero : (fderiv ℝ (u.approx n) x) (basisVec i) = 0 := by
       rw [hzero.fderiv_eq]
-      simp only [fderiv_zero, Pi.zero_apply, ContinuousLinearMap.zero_apply]
+      simp only [fderiv_zero, Pi.zero_apply, zero_apply]
     rw [Set.indicator_of_notMem hx, u.zeroExtensionGrad_apply_of_not_mem hx,
       Pi.zero_apply, sub_zero, hderiv_zero]
 
@@ -374,13 +374,13 @@ theorem ae_eq_fderiv_inwardMollification_unit_apply_basisVec
         (-ε • x0))
   have hv_deriv : HasFDerivAt v (fderiv ℝ v (globalAffineExpansion x0 ε x))
       (globalAffineExpansion x0 ε x) :=
-    hv_smooth.differentiable le_rfl |>.differentiableAt.hasFDerivAt
+    hv_smooth.differentiable (by simp) |>.differentiableAt.hasFDerivAt
   have hcomp := hv_deriv.comp x haff
   have hpoint :
       (fderiv ℝ (v ∘ globalAffineExpansion x0 ε) x) (basisVec i) =
         (1 + ε) * (fderiv ℝ v (globalAffineExpansion x0 ε x)) (basisVec i) := by
     rw [hcomp.fderiv]
-    simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply,
+    simp only [ContinuousLinearMap.comp_apply, smul_apply,
       ContinuousLinearMap.id_apply, map_smul, smul_eq_mul]
   have hx' :
       (fderiv ℝ v (globalAffineExpansion x0 ε x)) (basisVec i) =

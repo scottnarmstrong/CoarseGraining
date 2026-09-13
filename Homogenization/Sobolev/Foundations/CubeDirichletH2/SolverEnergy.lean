@@ -91,14 +91,14 @@ private theorem originCubeZeroTraceH1CoerciveConstant_bound_smul_unit
   have hvalue :
       ‖v.toH1Function.toScalarL2‖ =
         dilationL2Factor d s * ‖u.toH1Function.toScalarL2‖ := by
-    simpa [v, U0] using
+    simpa [v, U0] using!
       H1Function.norm_toScalarL2_unscale_eq
         (d := d) (U := U0) hs u.toH1Function
   have hgrad :
       v.toH1Function.gradientCoordL2NormSum =
         s * dilationL2Factor d s *
           u.toH1Function.gradientCoordL2NormSum := by
-    simpa [v, U0] using
+    simpa [v, U0] using!
       H1Function.gradientCoordL2NormSum_unscale_eq
         (d := d) (U := U0) hs u.toH1Function
   have hscaled :

@@ -98,7 +98,7 @@ private theorem memLp_fderiv_of_contDiffOnIsOpenBoundedConvexDomain
   have hCD : ∀ x ∈ closure U, ‖fderiv ℝ f x‖ ≤ CD :=
     Classical.choose_spec
       (hclosure_compact.exists_bound_of_continuousOn hfderiv_cont.continuousOn)
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   refine MeasureTheory.MemLp.of_bound
     (μ := volumeMeasureOn U) hfderiv_cont.aestronglyMeasurable CD ?_
@@ -140,7 +140,7 @@ theorem fderivL2Norm_le_gradientCoordL2NormSum_ofContDiffOnIsOpenBoundedConvexDo
       u.gradientCoordL2NormSum := by
   let hf1 : ContDiff ℝ 1 f := hf.of_le (by simp)
   let μ : MeasureTheory.Measure (Vec d) := volumeMeasureOn U
-  letI : MeasureTheory.IsFiniteMeasure μ := by
+  let : MeasureTheory.IsFiniteMeasure μ := by
     dsimp [μ, volumeMeasureOn]
     exact hU.isFiniteMeasure_restrict_volume
   let u : H1Function U := H1Function.ofContDiffOnIsOpenBoundedConvexDomain hU hf1
@@ -168,7 +168,7 @@ theorem fderivL2Norm_le_gradientCoordL2NormSum_ofContDiffOnIsOpenBoundedConvexDo
       H1Function.ofContDiffOnIsSobolevRegularDomain] using (u.grad_memL2 i).norm
   have hD_mem : MeasureTheory.MemLp D 2 μ := by
     have hsum :=
-      MeasureTheory.memLp_finset_sum (μ := μ) (p := (2 : ENNReal))
+      MeasureTheory.memLp_finsetSum (μ := μ) (p := (2 : ENNReal))
         (s := Finset.univ) (f := fun i : Fin d => fun x : Vec d => ‖dg i x‖)
         (fun i hi => hdi_mem i)
     simpa [D] using hsum
@@ -723,7 +723,7 @@ private theorem norm_toScalarL2_subAverage_le_smoothPoincareConst_mul_gradientCo
       simpa [ψ] using
         (tendsto_convexApproxSmoothH1_gradCoordToScalarL2 (U := U) hU u hball hr i)
     simpa [H1Function.gradientCoordL2NormSum] using
-      tendsto_finset_sum Finset.univ
+      tendsto_finsetSum Finset.univ
         (fun i _ => (continuous_norm.tendsto _).comp (hgrad i))
   have hright :
       Filter.Tendsto
@@ -891,7 +891,7 @@ theorem h1CoerciveEstimate_of_isOpenBoundedConvexDomain_constant_le_chosenBound
     · subst d
       simp [hvol0,
         H1Function.h1CoerciveEstimateChosenBound_nonneg (d := 0) (U := U) hU]
-    · letI : NeZero d := ⟨hd0⟩
+    · let : NeZero d := ⟨hd0⟩
       simp [hvol0, hd0, H1Function.h1CoerciveEstimateChosenBound,
         H1Function.smoothPoincareConst, H1Function.smoothPoincareSqConst]
 

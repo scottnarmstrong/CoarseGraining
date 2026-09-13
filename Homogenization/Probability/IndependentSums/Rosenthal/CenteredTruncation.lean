@@ -221,7 +221,7 @@ theorem measureReal_absTailEvent_centeredFinsetSum_absTailIndicator_le_two_mul_d
     intro ω
     simpa [F] using Finset.sum_nonneg fun i hi => hY_nonneg i hi ω
   have hF_int : Integrable F μ := by
-    simpa [F] using integrable_finset_sum' s hY_int
+    simpa [F] using integrable_finsetSum' s hY_int
   have hmarkov :
       μ.real (upperTailEvent F b) ≤
         (∑ i ∈ s, ∫ ω, Y i ω ∂μ) / b := by
@@ -243,7 +243,7 @@ theorem measureReal_absTailEvent_centeredFinsetSum_absTailIndicator_le_two_mul_d
               simpa [F] using
                 (mul_meas_ge_le_integral_of_nonneg (μ := μ) hF_nonneg hF_int b)
         _ = ∑ i ∈ s, ∫ ω, Y i ω ∂μ := by
-              rw [integral_finset_sum s hY_int]
+              rw [integral_finsetSum s hY_int]
     exact (le_div_iff₀' hb).2 hmul
   have hsum_le :
       ∑ i ∈ s, ∫ ω, Y i ω ∂μ ≤

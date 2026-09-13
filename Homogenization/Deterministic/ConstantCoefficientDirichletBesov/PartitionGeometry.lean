@@ -557,7 +557,7 @@ theorem fderiv_lowerOverlapTransition_eq_zero_of_coord_le {d : ℕ}
     have hprofile_zero :
         fderiv ℝ smoothTransitionProfile
           ((x i - overlapCoordLower S i) / cubeScaleFactor S) = 0 := by
-      rw [← deriv_fderiv,
+      rw [← toSpanSingleton_deriv,
         smoothTransitionProfile.deriv_zero_of_nonpos harg]
       apply ContinuousLinearMap.ext
       intro r
@@ -569,7 +569,7 @@ theorem fderiv_lowerOverlapTransition_eq_zero_of_coord_le {d : ℕ}
       funext y
       simp [lowerOverlapTransition, hboundary]
     rw [hfun]
-    rw [fderiv_comp' (x := x) hprofile_diff harg_diff]
+    rw [fderiv_fun_comp (x := x) hprofile_diff harg_diff]
     simp [hprofile_zero]
 
 theorem fderiv_upperOverlapTransition_eq_zero_of_coord_le {d : ℕ}
@@ -597,7 +597,7 @@ theorem fderiv_upperOverlapTransition_eq_zero_of_coord_le {d : ℕ}
     have hprofile_zero :
         fderiv ℝ smoothTransitionProfile
           ((overlapCoordUpper S i - x i) / cubeScaleFactor S) = 0 := by
-      rw [← deriv_fderiv,
+      rw [← toSpanSingleton_deriv,
         smoothTransitionProfile.deriv_zero_of_nonpos harg]
       apply ContinuousLinearMap.ext
       intro r
@@ -609,7 +609,7 @@ theorem fderiv_upperOverlapTransition_eq_zero_of_coord_le {d : ℕ}
       funext y
       simp [upperOverlapTransition, hboundary]
     rw [hfun]
-    rw [fderiv_comp' (x := x) hprofile_diff harg_diff]
+    rw [fderiv_fun_comp (x := x) hprofile_diff harg_diff]
     simp [hprofile_zero]
 
 theorem lowerOverlapTransition_eq_zero_of_mem_openCubeSet_coord_le {d : ℕ}

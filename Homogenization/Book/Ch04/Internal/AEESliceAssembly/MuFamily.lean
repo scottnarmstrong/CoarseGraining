@@ -52,7 +52,7 @@ theorem measurable_Mu_aeeQuantitativeSlice
     @Measurable {a : CoeffField d // AEEQuantitativeEllipticSlice U k a}
       ℝ (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel ℝ)
       (fun a => Mu U P a.1) := by
-  letI : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
+  let : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
     AEEQuantitativeEllipticSlice.localMeasurableSpace U k
   refine measurable_Mu_comp_of_measurable_blockEnergyAverage_affineField_denseSeq
     (A := fun a : {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} => a.1)
@@ -69,7 +69,7 @@ theorem measurable_Mu_aeeQuantitativeSlice_canonical_cubeSet
     @Measurable {a : CoeffField d // AEEQuantitativeEllipticSlice (cubeSet Q) k a}
       ℝ (AEEQuantitativeEllipticSlice.localMeasurableSpace (cubeSet Q) k) (borel ℝ)
       (fun a => Mu (cubeSet Q) P a.1) := by
-  letI : MeasurableSpace {a : CoeffField d //
+  let : MeasurableSpace {a : CoeffField d //
       AEEQuantitativeEllipticSlice (cubeSet Q) k a} :=
     AEEQuantitativeEllipticSlice.localMeasurableSpace (cubeSet Q) k
   have hRewrite :
@@ -109,7 +109,7 @@ theorem stronglyMeasurable_canonicalAEEMuHilbertMinimizer_aeeQuantitativeSlice_c
   classical
   let U : Set (Vec d) := cubeSet Q
   let Ωs := {a : CoeffField d // AEEQuantitativeEllipticSlice U k a}
-  letI : MeasurableSpace Ωs := AEEQuantitativeEllipticSlice.localMeasurableSpace U k
+  let : MeasurableSpace Ωs := AEEQuantitativeEllipticSlice.localMeasurableSpace U k
   let K : ClosedSubmodule ℝ (HilbertBlockL2 U) :=
     (canonicalAEEMuCorrectionSpaceData Q).correctionSpace
   let ξ : ℕ → canonicalMuBlockCorrectionGeneratorSubmodule U :=
@@ -182,11 +182,12 @@ theorem stronglyMeasurable_canonicalAEEMuHilbertMinimizer_aeeQuantitativeSlice_c
       change
         candidate (index m a) - H.constantField P ∈
           (canonicalAEEMuCorrectionSpaceData Q).correctionSpace
-      simp [candidate, H, U, canonicalAEEMuOperatorSystemData,
-        canonicalAEEMuCorrectionSpaceData, canonicalAEEPotentialSolenoidalL2Data,
-        AEEMuOperatorSystemData.toMuHilbertRealization,
-        MuOperatorRealization.toMuHilbertRealization, MuHilbertRealization.ofOperator,
-        sub_eq_add_neg, add_assoc, add_comm]
+      have hconst : H.constantField P = blockVecToHilbertBlockL2Const (U := U) P := rfl
+      have hcand : candidate (index m a) =
+          blockVecToHilbertBlockL2Const (U := U) P +
+            (canonicalMuCorrectionGeneratorEmbedding U (ξ (index m a)) : HilbertBlockL2 U) := rfl
+      rw [hcand, hconst, add_sub_cancel_left]
+      exact (canonicalMuCorrectionGeneratorEmbedding U (ξ (index m a))).2
     have hnear :
         ∀ m : ℕ,
           quadraticEnergy H.energyBilin (candidate (index m a)) ≤
@@ -199,7 +200,7 @@ theorem stronglyMeasurable_canonicalAEEMuHilbertMinimizer_aeeQuantitativeSlice_c
       have hqe :
           quadraticEnergy H.energyBilin (candidate (index m a)) =
             energy a (index m a) := by
-        simpa [H, candidate, energy, U, ξ] using
+        simpa [H, candidate, energy, U, ξ] using!
           canonicalAEEMuOperatorSystemData_quadraticEnergy_generatorAffine_eq_blockEnergyAverage
             Q k a P (ξ (index m a))
       have hmu :
@@ -208,7 +209,7 @@ theorem stronglyMeasurable_canonicalAEEMuHilbertMinimizer_aeeQuantitativeSlice_c
               (affineMinimizerMap K H.energyBilin H.energyCoercive (H.constantField P)) := by
         simpa [H, K, U, MuHilbertRealization.muCandidate, MuHilbertProblem.muCandidate,
           MuHilbertRealization.minimizerMap, MuHilbertProblem.minimizerMap,
-          parameterAffineMinimizerMap] using
+          parameterAffineMinimizerMap] using!
           mu_eq_canonicalAEEMuCandidate Q k a P
       calc
         quadraticEnergy H.energyBilin (candidate (index m a))
@@ -226,7 +227,7 @@ theorem stronglyMeasurable_canonicalAEEMuHilbertMinimizer_aeeQuantitativeSlice_c
           affineMinimizerMap K H.energyBilin H.energyCoercive (H.constantField P)) :=
     stronglyMeasurable_of_tendsto atTop hApprox_strong hlim
   simpa [Ωs, U, K, MuHilbertRealization.minimizerMap, MuHilbertProblem.minimizerMap,
-    parameterAffineMinimizerMap] using hAffine
+    parameterAffineMinimizerMap] using! hAffine
 
 /-- Canonical AEE cube-slice measurability of a fixed block-`L²` test paired
 through the Hilbert energy form with the selected canonical doubled-`Mu`
@@ -248,7 +249,7 @@ theorem measurable_energyBilin_fixed_canonicalAEEMuHilbertMinimizer_aeeQuantitat
   classical
   let U : Set (Vec d) := cubeSet Q
   let Ωs := {a : CoeffField d // AEEQuantitativeEllipticSlice U k a}
-  letI : MeasurableSpace Ωs := AEEQuantitativeEllipticSlice.localMeasurableSpace U k
+  let : MeasurableSpace Ωs := AEEQuantitativeEllipticSlice.localMeasurableSpace U k
   let K : ClosedSubmodule ℝ (HilbertBlockL2 U) :=
     (canonicalAEEMuCorrectionSpaceData Q).correctionSpace
   let ξ : ℕ → canonicalMuBlockCorrectionGeneratorSubmodule U :=
@@ -353,11 +354,12 @@ theorem measurable_energyBilin_fixed_canonicalAEEMuHilbertMinimizer_aeeQuantitat
       change
         candidate (index m a) - H.constantField P ∈
           (canonicalAEEMuCorrectionSpaceData Q).correctionSpace
-      simp [candidate, H, U, canonicalAEEMuOperatorSystemData,
-        canonicalAEEMuCorrectionSpaceData, canonicalAEEPotentialSolenoidalL2Data,
-        AEEMuOperatorSystemData.toMuHilbertRealization,
-        MuOperatorRealization.toMuHilbertRealization, MuHilbertRealization.ofOperator,
-        sub_eq_add_neg, add_assoc, add_comm]
+      have hconst : H.constantField P = blockVecToHilbertBlockL2Const (U := U) P := rfl
+      have hcand : candidate (index m a) =
+          blockVecToHilbertBlockL2Const (U := U) P +
+            (canonicalMuCorrectionGeneratorEmbedding U (ξ (index m a)) : HilbertBlockL2 U) := rfl
+      rw [hcand, hconst, add_sub_cancel_left]
+      exact (canonicalMuCorrectionGeneratorEmbedding U (ξ (index m a))).2
     have hnear :
         ∀ m : ℕ,
           quadraticEnergy H.energyBilin (candidate (index m a)) ≤
@@ -370,7 +372,7 @@ theorem measurable_energyBilin_fixed_canonicalAEEMuHilbertMinimizer_aeeQuantitat
       have hqe :
           quadraticEnergy H.energyBilin (candidate (index m a)) =
             energy a (index m a) := by
-        simpa [H, candidate, energy, U, ξ] using
+        simpa [H, candidate, energy, U, ξ] using!
           canonicalAEEMuOperatorSystemData_quadraticEnergy_generatorAffine_eq_blockEnergyAverage
             Q k a P (ξ (index m a))
       have hmu :
@@ -379,7 +381,7 @@ theorem measurable_energyBilin_fixed_canonicalAEEMuHilbertMinimizer_aeeQuantitat
               (affineMinimizerMap K H.energyBilin H.energyCoercive (H.constantField P)) := by
         simpa [H, K, U, MuHilbertRealization.muCandidate, MuHilbertProblem.muCandidate,
           MuHilbertRealization.minimizerMap, MuHilbertProblem.minimizerMap,
-          parameterAffineMinimizerMap] using
+          parameterAffineMinimizerMap] using!
           mu_eq_canonicalAEEMuCandidate Q k a P
       calc
         quadraticEnergy H.energyBilin (candidate (index m a))
@@ -397,7 +399,7 @@ theorem measurable_energyBilin_fixed_canonicalAEEMuHilbertMinimizer_aeeQuantitat
         Tendsto (fun m : ℕ => candidate (index m a)) atTop
           (𝓝 (H.minimizerMap P)) := by
       simpa [H, K, MuHilbertRealization.minimizerMap, MuHilbertProblem.minimizerMap,
-        parameterAffineMinimizerMap] using hHilbert
+        parameterAffineMinimizerMap] using! hHilbert
     exact (H.energyBilin y).continuous.tendsto
       (H.minimizerMap P) |>.comp hHilbert'
   have hStrong :
@@ -459,7 +461,7 @@ theorem measurable_Mu_comp_countable_aeeQuantitativeSlice_canonical_cubeSet_cove
     intro k
     have hA_sub : IsPointwiseLocalSigmaMeasurableOn
         (fun ω : t k => A ω.1) (cubeSet Q) := by
-      simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp] using hA.comp measurable_subtype_coe
+      simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp] using! hA.comp measurable_subtype_coe
     have hSlice_sub :
         ∀ ω : t k,
           AEEQuantitativeEllipticSlice (cubeSet Q) k
@@ -517,7 +519,7 @@ theorem aemeasurable_Mu_comp_countable_aeeQuantitativeSlice_canonical_cubeSet_co
     | some k =>
         have hA_sub : IsPointwiseLocalSigmaMeasurableOn
             (fun ω : cover (some k) => A ω.1) (cubeSet Q) := by
-          simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp, cover] using
+          simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp, cover] using!
             hA.comp measurable_subtype_coe
         have hSlice_sub :
             ∀ ω : cover (some k),
@@ -727,7 +729,7 @@ theorem measurable_Mu_comp_countable_aeeQuantitativeSlice_cover
   have hfm : ∀ k : ℕ, Measurable (f k) := by
     intro k
     have hA_sub : IsPointwiseLocalSigmaMeasurableOn (fun ω : t k => A ω.1) U := by
-      simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp] using hA.comp measurable_subtype_coe
+      simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp] using! hA.comp measurable_subtype_coe
     have hSlice_sub :
         ∀ ω : t k,
           AEEQuantitativeEllipticSlice U k ((fun ω : t k => A ω.1) ω) := by
@@ -801,7 +803,7 @@ theorem aemeasurable_Mu_comp_countable_aeeQuantitativeSlice_cover
     | none => exact measurable_const
     | some k =>
         have hA_sub : IsPointwiseLocalSigmaMeasurableOn (fun ω : cover (some k) => A ω.1) U := by
-          simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp, cover] using
+          simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp, cover] using!
             hA.comp measurable_subtype_coe
         have hSlice_sub :
             ∀ ω : cover (some k),

@@ -83,7 +83,7 @@ theorem efronStein_transfer_restriction
     fun i => restrictObservable (C i) (hC i) with hX
   set μ : ι → MeasureTheory.Measure (RegCoeffField d) :=
     fun i => MeasureTheory.Measure.map (restrictReg (C i) (hC i)) P with hμ
-  haveI hμprob : ∀ i, MeasureTheory.IsProbabilityMeasure (μ i) := fun i =>
+  have hμprob : ∀ i, MeasureTheory.IsProbabilityMeasure (μ i) := fun i =>
     MeasureTheory.Measure.isProbabilityMeasure_map
       (measurable_restrictReg (C i) (hC i)).aemeasurable
   -- Measurability of the joint restriction map.

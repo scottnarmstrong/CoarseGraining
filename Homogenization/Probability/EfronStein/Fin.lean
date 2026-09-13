@@ -200,7 +200,9 @@ theorem term_succ_le (μ : ∀ i, Measure (α i)) [∀ i, IsProbabilityMeasure (
             (integrable_sq_of_bound (ν j) (M := 2 * M) (by fun_prop)
               (fun w => hdiff (p.1, Function.update p.2 j w) (p.1, p.2)))
             (integrable_const _) (fun w => hDsq _ _)
-      _ = (2 * M) ^ 2 := by simp
+      _ = (2 * M) ^ 2 := by
+          have hprob : IsProbabilityMeasure (ν j) := by rw [hν]; infer_instance
+          rw [MeasureTheory.integral_const, MeasureTheory.probReal_univ, one_smul]
   -- per-`t` swap integrability
   have hSwapInt : ∀ t : ∀ k, α ((0 : Fin (n + 1)).succAbove k),
       Integrable (Function.uncurry fun (a : α 0) (w : α ((0 : Fin (n + 1)).succAbove j)) =>

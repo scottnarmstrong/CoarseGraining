@@ -137,7 +137,7 @@ private theorem tendsto_diagonalConvexApproxAverage_apply_of_boundedContinuous
         (unitConvexApproxKernel (d := d)) G x0 r (unitConvexApproxScale n) xy)
       Filter.atTop (nhds (G xy)) := by
   let ν := convexApproxKernelMeasure (unitConvexApproxKernel (d := d))
-  letI : IsProbabilityMeasure ν := by
+  let : IsProbabilityMeasure ν := by
     simpa only [ν] using
       isProbabilityMeasure_convexApproxKernelMeasure
         (isConvexApproxKernel_unitConvexApproxKernel (d := d))
@@ -192,7 +192,7 @@ private theorem aestronglyMeasurable_diagonalConvexApproxAverage_of_boundedConti
       (Gagliardo.gagliardoCubeMeasure Q) := by
   let μ := Gagliardo.gagliardoCubeMeasure Q
   let ν := convexApproxKernelMeasure (unitConvexApproxKernel (d := d))
-  letI : IsProbabilityMeasure ν := by
+  let : IsProbabilityMeasure ν := by
     simpa only [ν] using
       isProbabilityMeasure_convexApproxKernelMeasure
         (isConvexApproxKernel_unitConvexApproxKernel (d := d))
@@ -239,7 +239,7 @@ private theorem norm_diagonalConvexApproxAverage_le_norm_boundedContinuous
     ‖diagonalConvexApproxAverage (unitConvexApproxKernel (d := d)) G x0 r ε xy‖ ≤
       ‖G‖ := by
   let ν := convexApproxKernelMeasure (unitConvexApproxKernel (d := d))
-  letI : IsProbabilityMeasure ν := by
+  let : IsProbabilityMeasure ν := by
     simpa only [ν] using
       isProbabilityMeasure_convexApproxKernelMeasure
         (isConvexApproxKernel_unitConvexApproxKernel (d := d))
@@ -303,7 +303,7 @@ private theorem tendsto_eLpNorm_diagonalConvexApproxAverage_sub_zero_of_boundedC
         _ ≤ ‖G‖ + ‖G‖ := add_le_add havg (G.norm_coe_le_norm _)
         _ = 2 * ‖G‖ := by ring
     exact ENNReal.rpow_le_rpow (by
-      simpa only [ofReal_norm_eq_enorm] using ENNReal.ofReal_le_ofReal hnorm) hq0
+      simpa only [ofReal_norm] using ENNReal.ofReal_le_ofReal hnorm) hq0
   have hfin : ∫⁻ _xy, C ∂μ ≠ ⊤ := by
     rw [lintegral_const]
     exact ENNReal.mul_ne_top
@@ -331,10 +331,10 @@ private theorem tendsto_eLpNorm_diagonalConvexApproxAverage_sub_zero_of_boundedC
           (unitConvexApproxKernel (d := d)) G x0 r
             (unitConvexApproxScale n) xy - G xy‖ₑ)
         Filter.atTop (nhds 0) := by
-      simpa only [Function.comp_apply, enorm_zero] using henorm
+      simpa only [Function.comp_apply, enorm_zero] using! henorm
     have hrpow := ((ENNReal.continuous_rpow_const (y := q)).tendsto
       (0 : ℝ≥0∞)).comp henorm'
-    simpa only [Function.comp_apply, enorm_zero, ENNReal.zero_rpow_of_pos hqpos] using hrpow
+    simpa only [Function.comp_apply, enorm_zero, ENNReal.zero_rpow_of_pos hqpos] using! hrpow
   have hpower : Filter.Tendsto
       (fun n : ℕ => ∫⁻ xy, ‖diagonalConvexApproxAverage
           (unitConvexApproxKernel (d := d)) G x0 r
@@ -351,7 +351,7 @@ private theorem tendsto_eLpNorm_diagonalConvexApproxAverage_sub_zero_of_boundedC
           (unitConvexApproxKernel (d := d)) G x0 r
             (unitConvexApproxScale n) xy - G xy‖ₑ ^ q ∂μ) ^ (1 / q) by
       funext n
-      rw [eLpNorm_eq_lintegral_rpow_enorm
+      rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
         (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne]]
   have hrpow : Filter.Tendsto
       (fun n : ℕ => (∫⁻ xy, ‖diagonalConvexApproxAverage
@@ -363,7 +363,7 @@ private theorem tendsto_eLpNorm_diagonalConvexApproxAverage_sub_zero_of_boundedC
         (0 : ℝ≥0∞)).comp hpower
       have hzero : (0 : ℝ≥0∞) ^ (1 / q) = 0 :=
         by simpa only [one_div] using ENNReal.zero_rpow_of_pos (inv_pos.mpr hqpos)
-      simpa only [Function.comp_apply, hzero] using hraw
+      simpa only [Function.comp_apply, hzero] using! hraw
   simpa only [Function.comp_apply, ENNReal.zero_rpow_of_pos (inv_pos.mpr hqpos)] using hrpow
 
 private theorem memLp_comp_diagonalConvexApproxJointSample {d : ℕ} {E : Type*}
@@ -382,7 +382,7 @@ private theorem memLp_comp_diagonalConvexApproxJointSample {d : ℕ} {E : Type*}
   let ν := convexApproxKernelMeasure (unitConvexApproxKernel (d := d))
   let J : ℝ≥0∞ := ENNReal.ofReal (((1 - ε) ^ d)⁻¹) ^ 2
   let T := diagonalConvexApproxJointSample x0 r ε
-  letI : IsProbabilityMeasure ν := by
+  let : IsProbabilityMeasure ν := by
     simpa only [ν] using isProbabilityMeasure_convexApproxKernelMeasure
       (isConvexApproxKernel_unitConvexApproxKernel (d := d))
   have hmap : Measure.map T (μ.prod ν) ≤ J • μ := by
@@ -415,12 +415,12 @@ private theorem ae_diagonalConvexApproxAverage_sub {d : ℕ} {E : Type*}
           (unitConvexApproxKernel (d := d)) L x0 r ε xy := by
   let μ := Gagliardo.gagliardoCubeMeasure Q
   let ν := convexApproxKernelMeasure (unitConvexApproxKernel (d := d))
-  letI : IsProbabilityMeasure ν := by
+  let : IsProbabilityMeasure ν := by
     simpa only [ν] using isProbabilityMeasure_convexApproxKernelMeasure
       (isConvexApproxKernel_unitConvexApproxKernel (d := d))
-  letI : SFinite ν := inferInstance
-  letI : IsFiniteMeasure μ := inferInstance
-  letI : IsFiniteMeasure (μ.prod ν) := inferInstance
+  let : SFinite ν := inferInstance
+  let : IsFiniteMeasure μ := inferInstance
+  let : IsFiniteMeasure (μ.prod ν) := inferInstance
   have hKjoint := memLp_comp_diagonalConvexApproxJointSample
     Q p K hK hε hball hr hε0 hε1
   have hLjoint := memLp_comp_diagonalConvexApproxJointSample
@@ -455,7 +455,7 @@ private theorem aestronglyMeasurable_diagonalConvexApproxAverage_of_memLp
       (Gagliardo.gagliardoCubeMeasure Q) := by
   let μ := Gagliardo.gagliardoCubeMeasure Q
   let ν := convexApproxKernelMeasure (unitConvexApproxKernel (d := d))
-  letI : IsProbabilityMeasure ν := by
+  let : IsProbabilityMeasure ν := by
     simpa only [ν] using isProbabilityMeasure_convexApproxKernelMeasure
       (isConvexApproxKernel_unitConvexApproxKernel (d := d))
   have hjoint := memLp_comp_diagonalConvexApproxJointSample
@@ -678,7 +678,7 @@ private theorem cubeEuclideanWspKernel_convexApproxSmoothField_eq_scaled_average
         (convexApproxSample x0 z r ε xy.2)) ν := by
     apply Integrable.of_eval
     intro i
-    simpa only [Pi.sub_apply] using (hint i).1.sub (hint i).2
+    simpa only [Pi.sub_apply] using! (hint i).1.sub (hint i).2
   rw [show cubeEuclideanWspConvexApproxSmoothField F x0 r ε = S by rfl,
     cubeEuclideanWspKernel_apply, hS]
   change (euclideanDist xy.1 xy.2 ^ (-(s.1 + (d : ℝ) / p.exponent.toReal))) •
@@ -702,14 +702,14 @@ private theorem cubeEuclideanWspField_component_comp_fst_memLpGagliardo
     MemLp (fun xy : Vec d × Vec d => F.toField xy.1 i) p.exponent
       (Gagliardo.gagliardoCubeMeasure Q) := by
   let ν := volume.restrict (cubeSet Q)
-  letI : IsFiniteMeasure ν := by
+  let : IsFiniteMeasure ν := by
     simpa only [ν, ← volume_restrict_cubeSet_eq_volume_restrict_openCubeSet] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   have hcomponent : MemLp (fun x => F.toField x i) p.exponent
       (normalizedCubeMeasure Q) := by
     simpa only [HilbertVec.ofVec, PiLp.toLp_apply] using
       F.euclideanMemLp.eval_piLp i
-  simpa only [ν, Gagliardo.gagliardoCubeMeasure] using hcomponent.comp_fst ν
+  simpa only [ν, Gagliardo.gagliardoCubeMeasure] using! hcomponent.comp_fst ν
 
 private theorem cubeEuclideanWspField_component_comp_snd_memLpGagliardo
     {d : ℕ} {Q : TriadicCube d} {s : FractionalOrder} {p : FiniteLpExponent}
@@ -717,12 +717,12 @@ private theorem cubeEuclideanWspField_component_comp_snd_memLpGagliardo
     MemLp (fun xy : Vec d × Vec d => F.toField xy.2 i) p.exponent
       (Gagliardo.gagliardoCubeMeasure Q) := by
   let μ := normalizedCubeMeasure Q
-  letI : IsFiniteMeasure μ := inferInstance
+  let : IsFiniteMeasure μ := inferInstance
   have hcomponent : MemLp (fun x => F.toField x i) p.exponent
       (volume.restrict (cubeSet Q)) := by
     simpa only [MemLpOn, ← volume_restrict_cubeSet_eq_volume_restrict_openCubeSet] using
       cubeEuclideanWspField_component_memLpOn F i
-  simpa only [μ, Gagliardo.gagliardoCubeMeasure] using hcomponent.comp_snd μ
+  simpa only [μ, Gagliardo.gagliardoCubeMeasure] using! hcomponent.comp_snd μ
 
 private theorem ae_integrable_diagonalConvexApproxSample_components
     {d : ℕ} {Q : TriadicCube d} {s : FractionalOrder} {p : FiniteLpExponent}
@@ -738,11 +738,11 @@ private theorem ae_integrable_diagonalConvexApproxSample_components
           (convexApproxKernelMeasure (unitConvexApproxKernel (d := d))) := by
   let μ := Gagliardo.gagliardoCubeMeasure Q
   let ν := convexApproxKernelMeasure (unitConvexApproxKernel (d := d))
-  letI : IsFiniteMeasure μ := inferInstance
-  letI : IsProbabilityMeasure ν := by
+  let : IsFiniteMeasure μ := inferInstance
+  let : IsProbabilityMeasure ν := by
     simpa only [ν] using isProbabilityMeasure_convexApproxKernelMeasure
       (isConvexApproxKernel_unitConvexApproxKernel (d := d))
-  letI : IsFiniteMeasure (μ.prod ν) := inferInstance
+  let : IsFiniteMeasure (μ.prod ν) := inferInstance
   have hfst : ∀ i : Fin d, MemLp
       ((fun xy : Vec d × Vec d => F.toField xy.1 i) ∘
         diagonalConvexApproxJointSample x0 r ε) p.exponent
@@ -762,14 +762,14 @@ private theorem ae_integrable_diagonalConvexApproxSample_components
         (convexApproxSample x0 z r ε xy.1) i)
           (convexApproxKernelMeasure (unitConvexApproxKernel (d := d))) := by
     intro i
-    simpa only [μ, ν, Function.comp_apply, diagonalConvexApproxJointSample] using
+    simpa only [μ, ν, Function.comp_apply, diagonalConvexApproxJointSample] using!
       (hfst i).integrable p.one_lt.le |>.prod_right_ae
   have hsnd' : ∀ i : Fin d, ∀ᵐ xy ∂Gagliardo.gagliardoCubeMeasure Q,
       Integrable (fun z : Vec d => F.toField
         (convexApproxSample x0 z r ε xy.2) i)
           (convexApproxKernelMeasure (unitConvexApproxKernel (d := d))) := by
     intro i
-    simpa only [μ, ν, Function.comp_apply, diagonalConvexApproxJointSample] using
+    simpa only [μ, ν, Function.comp_apply, diagonalConvexApproxJointSample] using!
       (hsnd i).integrable p.one_lt.le |>.prod_right_ae
   have hall : ∀ᵐ xy ∂Gagliardo.gagliardoCubeMeasure Q, ∀ i : Fin d,
       Integrable (fun z : Vec d => F.toField
@@ -809,7 +809,7 @@ private theorem tendsto_fractional_diagonal_scale_one {d : ℕ}
     simpa using tendsto_const_nhds.sub tendsto_unitConvexApproxScale_zero
   have hpow := (Real.continuousAt_rpow_const 1
       (s.1 + (d : ℝ) / p.exponent.toReal) (Or.inl one_ne_zero)).tendsto.comp hbase
-  simpa using hpow
+  simpa using! hpow
 
 private theorem tendsto_cubeEuclideanWspESeminorm_convexApproxSmoothField_sub_zero
     {d : ℕ} (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent)
@@ -835,14 +835,14 @@ private theorem tendsto_cubeEuclideanWspESeminorm_convexApproxSmoothField_sub_ze
     simpa only [c] using tendsto_fractional_diagonal_scale_one (d := d) s p
   have hcnorm : Filter.Tendsto (fun n : ℕ => ‖c n‖ₑ)
       Filter.atTop (nhds 1) := by
-    simpa using (continuous_enorm.tendsto (1 : ℝ)).comp hc
+    simpa using! (continuous_enorm.tendsto (1 : ℝ)).comp hc
   have hdiffnorm : Filter.Tendsto (fun n : ℕ => ‖c n - 1‖ₑ)
       Filter.atTop (nhds 0) := by
     have hreal : Filter.Tendsto (fun n : ℕ => c n - 1)
         Filter.atTop (nhds 0) := by
       simpa using hc.sub (tendsto_const_nhds : Filter.Tendsto
         (fun _ : ℕ => (1 : ℝ)) Filter.atTop (nhds 1))
-    simpa using (continuous_enorm.tendsto (0 : ℝ)).comp hreal
+    simpa using! (continuous_enorm.tendsto (0 : ℝ)).comp hreal
   have hfirst : Filter.Tendsto (fun n : ℕ => eLpNorm (fun xy => c n •
       (diagonalConvexApproxAverage (unitConvexApproxKernel (d := d)) K x0 r
         (unitConvexApproxScale n) xy - K xy)) p.exponent μ)
@@ -887,7 +887,7 @@ private theorem tendsto_cubeEuclideanWspESeminorm_convexApproxSmoothField_sub_ze
           F.euclideanMemWsp hε hball hr.le hεpos.le hε.le).sub
             F.euclideanMemWsp.aestronglyMeasurable |>.const_smul (c n)
       have hsecondmeas : AEStronglyMeasurable (fun xy => (c n - 1) • K xy) μ :=
-        by simpa only [μ, K] using F.euclideanMemWsp.aestronglyMeasurable.const_smul (c n - 1)
+        by simpa only [μ, K] using! F.euclideanMemWsp.aestronglyMeasurable.const_smul (c n - 1)
       simp only [T', if_pos hε]
       change T n ≤ _
       rw [show T n = eLpNorm (cubeEuclideanWspKernel s p (fun x =>
@@ -1014,13 +1014,13 @@ private theorem tendsto_normalizedEuclideanLpENorm_convexApproxSmoothField_sub_z
       (fun n : ℕ => eLpNorm (fun x => V n x i) p.exponent μ)
       Filter.atTop (nhds 0) := by
     intro i
-    simpa only [V, μ] using
+    simpa only [V, μ] using!
       tendsto_eLpNorm_component_convexApproxSmoothField_sub_zero
         Q s p F x0 r hball hr i
   have hsum : Filter.Tendsto
       (fun n : ℕ => ∑ i : Fin d, eLpNorm (fun x => V n x i) p.exponent μ)
       Filter.atTop (nhds 0) := by
-    simpa using tendsto_finset_sum Finset.univ (fun i _ => hcoord i)
+    simpa using tendsto_finsetSum Finset.univ (fun i _ => hcoord i)
   have hdimtop : ‖(d : ℝ)‖ₑ ≠ ⊤ := enorm_ne_top
   have hbound : Filter.Tendsto (fun n : ℕ => ‖(d : ℝ)‖ₑ *
       ∑ i : Fin d, eLpNorm (fun x => V n x i) p.exponent μ)
@@ -1076,10 +1076,10 @@ private theorem tendsto_cubeEuclideanWspFullENorm_convexApproxSmoothField_sub_ze
       Q s p F x0 r hball hr
   have hLpow : Filter.Tendsto (fun n : ℕ => L n ^ q) Filter.atTop (nhds 0) := by
     have h := ((ENNReal.continuous_rpow_const (y := q)).tendsto (0 : ℝ≥0∞)).comp hL
-    simpa only [ENNReal.zero_rpow_of_pos hqpos] using h
+    simpa only [ENNReal.zero_rpow_of_pos hqpos] using! h
   have hSpow : Filter.Tendsto (fun n : ℕ => S n ^ q) Filter.atTop (nhds 0) := by
     have h := ((ENNReal.continuous_rpow_const (y := q)).tendsto (0 : ℝ≥0∞)).comp hS
-    simpa only [ENNReal.zero_rpow_of_pos hqpos] using h
+    simpa only [ENNReal.zero_rpow_of_pos hqpos] using! h
   have hWtop : W ≠ ⊤ := (cubeEuclideanWspScalePowerWeight_lt_top Q s p).ne
   have hWpow : Filter.Tendsto (fun n : ℕ => W * L n ^ q)
       Filter.atTop (nhds 0) := by
@@ -1091,7 +1091,7 @@ private theorem tendsto_cubeEuclideanWspFullENorm_convexApproxSmoothField_sub_ze
   have hfinal := ((ENNReal.continuous_rpow_const (y := q⁻¹)).tendsto
     (0 : ℝ≥0∞)).comp hsum
   simpa only [cubeEuclideanWspFullENorm, L, S, W, q,
-    ENNReal.zero_rpow_of_pos hinvpos] using hfinal
+    ENNReal.zero_rpow_of_pos hinvpos] using! hfinal
 
 /-- Componentwise `L^p` convergence of the explicit convex smoothing sequence,
 from a supplied normalized `L^p` bound.  This is kept separate from the
@@ -1184,7 +1184,7 @@ private theorem tendsto_eLpNorm_two_convexApproxSmoothField_sub_zero
       (fun n : ℕ => eLpNorm (fun x => V n x i) 2 (normalizedCubeMeasure Q))
       Filter.atTop (nhds 0) := by
     intro i
-    simpa only [V] using
+    simpa only [V] using!
       (tendsto_eLpNorm_component_convexApproxSmoothField_sub_zero_of_memLp
         (p := FiniteLpExponent.two) Q s F.toCubeEuclideanWspField x0 r hball hr i
         (by
@@ -1194,7 +1194,7 @@ private theorem tendsto_eLpNorm_two_convexApproxSmoothField_sub_zero
       (fun n : ℕ => ∑ i : Fin d,
         eLpNorm (fun x => V n x i) 2 (normalizedCubeMeasure Q))
       Filter.atTop (nhds 0) := by
-    simpa using tendsto_finset_sum Finset.univ (fun i _ => hcoord i)
+    simpa using tendsto_finsetSum Finset.univ (fun i _ => hcoord i)
   have hdimtop : ‖(d : ℝ)‖ₑ ≠ ⊤ := enorm_ne_top
   have hbound : Filter.Tendsto (fun n : ℕ => ‖(d : ℝ)‖ₑ *
       ∑ i : Fin d, eLpNorm (fun x => V n x i) 2 (normalizedCubeMeasure Q))

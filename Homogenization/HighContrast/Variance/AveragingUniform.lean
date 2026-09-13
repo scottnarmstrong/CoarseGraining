@@ -35,7 +35,7 @@ theorem exists_gridPhase_meanSq_le_uniform [NeZero d] :
   classical
   refine ⟨576 * (d : ℝ), by positivity, ?_⟩
   intro Θ hΘ L hP hell m ℓ hℓ N hN P
-  haveI : IsProbabilityMeasure L := hP.isProbability
+  have : IsProbabilityMeasure L := hP.isProbability
   set Msq := Θ * vecNormSq P.1 + vecNormSq P.2 with hMsqdef
   have hΘpos : (0 : ℝ) < Θ := lt_of_lt_of_le one_pos hΘ
   have hℓ0 : (0 : ℝ) < ℓ := by linarith
@@ -74,7 +74,7 @@ theorem exists_gridPhase_meanSq_le_uniform [NeZero d] :
           (blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m))
                 (corridorField ℓ (gridPhase ℓ N σ) a.toFun)) P) -
               blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P)) ^ 2)
-          L := by simpa [pow_two] using (hFφ.sub hF).mul (hFφ.sub hF)
+          L := by simpa [pow_two] using! (hFφ.sub hF).mul (hFφ.sub hF)
       simpa [sq_abs] using h2
     refine (integrable_const (4 * Msq ^ 2)).mono' hmeas ?_
     filter_upwards [hAE] with a ha
@@ -89,21 +89,21 @@ theorem exists_gridPhase_meanSq_le_uniform [NeZero d] :
             (corridorField ℓ (gridPhase ℓ N σ) a.toFun)) P) -
           blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P)| ^ 2 ∂L
         ≤ B := by
-    rw [← integral_finset_sum _ (fun σ _ => hInt σ)]
+    rw [← integral_finsetSum _ (fun σ _ => hInt σ)]
     calc ∫ a, ∑ σ : Fin d → Fin N,
             |blockVecDot P (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m))
                   (corridorField ℓ (gridPhase ℓ N σ) a.toFun)) P) -
                 blockVecDot P
                   (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P)| ^ 2 ∂L
         ≤ ∫ _a, B ∂L :=
-          integral_mono_ae (integrable_finset_sum _ (fun σ _ => hInt σ)) (integrable_const B)
+          integral_mono_ae (integrable_finsetSum _ (fun σ _ => hInt σ)) (integrable_const B)
             (by filter_upwards [hAE] with a ha; exact ha.2)
       _ = B := by rw [integral_const]; simp
   have hcard : (Finset.univ : Finset (Fin d → Fin N)).card = N ^ d := by
     rw [Finset.card_univ, Fintype.card_fun, Fintype.card_fin, Fintype.card_fin]
   have hne : (Finset.univ : Finset (Fin d → Fin N)).Nonempty := by
     have hNpos : 0 < N := by exact_mod_cast hN0
-    haveI : Nonempty (Fin N) := ⟨⟨0, hNpos⟩⟩
+    have : Nonempty (Fin N) := ⟨⟨0, hNpos⟩⟩
     exact Finset.univ_nonempty
   have hgsum : (∑ _σ : Fin d → Fin N, B / (N : ℝ) ^ d) = B := by
     rw [Finset.sum_const, hcard, nsmul_eq_mul]

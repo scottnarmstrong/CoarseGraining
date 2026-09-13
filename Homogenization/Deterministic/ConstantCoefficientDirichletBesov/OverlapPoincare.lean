@@ -85,7 +85,7 @@ theorem overlapCubeLpNorm_two_overlapCubeFluctuationVec_toField_le_scale_mul_sum
           (originCubeMeanZeroH1CoerciveEstimate d 0).constant) *
         ∑ i : Fin d,
           overlapCubeLpNorm S (2 : ℝ≥0∞) (G.coord i).grad := by
-  simpa using
+  simpa using!
     overlapCubeLpNorm_two_overlapCubeFluctuationVec_toField_le_scale_mul_sum_grad
       G hS
 

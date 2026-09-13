@@ -51,7 +51,7 @@ theorem coarsePoincareGradient_negativeBesov_le {d : ℕ} [NeZero d]
   have haeeq_a_ap : Ch02.CoeffOn.AEEq aQ ap := haeeq_ap_a.symm
   let uPw : Ch02.Solution U ap := Ch02.Solution.ofAEEq haeeq_a_ap u
   let uOpen : AHarmonicFunction A (openCubeSet Q) := by
-    simpa [U, ap, A] using uPw
+    simpa [U, ap, A] using! uPw
   let uCube : AHarmonicFunction A (cubeSet Q) := uOpen.toCubeSet
   let energy : Vec d → ℝ := fun x => scalarVariationEnergyIntegrand A uCube x
   have hEll : IsEllipticFieldOn aQ.lam aQ.Lam (cubeSet Q) A := by
@@ -127,6 +127,7 @@ theorem coarsePoincareGradient_negativeBesov_le {d : ℕ} [NeZero d]
       funext x
       simp [energy, scalarVariationEnergyIntegrand, Ch02.variationEnergyIntegrand,
         uCube, uOpen, uPw, U, ap, A, Internal.Ch02.BookCh02.pointwiseCoeffOn]
+      rfl
     have hcube_pw :
         cubeAverage Q energy = Ch02.variationEnergyValue U ap uPw := by
       calc
@@ -149,6 +150,7 @@ theorem coarsePoincareGradient_negativeBesov_le {d : ℕ} [NeZero d]
         =ᵐ[MeasureTheory.volume.restrict (cubeSet Q)] solutionGradientField u := by
     exact Filter.Eventually.of_forall fun x => by
       simp [solutionGradientField, uCube, uOpen, uPw, U, ap, A]
+      rfl
   cases q with
   | finite q =>
       have hq' : 1 ≤ q := by simpa using hq
@@ -233,7 +235,7 @@ theorem coarsePoincareFlux_negativeBesov_le {d : ℕ} [NeZero d]
   have haeeq_a_ap : Ch02.CoeffOn.AEEq aQ ap := haeeq_ap_a.symm
   let uPw : Ch02.Solution U ap := Ch02.Solution.ofAEEq haeeq_a_ap u
   let uOpen : AHarmonicFunction A (openCubeSet Q) := by
-    simpa [U, ap, A] using uPw
+    simpa [U, ap, A] using! uPw
   let uCube : AHarmonicFunction A (cubeSet Q) := uOpen.toCubeSet
   let oldFlux : Vec d → Vec d := fun x => matVecMul (A x) (uCube.toH1.grad x)
   let energy : Vec d → ℝ := fun x => scalarVariationEnergyIntegrand A uCube x
@@ -318,6 +320,7 @@ theorem coarsePoincareFlux_negativeBesov_le {d : ℕ} [NeZero d]
       funext x
       simp [energy, scalarVariationEnergyIntegrand, Ch02.variationEnergyIntegrand,
         uCube, uOpen, uPw, U, ap, A, Internal.Ch02.BookCh02.pointwiseCoeffOn]
+      rfl
     have hcube_pw :
         cubeAverage Q energy = Ch02.variationEnergyValue U ap uPw := by
       calc
@@ -347,6 +350,7 @@ theorem coarsePoincareFlux_negativeBesov_le {d : ℕ} [NeZero d]
       oldFlux =ᵐ[MeasureTheory.volume.restrict (cubeSet Q)] solutionFluxField Q a u := by
     exact hA_ae_cube.mono fun x hx => by
       simp [oldFlux, solutionFluxField, uCube, uOpen, uPw, U, ap, A, hx]
+      rfl
   cases q with
   | finite q =>
       have hq' : 1 ≤ q := by simpa using hq

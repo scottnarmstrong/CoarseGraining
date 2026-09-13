@@ -130,11 +130,11 @@ theorem frobeniusMagnitude_memLp_normalizedCubeMeasure (Q : TriadicCube d)
   have hrow : ∀ i : Fin d, MeasureTheory.MemLp (fun x => ∑ j : Fin d, G i j x)
       (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
     intro i
-    exact MeasureTheory.memLp_finset_sum Finset.univ
+    exact MeasureTheory.memLp_finsetSum Finset.univ
       (fun j _ => hG i j)
   have hsum : MeasureTheory.MemLp (fun x => ∑ i : Fin d, ∑ j : Fin d, G i j x)
       (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    exact MeasureTheory.memLp_finset_sum Finset.univ (fun i _ => hrow i)
+    exact MeasureTheory.memLp_finsetSum Finset.univ (fun i _ => hrow i)
   have hsquare_meas : MeasureTheory.AEStronglyMeasurable
       (fun x => ∑ i : Fin d, ∑ j : Fin d, (H.hess i j x) ^ 2)
       (normalizedCubeMeasure Q) := by
@@ -146,7 +146,7 @@ theorem frobeniusMagnitude_memLp_normalizedCubeMeasure (Q : TriadicCube d)
   have hmag_meas : MeasureTheory.AEStronglyMeasurable H.frobeniusMagnitude
       (normalizedCubeMeasure Q) := by
     have hsqrt := Real.continuous_sqrt.comp_aestronglyMeasurable hsquare_meas
-    simpa [frobeniusMagnitude, matrixFrobeniusMagnitude] using hsqrt
+    simpa [frobeniusMagnitude, matrixFrobeniusMagnitude] using! hsqrt
   refine hsum.mono hmag_meas ?_
   filter_upwards with x
   have hsum_nonneg : 0 ≤ ∑ i : Fin d, ∑ j : Fin d, G i j x := by
@@ -158,8 +158,11 @@ theorem frobeniusMagnitude_memLp_normalizedCubeMeasure (Q : TriadicCube d)
   rw [hsum_norm]
   change |matrixFrobeniusMagnitude (fun i j => H.hess i j x)| ≤
     ∑ i : Fin d, ∑ j : Fin d, |H.hess i j x|
-  rw [abs_of_nonneg (matrixFrobeniusMagnitude_nonneg _)]
-  exact matrixFrobeniusMagnitude_le_sum_abs _
+  calc |matrixFrobeniusMagnitude (fun i j => H.hess i j x)|
+      = matrixFrobeniusMagnitude (fun i j => H.hess i j x) :=
+        abs_of_nonneg (matrixFrobeniusMagnitude_nonneg _)
+    _ ≤ ∑ i : Fin d, ∑ j : Fin d, |H.hess i j x| :=
+        matrixFrobeniusMagnitude_le_sum_abs (fun i j => H.hess i j x)
 
 theorem integral_frobeniusMagnitude_sq_eq_sum_integral (Q : TriadicCube d)
     {v : H1Function (openCubeSet Q)}
@@ -182,14 +185,14 @@ theorem integral_frobeniusMagnitude_sq_eq_sum_integral (Q : TriadicCube d)
           exact H.sq_frobeniusMagnitude x
     _ = ∑ i : Fin d, ∫ x, ∑ j : Fin d, (H.hess i j x) ^ 2
           ∂normalizedCubeMeasure Q := by
-          exact MeasureTheory.integral_finset_sum Finset.univ
-            (fun i _ => MeasureTheory.integrable_finset_sum Finset.univ
+          exact MeasureTheory.integral_finsetSum Finset.univ
+            (fun i _ => MeasureTheory.integrable_finsetSum Finset.univ
               (fun j _ => hint i j))
     _ = ∑ i : Fin d, ∑ j : Fin d, ∫ x, (H.hess i j x) ^ 2
           ∂normalizedCubeMeasure Q := by
           apply Finset.sum_congr rfl
           intro i _
-          exact MeasureTheory.integral_finset_sum Finset.univ (fun j _ => hint i j)
+          exact MeasureTheory.integral_finsetSum Finset.univ (fun j _ => hint i j)
 
 theorem integral_hess_sq_normalizedCubeMeasure (Q : TriadicCube d)
     {v : H1Function (openCubeSet Q)}

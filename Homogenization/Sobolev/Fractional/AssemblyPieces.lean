@@ -90,7 +90,7 @@ theorem lintegral_gagliardoCubeMeasure_eq (Q : TriadicCube d)
       ENNReal.ofReal (cubeVolume Q)⁻¹ *
         ∫⁻ z in Homogenization.cubeSet Q ×ˢ Homogenization.cubeSet Q, f z
           ∂(MeasureTheory.volume.prod MeasureTheory.volume) := by
-  haveI : SFinite (Homogenization.cubeMeasure Q) := by
+  have : SFinite (Homogenization.cubeMeasure Q) := by
     unfold Homogenization.cubeMeasure
     infer_instance
   rw [gagliardoCubeMeasure, Homogenization.normalizedCubeMeasure,

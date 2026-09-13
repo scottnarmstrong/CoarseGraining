@@ -45,7 +45,7 @@ theorem isPotentialOn_swap_openCubeSet_originCube
     IsPotentialOn (openCubeSet (originCube d n))
       (fun x => swapVecContinuousLinearEquiv i j (f (swapVecContinuousLinearEquiv i j x))) := by
   rcases hf with ⟨u, rfl⟩
-  simpa [swapVecContinuousLinearEquiv_apply] using
+  simpa [swapVecContinuousLinearEquiv_apply] using!
     (u.swapOnOpenCubeSetOriginCube i j).isPotentialOn
 
 theorem isPotentialZeroTraceOn_signFlip_openCubeSet_originCube
@@ -62,7 +62,7 @@ theorem isPotentialZeroTraceOn_swap_openCubeSet_originCube
     IsPotentialZeroTraceOn (openCubeSet (originCube d n))
       (fun x => swapVecContinuousLinearEquiv i j (f (swapVecContinuousLinearEquiv i j x))) := by
   rcases hf with ⟨u, rfl⟩
-  simpa [swapVecContinuousLinearEquiv_apply] using
+  simpa [swapVecContinuousLinearEquiv_apply] using!
     (H10Function.swapOnOpenCubeSetOriginCube u i j).isPotentialZeroTraceOn
 
 theorem isSolenoidalZeroNormalTraceOn_signFlip_openCubeSet_originCube

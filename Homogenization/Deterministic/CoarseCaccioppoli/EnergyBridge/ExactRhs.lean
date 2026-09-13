@@ -678,7 +678,7 @@ theorem coarseCaccioppoliFluxEnergyExactCenteredCoeff_mono_Acirc {d : ℕ}
   have havg_le :
       coarseCaccioppoliFluxEnergyExactCenteredAverageCoeff Q a ξ Acirc1 C ≤
         coarseCaccioppoliFluxEnergyExactCenteredAverageCoeff Q a ξ A1 C := by
-    simpa [coarseCaccioppoliFluxEnergyExactCenteredAverageCoeffFactorBound] using
+    simpa [coarseCaccioppoliFluxEnergyExactCenteredAverageCoeffFactorBound] using!
       (coarseCaccioppoliFluxEnergyExactCenteredAverageCoeff_le_factorBound
         Q a ξ hAavg_nonneg hXi_nonneg hAcirc1_nonneg hC
         (le_rfl : Real.sqrt (coarseBBlockNorm Q a) ≤ Real.sqrt (coarseBBlockNorm Q a))

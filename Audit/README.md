@@ -2,9 +2,7 @@
 
 This directory contains Mathlib-only comparator challenges for the public-facing
 quenched homogenization comparison theorem and four corollaries of it — three
-deterministic periodic specializations and one random Bernoulli checkerboard —
-together with the polynomial homogenization-scale capstone and its
-Bernoulli-checkerboard instantiation.
+deterministic periodic specializations and one random Bernoulli checkerboard.
 Each comparator lives in its own subdirectory:
 
 | Directory | Checked theorem |
@@ -14,46 +12,14 @@ Each comparator lives in its own subdirectory:
 | `PeriodicConcrete/` | `Homogenization.StatementAudit.PeriodicConcrete.periodicConcrete_comparison` |
 | `PeriodicSmooth/` | `Homogenization.StatementAudit.PeriodicSmooth.periodicSmooth_comparison` |
 | `RandomCheckerboard/` | `Homogenization.StatementAudit.RandomCheckerboard.randomCheckerboard_quenchedComparison` |
-| `PolynomialScale/` | `Homogenization.StatementAudit.PolynomialScale.homogenizationScale_polynomial_of_unitRange` |
-| `CheckerboardScale/` | `Homogenization.StatementAudit.CheckerboardScale.randomCheckerboard_homogenizationScale` |
 
 `MeasurabilityLocality/SemanticRegression.lean` is an additional project-level
-regression module, not an eighth comparator.  It checks that the integral-local
+regression module, not a sixth comparator.  It checks that the integral-local
 coarse measurable structure and the pointwise regular measurable structure
 remain semantically distinct, including the corresponding locality notions.
 
-The first five comparators check the quenched comparison estimate described
-below.  `PolynomialScale/` checks the unconditional homogenization-scale
-capstone: under the explicit dimension restriction `d > 2` (the hypothesis
-`hd : 3 ≤ d`), every `Θ`-elliptic (`Θ ≥ 1`, in the quadratic-form ellipticity
-class `IsEllipticMatrix 1 Θ`: coercivity `∀ ξ, |ξ|² ≤ ξ · a ξ` together with
-the inverse quadratic-form bound `∀ ξ, Θ⁻¹ |ξ|² ≤ ξ · a⁻¹ ξ`; the fields are
-general non-symmetric matrices) stationary, unit-range, isotropic,
-adjoint-invariant probability law has geometrically decaying scalar contrast,
-`θ_{N₀+n} - 1 ≤ 3^{-alpha·n}`, from an entry scale `N₀ ≤ Cscale · log(2 + Θ)`
-with `3^{N₀} ≤ (2 + Θ)^{Ctriadic}`, where `Cscale, Ctriadic, alpha > 0` are
-dimensional constants chosen before the law.  The scalar contrast
-`thetaAtScale P n` is mirrored as the `(0, 0)`-entry ratio of the annealed
-coarse matrices built by polarization from the variational quantity `Mu`.
-
-`CheckerboardScale/` checks the Bernoulli-checkerboard instantiation of the
-same capstone: under the explicit dimension restriction `d > 2` (the
-hypothesis `hd : 3 ≤ d`), for every `1 ≤ lam ≤ Lam` and every coin parameter
-`p ≤ 1`, the Bernoulli checkerboard law with conductances `lam`, `Lam` — a
-genuinely random stationary law whose realizations lie pointwise in the
-quadratic-form ellipticity class `IsEllipticMatrix 1 Lam` (coercivity
-`∀ ξ, |ξ|² ≤ ξ · a ξ` together with the inverse quadratic-form bound
-`∀ ξ, Lam⁻¹ |ξ|² ≤ ξ · a⁻¹ ξ`; the class is stated for general non-symmetric
-matrices) — satisfies the same contrast decay
-`θ_{N₀+n} - 1 ≤ 3^{-alpha·n}` from an entry scale
-`N₀ ≤ Cscale · log(2 + Lam)` with `3^{N₀} ≤ (2 + Lam)^{Ctriadic}`.  The
-capstone's ellipticity parameter is instantiated at `Θ = Lam`, and all of its
-law hypotheses — the probability instance, the law carrier, the structural
-law, and the `Θ`-ellipticity class membership — are discharged by the
-checkerboard construction, so none of them appears in the statement: the
-triadic bound `3^{N₀} ≤ (2 + Lam)^{Ctriadic}` exhibits the physical entry
-scale as an explicit algebraic (polynomial) function of the contrast `Lam`,
-concretely instantiated on a random law.
+The five comparators check the quenched comparison estimate described
+below.
 
 Each `Challenge.lean` imports only `Mathlib` and ends with one `sorry`, the
 theorem proof being checked.  Each `Solution.lean` imports the repository theorem
@@ -151,7 +117,7 @@ solution pair is presented:
   is *constructed* from this classical data by integration by parts, so no
   weak-solution object is assumed; its defect and data are written with the
   classical gradient (`classicalComparisonDefect` / `classicalComparisonData`).
-- **`RandomCheckerboard`** is the only *random* (non-deterministic) comparator.
+- **`RandomCheckerboard`** supplies an explicit *random* (non-deterministic) example.
   The field is a Bernoulli checkerboard — each unit lattice cell independently
   gets scalar conductance `lam` or `Lam` with probability `p` — a genuinely
   random, stationary, finite-range, uniformly elliptic law, and the estimate
@@ -175,7 +141,6 @@ definitions needed to state the theorem surfaces.
 | negative Sobolev/dual norm representative | `Homogenization/Besov/Negative.lean` and `Homogenization/Book/Ch03/Theorems/SobolevPublic.lean` |
 | block formalism and the variational quantity `Mu` | `Homogenization/Ambient/{Basic,BlockMatrix}.lean`, `Homogenization/CoarseGraining/BlockFormalism/{Structures,Properties}.lean`, and `Homogenization/CoarseGraining/Definitions.lean` |
 | annealed coarse matrices and the scalar contrast | `Homogenization/Book/Ch04/AnnealedDefinitions.lean` and `Homogenization/Book/Ch05/Definitions.lean` |
-| the homogenization-scale theorem surface | `Homogenization/HighContrast/Scale/Final.lean` |
 | periodic Dirac bridge and examples | `Homogenization/Examples/Periodic/*` |
 | random Bernoulli checkerboard law and setup | `Homogenization/Examples/RandomCheckerboard/Basic.lean` and `Homogenization/Examples/RandomCheckerboard/CarrierLaw.lean` |
 
@@ -193,19 +158,17 @@ lake build \
   Audit.PeriodicGeneral.Challenge Audit.PeriodicGeneral.Solution \
   Audit.PeriodicConcrete.Challenge Audit.PeriodicConcrete.Solution \
   Audit.PeriodicSmooth.Challenge Audit.PeriodicSmooth.Solution \
-  Audit.RandomCheckerboard.Challenge Audit.RandomCheckerboard.Solution \
-  Audit.PolynomialScale.Challenge Audit.PolynomialScale.Solution \
-  Audit.CheckerboardScale.Challenge Audit.CheckerboardScale.Solution
+  Audit.RandomCheckerboard.Challenge Audit.RandomCheckerboard.Solution
 
 lake build Audit.MeasurabilityLocality.SemanticRegression
 ```
 
-The seven challenge modules each emit their one documented theorem-body
+The five challenge modules each emit their one documented theorem-body
 `sorry` warning.  Those are the only expected warnings: the solutions,
 semantic regression, and production library must emit no linter or other
 compiler warnings.
 
-Run the seven comparators:
+Run the five comparators:
 
 ```bash
 lake env comparator Audit/QuenchedComparison/comparator.json
@@ -213,8 +176,6 @@ lake env comparator Audit/PeriodicGeneral/comparator.json
 lake env comparator Audit/PeriodicConcrete/comparator.json
 lake env comparator Audit/PeriodicSmooth/comparator.json
 lake env comparator Audit/RandomCheckerboard/comparator.json
-lake env comparator Audit/PolynomialScale/comparator.json
-lake env comparator Audit/CheckerboardScale/comparator.json
 ```
 
 Point the comparator at the tools via `PATH` or the environment variables
@@ -243,24 +204,24 @@ Optionally, each solution can additionally be checked with the independent
 set `"enable_nanoda": true` in a comparator config and have `nanoda_bin` in
 `PATH` (or set `COMPARATOR_NANODA`).  Two extra lines then precede the
 verdict: `Running nanoda kernel on solution` / `nanoda kernel accepts the
-solution`.  All seven pairs pass this two-kernel variant (verified
-2026-08-19).
+solution`.  All five pairs pass this two-kernel variant (verified
+2026-09-13).
 
 The GitHub Actions workflow `.github/workflows/comparator.yml` runs the sweep
-on every push to `main` — all seven pairs, with the nanoda check enabled on
+on every push to `main` — all five pairs, with the nanoda check enabled on
 its own working copy of the configs, so the committed baseline stays
 three-tool while CI always exercises the stronger two-kernel variant — and
 uploads the per-pair logs as an artifact.
 
 ## Comparator Tools Used
 
-The successful local runs (2026-08-19, all seven pairs, both kernels) used:
+The successful local runs (2026-09-13, all five pairs, both kernels) used:
 
 | Tool | Version |
 | --- | --- |
-| Lean / Mathlib | `v4.26.0` |
+| Lean / Mathlib | `v4.33.0` |
 | comparator | commit `575674928e239f5bc452aab72d1dd7b0f1326494` (built on its own pinned toolchain; it is version-agnostic toward this project since it orchestrates `lake`/`lean4export` subprocesses) |
-| lean4export | tag `v4.26.0` (commit `3e1cdfe206ec3f54bae4a548d814ce9b2c1bb43d`) — must be built on the SAME toolchain as this repository, since it loads the project's oleans |
+| lean4export | tag `v4.33.0` (commit `15f6055e299ad5b89345e533cc2192f4cc00f659`) — must be built on the SAME toolchain as this repository, since it loads the project's oleans |
 | landrun | `0.1.18` (commit `811cfff51ceaf3d9843708aa6d22e9b84ccac8b4`), built from source with `CGO_ENABLED=0 go build ./cmd/landrun` (Go >= 1.24; the release binaries require glibc 2.38) |
 | nanoda (optional; CI enables it) | `nanoda_lib` 0.4.15 (commit `6ae1f0cd962f081f6c423454c5da729d841236a7`), `cargo build --release` (recent Rust; the binary is `target/release/nanoda_bin`) |
 

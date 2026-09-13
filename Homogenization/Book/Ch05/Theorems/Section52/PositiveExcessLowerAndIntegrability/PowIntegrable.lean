@@ -47,7 +47,7 @@ theorem section52_integrable_abs_finset_sum_pow_of_integrable_abs_pow
     simpa [Real.norm_eq_abs] using hG_int i hi
   have hsum_memLp :
       MemLp (fun a => ∑ i ∈ s, G i a) (ξ : ENNReal) P :=
-    memLp_finset_sum s hG_memLp
+    memLp_finsetSum s hG_memLp
   simpa [Real.norm_eq_abs] using
     hsum_memLp.integrable_norm_pow
       (Nat.pos_iff_ne_zero.mp (lt_of_lt_of_le zero_lt_one hξ))
@@ -144,7 +144,7 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
         (Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) hP4.sUpper (.finite 1) a) ^
           hP4.xi) P := by
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let s : ℝ := hP4.sUpper
   let ξ : ℕ := hP4.xi
   let D : Finset (TriadicCube d) := descendantsAtScale (originCube d (m : ℤ)) 0
@@ -215,7 +215,7 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
   have hlarge_nonneg :
       ∀ n ∈ section52LargeScaleSet m, ∀ a, 0 ≤ large n a := by
     intro n hn a
-    simpa [large, s, scalarization, base, hn] using
+    simpa [large, s, scalarization, base, hn] using!
       upperLargeScalePositiveExcess_nonneg_source
         hP hStruct hs_nonneg hn a
   have hG_nonneg : ∀ o ∈ I, ∀ a, 0 ≤ G o a := by
@@ -256,7 +256,7 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
             simpa [I] using ho
           rcases Finset.mem_image.mp hsome with ⟨k, hk, hkn⟩
           exact Option.some.inj hkn ▸ hk
-        simpa [G, large, s, scalarization, base, hn] using
+        simpa [G, large, s, scalarization, base, hn] using!
           upperLargeScalePositiveExcess_aemeasurable_source
             hP hStruct (r := s) hn
   have hsmall_int : Integrable (fun a : RegCoeffField d => |small a| ^ ξ) P := by
@@ -308,7 +308,7 @@ theorem upperFactorPowerIntegrableAtScale_from_P4
           upperLargeScalePositiveExcess_integrable_abs_pow_source
             hP hStruct (sSource := s) (r := s) (ξ := ξ)
             hs hξ_one hξ_two hP4.upper_moment_integrable hn
-        simpa [G, large, s, scalarization, base, Real.norm_eq_abs, hn] using hInt
+        simpa [G, large, s, scalarization, base, Real.norm_eq_abs, hn] using! hInt
   let X : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) s (.finite 1) a
   have hX_aemeas : AEMeasurable X P :=

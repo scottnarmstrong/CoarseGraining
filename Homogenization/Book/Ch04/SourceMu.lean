@@ -71,7 +71,7 @@ theorem isSourceLocalRandomVariable_Mu_cubeSet {d : ℕ}
   have hY_local :
       @Measurable (Source.Coarse.Carrier d) ℝ
         (Source.Coarse.localSigma (cubeSet Q) (measurableSet_cubeSet Q)) _ Y := by
-    letI : MeasurableSpace (Source.Coarse.Carrier d) :=
+    let : MeasurableSpace (Source.Coarse.Carrier d) :=
       Source.Coarse.localSigma (cubeSet Q) (measurableSet_cubeSet Q)
     have hcover_meas : ∀ i : Option ℕ, MeasurableSet (cover i) := by
       intro i

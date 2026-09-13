@@ -49,7 +49,7 @@ theorem h10WeakEquationOn_of_contDiff_tests
         ∫ x in U, vecDot (G x) (D n x) ∂MeasureTheory.volume =
           ∫ x in U, f x * φ.approx n x ∂MeasureTheory.volume := by
     intro n
-    simpa [D, euclideanGradient, euclideanCoordDeriv] using
+    simpa [D, euclideanGradient, euclideanCoordDeriv] using!
       htest (φ.approx n) (φ.approx_smooth n)
         (φ.approx_hasCompactSupport n) (φ.approx_support_subset n)
   have hcoord_tendsto :
@@ -74,10 +74,10 @@ theorem h10WeakEquationOn_of_contDiff_tests
         ∀ᶠ n in Filter.atTop, MeasureTheory.Integrable (Fn n) μ := by
       refine Filter.Eventually.of_forall ?_
       intro n
-      simpa [Fn, gi, D, μ, MeasureTheory.IntegrableOn] using
+      simpa [Fn, gi, D, μ, MeasureTheory.IntegrableOn] using!
         (hgi_mem.integrable_mul (hD_coord n i))
     have hfLim_int : MeasureTheory.Integrable fLim μ := by
-      simpa [fLim, gi, μ, MeasureTheory.IntegrableOn] using
+      simpa [fLim, gi, μ, MeasureTheory.IntegrableOn] using!
         (hgi_mem.integrable_mul (φ.toH1Function.gradMemL2 i))
     have hL1_bound :
         ∀ n,
@@ -118,7 +118,7 @@ theorem h10WeakEquationOn_of_contDiff_tests
             Filter.atTop (nhds 0) := by
         simpa [mul_zero] using hscaled
       exact tendsto_of_tendsto_of_tendsto_of_le_of_le
-        tendsto_const_nhds hscaled0 (fun _ => zero_le') hL1_bound
+        tendsto_const_nhds hscaled0 (fun _ => zero_le) hL1_bound
     have hL1_diff :
         Filter.Tendsto
           (fun n => MeasureTheory.eLpNorm (fun x => Fn n x - fLim x) 1 μ)
@@ -134,7 +134,7 @@ theorem h10WeakEquationOn_of_contDiff_tests
       rw [hEq]
       exact hL1
     exact MeasureTheory.tendsto_integral_of_L1'
-      (μ := μ) (f := fLim) hfLim_int hFn_int hL1_diff
+      (μ := μ) (f := fLim) hfLim_int.aestronglyMeasurable hFn_int hL1_diff
   have hleft_tendsto :
       Filter.Tendsto
         (fun n => ∫ x in U, vecDot (G x) (D n x) ∂MeasureTheory.volume)
@@ -150,7 +150,7 @@ theorem h10WeakEquationOn_of_contDiff_tests
             fun x => ∑ i, G x i * D n x i by
             funext x
             simp [vecDot, D]]
-      rw [MeasureTheory.integral_finset_sum]
+      rw [MeasureTheory.integral_finsetSum]
       intro i _hi
       exact ((memScalarL2_coord_of_memVectorL2 hG i).integrable_mul
         (hD_coord n i))
@@ -163,7 +163,7 @@ theorem h10WeakEquationOn_of_contDiff_tests
             fun x => ∑ i, G x i * φ.toH1Function.grad x i by
             funext x
             simp [vecDot]]
-      rw [MeasureTheory.integral_finset_sum]
+      rw [MeasureTheory.integral_finsetSum]
       intro i _hi
       exact ((memScalarL2_coord_of_memVectorL2 hG i).integrable_mul
         (φ.toH1Function.gradMemL2 i))
@@ -176,7 +176,7 @@ theorem h10WeakEquationOn_of_contDiff_tests
           (nhds (∑ i, ∫ x in U, G x i * φ.toH1Function.grad x i
             ∂MeasureTheory.volume)) := by
       simpa using
-        tendsto_finset_sum Finset.univ (fun i _ => hcoord_tendsto i)
+        tendsto_finsetSum Finset.univ (fun i _ => hcoord_tendsto i)
     rw [hEq_limit]
     exact hsum
   have hright_tendsto :
@@ -195,10 +195,10 @@ theorem h10WeakEquationOn_of_contDiff_tests
         ∀ᶠ n in Filter.atTop, MeasureTheory.Integrable (Fn n) μ := by
       refine Filter.Eventually.of_forall ?_
       intro n
-      simpa [Fn, μ, MeasureTheory.IntegrableOn] using
+      simpa [Fn, μ, MeasureTheory.IntegrableOn] using!
         (hf.integrable_mul (hψ_mem n))
     have hfLim_int : MeasureTheory.Integrable fLim μ := by
-      simpa [fLim, μ, MeasureTheory.IntegrableOn] using
+      simpa [fLim, μ, MeasureTheory.IntegrableOn] using!
         (hf.integrable_mul φ.toH1Function.memL2)
     have hL1_bound :
         ∀ n,
@@ -239,7 +239,7 @@ theorem h10WeakEquationOn_of_contDiff_tests
             Filter.atTop (nhds 0) := by
         simpa [mul_zero] using hscaled
       exact tendsto_of_tendsto_of_tendsto_of_le_of_le
-        tendsto_const_nhds hscaled0 (fun _ => zero_le') hL1_bound
+        tendsto_const_nhds hscaled0 (fun _ => zero_le) hL1_bound
     have hL1_diff :
         Filter.Tendsto
           (fun n => MeasureTheory.eLpNorm (fun x => Fn n x - fLim x) 1 μ)
@@ -255,7 +255,7 @@ theorem h10WeakEquationOn_of_contDiff_tests
       rw [hEq]
       exact hL1
     exact MeasureTheory.tendsto_integral_of_L1'
-      (μ := μ) (f := fLim) hfLim_int hFn_int hL1_diff
+      (μ := μ) (f := fLim) hfLim_int.aestronglyMeasurable hFn_int hL1_diff
   have hright_to_left :
       Filter.Tendsto
         (fun n => ∫ x in U, f x * φ.approx n x ∂MeasureTheory.volume)

@@ -40,7 +40,9 @@ noncomputable def boundaryForcedCaccioppoliCorrectorOpenH10
     (ρ : ZeroTraceDirichletCorrectorData Q (publicCoeffField Q a) g) :
     (boundaryForcedCaccioppoliCorrectorOpenH10 (Q := Q) (a := a) ρ).toH1Function.grad =
       ρ.toH10.toH1Function.grad := by
-  simp [boundaryForcedCaccioppoliCorrectorOpenH10]
+  simp only [boundaryForcedCaccioppoliCorrectorOpenH10]
+  rw [castH10Domain_toH1Function_grad]
+  rw [H10Function.toOpenCubeSet_toH1Function_grad]
 
 @[simp] theorem boundaryForcedCaccioppoliCorrectorOpenH10_toFun
     {d : ℕ} [NeZero d] {Q : TriadicCube d} {a : CoeffFamily d}
@@ -48,7 +50,9 @@ noncomputable def boundaryForcedCaccioppoliCorrectorOpenH10
     (ρ : ZeroTraceDirichletCorrectorData Q (publicCoeffField Q a) g) :
     (boundaryForcedCaccioppoliCorrectorOpenH10 (Q := Q) (a := a) ρ).toH1Function.toFun =
       ρ.toH10.toH1Function.toFun := by
-  simp [boundaryForcedCaccioppoliCorrectorOpenH10]
+  simp only [boundaryForcedCaccioppoliCorrectorOpenH10]
+  rw [castH10Domain_toH1Function_toFun]
+  rw [H10Function.toOpenCubeSet_toH1Function_toFun]
 
 /-- Half-open zero-trace RHS weak solutions transport to the open cube because
 the boundary has zero volume. -/
@@ -155,8 +159,17 @@ noncomputable def boundaryForcedCaccioppoliCorrectorZeroTraceForcedCubeSolution
     let φOpen : H10Function (openCubeSet Q) :=
       castH10Domain (Ch02.cubeDomain_coe Q) φ
     have h := hopen_coeff φOpen
-    simpa [boundaryForcedCaccioppoliCorrectorOpenH10, φOpen,
-      Ch02.cubeDomain_coe] using h
+    have hgrad : φOpen.toH1Function.grad = φ.toH1Function.grad := by
+      simp only [φOpen]
+      rw [castH10Domain_toH1Function_grad]
+    have hρgrad :
+        (boundaryForcedCaccioppoliCorrectorOpenH10 (Q := Q) (a := a) ρ).toH1Function.grad =
+          ρ.toH10.toH1Function.grad :=
+      boundaryForcedCaccioppoliCorrectorOpenH10_grad (Q := Q) (a := a) ρ
+    have hρgrad' :
+        ρ.toH10.toOpenCubeSet.toH1Function.grad = ρ.toH10.toH1Function.grad := by
+      simp only [H10Function.toOpenCubeSet_toH1Function_grad]
+    simpa only [hgrad, hρgrad, hρgrad', Ch02.cubeDomain_coe] using h
 
 /-- Public forced-solution wrapper for the zero-trace corrector, used when the
 RHS Poincare gradient estimate is applied to the corrector itself. -/
@@ -191,7 +204,7 @@ noncomputable def boundaryForcedCaccioppoliCorrectorForcedCubeSolution
       zeroTraceForcedSolutionEnergyNorm Q a
         (boundaryForcedCaccioppoliCorrectorZeroTraceForcedCubeSolution
           (Q := Q) (a := a) ρ) := by
-  simp [boundaryForcedCaccioppoliCorrectorForcedCubeSolution,
+  simp only [boundaryForcedCaccioppoliCorrectorForcedCubeSolution,
     boundaryForcedCaccioppoliCorrectorZeroTraceForcedCubeSolution,
     forcedSolutionEnergyNorm, zeroTraceForcedSolutionEnergyNorm]
 
@@ -212,7 +225,8 @@ noncomputable def boundaryForcedCaccioppoliRemainderOpenH1
     (boundaryForcedCaccioppoliRemainderOpenH1 u ρ).grad =
       fun y => u.toH1.grad y - ρ.toH10.toH1Function.grad y := by
   funext y
-  simp [boundaryForcedCaccioppoliRemainderOpenH1]
+  simp only [boundaryForcedCaccioppoliRemainderOpenH1, H1Function.sub_grad,
+    boundaryForcedCaccioppoliCorrectorOpenH10_grad]
 
 @[simp] theorem boundaryForcedCaccioppoliRemainderOpenH1_toFun
     {d : ℕ} [NeZero d] {Q : TriadicCube d} {a : CoeffFamily d}
@@ -222,7 +236,8 @@ noncomputable def boundaryForcedCaccioppoliRemainderOpenH1
     (boundaryForcedCaccioppoliRemainderOpenH1 u ρ).toFun =
       fun y => u.toH1.toFun y - ρ.toH10.toH1Function.toFun y := by
   funext y
-  simp [boundaryForcedCaccioppoliRemainderOpenH1]
+  simp only [boundaryForcedCaccioppoliRemainderOpenH1, H1Function.sub_toFun,
+    boundaryForcedCaccioppoliCorrectorOpenH10_toFun]
 
 /-- Deterministic half-open-cube realization of the homogeneous remainder. -/
 noncomputable def boundaryForcedCaccioppoliRemainderCubeH1
@@ -320,7 +335,6 @@ theorem boundaryForcedCaccioppoliRemainderCube_isAHarmonicGradient_publicCoeffFi
     ext i
     simp [W, U, boundaryForcedCaccioppoliRemainderCubeH1,
       sub_eq_add_neg, matVecMul_add, matVecMul_neg, Pi.add_apply]
-    ring
   exact ⟨W.isPotentialOn, hsol⟩
 
 /-- The value-level remainder is harmonic for the public coefficient field on
@@ -387,8 +401,17 @@ noncomputable def boundaryForcedCaccioppoliRemainderDatum
             (Q := Q) (a := a) ρ).toH1Function.toFun :=
       localizedZeroTraceFunctionOn_of_h10_any
         (boundaryForcedCaccioppoliCorrectorOpenH10 (Q := Q) (a := a) ρ)
-    simpa [boundaryForcedCaccioppoliRemainderOpenH1] using
+    have hsub :=
       localizedZeroTraceFunctionOn_sub u.zeroTraceOnBoundaryPatch hρ
+    have hfun :
+        (boundaryForcedCaccioppoliRemainderOpenH1 u ρ).toFun =
+          fun y => u.toH1.toFun y -
+            (boundaryForcedCaccioppoliCorrectorOpenH10
+              (Q := Q) (a := a) ρ).toH1Function.toFun y := by
+      funext y
+      simp only [boundaryForcedCaccioppoliRemainderOpenH1, H1Function.sub_toFun]
+    rw [hfun]
+    exact hsub
 
 @[simp] theorem boundaryForcedCaccioppoliRemainderDatum_toH1
     {d : ℕ} [NeZero d] {Q : TriadicCube d} {a : CoeffFamily d}

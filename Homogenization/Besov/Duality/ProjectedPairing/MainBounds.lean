@@ -109,9 +109,9 @@ theorem abs_cubeBesovPairing_projection_le_max_mul_cubeBesovPartialNorm_cubeBeso
               exact hterm j (Finset.mem_range.mp hj)
       _ = K * Finset.sum (Finset.range (N + 1)) (fun j => A j * B j) := by
             rw [← Finset.mul_sum]
-  letI : ENNReal.HolderConjugate q qConj :=
+  let : ENNReal.HolderConjugate q qConj :=
     by simpa [qConj, cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hq
-  letI : ENNReal.HolderConjugate qConj q := inferInstance
+  let : ENNReal.HolderConjugate qConj q := inferInstance
   have hq_toReal_ge : 1 ≤ q.toReal := by
     simpa using ENNReal.toReal_mono hqTop hq
   have hq_ne_one : q ≠ 1 := by

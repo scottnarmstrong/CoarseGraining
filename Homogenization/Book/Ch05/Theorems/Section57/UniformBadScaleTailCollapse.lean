@@ -173,7 +173,7 @@ theorem measureReal_shiftedBadScaleEvent_quenchedProbeEnvelope_le_uniformEndpoin
   dsimp only
   intro ht hα_nonneg hαt hαb hαharm hαa htb hBtail hlead_one
     hAcrude_one hq_large hpref
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P

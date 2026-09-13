@@ -288,7 +288,7 @@ theorem CubeBesovDualLocalMemLpGlobal.of_memLp_parent {d : ℕ} {Q : TriadicCube
   have hgR :
       MeasureTheory.MemLp g (cubeBesovConjExponent p) (normalizedCubeMeasure R) :=
     memLp_on_descendant_of_memLp (Q := Q) (R := R) (j := j) hR hg
-  simpa [cubeFluctuation] using
+  simpa [cubeFluctuation] using!
     hgR.sub (MeasureTheory.memLp_const (cubeAverage R g))
 
 theorem CubeBesovDualFullTest.memLp {d : ℕ} {Q : TriadicCube d} {s : ℝ}

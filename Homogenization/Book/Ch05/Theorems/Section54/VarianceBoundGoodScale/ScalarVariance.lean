@@ -96,7 +96,7 @@ theorem fullBlockNormalizedQuadraticObservable_scalarVariance_good_origin_le
           (cubeSet (originCube d (j : ℤ))) a - dotProduct q q| ^ (2 : ℕ) ∂P ≤
       4 * (delta * dotProduct q q) ^ (2 : ℕ) + 4 * K ^ (2 : ℕ) +
         2 * dotProduct q q * (delta * dotProduct q q + K) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : RegCoeffField d → ℝ := fun a =>
     fullBlockNormalizedQuadraticObservable hP hStruct (m : ℤ) q
       (cubeSet (originCube d (j : ℤ))) a

@@ -14,7 +14,7 @@ noncomputable def approxH1 (hU : IsOpen U) (u : H10Function U) (n : ℕ) : H1Fun
 theorem approx_memL2_sub_toH1_memL2
     (hU : IsOpen U) (u : H10Function U) (n : ℕ) :
     MeasureTheory.MemLp (fun x => u.approx n x - u.toH1Function x) 2 (volumeMeasureOn U) := by
-  simpa [approxH1, H1Function.ofContDiff] using
+  simpa [approxH1, H1Function.ofContDiff] using!
     ((approxH1 hU u n).memL2.sub u.toH1Function.memL2)
 
 theorem approx_grad_memL2_sub_toH1_grad_memL2
@@ -22,7 +22,7 @@ theorem approx_grad_memL2_sub_toH1_grad_memL2
     MeasureTheory.MemLp
       (fun x => (fderiv ℝ (u.approx n) x) (basisVec i) - u.toH1Function.grad x i)
       2 (volumeMeasureOn U) := by
-  simpa [approxH1, H1Function.ofContDiff] using
+  simpa [approxH1, H1Function.ofContDiff] using!
     (((approxH1 hU u n).grad_memL2 i).sub (u.toH1Function.grad_memL2 i))
 
 theorem tendsto_approxH1_toScalarL2
@@ -101,7 +101,7 @@ theorem tendsto_approxH1_gradientCoordL2NormSum
     Filter.Tendsto (fun n => (approxH1 hU u n).gradientCoordL2NormSum) Filter.atTop
       (nhds u.toH1Function.gradientCoordL2NormSum) := by
   simpa [H1Function.gradientCoordL2NormSum] using
-    tendsto_finset_sum Finset.univ
+    tendsto_finsetSum Finset.univ
       (fun i _ =>
         (continuous_norm.tendsto _).comp
           (tendsto_approxH1_gradCoordToScalarL2 (hU := hU) (u := u) i))
@@ -131,7 +131,7 @@ theorem valueL2Norm_le_sobolevConst_mul_gradientCoordL2NormSum_of_isOpenBoundedC
   have hleft :
       Filter.Tendsto (fun n => ‖(ψ n).toScalarL2‖) Filter.atTop
         (nhds ‖u.toH1Function.toScalarL2‖) := by
-    simpa [ψ] using
+    simpa [ψ] using!
       ((continuous_norm.tendsto _).comp
         (tendsto_approxH1_toScalarL2 (hU := hU.isOpen) (u := u)))
   have hright_grad :

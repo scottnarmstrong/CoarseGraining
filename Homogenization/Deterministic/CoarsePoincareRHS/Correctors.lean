@@ -18,7 +18,7 @@ leaving the scale recurrence and iteration for downstream work.
 theorem isFiniteMeasureVolumeMeasureOnCubeSet_rhs {d : ℕ} (Q : TriadicCube d) :
     MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) := by
   let U : Set (Vec d) := cubeSet Q
-  letI : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_cubeSet_lt_top Q⟩
+  let : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_cubeSet_lt_top Q⟩
   change MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict U)
   infer_instance
 
@@ -220,7 +220,6 @@ theorem exists_aHarmonicRemainder_of_potential_solenoidal
     funext x
     ext i
     simp [wH1, hv, sub_eq_add_neg, matVecMul_add, matVecMul_neg, Pi.add_apply]
-    ring
   let w : AHarmonicFunction a (cubeSet Q) :=
     { toH1 := wH1
       isHarmonic := ⟨wH1.isPotentialOn, hsol⟩ }

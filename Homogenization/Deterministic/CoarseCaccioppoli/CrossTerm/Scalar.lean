@@ -1,4 +1,5 @@
 import Homogenization.Deterministic.CoarseCaccioppoli.TriadicScale
+import Mathlib.Analysis.SpecialFunctions.Log.Base
 
 namespace Homogenization
 
@@ -376,15 +377,6 @@ theorem coarseCaccioppoli_boundary_explicitHeight_rightBranch_scalar_with_front
                 Real.rpow (ThetaRatio Q s t a) (1 / 2 : ℝ))
               (coarseCaccioppoliPower s t) *
             Real.rpow (coarseCaccioppoliGapInv ρ₁ ρ₂) (coarseCaccioppoliPower s t) := by
-      change
-        Calpha * X ≤
-          ((9 : ℝ) * Real.rpow (4 : ℝ) (coarseCaccioppoliPower s t) *
-            Real.rpow (81 : ℝ) (coarseCaccioppoliPower s t)) * Calpha *
-            Real.rpow
-              (Calpha / (s * (1 - s)) *
-                Real.rpow (ThetaRatio Q s t a) (1 / 2 : ℝ))
-              (coarseCaccioppoliPower s t) *
-            Real.rpow (coarseCaccioppoliGapInv ρ₁ ρ₂) (coarseCaccioppoliPower s t)
       exact
       coarseCaccioppoli_boundary_explicitHeight_rightBranch_scalar
         Q a hCalpha.le hs ht hst hchoice hlt hbranch
@@ -528,7 +520,7 @@ theorem coarseCaccioppoli_boundary_noteCrossTermBound_of_triadicGapScaleChoice
         symm
         exact Real.rpow_natCast _ 2
       _ = Real.rpow (ρ₂ - ρ₁) (-(2 : ℝ)) := by
-            simpa using (Real.rpow_neg_eq_inv_rpow (ρ₂ - ρ₁) (2 : ℝ)).symm
+            simp
       _ = Real.rpow (ρ₂ - ρ₁) (-2 : ℝ) := by ring
   have hgapPowEq :
       Real.rpow (coarseCaccioppoliGapInv ρ₁ ρ₂) p = Real.rpow (ρ₂ - ρ₁) (-p) := by

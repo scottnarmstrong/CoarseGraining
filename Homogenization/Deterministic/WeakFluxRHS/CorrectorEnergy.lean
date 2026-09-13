@@ -225,7 +225,7 @@ theorem coefficientEnergy_average_le_note_terms_of_partialBounds_centered_two_tw
         MeasureTheory.MemLp (fun _ : Vec d => cubeAverageVec Q g)
           (2 : ENNReal) (normalizedCubeMeasure Q) :=
       MeasureTheory.memLp_const (cubeAverageVec Q g)
-    simpa [gCentered] using hg.sub hconst
+    simpa [gCentered] using! hg.sub hconst
   have havg_g : cubeAverageVec Q gCentered = 0 := by
     simpa [gCentered] using cubeAverageVec_centered_eq_zero Q g hg_mem
   have hpair :
@@ -301,7 +301,7 @@ theorem coefficientEnergy_average_le_sharp_note_terms_of_partialBounds_centered_
         MeasureTheory.MemLp (fun _ : Vec d => cubeAverageVec Q g)
           (2 : ENNReal) (normalizedCubeMeasure Q) :=
       MeasureTheory.memLp_const (cubeAverageVec Q g)
-    simpa [gCentered] using hg.sub hconst
+    simpa [gCentered] using! hg.sub hconst
   have havg_g : cubeAverageVec Q gCentered = 0 := by
     simpa [gCentered] using cubeAverageVec_centered_eq_zero Q g hg_mem
   have hpair :

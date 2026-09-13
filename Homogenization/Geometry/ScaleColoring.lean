@@ -208,7 +208,7 @@ theorem one_le_dist_of_ne_of_mem_descendantsAtScaleScaleColorClass {d : ℕ}
       _ = cubeScaleColor k S := ((mem_descendantsAtScaleScaleColorClass_iff.mp hS).2).symm
   have hindex_ne : ∃ i, R.index i ≠ S.index i := by
     by_contra h
-    push_neg at h
+    push Not at h
     apply hneq
     cases R with
     | mk scaleR indexR =>

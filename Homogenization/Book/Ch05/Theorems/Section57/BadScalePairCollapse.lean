@@ -480,7 +480,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_soft_hig
   dsimp only
   intro hnm hqm ht hαt
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let x : ℝ :=
     αbad * ((m - q : ℕ) : ℝ) - t * ((m - n : ℕ) : ℝ)
@@ -635,7 +635,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_soft_cru
   dsimp only
   intro hnm hqm hαt
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let x : ℝ :=
     αbad * ((m - q : ℕ) : ℝ) - t * ((m - n : ℕ) : ℝ)
@@ -778,7 +778,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_soft_mix
   dsimp only
   intro hnm hqm ht hαt
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let x : ℝ :=
     αbad * ((m - q : ℕ) : ℝ) - t * ((m - n : ℕ) : ℝ)

@@ -330,10 +330,8 @@ theorem aemeasurable_coarseFullBlockMatrix_cubeSet
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P := by
-  rw [aemeasurable_pi_iff]
-  intro α
-  rw [aemeasurable_pi_iff]
-  intro β
+  refine aemeasurable_pi_iff.2 fun α => ?_
+  refine aemeasurable_pi_iff.2 fun β => ?_
   cases α with
   | inl i =>
       cases β with
@@ -359,10 +357,8 @@ theorem aemeasurable_coarseB_cubeSet
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft) P := by
-  rw [aemeasurable_pi_iff]
-  intro i
-  rw [aemeasurable_pi_iff]
-  intro j
+  refine aemeasurable_pi_iff.2 fun i => ?_
+  refine aemeasurable_pi_iff.2 fun j => ?_
   exact hP.aemeasurable_coarseBlockMatrix_upperLeft_apply_cubeSet Q i j
 
 /-- The upper-right block of the doubled coarse matrix is a.e.-measurable. -/
@@ -371,10 +367,8 @@ theorem aemeasurable_coarseBlockMatrix_upperRight_cubeSet
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).upperRight) P := by
-  rw [aemeasurable_pi_iff]
-  intro i
-  rw [aemeasurable_pi_iff]
-  intro j
+  refine aemeasurable_pi_iff.2 fun i => ?_
+  refine aemeasurable_pi_iff.2 fun j => ?_
   exact hP.aemeasurable_coarseBlockMatrix_upperRight_apply_cubeSet Q i j
 
 /-- The lower-left block of the doubled coarse matrix is a.e.-measurable. -/
@@ -383,10 +377,8 @@ theorem aemeasurable_coarseBlockMatrix_lowerLeft_cubeSet
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft) P := by
-  rw [aemeasurable_pi_iff]
-  intro i
-  rw [aemeasurable_pi_iff]
-  intro j
+  refine aemeasurable_pi_iff.2 fun i => ?_
+  refine aemeasurable_pi_iff.2 fun j => ?_
   exact hP.aemeasurable_coarseBlockMatrix_lowerLeft_apply_cubeSet Q i j
 
 /-- The lower-right block `σ_*⁻¹(U; a)` is a.e.-measurable as a matrix-valued
@@ -396,10 +388,8 @@ theorem aemeasurable_coarseSigmaStarInv_cubeSet
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight) P := by
-  rw [aemeasurable_pi_iff]
-  intro i
-  rw [aemeasurable_pi_iff]
-  intro j
+  refine aemeasurable_pi_iff.2 fun i => ?_
+  refine aemeasurable_pi_iff.2 fun j => ?_
   exact hP.aemeasurable_coarseBlockMatrix_lowerRight_apply_cubeSet Q i j
 
 /-- The mixed observable `σ_*⁻¹(U; a)κ(U; a)`, represented as the negative
@@ -409,10 +399,8 @@ theorem aemeasurable_coarseSigmaStarInvKappaMean_cubeSet
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => -((coarseBlockMatrix (cubeSet Q) a.toFun).lowerLeft)) P := by
-  rw [aemeasurable_pi_iff]
-  intro i
-  rw [aemeasurable_pi_iff]
-  intro j
+  refine aemeasurable_pi_iff.2 fun i => ?_
+  refine aemeasurable_pi_iff.2 fun j => ?_
   exact (hP.aemeasurable_coarseBlockMatrix_lowerLeft_apply_cubeSet Q i j).neg
 
 /-- The full unfolded starred inverse coarse block matrix is a.e.-measurable. -/
@@ -421,10 +409,8 @@ theorem aemeasurable_coarseStarredFullBlockMatrixInv_cubeSet
     (Q : TriadicCube d) :
     AEMeasurable
       (fun a : RegCoeffField d => toFullBlockMat (coarseStarredBlockMatrixInv (cubeSet Q) a.toFun)) P := by
-  rw [aemeasurable_pi_iff]
-  intro α
-  rw [aemeasurable_pi_iff]
-  intro β
+  refine aemeasurable_pi_iff.2 fun α => ?_
+  refine aemeasurable_pi_iff.2 fun β => ?_
   cases α with
   | inl i =>
       cases β with

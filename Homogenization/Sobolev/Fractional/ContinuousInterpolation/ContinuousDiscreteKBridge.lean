@@ -108,7 +108,7 @@ theorem cubeResidualNorm_le_continuousKResidualNorm {d : ℕ}
       (unitCenteredCubeDomain d).normalizedVolume := by
     have hsub := F.euclideanMemL2.sub G.euclideanMemL2
     simpa only [euclideanNorm_eq_norm_ofVec, HilbertVec.ofVec, PiLp.toLp_apply,
-      Pi.sub_apply] using hsub.norm
+      Pi.sub_apply] using! hsub.norm
   change
     (MeasureTheory.eLpNorm
       (fun x => F x - G.toField x) (2 : ℝ≥0∞)
@@ -143,7 +143,7 @@ theorem continuousKResidualNorm_le_dimPlusOne_mul_cubeResidualNorm {d : ℕ}
     rw [MeasureTheory.memLp_piLp_iff] at hF
     have hG := G.euclideanMemL2
     rw [MeasureTheory.memLp_piLp_iff] at hG
-    simpa only [R, Pi.sub_apply, HilbertVec.ofVec, PiLp.toLp_apply] using
+    simpa only [R, Pi.sub_apply, HilbertVec.ofVec, PiLp.toLp_apply] using!
       (hF i).sub (hG i)
   have hbound : ∀ x : Vec d, euclideanNorm (R x) ≤ ‖C • R x‖ := by
     intro x
@@ -262,7 +262,7 @@ theorem continuousKGradientNorm_le_cubeRelativeGradientCoordL2NormSum {d : ℕ}
       exact Finset.sum_nonneg fun _ _ =>
         Finset.sum_nonneg fun _ _ => abs_nonneg _
     rw [Real.norm_eq_abs, abs_of_nonneg htotal_nonneg]
-    simpa only [total, row, f] using matrixFrobeniusMagnitude_le_sum_abs (G.gradient x)
+    simpa only [total, row, f] using! matrixFrobeniusMagnitude_le_sum_abs (G.gradient x)
   have hsum_ne_top :
       (∑ i : Fin d, ∑ j : Fin d,
         MeasureTheory.eLpNorm (f i j) (2 : ℝ≥0∞) μ) ≠ ∞ := by
@@ -441,7 +441,7 @@ theorem cubeKFunctionalCompetitorValue_le_continuousKFunctionalCompetitorValue_m
           (continuousKResidualNorm_nonneg F G)
   have hB : G.toCubeVectorH1Function.relativeGradientCoordL2NormSum ≤
       C * continuousKGradientNorm G := by
-    simpa only [C] using
+    simpa only [C] using!
       cubeRelativeGradientCoordL2NormSum_le_dimPlusOne_sq_mul_continuousKGradientNorm G
   simpa only [cubeVectorKFunctionalCompetitorValue,
     continuousKFunctionalCompetitorValue] using
@@ -473,7 +473,7 @@ theorem continuousKFunctionalCompetitorValue_le_cubeKFunctionalCompetitorValue_m
       continuousKResidualNorm F G.toContinuousKCompetitor
           ≤ (d + 1 : ℝ) * cubeLpNorm (originCube d 0) (2 : ℝ≥0∞)
             (fun x => F x - G.toField x) := by
-              simpa only using
+              simpa only using!
                 continuousKResidualNorm_le_dimPlusOne_mul_cubeResidualNorm F
                   G.toContinuousKCompetitor
       _ ≤ C * cubeLpNorm (originCube d 0) (2 : ℝ≥0∞)
@@ -485,7 +485,7 @@ theorem continuousKFunctionalCompetitorValue_le_cubeKFunctionalCompetitorValue_m
     calc
       continuousKGradientNorm G.toContinuousKCompetitor
           ≤ G.relativeGradientCoordL2NormSum := by
-              simpa only using
+              simpa only using!
                 continuousKGradientNorm_le_cubeRelativeGradientCoordL2NormSum
                   G.toContinuousKCompetitor
       _ ≤ C * G.relativeGradientCoordL2NormSum := by

@@ -243,7 +243,7 @@ theorem isBigO_quenchedProbeEnvelope
       (X := localizedNormalizedProbeJMax hP hStruct m n)
       (A := A) (c := K)
       (by simpa [K] using quenchedProbeEnvelopeConst_nonneg d) htail
-  simpa [quenchedProbeEnvelope, K, D, S, A] using hmul
+  simpa [quenchedProbeEnvelope, K, D, S, A] using! hmul
 
 /-- Fixed-pair high-scale bad-event estimate, after shifting the deterministic
 entry scale to zero.  The three threshold hypotheses are deterministic and are
@@ -300,7 +300,7 @@ theorem measureReal_shiftedHigh_badPairEvent_quenchedProbeEnvelope_le_exp
   intro t αbad P hP hStruct hΓ hσ_eq hparams q m n ℓ s T hℓn hnm hqm hs
   dsimp only
   intro hthreshold hcenter hscale
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
@@ -383,7 +383,7 @@ theorem measureReal_crude_badPairEvent_quenchedProbeEnvelope_le_exp
   intro P hP hStruct hΓ hσ_eq hparams N m n s T hnm hNm hs
   dsimp only
   intro hthreshold hscale
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let D : Finset (TriadicCube d) :=
     descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ)
   let S : Finset (NormalizedProbeIndex d) := Finset.univ

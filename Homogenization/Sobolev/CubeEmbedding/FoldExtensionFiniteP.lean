@@ -144,8 +144,8 @@ private theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp
       atTop (nhds 0)) :
     Tendsto (fun n => ∫ x in U, f n x * h x ∂volume)
       atTop (nhds (∫ x in U, g x * h x ∂volume)) := by
-  letI : ENNReal.HolderConjugate p.exponent p.conjugate.exponent := p.holderConjugate
-  letI : ENNReal.HolderConjugate p.conjugate.exponent p.exponent := inferInstance
+  let : ENNReal.HolderConjugate p.exponent p.conjugate.exponent := p.holderConjugate
+  let : ENNReal.HolderConjugate p.conjugate.exponent p.exponent := inferInstance
   set μ : Measure (Vec d) := volume.restrict U with hμ
   have hfh_int : ∀ n, Integrable (fun x => f n x * h x) μ := by
     intro n
@@ -170,7 +170,7 @@ private theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp
         tendsto_const_nhds (Or.inr (by simp))
     rw [zero_mul] at hprod
     have hreal := (ENNReal.tendsto_toReal (by simp : (0 : ℝ≥0∞) ≠ ⊤)).comp hprod
-    simpa using hreal
+    simpa using! hreal
   refine squeeze_zero_norm ?_ hBtend
   intro n
   rw [hdiff_eq n]
@@ -181,14 +181,14 @@ private theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp
     have h := eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm
       (p := p.exponent) (q := p.conjugate.exponent) (r := 1)
       ((hf n).sub hg).1 hh.1 (fun a b => a * b) 1 hbound
-    simpa [B] using h
+    simpa [B] using! h
   calc
     ‖∫ x, (f n x - g x) * h x ∂μ‖
       ≤ (∫⁻ x, ENNReal.ofReal ‖(f n x - g x) * h x‖ ∂μ).toReal :=
         norm_integral_le_lintegral_norm _
     _ = (eLpNorm (fun x => (f n x - g x) * h x) 1 μ).toReal := by
       rw [eLpNorm_one_eq_lintegral_enorm]
-      simp_rw [ofReal_norm_eq_enorm]
+      simp_rw [ofReal_norm]
     _ ≤ (B n).toReal := by
       apply ENNReal.toReal_mono _ hHolder
       exact ENNReal.mul_ne_top ((hf n).sub hg).2.ne hh.2.ne
@@ -422,7 +422,7 @@ def foldExtensionFiniteP {m : ℕ} (lo hi : Vec (m + 1)) (hlt : ∀ k, lo k < hi
     intro n i
     have hcont : Continuous (fun y => fderiv ℝ (wn n) y (basisVec i)) :=
       (((hw_smooth n).of_le (by exact_mod_cast le_top) : ContDiff ℝ 1 (wn n)).continuous_fderiv
-        le_rfl).clm_apply continuous_const
+        (by simp)).clm_apply continuous_const
     refine ⟨((hcont.measurable.comp hFold_meas).mul
       (measurable_foldSign_comp lo hi i)).aestronglyMeasurable, ?_⟩
     refine lt_of_le_of_lt
@@ -449,13 +449,13 @@ def foldExtensionFiniteP {m : ℕ} (lo hi : Vec (m + 1)) (hlt : ∀ k, lo k < hi
           (volume.restrict (Box lo hi)) := by
       intro n
       rw [show (fun x => wn n (Fold lo hi x) - g (Fold lo hi x))
-          = fun x => (fun y => wn n y - g y) (Fold lo hi x) from rfl,
+          = fun x => (wn n - g) (Fold lo hi x) from rfl,
         eLpNorm_foldComp_finiteLp p ((hw_meas n).sub hg_meas) lo hi hlt]
       congr 1
       refine eLpNorm_congr_ae ?_
       filter_upwards [ae_restrict_mem (isOpen_Box lo hi).measurableSet, hg_ae] with x hxU hgx
       have hχ1 : χ x = 1 := hχ_one x (hBox_Icc x hxU)
-      simp only [hwn, hχ1, one_mul, hgx]
+      simp only [Pi.sub_apply, hwn, hχ1, one_mul, hgx]
     have hmul : Tendsto
         (fun n => Cd * eLpNorm (fun x => (A n).toFun x - u.toFun x) p.exponent
           (volume.restrict (Box lo hi))) atTop (nhds (Cd * 0)) :=
@@ -492,7 +492,7 @@ def foldExtensionFiniteP {m : ℕ} (lo hi : Vec (m + 1)) (hlt : ∀ k, lo k < hi
               p.exponent (volume.restrict (Box lo hi)) :=
               eLpNorm_foldComp_mul_foldSign_le_finiteLp p
                 ((((hw_smooth n).of_le (by exact_mod_cast le_top) : ContDiff ℝ 1 (wn n)).continuous_fderiv
-                  le_rfl).clm_apply continuous_const |>.measurable.sub (hgi_meas i)) lo hi hlt i
+                  (by simp)).clm_apply continuous_const |>.measurable.sub (hgi_meas i)) lo hi hlt i
         _ = Cd * eLpNorm (fun x => (A n).grad x i - u.grad x i) p.exponent
               (volume.restrict (Box lo hi)) := by
               congr 1
@@ -508,7 +508,7 @@ def foldExtensionFiniteP {m : ℕ} (lo hi : Vec (m + 1)) (hlt : ∀ k, lo k < hi
         (Or.inr hCd_lt.ne)
       simpa using hmul
     exact tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hrhs
-      (fun n => zero_le _) hbound
+      (fun n => zero_le) hbound
   exact
     { Eu :=
         { toFun := fun x => g (Fold lo hi x)

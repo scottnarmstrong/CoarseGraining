@@ -102,7 +102,7 @@ noncomputable def toH1FunctionOfMemH1Graph
     simpa [MemL2On, MemVectorL2, volumeMeasureOn] using
       (show MemL2On U (fun x => (hilbertVectorL2ToVectorL2 (U := U) z.2 x) i) by
         let π : Vec d →L[ℝ] ℝ := ContinuousLinearMap.proj i
-        simpa [MemL2On, MemVectorL2, volumeMeasureOn] using π.comp_memLp' hgradMem)
+        simpa [MemL2On, MemVectorL2, volumeMeasureOn] using! π.comp_memLp' hgradMem)
   hasWeakGradient := by
     intro i ψ hψ_smooth hψ_compact hψ_sub
     let φ : H1WeakTestFunction U :=
@@ -191,7 +191,7 @@ theorem exists_h1Function_of_toScalarL2_toHilbertVectorL2OfVecField_mem_h1GraphC
       hasWeakGradient := ?_ }
   · intro i
     let π : Vec d →L[ℝ] ℝ := ContinuousLinearMap.proj i
-    simpa [MemL2On, MemVectorL2, volumeMeasureOn] using π.comp_memLp' hG
+    simpa [MemL2On, MemVectorL2, volumeMeasureOn] using! π.comp_memLp' hG
   · intro i φ hφ_smooth hφ_compact hφ_sub
     let ψ : H1WeakTestFunction U :=
       ⟨φ, hφ_smooth, hφ_compact, hφ_sub⟩
@@ -409,7 +409,7 @@ theorem tendsto_integralAverage_of_tendsto_toScalarL2
   have hCLM :
       Filter.Tendsto (fun a => integralAverageCLM (U := U) ((f a).toScalarL2)) l
         (nhds (integralAverageCLM (U := U) u.toScalarL2)) := by
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_apply] using!
       ((integralAverageCLM (U := U)).continuous.tendsto u.toScalarL2).comp h
   simpa [integralAverage_eq_integralAverageCLM_toScalarL2] using hCLM
 
@@ -421,7 +421,7 @@ theorem tendsto_toScalarL2_subAverage_of_tendsto_toScalarL2
   have hCLM :
       Filter.Tendsto (fun a => subAverageValueCLM (U := U) ((f a).toScalarL2)) l
         (nhds (subAverageValueCLM (U := U) u.toScalarL2)) := by
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_apply] using!
       ((subAverageValueCLM (U := U)).continuous.tendsto u.toScalarL2).comp h
   simpa [toScalarL2_subAverage_eq_subAverageValueCLM] using hCLM
 
@@ -450,7 +450,7 @@ theorem tendsto_gradientCoordL2NormSum_subAverage_of_tendsto_gradCoordToScalarL2
     Filter.Tendsto (fun a => (f a).subAverage.gradientCoordL2NormSum) l
       (nhds u.subAverage.gradientCoordL2NormSum) := by
   simpa [H1Function.gradientCoordL2NormSum, H1Function.gradCoordToScalarL2_subAverage_eq] using
-    (tendsto_finset_sum Finset.univ
+    (tendsto_finsetSum Finset.univ
       (fun i _ =>
         (continuous_norm.tendsto _).comp
           (hgrad i)))

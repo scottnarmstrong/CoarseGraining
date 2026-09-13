@@ -331,7 +331,7 @@ Isotropy and adjoint invariance scalarize the primitive annealed blocks at a
 fixed scale.  The a.s. deterministic coarse-block existence needed by the
 covariance identities is supplied by `RestrictionLawCarrier`.
 -/
-noncomputable def Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoint
+theorem Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoint
     {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (hIso : RestrictionIsotropicLaw P) (hAdj : RestrictionAdjointInvariantLaw P) (n : ℤ) :
     Internal.AnnealedPrimitiveScalarizationData (d := d) P n :=
@@ -385,7 +385,7 @@ noncomputable def Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoi
 
 /-- Structural-law version of
 `Internal.annealedPrimitiveScalarizationData_of_isotropic_adjoint`. -/
-noncomputable def Internal.annealedPrimitiveScalarizationData_of_structuralLaw
+theorem Internal.annealedPrimitiveScalarizationData_of_structuralLaw
     {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
     (hStruct : RestrictionStructuralLaw P) (n : ℤ) :
     Internal.AnnealedPrimitiveScalarizationData (d := d) P n :=

@@ -188,8 +188,9 @@ theorem matrixArithmeticMean_le_matrixHarmonicMean_add_average_quadratic
       (b := b) G hb
   have hPSD := harmonicMean_quadratic_posSemidef (b := b) (G := G) hb hG
   convert hPSD using 1
-  rw [hId]
-  noncomm_ring
+  all_goals first
+    | rfl
+    | (rw [hId]; noncomm_ring)
 
 /-- The comparison form used to replace the harmonic mean by the arithmetic mean. -/
 theorem matrixArithmeticMean_sub_matrixHarmonicMean_le_average_quadratic
@@ -203,8 +204,9 @@ theorem matrixArithmeticMean_sub_matrixHarmonicMean_le_average_quadratic
       (b := b) G hb
   have hPSD := harmonicMean_quadratic_posSemidef (b := b) (G := G) hb hG
   convert hPSD using 1
-  rw [hId]
-  noncomm_ring
+  all_goals first
+    | rfl
+    | (rw [hId]; noncomm_ring)
 
 end
 

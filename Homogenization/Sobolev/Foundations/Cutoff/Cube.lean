@@ -121,7 +121,7 @@ theorem differentiableAt_cubeArgument {d : ℕ} (Q : TriadicCube d)
       (fun y : Vec d => y i - cubeCenter Q i) :=
     (contDiff_apply ℝ ℝ i).sub contDiff_const
   exact ((contDiff_const.sub (hcoord.pow 2)).div contDiff_const hden).differentiable
-    (by simp : (1 : WithTop ℕ∞) ≤ (⊤ : ℕ∞)) x
+    (by simp) x
 
 /-- On the outer closed cube, each one-dimensional cube argument has the
 expected first-derivative scale. -/
@@ -200,17 +200,14 @@ theorem norm_iteratedFDeriv_two_cubeArgument_le {d : ℕ}
   rw [hfun]
   have hsq2 : ContDiff ℝ (2 : ℕ) (fun y : Vec d => (y i - cubeCenter Q i) ^ 2) := by
     exact (((contDiff_apply ℝ ℝ i).sub contDiff_const).pow 2)
-  have hf2 : ContDiff ℝ (2 : ℕ) f := by
-    simpa [f] using
-      ((contDiff_const : ContDiff ℝ (2 : ℕ)
-        (fun _ : Vec d => (-(1 / ((ρ₂ * cubeRadius Q) ^ 2 - (ρ₁ * cubeRadius Q) ^ 2)) : ℝ))).smul
-        hsq2)
+  have hf2 : ContDiff ℝ (2 : ℕ) f :=
+    hsq2.const_smul (-(1 / ((ρ₂ * cubeRadius Q) ^ 2 - (ρ₁ * cubeRadius Q) ^ 2)))
   have hg2 : ContDiff ℝ (2 : ℕ) g := by
     simpa [g] using (contDiff_const : ContDiff ℝ (2 : ℕ) g)
   have hsum :
       iteratedFDeriv ℝ 2 (fun y : Vec d => f y + g y) x =
         iteratedFDeriv ℝ 2 f x + iteratedFDeriv ℝ 2 g x := by
-    simpa using
+    simpa using!
       congrArg (fun F : Vec d → ContinuousMultilinearMap ℝ (fun _ : Fin 2 => Vec d) ℝ => F x)
         (iteratedFDeriv_add (𝕜 := ℝ) (i := 2) (f := f) (g := g) hf2 hg2)
   rw [hsum]
@@ -286,7 +283,7 @@ theorem cubeFactor_contDiff_two {d : ℕ} (θ : QuantitativeTransitionProfile)
   have harg : ContDiff ℝ (2 : ℕ) (cubeArgument Q ρ₁ ρ₂ i) := by
     unfold cubeArgument
     exact (contDiff_const.sub (hcoord.pow 2)).div contDiff_const hden
-  simpa [cubeFactor] using hθ.comp harg
+  simpa [cubeFactor] using! hθ.comp harg
 
 /-- Inside the `i`th inner slab, the `i`th one-dimensional cube factor is
 locally constant, hence its full Frechet derivative vanishes. -/
@@ -327,7 +324,7 @@ theorem fderiv_cubeFactor_apply_basisVec_eq_zero_of_ne {d : ℕ}
   have hθ : DifferentiableAt ℝ θ (cubeArgument Q ρ₁ ρ₂ k x) :=
     θ.smooth.differentiable (by simp) (cubeArgument Q ρ₁ ρ₂ k x)
   unfold cubeFactor
-  rw [fderiv_comp' (x := x) hθ harg]
+  rw [fderiv_fun_comp (x := x) hθ harg]
   have harg_zero :
       (fderiv ℝ (cubeArgument Q ρ₁ ρ₂ k) x) (basisVec i) = 0 := by
     simp [fderiv_cubeArgument_apply_basisVec, hik]
@@ -348,23 +345,23 @@ theorem fderiv_cubeCutoff_apply_basisVec_eq_zero_of_abs_sub_center_lt_inner {d :
       (differentiableAt_cubeArgument Q hρ₁ hρ₁₂ k x)
   change (fderiv ℝ (fun y : Vec d =>
       ∏ k : Fin d, θ (cubeArgument Q ρ₁ ρ₂ k y)) x) (basisVec i) = 0
-  rw [fderiv_finset_prod (u := (Finset.univ : Finset (Fin d)))
+  rw [fderiv_finsetProd (u := (Finset.univ : Finset (Fin d)))
     (g := fun k y => θ (cubeArgument Q ρ₁ ρ₂ k y))]
-  · simp only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply]
+  · simp only [sum_apply, smul_apply]
     apply Finset.sum_eq_zero
     intro k _hk
     by_cases hki : k = i
     · subst k
       have hderiv_zero :
           fderiv ℝ (fun y : Vec d => θ (cubeArgument Q ρ₁ ρ₂ i y)) x = 0 := by
-        simpa [cubeFactor] using
+        simpa [cubeFactor] using!
           fderiv_cubeFactor_eq_zero_of_abs_sub_center_lt_inner θ Q hρ₁ hρ₁₂ hx
       simp [hderiv_zero]
     · have hderiv_apply_zero :
           (fderiv ℝ (fun y : Vec d => θ (cubeArgument Q ρ₁ ρ₂ k y)) x)
               (basisVec i) = 0 := by
         have hik : i ≠ k := fun h => hki h.symm
-        simpa [cubeFactor] using
+        simpa [cubeFactor] using!
           fderiv_cubeFactor_apply_basisVec_eq_zero_of_ne θ Q hρ₁ hρ₁₂ hik x
       simp [hderiv_apply_zero]
   · intro k _hk
@@ -379,8 +376,7 @@ theorem norm_iteratedFDeriv_one_cubeFactor_le_of_mem_scaledClosedCubeSet {d : �
   have hnorm :
       ‖iteratedFDeriv ℝ 1 (cubeFactor θ Q ρ₁ ρ₂ i) x‖ =
         ‖fderiv ℝ (cubeFactor θ Q ρ₁ ρ₂ i) x‖ := by
-    simpa [norm_iteratedFDeriv_zero] using
-      (norm_iteratedFDeriv_fderiv (𝕜 := ℝ) (f := cubeFactor θ Q ρ₁ ρ₂ i) (n := 0) (x := x)).symm
+    simp
   have hargDiff : DifferentiableAt ℝ (cubeArgument Q ρ₁ ρ₂ i) x := by
     have hden : ∀ _x : Vec d,
         (ρ₂ * cubeRadius Q) ^ 2 - (ρ₁ * cubeRadius Q) ^ 2 ≠ 0 :=
@@ -388,7 +384,7 @@ theorem norm_iteratedFDeriv_one_cubeFactor_le_of_mem_scaledClosedCubeSet {d : �
     have hcoord : ContDiff ℝ (⊤ : ℕ∞) (fun y : Vec d => y i - cubeCenter Q i) :=
       (contDiff_apply ℝ ℝ i).sub contDiff_const
     exact ((contDiff_const.sub (hcoord.pow 2)).div contDiff_const hden).differentiable
-      (ENat.natCast_le_of_coe_top_le_withTop le_rfl 1) x
+      (by simp) x
   rw [hnorm]
   calc
     ‖fderiv ℝ (cubeFactor θ Q ρ₁ ρ₂ i) x‖
@@ -412,8 +408,7 @@ theorem norm_iteratedFDeriv_two_cubeFactor_le_of_mem_scaledClosedCubeSet {d : �
     have hnorm :
         ‖iteratedFDeriv ℝ 1 (cubeArgument Q ρ₁ ρ₂ i) x‖ =
           ‖fderiv ℝ (cubeArgument Q ρ₁ ρ₂ i) x‖ := by
-      simpa [norm_iteratedFDeriv_zero] using
-        (norm_iteratedFDeriv_fderiv (𝕜 := ℝ) (f := cubeArgument Q ρ₁ ρ₂ i) (n := 0) (x := x)).symm
+      simp
     rw [hnorm]
     exact norm_fderiv_cubeArgument_le_of_mem_scaledClosedCubeSet Q hρ₁ hρ₁₂ hx
   have hsecond :
@@ -440,7 +435,7 @@ theorem norm_iteratedFDeriv_two_cubeFactor_le_of_mem_scaledClosedCubeSet {d : �
         (ENat.natCast_le_of_coe_top_le_withTop le_rfl 2)
     unfold cubeArgument
     exact (contDiff_const.sub (hcoord.pow 2)).div contDiff_const hden
-  simpa [cubeFactor] using
+  simpa [cubeFactor] using!
     norm_iteratedFDeriv_two_profile_comp_le θ hargContDiff hfirst hsecond
 
 theorem cubeCutoff_smooth {d : ℕ} (θ : QuantitativeTransitionProfile)
@@ -594,9 +589,9 @@ private theorem norm_fderiv_partialCubeCutoff_le {d : ℕ}
   have hfactor_diff : ∀ i ∈ u, DifferentiableAt ℝ (cubeFactor θ Q ρ₁ ρ₂ i) x := by
     intro i hi
     exact (cubeFactor_contDiff_two θ Q hρ₁ hρ₁₂ i).differentiable
-      (by norm_num : (1 : WithTop ℕ∞) ≤ (2 : WithTop ℕ∞)) x
+      (by norm_num) x
   unfold partialCubeCutoff
-  rw [fderiv_finset_prod]
+  rw [fderiv_finsetProd]
   · calc
       ‖∑ i ∈ u, (∏ j ∈ u.erase i, cubeFactor θ Q ρ₁ ρ₂ j x) •
           fderiv ℝ (cubeFactor θ Q ρ₁ ρ₂ i) x‖
@@ -623,9 +618,7 @@ private theorem norm_fderiv_partialCubeCutoff_le {d : ℕ}
           have hnorm :
               ‖iteratedFDeriv ℝ 1 (cubeFactor θ Q ρ₁ ρ₂ i) x‖ =
                 ‖fderiv ℝ (cubeFactor θ Q ρ₁ ρ₂ i) x‖ := by
-            simpa [norm_iteratedFDeriv_zero] using
-              (norm_iteratedFDeriv_fderiv (𝕜 := ℝ) (f := cubeFactor θ Q ρ₁ ρ₂ i)
-                (n := 0) (x := x)).symm
+            simp
           calc
             ‖fderiv ℝ (cubeFactor θ Q ρ₁ ρ₂ i) x‖
                 ≤ θ.derivBound * (2 / ((ρ₂ - ρ₁) * cubeRadius Q)) := by
@@ -668,9 +661,7 @@ private theorem norm_iteratedFDeriv_one_partialCubeCutoff_le {d : ℕ}
   have hnorm :
       ‖iteratedFDeriv ℝ 1 (partialCubeCutoff θ Q ρ₁ ρ₂ u) x‖ =
         ‖fderiv ℝ (partialCubeCutoff θ Q ρ₁ ρ₂ u) x‖ := by
-    simpa [norm_iteratedFDeriv_zero] using
-      (norm_iteratedFDeriv_fderiv (𝕜 := ℝ) (f := partialCubeCutoff θ Q ρ₁ ρ₂ u)
-        (n := 0) (x := x)).symm
+    simp
   rw [hnorm]
   exact norm_fderiv_partialCubeCutoff_le θ Q hρ₁ hρ₁₂ u hx
 
@@ -805,7 +796,7 @@ theorem norm_iteratedFDeriv_two_cubeCutoff_le {d : ℕ}
   by_cases hx : x ∈ scaledClosedCubeSet Q ρ₂
   · have hpartial := norm_iteratedFDeriv_two_partialCubeCutoff_le θ Q hρ₁ hρ₁₂
       (Finset.univ : Finset (Fin d)) x hx
-    simpa [cubeCutoff, partialCubeCutoff] using hpartial
+    simpa [cubeCutoff, partialCubeCutoff] using! hpartial
   · have hx_support : x ∉ tsupport (cubeCutoff θ Q ρ₁ ρ₂) := fun hxs =>
       hx (cubeCutoff_tsupport_subset_scaledClosedCubeSet θ hρ₁ hρ₁₂ hxs)
     have hx_iter :
@@ -835,7 +826,7 @@ theorem norm_fderiv_cubeCutoff_le {d : ℕ}
           (fun x : Vec d => x i - cubeCenter Q i) :=
         (contDiff_apply ℝ ℝ i).sub contDiff_const
       exact ((contDiff_const.sub (hcoord.pow 2)).div contDiff_const hden).differentiable
-        (by simp : (1 : WithTop ℕ∞) ≤ (⊤ : ℕ∞)) x
+        (by simp) x
     have hfactor_diff : ∀ i : Fin d,
         DifferentiableAt ℝ (fun y : Vec d => θ (cubeArgument Q ρ₁ ρ₂ i y)) x := by
       intro i
@@ -844,7 +835,7 @@ theorem norm_fderiv_cubeCutoff_le {d : ℕ}
     change ‖fderiv ℝ
         (fun y : Vec d => ∏ i : Fin d, θ (cubeArgument Q ρ₁ ρ₂ i y)) x‖ ≤
       (d : ℝ) * θ.derivBound * (2 / ((ρ₂ - ρ₁) * cubeRadius Q))
-    rw [fderiv_finset_prod (u := (Finset.univ : Finset (Fin d)))
+    rw [fderiv_finsetProd (u := (Finset.univ : Finset (Fin d)))
       (g := fun i y => θ (cubeArgument Q ρ₁ ρ₂ i y))]
     · calc
         ‖∑ i ∈ (Finset.univ : Finset (Fin d)),

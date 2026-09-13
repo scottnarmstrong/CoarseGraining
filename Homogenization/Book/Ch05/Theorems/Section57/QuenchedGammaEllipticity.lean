@@ -260,7 +260,7 @@ theorem integrable_abs_unitEllipticityObservable_rpow_xi
       (fun a : RegCoeffField d =>
         |gammaSigmaUnitEllipticityObservable hP hStruct
           hΓ.params.sUpper hΓ.params.sLower a| ^ (hΓ.params.xi : ℝ)) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hxi_one : 1 ≤ (hΓ.params.xi : ℝ) := by
     exact_mod_cast
       (le_trans (by norm_num : 1 ≤ 2) hΓ.two_le_xi)
@@ -290,7 +290,7 @@ theorem barSigmaAtScale_zero_pos
     0 < hP.barSigmaAtScale hStruct (0 : ℤ) := by
   by_cases hbar : 0 < hP.barSigmaAtScale hStruct (0 : ℤ)
   · exact hbar
-  · letI : IsProbabilityMeasure P := hP.isProbability
+  · let : IsProbabilityMeasure P := hP.isProbability
     let ξ : ℕ := hΓ.params.xi
     let L : RegCoeffField d → ℝ :=
       fun a => Ch04.LambdaSqCoeffField (originCube d 0)
@@ -560,7 +560,7 @@ theorem unitEllipticityMomentRoot_le_gammaMomentScale
     hΓ.unitEllipticityMomentRoot ≤
       Ch04.gammaMomentConst hΓ.sigma *
         (hΓ.params.xi : ℝ) ^ hΓ.sigma⁻¹ * hΓ.thetaHat := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let ξ : ℕ := hΓ.params.xi
   let X : RegCoeffField d → ℝ :=
     gammaSigmaUnitEllipticityObservable hP hStruct

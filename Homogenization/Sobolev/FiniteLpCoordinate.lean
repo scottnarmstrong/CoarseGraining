@@ -135,7 +135,7 @@ theorem euclidean_eLpNorm_le_dimension_mul_sum_coordinates
     have hsup : ‖F x‖ ≤ D x := by
       refine (pi_norm_le_iff_of_nonneg hDnonneg).2 ?_
       intro i
-      simpa only [Real.norm_eq_abs] using
+      simpa only [Real.norm_eq_abs] using!
         Finset.single_le_sum (fun j _ => norm_nonneg (F x j)) (Finset.mem_univ i)
     have hhilbert : ‖HilbertVec.ofVec (F x)‖ ≤ (d : ℝ) * ‖F x‖ :=
       HilbertVec.norm_ofVec_le_mul_norm (F x)
@@ -161,7 +161,7 @@ theorem euclidean_eLpNorm_le_dimension_mul_sum_coordinates
   calc
     eLpNorm (fun x => HilbertVec.ofVec (F x)) p.exponent μ ≤
         eLpNorm ((d : ℝ) • D) p.exponent μ := by
-      simpa only [Pi.smul_apply, smul_eq_mul] using hvec_le_D
+      simpa only [Pi.smul_apply, smul_eq_mul] using! hvec_le_D
     _ = ‖(d : ℝ)‖ₑ * eLpNorm D p.exponent μ :=
       eLpNorm_const_smul _ _ _ _
     _ ≤ ‖(d : ℝ)‖ₑ *

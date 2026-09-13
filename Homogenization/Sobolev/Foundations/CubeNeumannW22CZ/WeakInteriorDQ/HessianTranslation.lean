@@ -46,7 +46,7 @@ theorem translate {d : ℕ} {U : Set (Vec d)} {i : Fin d}
   let V : Set (Vec d) := translateSet z U
   let ψ : Vec d → ℝ := fun x => φ (x + z)
   have hψ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-    simpa [ψ] using hφ.comp (contDiff_id.add contDiff_const)
+    simpa [ψ] using! hφ.comp (contDiff_id.add contDiff_const)
   have hψ_supp : HasCompactSupport ψ := by
     show HasCompactSupport (φ ∘ Homeomorph.addRight z)
     simpa [ψ, Function.comp] using hφ_supp.comp_homeomorph (Homeomorph.addRight z)
@@ -135,7 +135,7 @@ theorem norm_hessCoordToScalarL2_translate_eq
   unfold hessCoordToScalarL2 Homogenization.toScalarL2
   rw [MeasureTheory.Lp.norm_toLp, MeasureTheory.Lp.norm_toLp]
   exact congrArg ENNReal.toReal (by
-    simpa [HasWeakHessianOn.translate, MemScalarL2, volumeMeasureOn, V, T, Function.comp] using
+    simpa [HasWeakHessianOn.translate, MemScalarL2, volumeMeasureOn, V, T, Function.comp] using!
       (MeasureTheory.eLpNorm_comp_measurePreserving
         (g := H.hess i j) (p := (2 : ℝ≥0∞))
         (H.hess_memL2 i j).aestronglyMeasurable hμ))

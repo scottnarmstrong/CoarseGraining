@@ -11,7 +11,7 @@ theorem cubeProjection_one_memLp {d : ℕ} (Q : TriadicCube d) (p : ℝ≥0∞)
   classical
   unfold cubeProjection
   rw [descendantsAtDepth_one]
-  refine MeasureTheory.memLp_finset_sum
+  refine MeasureTheory.memLp_finsetSum
     (s := childCubes Q)
     (f := fun R : TriadicCube d => fun x : Vec d =>
       if x ∈ cubeSet R then cubeAverage R g else 0) ?_
@@ -21,7 +21,7 @@ theorem cubeProjection_one_memLp {d : ℕ} (Q : TriadicCube d) (p : ℝ≥0∞)
       MeasureTheory.measure_mono (Set.subset_univ (cubeSet R))
     have hUniv_lt : normalizedCubeMeasure Q Set.univ < ∞ := by simp
     exact ne_of_lt (lt_of_le_of_lt hR_le hUniv_lt)
-  simpa [Set.indicator] using
+  simpa [Set.indicator] using!
     (MeasureTheory.memLp_indicator_const (μ := normalizedCubeMeasure Q)
       (p := p) (s := cubeSet R) (hs := measurableSet_cubeSet R)
       (c := cubeAverage R g) (Or.inr hR_ne_top))
@@ -143,9 +143,9 @@ theorem abs_cubeAverage_mul_projection_succ_projectionResidual_le_mul_cubeBesovC
       (cubeBesovDepthAverage Q p f j) ^ (1 / p.toReal) := by
   classical
   let q : ℝ≥0∞ := cubeBesovConjExponent p
-  letI : ENNReal.HolderConjugate p q :=
+  let : ENNReal.HolderConjugate p q :=
     by simpa [q, cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hp
-  letI : ENNReal.HolderConjugate q p := inferInstance
+  let : ENNReal.HolderConjugate q p := inferInstance
   have hq : 1 ≤ q := ENNReal.HolderConjugate.one_le (p := q) (q := p)
   have hqTop : q ≠ ∞ := by
     simpa [q] using hpConjTop
@@ -173,7 +173,7 @@ theorem abs_cubeAverage_mul_projection_succ_projectionResidual_le_mul_cubeBesovC
         (Q := Q) (R := R) (j := j) (p := p) (u := f) hR (hf R hR)
     have hprod_norm :
         MeasureTheory.Integrable h (normalizedCubeMeasure R) := by
-      simpa [h, q] using (hg R hR).integrable_mul hres
+      simpa [h, q] using! (hg R hR).integrable_mul hres
     have hscale_ne_zero : ENNReal.ofReal ((cubeVolume R)⁻¹) ≠ 0 := by
       have hscale_pos : 0 < ENNReal.ofReal ((cubeVolume R)⁻¹) := by
         exact ENNReal.ofReal_pos.mpr (inv_pos.mpr (cubeVolume_pos R))

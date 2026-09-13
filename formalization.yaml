@@ -1,11 +1,29 @@
-version: "v0.3"
+version: "v0.4"
 
 project:
   name: "CoarseGraining"
+  description: >-
+    A Lean formalization of the coarse-graining approach to quantitative
+    stochastic homogenization of divergence-form elliptic equations:
+    function-space, deterministic, probabilistic, and homogenization-scale
+    theory up to the quenched minimal-scale theorem. The public main result
+    is a uniformly elliptic, isotropic specialization of the quenched
+    homogenization comparison estimate in Armstrong-Kuusi,
+    "Renormalization Group and Elliptic Homogenization in High Contrast"
+    (Inventiones Mathematicae, 2025), independently checked using
+    Audit/QuenchedComparison/comparator.json, together with four further
+    comparator-checked specializations under Audit/.
   authors:
     - "Scott Armstrong"
     - "Tuomo Kuusi"
+  responsible_maintainers:
+    - "Scott Armstrong"
+    - "Tuomo Kuusi"
   license: "Apache-2.0"
+
+classification:
+  arxiv: ["math.AP"]
+  msc2020: ["35B27", "60K37", "35J15"]
 
 sources:
   - title: "Coarse-Graining Theory for Elliptic Equations"
@@ -14,6 +32,11 @@ sources:
       - "Tuomo Kuusi"
     id: ""                      # TODO: arXiv ID / DOI when the manuscript is public
     type: "manuscript"
+    relationship: "formalizes"
+    note: >-
+      The manuscript under formalization. Every theorem it states is
+      formalized; narrower or extra-hypothesis cases are flagged in
+      manuscript footnotes (see fidelity.divergences).
     license: "all rights reserved"
     author_contacted: "n/a"     # the formalizers are the authors of the source
     prior_work: ""
@@ -23,40 +46,31 @@ sources:
       - "Tuomo Kuusi"
     id: "doi:10.1007/s00222-025-01370-9"
     type: "journal article"
+    relationship: "formalizes"
+    note: >-
+      The public main result specializes this paper's quenched homogenization
+      comparison estimate to uniformly elliptic, isotropic laws, with the
+      Sobolev exponent fixed to s=3/4. It is
+      comparator checked via Audit/QuenchedComparison/.
     license: ""
     author_contacted: "n/a"
     prior_work: ""
-  - title: "Homogenization at a polynomial scale in high contrast"
-    authors:
-      - "Scott Armstrong"
-      - "Tuomo Kuusi"
-      - "Amélie Loher"
-    id: ""
-    type: "article"
-    license: ""
-    author_contacted: "n/a"
-    prior_work: "to appear"
+
+related_formalizations: []
 
 status:
   scope: >-
     A Lean 4 / Mathlib formalization of the coarse-graining approach to
     quantitative stochastic homogenization of divergence-form elliptic equations:
     function-space, deterministic, probabilistic, and homogenization-scale theory
-    up to the quenched minimal-scale theorem (Chapter 5), together with the
-    high-contrast development: block-variance decay and the polynomial
-    homogenization length scale (dimension d > 2, uniform ellipticity), from
-    Armstrong-Kuusi-Loher, Homogenization at a polynomial scale in high
-    contrast (to appear). The supporting library also includes finite-exponent
-    cube Calderón-Zygmund, Sobolev, fractional-Sobolev, and local
-    coarse-graining theory. Every theorem stated in
+    up to the quenched minimal-scale theorem (Chapter 5). The supporting
+    library also includes finite-exponent cube Calderón-Zygmund, Sobolev,
+    fractional-Sobolev, and local coarse-graining theory. Every theorem stated in
     the manuscript is formalized; narrower or extra-hypothesis cases are flagged
     in manuscript footnotes. The two main results are exposed publicly in
-    Homogenization/Book/MainResults.lean and the polynomial-scale theorem in
-    Homogenization/HighContrast/Scale/Final.lean; seven statements are
-    additionally checked by the Lean comparator (Audit/): the fixed-exponent
-    quenched comparison and four specializations, and the polynomial
-    homogenization scale in general form and instantiated on the Bernoulli
-    checkerboard law.
+    Homogenization/Book/MainResults.lean; five statements are additionally
+    checked by the Lean comparator (Audit/): the fixed-exponent quenched
+    comparison and four specializations.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms:
@@ -82,24 +96,6 @@ status:
       axioms: ["propext", "Classical.choice", "Quot.sound"]
       comparator_config: "Audit/QuenchedComparison/comparator.json"
       literature_dependencies: []
-    - declaration: "Homogenization.homogenizationScale_polynomial_of_unitRange"
-      file: "Homogenization/HighContrast/Scale/Final.lean"
-      sorry_count: 0
-      axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/PolynomialScale/comparator.json"
-      literature_dependencies: []
-    - declaration: "Homogenization.StatementAudit.PolynomialScale.homogenizationScale_polynomial_of_unitRange"
-      file: "Audit/PolynomialScale/Solution.lean"
-      sorry_count: 0
-      axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/PolynomialScale/comparator.json"
-      literature_dependencies: []
-    - declaration: "Homogenization.StatementAudit.CheckerboardScale.randomCheckerboard_homogenizationScale"
-      file: "Audit/CheckerboardScale/Solution.lean"
-      sorry_count: 0
-      axioms: ["propext", "Classical.choice", "Quot.sound"]
-      comparator_config: "Audit/CheckerboardScale/comparator.json"
-      literature_dependencies: []
 
 automation:
   methods:
@@ -113,13 +109,13 @@ automation:
         - "gpt-5.5"
       framework: "Claude Code (Anthropic) and Codex (OpenAI) agentic coding harnesses"
       tool_setup: >-
-        Lake builds under leanprover/lean4:v4.26.0 with Mathlib v4.26.0. The Lean
-        comparator was run locally on all seven pairs (comparator commit
-        575674928e239f5bc452aab72d1dd7b0f1326494, lean4export tag v4.26.0 =
-        commit 3e1cdfe206ec3f54bae4a548d814ce9b2c1bb43d, landrun 0.1.18 =
-        commit 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4), and additionally with
-        the independent nanoda kernel (nanoda_lib 0.4.15 = commit
-        6ae1f0cd962f081f6c423454c5da729d841236a7), which the
+        Lake builds under leanprover/lean4:v4.33.0 with Mathlib v4.33.0 (commit
+        db584cd6d46c92f209a44c0f1c829460d327499d). The Lean comparator was run
+        locally on all five pairs (comparator commit
+        575674928e239f5bc452aab72d1dd7b0f1326494, lean4export tag v4.33.0 =
+        commit 15f6055e299ad5b89345e533cc2192f4cc00f659, landrun 0.1.18 = commit 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4), and
+        additionally with the independent nanoda kernel (nanoda_lib 0.4.15 =
+        commit 6ae1f0cd962f081f6c423454c5da729d841236a7), which the
         .github/workflows/comparator.yml workflow enables on every push. Multiple
         read-only subagents were used for internal audit of theorem dependency
         order, definition faithfulness, challenge/solution alignment, and release
@@ -186,7 +182,7 @@ alignment:
       note: "Comparator-audited via Audit/QuenchedComparison/{Challenge,Solution}.lean."
     - source: "Mathlib-only challenge for the fixed-exponent quenched corollary"
       lean: "Homogenization.StatementAudit.homogenizationComparison_uniformEllipticity"
-      module: "Audit.Challenge / Audit.Solution"
+      module: "Audit.QuenchedComparison.Challenge / Audit.QuenchedComparison.Solution"
       status: "comparator-checked"
       note: "Challenge imports only Mathlib and contains one intentional theorem-body sorry."
 

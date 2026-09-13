@@ -180,7 +180,7 @@ private theorem responseCoarseGrainingEstimatesTheory_of_isEllipticFieldOn
               (fun x => vecDot q (w.toH1.grad x))
       exact volumeAverage_sub (hInt.flux p w) (hInt.grad q w)
     rw [hAvg, abs_sub_comm]
-    simpa [variationEnergyValue, book_responseJ_eq_ResponseJ U a p q] using hOld
+    simpa [variationEnergyValue, book_responseJ_eq_ResponseJ U a p q] using! hOld
   · intro p w
     let q0 : Vec d :=
       matVecMul (Book.Ch02.sigmaStarCoarse U a - Book.Ch02.kappaCoarse U a) p
@@ -245,7 +245,7 @@ private theorem responseCoarseGrainingEstimatesTheory_of_isEllipticFieldOn
     simpa [variationEnergyValue, averageGradient, averageFlux, aStarCoarse,
       book_sigmaStarCoarse_eq_sigmaStarCoarse U a,
       book_kappaCoarse_eq_kappaCoarse U a,
-      book_sigmaCoarse_eq_sigmaCoarse U a] using hOld
+      book_sigmaCoarse_eq_sigmaCoarse U a] using! hOld
   · intro w
     let q0 : Vec d :=
       matVecMul (Book.Ch02.sigmaStarCoarse U a) (averageGradient U a w)
@@ -257,12 +257,12 @@ private theorem responseCoarseGrainingEstimatesTheory_of_isEllipticFieldOn
             (Homogenization.sigmaStarCoarse (U : Set (Vec d)) a.toCoeffField)
             (fun i => volumeAverage (U : Set (Vec d)) (fun x => w.toH1.grad x i))) u := by
       simpa [q0, averageGradient, averageVec,
-        book_sigmaStarCoarse_eq_sigmaStarCoarse U a] using hmax
+        book_sigmaStarCoarse_eq_sigmaStarCoarse U a] using! hmax
     have hOld :=
       basic_cg_identities_energy_average_gradient_canonical_of_isSigmaStarCoarse
         (U : Set (Vec d)) a.toCoeffField hEll hS hdet hInt w u hmaxOld
     simpa [variationEnergyValue, averageGradient, averageVec,
-      book_sigmaStarCoarse_eq_sigmaStarCoarse U a] using hOld
+      book_sigmaStarCoarse_eq_sigmaStarCoarse U a] using! hOld
   · intro w
     let p0 : Vec d := -matVecMul (Book.Ch02.bCoarse U a)⁻¹ (averageFlux U a w)
     rcases (responseExistenceTheory U a).exists_maximizer p0 0 with
@@ -277,12 +277,12 @@ private theorem responseCoarseGrainingEstimatesTheory_of_isEllipticFieldOn
             (fun i =>
               volumeAverage (U : Set (Vec d))
                 (fun x => matVecMul (a.toCoeffField x) (w.toH1.grad x) i))) 0 u := by
-      simpa [p0, averageFlux, averageVec, hb] using hmax
+      simpa [p0, averageFlux, averageVec, hb] using! hmax
     have hOld :=
       basic_cg_identities_energy_average_flux_canonical_of_isSigmaCoarse
         (U : Set (Vec d)) a.toCoeffField hEll hS hK hSigmaCanon hdet hInt w u
         hmaxOld
-    simpa [variationEnergyValue, averageFlux, averageVec, hb] using hOld
+    simpa [variationEnergyValue, averageFlux, averageVec, hb] using! hOld
 
 private theorem responseCoarseGrainingEstimatesTheory_of_neZero
     {d : ℕ} [NeZero d] (U : Domain d) (a : CoeffOn U) :
@@ -301,7 +301,7 @@ theorem responseCoarseGrainingEstimatesTheory
   by_cases hd : d = 0
   · subst d
     exact responseCoarseGrainingEstimatesTheory_zero_dim U a
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     exact responseCoarseGrainingEstimatesTheory_of_neZero U a
 
 end BookCh02

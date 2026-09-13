@@ -19,7 +19,7 @@ private theorem coordinate_le_euclideanENorm {d : ℕ} (a : Fin d → ℝ≥0∞
     a i ≤ (∑ j : Fin d, a j ^ 2) ^ ((2 : ℝ)⁻¹) := by
   have hsquare : a i ^ (2 : ℕ) ≤ ∑ j : Fin d, a j ^ (2 : ℕ) := by
     exact Finset.single_le_sum
-      (fun j _ => zero_le (a j ^ (2 : ℕ))) (Finset.mem_univ i)
+      (fun j _ => (zero_le : (0 : ℝ≥0∞) ≤ a j ^ (2 : ℕ))) (Finset.mem_univ i)
   have hroot := ENNReal.rpow_le_rpow hsquare (show 0 ≤ (2 : ℝ)⁻¹ by norm_num)
   calc
     a i = (a i ^ (2 : ℕ)) ^ ((2 : ℝ)⁻¹) := by
@@ -84,8 +84,7 @@ structure ExactOverlapEuclideanIntegrable {d : ℕ} (Q : TriadicCube d)
   coordinate : ∀ i : Fin d, ExactOverlapIntegrable Q (fun x => F x i)
 
 /-- Canonical coordinatewise certificates for the zero vector field. -/
-@[nolint defLemma]
-def exactOverlapEuclideanZeroIntegrable {d : ℕ} (Q : TriadicCube d) :
+theorem exactOverlapEuclideanZeroIntegrable {d : ℕ} (Q : TriadicCube d) :
     ExactOverlapEuclideanIntegrable Q (fun _ : Vec d => (0 : Vec d)) where
   coordinate := fun _ => exactOverlapZeroIntegrable Q
 

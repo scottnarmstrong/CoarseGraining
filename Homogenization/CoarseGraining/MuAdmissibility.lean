@@ -35,11 +35,11 @@ theorem blockMuIntegrabilityData_of_memBlockL2_of_isEllipticFieldOn
   refine ⟨?_, ?_, ?_⟩
   · have hPot : MemVectorL2 U X.potential := by
       simpa [BlockState.eval] using memVectorL2_fst_of_memBlockL2 (U := U) hX
-    simpa [sub_eq_add_neg] using
+    simpa [sub_eq_add_neg] using!
       hPot.sub (MeasureTheory.memLp_const (μ := volumeMeasureOn U) (c := P.1))
   · have hFlux : MemVectorL2 U X.flux := by
       simpa [BlockState.eval] using memVectorL2_snd_of_memBlockL2 (U := U) hX
-    simpa [sub_eq_add_neg] using
+    simpa [sub_eq_add_neg] using!
       hFlux.sub (MeasureTheory.memLp_const (μ := volumeMeasureOn U) (c := P.2))
   · exact
       blockEnergyDensity_integrableOn_of_memBlockL2_of_isEllipticFieldOn
@@ -101,7 +101,7 @@ theorem memBlockL2_eval
       (MeasureTheory.memLp_const (μ := volumeMeasureOn U) (c := P.2)).add
         hX.fluxCorrection_memL2
     simpa [sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using hFlux'
-  simpa [BlockState.eval, blockField] using memBlockL2_blockField hPot hFlux
+  simpa [BlockState.eval, blockField] using! memBlockL2_blockField hPot hFlux
 
 /-- The admissible correction carried by `X` lands in the canonical closed
 correction space `\Lpoto(U) × \Lsolo(U)`. -/
@@ -203,7 +203,7 @@ theorem toBlockMuIntegrabilityDataOfIsEllipticFieldOn
         hX.fluxCorrection_memL2
     simpa [sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using hFlux'
   have hBlock : MemBlockL2 U X.eval := by
-    simpa [BlockState.eval, blockField] using memBlockL2_blockField hPot hFlux
+    simpa [BlockState.eval, blockField] using! memBlockL2_blockField hPot hFlux
   exact blockMuIntegrabilityData_of_memBlockL2_of_isEllipticFieldOn
     (U := U) (P := P) (a := a) hBlock hEll
 

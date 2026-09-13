@@ -15,7 +15,7 @@ Following the carrier redesign, the deterministic field is carried as an honest
 measurable and locally integrable), and the law is the Dirac point mass on the
 carrier.  The pushforward invariance fields of the stochastic setup reduce to
 pointwise invariance of the deterministic coefficient field through the carrier
-endomorphisms (`Measure.map_dirac`); unit-range dependence is formal because
+endomorphisms (`Measure.map_dirac'`); unit-range dependence is formal because
 `RestrictionSigmaR` events are *genuinely* measurable on the carrier; and the
 uniform-ellipticity support event is the genuinely measurable fixed-constant
 event of `RegCoeffField/EllipticSupport.lean`.
@@ -53,7 +53,7 @@ theorem translateReg_eq_self_of_periodic {d : ℕ} {a₀ : RegCoeffField d}
   apply RegCoeffField.ext
   intro x
   have h := congrFun (hper z) x
-  simpa [translateByInt, translateCoeffField, intVecToRealVec] using h
+  simpa [translateByInt, translateCoeffField, intVecToRealVec] using! h
 
 /-- Pointwise signed-permutation invariance lifts to the carrier rotation
 endomorphism. -/
@@ -80,7 +80,7 @@ theorem dirac_stationary {d : ℕ} {a₀ : RegCoeffField d}
     (hper : IsPeriodicCoeffField a₀.toFun) :
     Book.Ch04.RestrictionStationaryLaw (diracCoeffLaw a₀) := by
   intro z
-  rw [diracCoeffLaw, Measure.map_dirac (measurable_translateReg (intVecToRealVec z)),
+  rw [diracCoeffLaw, Measure.map_dirac' (measurable_translateReg (intVecToRealVec z)),
     translateReg_eq_self_of_periodic hper z]
 
 /-- Pointwise signed-permutation invariance gives isotropy of the Dirac law. -/
@@ -88,7 +88,7 @@ theorem dirac_isotropic {d : ℕ} {a₀ : RegCoeffField d}
     (hiso : IsIsotropicCoeffField a₀.toFun) :
     Book.Ch04.RestrictionIsotropicLaw (diracCoeffLaw a₀) := by
   intro R hR
-  rw [diracCoeffLaw, Measure.map_dirac (measurable_rotateReg R hR),
+  rw [diracCoeffLaw, Measure.map_dirac' (measurable_rotateReg R hR),
     rotateReg_eq_self_of_isotropic hiso hR]
 
 /-- Pointwise adjoint invariance gives adjoint invariance of the Dirac law. -/
@@ -96,7 +96,7 @@ theorem dirac_adjointInvariant {d : ℕ} {a₀ : RegCoeffField d}
     (hadj : IsAdjointInvariantCoeffField a₀.toFun) :
     Book.Ch04.RestrictionAdjointInvariantLaw (diracCoeffLaw a₀) := by
   show Measure.map adjointReg (Measure.dirac a₀) = Measure.dirac a₀
-  rw [Measure.map_dirac measurable_adjointReg,
+  rw [Measure.map_dirac' measurable_adjointReg,
     adjointReg_eq_self_of_adjointInvariant hadj]
 
 /-- **Restriction-unit-range dependence of a deterministic Dirac law is

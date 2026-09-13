@@ -52,7 +52,7 @@ theorem measurable_subtype_mk_quantitativeSlice_of_isLocalSigmaMeasurableOn
   apply Measurable.of_comap_le
   unfold QuantitativeEllipticSlice.localMeasurableSpace
   rw [MeasurableSpace.comap_comp]
-  simpa [As, IsPointwiseLocalSigmaMeasurableOn, Function.comp] using hA.comap_le
+  simpa [As, IsPointwiseLocalSigmaMeasurableOn, Function.comp] using! hA.comap_le
 
 /-- Composition form of fixed-competitor energy measurability on a single
 quantitative slice for sample-space-valued coefficient fields. -/
@@ -125,7 +125,8 @@ theorem measurable_blockEnergyAverage_comp_countable_quantitativeSlice_cover
   have hfm : ∀ k : ℕ, Measurable (f k) := by
     intro k
     have hA_sub : IsPointwiseLocalSigmaMeasurableOn (fun ω : t k => A ω.1) U := by
-      simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp] using hA.comp measurable_subtype_coe
+      simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp] using!
+        hA.comp measurable_subtype_coe
     have hSlice_sub :
         ∀ ω : t k, QuantitativeEllipticSlice U k ((fun ω : t k => A ω.1) ω) := by
       intro ω
@@ -191,7 +192,7 @@ theorem aemeasurable_blockEnergyAverage_comp_countable_quantitativeSlice_cover
         exact measurable_const
     | some k =>
         have hA_sub : IsPointwiseLocalSigmaMeasurableOn (fun ω : cover (some k) => A ω.1) U := by
-          simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp, cover] using
+          simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp, cover] using!
             hA.comp measurable_subtype_coe
         have hSlice_sub :
             ∀ ω : cover (some k),
@@ -343,7 +344,7 @@ theorem aemeasurable_blockEnergyAverage_comp_openCubeSet_originCube_of_ae_locall
     (X : BlockState d) (hX : MemBlockL2 (openCubeSet (originCube d n)) X.eval) :
     AEMeasurable
       (fun ω => blockEnergyAverage (openCubeSet (originCube d n)) (A ω) X) μ := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d n))) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d n))) :=
     (isOpenBoundedConvexDomain_openCubeSet (originCube d n)).isFiniteMeasure_restrict_volume
   have hcover_ae :
       ∀ᵐ ω ∂μ,

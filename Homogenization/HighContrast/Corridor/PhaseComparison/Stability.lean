@@ -122,7 +122,7 @@ theorem abs_phaseObservable_sub_le_of_minimizer [NeZero d] {Θ : ℝ} (hΘ : 1 �
   classical
   set U := cubeSet (originCube d m) with hUdef
   have hU : MeasurableSet U := measurableSet_cubeSet (originCube d m)
-  haveI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  have : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     rw [hUdef]; infer_instance
   have hΘpos : (0 : ℝ) < Θ := lt_of_lt_of_le one_pos hΘ
   set aσ := corridorField ℓ σ a with haσdef
@@ -172,12 +172,12 @@ theorem abs_phaseObservable_sub_le_of_minimizer [NeZero d] {Θ : ℝ} (hΘ : 1 �
     unfold blockCoeffField; rw [haσx]
   have hIntBZZ : IntegrableOn
       (fun x => blockVecDot (Z.eval x) (blockMatVecMul (blockCoeffField a x) (Z.eval x))) U := by
-    simpa [blockPairingIntegrand] using
+    simpa [blockPairingIntegrand] using!
       blockPairingIntegrand_integrableOn_of_memBlockL2_of_isEllipticFieldOn
         (X := Z) (Y := Z) hZbl hZbl hEll
   have hIntBtZZ : IntegrableOn
       (fun x => blockVecDot (Z.eval x) (blockMatVecMul (blockCoeffField aσ x) (Z.eval x))) U := by
-    simpa [blockPairingIntegrand] using
+    simpa [blockPairingIntegrand] using!
       blockPairingIntegrand_integrableOn_of_memBlockL2_of_isEllipticFieldOn
         (X := Z) (Y := Z) hZbl hZbl hEllσ
   have hIntBtYY : IntegrableOn

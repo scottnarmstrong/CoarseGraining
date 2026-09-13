@@ -38,7 +38,7 @@ private theorem annealedResponseJAtScale_le_of_ae_descendantsAverage
         Integrable (restrictionResponseJObservableCubeSet R p q) P := by
     intro R hR
     exact hDescInt R (by
-      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using hR)
+      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using! hR)
   have hAvgInt :
       Integrable
         (fun a : RegCoeffField d =>
@@ -97,7 +97,7 @@ private theorem integral_descendantsAverageBlockMat_entry_eq_annealedBlockMatrix
           (fun a : RegCoeffField d => blockMatEntry (coarseBlockMatrix (cubeSet R) a.toFun) α β) P := by
     intro R hR
     exact hDescInt R (by
-      simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth Q hnm] using hR) α β
+      simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth Q hnm] using! hR) α β
   have hEntryFun :
       (fun a : RegCoeffField d =>
         blockMatEntry
@@ -119,7 +119,7 @@ private theorem integral_descendantsAverageBlockMat_entry_eq_annealedBlockMatrix
         simpa [Q, j] using hEntryFun]
   let D : Finset (TriadicCube d) := descendantsAtDepth Q j
   have hDscale : D = descendantsAtScale Q n := by
-    simpa [D, Q, j] using (descendantsAtScale_eq_descendantsAtDepth Q hnm).symm
+    simpa [D, Q, j, originCube] using (descendantsAtScale_eq_descendantsAtDepth Q hnm).symm
   have hD_nonempty : D.Nonempty := by
     simpa [D] using descendantsAtDepth_nonempty Q j
   have hcard_ne : ((D.card : ℝ) ≠ 0) := by
@@ -183,7 +183,7 @@ theorem blockMatLoewnerLE_annealedBlockMatrixAtScale
           (fun a : RegCoeffField d => blockMatEntry (coarseBlockMatrix (cubeSet R) a.toFun) α β) P := by
     intro R hR α β
     exact hDescInt R (by
-      simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth Q hnm] using hR) α β
+      simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth Q hnm] using! hR) α β
   have hChildAverageEntryInt :
       ∀ α β, Integrable (fun a : RegCoeffField d => blockMatEntry (childAverageBlock a) α β) P := by
     intro α β
@@ -208,25 +208,30 @@ theorem blockMatLoewnerLE_annealedBlockMatrixAtScale
         lowerLeft := fun i k => ∫ a, (childAverageBlock a).lowerLeft i k ∂P
         lowerRight := fun i k => ∫ a, (childAverageBlock a).lowerRight i k ∂P }
     change C = annealedBlockMatrixAtScale P n
-    dsimp [C]
-    simp [annealedBlockMatrixAtScale, annealedBlockMatrix]
-    refine ⟨?_, ?_, ?_, ?_⟩
-    · ext i k
-      simpa [blockMatEntry, childAverageBlock, Q, j] using
+    have hUL : C.upperLeft = (annealedBlockMatrixAtScale P n).upperLeft := by
+      funext i k
+      simpa [blockMatEntry, childAverageBlock, Q, j, C] using!
         hP.integral_descendantsAverageBlockMat_entry_eq_annealedBlockMatrixAtScale
           hstat hn hnm hDescInt (Sum.inl i) (Sum.inl k)
-    · ext i k
-      simpa [blockMatEntry, childAverageBlock, Q, j] using
+    have hUR : C.upperRight = (annealedBlockMatrixAtScale P n).upperRight := by
+      funext i k
+      simpa [blockMatEntry, childAverageBlock, Q, j, C] using!
         hP.integral_descendantsAverageBlockMat_entry_eq_annealedBlockMatrixAtScale
           hstat hn hnm hDescInt (Sum.inl i) (Sum.inr k)
-    · ext i k
-      simpa [blockMatEntry, childAverageBlock, Q, j] using
+    have hLL : C.lowerLeft = (annealedBlockMatrixAtScale P n).lowerLeft := by
+      funext i k
+      simpa [blockMatEntry, childAverageBlock, Q, j, C] using!
         hP.integral_descendantsAverageBlockMat_entry_eq_annealedBlockMatrixAtScale
           hstat hn hnm hDescInt (Sum.inr i) (Sum.inl k)
-    · ext i k
-      simpa [blockMatEntry, childAverageBlock, Q, j] using
+    have hLR : C.lowerRight = (annealedBlockMatrixAtScale P n).lowerRight := by
+      funext i k
+      simpa [blockMatEntry, childAverageBlock, Q, j, C] using!
         hP.integral_descendantsAverageBlockMat_entry_eq_annealedBlockMatrixAtScale
           hstat hn hnm hDescInt (Sum.inr i) (Sum.inr k)
+    exact (BlockMat.mk.injEq C.upperLeft C.upperRight C.lowerLeft C.lowerRight
+      (annealedBlockMatrixAtScale P n).upperLeft (annealedBlockMatrixAtScale P n).upperRight
+      (annealedBlockMatrixAtScale P n).lowerLeft
+      (annealedBlockMatrixAtScale P n).lowerRight).mpr ⟨hUL, hUR, hLL, hLR⟩
   refine
     blockMatLoewnerLE_of_integral_quadratic_mono
       (P := P)
@@ -292,7 +297,7 @@ theorem blockMatLoewnerLE_annealedStarredBlockMatrixInvAtScale_of_block
       (annealedBlockMatrixAtScale P n)) :
     BlockMatLoewnerLE (annealedStarredBlockMatrixInvAtScale P m)
       (annealedStarredBlockMatrixInvAtScale P n) := by
-  simpa [annealedStarredBlockMatrixInvAtScale, annealedStarredBlockMatrixInv] using
+  simpa [annealedStarredBlockMatrixInvAtScale, annealedStarredBlockMatrixInv] using!
     blockMatLoewnerLE_blockReflect hBlock
 
 /-- Matrix monotonicity of `σ_*⁻¹` follows from annealed block monotonicity. -/

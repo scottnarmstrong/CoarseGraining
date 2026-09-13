@@ -90,7 +90,7 @@ private theorem h1Function_norm_gradToVectorL2_le_gradientCoordL2NormSum
     simpa [μ] using (v.grad_memL2 j).norm
   have hD_mem : MeasureTheory.MemLp D (2 : ℝ≥0∞) μ := by
     have hsum :=
-      MeasureTheory.memLp_finset_sum (μ := μ) (p := (2 : ℝ≥0∞))
+      MeasureTheory.memLp_finsetSum (μ := μ) (p := (2 : ℝ≥0∞))
         (s := Finset.univ)
         (f := fun j : Fin d => fun x : Vec d => ‖v.grad x j‖)
         (fun j _hj => hcoord_mem j)
@@ -197,7 +197,7 @@ private theorem cubePoissonRhs_toScalarL2_norm_le_coercive
     (hvOpen : MemScalarL2 (openCubeSet Q) (v.cubePoissonRhs Q)) :
     ‖Homogenization.toScalarL2 hvOpen‖ ≤
       hC.constant * ‖v.gradToVectorL2‖ := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   have hLpEq :
@@ -231,7 +231,7 @@ theorem cubeBesovOscillation_gradCoord_le_volumeFactor_mul_coerciveConst
     cubeBesovOscillation Q (2 : ℝ≥0∞) (fun x => u.grad x i) ≤
       ((cubeVolume Q)⁻¹ + 1) * hC.constant *
         ‖(H.gradCoordH1Function i).gradToVectorL2‖ := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   let v : H1Function (openCubeSet Q) := H.gradCoordH1Function i
@@ -280,7 +280,7 @@ theorem cubeBesovOscillation_gradCoord_le_volumeInvRpowHalf_mul_coerciveConst
     cubeBesovOscillation Q (2 : ℝ≥0∞) (fun x => u.grad x i) ≤
       ((cubeVolume Q)⁻¹) ^ (1 / 2 : ℝ) * hC.constant *
         ‖(H.gradCoordH1Function i).gradToVectorL2‖ := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   let v : H1Function (openCubeSet Q) := H.gradCoordH1Function i

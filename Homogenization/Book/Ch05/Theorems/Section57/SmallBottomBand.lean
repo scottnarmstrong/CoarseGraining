@@ -83,7 +83,7 @@ theorem measureReal_smallBottomPairEvent_quenchedProbeEnvelope_le_weighted_row
   dsimp only
   intro ht hαt hn_entry hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let H : ℕ → ℕ → RegCoeffField d → ℝ := quenchedProbeEnvelope hP hStruct
   let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -271,7 +271,7 @@ theorem measureReal_smallBottomBadScaleEvent_quenchedProbeEnvelope_le_weighted_k
   dsimp only
   intro ht hαt hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let H : ℕ → ℕ → RegCoeffField d → ℝ := quenchedProbeEnvelope hP hStruct
   let S : Finset (NormalizedProbeIndex d) := Finset.univ

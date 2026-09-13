@@ -127,7 +127,7 @@ theorem HasCompactSupport.exists_pos_forall_precomp_subRight_tsupport_subset_ope
   have hts :
       tsupport (fun x : Vec d => φ (x - (fun _ => ε))) =
         (Homeomorph.subRight (fun _ => ε)) ⁻¹' tsupport φ := by
-    simpa using tsupport_comp_eq_preimage φ (Homeomorph.subRight (fun _ => ε))
+    simpa using! tsupport_comp_eq_preimage φ (Homeomorph.subRight (fun _ => ε))
   have hxmem : x - (fun _ => ε) ∈ tsupport φ := by
     rw [hts] at hx
     exact hx

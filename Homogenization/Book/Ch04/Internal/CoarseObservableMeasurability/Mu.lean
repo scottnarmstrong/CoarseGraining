@@ -32,10 +32,10 @@ theorem measurable_half_blockVecDot_blockMatVecMul_of_measurable_fullBlockMat
       (fun a => (1 / 2 : ℝ) *
         blockVecDot X (blockMatVecMul (ofFullBlockMat (f a)) X)) := by
   let v : FullBlockVec d := toFullBlockVec X
-  rw [measurable_pi_iff] at hf
+  have hf' : ∀ i, Measurable (fun a : α => f a i) := measurable_pi_iff.1 hf
   have hEntry : ∀ i j, Measurable (fun a : α => f a i j) := by
     intro i j
-    simpa using (Measurable.eval (hf i) : Measurable fun a : α => f a i j)
+    simpa using (Measurable.eval (hf' i) : Measurable fun a : α => f a i j)
   have hTerm : ∀ i j, Measurable (fun a : α => v i * v j * f a i j) := by
     intro i j
     simpa [mul_assoc] using (hEntry i j).const_mul (v i * v j)
@@ -222,31 +222,29 @@ theorem measurable_coarseFullBlockMatrixObservable_of_measurable_coordinate_Mu
       ∀ i j : Fin d,
         Measurable (fun a : CoeffField d => Mu U ((Pi.single i 1, 0) + (0, Pi.single j 1)) a)) :
     Measurable (coarseFullBlockMatrixObservable U) := by
-  rw [measurable_pi_iff]
-  intro i
-  rw [measurable_pi_iff]
-  intro j
+  refine measurable_pi_iff.2 fun i => ?_
+  refine measurable_pi_iff.2 fun j => ?_
   cases i with
   | inl r =>
       cases j with
       | inl c =>
           simpa [coarseFullBlockMatrixObservable, coarseBObservable, Function.comp,
-            fullBlockMatUpperLeft, coarseBEntryObservable] using
+            fullBlockMatUpperLeft, coarseBEntryObservable] using!
             measurable_coarseBEntryObservable_of_measurable_Mu_pureGradient
               (U := U) hGrad hGradPair r c
       | inr c =>
-          simpa [coarseFullBlockMatrixObservable, coarseUpperRightEntryObservable] using
+          simpa [coarseFullBlockMatrixObservable, coarseUpperRightEntryObservable] using!
             measurable_coarseUpperRightEntryObservable_of_measurable_Mu_mixed
               (U := U) hFlux hGrad hMixed r c
   | inr r =>
       cases j with
       | inl c =>
-          simpa [coarseFullBlockMatrixObservable, coarseLowerLeftEntryObservable] using
+          simpa [coarseFullBlockMatrixObservable, coarseLowerLeftEntryObservable] using!
             measurable_coarseLowerLeftEntryObservable_of_measurable_Mu_mixed
               (U := U) hFlux hGrad hMixed r c
       | inr c =>
           simpa [coarseFullBlockMatrixObservable, coarseSigmaStarInvObservable, Function.comp,
-            fullBlockMatLowerRight, coarseSigmaStarInvEntryObservable] using
+            fullBlockMatLowerRight, coarseSigmaStarInvEntryObservable] using!
             measurable_coarseSigmaStarInvEntryObservable_of_measurable_Mu_pureFlux
               (U := U) hFlux hFluxPair r c
 

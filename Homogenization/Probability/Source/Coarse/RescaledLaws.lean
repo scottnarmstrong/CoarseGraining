@@ -120,7 +120,7 @@ theorem scaleNormalized {d : ℕ} {P : Measure (Carrier d)}
     ProbabilityTheory.indep_of_indep_of_le_right
       (ProbabilityTheory.indep_of_indep_of_le_left hIndepDilated hUle) hVle
   have hMap := indep_map_measurableEquiv (μ := P) e hComap
-  simpa [scaleNormalizedLaw, e] using hMap
+  simpa [scaleNormalizedLaw, e] using! hMap
 
 end IsUnitRangeDependent
 

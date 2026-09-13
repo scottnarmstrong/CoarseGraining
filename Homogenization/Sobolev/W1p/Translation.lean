@@ -33,7 +33,7 @@ noncomputable def translate {d : ℕ} {U : Set (Vec d)} {p : ENNReal}
   intro i φ hφ hφ_supp hφ_sub
   let ψ : Vec d → ℝ := fun x => φ (x + z)
   have hψ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-    simpa [ψ] using hφ.comp (contDiff_id.add contDiff_const)
+    simpa [ψ] using! hφ.comp (contDiff_id.add contDiff_const)
   have hψ_supp : HasCompactSupport ψ := by
     show HasCompactSupport (φ ∘ Homeomorph.addRight z)
     simpa [ψ, Function.comp] using hφ_supp.comp_homeomorph (Homeomorph.addRight z)
@@ -109,7 +109,7 @@ noncomputable def translate {d : ℕ} {U : Set (Vec d)} {p : ENNReal}
       approx := fun m x => u.approx m (T x)
       approx_smooth := by
         intro m
-        simpa [T, sub_eq_add_neg] using (u.approx_smooth m).comp (contDiff_id.sub contDiff_const)
+        simpa [T, sub_eq_add_neg] using! (u.approx_smooth m).comp (contDiff_id.sub contDiff_const)
       approx_hasCompactSupport := by
         intro m
         show HasCompactSupport (u.approx m ∘ Homeomorph.subRight z)

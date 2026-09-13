@@ -44,7 +44,7 @@ theorem norm_toScalarL2_le_solverCubeLpNorm_exact
           ((cubeVolume (originCube d m)) ^ (1 / 2 : ℝ) *
             cubeLpNorm (originCube d m) (2 : ℝ≥0∞) F)) := by
   let Q : TriadicCube d := originCube d m
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   let hC : H1CoerciveEstimate (openCubeSet Q) :=
@@ -67,7 +67,7 @@ theorem norm_toScalarL2_le_solverCubeLpNorm_exact
               cubeLpNorm Q (2 : ℝ≥0∞) F)) := by
           exact mul_le_mul_of_nonneg_left
             (by
-              simpa [Q] using
+              simpa [Q] using!
                 norm_gradToHilbertVectorL2_le_solverCubeLpNorm_exact W hF)
             (cubeMeanZeroH1CoerciveConstant_nonneg Q)
 

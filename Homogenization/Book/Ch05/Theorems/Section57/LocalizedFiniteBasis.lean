@@ -89,7 +89,7 @@ theorem localizedLimitNormalizedJMax_le_probeSumMax_ae
             limitNormalizedJProbeSum hP hStruct R a := by
     rw [Filter.eventually_all_finset]
     intro R _hR
-    simpa using
+    simpa using!
       limitNormalizedBlockJObservable_le_probeSum_ae hP hStruct hΓ R e he
   filter_upwards [hAll] with a hAll_a
   have hloc_eq :
@@ -139,7 +139,7 @@ theorem localizedLimitNormalizedJMax_le_normalizedProbeSumMax_ae
             limitNormalizedJNormalizedProbeSum hP hStruct R a := by
     rw [Filter.eventually_all_finset]
     intro R _hR
-    simpa using
+    simpa using!
       limitNormalizedBlockJObservable_le_normalizedProbeSum_ae
         hP hStruct hΓ R e he
   filter_upwards [hAll] with a hAll_a
@@ -190,7 +190,7 @@ theorem localizedLimitNormalizedJMax_smul_ae
             limitNormalizedBlockJObservable hP hStruct R e a := by
     rw [Filter.eventually_all_finset]
     intro R _hR
-    simpa using
+    simpa using!
       limitNormalizedBlockJObservable_smul_ae hP hStruct hΓ R c e
   filter_upwards [hAll] with a hAll_a
   have hloc_ce :
@@ -220,7 +220,7 @@ theorem localizedLimitNormalizedJMax_smul_ae
     (Finset.mul₀_sup'
       (a := c ^ (2 : ℕ))
       (f := fun R => limitNormalizedBlockJObservable hP hStruct R e a)
-      (s := D) (hs := hD) (sq_pos_of_ne_zero hc)).symm
+      (s := D) (hs := hD) (sq_pos_of_ne_zero hc).le).symm
 
 end
 

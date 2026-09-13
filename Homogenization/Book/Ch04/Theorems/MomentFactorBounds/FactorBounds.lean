@@ -64,7 +64,7 @@ theorem lowerRight_matrixNorm_positiveExcess_finsetSup_momentRoot_le_of_restrict
       ((Fintype.card (Fin d) : ℝ) * (Fintype.card (Fin d) : ℝ)) *
         ((parents.card : ℝ) ^ (1 / (ξ : ℝ)) * B) := by
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let C : ℝ := (parents.card : ℝ) ^ (1 / (ξ : ℝ)) * B
   let excess : RegCoeffField d → ℝ :=
     fun a =>
@@ -391,7 +391,7 @@ private theorem annealedMomentRoot_abs_sub_integral_le_two_mul
       eLpNorm (fun a => X a - c) (ξ : ENNReal) P ≤
         eLpNorm X (ξ : ENNReal) P +
           eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P := by
-    simpa [c, Pi.sub_apply] using
+    simpa [c, Pi.sub_apply] using!
       eLpNorm_sub_le hX_meas.aestronglyMeasurable
         (aestronglyMeasurable_const (μ := P) (b := c))
         (by exact_mod_cast hξ)
@@ -473,7 +473,7 @@ theorem restrictionCenteredOriginObservable_upperLeft_entry_momentRoot_le_two_La
             (fun U a => (coarseBlockMatrix U a).upperLeft i j) a| ^ ξ ∂P) ^
           (1 / (ξ : ℝ)) ≤
         2 * LambdaMomentAtScale P 0 s ξ := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : RegCoeffField d → ℝ :=
     fun a => (coarseBlockMatrix (cubeSet (originCube d 0)) a).upperLeft i j
   let Y : RegCoeffField d → ℝ :=
@@ -516,7 +516,7 @@ theorem restrictionCenteredOriginObservable_lowerRight_entry_momentRoot_le_two_l
             (fun U a => (coarseBlockMatrix U a).lowerRight i j) a| ^ ξ ∂P) ^
           (1 / (ξ : ℝ)) ≤
         2 * lambdaInvMomentAtScale P 0 s ξ := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : RegCoeffField d → ℝ :=
     fun a => (coarseBlockMatrix (cubeSet (originCube d 0)) a).lowerRight i j
   let Y : RegCoeffField d → ℝ :=

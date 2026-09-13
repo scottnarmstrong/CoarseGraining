@@ -42,7 +42,7 @@ theorem weighted_power_mean_setIntegral
   have hρ_lint_ne_top : ∫⁻ x, ρ x ∂μs ≠ ⊤ := by
     rw [← ofReal_integral_eq_lintegral_ofReal hwi (ae_of_all _ fun x => hw x)]
     simp
-  haveI : MeasureTheory.IsFiniteMeasure ν := MeasureTheory.isFiniteMeasure_withDensity hρ_lint_ne_top
+  have : MeasureTheory.IsFiniteMeasure ν := MeasureTheory.isFiniteMeasure_withDensity hρ_lint_ne_top
   have hf_meas_ν : AEMeasurable f ν := by
     exact hf_meas.mono_ac (MeasureTheory.withDensity_absolutelyContinuous _ _)
   have hpow_int_base : MeasureTheory.Integrable (fun x => (ρ x).toReal • (‖f x‖ ^ p)) μs := by

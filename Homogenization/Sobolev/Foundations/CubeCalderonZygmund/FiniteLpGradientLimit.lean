@@ -95,7 +95,7 @@ private theorem tendsto_rawEuclideanLpENorm_finiteLpSolutionApproximation_grad_s
     simpa only [A, mul_zero] using
       ENNReal.Tendsto.const_mul (a := A) hnormalized' (Or.inr hAtop)
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hright
-    (fun _ => zero_le _) (fun nk => ?_)
+    (fun _ => zero_le) (fun nk => ?_)
   exact raw_eLpNorm_le_cubeFactor_mul_normalized m q _
 
 private theorem finiteLpSolutionApproximation_grad_memLp
@@ -132,7 +132,7 @@ private theorem finiteLpSolutionApproximation_grad_memLp
         (centeredCubeDomain d m).normalizedVolume < ∞ :=
     ENNReal.mul_lt_top hfactor_top.lt_top hdata.eLpNorm_lt_top
   refine ⟨?_, ?_⟩
-  · simpa only [u, hilbertifyVecField] using
+  · simpa only [u, hilbertifyVecField] using!
       (memHilbertVectorL2_hilbertifyVecField u.toH1Function.grad_memVectorL2).aestronglyMeasurable
   · refine lt_of_le_of_lt (raw_eLpNorm_le_cubeFactor_mul_normalized m q _) ?_
     exact ENNReal.mul_lt_top
@@ -206,7 +206,7 @@ private theorem finiteLpGradientSubsequence_strictMono
     {d : ℕ} [NeZero d] (q : FiniteLpExponent) (m : ℤ) {sigma0 : ℝ}
     (hsigma0 : 0 < sigma0) (h : CubeEuclideanLpField (originCube d m) q) :
     StrictMono (finiteLpGradientSubsequence q m hsigma0 h) := by
-  letI : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
+  let : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
   exact (Classical.choose_spec (exists_finiteLpGradientSubsequence q m hsigma0 h)).1
 
 private theorem finiteLpGradientSubsequence_dist_lt
@@ -217,7 +217,7 @@ private theorem finiteLpGradientSubsequence_dist_lt
       (finiteLpSolutionApproximation_gradientLp m hsigma0 h
         (finiteLpGradientSubsequence q m hsigma0 h N)) <
       ((1 : ℝ) / 2) ^ (N + 2) := by
-  letI : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
+  let : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
   exact (Classical.choose_spec (exists_finiteLpGradientSubsequence q m hsigma0 h)).2 N n hn
 
 private theorem eLpNorm_finiteLpSolutionApproximation_gradient_sub_eq_edist
@@ -230,10 +230,10 @@ private theorem eLpNorm_finiteLpSolutionApproximation_gradient_sub_eq_edist
       q.exponent (volume.restrict (openCubeSet (originCube d m))) =
       edist (finiteLpSolutionApproximation_gradientLp m hsigma0 h n)
         (finiteLpSolutionApproximation_gradientLp m hsigma0 h k) := by
-  letI : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
+  let : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
   symm
   simpa only [finiteLpSolutionApproximation_gradientLp,
-    HilbertVec.ofVecL_apply] using
+    HilbertVec.ofVecL_apply] using!
     Lp.edist_toLp_toLp _ _
       (finiteLpSolutionApproximation_grad_memLp m hsigma0 h n)
       (finiteLpSolutionApproximation_grad_memLp m hsigma0 h k)
@@ -249,7 +249,7 @@ private theorem finiteLpGradientSubsequence_vector_eLpNorm_sub_lt
           (finiteLpGradientSubsequence q m hsigma0 h k)).toH1Function.grad x))
       q.exponent (volume.restrict (openCubeSet (originCube d m))) <
       ENNReal.ofReal (((1 : ℝ) / 2) ^ N) := by
-  letI : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
+  let : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
   let r := finiteLpGradientSubsequence q m hsigma0 h
   let u := finiteLpSolutionApproximation_gradientLp m hsigma0 h
   have hrn : r N ≤ r n := (finiteLpGradientSubsequence_strictMono q m hsigma0 h).monotone hNn
@@ -342,7 +342,7 @@ theorem exists_finiteLpGradientLimit
   · intro i
     exact hDmem i
   · intro i
-    simpa only [r] using hDtend i
+    simpa only [r] using! hDtend i
 
 /-- The subsequence selected together with the canonical limiting gradient. -/
 noncomputable def finiteLpGradientLimitSubsequence
@@ -409,7 +409,7 @@ theorem tendsto_eLpNorm_finiteLpSolutionApproximation_grad_sub_finiteLpGradientL
         (finiteLpSolutionApproximation m hsigma0 h (r N)).toH1Function.grad x i -
           Du x i) q.exponent
         (volume.restrict (openCubeSet (originCube d m)))) atTop (nhds 0) := by
-    simpa using (tendsto_finset_sum Finset.univ fun i _ => hcoord i)
+    simpa using (tendsto_finsetSum Finset.univ fun i _ => hcoord i)
   have hright : Tendsto (fun N => ‖(d : ℝ)‖ₑ * ∑ i : Fin d,
       eLpNorm (fun x =>
         (finiteLpSolutionApproximation m hsigma0 h (r N)).toH1Function.grad x i -
@@ -418,7 +418,7 @@ theorem tendsto_eLpNorm_finiteLpSolutionApproximation_grad_sub_finiteLpGradientL
     simpa only [mul_zero] using ENNReal.Tendsto.const_mul (a := ‖(d : ℝ)‖ₑ)
       hsum (Or.inr ENNReal.coe_ne_top)
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hright
-    (fun _ => zero_le _) (fun N => ?_)
+    (fun _ => zero_le) (fun N => ?_)
   apply euclidean_eLpNorm_le_dimension_mul_sum_coordinates
     (volume.restrict (openCubeSet (originCube d m))) q
     (fun x =>

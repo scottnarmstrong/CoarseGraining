@@ -41,7 +41,7 @@ theorem cubeLpNorm_add_le {d : ℕ} {E : Type*} [NormedAddCommGroup E]
       MeasureTheory.eLpNorm (fun x => f x + g x) p (normalizedCubeMeasure Q) ≤
         MeasureTheory.eLpNorm f p (normalizedCubeMeasure Q) +
           MeasureTheory.eLpNorm g p (normalizedCubeMeasure Q) := by
-    simpa using MeasureTheory.eLpNorm_add_le hf.1 hg.1 hp
+    simpa using! MeasureTheory.eLpNorm_add_le hf.1 hg.1 hp
   have hsum_top :
       MeasureTheory.eLpNorm f p (normalizedCubeMeasure Q) +
         MeasureTheory.eLpNorm g p (normalizedCubeMeasure Q) ≠ ∞ :=
@@ -108,7 +108,7 @@ theorem cubeLpNorm_two_smul_le_mul_cubeLpNorm_infty {d : ℕ} (Q : TriadicCube d
       MeasureTheory.eLpNorm (fun x => v x • ξ x) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) ≤
         MeasureTheory.eLpNorm v (2 : ℝ≥0∞) (normalizedCubeMeasure Q) *
           MeasureTheory.eLpNorm ξ ∞ (normalizedCubeMeasure Q) := by
-    simpa using
+    simpa using!
       (MeasureTheory.eLpNorm_smul_le_eLpNorm_mul_eLpNorm_top
         (p := (2 : ℝ≥0∞)) (f := ξ) hv.1)
   have hmul_top :
@@ -129,8 +129,8 @@ theorem norm_cubeAverageVec_scalar_smul_le_cubeLpNorm_infty_mul_cubeLpNorm_two {
         ≤ cubeLpNorm Q (2 : ℝ≥0∞) (fun x => u x • ξ x) := by
             exact norm_cubeAverageVec_le_cubeLpNorm_two Q (fun x => u x • ξ x) <|
               by
-                letI : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
-                simpa using hξ.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hu
+                let : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
+                simpa using! hξ.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hu
     _ ≤ cubeLpNorm Q ∞ ξ * cubeLpNorm Q (2 : ℝ≥0∞) u := by
           exact cubeLpNorm_two_smul_le_mul_cubeLpNorm_infty Q u ξ hu hξ
 
@@ -150,7 +150,7 @@ theorem cubeLpNorm_two_scalarFluctuation_smul_const_le {d : ℕ} (Q : TriadicCub
         (normalizedCubeMeasure Q) ≤
         MeasureTheory.eLpNorm (cubeFluctuation Q v) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) *
           MeasureTheory.eLpNorm (fun _ : Vec d => c) ∞ (normalizedCubeMeasure Q) := by
-    simpa using
+    simpa using!
       (MeasureTheory.eLpNorm_smul_le_eLpNorm_mul_eLpNorm_top
         (p := (2 : ℝ≥0∞)) (f := fun _ : Vec d => c) hv_fluct.1)
   have hmul_top :
@@ -176,24 +176,24 @@ theorem cubeLpNorm_two_cubeFluctuationVec_scalar_smul_le_note_terms {d : ℕ}
     cubeLpNorm Q (2 : ℝ≥0∞) (cubeFluctuationVec Q (fun x => v x • ξ x)) ≤
       2 * (cubeLpNorm Q ∞ (fun x => ξ x - cubeAverageVec Q ξ) * cubeLpNorm Q (2 : ℝ≥0∞) v +
         cubeLpNorm Q ∞ ξ * cubeBesovOscillation Q (2 : ℝ≥0∞) v) := by
-  letI : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
+  let : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
   have hprod :
       MeasureTheory.MemLp (fun x => v x • ξ x) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    simpa using hξ.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hv
+    simpa using! hξ.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hv
   have hξ_sub :
       MeasureTheory.MemLp (fun x => ξ x - cubeAverageVec Q ξ) ∞ (normalizedCubeMeasure Q) :=
     hξ.sub (MeasureTheory.memLp_const (cubeAverageVec Q ξ))
   have hfirst :
       MeasureTheory.MemLp (fun x => v x • (ξ x - cubeAverageVec Q ξ))
         (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    simpa using hξ_sub.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hv
+    simpa using! hξ_sub.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hv
   have hv_fluct :
       MeasureTheory.MemLp (cubeFluctuation Q v) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) :=
     hv.sub (MeasureTheory.memLp_const (cubeAverage Q v))
   have hsecond :
       MeasureTheory.MemLp (fun x => cubeFluctuation Q v x • cubeAverageVec Q ξ)
         (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    simpa using
+    simpa using!
       (MeasureTheory.memLp_const (cubeAverageVec Q ξ)).smul
         (p := (2 : ℝ≥0∞)) (q := (∞ : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hv_fluct
   have hsplit :

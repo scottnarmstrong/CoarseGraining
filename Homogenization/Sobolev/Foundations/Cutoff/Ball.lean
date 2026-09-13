@@ -89,8 +89,7 @@ private theorem norm_iteratedFDeriv_two_coord_sub_const_sq_le_ball {d : ℕ}
   have hone : ‖iteratedFDeriv ℝ 1 g x‖ ≤ 1 := by
     have hnorm :
         ‖iteratedFDeriv ℝ 1 g x‖ = ‖fderiv ℝ g x‖ := by
-      simpa [norm_iteratedFDeriv_zero] using
-        (norm_iteratedFDeriv_fderiv (𝕜 := ℝ) (f := g) (n := 0) (x := x)).symm
+      simp
     rw [hnorm]
     simpa [g] using norm_fderiv_coord_sub_const_le_one_ball i c x
   have hval : ‖iteratedFDeriv ℝ 0 g x‖ = ‖g x‖ := by
@@ -131,7 +130,7 @@ theorem fderiv_ballArgument_apply_basisVec {d : ℕ}
     simp [fderiv_euclideanSqDist_apply_basisVec, neg_mul]
     ring
   · exact ((contDiff_const.sub (contDiff_euclideanSqDist_left x₀)).differentiable
-      (by simp : (1 : WithTop ℕ∞) ≤ (⊤ : ℕ∞))) x
+      (by simp)) x
 
 /-- On the outer closed ball, the ball interpolation variable has first
 derivative of size at most `2 d / (s - r)` in the default product/sup norm on
@@ -198,16 +197,14 @@ theorem norm_iteratedFDeriv_two_ballArgument_le {d : ℕ}
   have heuc2 : ContDiff ℝ (2 : ℕ) (fun y : Vec d => euclideanSqDist y x₀) :=
     (contDiff_euclideanSqDist_left x₀).of_le
       (ENat.natCast_le_of_coe_top_le_withTop le_rfl 2)
-  have hf2 : ContDiff ℝ (2 : ℕ) f := by
-    simpa [f] using
-      ((contDiff_const : ContDiff ℝ (2 : ℕ)
-        (fun _ : Vec d => (-(1 / (s ^ 2 - r ^ 2)) : ℝ))).smul heuc2)
+  have hf2 : ContDiff ℝ (2 : ℕ) f :=
+    heuc2.const_smul (-(1 / (s ^ 2 - r ^ 2)))
   have hg2 : ContDiff ℝ (2 : ℕ) g := by
     simpa [g] using (contDiff_const : ContDiff ℝ (2 : ℕ) g)
   have hsum :
       iteratedFDeriv ℝ 2 (fun y : Vec d => f y + g y) x =
         iteratedFDeriv ℝ 2 f x + iteratedFDeriv ℝ 2 g x := by
-    simpa using
+    simpa using!
       congrArg (fun F : Vec d → ContinuousMultilinearMap ℝ (fun _ : Fin 2 => Vec d) ℝ => F x)
         (iteratedFDeriv_add (𝕜 := ℝ) (i := 2) (f := f) (g := g) hf2 hg2)
   rw [hsum]
@@ -377,7 +374,7 @@ theorem norm_fderiv_ballCutoff_le {d : ℕ}
         fun _ => (ballArgument_den_pos hr hrs).ne'
       exact ((contDiff_const.sub (contDiff_euclideanSqDist_left x₀)).div
         contDiff_const hden).differentiable
-          (by simp : (1 : WithTop ℕ∞) ≤ (⊤ : ℕ∞)) x
+          (by simp) x
     calc
       ‖fderiv ℝ (ballCutoff θ x₀ r s) x‖
           = ‖fderiv ℝ (fun y : Vec d => θ (ballArgument x₀ r s y)) x‖ := rfl
@@ -415,8 +412,7 @@ theorem norm_iteratedFDeriv_two_ballCutoff_le {d : ℕ}
       have hnorm :
           ‖iteratedFDeriv ℝ 1 (ballArgument x₀ r s) x‖ =
             ‖fderiv ℝ (ballArgument x₀ r s) x‖ := by
-        simpa [norm_iteratedFDeriv_zero] using
-          (norm_iteratedFDeriv_fderiv (𝕜 := ℝ) (f := ballArgument x₀ r s) (n := 0) (x := x)).symm
+        simp
       rw [hnorm]
       exact norm_fderiv_ballArgument_le_of_mem_euclideanClosedBall (x₀ := x₀) hr hrs hx
     have hsecond := norm_iteratedFDeriv_two_ballArgument_le (x₀ := x₀) hr hrs x

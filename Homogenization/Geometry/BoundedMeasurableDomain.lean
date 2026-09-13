@@ -29,7 +29,7 @@ namespace BoundedMeasurableDomain
 
 instance {d : ℕ} : SetLike (BoundedMeasurableDomain d) (Vec d) where
   coe U := U.carrier
-  coe_injective' := by
+  coe_injective := by
     intro U V hUV
     cases U
     cases V

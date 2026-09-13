@@ -50,7 +50,7 @@ section CanonicalCubeSet
 instance (priority := 900) instIsFiniteMeasureVolumeMeasureOnCubeSetAEEOperator
     {d : ℕ} (Q : TriadicCube d) :
     MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) := by
-  letI : Fact (MeasureTheory.volume (cubeSet Q) < ⊤) := ⟨volume_cubeSet_lt_top Q⟩
+  let : Fact (MeasureTheory.volume (cubeSet Q) < ⊤) := ⟨volume_cubeSet_lt_top Q⟩
   change MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict (cubeSet Q))
   infer_instance
 
@@ -75,8 +75,8 @@ noncomputable def canonicalAEEMuCorrectionSpaceData {d : ℕ} (Q : TriadicCube d
 instance canonicalAEEMuCorrectionSpaceData_separable {d : ℕ} (Q : TriadicCube d) :
     TopologicalSpace.SeparableSpace
       ↥(canonicalAEEMuCorrectionSpaceData Q).correctionSpace := by
-  letI : Fact ((1 : ENNReal) ≤ (2 : ENNReal)) := ⟨by norm_num⟩
-  letI : Fact ((2 : ENNReal) ≠ ⊤) := ⟨by norm_num⟩
+  let : Fact ((1 : ENNReal) ≤ (2 : ENNReal)) := ⟨by norm_num⟩
+  let : Fact ((2 : ENNReal) ≠ ⊤) := ⟨by norm_num⟩
   infer_instance
 
 /-- Canonical AEE coefficient-operator data on one quantitative AEE cube
@@ -235,7 +235,7 @@ theorem mu_eq_canonicalAEEMuCandidate
     simpa [canonicalAEEMuOperatorSystemData, canonicalAEEMuCorrectionSpaceData,
       canonicalAEEPotentialSolenoidalL2Data, MuCorrectionSpaceData.ofSubmoduleClosures,
       AEEMuOperatorSystemData.toMuHilbertRealization,
-      MuOperatorRealization.toMuHilbertRealization, MuHilbertRealization.ofOperator] using
+      MuOperatorRealization.toMuHilbertRealization, MuHilbertRealization.ofOperator] using!
       denseRange_canonicalMuCorrectionGeneratorEmbedding U
   have hCandidate_sInf : H.muCandidate P0 = sInf s := by
     simpa [s] using
@@ -297,7 +297,7 @@ theorem mu_eq_canonicalAEEMuCandidate
           blockL2ToHilbertBlockL2 (U := U) (Y : BlockL2 U) =
             toHilbertBlockL2OfComponents hf hg := by
         rw [← hY]
-        simpa [toBlockL2OfComponents, toHilbertBlockL2OfComponents] using
+        simpa [toBlockL2OfComponents, toHilbertBlockL2OfComponents] using!
           (blockL2ToHilbertBlockL2_toBlockL2
             (U := U)
             (F := blockField f g)
@@ -396,7 +396,7 @@ theorem mu_eq_iInf_blockEnergyAverage_canonicalAEEMuGenerator_denseSeq
       canonicalAEEPotentialSolenoidalL2Data, MuCorrectionSpaceData.ofSubmoduleClosures,
       AEEMuOperatorSystemData.toMuHilbertRealization,
       MuOperatorRealization.toMuHilbertRealization, MuHilbertRealization.ofOperator,
-      Function.comp_def] using hcomp
+      Function.comp_def] using! hcomp
   have hCandidate :
       H.muCandidate P0 =
         sInf (Set.range fun n : ℕ =>

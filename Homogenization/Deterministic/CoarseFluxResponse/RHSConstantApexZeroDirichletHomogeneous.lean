@@ -291,7 +291,7 @@ theorem coarseFluxResponseQOneBound_le_const_mul_RHSHomogeneousSplitBound_of_zer
       Q a (fun x => ρ.toH10.toH1Function.grad x) hEll
   have hAw_nonneg :
       0 ≤ cubeAverage Q (scalarVariationEnergyIntegrand a w) := by
-    simpa [scalarVariationEnergyIntegrand, coefficientEnergyDensity] using
+    simpa [scalarVariationEnergyIntegrand, coefficientEnergyDensity] using!
       cubeAverage_coefficientEnergyDensity_nonneg_of_isEllipticFieldOn
         Q a (fun x => w.toH1.grad x) hEll
   have hρEnvelope :

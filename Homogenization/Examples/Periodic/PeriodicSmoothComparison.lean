@@ -329,7 +329,7 @@ theorem periodicSmooth_comparison {d : ℕ} [NeZero d] :
     classicalComparisonDefect, classicalComparisonData,
     classicalComparisonConstantGradientField, classicalComparisonFluxField,
     classicalH1EnergyNormOnCube, classicalFluxComparisonPair,
-    classicalH1OnOriginCube, volumeAverage] using hstep
+    classicalH1OnOriginCube, volumeAverage] using! hstep
 
 end
 

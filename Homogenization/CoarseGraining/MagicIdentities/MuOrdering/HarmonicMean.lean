@@ -154,7 +154,7 @@ theorem averagedSymmPartInv_posDef_of_isEllipticFieldOn
   have hPos :
       0 < vecDot q (matVecMul (averagedSymmPartInv U a) q) := by
     nlinarith
-  simpa [vecDot, matVecMul] using hPos
+  simpa [vecDot, matVecMul] using! hPos
 
 theorem sigmaStarInvCoarse_le_averagedSymmPartInv_of_isEllipticFieldOn_of_hodgeConverseCriterion
     {d : ℕ} {U : Set (Vec d)} [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]

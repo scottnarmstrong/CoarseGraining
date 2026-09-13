@@ -116,7 +116,7 @@ theorem sqWeightedMeasure_indicator_tail_inter_eq_of_subset {α E : Type*}
       {x | a < ‖f x‖} ∩ B := by
     ext x
     by_cases hx : x ∈ B
-    · simp only [Set.mem_inter_iff, Set.mem_setOf_eq, hx, and_true]
+    · simp only [Set.mem_inter_iff, Set.mem_ofPred_eq, hx, and_true]
       rw [Set.indicator_of_mem (hBU hx)]
     · simp only [Set.mem_inter_iff, hx, and_false]
   rw [htail]

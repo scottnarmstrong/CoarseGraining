@@ -27,7 +27,7 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
     (hmatch : MemH10 U (fun x => w₁.toFun x - w₂.toFun x)) (c : ℝ) :
     MemH10 U (fun x => max (w₁.toFun x - c) 0 - max (w₂.toFun x - c) 0) := by
   classical
-  haveI : IsFiniteMeasure (volumeMeasureOn U) :=
+  have : IsFiniteMeasure (volumeMeasureOn U) :=
     hU.isBoundedDomain.isFiniteMeasure_restrict_volume
   -- `h := w₁ − w₂` and its `H¹₀` witness `W`.
   set h : H1Function U := w₁ - w₂ with hh_def
@@ -121,7 +121,7 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
       simp_rw [hswap]
       exact hWconv.comp hσ_mono.tendsto_atTop
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hub
-      (fun n => zero_le _) (fun n => ?_)
+      (fun n => zero_le) (fun n => ?_)
     refine eLpNorm_mono (fun x => ?_)
     have hTx : T.toFun x = max (w₁.toFun x - c) 0 - max (w₂.toFun x - c) 0 := congrFun hTtf x
     have hΨx : (V1 (σ n) - V2).toFun x
@@ -166,9 +166,9 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
       intro n
       filter_upwards [hV1'g, hV1g n] with x hx' hxn
       have e' : V1'.grad x i = if c < w₁.toFun x then w₁.grad x i else 0 := by
-        rw [hx', indic]; simp only [Set.mem_setOf_eq]
+        rw [hx', indic]; simp only [Set.mem_ofPred_eq]
       have en : (V1 n).grad x i = if c < (S n).toFun x then (S n).grad x i else 0 := by
-        rw [hxn, indic]; simp only [Set.mem_setOf_eq]
+        rw [hxn, indic]; simp only [Set.mem_ofPred_eq]
       have eSg : (S n).grad x i = w₂.grad x i + (Φ n).grad x i := rfl
       have hw1g : w₁.grad x i = w₂.grad x i + h.grad x i := by
         have hsg : h.grad x i = w₁.grad x i - w₂.grad x i :=
@@ -199,7 +199,7 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
       exact W.tendsto_approx_grad i
     have hTA_conv : Tendsto (fun n => eLpNorm (TA n) 2 (volumeMeasureOn U)) atTop (nhds 0) := by
       refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hEconv
-        (fun n => zero_le _) (fun n => ?_)
+        (fun n => zero_le) (fun n => ?_)
       refine eLpNorm_mono (fun x => ?_)
       simp only [hTA_def]
       rw [norm_mul]
@@ -249,7 +249,7 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
         + eLpNorm (fun x => TB (σ n) x) 2 (volumeMeasureOn U)) atTop (nhds 0) := by
       simpa using (hTA_conv.comp hσ_mono.tendsto_atTop).add hTB_conv
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hsum
-      (fun n => zero_le _) (fun n => ?_)
+      (fun n => zero_le) (fun n => ?_)
     have hVcancel : (fun x => T.grad x i - (V1 (σ n) - V2).grad x i)
         = (fun x => V1'.grad x i - (V1 (σ n)).grad x i) := by
       funext x

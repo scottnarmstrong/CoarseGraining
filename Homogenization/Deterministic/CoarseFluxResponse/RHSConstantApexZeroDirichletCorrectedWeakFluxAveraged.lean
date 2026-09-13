@@ -524,7 +524,7 @@ theorem cubeBesovNegativeVectorSeminormTwo_fluxDefect_le_two_mul_const_mul_coars
     exact
       (cubeBesovNegativeVectorPartialSeminormTwo_le_partialSeminorm
         Q s N (fluxDefect a a0 w.toH1.grad)).trans <| by
-        simpa [fluxDefect, coarseFluxResponseQOneBound] using
+        simpa [fluxDefect, coarseFluxResponseQOneBound] using!
           coarseFluxResponse_qone_partialSeminorm_le_of_aHarmonicFunction
             (Q := Q) (a := a) (a0 := a0) (s := s)
             hs hEll ha0 ha0symm w hresponseSum N

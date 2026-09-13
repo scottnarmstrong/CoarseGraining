@@ -107,7 +107,7 @@ theorem iIndep_localSigma_of_unitRangeDependent
     (hsep : Pairwise fun i j => unitSeparated (U i) (U j)) :
     letI : MeasurableSpace (Carrier d Θ) := globalSigma d Θ
     ProbabilityTheory.iIndep (fun i => localSigma (U i)) P := by
-  letI : MeasurableSpace (Carrier d Θ) := globalSigma d Θ
+  let : MeasurableSpace (Carrier d Θ) := globalSigma d Θ
   apply (ProbabilityTheory.iIndep_iff (fun i => localSigma (U i)) P).2
   intro s f hf
   exact measure_biInter_eq_prod_of_unitRangeDependent P hP U hsep s hf
@@ -122,7 +122,7 @@ theorem iIndepFun_of_sourceLocal_of_unitRangeDependent
     (hsep : Pairwise fun i j => unitSeparated (U i) (U j)) :
     letI : MeasurableSpace (Carrier d Θ) := globalSigma d Θ
     ProbabilityTheory.iIndepFun X P := by
-  letI : MeasurableSpace (Carrier d Θ) := globalSigma d Θ
+  let : MeasurableSpace (Carrier d Θ) := globalSigma d Θ
   rw [ProbabilityTheory.iIndepFun_iff_iIndep]
   apply (ProbabilityTheory.iIndep_iff (fun i =>
     MeasurableSpace.comap (X i) inferInstance) P).2

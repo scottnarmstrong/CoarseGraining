@@ -30,12 +30,14 @@ theorem convexApproxSample_eq_segmentBlend {d : ℕ} (x0 z : Vec d) (r ε : ℝ)
 
 theorem continuous_convexApproxSample {d : ℕ} (x0 z : Vec d) (r ε : ℝ) :
     Continuous (convexApproxSample x0 z r ε : Vec d → Vec d) := by
-  simpa [convexApproxSample] using
-    (continuous_const.smul continuous_id).add continuous_const
+  simpa [convexApproxSample] using!
+    ((continuous_const : Continuous (fun _ : Vec d => (1 - ε))).smul
+        (continuous_id : Continuous (fun x : Vec d => x))).add
+      (continuous_const : Continuous (fun _ : Vec d => ε • (x0 - r • z)))
 
 theorem contDiff_convexApproxSample {d : ℕ} (x0 z : Vec d) (r ε : ℝ) {n : ℕ∞} :
     ContDiff ℝ n (convexApproxSample x0 z r ε : Vec d → Vec d) := by
-  simpa [convexApproxSample] using
+  simpa [convexApproxSample] using!
     (contDiff_const.smul contDiff_id).add contDiff_const
 
 theorem sub_smul_mem_closedBall {d : ℕ} {x0 z : Vec d} {r : ℝ}

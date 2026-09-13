@@ -36,11 +36,11 @@ theorem integrable_abs_pow_of_map_eq_map
     exact (continuous_abs.measurable.pow_const p).aemeasurable.aestronglyMeasurable
   have hφ_int_g : MeasureTheory.Integrable φ (MeasureTheory.Measure.map g P) := by
     exact (MeasureTheory.integrable_map_measure hφ_aesm_g hg.aemeasurable).mpr
-      (by simpa [φ] using hg_int)
+      (by simpa [φ] using! hg_int)
   have hφ_int_f : MeasureTheory.Integrable φ (MeasureTheory.Measure.map f P) := by
-    simpa [hmap] using hφ_int_g
+    simpa [hmap] using! hφ_int_g
   exact (MeasureTheory.integrable_map_measure hφ_aesm_f hf.aemeasurable).mp
-    (by simpa [φ] using hφ_int_f)
+    (by simpa [φ] using! hφ_int_f)
 
 /-- A.e.-measurable version of `integrable_abs_pow_of_map_eq_map`. -/
 theorem integrable_abs_pow_of_map_eq_map_aemeasurable
@@ -59,11 +59,11 @@ theorem integrable_abs_pow_of_map_eq_map_aemeasurable
     exact (continuous_abs.measurable.pow_const p).aemeasurable.aestronglyMeasurable
   have hφ_int_g : MeasureTheory.Integrable φ (MeasureTheory.Measure.map g P) := by
     exact (MeasureTheory.integrable_map_measure hφ_aesm_g hg).mpr
-      (by simpa [φ] using hg_int)
+      (by simpa [φ] using! hg_int)
   have hφ_int_f : MeasureTheory.Integrable φ (MeasureTheory.Measure.map f P) := by
-    simpa [hmap] using hφ_int_g
+    simpa [hmap] using! hφ_int_g
   exact (MeasureTheory.integrable_map_measure hφ_aesm_f hf).mp
-    (by simpa [φ] using hφ_int_f)
+    (by simpa [φ] using! hφ_int_f)
 
 theorem integral_abs_pow_eq_of_map_eq_map
     {d : ℕ} {P : MeasureTheory.Measure (RegCoeffField d)}
@@ -187,7 +187,7 @@ theorem integral_abs_finsetSum_pow_rpow_inv_le_sum
       (by exact_mod_cast hp_nat_ne_zero) (by simp)).1 ?_
     simpa [Real.norm_eq_abs] using hLp_int i hi
   have hg_memLp : MeasureTheory.MemLp g (p : ENNReal) μ := by
-    simpa [g] using MeasureTheory.memLp_finset_sum s h_memLp
+    simpa [g] using MeasureTheory.memLp_finsetSum s h_memLp
   have hg_eq : g = ∑ i ∈ s, f i := by
     funext a
     simp [g]
@@ -265,7 +265,7 @@ theorem integral_abs_finsetSum_pow_rpow_inv_le_sum_aemeasurable
       (by exact_mod_cast hp_nat_ne_zero) (by simp)).1 ?_
     simpa [Real.norm_eq_abs] using hLp_int i hi
   have hg_memLp : MeasureTheory.MemLp g (p : ENNReal) μ := by
-    simpa [g] using MeasureTheory.memLp_finset_sum s h_memLp
+    simpa [g] using MeasureTheory.memLp_finsetSum s h_memLp
   have hg_eq : g = ∑ i ∈ s, f i := by
     funext a
     simp [g]

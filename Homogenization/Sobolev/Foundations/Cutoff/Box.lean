@@ -3,7 +3,7 @@ import Mathlib.Analysis.SpecialFunctions.SmoothTransition
 import Mathlib.Analysis.Calculus.ContDiff.Operations
 import Mathlib.Analysis.Calculus.FDeriv.Mul
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Topology.Algebra.Module.LinearMapPiProd
+import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.PiProd
 
 namespace Homogenization
 
@@ -135,8 +135,9 @@ theorem smoothTransition_hasDerivAt (x : ℝ) :
   have hq := ha.div hD hDne
   simp only [Pi.add_apply, Function.comp_apply] at hq
   convert hq using 1
-  congr 1
-  ring
+  all_goals first
+    | rfl
+    | ring
 
 /-- **Explicit derivative bound for `Real.smoothTransition`.**  For every `x`,
 `|smoothTransition'(x)| ≤ 8`.  (The sharp constant is `2`, at `x = 1/2`; `8`
@@ -182,7 +183,8 @@ theorem profile_le_one (t : ℝ) : profile lo hi ℓ t ≤ 1 := by
   have h := mul_le_mul (Real.smoothTransition.le_one ((t - (lo - ℓ)) / ℓ))
     (Real.smoothTransition.le_one (((hi + ℓ) - t) / ℓ))
     (Real.smoothTransition.nonneg _) (zero_le_one)
-  simpa using h
+  rw [mul_one] at h
+  exact h
 
 theorem profile_abs_le_one (t : ℝ) : |profile lo hi ℓ t| ≤ 1 := by
   rw [abs_of_nonneg (profile_nonneg t)]; exact profile_le_one t
@@ -192,7 +194,7 @@ theorem profile_contDiff : ContDiff ℝ (⊤ : ℕ∞) (profile lo hi ℓ) := by
   fun_prop
 
 theorem profile_differentiable : Differentiable ℝ (profile lo hi ℓ) :=
-  profile_contDiff.differentiable (by exact_mod_cast le_top)
+  profile_contDiff.differentiable (by simp)
 
 /-- The profile is identically `1` on the core interval `[lo, hi]`. -/
 theorem profile_eq_one (hℓ : 0 < ℓ) {t : ℝ} (hlo : lo ≤ t) (hhi : t ≤ hi) :
@@ -240,7 +242,7 @@ theorem profile_deriv_abs_le (hℓ : 0 < ℓ) (t : ℝ) :
     simpa using h
   -- the two transition factors
   have hst : ∀ s : ℝ, HasDerivAt Real.smoothTransition (deriv Real.smoothTransition s) s :=
-    fun s => (Real.smoothTransition.contDiff.differentiable (by exact_mod_cast le_top) s).hasDerivAt
+    fun s => (Real.smoothTransition.contDiff.differentiable_one s).hasDerivAt
   have hL := (hst ((t - (lo - ℓ)) / ℓ)).comp t hArgL
   have hR := (hst (((hi + ℓ) - t) / ℓ)).comp t hArgR
   have hd : HasDerivAt (profile lo hi ℓ)
@@ -333,11 +335,11 @@ theorem boxCutoff_eq_zero (hℓ : 0 < ℓ) {x : Vec d}
   rcases hx with h | h
   · rw [Pi.le_def, not_forall] at h
     obtain ⟨i, hi⟩ := h
-    push_neg at hi
+    push Not at hi
     exact Finset.prod_eq_zero (Finset.mem_univ i) (profile_eq_zero_left hℓ hi.le)
   · rw [Pi.le_def, not_forall] at h
     obtain ⟨i, hi⟩ := h
-    push_neg at hi
+    push Not at hi
     exact Finset.prod_eq_zero (Finset.mem_univ i) (profile_eq_zero_right hℓ hi.le)
 
 /-- `HasFDerivAt` for the box cutoff, via the finite-product rule on the
@@ -357,7 +359,7 @@ theorem boxCutoff_hasFDerivAt (x : Vec d) :
       (profile_differentiable (lo := lo i) (hi := hi i) (ℓ := ℓ) (x i)).hasDerivAt
     exact HasDerivAt.comp_hasFDerivAt (h₂ := profile (lo i) (hi i) ℓ)
       (f := fun y : Vec d => y i) x hp (hasFDerivAt_apply i x)
-  exact HasFDerivAt.finset_prod hfac
+  exact HasFDerivAt.finsetProd hfac
 
 /-- The `i`-th partial derivative of the box cutoff: only the `i`-th factor is
 differentiated, the rest form the product with `i` removed. -/
@@ -366,7 +368,7 @@ theorem boxCutoff_fderiv_single (x : Vec d) (k : Fin d) :
       (∏ j ∈ Finset.univ.erase k, profile (lo j) (hi j) ℓ (x j)) *
         deriv (profile (lo k) (hi k) ℓ) (x k) := by
   rw [(boxCutoff_hasFDerivAt x).fderiv]
-  simp only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, smul_eq_mul,
+  simp only [sum_apply, smul_apply, smul_eq_mul,
     ContinuousLinearMap.proj_apply, Pi.single_apply, mul_ite, mul_one, mul_zero]
   rw [Finset.sum_ite_eq' Finset.univ k]
   simp
@@ -417,9 +419,9 @@ theorem boxCutoff_support_volume_le (hℓ : 0 < ℓ) (hle : lo ≤ hi) :
       have hi0 : profile (lo i) (hi i) ℓ (x i) ≠ 0 :=
         Finset.prod_ne_zero_iff.mp hx i (Finset.mem_univ i)
       refine ⟨?_, ?_⟩
-      · by_contra hlt; push_neg at hlt
+      · by_contra hlt; push Not at hlt
         exact hi0 (profile_eq_zero_left hℓ hlt.le)
-      · by_contra hlt; push_neg at hlt
+      · by_contra hlt; push Not at hlt
         exact hi0 (profile_eq_zero_right hℓ hlt.le)
     exact ⟨fun i => (key i).1, fun i => (key i).2⟩
   calc volume (Function.support (boxCutoff lo hi ℓ))

@@ -18,7 +18,7 @@ noncomputable def centeredCubeNormalizedL2 {d : ℕ} (Q : TriadicCube d)
     (cubeFluctuation Q F)
     (by
       simpa [cubeFluctuation,
-        cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure] using
+        cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure] using!
         hF.sub (MeasureTheory.memLp_const (cubeAverage Q F)))
 
 /-- A stronger regularity-producing centered-cube `q = 2` Neumann result.
@@ -104,7 +104,7 @@ theorem originCubeNeumannW22CalderonZygmund_regularity_qTwo :
   let Q : TriadicCube d := originCube d m
   let G : Vec d → ℝ := cubeFluctuation Q F
   have hG : MeasureTheory.MemLp G (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    simpa [G, cubeFluctuation] using memLp_centered_normalizedCubeMeasure Q hF
+    simpa [G, cubeFluctuation] using! memLp_centered_normalizedCubeMeasure Q hF
   have hGmean : cubeAverage Q G = 0 := by
     exact cubeAverage_centered_eq_zero Q hF
   rcases

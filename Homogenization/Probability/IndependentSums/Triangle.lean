@@ -395,7 +395,7 @@ theorem mul_measureReal_upperTailEvent_finset_sum_le_integral_finset_sum
     show 0 ≤ F ω
     simpa [F] using Finset.sum_nonneg (fun i hi => hY_nonneg i hi ω)
   have hF_int : Integrable F μ := by
-    simpa [F] using integrable_finset_sum' s hY_int
+    simpa [F] using integrable_finsetSum' s hY_int
   have hmono :
       μ.real (upperTailEvent F b) ≤ μ.real {ω | b ≤ F ω} := by
     refine measureReal_mono ?_
@@ -411,7 +411,7 @@ theorem mul_measureReal_upperTailEvent_finset_sum_le_integral_finset_sum
           (mul_meas_ge_le_integral_of_nonneg (μ := μ) hF_nonneg hF_int b)
       _ = Finset.sum s (fun i => ∫ ω, Y i ω ∂μ) := by
         rw [hF_eq]
-        rw [integral_finset_sum s hY_int]
+        rw [integral_finsetSum s hY_int]
   simpa [hF_eq] using hmain
 
 theorem measureReal_upperTailEvent_finset_sum_le_div

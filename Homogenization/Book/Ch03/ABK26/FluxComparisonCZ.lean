@@ -93,11 +93,11 @@ private theorem exists_centeredCube_adjGradient_full_cz
     smoothTestToCubeEuclideanL2LpField h
   have hsolution : IsCenteredCubeH10ScalarDivergenceSolution m 1 z hLp.toLpTwo :=
     CubeEuclideanL2LpField.to_centeredCubeH10ScalarDivergenceSolution m hLp z (by
-      simpa only [hLp] using hz)
+      simpa only [hLp] using! hz)
   have hfull := hC m 1 s hWsp z zero_lt_one (by
-    simpa only [hWsp, hLp] using hsolution)
+    simpa only [hWsp, hLp] using! hsolution)
   obtain ⟨gradW, hgradW, _⟩ := hCsemi m 1 s hWsp z zero_lt_one (by
-    simpa only [hWsp, hLp] using hsolution)
+    simpa only [hWsp, hLp] using! hsolution)
   let gradZ : CubeEuclideanWspL2Field (originCube d m) s p :=
     { toField := gradW.toField
       euclideanMemLp := gradW.euclideanMemLp
@@ -136,7 +136,7 @@ private theorem centeredCube_adjoint_testing_identity
   let w := (centeredCubeGradientDifferenceL2Field m u v).toField
   let F := (centeredCubeRootFluxDefectL2Field m a sigma0 u).toField
   have hw : IsPotentialZeroTraceOn (cubeSet Q) w := by
-    simpa only [Q, w] using hzero.isPotentialZeroTraceOn_cubeSet
+    simpa only [Q, w] using! hzero.isPotentialZeroTraceOn_cubeSet
   have hF : MemVectorL2 (cubeSet Q) F := by
     simpa only [Q, F] using
       memVectorL2_cubeSet_of_cubeEuclideanLpField_two
@@ -155,7 +155,7 @@ private theorem centeredCube_adjoint_testing_identity
         _ = (centeredCubeFluxDifferenceL2Field m a sigma0 u v).toField :=
           (centeredCubeFluxDifference_eq_smul_gradientDifference_add_rootDefect
             m a sigma0 u v).symm]
-    simpa only [Q] using hbal.isSolenoidalOn_cubeSet
+    simpa only [Q] using! hbal.isSolenoidalOn_cubeSet
   have hraw := dirichletDivergence_solutionComparison_integral_identity
     (Q := Q) (sigma0 := sigma0) (w := w) (F := F) (h := h) (v := z)
       hF (by simpa only [Q] using hz) hw hsol
@@ -306,7 +306,8 @@ private theorem exists_centeredCube_gradient_negativeDual_le_rootDefect
     _ ≤ cubeEuclideanNegativeWspSmoothDualENorm (originCube d m) s p
           (centeredCubeRootFluxDefectL2Field m a sigma0 u) * C := by
           gcongr
-          simpa only [mul_one] using mul_le_mul_of_nonneg_left hh (zero_le C)
+          simpa only [mul_one] using
+            mul_le_mul_of_nonneg_left hh (zero_le : (0 : ℝ≥0∞) ≤ C)
     _ = C * cubeEuclideanNegativeWspSmoothDualENorm (originCube d m) s p
           (centeredCubeRootFluxDefectL2Field m a sigma0 u) := by ac_rfl
 
@@ -330,7 +331,7 @@ theorem exists_centeredCubeFluxComparison_cz
                 (Real.rpow 3 (s.1 * (((m - n : ℤ) : ℝ)))) *
               centeredCubeLocalFluxDefectSmoothDualLpAverage
                 m n hnm a sigma0 u s p := by
-  letI : NeZero d := ⟨by omega⟩
+  let : NeZero d := ⟨by omega⟩
   obtain ⟨Ccz, hCcz_top, hCcz⟩ :=
     exists_centeredCube_gradient_negativeDual_le_rootDefect d p
   refine ⟨2 * Ccz + 1, ?_, ?_⟩
@@ -379,7 +380,7 @@ theorem exists_centeredCubeFluxComparison_cz
           (ENNReal.ofReal (Real.rpow 3 (s.1 * (((m - n : ℤ) : ℝ)))) *
             centeredCubeLocalFluxDefectSmoothDualLpAverage
               m n hnm a sigma0 u s p) := by
-          exact mul_le_mul_of_nonneg_left hlocal (zero_le _)
+          exact mul_le_mul_of_nonneg_left hlocal (zero_le)
     _ = (2 * Ccz + 1) * ENNReal.ofReal
           (Real.rpow 3 (s.1 * (((m - n : ℤ) : ℝ)))) *
         centeredCubeLocalFluxDefectSmoothDualLpAverage

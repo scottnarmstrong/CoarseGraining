@@ -207,8 +207,8 @@ theorem cubeEuclideanNormalizedSmoothPairing_integrable {d : ℕ}
     intro i
     simpa only [HilbertVec.ofVec, PiLp.toLp_apply] using
       h.euclideanMemLp_two.eval_piLp i
-  simpa only [vecDot] using
-    integrable_finset_sum Finset.univ fun i _ => (hF i).integrable_mul (hh i)
+  simpa only [vecDot] using!
+    integrable_finsetSum Finset.univ fun i _ => (hF i).integrable_mul (hh i)
 
 private theorem cubeEuclideanNormalizedSmoothPairing_eq_zero_of_fullENorm_eq_zero
     {d : ℕ} (Q : TriadicCube d) (s : FractionalOrder)

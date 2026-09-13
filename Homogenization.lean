@@ -112,7 +112,6 @@ import Homogenization.CoarseGraining.QuadraticStability
 import Homogenization.CoarseGraining.CubeMinimizer
 import Homogenization.CoarseGraining.CoarseBounds
 
-import Homogenization.HighContrast
 
 import Homogenization.Book.Ch01
 import Homogenization.Book.Ch01.Theorems.MeanSquareDeviation

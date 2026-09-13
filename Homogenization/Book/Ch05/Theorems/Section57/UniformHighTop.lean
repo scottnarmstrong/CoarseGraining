@@ -72,7 +72,7 @@ theorem measureReal_shiftedHighTopBadScaleEvent_quenchedProbeEnvelope_le_weighte
   dsimp only
   intro ht hαt hαb hαharm hDen hDen_high hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let hΓ2 := hInf.toGammaSigma 2 (by norm_num : (0 : ℝ) < 2)
   have hΓ2_params : hΓ2.params = params := by
     simpa [hΓ2, GammaInfinityCoarseGrainedEllipticity.toGammaSigma] using hparams
@@ -162,7 +162,7 @@ theorem measureReal_shiftedHighTopBadScaleEvent_quenchedProbeEnvelope_le_weighte
         (t := t) (αbad := αbad)
         hP hStruct hΓ2 rfl hΓ2_params (q := q)
     simpa [K, N0, Hshift, S, b, L, ctop, η, w, Dhigh, Aold, ρtop,
-      hΓ2, GammaInfinityCoarseGrainedEllipticity.toGammaSigma] using
+      hΓ2, GammaInfinityCoarseGrainedEllipticity.toGammaSigma] using!
       htop ht hαt hαb hαharm hAold_one
   have hw_pos : 0 < w := by
     dsimp [w]

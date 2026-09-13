@@ -55,9 +55,9 @@ private theorem measurable_canonicalMuHilbertMinimizerCubeSet_localSigmaR
       (LocalSigmaR (cubeSet Q)) (borel (HilbertBlockL2 (cubeSet Q)))
       (fun a : RegCoeffField d => canonicalMuHilbertMinimizerCubeSet Q P0 a.toFun) := by
   classical
-  letI : MeasurableSpace (RegCoeffField d) := LocalSigmaR (cubeSet Q)
-  letI : MeasurableSpace (HilbertBlockL2 (cubeSet Q)) := borel _
-  haveI : BorelSpace (HilbertBlockL2 (cubeSet Q)) := ⟨rfl⟩
+  let : MeasurableSpace (RegCoeffField d) := LocalSigmaR (cubeSet Q)
+  let : MeasurableSpace (HilbertBlockL2 (cubeSet Q)) := borel _
+  have : BorelSpace (HilbertBlockL2 (cubeSet Q)) := ⟨rfl⟩
   let slice : ℕ → Set (RegCoeffField d) :=
     fun k => {a : RegCoeffField d | AEEQuantitativeEllipticSlice (cubeSet Q) k a.toFun}
   let firstSlice : ℕ → Set (RegCoeffField d) :=
@@ -181,7 +181,7 @@ private theorem measurable_canonicalMuHilbertMinimizerCubeSet_localSigmaR
       rw [Set.liftCover_of_mem
         (S := cover) (f := piece) (hf := hagree) (hS := hcover) (i := some k)
         (by simpa [cover] using hafirst)]
-      simp [canonicalMuHilbertMinimizerCubeSet, ha, k, piece, cover]
+      simp only [piece, cover, canonicalMuHilbertMinimizerCubeSet, ha, k, dif_pos]
     · have ha_notS : a ∉ S := by
         intro haS
         rcases Set.mem_iUnion.mp haS with ⟨k, hafirst⟩
@@ -201,7 +201,7 @@ private theorem measurable_canonicalMuHilbertEnergyBilinFixedCubeSet_localSigmaR
       (LocalSigmaR (cubeSet Q)) (borel ℝ)
       (fun a : RegCoeffField d => canonicalMuHilbertEnergyBilinFixedCubeSet Q P0 Y hY a.toFun) := by
   classical
-  letI : MeasurableSpace (RegCoeffField d) := LocalSigmaR (cubeSet Q)
+  let : MeasurableSpace (RegCoeffField d) := LocalSigmaR (cubeSet Q)
   let slice : ℕ → Set (RegCoeffField d) :=
     fun k => {a : RegCoeffField d | AEEQuantitativeEllipticSlice (cubeSet Q) k a.toFun}
   let firstSlice : ℕ → Set (RegCoeffField d) :=
@@ -346,8 +346,8 @@ theorem aestronglyMeasurable_canonicalMuHilbertMinimizer_cubeSet
       (fun a : RegCoeffField d => canonicalMuHilbertMinimizerCubeSet Q P0 a.toFun) P := by
   classical
   let U : Set (Vec d) := cubeSet Q
-  letI : MeasurableSpace (HilbertBlockL2 U) := borel _
-  haveI : BorelSpace (HilbertBlockL2 U) := ⟨rfl⟩
+  let : MeasurableSpace (HilbertBlockL2 U) := borel _
+  have : BorelSpace (HilbertBlockL2 U) := ⟨rfl⟩
   let f : RegCoeffField d → HilbertBlockL2 U :=
     fun a => canonicalMuHilbertMinimizerCubeSet Q P0 a.toFun
   have hLocalMeas :
@@ -366,7 +366,7 @@ theorem aestronglyMeasurable_canonicalMuHilbertMinimizer_cubeSet
     have hSlices : TopologicalSpace.IsSeparable (⋃ k : ℕ, sliceRange k) := by
       refine .iUnion ?_
       intro k
-      letI : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
+      let : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
         AEEQuantitativeEllipticSlice.localMeasurableSpace U k
       have hslice : StronglyMeasurable
           (fun a : {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} =>
@@ -384,10 +384,11 @@ theorem aestronglyMeasurable_canonicalMuHilbertMinimizer_cubeSet
       have hslice : AEEQuantitativeEllipticSlice U k a.toFun := by
         simpa [k] using Nat.find_spec ha
       right
-      exact Set.mem_iUnion.mpr
-        ⟨k, ⟨⟨a.toFun, hslice⟩, by simp [f, canonicalMuHilbertMinimizerCubeSet, U, ha, k]⟩⟩
+      refine Set.mem_iUnion.mpr ⟨k, ⟨⟨a.toFun, hslice⟩, ?_⟩⟩
+      simp only [f, canonicalMuHilbertMinimizerCubeSet, U, ha, k, dif_pos]
     · left
-      simp [f, canonicalMuHilbertMinimizerCubeSet, U, ha]
+      simp only [f, canonicalMuHilbertMinimizerCubeSet, U, ha, dif_neg, not_false_eq_true,
+        Set.mem_singleton_iff]
   exact (aestronglyMeasurable_iff_nullMeasurable_separable).2
     ⟨hNull, ⟨sepSet, hSep, hMemSep⟩⟩
 
@@ -666,7 +667,7 @@ theorem aemeasurable_canonicalScalarResponseGradientAverage_cubeSet
   have hLower :=
     (aemeasurable_pi_iff.mp
       (hP.aemeasurable_canonicalDoubledMuResponseLowerImageAverage_cubeSet Q R p q)) i
-  simpa [canonicalScalarResponseGradientAverageCubeSet, Pi.add_apply] using hPot.add hLower
+  simpa [canonicalScalarResponseGradientAverageCubeSet, Pi.add_apply] using! hPot.add hLower
 
 /-- Law-facing measurability of raw scalar response-flux averages
 `avg_R a grad v_m`. -/
@@ -683,7 +684,7 @@ theorem aemeasurable_canonicalScalarResponseFluxAverage_cubeSet
   have hUpper :=
     (aemeasurable_pi_iff.mp
       (hP.aemeasurable_canonicalDoubledMuResponseUpperImageAverage_cubeSet Q R p q)) i
-  simpa [canonicalScalarResponseFluxAverageCubeSet, Pi.add_apply] using hFlux.add hUpper
+  simpa [canonicalScalarResponseFluxAverageCubeSet, Pi.add_apply] using! hFlux.add hUpper
 
 /-- Law-facing measurability of finite-depth raw scalar response-gradient weak
 norms. -/

@@ -52,7 +52,7 @@ theorem cubeAverage_vecDot_const_left_eq_vecDot_cubeAverageVec
     simpa [IntegrableOn] using
       (hField i).integrable.const_mul (c i)
   unfold cubeAverage vecDot cubeAverageVec
-  rw [integral_finset_sum Finset.univ hterm]
+  rw [integral_finsetSum Finset.univ hterm]
   rw [Finset.mul_sum]
   refine Finset.sum_congr rfl ?_
   intro i _hi

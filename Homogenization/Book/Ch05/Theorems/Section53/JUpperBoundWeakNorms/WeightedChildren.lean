@@ -103,9 +103,9 @@ theorem integrable_cutoffWeightedChildResponseJAtScale
               Ch04.restrictionResponseJObservableCubeSet R p q a) P := by
     intro R hR
     have hRscale : R ∈ descendantsAtScale (originCube d m) k := by
-      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR
+      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using! hR
     exact (hJ R hRscale).const_mul (cutoffChildWeight φ R)
-  simpa [cutoffWeightedChildResponseJAtScale] using
+  simpa [cutoffWeightedChildResponseJAtScale] using!
     Ch04.integrable_descendantsAverage
       (P := P) (Q := originCube d m) (j := Int.toNat (m - k))
       (F := fun R a =>
@@ -164,7 +164,7 @@ theorem integral_centeredJMinusCutoffWeightedChildAtScale_eq_expectedResponseJCu
     ∫ a, centeredJMinusCutoffWeightedChildAtScale m k φ p q p0 q0 a ∂P =
       Ch04.expectedResponseJCubeSet P (originCube d m) p q -
         (1 / 2 : ℝ) * vecDot p0 q0 := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hWeightedInt :
       Integrable (cutoffWeightedChildResponseJAtScale m k φ p q) P :=
     integrable_cutoffWeightedChildResponseJAtScale (P := P) hkm φ p q hJ
@@ -231,7 +231,7 @@ theorem integral_responseJAdditivityDefectAtScale_eq_tauAtScale
         Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P := by
     intro R hR
     exact hDesc R (by
-      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR)
+      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using! hR)
   have hAvgInt :
       Integrable
         (fun a : RegCoeffField d =>
@@ -297,7 +297,7 @@ theorem integral_centeredJMinusCutoffWeightedChildAtScale_le_integral_of_ae_abs_
     Ch04.expectedResponseJCubeSet P (originCube d m) p q -
         (1 / 2 : ℝ) * vecDot p0 q0 ≤
       ∫ a, RHS a ∂P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : RegCoeffField d → ℝ :=
     centeredJMinusCutoffWeightedChildAtScale m k φ p q p0 q0
   have hWeightedInt :
@@ -309,7 +309,7 @@ theorem integral_centeredJMinusCutoffWeightedChildAtScale_le_integral_of_ae_abs_
       Ch04.integrable_restrictionCenteredResponseJObservableCubeSet
         (P := P) (Q := originCube d m) p q p0 q0 hParent
   have hXint : Integrable X P := by
-    simpa [X, centeredJMinusCutoffWeightedChildAtScale] using
+    simpa [X, centeredJMinusCutoffWeightedChildAtScale] using!
       hCenteredInt.sub hWeightedInt
   have hInt_le :
       ∫ a, X a ∂P ≤ ∫ a, RHS a ∂P :=

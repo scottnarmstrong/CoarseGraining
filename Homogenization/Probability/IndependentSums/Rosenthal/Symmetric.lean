@@ -139,7 +139,7 @@ theorem measureReal_absTailEvent_finsetSum_le_sup'_abs_add_bennett
     have hg : ∀ i, Measurable (g i) := by
       intro i
       exact absTruncation_measurable (X := fun t : ℝ => t) (r := r) measurable_id
-    simpa [Y, g, Function.comp] using h_indep.comp g hg
+    simpa [Y, g, Function.comp] using! h_indep.comp g hg
   have h_measY : ∀ i, Measurable (Y i) := by
     intro i
     exact absTruncation_measurable (X := X i) (r := r) (h_meas i)
@@ -164,7 +164,7 @@ theorem measureReal_absTailEvent_finsetSum_le_sup'_abs_add_bennett
               bennettH
                 (t * r /
                   (∑ i ∈ s, ProbabilityTheory.moment (fun ω => absTruncation (X i) r ω) 2 μ)))) := by
-    simpa [Y] using htailY
+    simpa [Y] using! htailY
   calc
     μ.real (absTailEvent (fun ω => ∑ i ∈ s, X i ω) t)
         ≤ μ.real
@@ -236,7 +236,7 @@ theorem measureReal_absTailEvent_finsetSum_le_sup'_abs_add_bennettBeta_of_scale
     dsimp [v, sigmaSq]
     refine Finset.sum_le_sum ?_
     intro i hi
-    simpa [r] using moment_absTruncation_two_le
+    simpa [r] using! moment_absTruncation_two_le
       (μ := μ) (X := X i) (r := t / p) (h_meas i) (h_sq_int i hi)
   have hmaster :=
     measureReal_absTailEvent_finsetSum_le_sup'_abs_add_bennett
@@ -245,7 +245,7 @@ theorem measureReal_absTailEvent_finsetSum_le_sup'_abs_add_bennettBeta_of_scale
   have harg_le : t * r / sigmaSq ≤ t * r / v := by
     have htr_nonneg : 0 ≤ t * r := mul_nonneg ht.le hr_pos.le
     have hinv : sigmaSq⁻¹ ≤ v⁻¹ := by
-      simpa [one_div] using one_div_le_one_div_of_le hv_pos hv_le
+      simpa [one_div] using! one_div_le_one_div_of_le hv_pos hv_le
     simpa [div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using
       mul_le_mul_of_nonneg_left hinv htr_nonneg
   have hleft_pos : 0 < t * r / sigmaSq := by
@@ -311,7 +311,7 @@ theorem ae_eq_zero_finsetSum_of_forall
         apply ih
         intro i hi
         exact hY_zero i (by simp [hi])
-      simpa [Finset.sum_insert, ha] using hae.add hrest
+      simpa [Finset.sum_insert, ha] using! hae.add hrest
 
 /-- Symmetric Rosenthal bound in `lintegral` form. This is the exact
 tail-integration endpoint coming from the Chapter 4 Bennett-plus-maximum split. -/
@@ -646,7 +646,8 @@ theorem integrable_abs_finsetSum_rpow_of_identDistrib_neg
     intro ω
     have hnonneg : 0 ≤ |X hs.choose ω| := abs_nonneg _
     have hle : |X hs.choose ω| ≤ M ω := by
-      simpa [M] using (Finset.le_sup' (f := fun i => |X i ω|) hs.choose_spec)
+      show |X hs.choose ω| ≤ s.sup' hs (fun i => |X i ω|)
+      exact Finset.le_sup' (f := fun i => |X i ω|) hs.choose_spec
     exact le_trans hnonneg hle
   have hMpow_nonneg : 0 ≤ᵐ[μ] fun ω => M ω ^ p := by
     exact Filter.Eventually.of_forall fun ω => Real.rpow_nonneg (hM_nonneg ω) _
@@ -721,7 +722,8 @@ theorem integral_abs_finsetSum_rpow_le_rosenthal_of_identDistrib_neg
     intro ω
     have hnonneg : 0 ≤ |X hs.choose ω| := abs_nonneg _
     have hle : |X hs.choose ω| ≤ M ω := by
-      simpa [M] using (Finset.le_sup' (f := fun i => |X i ω|) hs.choose_spec)
+      show |X hs.choose ω| ≤ s.sup' hs (fun i => |X i ω|)
+      exact Finset.le_sup' (f := fun i => |X i ω|) hs.choose_spec
     exact le_trans hnonneg hle
   have hMpow_nonneg : 0 ≤ᵐ[μ] fun ω => M ω ^ p := by
     exact Filter.Eventually.of_forall fun ω => Real.rpow_nonneg (hM_nonneg ω) _

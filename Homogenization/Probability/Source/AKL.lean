@@ -95,14 +95,14 @@ private theorem isClosed_isEllipticEntry :
     IsClosed {A : Mat d | IsEllipticEntry Θ A} := by
   have h₁ : IsClosed
       {A : Mat d | ∀ ξ : Vec d, vecNormSq ξ ≤ vecDot ξ (matVecMul A ξ)} := by
-    rw [Set.setOf_forall]
+    rw [Set.ofPred_forall]
     refine isClosed_iInter fun ξ => ?_
     simp only [vecNormSq, vecDot, matVecMul]
     exact isClosed_le continuous_const (by fun_prop)
   have h₂ : IsClosed
       {A : Mat d | ∀ η : Vec d,
         vecNormSq (matVecMul A η) ≤ Θ * vecDot η (matVecMul A η)} := by
-    rw [Set.setOf_forall]
+    rw [Set.ofPred_forall]
     refine isClosed_iInter fun η => ?_
     simp only [vecNormSq, vecDot, matVecMul]
     exact isClosed_le (by fun_prop) (by fun_prop)
@@ -123,13 +123,13 @@ private theorem measurableSet_isEllipticMatrix :
   · have hset :
         {A : Mat d | IsEllipticMatrix 1 Θ A} = {A : Mat d | IsEllipticEntry Θ A} := by
       ext A
-      simp only [Set.mem_setOf_eq]
+      simp only [Set.mem_ofPred_eq]
       exact (isEllipticMatrix_one_iff A).trans (and_iff_right hΘ)
     rw [hset]
     exact isClosed_isEllipticEntry.measurableSet
   · have hempty : {A : Mat d | IsEllipticMatrix 1 Θ A} = ∅ := by
       ext A
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
       intro hA
       exact hΘ hA.2.1
     rw [hempty]
@@ -202,6 +202,7 @@ theorem generator_mk_eq_raw {d : ℕ} {Θ : ℝ}
   filter_upwards [ae_restrict_of_ae (AEEqFun.coeFn_mk f hf)] with x hx
   rw [hx]
 
+set_option warn.classDefReducibility false in
 def localSigma {d : ℕ} {Θ : ℝ}
     (U : BorelRegion d) : MeasurableSpace (Carrier d Θ) :=
   MeasurableSpace.generateFrom
@@ -209,6 +210,7 @@ def localSigma {d : ℕ} {Θ : ℝ}
       ContDiff ℝ (⊤ : ℕ∞) φ ∧ HasCompactSupport φ ∧
       ∃ t : Set ℝ, MeasurableSet t ∧ s = generator U e e' φ ⁻¹' t}
 
+set_option warn.classDefReducibility false in
 def globalSigma (d : ℕ) (Θ : ℝ) : MeasurableSpace (Carrier d Θ) :=
   localSigma (Θ := Θ)
     (⟨Set.univ, MeasurableSet.univ⟩ : BorelRegion d)
@@ -266,8 +268,9 @@ private theorem aestronglyMeasurable_density {d : ℕ} {Θ : ℝ}
   apply Finset.aestronglyMeasurable_sum
   intro j hj
   have hentry : AEStronglyMeasurable (fun x => a.1 x i j) volume := by
-    simpa [Function.comp_def] using
-      ((continuous_apply_apply i j).measurable.comp a.1.measurable).aestronglyMeasurable
+    have hcont : Continuous (fun M : Mat d => M i j) := continuous_apply_apply i j
+    simpa [Function.comp_def] using!
+      (hcont.measurable.comp a.1.measurable).aestronglyMeasurable
   exact (hentry.mul_const (e j)).const_mul (e' i)
 
 private theorem memLp_top_density {d : ℕ} {Θ : ℝ}
@@ -335,7 +338,7 @@ private theorem integrable_density_mul {d : ℕ} {Θ : ℝ}
     (hf : MemLp f 1 volume) :
     Integrable (fun x => density e e' a x * f x) volume := by
   rw [← memLp_one_iff_integrable]
-  simpa [Pi.mul_apply] using hf.mul (memLp_top_density e e' a)
+  simpa [Pi.mul_apply] using! hf.mul (memLp_top_density e e' a)
 
 private theorem integral_density_indicator_eq {d : ℕ} {Θ : ℝ}
     {U V : BorelRegion d} (hUV : U.1 ⊆ V.1)
@@ -369,7 +372,7 @@ private theorem measurable_generator_of_subset {d : ℕ} {Θ : ℝ}
   have hf : MemLp f 1 volume := memLp_one_iff_integrable.mpr hfint
   obtain ⟨ψ, hψcompact, hψsmooth, hψtend⟩ :=
     exists_smoothCompactSupport_L1_sequence f hf
-  letI : MeasurableSpace (Carrier d Θ) := localSigma V
+  let : MeasurableSpace (Carrier d Θ) := localSigma V
   apply measurable_of_tendsto_metrizable
   · intro n
     exact measurable_generator_localSigma V e e' (ψ n) (hψsmooth n) (hψcompact n)
@@ -397,7 +400,7 @@ private theorem measurable_generator_of_subset {d : ℕ} {Θ : ℝ}
       simp only [Pi.sub_apply]
       ring
     have hint := tendsto_setIntegral_of_L1' (fun x => density e e' a x * f x)
-      htarget (Filter.Eventually.of_forall hseqint) hL1 V.1
+      htarget.aestronglyMeasurable (Filter.Eventually.of_forall hseqint) hL1 V.1
     have htarget_eq : (∫ x in V.1, density e e' a x * f x) =
         generator U e e' φ a := by
       simpa [f] using integral_density_indicator_eq hUV e e' φ a
@@ -459,7 +462,7 @@ theorem measurable_translate_global {d : ℕ} {Θ : ℝ}
     @Measurable (Carrier d Θ) (Carrier d Θ)
       (globalSigma d Θ) (globalSigma d Θ) (translate (Θ := Θ) z) := by
   let U : BorelRegion d := ⟨Set.univ, MeasurableSet.univ⟩
-  letI : MeasurableSpace (Carrier d Θ) := localSigma U
+  let : MeasurableSpace (Carrier d Θ) := localSigma U
   change @Measurable (Carrier d Θ) (Carrier d Θ) (localSigma U)
     (MeasurableSpace.generateFrom
       {s | ∃ (e e' : Vec d) (φ : Vec d → ℝ),

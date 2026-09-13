@@ -89,7 +89,7 @@ theorem sqWeightedMeasure_neumannReflected_oneLevel_tail_originCube
       (depth := depth) (eps := eps) hsigma0 u uP H HP hH huP_grad (by rfl)
     rw [hglobal] at hlevel
     simpa only [reflectedStoppingRadius, reflectedGlobalSquaredEnergy, F, Hext,
-      gext] using hlevel
+      gext] using! hlevel
   have hlevel_pos : 0 < level :=
     lt_of_le_of_lt (Real.sqrt_nonneg _) hcutoff
   let T : Set (Vec d) := {x | M * level < ‖F x‖} ∩ Q
@@ -202,7 +202,7 @@ theorem sqWeightedMeasure_neumannReflected_oneLevel_tail_originCube
             ({x | a < ‖HilbertVec.ofVec
               (cubeCoordinateFoldReflectedVectorField (originCube d m)
                 (fun y ↦ u.toH1Function.grad y) x)‖} ∩ P) := by
-      simpa only [F, P, reflectedParentGradientExtension, huP_grad] using
+      simpa only [F, P, reflectedParentGradientExtension, huP_grad] using!
         hindicator
     calc
       sqWeightedMeasure F volume ({x | a < ‖F x‖} ∩ P) =
@@ -215,7 +215,7 @@ theorem sqWeightedMeasure_neumannReflected_oneLevel_tail_originCube
                 (fun y ↦ u.toH1Function.grad y) x)‖} ∩ P) := hreflect
       _ = ((3 : ℝ≥0∞) ^ d) *
           sqWeightedMeasure fu volume ({x | a < ‖fu x‖} ∩ Q) := by
-            simpa only [fu, Q, mul_comm] using
+            simpa only [fu, Q, mul_comm] using!
               sqWeightedMeasure_openCubeSet_succ_originCube_cubeCoordinateFoldReflectedVectorField_tail
                 (fun y ↦ u.toH1Function.grad y) hfu_meas
       _ = sqWeightedMeasure fu volume ({x | a < ‖fu x‖} ∩ Q) *
@@ -231,7 +231,7 @@ theorem sqWeightedMeasure_neumannReflected_oneLevel_tail_originCube
         (originCube d m) _ hx]
   have hT_eq : T = {x | M * level < ‖fu x‖} ∩ Q := by
     ext x
-    simp only [T, Set.mem_inter_iff, Set.mem_setOf_eq]
+    simp only [T, Set.mem_inter_iff, Set.mem_ofPred_eq]
     constructor
     · intro hx
       exact ⟨by rw [hFQpoint x hx.2] at hx; exact hx.1, hx.2⟩
@@ -308,7 +308,7 @@ theorem sqWeightedMeasure_neumannReflected_oneLevel_tail_originCube
                 (sigma0⁻¹ • H) x)‖} ∩ P) := hreflect
       _ = ((3 : ℝ≥0∞) ^ d) *
           sqWeightedMeasure g volume ({x | a < ‖g x‖} ∩ Q) := by
-            simpa only [g, Q, mul_comm] using
+            simpa only [g, Q, mul_comm] using!
               sqWeightedMeasure_openCubeSet_succ_originCube_cubeCoordinateFoldReflectedVectorField_tail
                 (sigma0⁻¹ • H) hH_source_meas
       _ = sqWeightedMeasure g volume ({x | a < ‖g x‖} ∩ Q) *

@@ -18,7 +18,7 @@ real Hölder conjugate used by the exact dual kernel. -/
 theorem cubeBesovConjExponent_ofReal_eq_exactDualConjExponent (p : ℝ) (hp : 1 < p) :
     cubeBesovConjExponent (ENNReal.ofReal p) =
       ENNReal.ofReal (exactDualConjExponent p) := by
-  letI : ENNReal.HolderConjugate (ENNReal.ofReal p)
+  let : ENNReal.HolderConjugate (ENNReal.ofReal p)
       (ENNReal.ofReal (exactDualConjExponent p)) :=
     (exactDualConjExponent_holder p hp).ennrealOfReal
   simpa only [cubeBesovConjExponent] using
@@ -29,7 +29,7 @@ theorem cubeBesovConjExponent_ofReal_eq_exactDualConjExponent (p : ℝ) (hp : 1 
 theorem cubeBesovConjExponent_exactDualConjExponent_eq_ofReal (p : ℝ) (hp : 1 < p) :
     cubeBesovConjExponent (ENNReal.ofReal (exactDualConjExponent p)) =
       ENNReal.ofReal p := by
-  letI : ENNReal.HolderConjugate (ENNReal.ofReal (exactDualConjExponent p))
+  let : ENNReal.HolderConjugate (ENNReal.ofReal (exactDualConjExponent p))
       (ENNReal.ofReal p) :=
     (exactDualConjExponent_holder p hp).symm.ennrealOfReal
   simpa only [cubeBesovConjExponent] using

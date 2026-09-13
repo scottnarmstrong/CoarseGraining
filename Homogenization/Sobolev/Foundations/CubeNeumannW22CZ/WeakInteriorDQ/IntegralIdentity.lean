@@ -322,13 +322,13 @@ theorem abs_integral_coord_mul_le_half_integral_vecNormSq_add_half_integral_sq_o
     hGj.integrable_mul hφ
   have hprod_abs :
       MeasureTheory.IntegrableOn (fun x => |G x j * φ x|) U := by
-    simpa [Real.norm_eq_abs] using hprod.norm
+    simpa [Real.norm_eq_abs] using! hprod.norm
   have hGsq :
       MeasureTheory.IntegrableOn (fun x => vecNormSq (G x)) U := by
     simpa [vecNormSq] using integrableOn_vecDot_of_memVectorL2 hG hG
   have hφsq :
       MeasureTheory.IntegrableOn (fun x => φ x ^ 2) U := by
-    simpa [pow_two, MeasureTheory.IntegrableOn, volumeMeasureOn] using
+    simpa [pow_two, MeasureTheory.IntegrableOn, volumeMeasureOn] using!
       hφ.integrable_mul hφ
   have hright_int :
       MeasureTheory.IntegrableOn
@@ -478,7 +478,7 @@ theorem integral_coord_norm_rpow_two_le_integral_vecNormSq_of_memVectorL2
   have hleft_int :
       MeasureTheory.IntegrableOn (fun x => ‖G x j‖ ^ (2 : ℝ)) U := by
     simpa [Real.rpow_two, Real.norm_eq_abs, sq_abs, pow_two,
-      MeasureTheory.IntegrableOn, volumeMeasureOn] using hGj.integrable_mul hGj
+      MeasureTheory.IntegrableOn, volumeMeasureOn] using! hGj.integrable_mul hGj
   have hright_int :
       MeasureTheory.IntegrableOn (fun x => vecNormSq (G x)) U := by
     simpa [vecNormSq] using integrableOn_vecDot_of_memVectorL2 hG hG
@@ -737,7 +737,7 @@ theorem neg_integral_forwardDifferenceQuotient_mul_fderiv_eq_of_l2_dist_zero_on_
   have hχ : ContDiff ℝ (⊤ : ℕ∞) χ := by
     simpa [χ] using hφ.sub hψ
   have hχ_compact : HasCompactSupport χ := by
-    simpa [χ] using hφ_compact.sub hψ_compact
+    simpa [χ] using! hφ_compact.sub hψ_compact
   have hχ_subS : tsupport χ ⊆ S := by
     intro x hx
     have hx' : x ∈ tsupport φ ∪ tsupport ψ := by
@@ -783,11 +783,11 @@ theorem neg_integral_forwardDifferenceQuotient_mul_fderiv_eq_of_l2_dist_zero_on_
   have hGφ_int :
       MeasureTheory.Integrable (fun x => G x * φ x)
         (MeasureTheory.volume.restrict V) := by
-    simpa [volumeMeasureOn] using hG.integrable_mul hφV
+    simpa [volumeMeasureOn] using! hG.integrable_mul hφV
   have hGψ_int :
       MeasureTheory.Integrable (fun x => G x * ψ x)
         (MeasureTheory.volume.restrict V) := by
-    simpa [volumeMeasureOn] using hG.integrable_mul hψV
+    simpa [volumeMeasureOn] using! hG.integrable_mul hψV
   have hlin :
       ∫ x in V, G x * χ x ∂MeasureTheory.volume =
         ∫ x in V, G x * φ x ∂MeasureTheory.volume -

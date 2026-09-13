@@ -162,7 +162,6 @@ theorem measurableSet_triadicDilateSet {d : ℕ} (k : ℕ) {U : Set (Vec d)}
       rwa [hback]
     · intro hx
       refine ⟨((3 : ℝ) ^ k)⁻¹ • x, hx, ?_⟩
-      change x = triadicDilateVec k (((3 : ℝ) ^ k)⁻¹ • x)
       change x = ((3 : ℝ) ^ k) • (((3 : ℝ) ^ k)⁻¹ • x)
       rw [smul_smul, mul_inv_cancel₀ hk, one_smul]
   rw [hset]
@@ -194,6 +193,12 @@ private theorem triadicDilateSet_univ {d : ℕ} (k : ℕ) :
     change x = ((3 : ℝ) ^ k) • (((3 : ℝ) ^ k)⁻¹ • x)
     rw [smul_smul, mul_inv_cancel₀ (by positivity : ((3 : ℝ) ^ k) ≠ 0), one_smul]
 
+private theorem localSigma_eq_of_eq {d : ℕ} {U V : Set (Vec d)} (h : U = V)
+    (hU : MeasurableSet U) (hV : MeasurableSet V) :
+    localSigma U hU = localSigma V hV := by
+  cases h
+  rfl
+
 theorem measurable_rescale_localSigma {d : ℕ} (k : ℕ) (U : Set (Vec d))
     (hU : MeasurableSet U) :
     @Measurable (Carrier d) (Carrier d)
@@ -220,7 +225,7 @@ theorem measurable_rescale_localSigma {d : ℕ} (k : ℕ) (U : Set (Vec d))
   change @MeasurableSet (Carrier d)
     (localSigma (triadicDilateSet k U) (measurableSet_triadicDilateSet k hU))
     (bilinearTest e e' ψ ⁻¹' q')
-  letI : MeasurableSpace (Carrier d) :=
+  let : MeasurableSpace (Carrier d) :=
     localSigma (triadicDilateSet k U) (measurableSet_triadicDilateSet k hU)
   apply MeasurableSpace.measurableSet_generateFrom
   exact ⟨e, e', ψ, smoothCompactProbe_rescale k hφ,
@@ -228,10 +233,14 @@ theorem measurable_rescale_localSigma {d : ℕ} (k : ℕ) (U : Set (Vec d))
 
 theorem measurable_rescale_globalSigma {d : ℕ} (k : ℕ) :
     Measurable (Carrier.rescale (d := d) k) := by
-  change @Measurable (Carrier d) (Carrier d) (globalSigma d) (globalSigma d)
+  change @Measurable (Carrier d) (Carrier d)
+    (localSigma Set.univ MeasurableSet.univ) (localSigma Set.univ MeasurableSet.univ)
     (Carrier.rescale k)
-  simpa only [globalSigma, triadicDilateSet_univ] using
-    measurable_rescale_localSigma (d := d) k Set.univ MeasurableSet.univ
+  have heq : localSigma (triadicDilateSet k Set.univ)
+      (measurableSet_triadicDilateSet k MeasurableSet.univ)
+      = localSigma Set.univ MeasurableSet.univ :=
+    localSigma_eq_of_eq (triadicDilateSet_univ (d := d) k) _ _
+  exact heq ▸ measurable_rescale_localSigma (d := d) k Set.univ MeasurableSet.univ
 
 private theorem measurable_smul_globalSigma {d : ℕ} (r : ℝ) (hr : 0 < r) :
     Measurable (Carrier.smul (d := d) r hr) := by

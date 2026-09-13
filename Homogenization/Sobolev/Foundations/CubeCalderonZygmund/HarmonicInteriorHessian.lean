@@ -284,10 +284,10 @@ theorem exists_innerHalf_hasWeakHessianOn_harmonic_same_values
       uS.toFun = u.toFun ∧
         uS.grad = u.grad ∧
           Nonempty (HasWeakHessianOn (scaledOpenCubeSet Q (1 / 2 : ℝ)) uS) := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
-  letI : MeasureTheory.IsFiniteMeasure
+  let : MeasureTheory.IsFiniteMeasure
       (volumeMeasureOn (scaledOpenCubeSet Q (1 / 2 : ℝ))) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_scaledOpenCubeSet_of_pos Q
@@ -333,10 +333,10 @@ theorem exists_harmonic_innerHalf_hessian_energy_bound (d : ℕ) :
         (1 + (256 : ℝ) * (d : ℝ) * quantitativeCubeCutoffGradientConst d ^ 2 *
           (originCubeMeanZeroH1CoerciveEstimate d 0).constant ^ 2))]
   intro Q u h
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
-  letI : MeasureTheory.IsFiniteMeasure
+  let : MeasureTheory.IsFiniteMeasure
       (volumeMeasureOn (scaledOpenCubeSet Q (1 / 2 : ℝ))) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_scaledOpenCubeSet_of_pos Q

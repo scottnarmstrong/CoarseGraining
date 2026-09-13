@@ -25,14 +25,14 @@ theorem volume_openCubeSet_originCube_lt_top_l2 {d : ℕ} (n : ℤ) :
 instance instIsFiniteMeasureVolumeMeasureOnOpenCubeSetOriginCube {d : ℕ} {n : ℤ} :
     MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d n))) := by
   let U : Set (Vec d) := openCubeSet (originCube d n)
-  letI : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_openCubeSet_originCube_lt_top_l2 (d := d) n⟩
+  let : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_openCubeSet_originCube_lt_top_l2 (d := d) n⟩
   change MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict U)
   infer_instance
 
 instance instIsFiniteMeasureVolumeMeasureOnCubeSetOriginCube {d : ℕ} {n : ℤ} :
     MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet (originCube d n))) := by
   let U : Set (Vec d) := cubeSet (originCube d n)
-  letI : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_cubeSet_originCube_lt_top_l2 (d := d) n⟩
+  let : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_cubeSet_originCube_lt_top_l2 (d := d) n⟩
   change MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict U)
   infer_instance
 
@@ -66,13 +66,13 @@ theorem integrableOn_pairing_affine_openCubeSet_originCube {d : ℕ} [NeZero d] 
   have hsum123 :
       MeasureTheory.IntegrableOn
         (fun x => (vecDot p q) + vecDot p (X.flux x) + vecDot (X.potential x) q) U := by
-    simpa [MeasureTheory.IntegrableOn] using hsum12.integrable.add hpotInt.integrable
+    simpa [MeasureTheory.IntegrableOn] using! hsum12.integrable.add hpotInt.integrable
   have hsum :
       MeasureTheory.IntegrableOn
         (fun x =>
           ((vecDot p q) + vecDot p (X.flux x) + vecDot (X.potential x) q) +
             vecDot (X.potential x) (X.flux x)) U := by
-    simpa [MeasureTheory.IntegrableOn] using hsum123.integrable.add hpairInt.integrable
+    simpa [MeasureTheory.IntegrableOn] using! hsum123.integrable.add hpairInt.integrable
   have hEq :
       (fun x => vecDot (p + X.potential x) (q + X.flux x)) =
         (fun x =>
@@ -94,8 +94,8 @@ theorem integral_pairing_affine_openCubeSet_originCube {d : ℕ} [NeZero d] {n :
         vecDot (p + X.potential x) (q + X.flux x) ∂MeasureTheory.volume =
       (MeasureTheory.volume (openCubeSet (originCube d n))).toReal * vecDot p q := by
   let U : Set (Vec d) := openCubeSet (originCube d n)
-  haveI : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_openCubeSet_originCube_lt_top_l2 (d := d) n⟩
-  haveI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := inferInstance
+  have : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_openCubeSet_originCube_lt_top_l2 (d := d) n⟩
+  have : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := inferInstance
   have hpotZero :
       (fun i => ∫ x in U, X.potential x i ∂MeasureTheory.volume) = 0 := by
     simpa [U] using
@@ -130,7 +130,7 @@ theorem integral_pairing_affine_openCubeSet_originCube {d : ℕ} [NeZero d] {n :
   have hsum123 :
       MeasureTheory.IntegrableOn
         (fun x => (vecDot p q) + vecDot p (X.flux x) + vecDot (X.potential x) q) U := by
-    simpa [MeasureTheory.IntegrableOn] using hsum12.integrable.add hpotInt.integrable
+    simpa [MeasureTheory.IntegrableOn] using! hsum12.integrable.add hpotInt.integrable
   have hfluxTerm :
       ∫ x in U, vecDot p (X.flux x) ∂MeasureTheory.volume = 0 :=
     integral_vecDot_const_left_eq_zero_of_integral_eq_zero_coords
@@ -294,13 +294,13 @@ theorem integrableOn_pairing_affine_cubeSet_originCube {d : ℕ} [NeZero d] {n :
   have hsum123 :
       MeasureTheory.IntegrableOn
         (fun x => (vecDot p q) + vecDot p (X.flux x) + vecDot (X.potential x) q) U := by
-    simpa [MeasureTheory.IntegrableOn] using hsum12.integrable.add hpotInt.integrable
+    simpa [MeasureTheory.IntegrableOn] using! hsum12.integrable.add hpotInt.integrable
   have hsum :
       MeasureTheory.IntegrableOn
         (fun x =>
           ((vecDot p q) + vecDot p (X.flux x) + vecDot (X.potential x) q) +
             vecDot (X.potential x) (X.flux x)) U := by
-    simpa [MeasureTheory.IntegrableOn] using hsum123.integrable.add hpairInt.integrable
+    simpa [MeasureTheory.IntegrableOn] using! hsum123.integrable.add hpairInt.integrable
   have hEq :
       (fun x => vecDot (p + X.potential x) (q + X.flux x)) =
         (fun x =>
@@ -322,8 +322,8 @@ theorem integral_pairing_affine_cubeSet_originCube {d : ℕ} [NeZero d] {n : ℤ
         vecDot (p + X.potential x) (q + X.flux x) ∂MeasureTheory.volume =
       (MeasureTheory.volume (cubeSet (originCube d n))).toReal * vecDot p q := by
   let U : Set (Vec d) := cubeSet (originCube d n)
-  haveI : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_cubeSet_originCube_lt_top_l2 (d := d) n⟩
-  haveI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := inferInstance
+  have : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_cubeSet_originCube_lt_top_l2 (d := d) n⟩
+  have : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := inferInstance
   have hpotZero :
       (fun i => ∫ x in U, X.potential x i ∂MeasureTheory.volume) = 0 := by
     simpa [U] using
@@ -358,7 +358,7 @@ theorem integral_pairing_affine_cubeSet_originCube {d : ℕ} [NeZero d] {n : ℤ
   have hsum123 :
       MeasureTheory.IntegrableOn
         (fun x => (vecDot p q) + vecDot p (X.flux x) + vecDot (X.potential x) q) U := by
-    simpa [MeasureTheory.IntegrableOn] using hsum12.integrable.add hpotInt.integrable
+    simpa [MeasureTheory.IntegrableOn] using! hsum12.integrable.add hpotInt.integrable
   have hfluxTerm :
       ∫ x in U, vecDot p (X.flux x) ∂MeasureTheory.volume = 0 :=
     integral_vecDot_const_left_eq_zero_of_integral_eq_zero_coords

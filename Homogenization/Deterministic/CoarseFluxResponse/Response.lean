@@ -396,7 +396,7 @@ theorem coarseFluxResponse_qone_of_descendantScalarCanonicalFluxDefectAHarmonicD
         HomogenizationErrorOnCube Q s .infinity (.finite 1) a a0 *
         (Real.sqrt (((4 : ℝ) * matNorm a0)) *
           Real.sqrt (cubeAverage Q (scalarVariationEnergyIntegrand a u))) := by
-  letI := isFiniteMeasureVolumeMeasureOnCubeSet Q
+  let := isFiniteMeasureVolumeMeasureOnCubeSet Q
   have henergy_nonneg :
       ∀ x ∈ cubeSet Q, 0 ≤ scalarVariationEnergyIntegrand a u x :=
     scalarVariationEnergyIntegrand_nonneg_of_isEllipticFieldOn (cubeSet Q) a hEll u
@@ -435,7 +435,7 @@ theorem coarseFluxResponse_qone_partialSeminorm_le_of_aHarmonicFunction
         HomogenizationErrorOnCube Q s .infinity (.finite 1) a a0 *
         (Real.sqrt (((4 : ℝ) * matNorm a0)) *
           Real.sqrt (cubeAverage Q (scalarVariationEnergyIntegrand a u))) := by
-  letI := isFiniteMeasureVolumeMeasureOnCubeSet Q
+  let := isFiniteMeasureVolumeMeasureOnCubeSet Q
   have henergy_nonneg :
       ∀ x ∈ cubeSet Q, 0 ≤ scalarVariationEnergyIntegrand a u x :=
     scalarVariationEnergyIntegrand_nonneg_of_isEllipticFieldOn (cubeSet Q) a hEll u
@@ -473,7 +473,7 @@ theorem coarseFluxResponse_qone_of_aHarmonicFunction
         HomogenizationErrorOnCube Q s .infinity (.finite 1) a a0 *
         (Real.sqrt (((4 : ℝ) * matNorm a0)) *
           Real.sqrt (cubeAverage Q (scalarVariationEnergyIntegrand a u))) := by
-  letI := isFiniteMeasureVolumeMeasureOnCubeSet Q
+  let := isFiniteMeasureVolumeMeasureOnCubeSet Q
   have henergy_nonneg :
       ∀ x ∈ cubeSet Q, 0 ≤ scalarVariationEnergyIntegrand a u x :=
     scalarVariationEnergyIntegrand_nonneg_of_isEllipticFieldOn (cubeSet Q) a hEll u

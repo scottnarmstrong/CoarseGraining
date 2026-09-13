@@ -71,7 +71,7 @@ theorem measurableSet_forall_openCubeSet_isAEEllipticFieldOn (lam Lam : ℝ) :
       = ⋂ Q : TriadicCube d,
           {a : RegCoeffField d | IsAEEllipticFieldOn lam Lam (openCubeSet Q) a.toFun} := by
     ext a
-    simp only [Set.mem_setOf_eq, Set.mem_iInter]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter]
   rw [h1]
   exact MeasurableSet.iInter fun Q =>
     measurableSet_isAEEllipticFieldOn_of_isOpen (isOpen_openCubeSet Q) lam Lam

@@ -62,7 +62,7 @@ theorem cubeEuclideanWspESeminorm_eq_lintegral {d : ℕ}
         ∂Gagliardo.gagliardoCubeMeasure Q) ^
           (1 / p.exponent.toReal) := by
   unfold cubeEuclideanWspESeminorm
-  exact eLpNorm_eq_lintegral_rpow_enorm
+  exact eLpNorm_eq_lintegral_rpow_enorm_toReal
     (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne
 
 theorem memCubeEuclideanWsp_iff {d : ℕ} {Q : TriadicCube d}

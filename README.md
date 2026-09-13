@@ -13,28 +13,25 @@ This repository formalizes the coarse-graining theory of divergence-form
 elliptic equations and quantitative stochastic homogenization developed in the
 manuscript above. It builds the function-space, deterministic, probabilistic,
 and homogenization-scale machinery up to the quenched minimal-scale theorem of
-Chapter 5. Its main result formalizes a central theorem of Scott Armstrong and
+Chapter 5. Its public main result formalizes a uniformly elliptic, isotropic
+specialization of the quenched comparison estimate in Scott Armstrong and
 Tuomo Kuusi, *Renormalization Group and Elliptic Homogenization in High Contrast*,
 Inventiones Mathematicae **242** (2025), 895–1086,
 [doi:10.1007/s00222-025-01370-9](https://doi.org/10.1007/s00222-025-01370-9);
 carrying out that formalization was the principal aim of the project. The
-library has since been extended with the high-contrast development —
-block-variance decay and the polynomial homogenization length scale — from
-Scott Armstrong, Tuomo Kuusi, and Amélie Loher,
-*Homogenization at a polynomial scale in high contrast* (to appear), described
-below. The supporting analytic library now also includes finite-exponent cube
+supporting analytic library also includes finite-exponent cube
 Calderón–Zygmund estimates, finite-exponent Sobolev and fractional-Sobolev
 infrastructure, and a finite-exponent local coarse-graining theorem.
 
-- **1,695 Lean source files, 613,252 lines** (including the comparator audit
-  surface; the production library is 1,672 files and 600,084 lines).
+- **1,606 Lean source files, 569,567 lines** (including the comparator audit
+  surface; the production library is 1,589 files and 559,987 lines).
 - **No `sorry`** anywhere in the library. (Each Mathlib-only comparator
   challenge in `Audit/` contains its single intentional statement-level
   `sorry`, filled by the corresponding solution file.)
 - **No custom `axiom`.** The public theorems reduce to `mathlib`'s three
   standard foundational axioms — `propext`, `Classical.choice`, `Quot.sound` —
   verified by [`Homogenization/Meta/AxiomsAudit.lean`](Homogenization/Meta/AxiomsAudit.lean).
-- Pinned to Lean `v4.26.0` and `mathlib` `v4.26.0`.
+- Pinned to Lean `v4.33.0` and `mathlib` `v4.33.0`.
 
 ## Scope and faithfulness
 
@@ -93,42 +90,9 @@ minimal scale `𝒳` exists and satisfies the same stretched-exponential tail
 bound with constant `exp(Cscale·log²(2+θ̂))`, with all constants chosen before
 the law.
 
-## Polynomial homogenization length scale
-
-In dimension `d > 2`, the development also proves that homogenization sets in
-at a length scale which is **polynomial in the ellipticity contrast**. This
-formalizes the main result of Scott Armstrong, Tuomo Kuusi, and Amélie Loher,
-*Homogenization at a polynomial scale in high contrast* (to appear).
-
-**`homogenizationScale_polynomial_of_unitRange`**
-([`Homogenization/HighContrast/Scale/Final.lean`](Homogenization/HighContrast/Scale/Final.lean)).
-For every dimension `d > 2` (the hypothesis `3 ≤ d` is explicit in the
-statement) there exist constants `Cscale, Ctriadic, α > 0`, depending only on
-`d` and quantified **before** the law, with the following property. Let `P` be
-any stationary, unit-range, isotropic probability law on coefficient fields
-which is `Θ`-elliptic in the quadratic-form sense above (with `λ = 1`,
-`Λ = Θ`; the field need not be symmetric). Then there is an entry scale
-`N₀` satisfying
-
-> `N₀ ≤ Cscale·log(2+Θ)`,  equivalently  `3^{N₀} ≤ (2+Θ)^{Ctriadic}`,
-
-so that the waiting length scale `3^{N₀}` is polynomial in the contrast, and
-beyond it the coarse-grained ellipticity contrast decays exponentially fast:
-
-> `θ(□_{N₀+n}) − 1 ≤ 3^{−αn}`  for every `n ≥ 0`,
-
-where `θ(□_m)` (`thetaAtScale`) is the contrast of the annealed coarse-grained
-matrices on the triadic cube `□_m`. This complements the minimal-scale theorem
-above: there, under coarse-grained ellipticity alone, the scale is random with
-stretched-exponential tails of size `exp(C·log²(2+θ̂))`; here, at the price of
-uniform ellipticity and `d > 2`, the entry scale is deterministic and
-polynomial in the contrast. The theorem is independently comparator-verified,
-both in general form and instantiated on the Bernoulli checkerboard law (see
-below).
-
 ## Verified against a Mathlib-only statement
 
-So that the central claims can be checked without trusting the ~600k-line
+So that the central claims can be checked without trusting the ~570k-line
 development, they are **independently verified by
 [`leanprover/comparator`](https://github.com/leanprover/comparator)**. Each is
 restated using **only Mathlib** — no project definitions — in a
@@ -137,15 +101,10 @@ library; the comparator confirms the two have identical elaborated types and
 that the proof reduces to the three standard axioms, printing
 `Your solution is okay!` (see [`Audit/README.md`](Audit/README.md)).
 
-Seven comparators are checked: five for the quenched comparison estimate — the
+Five comparators are checked for the quenched comparison estimate — the
 general statement in
 [`Audit/QuenchedComparison/`](Audit/QuenchedComparison/) and four
-specializations (three periodic laws and the random checkerboard) — and two
-for the polynomial homogenization length scale: the general theorem in
-[`Audit/PolynomialScale/`](Audit/PolynomialScale/) and its concrete
-instantiation on the Bernoulli checkerboard law in
-[`Audit/CheckerboardScale/`](Audit/CheckerboardScale/), where the bound reads
-`3^{N₀} ≤ (2+Λ)^{Ctriadic}` for the checkerboard with values of contrast `Λ`.
+specializations (three periodic laws and the random checkerboard).
 
 The general quenched-comparison statement, as verified, is
 `Homogenization.StatementAudit.homogenizationComparison_uniformEllipticity`,
@@ -197,7 +156,7 @@ lake build           # compile the project
 which pins the exact dependency revisions.
 
 On an 8-core / 32 GB machine, with Mathlib supplied by `lake exe cache get`, the
-project itself elaborates in roughly half an hour (4,732 build jobs for the
+project itself elaborates in roughly half an hour (4,842 build jobs for the
 default `Homogenization` target, which globs every module under
 `Homogenization/`; `lake build Audit` additionally elaborates the comparator
 surface and its semantic regression). Continuous
@@ -207,7 +166,7 @@ GitHub's own measured build time for each run are shown in the
 badges at the top of this file. A second workflow,
 [`.github/workflows/comparator.yml`](.github/workflows/comparator.yml), re-runs
 the full comparator sweep described below on every push, checking each of the
-seven pairs with both the Lean kernel and the independent `nanoda` kernel.
+five pairs with both the Lean kernel and the independent `nanoda` kernel.
 
 To use the library, `import Homogenization` (the root module
 [`Homogenization.lean`](Homogenization.lean)) pulls in the whole development; the
@@ -226,7 +185,7 @@ Homogenization/
   Probability/     regular coefficient fields, stationarity, concentration, independence
   Deterministic/   coarse Caccioppoli / Poincaré, deterministic homogenization
   CoarseGraining/  block formalism, response identities, μ-operators
-  HighContrast/    block-variance decay and the polynomial homogenization scale
+  HighContrast/    background material retained for downstream projects
   Renormalization/ renormalization-group iteration
   Internal/        internal support material
   Book/            chapter-by-chapter theorem surfaces (Ch01–Ch05)
@@ -241,9 +200,9 @@ doc/coarse-graining.pdf
 
 The original Lean code in this repository was written by GPT-5.5 and Claude
 Opus 4.6–4.8, under the close supervision of the authors. Subsequent updates,
-including the polynomial-scale high-contrast and finite-exponent analytic
-developments, were written by Claude Fable 5 under the same supervision. The
-models, tooling, cost, and review status are disclosed in full in
+including the finite-exponent analytic developments, were written by Claude
+Fable 5 under the same supervision. The models, tooling, cost, and review
+status are disclosed in full in
 [`formalization.yaml`](formalization.yaml), following the
 [mathlib-initiative](https://github.com/mathlib-initiative/formalization.yaml)
 standard.

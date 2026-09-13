@@ -53,14 +53,14 @@ theorem lowerTriangularConvolution_sq_sum_le
           (∑ m ∈ Finset.range j, w j m) * T j := by
       dsimp [T]
       exact
-        Finset.sum_sq_le_sum_mul_sum_of_sq_eq_mul
+        Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul
           (s := Finset.range j)
           (r := fun m => w j m * a m)
           (f := fun m => w j m)
           (g := fun m => w j m * (a m) ^ 2)
           (fun m _hm => hw_nonneg j m)
           (fun m _hm => mul_nonneg (hw_nonneg j m) (sq_nonneg (a m)))
-          (fun m _hm => by ring)
+          (fun m _hm => le_of_eq (by ring))
     exact hcauchy.trans
       (mul_le_mul_of_nonneg_right (hrow j hj) (hT_nonneg j))
   have hsum_depth :
@@ -76,8 +76,10 @@ theorem lowerTriangularConvolution_sq_sum_le
       rw [Finset.mem_filter]
       exact
         ⟨by
-          simpa [J] using
-            Nat.lt_trans (Finset.mem_range.mp hm) (by simpa [J] using hj),
+          have hj' : j < N + 1 := by
+            have : j ∈ Finset.range (N + 1) := hj
+            exact Finset.mem_range.mp this
+          exact Finset.mem_range.mpr (Nat.lt_trans (Finset.mem_range.mp hm) hj'),
         Finset.mem_range.mp hm⟩
     · intro h
       exact Finset.mem_range.mpr ((Finset.mem_filter.mp h).2)

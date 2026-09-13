@@ -108,7 +108,7 @@ theorem betaShiftedWidetildeThetaAtScale_restrictionScaleNormalizedLaw
     Ch04.widetildeThetaAtScale_restrictionScaleNormalizedLaw hP k m
       (sUpper_add_beta_pos hP4) (sLower_add_beta_pos hP4) hP4.xi
   simpa [betaShiftedWidetildeThetaAtScale, hβ,
-    QuantitativeCoarseGrainedEllipticity.scaleNormalized] using h
+    QuantitativeCoarseGrainedEllipticity.scaleNormalized] using! h
 
 /-- Scale normalization sends scale `0` to the original scale `k` for the
 unshifted manuscript `widetildeTheta`. -/
@@ -205,7 +205,7 @@ private theorem LambdaMomentAtScale_le_barSigma_zero_add_positiveExcessMomentAtS
     Ch04.LambdaMomentAtScale P m s ξ ≤
       hP.barSigmaAtScale hStruct 0 +
         LambdaPositiveExcessMomentAtScale P m s ξ hP hStruct := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d m) s (.finite 1) a
   let E : RegCoeffField d → ℝ :=
@@ -247,7 +247,7 @@ private theorem lambdaInvMomentAtScale_le_barSigmaStar_zero_inv_add_positiveExce
     Ch04.lambdaInvMomentAtScale P m s ξ ≤
       (hP.barSigmaStarAtScale hStruct 0)⁻¹ +
         lambdaInvPositiveExcessMomentAtScale P m s ξ hP hStruct := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : RegCoeffField d → ℝ :=
     fun a => (Ch04.lambdaSqCoeffField (originCube d m) s (.finite 1) a)⁻¹
   let E : RegCoeffField d → ℝ :=
@@ -403,7 +403,7 @@ private theorem shiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_positiveEx
           Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
         LambdaPositiveExcessMomentAtScale P (m : ℤ) rUpper hP4.xi hP hStruct *
           lambdaInvPositiveExcessMomentAtScale P (m : ℤ) rLower hP4.xi hP hStruct := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hBarSigma0_nonneg : 0 ≤ hP.barSigmaAtScale hStruct 0 := by
     rw [hP.barSigmaAtScale_eq_barBAtScale hStruct (0 : ℤ)]
     simpa [Ch04.RestrictionLawCarrier.barBAtScale] using
@@ -716,7 +716,7 @@ theorem betaShiftedWidetildeThetaAtScale_le_thetaAtScale_zero_add_section52TwoEx
       (le_rfl :
         coeffUpper + coeffLower + coeffUpper * coeffLower ≤
           coeffUpper + coeffLower + coeffUpper * coeffLower)
-  simpa [betaShiftedWidetildeThetaAtScale, β, coeffUpper, coeffLower] using hShifted
+  simpa [betaShiftedWidetildeThetaAtScale, β, coeffUpper, coeffLower] using! hShifted
 
 theorem section52TwoExponentMomentBoundCoeff_upper_beta_shift_le_loss_beta_decay
     {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d} {C : ℝ}

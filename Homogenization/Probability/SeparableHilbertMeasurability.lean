@@ -100,7 +100,7 @@ theorem measurable_of_measurable_norm_inner_denseRange
   have hInner' : Measurable fun ω => inner ℝ (F ω) c := by
     simpa [c, real_inner_comm] using hInner n
   have hNormSq : Measurable fun ω => ‖F ω‖ ^ 2 := by
-    simpa [pow_two] using hNorm.mul hNorm
+    simpa [pow_two, Pi.mul_def] using hNorm.mul hNorm
   have hExpr :
       Measurable fun ω =>
         ‖F ω‖ ^ 2 - 2 * inner ℝ (F ω) c + ‖c‖ ^ 2 :=

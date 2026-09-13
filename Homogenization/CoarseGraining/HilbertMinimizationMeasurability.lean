@@ -85,16 +85,21 @@ theorem measurable_matrix_inv_entry {d : ℕ} {α : Type*} [MeasurableSpace α]
   have hdetMap : Measurable fun M : Fin d → Fin d → ℝ => Matrix.det M := by
     let f : (Fin d → Fin d → ℝ) → ℝ := fun M => Matrix.det M
     have hf : Continuous f := by
-      simpa [f] using (continuous_id.matrix_det : Continuous f)
+      simpa [f] using! (continuous_id.matrix_det : Continuous f)
     exact hf.measurable
   have hdet : Measurable fun x => Matrix.det (A x) := hdetMap.comp hA
   have hadjMap : Measurable fun M : Fin d → Fin d → ℝ => Matrix.adjugate M i j := by
     let g : (Fin d → Fin d → ℝ) → ℝ := fun M => Matrix.adjugate M i j
     have hg : Continuous g := by
-      simpa [g] using (((continuous_id.matrix_adjugate).matrix_elem i j) : Continuous g)
+      simpa [g] using! (((continuous_id.matrix_adjugate).matrix_elem i j) : Continuous g)
     exact hg.measurable
   have hadj : Measurable fun x => Matrix.adjugate (A x) i j := hadjMap.comp hA
-  simpa [Matrix.inv_def] using hdet.inv.mul hadj
+  have hEq : ∀ x, (((A x : Matrix (Fin d) (Fin d) ℝ)⁻¹ : Matrix (Fin d) (Fin d) ℝ) i j)
+      = (Matrix.det (A x))⁻¹ * Matrix.adjugate (A x) i j := fun x => by
+    have := congrFun (congrFun (Matrix.inv_def (A x : Matrix (Fin d) (Fin d) ℝ)) i) j
+    simpa [Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv'] using this
+  simp only [hEq]
+  exact hdet.inv.mul hadj
 
 end Matrix
 
@@ -156,7 +161,10 @@ theorem measurable_galerkinRhs
     Measurable fun ω => galerkinRhs (B ω) (x ω) e := by
   refine measurable_pi_iff.2 ?_
   intro i
-  simpa [galerkinRhs] using (hBx i).neg
+  have hEq : ∀ ω, galerkinRhs (B ω) (x ω) e i = -(B ω (x ω) (e i)) :=
+    fun ω => neg_apply (B ω (x ω)) (e i)
+  simp only [hEq]
+  exact (hBx i).neg
 
 /-- Measurability of the finite Galerkin coefficient vector. -/
 theorem measurable_galerkinCoeff
@@ -180,7 +188,7 @@ theorem measurable_galerkinCoeff
     measurable_matrix_inv_entry hMat j i
   have hRhsEntry : Measurable fun ω => galerkinRhs (B ω) (x ω) e i :=
     measurable_pi_iff.1 hRhs i
-  simpa [galerkinCoeff] using hInvEntry.mul hRhsEntry
+  simpa [galerkinCoeff] using! hInvEntry.mul hRhsEntry
 
 /-- Measurability of each finite Galerkin correction. -/
 theorem measurable_galerkinCorrection
@@ -209,7 +217,7 @@ theorem measurable_galerkinAffineMinimizer
     Measurable fun ω => galerkinAffineMinimizer (B ω) (x ω) e := by
   have hCorr : Measurable fun ω => galerkinCorrection (B ω) (x ω) e :=
     measurable_galerkinCorrection hB hBx
-  simpa [galerkinAffineMinimizer] using hx.add hCorr
+  simpa [galerkinAffineMinimizer] using! hx.add hCorr
 
 /-- Strong measurability of each finite Galerkin affine minimizer from scalar
 Gram/RHS probe measurability.  Unlike `measurable_galerkinAffineMinimizer`,
@@ -237,7 +245,7 @@ theorem stronglyMeasurable_galerkinAffineMinimizer_of_scalar_probes
     convert hsum using 1
     ext ω
     simp [Finset.sum_apply]
-  simpa [galerkinAffineMinimizer] using hx.add hCorr
+  simpa [galerkinAffineMinimizer] using! hx.add hCorr
 
 /-- A pointwise limit of finite Galerkin affine minimizers is strongly
 measurable.  This is the generic measurability bridge for selected Hilbert
@@ -444,7 +452,7 @@ theorem _root_.Measurable.affineMinimizerMap_apply
     Measurable.correctionMap_apply K hSharp hRhs
   have hCorrV : Measurable fun ω => (correctionMap K (B ω) (hB ω) (x ω) : V) :=
     measurable_subtype_coe.comp hCorr
-  simpa [affineMinimizerMap] using hx.add hCorrV
+  simpa [affineMinimizerMap] using! hx.add hCorrV
 
 /-- Measurability of the parameterized affine Hilbert minimizer. -/
 theorem _root_.Measurable.parameterAffineMinimizerMap_apply

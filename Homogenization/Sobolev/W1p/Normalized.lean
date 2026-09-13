@@ -27,7 +27,8 @@ theorem gradEuclideanMemLp {d : ℕ} (U : BoundedMeasurableDomain d) (p : ℝ≥
       MeasureTheory.MemLp (fun x => HilbertVec.ofVec (u.grad x)) p U.restrictedVolume := by
     rw [MeasureTheory.memLp_piLp_iff]
     intro i
-    simpa only [Function.comp_apply, PiLp.toLp_apply] using u.gradMemLp i
+    simpa only [Function.comp_apply, PiLp.toLp_apply,
+      BoundedMeasurableDomain.restrictedVolume] using u.gradMemLp i
   have hnorm_restricted :
       MeasureTheory.MemLp (fun x => euclideanNorm (u.grad x)) p U.restrictedVolume := by
     simpa only [euclideanNorm_eq_norm_ofVec] using hgrad_restricted.norm

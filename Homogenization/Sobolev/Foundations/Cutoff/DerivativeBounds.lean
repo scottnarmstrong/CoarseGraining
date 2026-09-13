@@ -132,8 +132,8 @@ theorem norm_iteratedFDeriv_two_coord_sub_const_sq_le {d : ℕ}
   have hone : ‖iteratedFDeriv ℝ 1 g x‖ ≤ 1 := by
     have hnorm :
         ‖iteratedFDeriv ℝ 1 g x‖ = ‖fderiv ℝ g x‖ := by
-      simpa [norm_iteratedFDeriv_zero] using
-        (norm_iteratedFDeriv_fderiv (𝕜 := ℝ) (f := g) (n := 0) (x := x)).symm
+      simp [norm_iteratedFDeriv_zero,
+        (norm_iteratedFDeriv_fderiv (𝕜 := ℝ) (f := g) (n := 0) (x := x)).symm]
     rw [hnorm]
     simpa [g] using norm_fderiv_coord_sub_const_le_one i c x
   have hval : ‖iteratedFDeriv ℝ 0 g x‖ = ‖g x‖ := by
@@ -215,7 +215,7 @@ theorem norm_fderiv_profile_comp_le {d : ℕ}
       θ.derivBound * ‖fderiv ℝ g x‖ := by
   have hθdiff : DifferentiableAt ℝ θ (g x) :=
     θ.smooth.differentiable (by simp) (g x)
-  rw [fderiv_comp' (x := x) hθdiff hg]
+  rw [fderiv_fun_comp (x := x) hθdiff hg]
   calc
     ‖(fderiv ℝ θ (g x)).comp (fderiv ℝ g x)‖
         ≤ ‖fderiv ℝ θ (g x)‖ * ‖fderiv ℝ g x‖ :=
@@ -274,7 +274,7 @@ theorem exists_bound_fderiv_of_contDiff_hasCompactSupport {d : ℕ}
     ∃ C : ℝ, 0 ≤ C ∧ ∀ x, ‖fderiv ℝ η x‖ ≤ C := by
   obtain ⟨C, hC⟩ :=
     (hη_comp.fderiv (𝕜 := ℝ)).exists_bound_of_continuous
-      (hη.continuous_fderiv (by simp : (1 : WithTop ℕ∞) ≤ (⊤ : ℕ∞)))
+      (hη.continuous_fderiv (by simp))
   refine ⟨max C 0, le_max_right _ _, ?_⟩
   intro x
   exact le_trans (hC x) (le_max_left _ _)

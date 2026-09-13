@@ -89,7 +89,7 @@ private theorem lintegral_divided_moment_ne_top
   exact ENNReal.mul_ne_top
     (ENNReal.inv_ne_top.2 (ENNReal.ofReal_ne_zero_iff.mpr hb))
     (by
-      simpa only [← ofReal_norm_eq_enorm,
+      simpa only [← ofReal_norm,
         ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _)
           ENNReal.toReal_nonneg] using
         (MeasureTheory.lintegral_rpow_enorm_lt_top_of_eLpNorm_lt_top
@@ -101,7 +101,7 @@ private theorem eLpNorm_rpow_eq_lintegral_ofReal_norm_rpow
     {μ : Measure α} (q : FiniteLpExponent) (f : α → E) :
     (eLpNorm f q.exponent μ) ^ q.exponent.toReal =
       ∫⁻ x, ENNReal.ofReal (‖f x‖ ^ q.exponent.toReal) ∂μ := by
-  rw [eLpNorm_eq_lintegral_rpow_enorm
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
     (ne_of_gt (zero_lt_one.trans q.one_lt)) q.lt_top.ne,
     ← ENNReal.rpow_mul]
   have hq0 : q.exponent.toReal ≠ 0 :=
@@ -110,7 +110,7 @@ private theorem eLpNorm_rpow_eq_lintegral_ofReal_norm_rpow
   rw [one_div, inv_mul_cancel₀ hq0, ENNReal.rpow_one]
   apply MeasureTheory.lintegral_congr
   intro x
-  rw [← ofReal_norm_eq_enorm,
+  rw [← ofReal_norm,
     ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) ENNReal.toReal_nonneg]
 
 private theorem divided_moment_eq
@@ -224,7 +224,7 @@ private theorem normalized_l2_le_lq
     (hFq : MemLp F q.exponent (normalizedCubeMeasure Q)) :
     eLpNorm F 2 (normalizedCubeMeasure Q) ≤
       eLpNorm F q.exponent (normalizedCubeMeasure Q) := by
-  letI : IsProbabilityMeasure (normalizedCubeMeasure Q) :=
+  let : IsProbabilityMeasure (normalizedCubeMeasure Q) :=
     ⟨normalizedCubeMeasure_apply_univ Q⟩
   apply eLpNorm_le_eLpNorm_of_exponent_le _ hFq.aestronglyMeasurable
   apply le_of_lt
@@ -458,7 +458,7 @@ theorem exists_scalarPoisson_hessianHilbertMat_normalizedCubeMeasure_le_of_two_l
       eLpNorm (row i) q.exponent μ ≤ Crow * Y := by
     intro i
     have hrow2 : MemLp (row i) 2 μ := by
-      simpa only [row, Q, μ] using
+      simpa only [row, Q, μ] using!
         H.hessianHilbertRow_memLp_two_normalizedCubeMeasure Q i
     have hrowMeas : AEStronglyMeasurable (row i) μ :=
       hrow2.aestronglyMeasurable
@@ -477,11 +477,11 @@ theorem exists_scalarPoisson_hessianHilbertMat_normalizedCubeMeasure_le_of_two_l
           eLpNorm (row i) 2 μ ≤ ENNReal.ofReal
               (((cubeVolume Q)⁻¹) ^ (1 / 2 : ℝ) *
                 H.hessianCoordL2NormSum) := by
-            simpa only [row] using
+            simpa only [row] using!
               H.eLpNorm_hessianHilbertRow_two_normalizedCubeMeasure_le Q i
           _ ≤ 0 := by
             have hN2 : cubeLpNorm Q 2 F = 0 := by
-              simpa only [cubeLpNorm, μ] using
+              simpa only [cubeLpNorm, μ] using!
                 congrArg ENNReal.toReal hF2zero
             rw [hN2, mul_zero] at hH
             have hHzero := le_antisymm hH H.hessianCoordL2NormSum_nonneg
@@ -533,7 +533,7 @@ theorem exists_scalarPoisson_hessianHilbertMat_normalizedCubeMeasure_le_of_two_l
           sqWeightedMeasure_smul_measure,
           sqWeightedMeasure_restrict_apply_eq_inter
             (measurableSet_openCubeSet Q), theta, B, mul_add, mul_assoc,
-          mul_left_comm, mul_comm] using hscaled
+          mul_left_comm, mul_comm] using! hscaled
       have hBfinite : B ≠ ∞ := hBtop
       have hintegrated := lp_le_of_oneLevel_weighted_tail
         hrowMeas hFMeas hq (by linarith) (by linarith) heps hlambda

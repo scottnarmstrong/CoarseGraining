@@ -4,9 +4,10 @@ title: "CoarseGraining: a Lean 4 formalization of Coarse-Graining Theory for Ell
 abstract: >-
   A machine-checked Lean 4 / mathlib formalization of the coarse-graining theory
   of divergence-form elliptic equations and quantitative stochastic
-  homogenization, including the quenched minimal-scale theorem and the
-  polynomial homogenization scale in high contrast. The development contains
-  no sorry and no custom axiom.
+  homogenization, including the quenched minimal-scale theorem. The
+  production library contains no sorry and no custom axiom. Each comparator
+  challenge contains one intentional theorem-body sorry, checked against its
+  completed solution.
 type: software
 authors:
   - family-names: Armstrong
@@ -25,16 +26,6 @@ license: Apache-2.0
 repository-code: "https://github.com/scottnarmstrong/CoarseGraining"
 references:
   - type: article
-    title: "Homogenization at a polynomial scale in high contrast"
-    authors:
-      - family-names: Armstrong
-        given-names: Scott
-      - family-names: Kuusi
-        given-names: Tuomo
-      - family-names: Loher
-        given-names: Amélie
-    notes: "Forthcoming paper whose polynomial-scale theorem is formalized here."
-  - type: article
     title: "Renormalization Group and Elliptic Homogenization in High Contrast"
     authors:
       - family-names: Armstrong
@@ -48,4 +39,4 @@ references:
     end: 1086
     year: 2025
     doi: "10.1007/s00222-025-01370-9"
-    notes: "The published paper whose central theorems this project formalizes."
+    notes: "The published paper whose quenched comparison estimate this project specializes to uniformly elliptic, isotropic laws."

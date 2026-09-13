@@ -102,7 +102,7 @@ theorem originCubeMeanZeroH1CoerciveEstimate_constant_le_chosenBound
       H1Function.h1CoerciveEstimateChosenBound
         (d := d) (U := openCubeSet (originCube d m))
         (isOpenBoundedConvexDomain_openCubeSet_originCube_scale d m) := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d m))) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d m))) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet (originCube d m)).isFiniteMeasure_restrict_volume
   unfold originCubeMeanZeroH1CoerciveEstimate

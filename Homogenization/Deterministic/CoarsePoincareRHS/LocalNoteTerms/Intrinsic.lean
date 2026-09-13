@@ -120,7 +120,7 @@ theorem sq_cubeBesovNegativeVectorSeminormTwo_le_discount_next_add_intrinsicAbso
   have hgradCoeff :
       CubeAverageGradientEnergyControl R a (fun x => w.toH1.grad x)
         (coefficientEnergyDensity a (fun x => w.toH1.grad x)) := by
-    simpa [coefficientEnergyDensity, scalarVariationEnergyIntegrand] using hgradScalar
+    simpa [coefficientEnergyDensity, scalarVariationEnergyIntegrand] using! hgradScalar
   have hη_pos : 0 < coarsePoincareRHSNoteEta s :=
     coarsePoincareRHSNoteEta_pos hs
   have hη_lt_one : coarsePoincareRHSNoteEta s < 1 := by

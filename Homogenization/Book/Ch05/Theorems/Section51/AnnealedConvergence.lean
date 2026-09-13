@@ -105,7 +105,7 @@ theorem annealedConvergence_homogenizationScale
       widetildeThetaAtScale PN (0 : ℤ) hP4S - 1 ≤ 1 / 4 :=
     hsmall0_delta.trans hδ_le_quarter
   have hP4N_params : hP4N.params = params := by
-    simpa [hP4N, QuantitativeCoarseGrainedEllipticity.scaleNormalized] using hparams
+    simpa [hP4N, QuantitativeCoarseGrainedEllipticity.scaleNormalized] using! hparams
   have hparamsS : hP4S.params = twoBetaShiftedParams params := by
     calc
       hP4S.params = twoBetaShiftedParams hP4N.params := by

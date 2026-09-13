@@ -99,7 +99,7 @@ theorem coefficientEnergy_average_le_centered_force_mul_sqrt_intrinsicGlobalEner
         MeasureTheory.MemLp (fun _ : Vec d => cubeAverageVec Q g)
           (2 : ENNReal) (normalizedCubeMeasure Q) :=
       MeasureTheory.memLp_const (cubeAverageVec Q g)
-    simpa [gCentered] using hg.sub hconst
+    simpa [gCentered] using! hg.sub hconst
   have hg_centered_mem : MemVectorL2 (cubeSet Q) gCentered :=
     memVectorL2_cubeSet_of_memLp_normalizedCubeMeasure Q hg_centered
   have hgradω :

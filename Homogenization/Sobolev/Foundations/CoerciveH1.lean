@@ -143,7 +143,7 @@ noncomputable def toH1FunctionAddMonoidHom :
   map_zero' := rfl
   map_add' _ _ := rfl
 
-instance : Module ℝ (H1MeanZeroFunction U) :=
+noncomputable instance : Module ℝ (H1MeanZeroFunction U) :=
   Function.Injective.module ℝ
     toH1FunctionAddMonoidHom
     toH1Function_injective
@@ -193,20 +193,20 @@ theorem coeFn_gradCoordToScalarL2 (u : H1Function U) (i : Fin d) :
 
 theorem toScalarL2_add (u v : H1Function U) :
     (u + v).toScalarL2 = u.toScalarL2 + v.toScalarL2 := by
-  simpa [H1Function.toScalarL2] using MeasureTheory.MemLp.toLp_add u.memL2 v.memL2
+  simpa [H1Function.toScalarL2] using! MeasureTheory.MemLp.toLp_add u.memL2 v.memL2
 
 theorem toScalarL2_smul (c : ℝ) (u : H1Function U) :
     (c • u).toScalarL2 = c • u.toScalarL2 := by
-  simpa [H1Function.toScalarL2] using MeasureTheory.MemLp.toLp_const_smul c u.memL2
+  simpa [H1Function.toScalarL2] using! MeasureTheory.MemLp.toLp_const_smul c u.memL2
 
 theorem gradToVectorL2_add (u v : H1Function U) :
     (u + v).gradToVectorL2 = u.gradToVectorL2 + v.gradToVectorL2 := by
-  simpa [H1Function.gradToVectorL2] using
+  simpa [H1Function.gradToVectorL2] using!
     MeasureTheory.MemLp.toLp_add u.grad_memVectorL2 v.grad_memVectorL2
 
 theorem gradToVectorL2_smul (c : ℝ) (u : H1Function U) :
     (c • u).gradToVectorL2 = c • u.gradToVectorL2 := by
-  simpa [H1Function.gradToVectorL2] using
+  simpa [H1Function.gradToVectorL2] using!
     MeasureTheory.MemLp.toLp_const_smul c u.grad_memVectorL2
 
 theorem gradToHilbertVectorL2_add (u v : H1Function U) :
@@ -215,24 +215,24 @@ theorem gradToHilbertVectorL2_add (u v : H1Function U) :
     Homogenization.memHilbertVectorL2_hilbertifyVecField u.grad_memVectorL2
   let hv : MemHilbertVectorL2 U (hilbertifyVecField v.grad) :=
     Homogenization.memHilbertVectorL2_hilbertifyVecField v.grad_memVectorL2
-  simpa [H1Function.gradToHilbertVectorL2, hilbertifyVecField] using
+  simpa [H1Function.gradToHilbertVectorL2, hilbertifyVecField] using!
     MeasureTheory.MemLp.toLp_add hu hv
 
 theorem gradToHilbertVectorL2_smul (c : ℝ) (u : H1Function U) :
     (c • u).gradToHilbertVectorL2 = c • u.gradToHilbertVectorL2 := by
   let hu : MemHilbertVectorL2 U (hilbertifyVecField u.grad) :=
     Homogenization.memHilbertVectorL2_hilbertifyVecField u.grad_memVectorL2
-  simpa [H1Function.gradToHilbertVectorL2, hilbertifyVecField] using
+  simpa [H1Function.gradToHilbertVectorL2, hilbertifyVecField] using!
     MeasureTheory.MemLp.toLp_const_smul c hu
 
 theorem gradCoordToScalarL2_add (u v : H1Function U) (i : Fin d) :
     (u + v).gradCoordToScalarL2 i = u.gradCoordToScalarL2 i + v.gradCoordToScalarL2 i := by
-  simpa [H1Function.gradCoordToScalarL2] using
+  simpa [H1Function.gradCoordToScalarL2] using!
     MeasureTheory.MemLp.toLp_add (u.grad_memL2 i) (v.grad_memL2 i)
 
 theorem gradCoordToScalarL2_smul (c : ℝ) (u : H1Function U) (i : Fin d) :
     (c • u).gradCoordToScalarL2 i = c • u.gradCoordToScalarL2 i := by
-  simpa [H1Function.gradCoordToScalarL2] using
+  simpa [H1Function.gradCoordToScalarL2] using!
     MeasureTheory.MemLp.toLp_const_smul c (u.grad_memL2 i)
 
 theorem norm_gradCoordToScalarL2_le (u : H1Function U) (i : Fin d) :
@@ -422,7 +422,7 @@ noncomputable instance [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)] :
     ‖u‖ = u.gradientL2Norm :=
   rfl
 
-noncomputable def seminormedSpaceCore [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)] :
+theorem seminormedSpaceCore [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)] :
     SeminormedSpace.Core ℝ (H1MeanZeroFunction U) where
   norm_nonneg u := by
     show 0 ≤ u.gradientL2Norm
@@ -439,7 +439,7 @@ noncomputable instance [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)] :
     SeminormedAddCommGroup (H1MeanZeroFunction U) :=
   SeminormedAddCommGroup.ofCore (𝕜 := ℝ) seminormedSpaceCore
 
-instance [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)] :
+noncomputable instance [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)] :
     NormedSpace ℝ (H1MeanZeroFunction U) where
   norm_smul_le c u := by
     rw [(seminormedSpaceCore (U := U)).norm_smul c u]
@@ -575,9 +575,9 @@ noncomputable def gradientPairingCLM {f : Vec d → Vec d}
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
     (hf : MemVectorL2 U f) (u : H1MeanZeroFunction U) :
     gradientPairingCLM hf u = gradientPairing hf u := by
-  letI : AddCommGroup (H1MeanZeroFunction U) :=
+  let : AddCommGroup (H1MeanZeroFunction U) :=
     (show SeminormedAddCommGroup (H1MeanZeroFunction U) from inferInstance).toAddCommGroup
-  letI : Module ℝ (H1MeanZeroFunction U) := inferInstance
+  let : Module ℝ (H1MeanZeroFunction U) := inferInstance
   show (gradientPairingLinear hf).mkContinuous
       (((d : ℝ) * ‖Homogenization.toHilbertVectorL2OfVecField hf‖))
       (fun u => by

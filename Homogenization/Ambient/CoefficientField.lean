@@ -351,7 +351,7 @@ theorem isUnit_det_symmPart_of_isEllipticMatrix {d : ℕ} {lam Lam : ℝ} {A : M
       nlinarith [vecNormSq_nonneg (ξ - η)]
     exact sub_eq_zero.mp (vecNormSq_eq_zero hnorm_zero)
   have hinj' : Function.Injective ((symmPart A).mulVec) := by
-    simpa [matVecMul] using hinj
+    simpa [matVecMul] using! hinj
   exact ((symmPart A).isUnit_iff_isUnit_det).mp
     ((Matrix.mulVec_injective_iff_isUnit (A := symmPart A)).mp hinj')
 
@@ -587,17 +587,17 @@ private theorem measurable_matrix_inv_entry {d : ℕ} {α : Type*} [MeasurableSp
   have hdetMap : Measurable (fun M : Fin d → Fin d → ℝ => Matrix.det M) := by
     let f : (Fin d → Fin d → ℝ) → ℝ := fun M => Matrix.det M
     have hf : Continuous f := by
-      simpa [f] using (continuous_id.matrix_det : Continuous f)
+      simpa [f] using! (continuous_id.matrix_det : Continuous f)
     exact hf.measurable
   have hdet : Measurable (fun x => Matrix.det (A x)) := hdetMap.comp hA
   have hadjMap : Measurable (fun M : Fin d → Fin d → ℝ => Matrix.adjugate M i j) := by
     let g : (Fin d → Fin d → ℝ) → ℝ := fun M => Matrix.adjugate M i j
     have hg : Continuous g := by
-      simpa [g] using (((continuous_id.matrix_adjugate).matrix_elem i j) : Continuous g)
+      simpa [g] using! (((continuous_id.matrix_adjugate).matrix_elem i j) : Continuous g)
     exact hg.measurable
   have hadj : Measurable (fun x => Matrix.adjugate (A x) i j) := hadjMap.comp hA
   change Measurable (fun x => Ring.inverse (Matrix.det (A x)) * Matrix.adjugate (A x) i j)
-  simpa [Matrix.inv_def] using hdet.inv.mul hadj
+  simpa [Matrix.inv_def] using! hdet.inv.mul hadj
 
 theorem memVectorL2_matVecMul_of_isEllipticFieldOn {d : ℕ} {lam Lam : ℝ}
     {U : Set (Vec d)} {a : CoeffField d} (hEll : IsEllipticFieldOn lam Lam U a)
@@ -607,7 +607,7 @@ theorem memVectorL2_matVecMul_of_isEllipticFieldOn {d : ℕ} {lam Lam : ℝ}
   rw [MemVectorL2] at hf ⊢
   refine (MeasureTheory.memLp_pi_iff).2 ?_
   intro i
-  refine MeasureTheory.memLp_finset_sum
+  refine MeasureTheory.memLp_finsetSum
     (s := Finset.univ)
     (f := fun j : Fin d => fun x : Vec d => a x i j * f x j) ?_
   intro j hj
@@ -645,7 +645,7 @@ theorem memVectorL2_matVecMul_symmPart_of_isEllipticFieldOn {d : ℕ} {lam Lam :
   rw [MemVectorL2] at hf ⊢
   refine (MeasureTheory.memLp_pi_iff).2 ?_
   intro i
-  refine MeasureTheory.memLp_finset_sum
+  refine MeasureTheory.memLp_finsetSum
     (s := Finset.univ)
     (f := fun j : Fin d => fun x : Vec d => symmPart (a x) i j * f x j) ?_
   intro j hj
@@ -709,7 +709,7 @@ theorem memVectorL2_matVecMul_symmPartInv_of_isEllipticFieldOn {d : ℕ} {lam La
   rw [MemVectorL2] at hf ⊢
   refine (MeasureTheory.memLp_pi_iff).2 ?_
   intro i
-  refine MeasureTheory.memLp_finset_sum
+  refine MeasureTheory.memLp_finsetSum
     (s := Finset.univ)
     (f := fun j : Fin d => fun x : Vec d => (((symmPart (a x))⁻¹ : Mat d) i j) * f x j) ?_
   intro j hj
@@ -769,7 +769,7 @@ theorem memVectorL2_matVecMul_skewPart_of_isEllipticFieldOn {d : ℕ} {lam Lam :
   rw [MemVectorL2] at hf ⊢
   refine (MeasureTheory.memLp_pi_iff).2 ?_
   intro i
-  refine MeasureTheory.memLp_finset_sum
+  refine MeasureTheory.memLp_finsetSum
     (s := Finset.univ)
     (f := fun j : Fin d => fun x : Vec d => skewPart (a x) i j * f x j) ?_
   intro j hj

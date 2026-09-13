@@ -76,7 +76,7 @@ theorem blockResponse_pair_mem_responseSpace_of_isEllipticFieldOn
     have hvNegSol :
         IsSolenoidalOn U
           (fun x => -matVecMul (matTranspose (a x)) (v.toH1.grad x)) := by
-      simpa [Pi.smul_apply] using isSolenoidalOn_smul hvSol (-1 : ℝ)
+      simpa [Pi.smul_apply] using! isSolenoidalOn_smul hvSol (-1 : ℝ)
     have hvNegInt :
         ∀ φ : H10Function U,
           MeasureTheory.IntegrableOn
@@ -99,7 +99,7 @@ theorem blockResponse_pair_mem_responseSpace_of_isEllipticFieldOn
     have hYpotL2 : MemVectorL2 U Y.potential := by
       simpa [hφ] using φ.toH1Function.grad_memVectorL2
     have hFluxPlusL2 : MemVectorL2 U fluxPlus := by
-      simpa [fluxPlus, Pi.add_apply] using huFluxL2.add hvFluxAdjL2
+      simpa [fluxPlus, Pi.add_apply] using! huFluxL2.add hvFluxAdjL2
     have hTerm1Int :
         MeasureTheory.IntegrableOn
           (fun x => vecDot (Y.potential x) (fluxPlus x)) U :=
@@ -201,13 +201,13 @@ theorem blockResponseIntegrabilityData_pair_half_of_isEllipticFieldOn
       IsPotentialOn U (fun x => (1 / 2 : ℝ) • (u.toH1.grad x - v.toH1.grad x)) := by
     have hGradDiff :
         IsPotentialOn U (fun x => u.toH1.grad x - v.toH1.grad x) := by
-      simpa [sub_eq_add_neg, Pi.add_apply, Pi.smul_apply] using
+      simpa [sub_eq_add_neg, Pi.add_apply, Pi.smul_apply] using!
         isPotentialOn_add u.toH1.isPotentialOn (isPotentialOn_smul v.toH1.isPotentialOn (-1 : ℝ))
     exact isPotentialOn_smul hGradDiff (1 / 2 : ℝ)
   exact
     blockResponseIntegrabilityData_of_lowerImage_ae_eq_potential_of_mem_responseSpace_of_isEllipticFieldOn
       (hX := by
-        simpa [blockResponsePairHalfState] using
+        simpa [blockResponsePairHalfState] using!
           (blockResponse_pair_half_mem_responseSpace_of_isEllipticFieldOn (a := a) hEll u v))
       hGradDiffPot
       (blockResponse_lowerImage_pair_half_ae_eq_gradDiff_of_isEllipticFieldOn (a := a) hEll u v)

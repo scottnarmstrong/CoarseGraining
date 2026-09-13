@@ -142,7 +142,7 @@ theorem cubeDirichletH2RegularityExact
     originCube_sum_reducedSolverEnergyBoundExact_le_regularityConstant_mul_cubeLpNorm
       (m := Q.scale) (F := F₀)
   have hnorm := cubeLpNorm_originCube_comp_addRight_eq_of_memLp Q hF
-  simpa [cubeDirichletH2RegularityConstantExact, F₀, z, hnorm] using hsum
+  simpa [cubeDirichletH2RegularityConstantExact, F₀, z, hnorm] using! hsum
 
 /-- Dimension-only cube Dirichlet `H²` regularity when the forcing is measured
 in the unnormalized open-cube `L²` norm. -/

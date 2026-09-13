@@ -29,7 +29,7 @@ private theorem vectorW1pDivergence_memLp
     {d : ℕ} {Q : TriadicCube d} {q : FiniteLpExponent}
     (G : CubeVectorW1pFunction Q q) :
     MemLp (vectorW1pDivergence G) q.exponent (normalizedCubeMeasure Q) := by
-  apply MeasureTheory.memLp_finset_sum
+  apply MeasureTheory.memLp_finsetSum
   intro i _hi
   have hmatrix := G.jacobianHilbertMemLp
   rw [MeasureTheory.memLp_piLp_iff] at hmatrix

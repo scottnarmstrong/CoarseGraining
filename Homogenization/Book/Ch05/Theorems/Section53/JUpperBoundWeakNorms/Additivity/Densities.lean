@@ -101,8 +101,8 @@ theorem childAdditivityCrossDensityOnFamilyOnCube_integrableOn
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
     IntegrableOn (childAdditivityCrossDensityOnFamilyOnCube a Q R p q)
       (cubeSet R) volume := by
-  letI : IsFiniteMeasure (volumeMeasureOn (cubeSet R)) := by
-    letI : Fact (volume (cubeSet R) < ⊤) := ⟨volume_cubeSet_lt_top R⟩
+  let : IsFiniteMeasure (volumeMeasureOn (cubeSet R)) := by
+    let : Fact (volume (cubeSet R) < ⊤) := ⟨volume_cubeSet_lt_top R⟩
     change IsFiniteMeasure (volume.restrict (cubeSet R))
     infer_instance
   let topGrad : Vec d → Vec d :=
@@ -111,7 +111,7 @@ theorem childAdditivityCrossDensityOnFamilyOnCube_integrableOn
     canonicalMaximizerGradientOnCube R (a.coeffOn R) p q
   let coeff : CoeffField d := (a.coeffOn R).toCoeffField
   have hTop : MemVectorL2 (cubeSet R) topGrad := by
-    simpa [topGrad, canonicalMaximizerGradientOnCube] using
+    simpa [topGrad, canonicalMaximizerGradientOnCube] using!
       (Ch03.publicH1ToCubeSet_grad_memVectorL2_descendant_cubeSet
         (Q := Q) (R := R) (j := j)
         (canonicalMaximizerSolutionOnCube Q (a.coeffOn Q) p q).toH1 hR)
@@ -119,9 +119,9 @@ theorem childAdditivityCrossDensityOnFamilyOnCube_integrableOn
     have h :=
       (Ch03.publicH1ToCubeSet
         (Q := R) (canonicalMaximizerSolutionOnCube R (a.coeffOn R) p q).toH1).grad_memVectorL2
-    simpa [childGrad, canonicalMaximizerGradientOnCube, Ch03.publicH1ToCubeSet_grad] using h
+    simpa [childGrad, canonicalMaximizerGradientOnCube, Ch03.publicH1ToCubeSet_grad] using! h
   have hDiff : MemVectorL2 (cubeSet R) (fun x => topGrad x - childGrad x) := by
-    simpa using hTop.sub hChild
+    simpa using! hTop.sub hChild
   have hEllOpen :
       IsAEEllipticFieldOn (a.coeffOn R).lam (a.coeffOn R).Lam
         (openCubeSet R) coeff := by
@@ -329,8 +329,8 @@ theorem additivityDiffHalfEnergyDensityOnFamilyOnCube_integrableOn
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
     IntegrableOn (additivityDiffHalfEnergyDensityOnFamilyOnCube a Q R p q)
       (cubeSet R) volume := by
-  letI : IsFiniteMeasure (volumeMeasureOn (cubeSet R)) := by
-    letI : Fact (volume (cubeSet R) < ⊤) := ⟨volume_cubeSet_lt_top R⟩
+  let : IsFiniteMeasure (volumeMeasureOn (cubeSet R)) := by
+    let : Fact (volume (cubeSet R) < ⊤) := ⟨volume_cubeSet_lt_top R⟩
     change IsFiniteMeasure (volume.restrict (cubeSet R))
     infer_instance
   let topGrad : Vec d → Vec d :=
@@ -339,7 +339,7 @@ theorem additivityDiffHalfEnergyDensityOnFamilyOnCube_integrableOn
     canonicalMaximizerGradientOnCube R (a.coeffOn R) p q
   let coeff : CoeffField d := (a.coeffOn R).toCoeffField
   have hTop : MemVectorL2 (cubeSet R) topGrad := by
-    simpa [topGrad, canonicalMaximizerGradientOnCube] using
+    simpa [topGrad, canonicalMaximizerGradientOnCube] using!
       (Ch03.publicH1ToCubeSet_grad_memVectorL2_descendant_cubeSet
         (Q := Q) (R := R) (j := j)
         (canonicalMaximizerSolutionOnCube Q (a.coeffOn Q) p q).toH1 hR)
@@ -347,9 +347,9 @@ theorem additivityDiffHalfEnergyDensityOnFamilyOnCube_integrableOn
     have h :=
       (Ch03.publicH1ToCubeSet
         (Q := R) (canonicalMaximizerSolutionOnCube R (a.coeffOn R) p q).toH1).grad_memVectorL2
-    simpa [childGrad, canonicalMaximizerGradientOnCube, Ch03.publicH1ToCubeSet_grad] using h
+    simpa [childGrad, canonicalMaximizerGradientOnCube, Ch03.publicH1ToCubeSet_grad] using! h
   have hDiff : MemVectorL2 (cubeSet R) (fun x => topGrad x - childGrad x) := by
-    simpa using hTop.sub hChild
+    simpa using! hTop.sub hChild
   have hEllOpen :
       IsAEEllipticFieldOn (a.coeffOn R).lam (a.coeffOn R).Lam
         (openCubeSet R) coeff := by
@@ -379,7 +379,7 @@ theorem additivityDiffHalfEnergyDensityOnFamilyOnCube_integrableOn
             (canonicalMaximizerGradientOnCube Q (a.coeffOn Q) p q x -
               canonicalMaximizerGradientOnCube R (a.coeffOn R) p q x)))
       (cubeSet R) volume
-  simpa [additivityDiffHalfEnergyDensityOnFamilyOnCube, topGrad, childGrad, coeff] using
+  simpa [additivityDiffHalfEnergyDensityOnFamilyOnCube, topGrad, childGrad, coeff] using!
     hQuad.const_mul (1 / 2 : ℝ)
 
 /-! ### Difference energy and the response partition defect -/

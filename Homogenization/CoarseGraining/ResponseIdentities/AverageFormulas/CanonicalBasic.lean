@@ -24,13 +24,8 @@ theorem responseJ_eq {d : ℕ} {U : Set (Vec d)} {p q : Vec d} {a : CoeffField d
 
 theorem firstVariation {d : ℕ} {U : Set (Vec d)} {p q : Vec d} {a : CoeffField d}
     (v : ScalarCanonicalMaximizer U p q a) (w : AHarmonicFunction a U)
-    (hu_int : ∀ φ : H10Function U,
-      MeasureTheory.IntegrableOn
-        (fun x => vecDot (matVecMul (a x) ((v : AHarmonicFunction a U).toH1.grad x))
-          (φ.toH1Function.grad x)) U)
-    (hw_int : ∀ φ : H10Function U,
-      MeasureTheory.IntegrableOn
-        (fun x => vecDot (matVecMul (a x) (w.toH1.grad x)) (φ.toH1Function.grad x)) U)
+    (hu_int : weakFluxIntegrable U a (v : AHarmonicFunction a U))
+    (hw_int : weakFluxIntegrable U a w)
     (hresp_v : MeasureTheory.IntegrableOn
       (scalarResponseIntegrand U a p q (v : AHarmonicFunction a U)) U)
     (hlin : MeasureTheory.IntegrableOn
@@ -43,13 +38,8 @@ theorem firstVariation {d : ℕ} {U : Set (Vec d)} {p q : Vec d} {a : CoeffField
 
 theorem secondVariationLine {d : ℕ} {U : Set (Vec d)} {p q : Vec d} {a : CoeffField d}
     (v : ScalarCanonicalMaximizer U p q a) (w : AHarmonicFunction a U) (t : ℝ)
-    (hu_int : ∀ φ : H10Function U,
-      MeasureTheory.IntegrableOn
-        (fun x => vecDot (matVecMul (a x) ((v : AHarmonicFunction a U).toH1.grad x))
-          (φ.toH1Function.grad x)) U)
-    (hw_int : ∀ φ : H10Function U,
-      MeasureTheory.IntegrableOn
-        (fun x => vecDot (matVecMul (a x) (w.toH1.grad x)) (φ.toH1Function.grad x)) U)
+    (hu_int : weakFluxIntegrable U a (v : AHarmonicFunction a U))
+    (hw_int : weakFluxIntegrable U a w)
     (hresp_v : MeasureTheory.IntegrableOn
       (scalarResponseIntegrand U a p q (v : AHarmonicFunction a U)) U)
     (hlin : MeasureTheory.IntegrableOn
@@ -65,13 +55,8 @@ theorem secondVariationLine {d : ℕ} {U : Set (Vec d)} {p q : Vec d} {a : Coeff
 
 theorem secondVariation {d : ℕ} {U : Set (Vec d)} {p q : Vec d} {a : CoeffField d}
     (v : ScalarCanonicalMaximizer U p q a) (w : AHarmonicFunction a U)
-    (hu_int : ∀ φ : H10Function U,
-      MeasureTheory.IntegrableOn
-        (fun x => vecDot (matVecMul (a x) ((v : AHarmonicFunction a U).toH1.grad x))
-          (φ.toH1Function.grad x)) U)
-    (hw_int : ∀ φ : H10Function U,
-      MeasureTheory.IntegrableOn
-        (fun x => vecDot (matVecMul (a x) (w.toH1.grad x)) (φ.toH1Function.grad x)) U)
+    (hu_int : weakFluxIntegrable U a (v : AHarmonicFunction a U))
+    (hw_int : weakFluxIntegrable U a w)
     (hresp_v : MeasureTheory.IntegrableOn
       (scalarResponseIntegrand U a p q (v : AHarmonicFunction a U)) U)
     (hlin : MeasureTheory.IntegrableOn

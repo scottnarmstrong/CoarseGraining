@@ -194,7 +194,7 @@ theorem coefficientEnergy_average_le_collapsed_note_term_centered_two_two
         MeasureTheory.MemLp (fun _ : Vec d => cubeAverageVec Q g) (2 : ℝ≥0∞)
           (normalizedCubeMeasure Q) :=
       MeasureTheory.memLp_const (cubeAverageVec Q g)
-    simpa using hg.sub hconst
+    simpa using! hg.sub hconst
   have havg_g :
       cubeAverageVec Q (fun x => g x - cubeAverageVec Q g) = 0 := by
     rw [cubeAverageVec_sub_const Q g (cubeAverageVec Q g) hg]

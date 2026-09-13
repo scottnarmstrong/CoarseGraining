@@ -25,8 +25,8 @@ theorem additivitySumHalfEnergyDensityOnFamilyOnCube_integrableOn
     (hR : R ∈ descendantsAtDepth Q j) (p q : Vec d) :
     IntegrableOn (additivitySumHalfEnergyDensityOnFamilyOnCube a Q R p q)
       (cubeSet R) volume := by
-  letI : IsFiniteMeasure (volumeMeasureOn (cubeSet R)) := by
-    letI : Fact (volume (cubeSet R) < ⊤) := ⟨volume_cubeSet_lt_top R⟩
+  let : IsFiniteMeasure (volumeMeasureOn (cubeSet R)) := by
+    let : Fact (volume (cubeSet R) < ⊤) := ⟨volume_cubeSet_lt_top R⟩
     change IsFiniteMeasure (volume.restrict (cubeSet R))
     infer_instance
   let topGrad : Vec d → Vec d :=
@@ -35,7 +35,7 @@ theorem additivitySumHalfEnergyDensityOnFamilyOnCube_integrableOn
     canonicalMaximizerGradientOnCube R (a.coeffOn R) p q
   let coeff : CoeffField d := (a.coeffOn R).toCoeffField
   have hTop : MemVectorL2 (cubeSet R) topGrad := by
-    simpa [topGrad, canonicalMaximizerGradientOnCube] using
+    simpa [topGrad, canonicalMaximizerGradientOnCube] using!
       (Ch03.publicH1ToCubeSet_grad_memVectorL2_descendant_cubeSet
         (Q := Q) (R := R) (j := j)
         (canonicalMaximizerSolutionOnCube Q (a.coeffOn Q) p q).toH1 hR)
@@ -43,9 +43,9 @@ theorem additivitySumHalfEnergyDensityOnFamilyOnCube_integrableOn
     have h :=
       (Ch03.publicH1ToCubeSet
         (Q := R) (canonicalMaximizerSolutionOnCube R (a.coeffOn R) p q).toH1).grad_memVectorL2
-    simpa [childGrad, canonicalMaximizerGradientOnCube, Ch03.publicH1ToCubeSet_grad] using h
+    simpa [childGrad, canonicalMaximizerGradientOnCube, Ch03.publicH1ToCubeSet_grad] using! h
   have hSumGrad : MemVectorL2 (cubeSet R) (fun x => topGrad x + childGrad x) := by
-    simpa using hTop.add hChild
+    simpa using! hTop.add hChild
   have hEllOpen :
       IsAEEllipticFieldOn (a.coeffOn R).lam (a.coeffOn R).Lam
         (openCubeSet R) coeff := by
@@ -75,7 +75,7 @@ theorem additivitySumHalfEnergyDensityOnFamilyOnCube_integrableOn
             (canonicalMaximizerGradientOnCube Q (a.coeffOn Q) p q x +
               canonicalMaximizerGradientOnCube R (a.coeffOn R) p q x)))
       (cubeSet R) volume
-  simpa [additivitySumHalfEnergyDensityOnFamilyOnCube, topGrad, childGrad, coeff] using
+  simpa [additivitySumHalfEnergyDensityOnFamilyOnCube, topGrad, childGrad, coeff] using!
     hQuad.const_mul (1 / 2 : ℝ)
 
 /-- An integrable nonnegative scalar density has a square root in normalized
@@ -181,10 +181,10 @@ theorem integrable_sqrt_mul_sqrt_of_integrable_of_ae_nonneg
       MemLp sqrtB (2 : ℝ≥0∞) μ := by
     simpa [sqrtB] using
       memLp_sqrt_two_of_integrable_of_ae_nonneg hB_int hB_nonneg
-  haveI : ENNReal.HolderTriple (2 : ℝ≥0∞) (2 : ℝ≥0∞) (1 : ℝ≥0∞) := by
+  have : ENNReal.HolderTriple (2 : ℝ≥0∞) (2 : ℝ≥0∞) (1 : ℝ≥0∞) := by
     infer_instance
   have hProd_mem : MemLp (fun x => sqrtA x * sqrtB x) 1 μ := by
-    simpa [sqrtA, sqrtB] using hSqrtB_mem.mul hSqrtA_mem
+    simpa [sqrtA, sqrtB] using! hSqrtB_mem.mul hSqrtA_mem
   simpa [sqrtA, sqrtB] using hProd_mem.integrable (by norm_num : (1 : ℝ≥0∞) ≤ 1)
 
 /-- Integrability of a nonnegative product from square integrability of both
@@ -255,15 +255,15 @@ theorem abs_cubeAverage_le_sqrt_cubeAverage_mul_sqrt_cubeAverage_of_ae_abs_le_sq
   have hProd_nonneg : 0 ≤ᵐ[μ] fun x => sqrtA x * sqrtB x := by
     filter_upwards with x
     exact mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)
-  haveI : ENNReal.HolderTriple (2 : ℝ≥0∞) (2 : ℝ≥0∞) (1 : ℝ≥0∞) := by
+  have : ENNReal.HolderTriple (2 : ℝ≥0∞) (2 : ℝ≥0∞) (1 : ℝ≥0∞) := by
     infer_instance
   have hProd_mem : MemLp (fun x => sqrtA x * sqrtB x) 1 μ := by
-    simpa [μ, sqrtA, sqrtB] using hSqrtB_mem.mul hSqrtA_mem
+    simpa [μ, sqrtA, sqrtB] using! hSqrtB_mem.mul hSqrtA_mem
   have hProd_int : Integrable (fun x => sqrtA x * sqrtB x) μ :=
     hProd_mem.integrable (by norm_num : (1 : ℝ≥0∞) ≤ 1)
   have hAbs_le :
       (fun x => |F x|) ≤ᵐ[μ] fun x => sqrtA x * sqrtB x := by
-    simpa [μ, sqrtA, sqrtB] using hPoint
+    simpa [μ, sqrtA, sqrtB] using! hPoint
   have hInt_abs_le :
       ∫ x, |F x| ∂μ ≤ ∫ x, sqrtA x * sqrtB x ∂μ :=
     integral_mono_ae hF_int.norm hProd_int hAbs_le
@@ -275,7 +275,7 @@ theorem abs_cubeAverage_le_sqrt_cubeAverage_mul_sqrt_cubeAverage_of_ae_abs_le_sq
       |cubeAverage Q (fun x => sqrtA x * sqrtB x)| ≤
         cubeLpNorm Q (2 : ℝ≥0∞) sqrtA *
           cubeLpNorm Q (2 : ℝ≥0∞) sqrtB := by
-    letI : ENNReal.HolderConjugate (2 : ℝ≥0∞) (2 : ℝ≥0∞) := by
+    let : ENNReal.HolderConjugate (2 : ℝ≥0∞) (2 : ℝ≥0∞) := by
       infer_instance
     exact
       abs_cubeAverage_mul_le_mul_cubeLpNorm_of_holderConjugate

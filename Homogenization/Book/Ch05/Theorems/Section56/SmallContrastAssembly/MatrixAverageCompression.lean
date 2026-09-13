@@ -49,8 +49,6 @@ private theorem pairPointwiseBudgetConst_nonneg
 
 private theorem scaleColorPeriod_natCast_eq_zero (n : ℕ) :
     scaleColorPeriod (n : ℤ) = scaleColorPeriod 0 := by
-  have hpos : 0 < (3 : ℝ) ^ (-(n : ℤ)) :=
-    zpow_pos (by norm_num : (0 : ℝ) < 3) (-(n : ℤ))
   have hle_one : (3 : ℝ) ^ (-(n : ℤ)) ≤ 1 := by
     exact zpow_le_one_of_nonpos₀
       (show (1 : ℝ) ≤ 3 by norm_num)
@@ -59,8 +57,7 @@ private theorem scaleColorPeriod_natCast_eq_zero (n : ℕ) :
       Nat.ceil ((3 : ℝ) ^ (-(n : ℤ))) = 1 := by
     rw [Nat.ceil_eq_iff (by norm_num : (1 : ℕ) ≠ 0)]
     constructor
-    · convert hpos using 1
-      norm_num
+    · norm_num
     · simpa using hle_one
   unfold scaleColorPeriod
   rw [hceil]

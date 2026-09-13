@@ -396,7 +396,7 @@ theorem homogenizationComparison_uniformEllipticity_variableExponents
           C0 * rate * (E + B) := by
       simpa [rate, E, B, Setup.homogenizedMatrix,
         Setup.ComparisonPair, Setup.barSigmaLimit_pos, hInf, Setup.endpoint]
-        using hstep
+        using! hstep
     have hneg :
         S.comparisonDefect s pair ≤
           Kneg *
@@ -572,7 +572,7 @@ theorem homogenizationComparison_uniformEllipticity
             C0 * rate * (E + B) := by
         simpa [rate, E, B, Setup.homogenizedMatrix,
           Setup.ComparisonPair, Setup.barSigmaLimit_pos, hInf]
-          using hstep
+          using! hstep
       have hneg :
           S.comparisonDefect fixedComparisonS pair ≤
             Kneg *

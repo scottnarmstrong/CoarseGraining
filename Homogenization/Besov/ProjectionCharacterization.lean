@@ -43,7 +43,7 @@ theorem cubeFluctuation_ae_eq_cubeProjectionResidual_of_mem_descendantsAtDepth {
     {Q R : TriadicCube d} {j : ℕ} (u : Vec d → ℝ)
     (hR : R ∈ descendantsAtDepth Q j) :
     cubeFluctuation R u =ᵐ[normalizedCubeMeasure R] cubeProjectionResidual Q j u := by
-  simpa [cubeProjectionResidual] using
+  simpa [cubeProjectionResidual] using!
     cubeFluctuation_ae_eq_sub_cubeProjection_of_mem_descendantsAtDepth
       (Q := Q) (R := R) (j := j) u hR
 
@@ -60,7 +60,7 @@ theorem cubeBesovOscillation_eq_cubeLpNorm_cubeProjectionResidual_of_mem_descend
     {d : ℕ} {Q R : TriadicCube d} {j : ℕ} (p : ℝ≥0∞) (u : Vec d → ℝ)
     (hR : R ∈ descendantsAtDepth Q j) :
     cubeBesovOscillation R p u = cubeLpNorm R p (cubeProjectionResidual Q j u) := by
-  simpa [cubeProjectionResidual] using
+  simpa [cubeProjectionResidual] using!
     cubeBesovOscillation_eq_cubeLpNorm_sub_cubeProjection_of_mem_descendantsAtDepth
       (Q := Q) (R := R) (j := j) (p := p) u hR
 
@@ -82,7 +82,7 @@ theorem cubeBesovDepthAverage_eq_descendantsAverage_projectionResidual {d : ℕ}
     cubeBesovDepthAverage Q p u j =
       descendantsAverage Q j (fun R =>
         (cubeLpNorm R p (cubeProjectionResidual Q j u)) ^ p.toReal) := by
-  simpa [cubeProjectionResidual] using
+  simpa [cubeProjectionResidual] using!
     cubeBesovDepthAverage_eq_descendantsAverage_projection_error
       (Q := Q) (p := p) (u := u) (j := j)
 
@@ -102,7 +102,7 @@ theorem cubeBesovDepthSeminorm_eq_projectionResidual {d : ℕ}
         (descendantsAverage Q j (fun R =>
           (cubeLpNorm R p (cubeProjectionResidual Q j u)) ^ p.toReal)) ^
           (1 / p.toReal) := by
-  simpa [cubeProjectionResidual] using
+  simpa [cubeProjectionResidual] using!
     cubeBesovDepthSeminorm_eq_projection_error (Q := Q) (s := s) (p := p) (u := u) (j := j)
 
 theorem cubeBesovPartialSeminorm_eq_projection_error {d : ℕ}

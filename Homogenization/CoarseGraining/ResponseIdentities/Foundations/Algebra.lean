@@ -68,7 +68,7 @@ theorem volumeAverage_sum {d : ℕ} {α : Type*} {U : Set (Vec d)}
       exact hf b (Finset.mem_insert_of_mem hb)
     have hsumInt : MeasureTheory.IntegrableOn (fun x => s.sum (fun b => f b x)) U := by
       simpa [MeasureTheory.IntegrableOn] using
-        (MeasureTheory.integrable_finset_sum
+        (MeasureTheory.integrable_finsetSum
           (μ := MeasureTheory.Measure.restrict MeasureTheory.volume U) s
           (fun b hb => (hsInt b hb).integrable))
     calc
@@ -101,7 +101,7 @@ theorem volumeAverage_vecDot_left {d : ℕ} {U : Set (Vec d)} (v : Vec d) (f : V
   have hsum :
       ∀ i ∈ (Finset.univ : Finset (Fin d)), MeasureTheory.IntegrableOn (fun x => v i * f x i) U := by
     intro i hi
-    simpa [MeasureTheory.IntegrableOn, smul_eq_mul] using (hf i).integrable.smul (v i)
+    simpa [MeasureTheory.IntegrableOn, smul_eq_mul] using! (hf i).integrable.smul (v i)
   calc
     volumeAverage U (fun x => vecDot v (f x))
       = volumeAverage U (fun x => ∑ i, v i * f x i) := by
@@ -111,7 +111,7 @@ theorem volumeAverage_vecDot_left {d : ℕ} {U : Set (Vec d)} (v : Vec d) (f : V
     _ = ∑ i, v i * volumeAverage U (fun x => f x i) := by
           refine Finset.sum_congr rfl ?_
           intro i hi
-          simpa [smul_eq_mul] using (volumeAverage_smul U (v i) (fun x => f x i))
+          simpa [smul_eq_mul] using! (volumeAverage_smul U (v i) (fun x => f x i))
     _ = vecDot v (fun i => volumeAverage U (fun x => f x i)) := by
           simp [vecDot]
 
@@ -135,7 +135,7 @@ theorem integrableOn_matVecMul_of_integrableOn_entries {d : ℕ} {U : Set (Vec d
     ∀ i, MeasureTheory.IntegrableOn (fun x => matVecMul (f x) y i) U := by
   intro i
   simpa [MeasureTheory.IntegrableOn, matVecMul, mul_comm, mul_left_comm, mul_assoc] using
-    (MeasureTheory.integrable_finset_sum
+    (MeasureTheory.integrable_finsetSum
       (μ := MeasureTheory.Measure.restrict MeasureTheory.volume U) Finset.univ
       (fun j _ => (hf i j).integrable.const_mul (y j)))
 
@@ -144,7 +144,7 @@ theorem integrableOn_vecDot_matVecMul_of_integrableOn_entries {d : ℕ} {U : Set
     (hf : ∀ i j, MeasureTheory.IntegrableOn (fun x => f x i j) U) (x y : Vec d) :
     MeasureTheory.IntegrableOn (fun z => vecDot x (matVecMul (f z) y)) U := by
   simpa [MeasureTheory.IntegrableOn, vecDot] using
-    (MeasureTheory.integrable_finset_sum
+    (MeasureTheory.integrable_finsetSum
       (μ := MeasureTheory.Measure.restrict MeasureTheory.volume U) Finset.univ
       (fun i _ =>
         ((integrableOn_matVecMul_of_integrableOn_entries hf y i).integrable).const_mul (x i)))
@@ -295,7 +295,7 @@ def rescaleCoeff {d : ℕ} {a : CoeffField d} {U : Set (Vec d)}
     isHarmonic := by
       rcases u.isHarmonic with ⟨hpot, hsol⟩
       refine ⟨hpot, ?_⟩
-      simpa [Pi.smul_apply, smul_matVecMul] using isSolenoidalOn_smul hsol c }
+      simpa [Pi.smul_apply, smul_matVecMul] using! isSolenoidalOn_smul hsol c }
 
 @[simp] theorem toH1_rescaleCoeff {d : ℕ} {a : CoeffField d} {U : Set (Vec d)}
     (u : AHarmonicFunction a U) (c : ℝ) :
@@ -317,7 +317,7 @@ def unscaleCoeff {d : ℕ} {a : CoeffField d} {U : Set (Vec d)}
       have hscaled := isSolenoidalOn_smul hsol c⁻¹
       have hscaled' :
           IsSolenoidalOn U (fun x => c⁻¹ • matVecMul ((c • a) x) (u.toH1.grad x)) := by
-        simpa [Pi.smul_apply] using hscaled
+        simpa [Pi.smul_apply] using! hscaled
       have hflux :
           (fun x => c⁻¹ • matVecMul ((c • a) x) (u.toH1.grad x)) =
             fun x => matVecMul (a x) (u.toH1.grad x) := by

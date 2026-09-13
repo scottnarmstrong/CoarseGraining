@@ -72,7 +72,7 @@ private theorem isSourceLocalRandomVariable_descendantsAverage
       (fun a => descendantsAverage Q j (fun R => F R a)) := by
   classical
   let D : Finset (TriadicCube d) := descendantsAtDepth Q j
-  letI : MeasurableSpace (Source.Coarse.Carrier d) :=
+  let : MeasurableSpace (Source.Coarse.Carrier d) :=
     Source.Coarse.localSigma (cubeSet Q) (measurableSet_cubeSet Q)
   have hsum : Measurable (fun a : Source.Coarse.Carrier d => D.sum (fun R => F R a)) := by
     refine Finset.measurable_sum D ?_
@@ -80,7 +80,7 @@ private theorem isSourceLocalRandomVariable_descendantsAverage
     exact (hF R (by simpa [D] using hR)).mono
       (measurableSet_cubeSet R) (measurableSet_cubeSet Q)
       (cubeSet_subset_of_mem_descendantsAtDepth (by simpa [D] using hR))
-  simpa [descendantsAverage, D] using hsum.const_mul ((D.card : ℝ)⁻¹)
+  simpa [descendantsAverage, D] using! hsum.const_mul ((D.card : ℝ)⁻¹)
 
 /-- The finite descendant average of the scalar response is exact-source local
 on the parent cube. -/

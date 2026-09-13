@@ -54,7 +54,7 @@ private theorem triadicContinuousKInterval_eq_diff_singleton (j : ℕ) :
       Set.Ioc (triadicContinuousKScale (j + 1)).1 (triadicContinuousKScale j).1 \ {1} := by
   ext t
   simp only [triadicContinuousKInterval, Set.mem_inter_iff, Set.mem_Ioc, Set.mem_Ioo,
-    Set.mem_diff, Set.mem_singleton_iff]
+    Set.mem_sdiff, Set.mem_singleton_iff]
   constructor
   · rintro ⟨⟨hlower, hupper⟩, hpos, hone⟩
     exact ⟨⟨hlower, hupper⟩, ne_of_lt hone⟩
@@ -66,7 +66,7 @@ private theorem triadicContinuousKInterval_eq_diff_singleton (j : ℕ) :
 private theorem volume_triadicContinuousKInterval (j : ℕ) :
     volume (triadicContinuousKInterval j) =
       ENNReal.ofReal ((2 : ℝ) / 3 * (triadicContinuousKScale j).1) := by
-  rw [triadicContinuousKInterval_eq_diff_singleton, measure_diff_null Real.volume_singleton,
+  rw [triadicContinuousKInterval_eq_diff_singleton, measure_sdiff_null Real.volume_singleton,
     Real.volume_Ioc, triadicContinuousKScale_succ]
   congr 1
   ring

@@ -66,7 +66,7 @@ theorem blockMatrixField_factorization {d : ℕ}
           (Book.Ch02.blockDiag (symmPart (a.toCoeffField x))
             ((symmPart (a.toCoeffField x))⁻¹))
           (Book.Ch02.blockG (-skewPart (a.toCoeffField x)))) := by
-  simpa [book_blockMatrixField_eq_blockCoeffField] using
+  simpa [book_blockMatrixField_eq_blockCoeffField] using!
     blockMatrixOfCoeff_factorization (a.toCoeffField x)
 
 theorem blockMatrixFieldAlgebraTheory_of_coeffOn {d : ℕ}
@@ -74,13 +74,13 @@ theorem blockMatrixFieldAlgebraTheory_of_coeffOn {d : ℕ}
     BlockMatrixFieldAlgebraTheory U a where
   field_symmetric := by
     exact Filter.Eventually.of_forall fun x => by
-      simpa [book_blockMatrixField_eq_blockCoeffField] using
+      simpa [book_blockMatrixField_eq_blockCoeffField] using!
         isSymmetricBlockMat_blockMatrixOfCoeff (a.toCoeffField x)
   field_posDef := by
     filter_upwards [a.aeElliptic] with x hx
     intro X hX
     rcases X with ⟨p, q⟩
-    simpa [Book.Ch02.BlockPosDef, book_blockMatrixField_eq_blockCoeffField] using
+    simpa [Book.Ch02.BlockPosDef, book_blockMatrixField_eq_blockCoeffField] using!
       blockMatrixOfCoeff_quadratic_pos_of_isEllipticMatrix
         (A := a.toCoeffField x) hx hX
   factorization := by

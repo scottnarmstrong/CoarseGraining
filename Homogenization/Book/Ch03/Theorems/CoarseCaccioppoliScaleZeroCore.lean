@@ -40,16 +40,16 @@ theorem pointwiseCoeffFor_isEllipticFieldOn_cubeSet {d : ℕ}
 
 noncomputable def CubeSolution.toPointwiseAHarmonic {d : ℕ}
     {Q : TriadicCube d} {a : CoeffFamily d} (u : CubeSolution Q a) :
-    AHarmonicFunction (pointwiseCoeffFor Q a) (openCubeSet Q) := by
-  let U : Ch02.Domain d := Ch02.cubeDomain Q
-  let aQ : Ch02.CoeffOn U := a.coeffOn Q
-  let ap : Ch02.CoeffOn U := Internal.Ch02.BookCh02.pointwiseCoeffOn U aQ
-  have haeeq_ap_a : Ch02.CoeffOn.AEEq ap aQ := by
-    simpa [ap] using Internal.Ch02.BookCh02.pointwiseCoeffOn_ae_eq U aQ
-  have haeeq_a_ap : Ch02.CoeffOn.AEEq aQ ap := haeeq_ap_a.symm
-  let uPw : Ch02.Solution U ap := Ch02.Solution.ofAEEq haeeq_a_ap u
-  simpa [pointwiseCoeffFor, U, aQ, ap, uPw,
-    Internal.Ch02.BookCh02.pointwiseCoeffOn] using uPw
+    AHarmonicFunction (pointwiseCoeffFor Q a) (openCubeSet Q) where
+  toH1 := u.toH1
+  isHarmonic := by
+    let U : Ch02.Domain d := Ch02.cubeDomain Q
+    let A : CoeffField d := pointwiseCoeffFor Q a
+    have hA :
+        (a.coeffOn Q).toCoeffField =ᵐ[volumeMeasureOn (openCubeSet Q)] A := by
+      simpa [A, pointwiseCoeffFor, U, Ch02.cubeDomain] using
+        (Internal.Ch02.BookCh02.pointwiseCoeffField_ae_eq U (a.coeffOn Q)).symm
+    exact IsAHarmonicGradient.of_ae_eq_coeff hA u.isHarmonic
 
 noncomputable def BoundaryCaccioppoliDatum.toPointwiseAHarmonic
     {d : ℕ} {Q : TriadicCube d} {a : CoeffFamily d} {x : Vec d}

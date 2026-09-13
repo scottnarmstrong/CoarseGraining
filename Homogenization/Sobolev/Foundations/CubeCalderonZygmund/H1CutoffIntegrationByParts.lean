@@ -236,7 +236,7 @@ theorem h1_cutoff_integration_by_parts
       apply Finset.sum_congr rfl
       intro j _
       ring]
-    rw [MeasureTheory.integral_finset_sum]
+    rw [MeasureTheory.integral_finsetSum]
     intro j _
     exact hleft_int j
   have hmiddle_sum :
@@ -252,7 +252,7 @@ theorem h1_cutoff_integration_by_parts
       apply Finset.sum_congr rfl
       intro j _
       ring]
-    rw [MeasureTheory.integral_finset_sum]
+    rw [MeasureTheory.integral_finsetSum]
     intro j _
     exact hmiddle_int j
   have hlast_sum :
@@ -266,7 +266,7 @@ theorem h1_cutoff_integration_by_parts
       funext x
       simp only [euclideanCoordLaplacian]
       rw [Finset.mul_sum]]
-    rw [MeasureTheory.integral_finset_sum]
+    rw [MeasureTheory.integral_finsetSum]
     intro j _
     exact hlast_int j
   rw [hleft_sum, hmiddle_sum, hlast_sum]

@@ -32,7 +32,7 @@ theorem setIntegral_cubeFaceNeighborSlabSet_faceNeighborSlabReflectedScalar_sq
         Q i hF
   have hfS :
       MeasureTheory.Integrable f (MeasureTheory.volume.restrict S) := by
-    simpa [f] using hSlab.integrable_mul hSlab
+    simpa [f] using! hSlab.integrable_mul hSlab
   have hLsub : L ⊆ S := by
     intro x hx
     exact Or.inl (Or.inl hx)
@@ -280,7 +280,7 @@ theorem setIntegral_cubeFaceReflectionBlockSet_cubeCoordinateFoldReflectedScalar
         ∫ y in openCubeSet Q, F y * F y ∂MeasureTheory.volume := by
   exact
     setIntegral_cubeFaceReflectionBlockSet_cubeCoordinateFoldReflectedScalar_sq
-      Q (by simpa [volumeMeasureOn] using hF.integrable_mul hF)
+      Q (by simpa [volumeMeasureOn] using! hF.integrable_mul hF)
 
 /-- The squared `L²` energy of the all-coordinate reflected scalar on the full
 reflection block, with the cell count normalized to `(3 : ℝ)^d`. -/
@@ -317,7 +317,7 @@ theorem setIntegral_cubeFaceReflectionBlockSet_cubeCoordinateFoldReflectedScalar
   have hbase :
       MeasureTheory.Integrable (fun y => F y * U y)
         (MeasureTheory.volume.restrict (openCubeSet Q)) := by
-    simpa [volumeMeasureOn] using hF.integrable_mul hU
+    simpa [volumeMeasureOn] using! hF.integrable_mul hU
   have hfcell :
       ∀ choice : Fin d → Fin 3,
         MeasureTheory.Integrable f
@@ -642,7 +642,7 @@ theorem setIntegral_openCubeSet_union_upperFaceReflectedScalar_sq {d : ℕ}
         MeasureTheory.Integrable
           (fun x => F x * F x)
           (MeasureTheory.volume.restrict (openCubeSet Q)) := by
-      simpa using hF.integrable_mul hF
+      simpa using! hF.integrable_mul hF
     refine hmain.congr ?_
     filter_upwards
       [MeasureTheory.ae_restrict_mem (measurableSet_openCubeSet Q)] with x hx
@@ -659,7 +659,7 @@ theorem setIntegral_openCubeSet_union_upperFaceReflectedScalar_sq {d : ℕ}
           (fun x => R x * R x)
           (MeasureTheory.volume.restrict
             (openCubeSet (cubeUpperFaceNeighbor Q i))) := by
-      simpa using hR.integrable_mul hR
+      simpa using! hR.integrable_mul hR
     refine hreflected.congr ?_
     filter_upwards
       [MeasureTheory.ae_restrict_mem
@@ -743,7 +743,7 @@ theorem setIntegral_openCubeSet_union_lowerFaceReflectedScalar_sq {d : ℕ}
         MeasureTheory.Integrable
           (fun x => F x * F x)
           (MeasureTheory.volume.restrict (openCubeSet Q)) := by
-      simpa using hF.integrable_mul hF
+      simpa using! hF.integrable_mul hF
     refine hmain.congr ?_
     filter_upwards
       [MeasureTheory.ae_restrict_mem (measurableSet_openCubeSet Q)] with x hx
@@ -760,7 +760,7 @@ theorem setIntegral_openCubeSet_union_lowerFaceReflectedScalar_sq {d : ℕ}
           (fun x => R x * R x)
           (MeasureTheory.volume.restrict
             (openCubeSet (cubeLowerFaceNeighbor Q i))) := by
-      simpa using hR.integrable_mul hR
+      simpa using! hR.integrable_mul hR
     refine hreflected.congr ?_
     filter_upwards
       [MeasureTheory.ae_restrict_mem

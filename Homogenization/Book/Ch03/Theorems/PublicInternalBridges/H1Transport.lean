@@ -45,13 +45,17 @@ noncomputable def publicH1ToCubeSet {d : ℕ} [NeZero d]
     {Q : TriadicCube d}
     (u : H1Function (Ch02.cubeDomain Q : Set (Vec d))) :
     (publicH1ToCubeSet u).grad = u.grad := by
-  simp [publicH1ToCubeSet]
+  simp only [publicH1ToCubeSet]
+  rw [H1Function.grad_toCubeSet]
+  exact castH1Domain_grad _ u
 
 @[simp] theorem publicH1ToCubeSet_toFun {d : ℕ} [NeZero d]
     {Q : TriadicCube d}
     (u : H1Function (Ch02.cubeDomain Q : Set (Vec d))) :
     (publicH1ToCubeSet u).toFun = u.toFun := by
-  simp [publicH1ToCubeSet]
+  simp only [publicH1ToCubeSet]
+  rw [H1Function.toFun_toCubeSet]
+  exact castH1Domain_toFun _ u
 
 theorem publicH1ToCubeSet_grad_memVectorL2_descendant_cubeSet
     {d : ℕ} [NeZero d] {Q R : TriadicCube d} {j : ℕ}
@@ -131,14 +135,18 @@ noncomputable def publicH1MeanZeroToCubeSet {d : ℕ} [NeZero d]
     (u : H1MeanZeroFunction (Ch02.cubeDomain Q : Set (Vec d))) :
     (publicH1MeanZeroToCubeSet u).toH1Function.grad =
       u.toH1Function.grad := by
-  simp [publicH1MeanZeroToCubeSet]
+  simp only [publicH1MeanZeroToCubeSet, H1MeanZeroFunction.toCubeSet]
+  rw [H1Function.grad_toCubeSet]
+  exact castH1MeanZeroDomain_toH1Function_grad _ u
 
 @[simp] theorem publicH1MeanZeroToCubeSet_toH1Function_toFun
     {d : ℕ} [NeZero d] {Q : TriadicCube d}
     (u : H1MeanZeroFunction (Ch02.cubeDomain Q : Set (Vec d))) :
     (publicH1MeanZeroToCubeSet u).toH1Function.toFun =
       u.toH1Function.toFun := by
-  simp [publicH1MeanZeroToCubeSet]
+  simp only [publicH1MeanZeroToCubeSet, H1MeanZeroFunction.toCubeSet]
+  rw [H1Function.toFun_toCubeSet]
+  exact castH1MeanZeroDomain_toH1Function_toFun _ u
 
 /-- View a public open-domain `H¹₀` function as an `H¹₀` function on the
 half-open triadic cube used by the deterministic layer. -/
@@ -152,13 +160,17 @@ noncomputable def publicH10ToCubeSet {d : ℕ} [NeZero d]
     {Q : TriadicCube d}
     (u : H10Function (Ch02.cubeDomain Q : Set (Vec d))) :
     (publicH10ToCubeSet u).toH1Function.grad = u.toH1Function.grad := by
-  simp [publicH10ToCubeSet]
+  simp only [publicH10ToCubeSet]
+  rw [H10Function.toCubeSet_toH1Function_grad]
+  exact castH10Domain_toH1Function_grad _ u
 
 @[simp] theorem publicH10ToCubeSet_toH1Function_toFun {d : ℕ} [NeZero d]
     {Q : TriadicCube d}
     (u : H10Function (Ch02.cubeDomain Q : Set (Vec d))) :
     (publicH10ToCubeSet u).toH1Function.toFun = u.toH1Function.toFun := by
-  simp [publicH10ToCubeSet]
+  simp only [publicH10ToCubeSet]
+  rw [H10Function.toCubeSet_toH1Function_toFun]
+  exact castH10Domain_toH1Function_toFun _ u
 
 theorem publicH10ToCubeSet_toH1Function_grad_memVectorL2_descendant_cubeSet
     {d : ℕ} [NeZero d] {Q R : TriadicCube d} {j : ℕ}
@@ -293,8 +305,12 @@ theorem DirichletForcedCubeSolution.zeroTraceDifferenceH10CubeSet_grad_ae_eq
   have hwOpen :
       wOpen.toH1Function.toFun =ᵐ[volumeMeasureOn (openCubeSet Q)]
         zOpen.toFun := by
-    simpa [wOpen, zOpen, Ch02.cubeDomain_coe] using
-      u.zeroTraceDifferenceH10_toFun_ae_eq
+    show (castH10Domain (Ch02.cubeDomain_coe Q) u.zeroTraceDifferenceH10).toH1Function.toFun
+        =ᵐ[volumeMeasureOn (openCubeSet Q)]
+          (castH1Domain (Ch02.cubeDomain_coe Q) (u.toH1 - u.boundaryData)).toFun
+    rw [castH10Domain_toH1Function_toFun, castH1Domain_toFun, H1Function.sub_toFun,
+      ← Ch02.cubeDomain_coe Q]
+    exact u.zeroTraceDifferenceH10_toFun_ae_eq
   have hgradOpen :
       wOpen.toH1Function.grad =ᵐ[volumeMeasureOn (openCubeSet Q)]
         fun x => u.toH1.grad x - u.boundaryData.grad x := by
@@ -302,9 +318,20 @@ theorem DirichletForcedCubeSolution.zeroTraceDifferenceH10CubeSet_grad_ae_eq
       H1Function.grad_ae_eq_of_toFun_ae_eq
         (isOpen_openCubeSet Q) (u := wOpen.toH1Function)
         (v := zOpen) hwOpen
-    simpa [zOpen] using h
-  simpa [volumeMeasureOn, volume_restrict_cubeSet_eq_volume_restrict_openCubeSet Q,
-    wOpen] using hgradOpen
+    have ez : zOpen.grad = fun x => u.toH1.grad x - u.boundaryData.grad x := by
+      show (castH1Domain (Ch02.cubeDomain_coe Q) (u.toH1 - u.boundaryData)).grad =
+        fun x => u.toH1.grad x - u.boundaryData.grad x
+      rw [castH1Domain_grad, H1Function.sub_grad]
+    rw [ez] at h
+    exact h
+  have efun : u.zeroTraceDifferenceH10CubeSet.toH1Function.grad = wOpen.toH1Function.grad := by
+    show (publicH10ToCubeSet u.zeroTraceDifferenceH10).toH1Function.grad =
+      (castH10Domain (Ch02.cubeDomain_coe Q) u.zeroTraceDifferenceH10).toH1Function.grad
+    rw [publicH10ToCubeSet_toH1Function_grad, castH10Domain_toH1Function_grad]
+  have hmeas : volumeMeasureOn (cubeSet Q) = volumeMeasureOn (openCubeSet Q) :=
+    volume_restrict_cubeSet_eq_volume_restrict_openCubeSet Q
+  rw [efun, hmeas]
+  exact hgradOpen
 
 /-- Coefficient-energy split for a public Dirichlet solution:
 `∇v = ∇(v - h) + ∇h` on the deterministic cube, with the zero-trace
@@ -447,7 +474,12 @@ theorem isPotentialZeroTraceOn_cubeSet_of_public_zeroTraceDifference
   have hwOpen :
       wOpen.toH1Function.toFun =ᵐ[volumeMeasureOn (openCubeSet Q)]
         zOpen.toFun := by
-    simpa [wOpen, zOpen, Ch02.cubeDomain_coe] using hw
+    show (castH10Domain (Ch02.cubeDomain_coe Q) w).toH1Function.toFun
+        =ᵐ[volumeMeasureOn (openCubeSet Q)]
+          (castH1Domain (Ch02.cubeDomain_coe Q) (u - v)).toFun
+    rw [castH10Domain_toH1Function_toFun, castH1Domain_toFun, H1Function.sub_toFun,
+      ← Ch02.cubeDomain_coe Q]
+    exact hw
   have hgradOpen :
       wOpen.toH1Function.grad =ᵐ[volumeMeasureOn (openCubeSet Q)]
         fun x => u.grad x - v.grad x := by
@@ -455,7 +487,12 @@ theorem isPotentialZeroTraceOn_cubeSet_of_public_zeroTraceDifference
       H1Function.grad_ae_eq_of_toFun_ae_eq
         (isOpen_openCubeSet Q) (u := wOpen.toH1Function)
         (v := zOpen) hwOpen
-    simpa [zOpen] using h
+    have ez : zOpen.grad = fun x => u.grad x - v.grad x := by
+      show (castH1Domain (Ch02.cubeDomain_coe Q) (u - v)).grad =
+        fun x => u.grad x - v.grad x
+      rw [castH1Domain_grad, H1Function.sub_grad]
+    rw [ez] at h
+    exact h
   exact
     isPotentialZeroTraceOn_cubeSet_triadicCube_of_openCubeSet
       (IsPotentialZeroTraceOn.congr_ae hgradOpen

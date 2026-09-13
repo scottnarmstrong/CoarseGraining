@@ -28,12 +28,12 @@ theorem measureReal_iUnion_nat_le_tsum
   let ν : FiniteMeasure Ω := ⟨μ, inferInstance⟩
   have hE_nn : Summable fun k : ℕ => ν (E k) := by
     rw [← NNReal.summable_coe]
-    simpa [ν, Measure.real] using hE
+    simpa [ν, Measure.real] using! hE
   have hν := MeasureTheory.FiniteMeasure.apply_iUnion_le
     (μ := ν) (f := E) hE_nn
   have hν_real : (ν (⋃ k : ℕ, E k) : ℝ) ≤ ∑' k : ℕ, (ν (E k) : ℝ) := by
     exact_mod_cast hν
-  simpa [ν, Measure.real] using hν_real
+  simpa [ν, Measure.real] using! hν_real
 
 /-- The bad-scale event is bounded by the sum of the fixed-pair bad events. -/
 theorem measureReal_badScaleEvent_le_tsum_unpair_badPairEvent

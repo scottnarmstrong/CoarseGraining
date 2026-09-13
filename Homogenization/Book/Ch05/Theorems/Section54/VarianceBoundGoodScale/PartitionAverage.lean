@@ -1,5 +1,5 @@
 import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.FiniteNet
-import Mathlib.Data.Matrix.Bilinear
+import Mathlib.LinearAlgebra.Matrix.Bilinear
 
 namespace Homogenization
 namespace Book
@@ -29,11 +29,11 @@ private theorem isLocalRandomVariable_fullBlockMat_of_entries
         Ch04.IsRestrictionLocalRandomVariable U hU (fun a => X a α β)) :
     Ch04.IsRestrictionLocalRandomVariable U hU X := by
   change @Measurable (RegCoeffField d) (FullBlockMat d) (Ch04.restrictionSigma U hU) _ X
-  rw [@measurable_pi_iff (RegCoeffField d) (BlockCoord d)
-    (fun _ => BlockCoord d → ℝ) (Ch04.restrictionSigma U hU) (fun _ => inferInstance) X]
+  refine (@measurable_pi_iff (RegCoeffField d) (BlockCoord d)
+    (fun _ => BlockCoord d → ℝ) (Ch04.restrictionSigma U hU) (fun _ => inferInstance) X).2 ?_
   intro α
-  rw [@measurable_pi_iff (RegCoeffField d) (BlockCoord d)
-    (fun _ => ℝ) (Ch04.restrictionSigma U hU) (fun _ => inferInstance) (fun a => X a α)]
+  refine (@measurable_pi_iff (RegCoeffField d) (BlockCoord d)
+    (fun _ => ℝ) (Ch04.restrictionSigma U hU) (fun _ => inferInstance) (fun a => X a α)).2 ?_
   intro β
   exact hX α β
 
@@ -229,7 +229,7 @@ theorem section54_annealedMomentRoot_abs_sub_integral_le_two_mul
       eLpNorm (fun a => X a - c) (ξ : ENNReal) P ≤
         eLpNorm X (ξ : ENNReal) P +
           eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P := by
-    simpa [c, Pi.sub_apply] using
+    simpa only [c, Pi.sub_def, Pi.sub_apply] using
       eLpNorm_sub_le hX_meas.aestronglyMeasurable
         (aestronglyMeasurable_const (μ := P) (b := c))
         (by exact_mod_cast hξ)
@@ -324,7 +324,7 @@ theorem section54_annealedMomentRoot_add_le
   have hadd :
       eLpNorm (fun a => X a + Y a) (ξ : ENNReal) P ≤
         eLpNorm X (ξ : ENNReal) P + eLpNorm Y (ξ : ENNReal) P := by
-    simpa [Pi.add_apply] using
+    simpa only [Pi.add_def, Pi.add_apply] using
       (MeasureTheory.eLpNorm_add_le
         hX_meas.aestronglyMeasurable hY_meas.aestronglyMeasurable
         (by exact_mod_cast hξ))
@@ -356,7 +356,7 @@ theorem section54_centeredOrigin_momentRoot_le_factor_sum_of_abs_le
         2 * C *
           (Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
             Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let L : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d 0) hP4.sUpper (.finite 1) a
   let I : RegCoeffField d → ℝ :=
@@ -617,8 +617,8 @@ private theorem aemeasurable_fullBlockNormalizedFluctuationOperatorNormSq_cubeSe
       AEMeasurable
         (fun a : RegCoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P :=
     hP.aemeasurable_coarseFullBlockMatrix_cubeSet Q
-  simpa [Ch04.fullBlockNormalizedFluctuationOperatorNormSq, b, c, D, Abar, g,
-    normalizedFullBlockCLMLinearMap_apply] using
+  simpa only [Ch04.fullBlockNormalizedFluctuationOperatorNormSq, b, c, D, Abar, g,
+    normalizedFullBlockCLMLinearMap_apply, Function.comp_def] using
     hg.comp_aemeasurable hM
 
 theorem exists_isRestrictionLocalRandomVariable_ae_eq_fullBlockNormalizedFluctuationOperatorNormSq_cubeSet
@@ -664,7 +664,8 @@ private theorem aemeasurable_fullBlockNormalizedQuadraticObservable_cubeSet
       AEMeasurable
         (fun a : RegCoeffField d => toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P :=
     hP.aemeasurable_coarseFullBlockMatrix_cubeSet Q
-  simpa [fullBlockNormalizedQuadraticObservable, b, c, D, g] using
+  simpa only [fullBlockNormalizedQuadraticObservable, b, c, D, g,
+    Function.comp_def] using
     hg.comp_aemeasurable hM
 
 theorem exists_isRestrictionLocalRandomVariable_ae_eq_fullBlockNormalizedQuadraticObservable_cubeSet
@@ -829,7 +830,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSq_restrictionCenteredDescenda
               (1 / (hP4.xi : ℝ)) * K +
           Ch04.rosenthalDescendantsAtScaleSqrtConst d n hP4.xi *
             Real.sqrt ((descendantsAtScale (originCube d m) n).card : ℝ) * K) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fun U a =>
       Ch04.fullBlockNormalizedFluctuationOperatorNormSq hP hStruct center U a.toFun
@@ -837,17 +838,17 @@ theorem fullBlockNormalizedFluctuationOperatorNormSq_restrictionCenteredDescenda
       ∀ R ∈ descendantsAtScale (originCube d m) n,
         ∃ Y : RegCoeffField d → ℝ,
           Ch04.IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y := by
-    simpa [X] using
+    simpa only [X] using
       fullBlockNormalizedFluctuationOperatorNormSq_descendants_localRep
         hP hStruct center (originCube d m) n
   have hdesc_aemeas :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
         AEMeasurable (X (cubeSet R)) P := by
-    simpa [X] using
+    simpa only [X] using
       aemeasurable_fullBlockNormalizedFluctuationOperatorNormSq_descendants
         hP hStruct center (originCube d m) n
   have h0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P := by
-    simpa [X] using
+    simpa only [X] using
       aemeasurable_fullBlockNormalizedFluctuationOperatorNormSq_cubeSet
         hP hStruct center (originCube d n)
   simpa [X] using
@@ -893,24 +894,24 @@ theorem fullBlockNormalizedQuadraticObservable_restrictionCenteredDescendantAver
               (1 / (hP4.xi : ℝ)) * K +
           Ch04.rosenthalDescendantsAtScaleSqrtConst d n hP4.xi *
             Real.sqrt ((descendantsAtScale (originCube d m) n).card : ℝ) * K) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fullBlockNormalizedQuadraticObservableR hP hStruct center q
   have hlocal :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
         ∃ Y : RegCoeffField d → ℝ,
           Ch04.IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) Y ∧ X (cubeSet R) =ᵐ[P] Y := by
-    simpa [X] using
+    simpa only [X, fullBlockNormalizedQuadraticObservableR] using!
       fullBlockNormalizedQuadraticObservable_descendants_localRep
         hP hStruct center q (originCube d m) n
   have hdesc_aemeas :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
         AEMeasurable (X (cubeSet R)) P := by
-    simpa [X] using
+    simpa only [X, fullBlockNormalizedQuadraticObservableR] using!
       aemeasurable_fullBlockNormalizedQuadraticObservable_descendants
         hP hStruct center q (originCube d m) n
   have h0_aemeas : AEMeasurable (X (cubeSet (originCube d n))) P := by
-    simpa [X] using
+    simpa only [X, fullBlockNormalizedQuadraticObservableR] using!
       aemeasurable_fullBlockNormalizedQuadraticObservable_cubeSet
         hP hStruct center q (originCube d n)
   simpa [X] using

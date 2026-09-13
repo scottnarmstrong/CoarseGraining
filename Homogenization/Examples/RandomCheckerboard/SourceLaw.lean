@@ -96,7 +96,7 @@ private theorem measurable_checkerCarrier_local {d : ℕ} (lam Lam : ℝ)
   have hcomposite : @Measurable (Sample d) (RegCoeffField d)
       (sampleCellsSigma (cellsMeeting U)) (LocalSigmaR U)
       (Source.Coarse.coarseToRegular ∘ checkerCarrier lam Lam hlam hle) := by
-    simpa only [Function.comp_apply, coarseToRegular_checkerCarrier] using hregular
+    simpa only [Function.comp_apply, coarseToRegular_checkerCarrier] using! hregular
   rw [measurable_iff_comap_le]
   calc
     MeasurableSpace.comap (checkerCarrier lam Lam hlam hle) (Source.Coarse.localSigma U hU)
@@ -211,7 +211,7 @@ private theorem disjoint_cellsMeeting_triadicDilate_of_euclideanUnitSeparated {d
 private theorem measurable_checkerCarrier {d : ℕ} (lam Lam : ℝ)
     (hlam : 0 < lam) (hle : lam ≤ Lam) :
     Measurable (checkerCarrier (d := d) lam Lam hlam hle) := by
-  simpa [Source.Coarse.globalSigma] using
+  simpa [Source.Coarse.globalSigma] using!
     (measurable_checkerCarrier_local (d := d) lam Lam hlam hle Set.univ MeasurableSet.univ).mono
       (sampleCellsSigma_le _) le_rfl
 
@@ -265,7 +265,7 @@ private theorem baseLaw_stationary {d : ℕ} {lam Lam : ℝ}
       Measure.map (fun ω : Sample d =>
         Source.Coarse.Carrier.translate z (checkerCarrier lam Lam hlam hle ω))
         (sampleMeasure d p hp) := by
-          simpa [Function.comp] using Measure.map_map
+          simpa [Function.comp] using! Measure.map_map
             (Source.Coarse.measurable_translate_globalSigma z)
             (measurable_checkerCarrier (d := d) lam Lam hlam hle)
             (μ := sampleMeasure d p hp)
@@ -277,7 +277,7 @@ private theorem baseLaw_stationary {d : ℕ} {lam Lam : ℝ}
     _ = Measure.map (checkerCarrier lam Lam hlam hle)
         (Measure.map (shiftSample z) (sampleMeasure d p hp)) := by
           symm
-          simpa [Function.comp] using Measure.map_map
+          simpa [Function.comp] using! Measure.map_map
             (measurable_checkerCarrier (d := d) lam Lam hlam hle) (measurable_shiftSample z)
             (μ := sampleMeasure d p hp)
     _ = Measure.map (checkerCarrier lam Lam hlam hle) (sampleMeasure d p hp) := by
@@ -298,7 +298,7 @@ private theorem baseLaw_isotropic_adjoint {d : ℕ} {lam Lam : ℝ}
         Measure.map (fun ω : Sample d =>
           Source.Coarse.Carrier.rotate R hR (checkerCarrier lam Lam hlam hle ω))
           (sampleMeasure d p hp) := by
-            simpa [Function.comp] using Measure.map_map
+            simpa [Function.comp] using! Measure.map_map
               (Source.Coarse.measurable_rotate_globalSigma R hR)
               (measurable_checkerCarrier (d := d) lam Lam hlam hle)
               (μ := sampleMeasure d p hp)
@@ -310,7 +310,7 @@ private theorem baseLaw_isotropic_adjoint {d : ℕ} {lam Lam : ℝ}
       _ = Measure.map (checkerCarrier lam Lam hlam hle)
           (Measure.map (reindexSample e) (sampleMeasure d p hp)) := by
             symm
-            simpa [Function.comp, e] using Measure.map_map
+            simpa [Function.comp, e] using! Measure.map_map
               (measurable_checkerCarrier (d := d) lam Lam hlam hle) (measurable_reindexSample e)
               (μ := sampleMeasure d p hp)
       _ = Measure.map (checkerCarrier lam Lam hlam hle) (sampleMeasure d p hp) := by
@@ -322,7 +322,7 @@ private theorem baseLaw_isotropic_adjoint {d : ℕ} {lam Lam : ℝ}
         Measure.map (fun ω : Sample d =>
           Source.Coarse.Carrier.adjoint (checkerCarrier lam Lam hlam hle ω))
           (sampleMeasure d p hp) := by
-            simpa [Function.comp] using Measure.map_map
+            simpa [Function.comp] using! Measure.map_map
               Source.Coarse.measurable_adjoint_globalSigma
               (measurable_checkerCarrier (d := d) lam Lam hlam hle)
               (μ := sampleMeasure d p hp)
@@ -334,7 +334,7 @@ private theorem baseLaw_isotropic_adjoint {d : ℕ} {lam Lam : ℝ}
 instance instIsProbabilityMeasure_law (d : ℕ) (lam Lam : ℝ) (hlam : 0 < lam)
     (hle : lam ≤ Lam) (p : ℝ≥0) (hp : p ≤ 1) :
     IsProbabilityMeasure (law d lam Lam hlam hle p hp) := by
-  letI : IsProbabilityMeasure (baseLaw d lam Lam hlam hle p hp) := by
+  let : IsProbabilityMeasure (baseLaw d lam Lam hlam hle p hp) := by
     unfold baseLaw
     exact Measure.isProbabilityMeasure_map
       (measurable_checkerCarrier (d := d) lam Lam hlam hle).aemeasurable
@@ -366,7 +366,7 @@ private theorem law_eq_map_refinedCheckerCarrier {d : ℕ} (lam Lam : ℝ)
 private theorem measurable_refinedCheckerCarrier {d : ℕ} (lam Lam : ℝ)
     (hlam : 0 < lam) (hle : lam ≤ Lam) :
     Measurable (refinedCheckerCarrier (d := d) lam Lam hlam hle) := by
-  simpa only [refinedCheckerCarrier, Function.comp_apply] using
+  simpa only [refinedCheckerCarrier, Function.comp_apply] using!
     (Source.Coarse.measurable_rescale_globalSigma (d := d) (refinementScale d)).comp
       (measurable_checkerCarrier (d := d) lam Lam hlam hle)
 

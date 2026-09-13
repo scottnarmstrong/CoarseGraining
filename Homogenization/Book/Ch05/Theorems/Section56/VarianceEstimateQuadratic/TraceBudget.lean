@@ -40,7 +40,7 @@ theorem weightedAverage_const_mul'
     (Pcell : Ch02.DomainPartition U) (c : ℝ) (f : Pcell.Cell → ℝ) :
     Pcell.weightedAverage (fun i => c * f i) = c * Pcell.weightedAverage f := by
   classical
-  letI : Fintype Pcell.Cell := Pcell.instFintype
+  let : Fintype Pcell.Cell := Pcell.instFintype
   unfold Ch02.DomainPartition.weightedAverage
   rw [Finset.mul_sum]
   refine Finset.sum_congr rfl ?_
@@ -53,7 +53,7 @@ theorem vecDot_matVecMul_weightedMatAverage'
     vecDot x (matVecMul (Pcell.weightedMatAverage F) y) =
       Pcell.weightedAverage fun i => vecDot x (matVecMul (F i) y) := by
   classical
-  letI : Fintype Pcell.Cell := Pcell.instFintype
+  let : Fintype Pcell.Cell := Pcell.instFintype
   simp [Ch02.DomainPartition.weightedMatAverage, Ch02.DomainPartition.weightedAverage,
     vecDot, matVecMul, Finset.mul_sum, mul_assoc, mul_left_comm, mul_comm]
   ring_nf
@@ -76,7 +76,7 @@ theorem blockVecDot_blockMatVecMul_weightedBlockAverage'
       Pcell.weightedAverage
         (fun c => blockVecDot X (blockMatVecMul (F c) X)) := by
   classical
-  letI : Fintype Pcell.Cell := Pcell.instFintype
+  let : Fintype Pcell.Cell := Pcell.instFintype
   rcases X with ⟨p, q⟩
   rw [blockMatVecMul, blockVecDot, vecDot_add_right, vecDot_add_right]
   change
@@ -98,7 +98,7 @@ theorem blockReflect_weightedBlockAverage
     blockReflect (Pcell.weightedBlockAverage F) =
       Pcell.weightedBlockAverage (fun c => blockReflect (F c)) := by
   classical
-  letI : Fintype Pcell.Cell := Pcell.instFintype
+  let : Fintype Pcell.Cell := Pcell.instFintype
   rfl
 
 theorem blockVecDot_blockReflect_weightedBlockAverage'
@@ -176,7 +176,7 @@ theorem fullBlockJTraceBudgetWithNormalizers_weightedBlockAverage
       Pcell.weightedAverage
         (fun c => fullBlockJTraceBudgetWithNormalizers S T (F c)) := by
   classical
-  letI : Fintype Pcell.Cell := Pcell.instFintype
+  let : Fintype Pcell.Cell := Pcell.instFintype
   unfold fullBlockJTraceBudgetWithNormalizers
   simp_rw [blockVecDot_blockMatVecMul_weightedBlockAverage',
     blockVecDot_blockReflect_weightedBlockAverage']

@@ -113,7 +113,7 @@ theorem cubeFluctuation_sub_const_of_memLp_two {d : ℕ} (Q : TriadicCube d)
 theorem cubeFluctuation_cubeFluctuation_of_memLp_two {d : ℕ} (R Q : TriadicCube d)
     {f : Vec d → ℝ} (hf : MeasureTheory.MemLp f (2 : ℝ≥0∞) (normalizedCubeMeasure R)) :
     cubeFluctuation R (cubeFluctuation Q f) = cubeFluctuation R f := by
-  simpa [cubeFluctuation] using
+  simpa [cubeFluctuation] using!
     cubeFluctuation_sub_const_of_memLp_two R hf (cubeAverage Q f)
 
 noncomputable def cubeW1pSeminorm {d : ℕ} (Q : TriadicCube d) (p : ℝ≥0∞)
@@ -179,7 +179,7 @@ theorem cubeLpNorm_rpow_eq_cubeAverage_norm_rpow {d : ℕ} {E : Type*}
         = ((MeasureTheory.eLpNorm f p (normalizedCubeMeasure Q)) ^ p.toReal).toReal := by
             rw [cubeLpNorm, ← ENNReal.toReal_rpow]
     _ = (∫⁻ x, ‖f x‖ₑ ^ p.toReal ∂ normalizedCubeMeasure Q).toReal := by
-          rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm hp0 hpTop]
+          rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal hp0 hpTop]
           let A : ℝ≥0∞ := ∫⁻ x, ‖f x‖ₑ ^ p.toReal ∂ normalizedCubeMeasure Q
           change ((A ^ (1 / p.toReal)) ^ p.toReal).toReal = A.toReal
           rw [← ENNReal.rpow_mul, one_div, inv_mul_cancel₀ hpPos.ne', ENNReal.rpow_one]
@@ -232,7 +232,7 @@ theorem cubeLpNorm_mul_le_mul_cubeLpNorm_conjExponent {d : ℕ}
     (hp : 1 ≤ p) :
     cubeLpNorm Q 1 (fun x => f x * g x) ≤
       cubeLpNorm Q p f * cubeLpNorm Q (ENNReal.conjExponent p) g := by
-  letI : ENNReal.HolderConjugate p (ENNReal.conjExponent p) :=
+  let : ENNReal.HolderConjugate p (ENNReal.conjExponent p) :=
     ENNReal.HolderConjugate.conjExponent hp
   simpa using cubeLpNorm_mul_le_mul_cubeLpNorm_of_holderConjugate
     Q p (ENNReal.conjExponent p) f g hf hg
@@ -264,7 +264,7 @@ theorem abs_cubeAverage_mul_le_mul_cubeLpNorm_conjExponent {d : ℕ}
     (hp : 1 ≤ p) :
     |cubeAverage Q (fun x => f x * g x)| ≤
       cubeLpNorm Q p f * cubeLpNorm Q (ENNReal.conjExponent p) g := by
-  letI : ENNReal.HolderConjugate p (ENNReal.conjExponent p) :=
+  let : ENNReal.HolderConjugate p (ENNReal.conjExponent p) :=
     ENNReal.HolderConjugate.conjExponent hp
   simpa using abs_cubeAverage_mul_le_mul_cubeLpNorm_of_holderConjugate
     Q p (ENNReal.conjExponent p) f g hf hg

@@ -1035,7 +1035,7 @@ theorem exists_localCoarseGrainingLp (d : ℕ) (hd : 2 ≤ d) :
             (originCube d m) n
             (by simpa [originCube] using hnm.le)
             a sigma0 hsigma0 g u s1 s s2 p := by
-  letI : NeZero d := ⟨by omega⟩
+  let : NeZero d := ⟨by omega⟩
   let C : ℝ≥0∞ := (10 : ℝ≥0∞) * (3 ^ d : ℝ≥0∞) *
     ENNReal.ofReal (localCoarseGrainingOneCubeConstant d)
   refine ⟨C, ?_, ?_⟩

@@ -90,9 +90,9 @@ noncomputable def gagliardoCubeMeasure (Q : TriadicCube d) :
 
 instance instIsFiniteMeasureGagliardoCubeMeasure (Q : TriadicCube d) :
     IsFiniteMeasure (gagliardoCubeMeasure Q) := by
-  haveI : IsFiniteMeasure (cubeMeasure Q) :=
+  have : IsFiniteMeasure (cubeMeasure Q) :=
     ⟨lt_top_iff_ne_top.2 (cubeMeasure_apply_univ_ne_top Q)⟩
-  haveI : SFinite (cubeMeasure Q) := by
+  have : SFinite (cubeMeasure Q) := by
     unfold cubeMeasure
     infer_instance
   unfold gagliardoCubeMeasure
@@ -100,7 +100,7 @@ instance instIsFiniteMeasureGagliardoCubeMeasure (Q : TriadicCube d) :
 
 instance instSFiniteGagliardoCubeMeasure (Q : TriadicCube d) :
     SFinite (gagliardoCubeMeasure Q) := by
-  haveI : SFinite (cubeMeasure Q) := by
+  have : SFinite (cubeMeasure Q) := by
     unfold cubeMeasure
     infer_instance
   unfold gagliardoCubeMeasure
@@ -141,7 +141,7 @@ theorem cubeGagliardoESeminorm_eq_lintegral {Q : TriadicCube d} {s : ℝ}
     cubeGagliardoESeminorm Q s p u =
       (∫⁻ z, ‖gagliardoKernel s p u z‖ₑ ^ p.toReal
         ∂gagliardoCubeMeasure Q) ^ (1 / p.toReal) :=
-  eLpNorm_eq_lintegral_rpow_enorm hp0 hpt
+  eLpNorm_eq_lintegral_rpow_enorm_toReal hp0 hpt
 
 end Internal
 

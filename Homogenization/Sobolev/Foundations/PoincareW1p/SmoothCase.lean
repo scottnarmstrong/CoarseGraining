@@ -88,7 +88,7 @@ theorem subAverageLpSeminorm_le_smoothPoincareLpConst_mul_gradientCoordLpSeminor
       MeasureTheory.MemLp (fun x => f x - integralAverage U f) pE μ := by
     have hconst : MeasureTheory.MemLp (fun _ : Vec d => integralAverage U f) pE μ :=
       MeasureTheory.memLp_const (integralAverage U f)
-    simpa [Pi.sub_apply] using hf_mem.sub hconst
+    simpa [Pi.sub_apply] using! hf_mem.sub hconst
   have hfderiv_mem : MeasureTheory.MemLp (fderiv ℝ f) pE μ := by
     simpa [pE, μ] using
       (memLp_fderiv_of_contDiffOnIsOpenBoundedConvexDomain

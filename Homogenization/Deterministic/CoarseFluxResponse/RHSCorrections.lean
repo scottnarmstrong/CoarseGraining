@@ -229,7 +229,7 @@ theorem cubeAverageVec_matVecMul_const
     have huj :
         MeasureTheory.MemLp (fun x => u x j) (2 : ENNReal)
           (volumeMeasureOn (cubeSet Q)) := by
-      simpa using (ContinuousLinearMap.proj (R := ℝ) j).comp_memLp' hu
+      simpa using! (ContinuousLinearMap.proj (R := ℝ) j).comp_memLp' hu
     exact huj.integrable (by norm_num : (1 : ENNReal) ≤ (2 : ENNReal))
   have hAui_int :
       ∀ j : Fin d,
@@ -244,7 +244,7 @@ theorem cubeAverageVec_matVecMul_const
               rfl
     _ = (cubeVolume Q)⁻¹ *
           ∑ j, ∫ x in cubeSet Q, A i j * u x j ∂MeasureTheory.volume := by
-            rw [MeasureTheory.integral_finset_sum]
+            rw [MeasureTheory.integral_finsetSum]
             intro j hj
             exact hAui_int j
     _ = (cubeVolume Q)⁻¹ *

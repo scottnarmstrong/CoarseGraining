@@ -35,7 +35,7 @@ theorem expectedResponseJCubeSet_sub_half_vecDot_specialCentering_eq_expectedCen
         (1 / 2 : ℝ) * vecDot p0_e q0_e =
       expectedCenteredResponseJAtScale hP hStruct (m : ℤ) p_e q_e := by
   dsimp only
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hBlock :
       Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d (m : ℤ))) P :=
     Section52.originBlockIntegrableAtScale_from_P4 hP hStruct hP4 m

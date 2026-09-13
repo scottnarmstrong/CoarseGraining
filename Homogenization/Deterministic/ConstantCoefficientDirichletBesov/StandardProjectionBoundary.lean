@@ -57,7 +57,7 @@ theorem overlapCubeLpNorm_overlapCubeFluctuationVec_cubeIncrementVec_eq_zero_of_
       ¬ ∀ R ∈ descendantsAtDepth Q (m + 1), ¬ overlapCubeSet S ⊆ cubeSet R := by
     intro hcross
     exact hSnot (mem_overlapCrossingCentersAtDepth_iff.2 ⟨hS, hcross⟩)
-  push_neg at hnot
+  push Not at hnot
   rcases hnot with ⟨R, hR, hsub⟩
   exact
     overlapCubeLpNorm_overlapCubeFluctuationVec_cubeIncrementVec_eq_zero_of_subset_descendant
@@ -248,7 +248,7 @@ theorem mem_descendantBoundaryLayerAtDepth_iff_exists_coord_face {d : ℕ}
       ⟨hdesc, hboundary⟩
     refine ⟨hdesc, ?_⟩
     by_contra hno
-    push_neg at hno
+    push Not at hno
     have hsep :
         ∀ i : Fin d,
           cubeCoordLower R i + cubeScaleFactor S ≤ cubeCoordLower S i ∧

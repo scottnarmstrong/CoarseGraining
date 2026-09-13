@@ -162,7 +162,7 @@ theorem
   have hpair_int :
       MeasureTheory.IntegrableOn (fun x => vecDot (flux x) (u x • ξ x))
         (cubeSet Q) MeasureTheory.volume := by
-    simpa [flux, u, ξ] using
+    simpa [flux, u, ξ] using!
       integrableOn_vecDot_harmonicFlux_harmonicFunction_scalarCutoffGradientField
         Q a u0 hEllOpen ηρ.smooth ηρ.hasCompactSupport
   have huQ : MeasureTheory.MemLp u (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
@@ -328,7 +328,7 @@ theorem
   simpa [CoarseCaccioppoliBoundaryCanonicalHarmonicVectorNoteRawBridgeSplitAllRadii,
     coarseCaccioppoliLocalizedEnergyRadiusProfile, CeffAlpha, CeffCross, hheight,
     energy, Alpha, Bcross, flux, u, ξ, B]
-    using hraw
+    using! hraw
 
 /-- Boundary raw bridge for a constant harmonic family using the split
 buffered localized-energy summation.
@@ -499,7 +499,7 @@ theorem
   have hpair_int :
       MeasureTheory.IntegrableOn (fun x => vecDot (flux x) (u x • ξ x))
         (cubeSet Q) MeasureTheory.volume := by
-    simpa [flux, u, ξ] using
+    simpa [flux, u, ξ] using!
       integrableOn_vecDot_harmonicFlux_harmonicFunction_scalarCutoffGradientField
         Q a u0 hEllOpen ηρ.smooth ηρ.hasCompactSupport
   have huQ : MeasureTheory.MemLp u (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
@@ -665,7 +665,7 @@ theorem
   simpa [CoarseCaccioppoliBoundaryCanonicalHarmonicVectorNoteRawBridgeSplit,
     coarseCaccioppoliLocalizedEnergyRadiusProfile, CeffAlpha, CeffCross, hheight, ρ₁, ρ₂,
     energy, Alpha, Bcross, flux, u, ξ, B]
-    using hraw
+    using! hraw
 
 
 end

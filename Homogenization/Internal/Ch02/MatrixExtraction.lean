@@ -102,7 +102,7 @@ theorem exists_recoveryData_of_mu_eq_muCandidate_of_isOpenBoundedConvexDomain
         toHilbertBlockL2OfBlockField (U := U)
             ((R.toMuCorrectionSpaceRecoveryData).recoveredField_memBlockL2 system P) =
           H.minimizerMap P := by
-      simpa [H, R, system, PotentialSolenoidalL2RecoveryData.toMuHilbertRealization] using
+      simpa [H, R, system, PotentialSolenoidalL2RecoveryData.toMuHilbertRealization] using!
         (R.toMuCorrectionSpaceRecoveryData).recoveredField_minimizer_eq system P
     calc
       blockEnergyAverage U a ((R.toMuCorrectionSpaceRecoveryData).recoveredField system P)
@@ -183,7 +183,7 @@ theorem exists_oldCanonicalMatrixData_of_isOpenBoundedConvexDomain
     R.toMuOperatorSystemDataOfIsEllipticFieldOn hEll hvol
   have compat :
       PotentialSolenoidalL2RecoveryData.MuRecoveryCompatibilityData (a := a) R system := by
-    simpa [system] using
+    simpa [system] using!
       R.muRecoveryCompatibilityData_of_isEllipticFieldOn_of_mu_eq_muCandidate
         hEll hvol hMuEq
   have hex : ∃ Abar : BlockMat d, IsCoarseBlockMatrix U a Abar :=
@@ -547,7 +547,7 @@ theorem canonicalResponseMatrixIdentities
   by_cases hd : d = 0
   · subst d
     exact canonicalResponseMatrixIdentities_zero_dim U a
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     exact canonicalResponseMatrixIdentities_of_neZero U a
 
 end BookCh02

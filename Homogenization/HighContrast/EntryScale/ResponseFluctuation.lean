@@ -1,3 +1,0 @@
-import Homogenization.HighContrast.EntryScale.ResponseFluctuation.P1
-import Homogenization.HighContrast.EntryScale.ResponseFluctuation.P2
-import Homogenization.HighContrast.EntryScale.ResponseFluctuation.P3

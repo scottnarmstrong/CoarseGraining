@@ -45,7 +45,7 @@ noncomputable def exactOverlapScalarPParameters (s : FractionalOrder)
   q := p.exponent.toReal
   admissible := ⟨s.2.1, s.2.2, p.one_le_toReal, p.one_le_toReal⟩
 
-private def exactOverlapScalarPIntegrableOfMemLp {d : ℕ} (Q : TriadicCube d)
+private theorem exactOverlapScalarPIntegrableOfMemLp {d : ℕ} (Q : TriadicCube d)
     (p : FiniteLpExponent) {u : Vec d → ℝ}
     (hmem : MemLp u p.exponent (normalizedCubeMeasure Q)) :
     ExactOverlapIntegrable Q u where

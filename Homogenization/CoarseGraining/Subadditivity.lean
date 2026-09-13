@@ -167,7 +167,7 @@ theorem responseJ_subadditive_openCubeSet_childCubes_of_isEllipticFieldOn {d : �
     (hEll : IsEllipticFieldOn lam Lam (openCubeSet Q) a) (p q : Vec d) :
     ResponseJ (openCubeSet Q) p q a ≤
       descendantsAverage Q 1 (fun R => ResponseJ (openCubeSet R) p q a) := by
-  letI : Fact (MeasureTheory.volume (openCubeSet Q) < ⊤) := ⟨volume_openCubeSet_lt_top Q⟩
+  let : Fact (MeasureTheory.volume (openCubeSet Q) < ⊤) := ⟨volume_openCubeSet_lt_top Q⟩
   have hQvol : (MeasureTheory.volume (openCubeSet Q)).toReal ≠ 0 := by
     rw [volume_openCubeSet_toReal]
     exact (cubeVolume_pos Q).ne'
@@ -199,7 +199,7 @@ theorem responseJ_subadditive_openCubeSet_childCubes_of_isEllipticFieldOn {d : �
             have hEllR :
                 IsEllipticFieldOn lam Lam (openCubeSet R) a :=
               IsEllipticFieldOn.mono hEll (measurableSet_openCubeSet R) hRsub
-            letI : Fact (MeasureTheory.volume (openCubeSet R) < ⊤) :=
+            let : Fact (MeasureTheory.volume (openCubeSet R) < ⊤) :=
               ⟨volume_openCubeSet_lt_top R⟩
             have hRvol : (MeasureTheory.volume (openCubeSet R)).toReal ≠ 0 := by
               rw [volume_openCubeSet_toReal]

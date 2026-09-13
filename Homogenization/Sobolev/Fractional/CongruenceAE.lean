@@ -51,7 +51,7 @@ kernel only on a `gagliardoCubeMeasure`-null set of pairs. -/
 theorem gagliardoKernel_congr_ae {Q : TriadicCube d} {s : ℝ} {p : ℝ≥0∞}
     {u v : Vec d → E} (h : u =ᵐ[Homogenization.cubeMeasure Q] v) :
     gagliardoKernel s p u =ᵐ[gagliardoCubeMeasure Q] gagliardoKernel s p v := by
-  haveI : SFinite (Homogenization.cubeMeasure Q) := by
+  have : SFinite (Homogenization.cubeMeasure Q) := by
     unfold Homogenization.cubeMeasure
     infer_instance
   have hnorm : u =ᵐ[normalizedCubeMeasure Q] v :=

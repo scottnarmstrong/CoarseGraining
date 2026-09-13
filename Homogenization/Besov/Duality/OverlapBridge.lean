@@ -21,9 +21,9 @@ theorem cubeBesovConjExponent_toReal_pos_of_ne_top
 theorem one_le_cubeBesovConjExponent_toReal_of_one_le
     (q : ℝ≥0∞) (hq : 1 ≤ q) (hqConjTop : cubeBesovConjExponent q ≠ ∞) :
     1 ≤ (cubeBesovConjExponent q).toReal := by
-  letI : ENNReal.HolderConjugate q (cubeBesovConjExponent q) := by
+  let : ENNReal.HolderConjugate q (cubeBesovConjExponent q) := by
     simpa [cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hq
-  letI : ENNReal.HolderConjugate (cubeBesovConjExponent q) q :=
+  let : ENNReal.HolderConjugate (cubeBesovConjExponent q) q :=
     ENNReal.HolderConjugate.symm (p := q) (q := cubeBesovConjExponent q)
   have hqConj : 1 ≤ cubeBesovConjExponent q :=
     ENNReal.HolderConjugate.one_le (p := cubeBesovConjExponent q) (q := q)

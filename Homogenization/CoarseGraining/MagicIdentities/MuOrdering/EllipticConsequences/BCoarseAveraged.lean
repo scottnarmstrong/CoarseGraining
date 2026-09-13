@@ -117,7 +117,7 @@ theorem bCoarse_le_average_blockMatrixOfCoeff_upperLeft_of_isEllipticFieldOn_of_
       volumeAverage U (fun x => (1 / 2 : ℝ) * vecDot p (matVecMul ((blockMatrixOfCoeff (a x)).upperLeft) p)) =
         (1 / 2 : ℝ) *
           volumeAverage U (fun x => vecDot p (matVecMul ((blockMatrixOfCoeff (a x)).upperLeft) p)) := by
-    simpa [smul_eq_mul] using
+    simpa [smul_eq_mul] using!
       (volumeAverage_smul U (1 / 2 : ℝ)
         (fun x => vecDot p (matVecMul ((blockMatrixOfCoeff (a x)).upperLeft) p)))
   rw [hAvgHalf] at hMuLe

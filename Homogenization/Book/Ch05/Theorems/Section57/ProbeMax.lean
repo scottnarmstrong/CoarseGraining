@@ -25,7 +25,11 @@ inductive NormalizedProbeKind where
   | coord
   | plus
   | minus
-  deriving DecidableEq, Fintype
+  deriving DecidableEq
+
+instance : Fintype NormalizedProbeKind where
+  elems := {NormalizedProbeKind.coord, NormalizedProbeKind.plus, NormalizedProbeKind.minus}
+  complete := by intro x; cases x <;> decide
 
 @[simp]
 theorem fintype_card_normalizedProbeKind :
@@ -315,7 +319,7 @@ theorem localizedFirstQuenchedEstimate_normalizedProbeJMax
   refine ⟨Cfluct, Centry, α, hCfluct, hCentry, hα, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams ℓ n m hℓn hnm
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
@@ -418,7 +422,7 @@ theorem localizedFirstQuenchedEstimate_normalizedProbeJMax_uniformAnnealedExpone
   refine ⟨Cfluct, hCfluct, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams ℓ n m hℓn hnm
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
@@ -501,7 +505,7 @@ theorem isBigO_localizedNormalizedProbeJMax
   refine ⟨C, hC_pos, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams m n hnm
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let D : Finset (TriadicCube d) :=
     descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ)
   let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -557,7 +561,7 @@ theorem isBigO_localizedNormalizedProbeJMax
           (((3 * Real.log (D.card : ℝ)) ^ σ⁻¹) *
             (C * hΓ.thetaHat ^ (2 : ℕ)))) := by
     simpa [hscale, mul_assoc] using hsup
-  simpa [localizedNormalizedProbeJMax, S, hS, D] using hsup'
+  simpa [localizedNormalizedProbeJMax, S, hS, D] using! hsup'
 
 end
 

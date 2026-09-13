@@ -43,7 +43,7 @@ theorem section54_centeredOrigin_momentRoot_le_weighted_factor_sum_of_abs_le
         2 *
           (CUpper * Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
             CLower * Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let L : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField (originCube d 0) hP4.sUpper (.finite 1) a
   let I : RegCoeffField d → ℝ :=

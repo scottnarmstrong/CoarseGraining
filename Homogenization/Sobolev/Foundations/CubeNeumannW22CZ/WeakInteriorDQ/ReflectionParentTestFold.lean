@@ -331,12 +331,12 @@ private theorem hasCompactSupport_finset_sum
   revert hf
   refine Finset.induction_on s ?zero ?insert
   · intro _hf
-    simpa using (HasCompactSupport.zero : HasCompactSupport (fun _ : α => (0 : β)))
+    simpa using! (HasCompactSupport.zero : HasCompactSupport (fun _ : α => (0 : β)))
   · intro a s has hs hf
     have ha : HasCompactSupport (f a) := hf a (by simp [has])
     have hs' : HasCompactSupport (fun x => ∑ i ∈ s, f i x) := by
       exact hs (fun i hi => hf i (Finset.mem_insert_of_mem hi))
-    simpa [Finset.sum_insert has] using ha.add hs'
+    simpa [Finset.sum_insert has] using! ha.add hs'
 
 /-- The signed folded parent test is smooth when the parent test is smooth. -/
 theorem contDiff_cubeFaceReflectionFoldedParentScalarTest {d : ℕ}
@@ -364,7 +364,7 @@ theorem euclideanCoordDeriv_cubeFaceReflectionFoldedParentScalarTest {d : ℕ}
   classical
   unfold cubeFaceReflectionFoldedParentScalarTest euclideanCoordDeriv
   rw [fderiv_fun_sum]
-  · simp only [ContinuousLinearMap.sum_apply]
+  · simp only [sum_apply]
     apply Finset.sum_congr rfl
     intro choice _hchoice
     have hdiff :

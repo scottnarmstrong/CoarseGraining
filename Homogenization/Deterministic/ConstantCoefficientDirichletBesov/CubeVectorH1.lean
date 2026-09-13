@@ -75,7 +75,7 @@ theorem memLp_toField_normalizedCubeMeasure {d : ℕ} {Q : TriadicCube d}
 theorem memVectorL2_toField_openCubeSet {d : ℕ} {Q : TriadicCube d}
     (G : CubeVectorH1Function Q) :
     MemVectorL2 (openCubeSet Q) G.toField := by
-  simpa [MemVectorL2, volumeMeasureOn, CubeVectorH1Function.toField] using
+  simpa [MemVectorL2, volumeMeasureOn, CubeVectorH1Function.toField] using!
     (MeasureTheory.MemLp.of_eval
       (fun i : Fin d => (G.coord i).memL2))
 
@@ -87,7 +87,7 @@ theorem memLp_sub_toField_normalizedCubeMeasure {d : ℕ} {Q : TriadicCube d}
     (G : CubeVectorH1Function Q) :
     MeasureTheory.MemLp (fun x => h x - G.toField x) (2 : ℝ≥0∞)
       (normalizedCubeMeasure Q) := by
-  simpa [Pi.sub_apply] using hh.sub G.memLp_toField_normalizedCubeMeasure
+  simpa [Pi.sub_apply] using! hh.sub G.memLp_toField_normalizedCubeMeasure
 
 /-- Coordinate-summed `H¹` gradient size for a vector-field competitor. -/
 noncomputable def gradientCoordL2NormSum {d : ℕ} {Q : TriadicCube d}
@@ -152,24 +152,24 @@ theorem divergence_memLp_normalizedCubeMeasure {d : ℕ} {Q : TriadicCube d}
     (G : CubeVectorH1Function Q) :
     MeasureTheory.MemLp G.divergence (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
   have hsum :=
-    MeasureTheory.memLp_finset_sum
+    MeasureTheory.memLp_finsetSum
       (μ := normalizedCubeMeasure Q) (p := (2 : ℝ≥0∞))
       (s := Finset.univ)
       (f := fun i : Fin d => fun x : Vec d => (G.coord i).grad x i)
       (fun i _hi => H1Function.grad_memL2_normalizedCubeMeasure (G.coord i) i)
-  simpa [CubeVectorH1Function.divergence] using hsum
+  simpa [CubeVectorH1Function.divergence] using! hsum
 
 theorem divergence_memScalarL2_openCubeSet {d : ℕ} {Q : TriadicCube d}
     (G : CubeVectorH1Function Q) :
     MemScalarL2 (openCubeSet Q) G.divergence := by
   have hsum :=
-    MeasureTheory.memLp_finset_sum
+    MeasureTheory.memLp_finsetSum
       (μ := volumeMeasureOn (openCubeSet Q)) (p := (2 : ℝ≥0∞))
       (s := Finset.univ)
       (f := fun i : Fin d => fun x : Vec d => (G.coord i).grad x i)
       (fun i _hi => by
         simpa [MemScalarL2, volumeMeasureOn] using (G.coord i).grad_memL2 i)
-  simpa [CubeVectorH1Function.divergence, MemScalarL2, volumeMeasureOn] using hsum
+  simpa [CubeVectorH1Function.divergence, MemScalarL2, volumeMeasureOn] using! hsum
 
 theorem norm_toScalarL2_divergence_le_gradientCoordL2NormSum {d : ℕ}
     {Q : TriadicCube d} (G : CubeVectorH1Function Q)
@@ -255,7 +255,7 @@ theorem integral_divergence_mul_zeroTrace_eq_neg_integral_vecDot
           (fun x : Vec d => (G.coord i).grad x i * φ.toH1Function x)
           (MeasureTheory.volume.restrict U) := by
     intro i
-    simpa [U, MeasureTheory.IntegrableOn] using
+    simpa [U, MeasureTheory.IntegrableOn] using!
       ((G.coord i).gradMemL2 i).integrable_mul φ.toH1Function.memL2
   have hfield_mul_int :
       ∀ i : Fin d,
@@ -263,7 +263,7 @@ theorem integral_divergence_mul_zeroTrace_eq_neg_integral_vecDot
           (fun x : Vec d => (G.coord i) x * φ.toH1Function.grad x i)
           (MeasureTheory.volume.restrict U) := by
     intro i
-    simpa [U, MeasureTheory.IntegrableOn] using
+    simpa [U, MeasureTheory.IntegrableOn] using!
       (G.coord i).memL2.integrable_mul (φ.toH1Function.gradMemL2 i)
   have hleft_sum :
       ∫ x in openCubeSet Q,
@@ -281,7 +281,7 @@ theorem integral_divergence_mul_zeroTrace_eq_neg_integral_vecDot
           ∫ x, (G.coord i).grad x i * φ.toH1Function x
             ∂MeasureTheory.volume.restrict U
     simpa using
-      (MeasureTheory.integral_finset_sum
+      (MeasureTheory.integral_finsetSum
         (μ := MeasureTheory.volume.restrict U) (s := Finset.univ)
         (f := fun i : Fin d =>
           fun x : Vec d => (G.coord i).grad x i * φ.toH1Function x)
@@ -302,7 +302,7 @@ theorem integral_divergence_mul_zeroTrace_eq_neg_integral_vecDot
           ∫ x, (G.coord i) x * φ.toH1Function.grad x i
             ∂MeasureTheory.volume.restrict U
     simpa using
-      (MeasureTheory.integral_finset_sum
+      (MeasureTheory.integral_finsetSum
         (μ := MeasureTheory.volume.restrict U) (s := Finset.univ)
         (f := fun i : Fin d =>
           fun x : Vec d => (G.coord i) x * φ.toH1Function.grad x i)

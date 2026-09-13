@@ -47,7 +47,7 @@ private theorem memVectorL2_openCubeSet_of_cubeEuclideanLpField_two
   let T : HilbertVec d →L[ℝ] Vec d :=
     (HilbertVec.continuousLinearEquivVec d).toContinuousLinearMap
   simpa only [MemVectorL2, volumeMeasureOn, Function.comp_def,
-    HilbertVec.toVec_ofVec, T] using T.comp_memLp' hopen
+    HilbertVec.toVec_ofVec, T] using! T.comp_memLp' hopen
 
 private theorem norm_meanZeroGradToHilbertVectorL2_le_sigmaInv_datum
     {d : ℕ} {m : ℤ} {sigma0 : ℝ}
@@ -132,7 +132,7 @@ private theorem centeredCubeNormalized_eLpNorm_meanZeroGrad_le_scaledDatum
     rw [eLpNorm_const_smul,
       eLpNorm_hilbertify_grad_two_eq_ofReal_norm_gradToHilbertVectorL2,
       eLpNorm_hilbertifyVecField_two_eq_ofReal_norm_toHilbertVectorL2 hH]
-    rw [← ofReal_norm_eq_enorm,
+    rw [← ofReal_norm,
       Real.norm_of_nonneg (inv_nonneg.mpr hsigma0.le),
       ← ENNReal.ofReal_mul (inv_nonneg.mpr hsigma0.le)]
     exact ENNReal.ofReal_le_ofReal henergy
@@ -167,13 +167,13 @@ theorem centeredCubeH1MeanZeroScalarDivergence_cz_two
     centeredCubeNormalized_eLpNorm_meanZeroGrad_le_scaledDatum hsigma0 u hH
       hsolution.scalarMatrix_neg_weak
   rw [eLpNorm_const_smul] at hnormalized
-  rw [← ofReal_norm_eq_enorm,
+  rw [← ofReal_norm,
     Real.norm_of_nonneg (inv_nonneg.mpr hsigma0.le),
     ENNReal.ofReal_inv_of_pos hsigma0] at hnormalized
   simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
     BoundedMeasurableDomain.normalizedLpENorm,
     FiniteLpExponent.two_exponent, euclideanNorm_eq_norm_ofVec,
-    eLpNorm_norm, hilbertifyVecField] using hnormalized
+    eLpNorm_norm, hilbertifyVecField] using! hnormalized
 
 private theorem nonempty_openCubeSet_originCube_neumann (d : ℕ) (m : ℤ) :
     Set.Nonempty (openCubeSet (originCube d m)) := by
@@ -198,7 +198,7 @@ private theorem isEllipticFieldOn_scalarMatrix_centeredCube
           (fun _ : Vec d ↦ scalarMatrix (d := d) sigma0 i j)
           (fun _ ↦ 0)) :=
       measurable_const.piecewise (measurableSet_openCubeSet _) measurable_const
-    simpa only [Set.piecewise] using hpiece
+    simpa only [Set.piecewise] using! hpiece
   · intro x _hx
     exact isEllipticMatrix_scalarMatrix hsigma0
 
@@ -229,7 +229,7 @@ theorem centeredCubeMeanZeroScalarDivergenceSolution_isWeakSolution
       (openCubeSet (originCube d m))
       (centeredCubeMeanZeroScalarDivergenceSolution m hsigma0 G hG)
       (fun x ↦ -G x) := by
-  letI : IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d m))) :=
+  let : IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d m))) :=
     (isOpenBoundedConvexDomain_openCubeSet
       (originCube d m)).isFiniteMeasure_restrict_volume
   exact isMeanZeroNeumannRhsWeakSolution_coeffGradientProblemSolution_of_h1CoerciveEstimate

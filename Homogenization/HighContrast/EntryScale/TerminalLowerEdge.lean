@@ -1,2 +1,0 @@
-import Homogenization.HighContrast.EntryScale.TerminalLowerEdge.P1
-import Homogenization.HighContrast.EntryScale.TerminalLowerEdge.P2

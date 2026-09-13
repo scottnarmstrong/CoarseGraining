@@ -232,7 +232,7 @@ theorem normalizedBlockJTraceAverageSq_integral_le_geometric_add_thetaSq_of_smal
         normalizedTraceJAverageThetaConst d *
           (thetaAtScale hP hStruct (child : ℤ) - 1) ^ (2 : ℕ) := by
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (parent : ℤ)
   let j : ℕ := parent - child
   let opSq : RegCoeffField d → ℝ :=

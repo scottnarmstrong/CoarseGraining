@@ -88,7 +88,7 @@ theorem aestronglyMeasurable_badEventTruncation
   classical
   have hset : NullMeasurableSet {ω | 1 < M ω} μ :=
     aestronglyMeasurable_const.nullMeasurableSet_lt hM
-  simpa only using
+  simpa only [badEventTruncation, Set.indicator_apply, Set.mem_ofPred_eq] using!
     hM.indicator₀ hset
 
 /--
@@ -206,6 +206,16 @@ open scoped Matrix.Norms.L2Operator
 
 open ContinuousFunctionalCalculus
 
+/-- Negation is isometric for the L2 operator norm on square matrices.  Stated
+via `Matrix.cstar_norm_def` (bundling through `toEuclideanCLM`) rather than the
+generic `norm_neg`, because this file has both `Matrix.Norms.Elementwise` and
+`Matrix.Norms.L2Operator` open and a bare typeclass-inferred norm lemma can
+resolve against the wrong scoped instance. -/
+private lemma l2OpMatrixNormNeg
+    {n : Type*} [Fintype n] [DecidableEq n] (B : Matrix n n ℝ) :
+    ‖(-B : Matrix n n ℝ)‖ = ‖B‖ := by
+  rw [Matrix.cstar_norm_def, Matrix.cstar_norm_def, map_neg, norm_neg]
+
 private lemma Matrix.IsHermitian.isometry_cfcAux_l2
     {n : Type*} [Fintype n] [DecidableEq n]
     {A : Matrix n n ℝ} (hA : Matrix.IsHermitian A) :
@@ -246,7 +256,8 @@ private lemma Matrix.IsHermitian.isometry_cfcAux_l2
         subst x
         simpa only [Real.norm_eq_abs] using norm_le_pi_norm eigVals i
     rw [Matrix.IsHermitian.cfcAux_apply]
-    simpa only [RCLike.ofReal_real_eq_id, CompTriple.comp_eq, Unitary.conjStarAlgAut_apply] using
+    simpa only [RCLike.ofReal_real_eq_id, CompTriple.comp_eq, Unitary.conjStarAlgAut_apply,
+      Function.comp_def] using!
       (calc
         ‖((Unitary.conjStarAlgAut ℝ (Matrix n n ℝ)) hA.eigenvectorUnitary) D‖ =
             ‖D‖ := hunit
@@ -257,12 +268,9 @@ private lemma Matrix.IsHermitian.isometry_cfcAux_l2
   calc
     dist (hA.cfcAux f) (hA.cfcAux g) =
         ‖hA.cfcAux f - hA.cfcAux g‖ := by
-          exact show
-            @dist (Matrix n n ℝ) Matrix.instL2OpMetricSpace.toDist
-                (hA.cfcAux f) (hA.cfcAux g) =
-              @norm (Matrix n n ℝ) Matrix.instL2OpNormedRing.toNorm
-                (hA.cfcAux f - hA.cfcAux g) from
-            Matrix.instL2OpNormedRing.dist_eq (hA.cfcAux f) (hA.cfcAux g)
+          rw [Matrix.instL2OpNormedRing.dist_eq]
+          have hstep : -hA.cfcAux f + hA.cfcAux g = -(hA.cfcAux f - hA.cfcAux g) := by abel
+          rw [hstep, l2OpMatrixNormNeg]
     _ = ‖hA.cfcAux (f - g)‖ := by rw [map_sub]
     _ = ‖f - g‖ := by simpa only [Matrix.IsHermitian.cfcAux_apply, RCLike.ofReal_real_eq_id, ContinuousMap.coe_sub, CompTriple.comp_eq, Unitary.conjStarAlgAut_apply, u] using hnorm
     _ = dist f g := (dist_eq_norm _ _).symm
@@ -384,7 +392,7 @@ private theorem measurable_fullBlockOperatorNorm_posPart {d : ℕ} :
     have hid : Continuous fun M : Homogenization.FullBlockMat d => M := continuous_id
     have hclosed : IsClosed {M : Homogenization.FullBlockMat d | star M = M} :=
       isClosed_eq hstar hid
-    simpa only [isSelfAdjoint_iff] using hclosed
+    simpa only [selfAdjointSet, isSelfAdjoint_iff] using hclosed
   have hself_meas : MeasurableSet selfAdjointSet := hself_closed.measurableSet
   have hpos_cont :
       ContinuousOn (fun M : Homogenization.FullBlockMat d => M⁺) selfAdjointSet := by
@@ -422,16 +430,14 @@ private theorem measurable_fullBlockOperatorNorm_posPart {d : ℕ} :
                   Matrix.instL2OpMetricSpace.toPseudoMetricSpace M' M 0
               have hM'0 : distL2 M' 0 = normL2 M' := by
                 change dist M' 0 = ‖M'‖
-                rw [Matrix.instL2OpNormedRing.dist_eq]
-                simp only [sub_zero]
+                rw [Matrix.instL2OpNormedRing.dist_eq, add_zero, l2OpMatrixNormNeg]
               have hM0 : distL2 M 0 = normL2 M := by
                 change dist M 0 = ‖M‖
-                rw [Matrix.instL2OpNormedRing.dist_eq]
-                simp only [sub_zero]
+                rw [Matrix.instL2OpNormedRing.dist_eq, add_zero, l2OpMatrixNormNeg]
               simpa only [ge_iff_le, hM'0, hM0] using htri_dist
             linarith only [htri, hdist_near]
           have hM'_self : IsSelfAdjoint M' := by
-            simpa only [Set.mem_setOf_eq, selfAdjointSet] using hnear.1
+            simpa only [Set.mem_ofPred_eq, selfAdjointSet] using hnear.1
           have hy_norm : ‖y‖ ≤ ‖M'‖ :=
             NonUnitalIsometricContinuousFunctionalCalculus.norm_quasispectrum_le
               (𝕜 := ℝ) (A := Homogenization.FullBlockMat d)
@@ -465,7 +471,7 @@ private theorem measurable_fullBlockOperatorNorm_posPart {d : ℕ} :
     }
     have hcont : Continuous fun M : Homogenization.FullBlockMat d => ‖L M‖ :=
       L.continuous_of_finiteDimensional.norm
-    simpa only [fullBlockOperatorNorm, LinearMap.coe_mk, AddHom.coe_mk] using hcont
+    simpa only [fullBlockOperatorNorm, L, LinearMap.coe_mk, AddHom.coe_mk] using hcont
   have hf_cont :
       ContinuousOn
         (fun M : Homogenization.FullBlockMat d => fullBlockOperatorNorm (M⁺))
@@ -490,7 +496,7 @@ private theorem measurable_fullBlockOperatorNorm_posPart {d : ℕ} :
     by_cases hM : M ∈ selfAdjointSet
     · simp only [hM, Set.piecewise_eq_of_mem]
     · have hnot : ¬ IsSelfAdjoint M := by
-        simpa only [Set.mem_setOf_eq] using hM
+        simpa only [Set.mem_ofPred_eq, selfAdjointSet] using hM
       simp only [fullBlockOperatorNorm, hM, not_false_eq_true, Set.piecewise_eq_of_notMem, CFC.posPart_eq_zero_of_not_isSelfAdjoint hnot, map_zero, norm_zero]
   simpa only [hpw_eq] using hpw_meas
 
@@ -593,10 +599,9 @@ private theorem fullBlockQuadratic_le_posPart_of_isSymm
     (hM : M.IsSymm) (x : Homogenization.FullBlockVec d) :
     Homogenization.Book.Ch05.Section54.VarianceBoundGoodScale.fullBlockQuadratic M x ≤
       Homogenization.Book.Ch05.Section54.VarianceBoundGoodScale.fullBlockQuadratic M⁺ x := by
-  have hsa : IsSelfAdjoint M := by
-    simpa only [IsSelfAdjoint, Matrix.IsSymm] using hM
-  letI : PartialOrder (Homogenization.FullBlockMat d) := Matrix.instPartialOrder
-  letI : StarOrderedRing (Homogenization.FullBlockMat d) := Matrix.instStarOrderedRing
+  have hsa : IsSelfAdjoint M := Matrix.isHermitian_iff_isSymm.mpr hM
+  let _ : PartialOrder (Homogenization.FullBlockMat d) := Matrix.instPartialOrder
+  let _ : StarOrderedRing (Homogenization.FullBlockMat d) := Matrix.instStarOrderedRing
   have horder : M ≤ M⁺ := CFC.le_posPart (a := M) hsa
   have hdiff : (M⁺ - M).PosSemidef := Matrix.le_iff.mp horder
   have hdiff_quad :
@@ -670,7 +675,7 @@ theorem upperLeft_posSemidef_of_isSymmetricBlockMat_of_blockPosDef
         exact hx (congrArg Prod.fst hzero)
       have hquad := (hPos ((x, 0) : Homogenization.BlockVec d) hX).le
       simpa only [star_trivial, ge_iff_le, Homogenization.blockVecDot, Homogenization.blockMatVecMul, Homogenization.matVecMul_zero, add_zero, Homogenization.vecDot_zero_left]
-        using hquad
+        using! hquad
 
 theorem lowerRight_posSemidef_of_isSymmetricBlockMat_of_blockPosDef
     {d : ℕ} {A : Homogenization.BlockMat d}
@@ -689,7 +694,7 @@ theorem lowerRight_posSemidef_of_isSymmetricBlockMat_of_blockPosDef
         exact hx (congrArg Prod.snd hzero)
       have hquad := (hPos ((0, x) : Homogenization.BlockVec d) hX).le
       simpa only [star_trivial, ge_iff_le, Homogenization.blockVecDot, Homogenization.blockMatVecMul, Homogenization.matVecMul_zero, zero_add, Homogenization.vecDot_zero_left]
-        using hquad
+        using! hquad
 
 theorem scalar_one_posSemidef_of_nonneg
     {d : ℕ} {c : ℝ} (hc : 0 ≤ c) :

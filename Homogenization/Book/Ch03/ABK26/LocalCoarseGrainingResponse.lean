@@ -655,7 +655,6 @@ theorem rootPointwise_descendant_infinity_two_le_parent
     dsimp [c]
     rw [← Real.rpow_mul (by norm_num : 0 ≤ (3:ℝ))]
     congr 1
-    dsimp [c]
     ring
   change ENNReal.ofReal x ≤ ENNReal.ofReal c * ENNReal.ofReal y
   rw [← ENNReal.ofReal_mul hc]

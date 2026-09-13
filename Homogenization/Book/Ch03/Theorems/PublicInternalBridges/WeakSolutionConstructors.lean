@@ -86,7 +86,7 @@ theorem isH1DirichletRhsWeakSolutionOn_constantCoeff_cubeSet_of_isConstantCoeffF
   have hopen :
       IsH1DirichletRhsWeakSolutionOn (constantCoeffField a0.matrix)
         (openCubeSet Q) (castH1Domain (Ch02.cubeDomain_coe Q) u) g := by
-    simpa [Ch02.cubeDomain_coe] using
+    simpa [Ch02.cubeDomain_coe] using!
       isH1DirichletRhsWeakSolutionOn_constantCoeff_of_isConstantCoeffForcedEquation
         (Q := Q) (a0 := a0) (u := u) (g := g) h
   simpa [publicH1ToCubeSet] using
@@ -103,7 +103,7 @@ theorem isZeroTraceDirichletRhsWeakSolution_publicCoeffField_cubeSet_of_zeroTrac
   have hopen :
       IsZeroTraceDirichletRhsWeakSolution (publicCoeffField Q a)
         (openCubeSet Q) (castH10Domain (Ch02.cubeDomain_coe Q) u.toH10) g := by
-    simpa [Ch02.cubeDomain_coe] using
+    simpa [Ch02.cubeDomain_coe] using!
       isZeroTraceDirichletRhsWeakSolution_publicCoeffField_of_zeroTraceForcedCubeSolution
         (Q := Q) (a := a) (g := g) u
   simpa [publicH10ToCubeSet] using

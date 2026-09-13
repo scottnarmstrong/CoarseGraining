@@ -112,7 +112,7 @@ theorem posSemidef_of_matLoewnerLE_of_posSemidef_of_isSymm
     have hABx :
         (1 / 2 : ℝ) * dotProduct x (Matrix.mulVec A x) ≤
           (1 / 2 : ℝ) * dotProduct x (Matrix.mulVec B x) := by
-      simpa [vecDot, matVecMul] using hAB x
+      simpa [vecDot, matVecMul] using! hAB x
     nlinarith
 
 theorem bCoarse_posSemidef {d : ℕ} (U : Domain d) (a : CoeffOn U) :
@@ -202,7 +202,7 @@ theorem matrixNorm_descendantsAverageMat_le_finsetSupReal_matrixNorm
         descendantsAverage Q j (fun R => matrixNorm (F R)) :=
       matrixNorm_descendantsAverageMat_le_descendantsAverage_matrixNorm Q j F
     _ ≤ finsetSupReal (descendantsAtDepth Q j) (fun R => matrixNorm (F R)) := by
-      simpa [finsetSupReal] using
+      simpa [finsetSupReal] using!
         descendantsAverage_le_finsetSsup Q j (fun R => matrixNorm (F R))
 
 theorem finsetSupReal_eq_finsetSsup {α : Type*} (s : Finset α)

@@ -70,7 +70,7 @@ private lemma). -/
 theorem continuous_matVecMul (R : Mat d) : Continuous (fun x : Vec d => matVecMul R x) := by
   change Continuous fun x : Fin d → ℝ => fun i => ∑ j, R i j * x j
   exact continuous_pi fun i =>
-    continuous_finset_sum Finset.univ fun j _ => continuous_const.mul (continuous_apply j)
+    continuous_finsetSum Finset.univ fun j _ => continuous_const.mul (continuous_apply j)
 
 private theorem matVecMul_one' (x : Vec d) : matVecMul (1 : Mat d) x = x := by
   funext i; simp [matVecMul, Matrix.one_apply, Finset.sum_ite_eq]
@@ -182,7 +182,9 @@ def rotateReg (R : Mat d) (hR : IsSignedPermutationMatrix R) (a : RegCoeffField 
         (fun x => a (matVecMul R x) (σ i) (σ j)) volume :=
       locallyIntegrable_comp_homeomorph_of_measurePreserving (a.entry_locInt (σ i) (σ j))
         (matVecMulHomeomorph R hR) (measurePreserving_matVecMul R hR)
-    simpa [smul_eq_mul] using hg.smul (s i * s j)
+    show LocallyIntegrable
+        (fun x => (s i * s j) • a (matVecMul R x) (σ i) (σ j)) volume
+    exact hg.smul (s i * s j)
 
 @[simp] theorem rotateReg_apply (R : Mat d) (hR : IsSignedPermutationMatrix R)
     (a : RegCoeffField d) (x : Vec d) :
@@ -393,7 +395,7 @@ def ellipticTruncateReg (Θ : ℝ) (a : RegCoeffField d) : RegCoeffField d where
     have hEq : (fun x => (if IsEllipticMatrix 1 Θ (a x) then a x else 1) i j)
         = fun x => if x ∈ {x | IsEllipticMatrix 1 Θ (a x)}
             then a x i j else (1 : Mat d) i j := by
-      funext x; by_cases hx : IsEllipticMatrix 1 Θ (a x) <;> simp [hx, Set.mem_setOf_eq]
+      funext x; by_cases hx : IsEllipticMatrix 1 Θ (a x) <;> simp [hx, Set.mem_ofPred_eq]
     rw [hEq]
     exact Measurable.ite hSet (a.entry_measurable i j) measurable_const
   entry_locInt := fun i j => by
@@ -404,7 +406,7 @@ def ellipticTruncateReg (Θ : ℝ) (a : RegCoeffField d) : RegCoeffField d where
     have hEq : (fun x => (if IsEllipticMatrix 1 Θ (a x) then a x else 1) i j)
         = fun x => if x ∈ {x | IsEllipticMatrix 1 Θ (a x)}
             then a x i j else (1 : Mat d) i j := by
-      funext x; by_cases hx : IsEllipticMatrix 1 Θ (a x) <;> simp [hx, Set.mem_setOf_eq]
+      funext x; by_cases hx : IsEllipticMatrix 1 Θ (a x) <;> simp [hx, Set.mem_ofPred_eq]
     have hmeas : Measurable
         (fun x => (if IsEllipticMatrix 1 Θ (a x) then a x else 1) i j) := by
       rw [hEq]; exact Measurable.ite hSet (a.entry_measurable i j) measurable_const
@@ -440,7 +442,7 @@ theorem measurable_pointwiseSigmaR_ellipticTruncateReg (Θ : ℝ) :
       = fun a => if a ∈ {a : RegCoeffField d | IsEllipticMatrix 1 Θ (a y)}
           then a y i j else (1 : Mat d) i j := by
     funext a; by_cases ha : IsEllipticMatrix 1 Θ (a y) <;>
-      simp [ellipticTruncateReg_apply, ha, Set.mem_setOf_eq]
+      simp [ellipticTruncateReg_apply, ha, Set.mem_ofPred_eq]
   rw [hEq]
   exact Measurable.ite hSet (measurable_apply_entry y i j) measurable_const
 

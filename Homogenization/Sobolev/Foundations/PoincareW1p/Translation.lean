@@ -19,7 +19,7 @@ theorem valueLpSeminorm_translate_eq (u : W1pFunction U p) (z : Vec d) :
   have hμ := measurePreserving_subRight_restrict_translateSet (d := d) z U
   unfold valueLpSeminorm
   exact congrArg ENNReal.toReal (by
-    simpa [V, T, Function.comp, volumeMeasureOn] using
+    simpa [V, T, Function.comp, volumeMeasureOn] using!
       (MeasureTheory.eLpNorm_comp_measurePreserving
         (g := u.toFun) (p := p) u.memLp.aestronglyMeasurable hμ))
 
@@ -41,7 +41,7 @@ theorem subAverageLpSeminorm_translate_eq (u : W1pFunction U p) (z : Vec d) :
   unfold subAverageLpSeminorm
   rw [u.integralAverage_translate_eq z]
   exact congrArg ENNReal.toReal (by
-    simpa [V, T, Function.comp, volumeMeasureOn] using
+    simpa [V, T, Function.comp, volumeMeasureOn] using!
       (MeasureTheory.eLpNorm_comp_measurePreserving
         (g := fun x => u.toFun x - integralAverage U u.toFun) (p := p)
         (u.memLp.aestronglyMeasurable.sub continuous_const.aestronglyMeasurable) hμ))
@@ -54,7 +54,7 @@ theorem gradCoordLpSeminorm_translate_eq (u : W1pFunction U p) (z : Vec d) (i : 
   have hμ := measurePreserving_subRight_restrict_translateSet (d := d) z U
   unfold gradCoordLpSeminorm
   exact congrArg ENNReal.toReal (by
-    simpa [V, T, Function.comp, volumeMeasureOn] using
+    simpa [V, T, Function.comp, volumeMeasureOn] using!
       (MeasureTheory.eLpNorm_comp_measurePreserving
         (g := fun x => u.grad x i) (p := p) (u.gradMemLp i).aestronglyMeasurable hμ))
 
@@ -177,13 +177,13 @@ noncomputable def translate (hC : W1pPoincareEstimate U p) (z : Vec d) :
     let v : W1pMeanZeroFunction U p := W1pMeanZeroFunction.untranslateForPoincare z u
     calc
       u.valueLpSeminorm = v.valueLpSeminorm := by
-        simpa [v, W1pMeanZeroFunction.valueLpSeminorm] using
+        simpa [v, W1pMeanZeroFunction.valueLpSeminorm] using!
           (W1pFunction.valueLpSeminorm_untranslateForPoincare_eq (U := U) z
             u.toW1pFunction).symm
       _ ≤ hC.constant * v.gradientCoordLpSeminormSum := hC.bound v
       _ = hC.constant * u.gradientCoordLpSeminormSum := by
         rw [show v.gradientCoordLpSeminormSum = u.gradientCoordLpSeminormSum by
-          simpa [v, W1pMeanZeroFunction.gradientCoordLpSeminormSum] using
+          simpa [v, W1pMeanZeroFunction.gradientCoordLpSeminormSum] using!
             W1pFunction.gradientCoordLpSeminormSum_untranslateForPoincare_eq (U := U) z
               u.toW1pFunction]
 

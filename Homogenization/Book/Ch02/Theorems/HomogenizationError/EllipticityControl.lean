@@ -67,7 +67,7 @@ theorem constantFullBlockMatrix_posDef_of_isEllipticMatrix
       simpa [hzero] using hx0
     have hblock :
         0 < blockVecDot X (blockMatVecMul (constantBlockMatrix a0) X) := by
-      simpa [constantBlockMatrix, blockMatrixOfCoeff] using
+      simpa [constantBlockMatrix, blockMatrixOfCoeff] using!
         blockMatrixOfCoeff_quadratic_pos_of_isEllipticMatrix ha0 hX
     have hdot :
         0 < dotProduct (toFullBlockVec X)

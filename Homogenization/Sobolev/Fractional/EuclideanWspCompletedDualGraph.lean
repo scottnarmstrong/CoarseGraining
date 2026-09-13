@@ -49,8 +49,8 @@ noncomputable abbrev CubeEuclideanWspGraphAmbient {d : ℕ} (Q : TriadicCube d)
 noncomputable instance instCompleteSpaceCubeEuclideanWspGraphAmbient {d : ℕ}
     (Q : TriadicCube d) (p : FiniteLpExponent) :
     CompleteSpace (CubeEuclideanWspGraphAmbient Q p) := by
-  letI : Fact (1 ≤ p.exponent) := ⟨p.one_lt.le⟩
-  letI (b : Bool) : CompleteSpace (CubeEuclideanWspGraphComponent Q p b) := by
+  let : Fact (1 ≤ p.exponent) := ⟨p.one_lt.le⟩
+  let (b : Bool) : CompleteSpace (CubeEuclideanWspGraphComponent Q p b) := by
     cases b <;> infer_instance
   change CompleteSpace (PiLp p.exponent (CubeEuclideanWspGraphComponent Q p))
   exact PiLp.completeSpace _ _
@@ -237,10 +237,11 @@ private theorem enorm_graphFieldComponent {d : ℕ} {Q : TriadicCube d}
     (h : CubeEuclideanWspSmoothTest Q s p) :
     ‖graphFieldComponent h‖ₑ =
       (cubeBoundedMeasurableDomain Q).normalizedEuclideanLpENorm p.exponent h.toField := by
-  rw [show graphFieldComponent h =
-      h.toCubeEuclideanWspField.euclideanMemLp.toLp
-        (fun x => HilbertVec.ofVec (h.toField x)) by rfl,
-    Lp.enorm_toLp]
+  have hLp : ‖graphFieldComponent h‖ₑ =
+      eLpNorm (fun x => HilbertVec.ofVec (h.toField x)) p.exponent
+        (normalizedCubeMeasure Q) :=
+    Lp.enorm_toLp h.toCubeEuclideanWspField.euclideanMemLp
+  rw [hLp]
   unfold BoundedMeasurableDomain.normalizedEuclideanLpENorm
   unfold BoundedMeasurableDomain.normalizedLpENorm
   rw [cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
@@ -270,11 +271,11 @@ theorem graph_enorm_eq_cubeEuclideanWspFullENorm {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent}
     (h : CubeEuclideanWspSmoothTest Q s p) :
     ‖graph h‖ₑ = cubeEuclideanWspFullENorm Q s p h.toField := by
-  letI : Fact (1 ≤ p.exponent) := ⟨p.one_lt.le⟩
+  let : Fact (1 ≤ p.exponent) := ⟨p.one_lt.le⟩
   change ‖graphPoint h‖ₑ = cubeEuclideanWspFullENorm Q s p h.toField
   rw [enorm_eq_nnnorm, PiLp.nnnorm_eq_sum p.lt_top.ne]
   rw [one_div, ENNReal.coe_rpow_of_nonneg _ (inv_nonneg.mpr ENNReal.toReal_nonneg),
-    ENNReal.coe_finset_sum]
+    ENNReal.ofNNReal_finsetSum]
   simp_rw [ENNReal.coe_rpow_of_nonneg _ ENNReal.toReal_nonneg]
   rw [Fintype.sum_bool]
   change (‖graphKernelComponent h‖ₑ ^ p.exponent.toReal +

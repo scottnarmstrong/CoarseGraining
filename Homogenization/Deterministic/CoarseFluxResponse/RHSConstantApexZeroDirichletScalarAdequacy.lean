@@ -30,7 +30,7 @@ private theorem inv_pow_four_le_rpow_neg_three_sq {s : ℝ}
       (Real.rpow s (-3 : ℝ)) ^ 2 = (s⁻¹) ^ 6 := by
     have hneg :
         Real.rpow s (-3 : ℝ) = Real.rpow (s⁻¹) (3 : ℝ) := by
-      simpa using (Real.rpow_neg_eq_inv_rpow s (3 : ℝ))
+      simp
     have hpow_three : Real.rpow (s⁻¹) (3 : ℝ) = (s⁻¹) ^ 3 := by
       simp
     rw [hneg, hpow_three]

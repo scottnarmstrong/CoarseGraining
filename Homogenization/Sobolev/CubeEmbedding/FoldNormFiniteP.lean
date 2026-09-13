@@ -32,8 +32,8 @@ theorem eLpNorm_foldComp_finiteLp {v : Vec d → ℝ} (p : FiniteLpExponent)
     eLpNorm (fun x => v (Fold lo hi x)) p.exponent (volume.restrict (Box3 lo hi))
       = ((3 : ℝ≥0∞) ^ d) ^ (1 / p.exponent.toReal) *
           eLpNorm v p.exponent (volume.restrict (Box lo hi)) := by
-  rw [eLpNorm_eq_lintegral_rpow_enorm (finiteLpExponent_ne_zero p) p.lt_top.ne,
-    eLpNorm_eq_lintegral_rpow_enorm (finiteLpExponent_ne_zero p) p.lt_top.ne]
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal (finiteLpExponent_ne_zero p) p.lt_top.ne,
+    eLpNorm_eq_lintegral_rpow_enorm_toReal (finiteLpExponent_ne_zero p) p.lt_top.ne]
   have hgmeas : Measurable (fun x : Vec d => ‖v x‖ₑ ^ p.exponent.toReal) :=
     ENNReal.continuous_rpow_const.measurable.comp hv.enorm
   have htrans : ∫⁻ x in Box3 lo hi, ‖v (Fold lo hi x)‖ₑ ^ p.exponent.toReal

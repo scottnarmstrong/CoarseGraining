@@ -234,7 +234,8 @@ theorem responseJOnCube_le_childResponseJAverageOnFamilyAtDepth
         ≤ Pcell.weightedAverage fun i =>
           Ch02.responseJ (Pcell.cell i) (a.coeffOn i.1) p q := hsub
     _ = descendantsAverage Q j F := by
-          simpa [Pcell, F] using Ch02.descendantsDomainPartition_weightedAverage Q j F
+          simpa [Pcell, F] using!
+            Ch02.descendantsDomainPartition_weightedAverage Q j F
     _ = childResponseJAverageOnFamilyAtDepth a Q j p q := by
           rfl
 

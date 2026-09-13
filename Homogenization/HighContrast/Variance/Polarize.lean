@@ -33,7 +33,7 @@ theorem integrable_blockMatEntry_coarse [NeZero d]
     (hLaw : ThetaEllipticLaw Θ L) (m : ℤ) (α β : BlockCoord d) :
     Integrable
       (fun a => blockMatEntry (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) α β) L := by
-  haveI : IsProbabilityMeasure L := hP.isProbability
+  have : IsProbabilityMeasure L := hP.isProbability
   have hΘ0 : (0 : ℝ) < Θ := lt_of_lt_of_le one_pos hΘ
   have hAEM : AEMeasurable
       (fun a => blockMatEntry (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) α β) L := by

@@ -369,10 +369,10 @@ noncomputable def cubeFaceReflectionBlockFold {d : ℕ} {Q : TriadicCube d}
     memScalarL2_coord_of_memVectorL2 hGR i
   have hleftS :
       MeasureTheory.Integrable left (MeasureTheory.volume.restrict S) := by
-    simpa [left] using huR.integrable_mul hDφL2
+    simpa [left] using! huR.integrable_mul hDφL2
   have hrightS :
       MeasureTheory.Integrable right (MeasureTheory.volume.restrict S) := by
-    simpa [right] using hGRi.integrable_mul hφL2
+    simpa [right] using! hGRi.integrable_mul hφL2
   have hcell_subset :
       ∀ choice : Fin d → Fin 3,
         openCubeSet (cubeFaceReflectionCellCube Q choice) ⊆ S := by

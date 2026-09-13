@@ -14,14 +14,14 @@ theorem memVectorL2_comp_addRight_of_memVectorL2_translateSet
     {d : ℕ} {U : Set (Vec d)} {z : Vec d} {f : Vec d → Vec d}
     (hf : MemVectorL2 (translateSet z U) f) :
     MemVectorL2 U (fun x => f (x + z)) := by
-  simpa [MemVectorL2, volumeMeasureOn, Function.comp] using
+  simpa [MemVectorL2, volumeMeasureOn, Function.comp] using!
     hf.comp_measurePreserving (measurePreserving_addRight_restrict_translateSet (d := d) z U)
 
 theorem memVectorL2_translateSet_of_memVectorL2
     {d : ℕ} {U : Set (Vec d)} {z : Vec d} {f : Vec d → Vec d}
     (hf : MemVectorL2 U f) :
     MemVectorL2 (translateSet z U) (fun x => f (x - z)) := by
-  simpa [MemVectorL2, volumeMeasureOn, Function.comp] using
+  simpa [MemVectorL2, volumeMeasureOn, Function.comp] using!
     hf.comp_measurePreserving (measurePreserving_subRight_restrict_translateSet (d := d) z U)
 
 /-- The Hodge converse is invariant under translating the domain. -/
@@ -75,7 +75,7 @@ theorem hodgeConverseCriterion_cubeSet_originCube
       MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d n))) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet (originCube d n)).isFiniteMeasure_restrict_volume
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d n))) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d n))) :=
     hfiniteOpen
   intro f hf horth
   have hfOpen : MemVectorL2 (openCubeSet (originCube d n)) f := by
@@ -145,7 +145,7 @@ theorem hodgeConverseCriterion_cubeSet_triadicCube
     simpa [z, U0] using cubeSet_eq_translateSet_originCube_for_hodge Q
   have hfiniteOrigin :
       MeasureTheory.IsFiniteMeasure (volumeMeasureOn U0) := by
-    letI : Fact (MeasureTheory.volume U0 < ⊤) := by
+    let : Fact (MeasureTheory.volume U0 < ⊤) := by
       refine ⟨?_⟩
       simpa [U0] using volume_cubeSet_lt_top (originCube d Q.scale)
     change MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict U0)
@@ -154,8 +154,8 @@ theorem hodgeConverseCriterion_cubeSet_triadicCube
       MeasureTheory.IsFiniteMeasure (volumeMeasureOn (translateSet z U0)) := by
     simpa [hcube] using
       (inferInstance : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)))
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U0) := hfiniteOrigin
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (translateSet z U0)) := hfiniteTranslate
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U0) := hfiniteOrigin
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (translateSet z U0)) := hfiniteTranslate
   have horigin : HodgeConverseCriterion U0 := by
     change HodgeConverseCriterion (cubeSet (originCube d Q.scale))
     exact hodgeConverseCriterion_cubeSet_originCube (d := d) (n := Q.scale)

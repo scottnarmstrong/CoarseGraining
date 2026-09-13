@@ -56,7 +56,7 @@ theorem vecNormSq_cubeAverageVec_le_descendantsAverage_vecNormSq_cubeAverageVec_
     intro i
     have hui : MeasureTheory.MemLp (fun x => u x i) (2 : ENNReal)
         (normalizedCubeMeasure Q) := by
-      simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+      simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
     have hui_int : MeasureTheory.IntegrableOn (fun x => u x i)
         (cubeSet Q) MeasureTheory.volume :=
       integrableOn_of_integrable_normalizedCubeMeasure Q (hui.integrable (by norm_num))

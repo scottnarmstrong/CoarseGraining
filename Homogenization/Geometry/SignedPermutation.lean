@@ -163,7 +163,7 @@ private theorem continuous_matVecMul {d : ℕ} (R : Mat d) :
     Continuous (fun x : Vec d => matVecMul R x) := by
   change Continuous fun x : Fin d → ℝ => fun i => ∑ j, R i j * x j
   exact continuous_pi fun i =>
-    continuous_finset_sum Finset.univ fun j _ => continuous_const.mul (continuous_apply j)
+    continuous_finsetSum Finset.univ fun j _ => continuous_const.mul (continuous_apply j)
 
 noncomputable def signedPermutationHomeomorph {d : ℕ} (R : Mat d)
     (hR : IsSignedPermutationMatrix R) : Vec d ≃ₜ Vec d where

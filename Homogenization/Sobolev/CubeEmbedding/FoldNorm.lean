@@ -102,7 +102,7 @@ theorem map_foldR_restrict (lo hi : ℝ) (h : lo < hi) :
         · exact absurd hR (not_le.mpr htR)
     refine (MeasureTheory.ae_eq_set.2 ⟨?_, ?_⟩).symm
     · have hemp : (Set.Ioo (2 * lo - hi) lo ∪ Set.Ioo lo hi ∪ Set.Ioo hi (2 * hi - lo))
-          \ Set.Ioo (2 * lo - hi) (2 * hi - lo) = ∅ := Set.diff_eq_empty.2 hsub1
+          \ Set.Ioo (2 * lo - hi) (2 * hi - lo) = ∅ := Set.sdiff_eq_empty.2 hsub1
       rw [hemp]; simp
     · exact measure_mono_null hsub2
         (Set.Finite.measure_zero ((Set.finite_singleton hi).insert lo) volume)
@@ -187,13 +187,13 @@ theorem map_Fold_restrict (lo hi : Vec d) (hlt : ∀ k, lo k < hi k) :
       = (3 : ℝ≥0∞) ^ d • volume.restrict (Box lo hi) := by
   have hvol : (volume : Measure (Vec d)) = Measure.pi fun _ => volume := volume_pi
   have hFoldEq : Fold lo hi = (fun (x : Vec d) k => foldR (lo k) (hi k) (x k)) := rfl
-  haveI hσ3 : ∀ k : Fin d, SigmaFinite ((3 : ℝ≥0∞) • volume.restrict (Set.Ioo (lo k) (hi k))) :=
+  have hσ3 : ∀ k : Fin d, SigmaFinite ((3 : ℝ≥0∞) • volume.restrict (Set.Ioo (lo k) (hi k))) :=
     fun k => by
-      haveI : IsFiniteMeasure ((3 : ℝ≥0∞) • volume.restrict (Set.Ioo (lo k) (hi k))) :=
+      have : IsFiniteMeasure ((3 : ℝ≥0∞) • volume.restrict (Set.Ioo (lo k) (hi k))) :=
         ⟨by rw [Measure.smul_apply, smul_eq_mul, Measure.restrict_apply_univ, Real.volume_Ioo]
             exact ENNReal.mul_lt_top (by simp) ENNReal.ofReal_lt_top⟩
       infer_instance
-  haveI hσmap : ∀ k : Fin d, SigmaFinite
+  have hσmap : ∀ k : Fin d, SigmaFinite
       ((volume.restrict (Set.Ioo (2 * lo k - hi k) (2 * hi k - lo k))).map (foldR (lo k) (hi k))) :=
     fun k => by rw [map_foldR_restrict (lo k) (hi k) (hlt k)]; exact hσ3 k
   have hfam : (fun k => (volume.restrict
@@ -235,8 +235,8 @@ theorem eLpNorm_foldComp {v : Vec d → ℝ} (hv : Measurable v)
     (lo hi : Vec d) (hlt : ∀ k, lo k < hi k) :
     eLpNorm (fun x => v (Fold lo hi x)) 2 (volume.restrict (Box3 lo hi))
       = ((3 : ℝ≥0∞) ^ d) ^ ((1 : ℝ) / 2) * eLpNorm v 2 (volume.restrict (Box lo hi)) := by
-  rw [eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num),
-    eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num)]
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num),
+    eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]
   have hpt : (2 : ℝ≥0∞).toReal = 2 := by norm_num
   rw [hpt]
   have hgmeas : Measurable (fun x : Vec d => ‖v x‖ₑ ^ (2 : ℝ)) :=

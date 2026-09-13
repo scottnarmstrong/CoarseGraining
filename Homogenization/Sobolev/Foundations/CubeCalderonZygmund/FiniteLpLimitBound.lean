@@ -137,7 +137,7 @@ private theorem tendsto_normalizedEuclideanLpENorm_finiteLpSolutionApproximation
   simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
     BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
     eLpNorm_norm, centeredCube_normalizedVolume_eq_smul_openCubeVolume,
-    eLpNorm_smul_measure_of_ne_zero hc, c] using hscaled
+    eLpNorm_smul_measure_of_ne_zero hc, c] using! hscaled
 
 private theorem tendsto_normalizedEuclideanLpENorm_finiteLpSolutionApproximation_grad
     {d : ℕ} [NeZero d] (q : FiniteLpExponent) (m : ℤ) {sigma0 : ℝ}
@@ -162,7 +162,7 @@ private theorem tendsto_normalizedEuclideanLpENorm_finiteLpSolutionApproximation
     · exact (finiteLpGradientLimit_memLp_normalized q m hsigma0 h).eLpNorm_lt_top.ne
     · simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
         BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-        eLpNorm_norm] using
+        eLpNorm_norm] using!
         tendsto_normalizedEuclideanLpENorm_finiteLpSolutionApproximation_grad_sub_limit
           q m hsigma0 h
   simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
@@ -237,7 +237,7 @@ theorem finiteLpGradientLimit_cz
         (finiteLpDataApproximation h (r N)).toField) atTop
       (nhds (C * (ENNReal.ofReal sigma0)⁻¹ *
         (centeredCubeDomain d m).normalizedEuclideanLpENorm q.exponent h.toField)) := by
-    simpa only [mul_assoc, r] using
+    simpa only [mul_assoc, r] using!
       ENNReal.Tendsto.const_mul (a := C * (ENNReal.ofReal sigma0)⁻¹)
         hdata (Or.inr hfactor_top)
   refine le_of_tendsto_of_tendsto' hleft hright (fun N => ?_)

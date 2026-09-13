@@ -34,7 +34,7 @@ theorem memH10_zero {d : ℕ} {U : Set (Vec d)} : MemH10 U (0 : Vec d → ℝ) :
 theorem memH10_smul {d : ℕ} {U : Set (Vec d)} (c : ℝ) {u : Vec d → ℝ} (hu : MemH10 U u) :
     MemH10 U (fun x => c * u x) := by
   rcases hu with ⟨v, rfl⟩
-  simpa using ((c • v : H10Function U).memH10)
+  simpa using! ((c • v : H10Function U).memH10)
 
 theorem memH10_neg {d : ℕ} {U : Set (Vec d)} {u : Vec d → ℝ} (hu : MemH10 U u) :
     MemH10 U (fun x => -u x) := by
@@ -48,7 +48,7 @@ theorem memH10_add {d : ℕ} {U : Set (Vec d)} {u v : Vec d → ℝ}
     (hu : MemH10 U u) (hv : MemH10 U v) : MemH10 U (fun x => u x + v x) := by
   rcases hu with ⟨u', rfl⟩
   rcases hv with ⟨v', rfl⟩
-  simpa using ((u' + v' : H10Function U).memH10)
+  simpa using! ((u' + v' : H10Function U).memH10)
 
 theorem memH10_sub {d : ℕ} {U : Set (Vec d)} {u v : Vec d → ℝ}
     (hu : MemH10 U u) (hv : MemH10 U v) : MemH10 U (fun x => u x - v x) := by
@@ -69,7 +69,7 @@ theorem memH10_mul_of_contDiff_hasCompactSupport {d : ℕ} {U : Set (Vec d)}
   rcases hu with ⟨u', rfl⟩
   by_cases hts : tsupport φ = ∅
   · have hφ_zero : φ = 0 := tsupport_eq_empty_iff.mp hts
-    simpa [hφ_zero] using (memH10_zero (U := U))
+    simpa [hφ_zero] using! (memH10_zero (U := U))
   · obtain ⟨x0, hx0⟩ : (tsupport φ).Nonempty := Set.nonempty_iff_ne_empty.mpr hts
     have hx0U : x0 ∈ U := hφ_sub hx0
     rcases Metric.mem_nhds_iff.mp (hU.isOpen.mem_nhds hx0U) with ⟨r, hr_pos, hr_sub⟩
@@ -172,7 +172,7 @@ theorem memH10_mul_of_contDiff_hasCompactSupport {d : ℕ} {U : Set (Vec d)}
           exact hφ.mul (hψ_smooth n)
         approx_hasCompactSupport := by
           intro n
-          simpa [mul_comm] using (hφ_compact.mul_left (f := ψ n))
+          simpa [mul_comm] using! (hφ_compact.mul_left (f := ψ n))
         approx_support_subset := by
           intro n
           exact (tsupport_mul_subset_left (f := φ) (g := ψ n)).trans hφ_sub
@@ -209,7 +209,7 @@ theorem memH10_mul_of_contDiff_hasCompactSupport {d : ℕ} {U : Set (Vec d)}
             exact MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
               hdiff_mem.aestronglyMeasurable φ
           refine tendsto_of_tendsto_of_tendsto_of_le_of_le
-            tendsto_const_nhds ?_ (fun n => zero_le _) hupper
+            tendsto_const_nhds ?_ (fun n => zero_le) hupper
           simpa using hconst_tendsto
         tendsto_approx_grad := by
           intro i
@@ -292,21 +292,20 @@ theorem memH10_mul_of_contDiff_hasCompactSupport {d : ℕ} {U : Set (Vec d)}
               have hψ_diff : DifferentiableAt ℝ (ψ n) x :=
                 ((hψ_smooth n).contDiffAt).differentiableAt (by simp)
               rw [show (fun y => φ y * ψ n y) = φ * ψ n by rfl, fderiv_mul hφ_diff hψ_diff]
-              simp [A, B, dφ, uφ, H1Function.mulContDiffHasCompactSupport_grad, smul_eq_mul,
-                ContinuousLinearMap.add_apply]
+              simp [A, B, dφ, uφ, H1Function.mulContDiffHasCompactSupport_grad, smul_eq_mul]
               ring
             rw [hEq]
             refine (MeasureTheory.eLpNorm_add_le hA_mem.aestronglyMeasurable
               hB_mem.aestronglyMeasurable (by norm_num)).trans ?_
             refine add_le_add ?_ ?_
-            · simpa [A, mul_comm, mul_left_comm, mul_assoc] using
+            · simpa [A, mul_comm, mul_left_comm, mul_assoc] using!
                 (MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
                   hbase_grad_mem.aestronglyMeasurable φ)
-            · simpa [B, dφ, mul_comm, mul_left_comm, mul_assoc] using
+            · simpa [B, dφ, mul_comm, mul_left_comm, mul_assoc] using!
                 (MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
                   hbase_mem.aestronglyMeasurable dφ)
           refine tendsto_of_tendsto_of_tendsto_of_le_of_le
-            tendsto_const_nhds ?_ (fun n => zero_le _) hupper
+            tendsto_const_nhds ?_ (fun n => zero_le) hupper
           simpa [zero_add] using hsum_tendsto
       }, rfl⟩
 

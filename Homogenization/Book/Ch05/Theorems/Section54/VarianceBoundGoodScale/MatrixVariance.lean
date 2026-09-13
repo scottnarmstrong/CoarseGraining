@@ -165,7 +165,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_probeBou
             (Fintype.card (BlockCoord d) : ℝ) *
               ∑ β : BlockCoord d,
                 3 * (Ccoord α + Cplus α β + Cminus α β)) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (j : ℤ)
   let M : RegCoeffField d → FullBlockMat d := fun a =>
     fullBlockNormalizedFluctuationMatrix hP hStruct (m : ℤ) (cubeSet Q) a
@@ -211,9 +211,9 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_probeBou
         (fun a : RegCoeffField d =>
           fullBlockProbeSqBudget (M a)) P := by
     unfold fullBlockProbeSqBudget
-    refine (MeasureTheory.integrable_finset_sum _ ?_).const_mul _
+    refine (MeasureTheory.integrable_finsetSum _ ?_).const_mul _
     intro α _hα
-    refine (MeasureTheory.integrable_finset_sum _ ?_).const_mul _
+    refine (MeasureTheory.integrable_finsetSum _ ?_).const_mul _
     intro β _hβ
     simpa [M] using hterm_int α β
   have hpoint :
@@ -254,12 +254,12 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_probeBou
     unfold fullBlockProbeSqBudget
     rw [integral_const_mul]
     congr 1
-    rw [integral_finset_sum]
+    rw [integral_finsetSum]
     · congr 1
       ext α
       rw [integral_const_mul]
       congr 1
-      rw [integral_finset_sum]
+      rw [integral_finsetSum]
       · congr 1
         ext β
         rw [integral_const_mul]
@@ -311,7 +311,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_probeBou
       · intro β _hβ
         simpa [M] using hterm_int α β
     · intro α _hα
-      refine (MeasureTheory.integrable_finset_sum _ ?_).const_mul _
+      refine (MeasureTheory.integrable_finsetSum _ ?_).const_mul _
       intro β _hβ
       simpa [M] using hterm_int α β
   have hbudget_bound :

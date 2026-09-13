@@ -66,7 +66,7 @@ theorem shiftedWidetildeThetaAtScale_shifted_bound_homogenizationScale
   have hxi_k : hP4k.xi = xi := by
     simpa [hP4k, QuantitativeCoarseGrainedEllipticity.scaleNormalized] using hxi
   have hβ_k : section53CoarseFluctuationBeta hP4k = β := by
-    simpa [hP4k, QuantitativeCoarseGrainedEllipticity.scaleNormalized] using hβeq
+    simpa [hP4k, QuantitativeCoarseGrainedEllipticity.scaleNormalized] using! hβeq
   let m : ℕ := n - k
   let decay : ℝ := Real.rpow (3 : ℝ) (-β * (m : ℝ))
   let upperCoeff : ℝ :=

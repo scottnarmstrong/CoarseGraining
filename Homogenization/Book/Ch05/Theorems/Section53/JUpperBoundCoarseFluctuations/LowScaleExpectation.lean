@@ -161,7 +161,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
         Integrable (Ch04.coarseFullBlockMatrixAtCube Q) P := by
       simpa [Q] using
         Section52.originBlockIntegrableAtScale_from_P4 hP hStruct hP4 m
-    simpa [Jm] using
+    simpa [Jm] using!
       hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
         Q p_e q_e hBlock
   have hs'_pos : 0 < s' := by
@@ -179,13 +179,13 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
         Ch04.LambdaSqCoeffField Q t' (.finite 1) a) P :=
     hP.aemeasurable_LambdaSqCoeffField_finite_one Q ht'_pos
   have hJAE : AEMeasurable Jm P := by
-    simpa [Jm] using hP.aemeasurable_restrictionResponseJObservableCubeSet Q p_e q_e
+    simpa [Jm] using! hP.aemeasurable_restrictionResponseJObservableCubeSet Q p_e q_e
   have hGradAE :
       AEMeasurable
         (fun a : RegCoeffField d =>
           WeakNormsMaximizer.gradientLowScaleTailAtScale
             (m : ℤ) (k : ℤ) s s' p_e q_e a) P := by
-    simpa [WeakNormsMaximizer.gradientLowScaleTailAtScale, Q, s, s', Jm] using
+    simpa [WeakNormsMaximizer.gradientLowScaleTailAtScale, Q, s, s', Jm] using!
       (((aemeasurable_const.mul aemeasurable_const).mul hLowerAE.sqrt).mul
         hJAE.sqrt)
   have hFluxAE :
@@ -193,11 +193,11 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
         (fun a : RegCoeffField d =>
           WeakNormsMaximizer.fluxLowScaleTailAtScale
             (m : ℤ) (k : ℤ) t t' p_e q_e a) P := by
-    simpa [WeakNormsMaximizer.fluxLowScaleTailAtScale, Q, t, t', Jm] using
+    simpa [WeakNormsMaximizer.fluxLowScaleTailAtScale, Q, t, t', Jm] using!
       (((aemeasurable_const.mul aemeasurable_const).mul hUpperAE.sqrt).mul
         hJAE.sqrt)
   have hXAEMeas : AEMeasurable X P := by
-    simpa [X, pow_two] using
+    simpa [X, pow_two] using!
       (aemeasurable_const.mul (hGradAE.mul hGradAE)).add
         (aemeasurable_const.mul (hFluxAE.mul hFluxAE))
   have hs'_gt : hP4.sLower < s' := by
@@ -255,15 +255,15 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
   have hHolderReal : ζ.HolderConjugate (hP4.xi : ℝ) := by
     simpa [ζ] using
       (holderConjugate_xi_section53CoarseFluctuationZeta hP4).symm
-  letI : ENNReal.HolderTriple (ENNReal.ofReal ζ)
+  let : ENNReal.HolderTriple (ENNReal.ofReal ζ)
       (ENNReal.ofReal (hP4.xi : ℝ)) 1 := by
     simpa using Real.HolderTriple.ennrealOfReal hHolderReal
   have hLowerChildInt :
       Integrable (fun a : RegCoeffField d => lowerExcess a * childAvg a) P := by
-    simpa [mul_comm] using hChildMem.integrable_mul hLowerMem
+    simpa [mul_comm] using! hChildMem.integrable_mul hLowerMem
   have hUpperChildInt :
       Integrable (fun a : RegCoeffField d => upperExcess a * childAvg a) P := by
-    simpa [mul_comm] using hChildMem.integrable_mul hUpperMem
+    simpa [mul_comm] using! hChildMem.integrable_mul hUpperMem
   have hPosInt :
       Integrable
         (fun a : RegCoeffField d =>
@@ -288,7 +288,7 @@ theorem integral_paired_lowScaleTailSquares_special_le_rawLowScaleTerms
     simpa [Y] using hInside.const_mul tailFactor
   have hParent_le_child : Jm ≤ᵐ[P] childAvg := by
     have hkm_int : (k : ℤ) ≤ (m : ℤ) := by exact_mod_cast hkm.le
-    simpa [Jm, childAvg, Q, j] using
+    simpa [Jm, childAvg, Q, j] using!
       hP.restrictionResponseJObservableCubeSet_le_descendantsAverage_ae
         (n := (k : ℤ)) (m := (m : ℤ)) hkm_int p_e q_e
   have hPointXY : X ≤ᵐ[P] Y := by

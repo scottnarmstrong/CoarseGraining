@@ -45,7 +45,7 @@ private theorem old_blockJ_cube_eq_book_doubled {d : ℕ} [NeZero d]
     BlockJ (cubeSet R) P Q' A =
       Ch02.doubledResponseJ (Ch02.cubeDomain R) (a.coeffOn R) P Q' := by
   intro A
-  letI := isFiniteMeasureVolumeMeasureOnCubeSet R
+  let := isFiniteMeasureVolumeMeasureOnCubeSet R
   have hsubOpen : openCubeSet R ⊆ openCubeSet Q :=
     openCubeSet_subset_of_mem_descendantsAtScale hk hR
   let aRpw : Ch02.CoeffOn (Ch02.cubeDomain R) :=
@@ -281,7 +281,7 @@ theorem coarseFluxResponse_negativeBesov_le {d : ℕ} [NeZero d]
   have haeeq_a_ap : Ch02.CoeffOn.AEEq aQ ap := haeeq_ap_a.symm
   let uPw : Ch02.Solution U ap := Ch02.Solution.ofAEEq haeeq_a_ap u
   let uOpen : AHarmonicFunction A (openCubeSet Q) := by
-    simpa [U, ap, A] using uPw
+    simpa [U, ap, A] using! uPw
   let uCube : AHarmonicFunction A (cubeSet Q) := uOpen.toCubeSet
   let oldDefect : Vec d → Vec d :=
     fun x => matVecMul (A x) (uCube.toH1.grad x) -
@@ -315,9 +315,11 @@ theorem coarseFluxResponse_negativeBesov_le {d : ℕ} [NeZero d]
         Ch02.variationEnergyValue (Ch02.cubeDomain Q) (a.coeffOn Q) u := by
     have henergy_fun :
         energy = Ch02.variationEnergyIntegrand U ap uPw := by
+      have hgrad : uCube.toH1.grad = uPw.toH1.grad :=
+        AHarmonicFunction.grad_toCubeSet uOpen
       funext x
-      simp [energy, scalarVariationEnergyIntegrand, Ch02.variationEnergyIntegrand,
-        uCube, uOpen, uPw, U, ap, A, Internal.Ch02.BookCh02.pointwiseCoeffOn]
+      simp only [energy, scalarVariationEnergyIntegrand, Ch02.variationEnergyIntegrand,
+        hgrad, U, ap, A, Internal.Ch02.BookCh02.pointwiseCoeffOn]
     have hcube_pw :
         cubeAverage Q energy = Ch02.variationEnergyValue U ap uPw := by
       calc
@@ -346,8 +348,10 @@ theorem coarseFluxResponse_negativeBesov_le {d : ℕ} [NeZero d]
   have hdefect_ae :
       oldDefect =ᵐ[MeasureTheory.volume.restrict (cubeSet Q)]
         solutionFluxDefectField Q a a0 u := by
+    have hgrad : uCube.toH1.grad = u.toH1.grad :=
+      AHarmonicFunction.grad_toCubeSet uOpen
     exact hA_ae_cube.mono fun x hx => by
-      simp [oldDefect, solutionFluxDefectField, uCube, uOpen, uPw, U, ap, A, hx,
+      simp only [oldDefect, solutionFluxDefectField, hgrad, hx,
         sub_eq_add_neg, add_matVecMul, neg_matVecMul]
   have hdefect_norm_eq :
       cubeBesovNegativeVectorSeminorm Q s oldDefect =
@@ -434,7 +438,7 @@ theorem coarseFluxResponse_negativeBesov_le {d : ℕ} [NeZero d]
               exact inv_nonneg.mpr
                 (Homogenization.geometricDiscount_pos (by simpa using hs)).le
             exact mul_nonneg hG_nonneg hH_nonneg
-          exact mul_le_mul_of_nonneg_left (by simpa [mul_assoc] using hsqrt) hGH_nonneg
+          exact mul_le_mul_of_nonneg_left (by simpa [mul_assoc] using! hsqrt) hGH_nonneg
     _ ≤ (10 * (d : ℝ)) * s⁻¹ * M * E * H := hrhs_old_le_public
     _ = coarseFluxResponseRHS (10 * (d : ℝ)) Q a a0 s u := by
           dsimp [coarseFluxResponseRHS, H, M, E]

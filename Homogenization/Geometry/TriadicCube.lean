@@ -140,7 +140,8 @@ def translateCube {d : ℕ} (shift : Fin d → ℤ) (Q : TriadicCube d) : Triadi
             (shift i : ℝ) * cubeScaleFactor Q ≤
           x i :=
         le_sub_iff_add_le.mp hlo
-      simpa [sub_eq_add_neg, add_assoc, add_left_comm, add_comm, add_mul] using hlo'
+      simpa [cubeScaleFactor, sub_eq_add_neg, add_assoc, add_left_comm, add_comm, add_mul]
+        using hlo'
     · have hhi' :
         x i <
           (((Q.index i : ℝ) + (1 / 2 : ℝ)) * cubeScaleFactor Q) +
@@ -169,7 +170,8 @@ def translateCube {d : ℕ} (shift : Fin d → ℤ) (Q : TriadicCube d) : Triadi
             (shift i : ℝ) * cubeScaleFactor Q <
           x i :=
         lt_sub_iff_add_lt.mp hlo
-      simpa [sub_eq_add_neg, add_assoc, add_left_comm, add_comm, add_mul] using hlo'
+      simpa [cubeScaleFactor, sub_eq_add_neg, add_assoc, add_left_comm, add_comm, add_mul]
+        using hlo'
     · have hhi' :
         x i <
           (((Q.index i : ℝ) + (1 / 2 : ℝ)) * cubeScaleFactor Q) +

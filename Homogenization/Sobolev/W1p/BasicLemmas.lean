@@ -74,7 +74,7 @@ theorem HasWeakPartialDerivOn.of_contDiff {d : ℕ} {U : Set (Vec d)}
         ((hfderiv_f_cont.mul hφ_cont).integrable_of_hasCompactSupport hφ_supp.mul_left)
         ((hf_cont.mul hfderiv_φ_cont).integrable_of_hasCompactSupport hφ_fderiv_supp.mul_left)
         ((hf_cont.mul hφ_cont).integrable_of_hasCompactSupport hφ_supp.mul_left)
-        hf_diff hφ_diff
+        (fun x _ => hf_diff.differentiableAt) (fun x _ => hφ_diff.differentiableAt)
   ·
     intro x hx
     have hx_notin : x ∉ tsupport φ := fun hx' => hx (hφ_sub hx')
@@ -279,7 +279,7 @@ theorem memW1p_of_contDiffOnIsSobolevRegularDomain
     {f : Vec d → ℝ} (hf : ContDiff ℝ 1 f) :
     MemW1p U p f :=
   by
-    simpa using
+    simpa using!
       (W1pFunction.ofContDiffOnIsSobolevRegularDomain (U := U) (p := p) hU hf).memW1p
 
 theorem memW1p_of_contDiffOnIsOpenBoundedConvexDomain
@@ -287,7 +287,7 @@ theorem memW1p_of_contDiffOnIsOpenBoundedConvexDomain
     {f : Vec d → ℝ} (hf : ContDiff ℝ 1 f) :
     MemW1p U p f :=
   by
-    simpa using
+    simpa using!
       (W1pFunction.ofContDiffOnIsOpenBoundedConvexDomain (U := U) (p := p) hU hf).memW1p
 
 theorem memW1p_restrict {d : ℕ} {U V : Set (Vec d)} {p : ENNReal} {u : Vec d → ℝ}

@@ -240,7 +240,7 @@ private theorem reindex_swap_mul {d : ℕ} (M N : FullBlockMat d) :
       Matrix.reindex (blockCoordSwapEquiv d) (blockCoordSwapEquiv d) (M * N) =
         Matrix.reindex (blockCoordSwapEquiv d) (blockCoordSwapEquiv d) M *
           Matrix.reindex (blockCoordSwapEquiv d) (blockCoordSwapEquiv d) N := by
-  exact Matrix.reindexAlgEquiv_mul ℝ ℝ (blockCoordSwapEquiv d) M N
+  exact map_mul (Matrix.reindexAlgEquiv ℝ ℝ (blockCoordSwapEquiv d)) M N
 
 private theorem reflectedNormalizedBlockFluctuationMatrix_eq_reindex_full
     {d : ℕ} (b c : ℝ) (A Abar : BlockMat d) :

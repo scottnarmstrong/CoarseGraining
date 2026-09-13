@@ -40,12 +40,12 @@ private theorem hasCompactSupport_finset_sum
   revert hf
   refine Finset.induction_on s ?zero ?insert
   · intro _hf
-    simpa using (HasCompactSupport.zero : HasCompactSupport (fun _ : α => (0 : β)))
+    simpa using! (HasCompactSupport.zero : HasCompactSupport (fun _ : α => (0 : β)))
   · intro a s has hs hf
     have ha : HasCompactSupport (f a) := hf a (by simp [has])
     have hs' : HasCompactSupport (fun x => ∑ i ∈ s, f i x) := by
       exact hs (fun i hi => hf i (Finset.mem_insert_of_mem hi))
-    simpa [Finset.sum_insert has] using ha.add hs'
+    simpa [Finset.sum_insert has] using! ha.add hs'
 
 private theorem cubeDirichletOddReflectionCellSign_lowerChoiceSwap_of_choice_eq_zero
     {d : ℕ} (i : Fin d) (choice : Fin d → Fin 3)
@@ -313,7 +313,7 @@ theorem euclideanCoordDeriv_cubeDirichletOddReflectionFoldedParentScalarTest
   classical
   unfold cubeDirichletOddReflectionFoldedParentScalarTest euclideanCoordDeriv
   rw [fderiv_fun_sum]
-  · simp only [ContinuousLinearMap.sum_apply]
+  · simp only [sum_apply]
     apply Finset.sum_congr rfl
     intro choice _hchoice
     have hdiff :
@@ -634,7 +634,7 @@ theorem setIntegral_cubeFaceReflectionBlockSet_vecDot_cubeDirichletOddReflection
                   (euclideanGradient φ
                     (cubeFaceReflectionCellFoldMap Q choice y)))
           ∂MeasureTheory.volume := by
-          rw [MeasureTheory.integral_finset_sum]
+          rw [MeasureTheory.integral_finsetSum]
           intro choice _hchoice
           exact integrable_openCubeSet_cubeDirichletOddCellVectorPairing
             (Q := Q) (G := G) choice hG hφ hφ_compact
@@ -732,7 +732,7 @@ theorem setIntegral_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionScalar_
             (cubeDirichletOddReflectionCellSign choice *
               φ (cubeFaceReflectionCellFoldMap Q choice y))
         ∂MeasureTheory.volume := by
-          rw [MeasureTheory.integral_finset_sum]
+          rw [MeasureTheory.integral_finsetSum]
           intro choice _hchoice
           exact integrable_openCubeSet_cubeDirichletOddCellScalarPairing
             (Q := Q) (F := F) choice hF hφ hφ_compact
@@ -783,7 +783,7 @@ theorem test_cubeDirichletOddReflectionFoldedParentScalarTest_originCube
   simpa [ψ, H10Function.cubeDirichletOddReflectionFoldedParentScalarTestToH10,
     H10Function.ofContDiffFaceZeroOnOpenCubeSet_toFun,
     H10Function.ofContDiffFaceZeroOnOpenCubeSet_grad, euclideanGradient]
-    using htest
+    using! htest
 
 /-- Expanded cell-sum form of the folded-test weak identity.  This is the
 algebraic shape needed for the subsequent reflected-block

@@ -101,7 +101,7 @@ theorem rawPhaseObservable_restrict_eq_of_field [NeZero d]
     unfold coreUnion
     exact MeasurableSet.iUnion fun k =>
       MeasurableSet.iUnion fun _ => measurableSet_coreBox ℓ σ k
-  haveI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet (originCube d m))) :=
+  have : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet (originCube d m))) :=
     inferInstance
   set Ra : {k // k ∈ K} → CoeffField d :=
     fun k => restrictCoeffField (coreBox ℓ σ k.val) b with hRa

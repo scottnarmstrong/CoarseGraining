@@ -110,7 +110,7 @@ private theorem isH1DirichletRhsWeakSolutionOn_pointwiseCoeffOn_neg_of_isForcedE
   let b : Book.Ch02.CoeffOn (Book.Ch02.cubeDomain Q) :=
     Internal.Ch02.BookCh02.pointwiseCoeffOn (Book.Ch02.cubeDomain Q) a
   have hba : b.toCoeffField =ᵐ[volumeMeasureOn (openCubeSet Q)] a.toCoeffField := by
-    simpa only [b, Book.Ch02.cubeDomain_coe] using
+    simpa only [b, Book.Ch02.cubeDomain_coe] using!
       Internal.Ch02.BookCh02.pointwiseCoeffOn_ae_eq (Book.Ch02.cubeDomain Q) a
   intro phi
   calc
@@ -139,7 +139,7 @@ theorem IsForcedEquation.toIsH1DirichletRhsWeakSolutionOnNeg {d : ℕ}
   let b : Book.Ch02.CoeffOn (Book.Ch02.cubeDomain Q) :=
     Internal.Ch02.BookCh02.pointwiseCoeffOn (Book.Ch02.cubeDomain Q) a
   have hba : b.toCoeffField =ᵐ[volumeMeasureOn (openCubeSet Q)] a.toCoeffField := by
-    simpa only [b, Book.Ch02.cubeDomain_coe] using
+    simpa only [b, Book.Ch02.cubeDomain_coe] using!
       Internal.Ch02.BookCh02.pointwiseCoeffOn_ae_eq (Book.Ch02.cubeDomain Q) a
   have hb := isH1DirichletRhsWeakSolutionOn_pointwiseCoeffOn_neg_of_isForcedEquation h
   intro phi
@@ -178,7 +178,7 @@ private theorem integrable_coefficientEnergyDensity_normalizedCubeMeasure {d : �
       (openCubeSet R) :=
     integrableOn_coefficientEnergyDensity_of_isEllipticFieldOn hEll u.grad_memVectorL2
   have hba : b.toCoeffField =ᵐ[volumeMeasureOn (openCubeSet R)] a.toCoeffField := by
-    simpa only [b, Book.Ch02.cubeDomain_coe] using
+    simpa only [b, Book.Ch02.cubeDomain_coe] using!
       Internal.Ch02.BookCh02.pointwiseCoeffOn_ae_eq (Book.Ch02.cubeDomain R) a
   have hA : IntegrableOn (coefficientEnergyDensity a.toCoeffField u.grad)
       (openCubeSet R) := by
@@ -205,7 +205,7 @@ private theorem ae_nonneg_coefficientEnergyDensity_normalizedCubeMeasure {d : �
       Internal.Ch02.BookCh02.pointwiseCoeffOn_isEllipticFieldOn
         (Book.Ch02.cubeDomain R) a
   have hba : b.toCoeffField =ᵐ[volumeMeasureOn (openCubeSet R)] a.toCoeffField := by
-    simpa only [b, Book.Ch02.cubeDomain_coe] using
+    simpa only [b, Book.Ch02.cubeDomain_coe] using!
       Internal.Ch02.BookCh02.pointwiseCoeffOn_ae_eq (Book.Ch02.cubeDomain R) a
   have hnonneg : ∀ᵐ x ∂volumeMeasureOn (openCubeSet R),
       0 ≤ coefficientEnergyDensity a.toCoeffField u.grad x := by

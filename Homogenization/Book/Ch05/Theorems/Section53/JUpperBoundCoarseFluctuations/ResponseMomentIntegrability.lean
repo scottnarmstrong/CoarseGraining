@@ -27,7 +27,7 @@ theorem integrable_rpow_restrictionResponseJObservableCubeSet_originCube_from_P4
         Real.rpow
           (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p q a)
           (section53CoarseFluctuationZeta hP4)) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let ζ := section53CoarseFluctuationZeta hP4
   let J : RegCoeffField d → ℝ :=
     Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p q

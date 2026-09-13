@@ -11,7 +11,7 @@ theorem integral_pairing_affine_eq_volume_mul_vecDot
     (X : CorrectionFieldData U) (p q : Vec d) :
     ∫ x in U, vecDot (p + X.potential x) (q + X.flux x) ∂MeasureTheory.volume =
       (MeasureTheory.volume U).toReal * vecDot p q := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   exact
     X.integral_pairing_affine_eq_volume_mul_vecDot_of_integral_eq_zero p q
@@ -60,7 +60,7 @@ theorem integral_flux_affine_eq_volume_smul
     (X : CorrectionFieldData U) (q : Vec d) :
     (fun i => ∫ x in U, (q + X.flux x) i ∂MeasureTheory.volume) =
       (MeasureTheory.volume U).toReal • q := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   have hfluxZero :
       (fun i => ∫ x in U, X.flux x i ∂MeasureTheory.volume) = 0 :=
@@ -114,7 +114,7 @@ theorem average_flux_affine
     (hvol : (MeasureTheory.volume U).toReal ≠ 0)
     (X : CorrectionFieldData U) (q : Vec d) :
     (fun i => integralAverage U (fun x => (q + X.flux x) i)) = q := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   have hint := X.integral_flux_affine_eq_volume_smul hU q
   ext i
@@ -132,7 +132,7 @@ theorem average_state_affine
     (X : CorrectionFieldData U) (P : BlockVec d) :
     ((fun i => integralAverage U (fun x => (P.1 + X.potential x) i)),
       (fun i => integralAverage U (fun x => (P.2 + X.flux x) i))) = P := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   apply Prod.ext
   · exact X.average_potential_affine hvol P.1

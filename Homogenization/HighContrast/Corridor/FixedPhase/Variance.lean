@@ -93,7 +93,7 @@ theorem sum_coreEnergy_le [NeZero d] {Θ : ℝ} {m : ℤ} {ℓ : ℝ} (hℓ : 0 
     blockVecDot (Z.eval x) (blockMatVecMul (blockCoeffField c x) (Z.eval x)) with hgdef
   have hZbl : MemBlockL2 U Z.eval := hZadm.memBlockL2_eval
   have hgint : IntegrableOn g U := by
-    simpa [blockPairingIntegrand, hgdef] using
+    simpa [blockPairingIntegrand, hgdef] using!
       blockPairingIntegrand_integrableOn_of_memBlockL2_of_isEllipticFieldOn
         (X := Z) (Y := Z) hZbl hZbl hEll
   have hg0 : ∀ x ∈ U, 0 ≤ g x :=
@@ -120,7 +120,7 @@ theorem sum_coreEnergy_le [NeZero d] {Θ : ℝ} {m : ℤ} {ℓ : ℝ} (hℓ : 0 
     Set.iUnion_subset (fun k => Set.inter_subset_right)
   have hunionle : (∫ x in ⋃ k : {k // k ∈ K}, (coreBox ℓ σ k.val ∩ U), g x)
       ≤ ∫ x in U, g x := by
-    refine setIntegral_mono_set hgint ?_ (HasSubset.Subset.eventuallyLE hsub)
+    refine setIntegral_mono_set hgint ?_ (LE.le.eventuallyLE hsub)
     exact (ae_restrict_iff' hU).2 (Filter.Eventually.of_forall (fun x hx => hg0 x hx))
   -- whole-cube energy `= (vol U)·F(c) ≤ (vol U)·2M²`
   have hFeq : blockVecDot P (blockMatVecMul (coarseBlockMatrix U c) P)

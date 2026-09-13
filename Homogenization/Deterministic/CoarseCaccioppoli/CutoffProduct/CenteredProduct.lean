@@ -684,7 +684,7 @@ theorem cubeBesovPositiveVectorPartialSeminormTwo_centered_scalar_smul_le_poinca
           cubeL2ScalarPartialSeminormTwo Q (s - 1) N (cubeFluctuation Q u) +
         cubeLpNorm Q ∞ ξ *
           cubeBesovPositiveScalarPartialSeminormTwo Q s N (cubeFluctuation Q u)) := by
-            simpa [cubeFluctuation] using
+            simpa [cubeFluctuation] using!
               cubeBesovPositiveVectorPartialSeminormTwo_centered_scalar_smul_le_cutoff_terms_of_contDiff_component_bound
                 Q s N u ξ hB hu hξLp hξ hderiv
     _ ≤
@@ -884,7 +884,7 @@ theorem cubeBesovPositiveVectorPartialSeminormTwo_centered_scalar_smul_le_note_v
           cubeL2ScalarPartialSeminormTwo Q (s - 1) N (cubeFluctuation Q u) +
         cubeLpNorm Q ∞ ξ *
           cubeBesovPositiveScalarPartialSeminormTwo Q s N (cubeFluctuation Q u)) := by
-            simpa [cubeFluctuation] using hpartial
+            simpa [cubeFluctuation] using! hpartial
     _ ≤
       2 * (cubeScaleFactor Q * B *
           (Real.sqrt ((1 - Real.rpow (3 : ℝ) (2 * (s - 1)))⁻¹) *

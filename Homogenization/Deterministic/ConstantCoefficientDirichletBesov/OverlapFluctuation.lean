@@ -312,7 +312,7 @@ theorem overlapCentersAtDepth_average_lintegral_ofReal_vecNormSq_fluctuation_le
           rfl
     _ ≤ ((D.card : ℝ≥0∞)⁻¹) *
           D.sum (fun S => cardDim * J S) := by
-          exact mul_le_mul_of_nonneg_left hsum (zero_le _)
+          exact mul_le_mul_of_nonneg_left hsum (zero_le)
     _ = ((D.card : ℝ≥0∞)⁻¹) * (cardDim * D.sum J) := by
           congr 1
           rw [Finset.mul_sum]
@@ -352,10 +352,10 @@ theorem overlapCubeAverageVec_add_of_memLp_two {d : ℕ}
   funext i
   have hui : MeasureTheory.MemLp (fun x => u x i) (2 : ℝ≥0∞)
       (normalizedOverlapCubeMeasure S) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
   have hvi : MeasureTheory.MemLp (fun x => v x i) (2 : ℝ≥0∞)
       (normalizedOverlapCubeMeasure S) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hv
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hv
   show overlapCubeAverage S (fun x => (u x + v x) i) =
     overlapCubeAverage S (fun x => u x i) +
       overlapCubeAverage S (fun x => v x i)
@@ -375,7 +375,7 @@ theorem memLp_overlapCubeFluctuationVec {d : ℕ}
       MeasureTheory.MemLp (fun _ : Vec d => overlapCubeAverageVec S u)
         (2 : ℝ≥0∞) (normalizedOverlapCubeMeasure S) :=
     MeasureTheory.memLp_const (overlapCubeAverageVec S u)
-  simpa [overlapCubeFluctuationVec] using hu.sub hconst
+  simpa [overlapCubeFluctuationVec] using! hu.sub hconst
 
 theorem overlapCubeFluctuationVec_add_of_memLp_two {d : ℕ}
     (S : TriadicCube d) {u v : Vec d → Vec d}

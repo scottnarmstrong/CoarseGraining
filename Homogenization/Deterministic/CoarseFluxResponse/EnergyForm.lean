@@ -33,7 +33,7 @@ theorem cubeAverageFluxDefect_energyForm_le_normalizedBlockResponseMax_mul_energ
       ≤
       ((4 : ℝ) * normalizedBlockResponseMax R a a0) *
         cubeAverage R (scalarVariationEnergyIntegrand a w) := by
-  letI := isFiniteMeasureVolumeMeasureOnCubeSet R
+  let := isFiniteMeasureVolumeMeasureOnCubeSet R
   let defect : Vec d → Vec d :=
     fun x => matVecMul (a x) (w.toH1.grad x) - matVecMul a0 (w.toH1.grad x)
   let D : Vec d := cubeAverageVec R defect
@@ -215,7 +215,7 @@ theorem cubeAverageFluxDefect_energyForm_le_normalizedBlockResponseMax_mul_energ
                 have hsum :
                     MeasureTheory.IntegrableOn
                       (fun x => ∑ j, a0 i j * w.toH1.grad x j) (cubeSet R) := by
-                    refine MeasureTheory.integrable_finset_sum Finset.univ ?_
+                    refine MeasureTheory.integrable_finsetSum Finset.univ ?_
                     intro j hj
                     exact (hgradCoord j).const_mul (a0 i j)
                 simpa [defect, matVecMul] using hsum
@@ -396,10 +396,10 @@ theorem descendantScalarCanonicalFluxDefectAHarmonicData_of_aHarmonicFunction
     refine ⟨cubeCenter R, openCubeSet_subset_cubeSet R ?_⟩
     rw [← ball_cubeCenter_eq_openCubeSet]
     simpa [Metric.mem_ball] using cubeRadius_pos R
-  letI : Fact (MeasureTheory.volume (cubeSet R) < ⊤) := by
+  let : Fact (MeasureTheory.volume (cubeSet R) < ⊤) := by
     refine ⟨?_⟩
     simpa using volume_cubeSet_lt_top R
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet R)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet R)) := by
     change MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict (cubeSet R))
     infer_instance
   have hv :

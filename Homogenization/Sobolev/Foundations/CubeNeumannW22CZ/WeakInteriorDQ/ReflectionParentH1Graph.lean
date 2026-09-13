@@ -183,7 +183,7 @@ theorem setIntegral_cubeFaceReflectionBlockSet_reflectedScalar_mul_deriv_eq_fold
               euclideanCoordDeriv i φ
                 (cubeFaceReflectionCellFoldMap Q choice y)
           ∂MeasureTheory.volume := by
-          rw [MeasureTheory.integral_finset_sum]
+          rw [MeasureTheory.integral_finsetSum]
           intro choice _hchoice
           exact
             integrable_openCubeSet_mul_deriv_comp_cellFoldMap

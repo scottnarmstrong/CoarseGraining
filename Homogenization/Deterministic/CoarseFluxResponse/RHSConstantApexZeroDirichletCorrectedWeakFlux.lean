@@ -348,7 +348,7 @@ theorem localizedFluxDefectNegativeBesovAverageTwo_matVecMul_grad_le_sqrt_correc
         CubeAverageFluxEnergyControl R a
           (fun x => matVecMul (a x) (wR.toH1.grad x))
           (coefficientEnergyDensity a (fun x => wR.toH1.grad x)) := by
-      simpa [scalarVariationEnergyIntegrand, coefficientEnergyDensity] using
+      simpa [scalarVariationEnergyIntegrand, coefficientEnergyDensity] using!
         cubeAverageFluxEnergyControl_of_aHarmonicFunction
           (Q := R) (a := a) hEllR wR
           (openCubeDescendantDeterministicCoarseData_of_descendant_depth

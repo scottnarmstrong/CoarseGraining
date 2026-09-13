@@ -112,7 +112,7 @@ theorem unitConvexApproxScale_le_one (n : ℕ) :
 
 theorem tendsto_unitConvexApproxScale_zero :
     Filter.Tendsto unitConvexApproxScale Filter.atTop (nhds 0) := by
-  simpa [unitConvexApproxScale] using tendsto_one_div_add_atTop_nhds_zero_nat
+  simpa [unitConvexApproxScale] using! tendsto_one_div_add_atTop_nhds_zero_nat
 
 /-- The pointwise integrand for the convex-domain smoothing operator. -/
 def convexApproxIntegrand {d : ℕ} (ρ u : Vec d → ℝ)
@@ -148,17 +148,21 @@ noncomputable def scaledConvexApproxKernel {d : ℕ} (ρ : Vec d → ℝ) (a : �
 theorem continuous_scaledConvexApproxKernel {d : ℕ} {ρ : Vec d → ℝ}
     (hρ : Continuous ρ) (a : ℝ) :
     Continuous (scaledConvexApproxKernel ρ a) := by
-  simpa [scaledConvexApproxKernel] using
-    (continuous_const.mul (hρ.comp (continuous_const.smul continuous_id)))
+  simpa [scaledConvexApproxKernel] using!
+    ((continuous_const : Continuous (fun _ : Vec d => (a ^ d)⁻¹)).mul
+      (hρ.comp ((continuous_const : Continuous (fun _ : Vec d => a⁻¹)).smul
+        (continuous_id : Continuous (fun y : Vec d => y)))))
 
 theorem contDiff_scaledConvexApproxKernel {d : ℕ} {ρ : Vec d → ℝ}
     (hρ : IsConvexApproxKernel ρ) (a : ℝ) :
     ContDiff ℝ (⊤ : ℕ∞) (scaledConvexApproxKernel ρ a) := by
   have hscale : ContDiff ℝ (⊤ : ℕ∞) (fun y : Vec d => a⁻¹ • y) := by
-    simpa using
-      (contDiff_const.smul (contDiff_id : ContDiff ℝ (⊤ : ℕ∞) (fun y : Vec d => y)))
-  simpa [scaledConvexApproxKernel] using
-    (contDiff_const.mul (hρ.smooth.comp hscale))
+    simpa using!
+      ((contDiff_const : ContDiff ℝ (⊤ : ℕ∞) (fun _ : Vec d => a⁻¹)).smul
+        (contDiff_id : ContDiff ℝ (⊤ : ℕ∞) (fun y : Vec d => y)))
+  simpa [scaledConvexApproxKernel] using!
+    ((contDiff_const : ContDiff ℝ (⊤ : ℕ∞) (fun _ : Vec d => (a ^ d)⁻¹)).mul
+      (hρ.smooth.comp hscale))
 
 theorem measurable_scaledConvexApproxKernel {d : ℕ} {ρ : Vec d → ℝ}
     (hρ : Continuous ρ) (a : ℝ) :
@@ -170,7 +174,7 @@ theorem hasCompactSupport_scaledConvexApproxKernel {d : ℕ} {ρ : Vec d → ℝ
     HasCompactSupport (scaledConvexApproxKernel ρ a) := by
   have hcomp : HasCompactSupport (fun y : Vec d => ρ (a⁻¹ • y)) := by
     simpa [Function.comp] using hρ.comp_smul (inv_ne_zero ha.ne')
-  simpa [scaledConvexApproxKernel] using
+  simpa [scaledConvexApproxKernel] using!
     (hcomp.mul_left : HasCompactSupport (fun y : Vec d => (a ^ d)⁻¹ * ρ (a⁻¹ • y)))
 
 theorem integrable_scaledConvexApproxKernel {d : ℕ} {ρ : Vec d → ℝ}

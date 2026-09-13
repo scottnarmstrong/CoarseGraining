@@ -107,7 +107,7 @@ theorem integral_limitNormalizedBlockJObservable_le_thetaAtScale_sub_one
     (∫ a,
       limitNormalizedBlockJObservable hP hStruct (originCube d (k : ℤ)) e a ∂P) ≤
       thetaAtScale hP hStruct (k : ℤ) - 1 := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let hP4 := hΓ.toQuantitativeCoarseGrainedEllipticity
   let L : ℝ := barSigmaLimit hP hStruct
   let b : ℝ := hP.barSigmaAtScale hStruct (k : ℤ)

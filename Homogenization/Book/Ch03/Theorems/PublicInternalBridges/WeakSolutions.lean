@@ -163,7 +163,7 @@ theorem publicH1_fluxDefect_memVectorL2_descendant_cubeSet
       MemVectorL2 (cubeSet R) (fun x => matVecMul a0.matrix (u.grad x)) := by
     simpa [constantCoeffField] using
       memVectorL2_matVecMul_of_isEllipticFieldOn hEll0 hgrad
-  simpa [fluxDefect] using hA.sub hA0
+  simpa [fluxDefect] using! hA.sub hA0
 
 theorem publicH1_fluxDefect_negativeBesovPartialSeminormTwo_bddAbove_descendant
     {d : ℕ} [NeZero d] {Q R : TriadicCube d} {a : CoeffFamily d}
@@ -670,7 +670,7 @@ theorem isH1DirichletRhsWeakSolutionOn_publicCoeffField_cubeSet_of_isForcedEquat
   have hopen :
       IsH1DirichletRhsWeakSolutionOn (publicCoeffField Q a) (openCubeSet Q)
         (castH1Domain (Ch02.cubeDomain_coe Q) u) g := by
-    simpa [Ch02.cubeDomain_coe] using
+    simpa [Ch02.cubeDomain_coe] using!
       isH1DirichletRhsWeakSolutionOn_publicCoeffField_of_isForcedEquation
         (Q := Q) (a := a) (u := u) (g := g) h
   simpa [publicH1ToCubeSet] using
@@ -776,7 +776,7 @@ theorem isMeanZeroNeumannRhsWeakSolution_publicCoeffField_cubeSet_of_isMeanZeroN
   have hopen :
       IsMeanZeroNeumannRhsWeakSolution (publicCoeffField Q a)
         (openCubeSet Q) (castH1MeanZeroDomain (Ch02.cubeDomain_coe Q) w) g := by
-    simpa [Ch02.cubeDomain_coe] using
+    simpa [Ch02.cubeDomain_coe] using!
       isMeanZeroNeumannRhsWeakSolution_publicCoeffField_of_isMeanZeroNeumannForcedEquation
         (Q := Q) (a := a) (w := w) (g := g) h
   simpa [publicH1MeanZeroToCubeSet] using

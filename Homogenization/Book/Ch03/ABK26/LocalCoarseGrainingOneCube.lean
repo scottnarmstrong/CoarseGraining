@@ -255,7 +255,7 @@ private theorem homogenizationErrorOnCube_infinity_one_le_infinity_two_half
   calc
     ∑' n, f n * g n ≤
         (∑' n, f n ^ (2 : ℝ)) ^ (1 / (2 : ℝ)) *
-          (∑' n, g n ^ (2 : ℝ)) ^ (1 / (2 : ℝ)) := hcs.2
+          (∑' n, g n ^ (2 : ℝ)) ^ (1 / (2 : ℝ)) := hcs
     _ = Book.Ch02.HomogenizationErrorOnCube R (s / 2) .infinity (.finite 2) a a0 := by
       have hfs : ∑' n, f n ^ (2 : ℝ) = 1 := by
         calc
@@ -291,7 +291,7 @@ private theorem cubeBesovPositiveVectorSeminormTwo_neg_of_memLp
         cubeBesovPositiveVectorPartialSeminormTwo Q s N g := by
     intro N
     unfold cubeBesovPositiveVectorPartialSeminormTwo
-    congr 1
+    refine congrArg Real.sqrt ?_
     apply Finset.sum_congr rfl
     intro j _
     unfold cubeBesovPositiveVectorDepthSeminorm
@@ -747,7 +747,7 @@ private theorem memVectorL2_source_fluxDefect_openCubeSet
     u.grad_memVectorL2.const_smul sigma0
   have hsub := hflux.sub hscalar
   have hba : b.toCoeffField =ᵐ[volumeMeasureOn (openCubeSet R)] a.toCoeffField := by
-    simpa only [b, Book.Ch02.cubeDomain_coe] using
+    simpa only [b, Book.Ch02.cubeDomain_coe] using!
       Internal.Ch02.BookCh02.pointwiseCoeffOn_ae_eq (Book.Ch02.cubeDomain R) a
   apply (memLp_congr_ae ?_).mp
     (by simpa only [sub_matVecMul, matVecMul_scalarMatrix] using hsub)
@@ -781,7 +781,7 @@ private theorem ENNReal_ofReal_norm_cubeAverageVec_source_fluxDefect_le_legacyAp
       (fluxDefect a.toCoeffField (scalarMatrix (d := d) sigma0) u.toCubeSet.grad) := by
     simpa only [MemVectorL2, volumeMeasureOn,
       volume_restrict_cubeSet_eq_volume_restrict_openCubeSet, fluxDefect,
-      H1Function.grad_toCubeSet, sub_matVecMul] using hmemOpen
+      H1Function.grad_toCubeSet, sub_matVecMul] using! hmemOpen
   have hmem : MemLp
       (fluxDefect a.toCoeffField (scalarMatrix (d := d) sigma0) u.toCubeSet.grad)
       (2 : ℝ≥0∞) (normalizedCubeMeasure R) :=

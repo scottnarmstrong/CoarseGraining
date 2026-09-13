@@ -44,7 +44,7 @@ theorem CubeEuclideanL2LpField.memVectorL2_openCubeSet
   let T : HilbertVec d →L[ℝ] Vec d :=
     (HilbertVec.continuousLinearEquivVec d).toContinuousLinearMap
   simpa only [MemVectorL2, volumeMeasureOn, Function.comp_def,
-    HilbertVec.toVec_ofVec, T] using T.comp_memLp' hopen
+    HilbertVec.toVec_ofVec, T] using! T.comp_memLp' hopen
 
 /-- The Neumann even reflection and Dirichlet odd reflection have the same
 pointwise Euclidean norm. -/
@@ -294,7 +294,7 @@ theorem sqWeightedMeasure_openCubeSet_succ_originCube_cubeCoordinateFoldReflecte
     rw [hnorm x]
   have htail : {x | a < ‖E x‖} = {x | a < ‖O x‖} := by
     ext x
-    simp only [Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq]
     rw [hnorm x]
   change sqWeightedMeasure E volume
       ({x | a < ‖E x‖} ∩ openCubeSet (originCube d (m + 1))) = _

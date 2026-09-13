@@ -189,7 +189,7 @@ theorem centeredAbsTruncationFamily_iIndepFun
     exact
       (absTruncation_measurable (X := fun t : ℝ => t) (r := r i) measurable_id).sub
         measurable_const
-  simpa [centeredAbsTruncationFamily, g, Function.comp, absTruncation] using h_indep.comp g hg
+  simpa [centeredAbsTruncationFamily, g, Function.comp, absTruncation] using! h_indep.comp g hg
 
 theorem centeredAbsTruncationFamily_integral_eq_zero
     [IsProbabilityMeasure μ]

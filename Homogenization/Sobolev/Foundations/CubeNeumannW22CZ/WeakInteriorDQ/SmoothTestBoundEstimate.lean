@@ -89,7 +89,7 @@ theorem setIntegral_openCubeSet_value_fderiv_cutoff_sq_le
   have hdθ_top : MeasureTheory.MemLp
       (fun x => (fderiv ℝ (θ : Vec d → ℝ) x) (basisVec i)) ⊤
       (volumeMeasureOn (openCubeSet Q)) := by
-    simpa [euclideanCoordDeriv, volumeMeasureOn] using
+    simpa [euclideanCoordDeriv, volumeMeasureOn] using!
       (contDiff_euclideanCoordDeriv θ.smooth i).continuous.memLp_top_of_hasCompactSupport
         (hasCompactSupport_euclideanCoordDeriv θ.hasCompactSupport i)
         (volumeMeasureOn (openCubeSet Q))

@@ -336,7 +336,7 @@ theorem restrict_cubeSet_of_mem_descendantsAtDepth
     (hR : R ∈ descendantsAtDepth Q n)
     (hmemR : MemVectorL2 (cubeSet R) F) :
     IsSolenoidalOn (cubeSet R) F := by
-  haveI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet R)) := by
+  have : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet R)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet R).isFiniteMeasure_restrict_volume
   have hOpenQ : IsSolenoidalOn (openCubeSet Q) F :=

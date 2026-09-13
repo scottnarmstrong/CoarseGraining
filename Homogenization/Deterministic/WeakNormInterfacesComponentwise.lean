@@ -135,11 +135,11 @@ theorem abs_cubeAverage_vecDot_le_sum_note_constant_mul_of_uniform_component_bou
       have hconst :
           MeasureTheory.MemLp (fun x => (B i + 1) * ((B i + 1)⁻¹ * g x i))
             (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-        simpa [Pi.smul_apply, smul_eq_mul] using hscaled_mem.const_smul (B i + 1)
+        simpa [Pi.smul_apply, smul_eq_mul] using! hscaled_mem.const_smul (B i + 1)
       convert hconst using 1
       funext x
       field_simp [hBi_pos.ne']
-    simpa [Pi.mul_apply, mul_comm] using (hu i).integrable_mul hgi_mem
+    simpa [Pi.mul_apply, mul_comm] using! (hu i).integrable_mul hgi_mem
   calc
     |cubeAverage Q (fun x => vecDot (u x) (g x))|
         ≤ ∑ i, |cubeBesovPairing Q (fun x => u x i) (fun x => g x i)| := by
@@ -171,7 +171,7 @@ theorem memLp_component_of_memLp {d : ℕ} {Q : TriadicCube d}
     (u : Vec d → Vec d) (i : Fin d)
     (hu : MeasureTheory.MemLp u (2 : ℝ≥0∞) (normalizedCubeMeasure Q)) :
     MeasureTheory.MemLp (fun x => u x i) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-  simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+  simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
 
 theorem memLp_cubeFluctuationVec {d : ℕ} (Q : TriadicCube d) (u : Vec d → Vec d)
     (hu : MeasureTheory.MemLp u (2 : ℝ≥0∞) (normalizedCubeMeasure Q)) :
@@ -180,7 +180,7 @@ theorem memLp_cubeFluctuationVec {d : ℕ} (Q : TriadicCube d) (u : Vec d → Ve
       MeasureTheory.MemLp (fun _ : Vec d => cubeAverageVec Q u)
         (2 : ℝ≥0∞) (normalizedCubeMeasure Q) :=
     MeasureTheory.memLp_const (cubeAverageVec Q u)
-  simpa [cubeFluctuationVec] using hu.sub hconst
+  simpa [cubeFluctuationVec] using! hu.sub hconst
 
 theorem cubeFluctuation_component_eq_cubeFluctuationVec_component {d : ℕ}
     (Q : TriadicCube d) (u : Vec d → Vec d) (i : Fin d) :
@@ -770,7 +770,7 @@ theorem cubeBesovDualLocalMemLpGlobal_component_of_memLp {d : ℕ}
   have hfluctR : MeasureTheory.MemLp (cubeFluctuationVec R u)
       (2 : ℝ≥0∞) (normalizedCubeMeasure R) :=
     memLp_cubeFluctuationVec R u huR
-  simpa [hpConj, cubeFluctuation_component_eq_cubeFluctuationVec_component R u i] using
+  simpa [hpConj, cubeFluctuation_component_eq_cubeFluctuationVec_component R u i] using!
     (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hfluctR
 
 /-- A scalar `L²` function is locally admissible as a `p = 2` Besov dual test
@@ -791,7 +791,7 @@ theorem cubeBesovDualLocalMemLpGlobal_of_memLp_two {d : ℕ}
       MeasureTheory.MemLp (fun _ : Vec d => cubeAverage R g)
         (2 : ℝ≥0∞) (normalizedCubeMeasure R) :=
     MeasureTheory.memLp_const (cubeAverage R g)
-  simpa [hpConj, cubeFluctuation] using hgR.sub hconst
+  simpa [hpConj, cubeFluctuation] using! hgR.sub hconst
 
 theorem cubeBesovDualTestNorm_two_one_component_cubeFluctuationVec_le_scaleWeight_mul_positiveVectorPartialSeminormTwo
     {d : ℕ} (Q : TriadicCube d) (s : ℝ) (u : Vec d → Vec d) (i : Fin d) (N : ℕ)
@@ -819,7 +819,7 @@ theorem cubeBesovDualTestNorm_two_one_component_cubeFluctuationVec_le_scaleWeigh
   have hpartial_eq :
       cubeBesovPositiveVectorPartialSeminormTwo Q s N (cubeFluctuationVec Q u) =
         cubeBesovPositiveVectorPartialSeminormTwo Q s N u := by
-    simpa [cubeFluctuationVec] using
+    simpa [cubeFluctuationVec] using!
       cubeBesovPositiveVectorPartialSeminormTwo_sub_const Q s N u (cubeAverageVec Q u)
         (fun j hj R hR => hmem j hj R hR)
   rw [cubeBesovDualTestNorm_of_conjExponent_eq_top Q s (2 : ℝ≥0∞) (1 : ℝ≥0∞)
@@ -861,7 +861,7 @@ theorem cubeBesovDualTestNorm_two_two_component_cubeFluctuationVec_le_scaleWeigh
   have hpartial_eq :
       cubeBesovPositiveVectorPartialSeminormTwo Q s N (cubeFluctuationVec Q u) =
         cubeBesovPositiveVectorPartialSeminormTwo Q s N u := by
-    simpa [cubeFluctuationVec] using
+    simpa [cubeFluctuationVec] using!
       cubeBesovPositiveVectorPartialSeminormTwo_sub_const Q s N u (cubeAverageVec Q u)
         (fun j hj R hR => hmem j hj R hR)
   rw [cubeBesovDualTestNorm_eq_cubeBesovDualTestSeminorm_of_cubeAverage_eq_zero

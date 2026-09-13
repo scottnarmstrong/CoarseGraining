@@ -105,7 +105,7 @@ theorem hasQuadraticMu_openCubeSet_of_triadicCube_of_hasOpenCubeEllipticRecovery
         (translateCoeffField (fun i => (Q.index i : ℝ) * cubeScaleFactor Q) a)) :
     HasQuadraticMu (openCubeSet Q) a := by
   let z : Vec d := fun i => (Q.index i : ℝ) * cubeScaleFactor Q
-  simpa [z, openCubeSet_eq_translateSet_originCube_of_triadicCube Q] using
+  simpa [z, openCubeSet_eq_translateSet_originCube_of_triadicCube Q] using!
     hasQuadraticMu_translateSet_openCubeSet_originCube_of_hasOpenCubeEllipticRecoveryData
       (n := Q.scale) (z := z) (R := R) (a := a) hData
 
@@ -123,7 +123,7 @@ theorem exists_coarseBlockMatrix_openCubeSet_of_triadicCube_of_hasOpenCubeEllipt
         (translateCoeffField (fun i => (Q.index i : ℝ) * cubeScaleFactor Q) a)) :
     ∃ Abar : BlockMat d, IsCoarseBlockMatrix (openCubeSet Q) a Abar := by
   let z : Vec d := fun i => (Q.index i : ℝ) * cubeScaleFactor Q
-  simpa [z, openCubeSet_eq_translateSet_originCube_of_triadicCube Q] using
+  simpa [z, openCubeSet_eq_translateSet_originCube_of_triadicCube Q] using!
     exists_coarseBlockMatrix_translateSet_openCubeSet_originCube_of_hasOpenCubeEllipticRecoveryData
       (n := Q.scale) (z := z) (R := R) (a := a) hData
 

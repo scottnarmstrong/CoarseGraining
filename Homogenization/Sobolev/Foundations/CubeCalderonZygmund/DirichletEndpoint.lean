@@ -27,7 +27,7 @@ private theorem memLp_hilbertify_of_memLp_vec
     {d : ℕ} {p : ℝ≥0∞} {Q : TriadicCube d} {F : Vec d → Vec d}
     (hF : MemLp F p (normalizedCubeMeasure Q)) :
     MemLp (fun x ↦ HilbertVec.ofVec (F x)) p (normalizedCubeMeasure Q) := by
-  simpa only [Function.comp_apply, HilbertVec.ofVecL_apply] using
+  simpa only [Function.comp_apply, HilbertVec.ofVecL_apply] using!
     (HilbertVec.ofVecL d).comp_memLp' hF
 
 private theorem memLp_vec_of_memLp_hilbertify
@@ -36,7 +36,7 @@ private theorem memLp_vec_of_memLp_hilbertify
       (normalizedCubeMeasure Q)) :
     MemLp F p (normalizedCubeMeasure Q) := by
   simpa only [Function.comp_apply, HilbertVec.continuousLinearEquivVec_apply,
-    HilbertVec.toVec_ofVec] using
+    HilbertVec.toVec_ofVec] using!
     (HilbertVec.continuousLinearEquivVec d).toContinuousLinearMap.comp_memLp' hF
 
 private theorem eLpNorm_vec_le_hilbertify

@@ -164,7 +164,7 @@ theorem tendsto_descendantsAverage_sq_scaled_cubeBesovPositiveVectorPartialSemin
   unfold descendantsAverage
   exact
     Filter.Tendsto.const_mul ((descendantsAtDepth Q n).card : ℝ)⁻¹
-      (tendsto_finset_sum (descendantsAtDepth Q n)
+      (tendsto_finsetSum (descendantsAtDepth Q n)
         (fun R hR =>
           tendsto_sq_scaled_cubeBesovPositiveVectorPartialSeminormTwo_atTop
             R s (Real.rpow (3 : ℝ) (s * (n : ℝ))) u (hLocalBdd R hR)))

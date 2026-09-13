@@ -133,7 +133,7 @@ theorem exists_shifted_quenchedLocalizedEstimate_interpolated
   intro t αbad P hP hStruct hΓ hσ_eq hparams
   dsimp only
   intro ht htb hα_nonneg hαt hαb hαharm hαa
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P

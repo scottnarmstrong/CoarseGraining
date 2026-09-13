@@ -198,7 +198,7 @@ theorem abs_setIntegral_energy_sub_le
       integral_sub hIE hIF, hpBtZY_eq, hpBZY0]; ring
   -- localize to `S`
   have hδ1S : (∫ x in S, δ1 x) = -G := by
-    rw [← setIntegral_eq_of_subset_of_ae_diff_eq_zero hU.nullMeasurableSet hSU hδ1_off]; exact hδ1U
+    rw [← setIntegral_eq_of_subset_of_ae_sdiff_eq_zero hU.nullMeasurableSet hSU hδ1_off]; exact hδ1U
   -- pointwise bound on `S`: `|δ1| ≤ 2√K·√eB·√eBtY`
   set h1 : Vec d → ℝ := fun x => 2 * Real.sqrt K * Real.sqrt (eB x) * Real.sqrt (eBtY x) with hh1
   have hbound1 : ∀ᵐ x ∂(volume.restrict S), |δ1 x| ≤ h1 x := by
@@ -246,7 +246,7 @@ theorem abs_setIntegral_energy_sub_le
         (ae_mono (Measure.restrict_mono hSU le_rfl) heBtY0U)
     -- monotonicity: `∫_S eBtY ≤ G`
     have hmono : (∫ x in S, eBtY x) ≤ G := by
-      rw [hG]; exact setIntegral_mono_set hID heBtY0U (HasSubset.Subset.eventuallyLE hSU)
+      rw [hG]; exact setIntegral_mono_set hID heBtY0U (LE.le.eventuallyLE hSU)
     have hsqrtES : (0 : ℝ) ≤ Real.sqrt ES := Real.sqrt_nonneg _
     have hmono' : Real.sqrt (∫ x in S, eBtY x) ≤ Real.sqrt G := Real.sqrt_le_sqrt hmono
     calc G = |∫ x in S, δ1 x| := habs
@@ -297,7 +297,7 @@ theorem abs_setIntegral_energy_sub_le
     have hδ2U : (∫ x in U, δ2 x) = (∫ x in U, eBtZ x) - Etot := by
       rw [hEtot]; exact integral_sub hIC hIA
     have hδ2S : (∫ x in S, δ2 x) = (∫ x in U, δ2 x) :=
-      (setIntegral_eq_of_subset_of_ae_diff_eq_zero hU.nullMeasurableSet hSU hδ2_off).symm
+      (setIntegral_eq_of_subset_of_ae_sdiff_eq_zero hU.nullMeasurableSet hSU hδ2_off).symm
     rw [hEttot_eq, hδ2S, hδ2U]; ring
   ------------------------------------------------------------------
   -- Step (iv): `|∫_S δ2| ≤ 2K·ES`.

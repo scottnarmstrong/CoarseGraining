@@ -65,14 +65,14 @@ theorem tendsto_eLpNorm_sub_mul_of_eventually_eq_one_on_compacts
       hg.eLpNorm_indicator_le (p := (2 : ENNReal)) (by norm_num)
         ENNReal.ofNat_ne_top hε_real_pos
     obtain ⟨K, hKU, hK_compact, hK_closed, hμK⟩ :=
-      hUopen.measurableSet.exists_isCompact_isClosed_diff_lt
+      hUopen.measurableSet.exists_isCompact_isClosed_sdiff_lt
         (μ := MeasureTheory.volume) hUfinite
         ((ENNReal.ofReal_pos.mpr hδpos).ne')
     have hsmall : volumeMeasureOn U (U \ K) ≤ ENNReal.ofReal δ := by
       unfold volumeMeasureOn
       rw [MeasureTheory.Measure.restrict_apply
         (hUopen.measurableSet.diff hK_closed.measurableSet)]
-      simpa [Set.inter_eq_self_of_subset_left (Set.diff_subset : U \ K ⊆ U)]
+      simpa [Set.inter_eq_self_of_subset_left (Set.sdiff_subset : U \ K ⊆ U)]
         using hμK.le
     have htail :=
       hδ (U \ K) (hUopen.measurableSet.diff hK_closed.measurableSet) hsmall
@@ -245,7 +245,7 @@ theorem tendsto_eLpNorm_euclideanCoordDeriv_mul_sub_of_tendsto_inner_of_boundary
       (η n).smooth.continuous.mul (contDiff_euclideanCoordDeriv hψ i).continuous
     have hcomp :
         HasCompactSupport (fun x => η n x * Dψ x) := by
-      simpa [Dψ] using ((η n).hasCompactSupport.mul_right :
+      simpa [Dψ] using! ((η n).hasCompactSupport.mul_right :
         HasCompactSupport (fun x => (η n : Vec d → ℝ) x * euclideanCoordDeriv i ψ x))
     simpa [U, MemScalarL2, volumeMeasureOn] using
       (hcont.memLp_of_hasCompactSupport hcomp).restrict U
@@ -255,12 +255,12 @@ theorem tendsto_eLpNorm_euclideanCoordDeriv_mul_sub_of_tendsto_inner_of_boundary
         Continuous (fun x => euclideanCoordDeriv i (η n : Vec d → ℝ) x) :=
       (contDiff_euclideanCoordDeriv (η n).smooth i).continuous
     have hcont : Continuous (B n) := by
-      simpa [B] using hDη_cont.mul hψ.continuous
+      simpa [B] using! hDη_cont.mul hψ.continuous
     have hDη_comp :
         HasCompactSupport (fun x => euclideanCoordDeriv i (η n : Vec d → ℝ) x) :=
       hasCompactSupport_euclideanCoordDeriv (η n).hasCompactSupport i
     have hcomp : HasCompactSupport (B n) := by
-      simpa [B] using (hDη_comp.mul_right :
+      simpa [B] using! (hDη_comp.mul_right :
         HasCompactSupport
           (fun x => euclideanCoordDeriv i (η n : Vec d → ℝ) x * ψ x))
     simpa [U, MemScalarL2, volumeMeasureOn] using

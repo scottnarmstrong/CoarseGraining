@@ -240,7 +240,7 @@ theorem localFluxDefectNegativeBesovLpAverage_rpow_eq_tsum_descendantsAtScale
           simpa only [f] using hterm R.1 R.2
         _ = ∑ R ∈ D, f R := Finset.sum_attach D f
         _ = _ := by rfl
-    simpa only [D] using congrArg
+    simpa only [D] using! congrArg
       (fun z : ℝ≥0∞ => ((descendantsAtScale Q n).card : ℝ≥0∞)⁻¹ * z) hsum
   rw [hinner, descendantsAtScaleENNAverage_negativeDepth_tsum_eq Q n hn s p F]
   rw [← ENNReal.tsum_mul_left]

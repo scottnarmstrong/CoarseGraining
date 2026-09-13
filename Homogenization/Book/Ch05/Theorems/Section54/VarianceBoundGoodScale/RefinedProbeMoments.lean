@@ -581,7 +581,7 @@ theorem coordinateProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
           fullBlockNormalizedQuadraticObservable_coordinateProbe_abs_le_weighted_factors_ae
             hP hStruct hP4 m α)
   refine ⟨?_, ?_⟩
-  · simpa [X, Ch04.restrictionCenteredOriginObservable] using hbridge.1
+  · simpa [X, Ch04.restrictionCenteredOriginObservable] using! hbridge.1
   · have hweighted :=
       coordinateProbe_weighted_moments_le_one_add_delta_mul_widetildeTheta
         hP hStruct hP4 hdelta_nonneg m hgood_upper hgood_lower α
@@ -594,7 +594,7 @@ theorem coordinateProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good
           ≤ 2 *
               (Cu * Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
                 Cl * Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi) := by
-            simpa [X, Ch04.restrictionCenteredOriginObservable, Cu, Cl] using hbridge.2
+            simpa [X, Ch04.restrictionCenteredOriginObservable, Cu, Cl] using! hbridge.2
       _ ≤ 2 * ((1 + delta) * widetildeThetaAtScale P 0 hP4) :=
             mul_le_mul_of_nonneg_left hweighted (by norm_num)
 
@@ -669,7 +669,7 @@ private theorem pairProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good_au
       (X := X) hX_meas
       (by simpa [X, Cu, Cl] using hbound)
   refine ⟨?_, ?_⟩
-  · simpa [X, Ch04.restrictionCenteredOriginObservable] using hbridge.1
+  · simpa [X, Ch04.restrictionCenteredOriginObservable] using! hbridge.1
   · have hweighted :=
       pairProbe_weighted_moments_le_four_mul_one_add_delta_mul_widetildeTheta
         hP hStruct hP4 hdelta_nonneg m hgood_upper hgood_lower α β
@@ -682,7 +682,7 @@ private theorem pairProbe_centeredOrigin_momentRoot_le_widetildeTheta_of_good_au
           ≤ 2 *
               (Cu * Ch04.LambdaMomentAtScale P 0 hP4.sUpper hP4.xi +
                 Cl * Ch04.lambdaInvMomentAtScale P 0 hP4.sLower hP4.xi) := by
-            simpa [X, Ch04.restrictionCenteredOriginObservable, Cu, Cl] using hbridge.2
+            simpa [X, Ch04.restrictionCenteredOriginObservable, Cu, Cl] using! hbridge.2
       _ ≤ 2 * (4 * ((1 + delta) * widetildeThetaAtScale P 0 hP4)) :=
             mul_le_mul_of_nonneg_left hweighted (by norm_num)
       _ = 8 * ((1 + delta) * widetildeThetaAtScale P 0 hP4) := by ring

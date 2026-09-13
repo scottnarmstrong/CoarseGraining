@@ -182,14 +182,14 @@ theorem integrable_responseJAdditivityDefectAtScale
         Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P := by
     intro R hR
     exact hDesc R (by
-      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR)
+      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using! hR)
   have hAvgInt :
       Integrable
         (fun a : RegCoeffField d =>
           descendantsAverage (originCube d m) (Int.toNat (m - k))
             (fun R => Ch04.restrictionResponseJObservableCubeSet R p q a)) P :=
     Ch04.integrable_descendantsAverage_restrictionResponseJObservableCubeSet hDescDepth
-  simpa [responseJAdditivityDefectAtScale] using hAvgInt.sub hParent
+  simpa [responseJAdditivityDefectAtScale] using! hAvgInt.sub hParent
 
 /-- The additivity-defect observable is nonnegative on the a.s. elliptic
 support of a Chapter 4 law carrier. -/
@@ -230,7 +230,7 @@ theorem integral_sqrt_responseJAdditivityDefectAtScale_mul_sqrt_childResponseAve
         Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P := by
     intro R hR
     exact hDesc R (by
-      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR)
+      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using! hR)
   have hChildInt :
       Integrable
         (fun a : RegCoeffField d =>
@@ -403,7 +403,7 @@ theorem integral_cutoffProductBridgeRHS_le_weakNormSquareProduct
             Real.sqrt
               (∫ a,
                 (Ch04.canonicalScalarResponseFluxWeakNormCubeSet Q t p q q0 a.toFun) ^ 2 ∂P)) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let scaledGrad : RegCoeffField d → ℝ :=
     fun a => Ch04.canonicalScalarResponseGradientWeakNormCubeSet Q s p q p0 a.toFun
   let scaledFlux : RegCoeffField d → ℝ :=
@@ -435,7 +435,7 @@ theorem integral_cutoffProductBridgeRHS_le_weakNormSquareProduct
         ∫ a, Cprod * (scaledGrad a * scaledFlux a) ∂P :=
     integral_mono_ae
       (by simpa [productPoint] using hProductInt) hConstProdInt
-      (by simpa [productPoint, scaledGrad, scaledFlux] using hProductPoint)
+      (by simpa [productPoint, scaledGrad, scaledFlux] using! hProductPoint)
   have hCauchy :
       ∫ a, scaledGrad a * scaledFlux a ∂P ≤
         Real.sqrt (∫ a, (scaledGrad a) ^ 2 ∂P) *

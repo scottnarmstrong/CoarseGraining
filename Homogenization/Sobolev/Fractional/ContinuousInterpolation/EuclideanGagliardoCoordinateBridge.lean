@@ -70,10 +70,14 @@ private theorem measurable_scalar_gagliardoKernel {d : ℕ}
     (i : Fin d) :
     Measurable (Gagliardo.gagliardoKernel s.1 (2 : ℝ≥0∞) (fun x => F x i)) := by
   unfold Gagliardo.gagliardoKernel
-  apply Measurable.smul
-  · exact measurable_dist.pow measurable_const
-  · exact ((continuous_apply i).measurable.comp (hF.comp measurable_fst)).sub
+  have hf : Measurable fun z : Vec d × Vec d =>
+      dist z.1 z.2 ^ (-Gagliardo.kernelExponent d s.1 (2 : ℝ≥0∞)) :=
+    measurable_dist.pow measurable_const
+  have hg : Measurable fun z : Vec d × Vec d =>
+      (fun x => F x i) z.1 - (fun x => F x i) z.2 :=
+    ((continuous_apply i).measurable.comp (hF.comp measurable_fst)).sub
       ((continuous_apply i).measurable.comp (hF.comp measurable_snd))
+  exact hf.smul hg
 
 private theorem measurable_scalar_gagliardoKernel_enorm_sq {d : ℕ}
     (s : FractionalOrder) (F : UnitCubeEuclideanL2Field d) (hF : Measurable F)
@@ -94,7 +98,7 @@ theorem coordinateGagliardoEnergy_eq_lintegral_sum {d : ℕ}
   unfold coordinateGagliardoEnergy
   rw [Finset.sum_congr rfl fun i _ =>
     sq_scalar_cubeGagliardoESeminorm_eq_lintegral s (fun x => F x i)]
-  rw [← lintegral_finset_sum' Finset.univ]
+  rw [← lintegral_finsetSum' Finset.univ]
   intro i _
   exact (measurable_scalar_gagliardoKernel_enorm_sq s F hF i).aemeasurable
 

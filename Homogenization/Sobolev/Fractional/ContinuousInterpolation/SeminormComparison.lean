@@ -21,7 +21,7 @@ private theorem rpow_half_mul_sq_add_mul_le (A B C D : ℝ≥0∞) :
       (A ^ (1 / 2 : ℝ) * max 1 (C ^ (1 / 2 : ℝ))) *
         (B + D ^ (1 / 2 : ℝ)) := by
   have hB : (B ^ 2) ^ (1 / 2 : ℝ) = B := by
-    simpa only [one_div] using
+    simpa only [one_div] using!
       ENNReal.pow_rpow_inv_natCast (n := 2) (by norm_num) B
   have hCD :
       (C * D) ^ (1 / 2 : ℝ) = C ^ (1 / 2 : ℝ) * D ^ (1 / 2 : ℝ) :=

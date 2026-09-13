@@ -113,7 +113,7 @@ theorem canonicalScalarResponseGradientWeakNormPartialCubeSet_le_highLowSplit
         simpa [F, aQ, grad] using
           JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube_memLp_descendant
             Q R aQ hR p q
-      simpa [gradDefect, grad, add_comm, sub_eq_add_neg] using
+      simpa [gradDefect, grad, add_comm, sub_eq_add_neg] using!
         cubeAverageVec_sub_const R grad p0 hgrad
   rw [← JUpperBoundWeakNorms.cubeBesovNegativeVectorPartialSeminorm_canonicalMaximizerGradientDefectOnDependentFamily_eq_ch04
     a ha Q s N p q p0]
@@ -211,7 +211,7 @@ theorem canonicalScalarResponseFluxWeakNormPartialCubeSet_le_highLowSplit
         simpa [F, aQ, flux] using
           JUpperBoundWeakNorms.canonicalMaximizerFluxOnCube_memLp_descendant
             Q R aQ hR p q
-      simpa [fluxDefect, flux, add_comm, sub_eq_add_neg] using
+      simpa [fluxDefect, flux, add_comm, sub_eq_add_neg] using!
         cubeAverageVec_sub_const R flux q0 hflux
   rw [← JUpperBoundWeakNorms.cubeBesovNegativeVectorPartialSeminorm_canonicalMaximizerFluxDefectOnDependentFamily_eq_ch04
     a ha Q t N p q q0]

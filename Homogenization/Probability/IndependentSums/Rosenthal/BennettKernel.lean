@@ -137,7 +137,7 @@ theorem rosenthal_bennett_kernel_integral_le
   have htail_dom :
       Integrable (fun r : ℝ => r ^ (-p / 2 - 1))
         (volume.restrict (Set.Ioi (Real.exp 2))) := by
-    simpa using
+    simpa using!
       (integrableOn_Ioi_rpow_of_lt (a := -p / 2 - 1) (by linarith) (by positivity : 0 < Real.exp 2))
   have htail_Ioi :
       Integrable f (volume.restrict (Set.Ioi (Real.exp 2))) := by
@@ -350,7 +350,7 @@ theorem integrableOn_rosenthal_bennett_kernel
   have htail_dom :
       Integrable (fun r : ℝ => r ^ (-p / 2 - 1))
         (volume.restrict (Set.Ioi (Real.exp 2))) := by
-    simpa using
+    simpa using!
       (integrableOn_Ioi_rpow_of_lt (a := -p / 2 - 1) (by linarith) (by positivity : 0 < Real.exp 2))
   have htail_Ioi :
       Integrable f (volume.restrict (Set.Ioi (Real.exp 2))) := by
@@ -551,7 +551,8 @@ theorem lintegral_rpow_sup'_abs_eq_scaled_tail
     have hnonneg : 0 ≤ Mfun hs.choose ω := by
       simp [Mfun]
     have hle : Mfun hs.choose ω ≤ M ω := by
-      simpa [M] using (Finset.le_sup' (f := fun i => Mfun i ω) hs.choose_spec)
+      rw [hM_eq]
+      exact Finset.le_sup' (f := fun i => |X i ω|) hs.choose_spec
     exact le_trans hnonneg hle
   have hY_nonneg : ∀ ω, 0 ≤ Y ω := by
     intro ω

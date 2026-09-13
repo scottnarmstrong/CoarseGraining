@@ -51,7 +51,7 @@ theorem cubeAmbientHilbertWspESeminorm_eq_lintegral {d : ℕ}
       (∫⁻ z, ‖cubeAmbientHilbertWspKernel s p F z‖ₑ ^ p.exponent.toReal
         ∂Gagliardo.gagliardoCubeMeasure Q) ^ (1 / p.exponent.toReal) := by
   unfold cubeAmbientHilbertWspESeminorm
-  exact eLpNorm_eq_lintegral_rpow_enorm
+  exact eLpNorm_eq_lintegral_rpow_enorm_toReal
     (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne
 
 /-- The scalar coordinates of the intermediate vector kernel are precisely
@@ -82,7 +82,7 @@ theorem cubeAmbientHilbertWspKernel_enorm_rpow {d : ℕ}
         ENNReal.ofReal (euclideanNorm (F z.1 - F z.2) ^ p.exponent.toReal) := by
   have hp : 0 < p.exponent.toReal :=
     ENNReal.toReal_pos (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne
-  rw [← ofReal_norm_eq_enorm]
+  rw [← ofReal_norm]
   rw [ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) hp.le]
   simp only [cubeAmbientHilbertWspKernel_apply, norm_smul, Real.norm_eq_abs,
     abs_of_nonneg (Real.rpow_nonneg dist_nonneg _), ← euclideanNorm_eq_norm_ofVec]
@@ -124,7 +124,7 @@ theorem cubeEuclideanWspKernel_enorm_rpow {d : ℕ}
         ENNReal.ofReal (euclideanNorm (F z.1 - F z.2) ^ p.exponent.toReal) := by
   have hp : 0 < p.exponent.toReal :=
     ENNReal.toReal_pos (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne
-  rw [← ofReal_norm_eq_enorm]
+  rw [← ofReal_norm]
   rw [ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) hp.le]
   simp only [norm_cubeEuclideanWspKernel]
   rw [Real.mul_rpow (Real.rpow_nonneg (euclideanDist_nonneg _ _) _)
@@ -303,10 +303,14 @@ private theorem scalar_gagliardoKernel_measurable {d : ℕ}
     (hF : Measurable F) (i : Fin d) :
     Measurable (Gagliardo.gagliardoKernel s.1 p.exponent (fun x => F x i)) := by
   unfold Gagliardo.gagliardoKernel
-  apply Measurable.smul
-  · exact measurable_dist.pow measurable_const
-  · exact ((continuous_apply i).measurable.comp (hF.comp measurable_fst)).sub
+  have hf : Measurable fun z : Vec d × Vec d =>
+      dist z.1 z.2 ^ (-Gagliardo.kernelExponent d s.1 p.exponent) :=
+    measurable_dist.pow measurable_const
+  have hg : Measurable fun z : Vec d × Vec d =>
+      (fun x => F x i) z.1 - (fun x => F x i) z.2 :=
+    ((continuous_apply i).measurable.comp (hF.comp measurable_fst)).sub
       ((continuous_apply i).measurable.comp (hF.comp measurable_snd))
+  exact hf.smul hg
 
 private theorem scalar_gagliardoKernel_enorm_rpow_measurable {d : ℕ}
     (s : FractionalOrder) (p : FiniteLpExponent) (F : Vec d → Vec d)
@@ -344,7 +348,7 @@ theorem cubeCoordinateGagliardoPowerEnergy_eq_lintegral_sum {d : ℕ}
   unfold cubeCoordinateGagliardoPowerEnergy
   rw [Finset.sum_congr rfl fun i _ =>
     scalar_cubeGagliardoESeminorm_rpow_eq_lintegral Q s p (fun x => F x i)]
-  rw [← lintegral_finset_sum' Finset.univ]
+  rw [← lintegral_finsetSum' Finset.univ]
   intro i _
   exact (scalar_gagliardoKernel_enorm_rpow_measurable s p F hF i).aemeasurable
 
@@ -459,7 +463,7 @@ theorem cubeCoordinateGagliardoPowerEnergy_le_dimension_mul_ambientHilbert
     (fun z => (cubeAmbientHilbertWspKernel s p F z).toVec)
   simpa only [cubeCoordinateGagliardoPowerEnergy,
     cubeAmbientHilbertWspESeminorm, HilbertVec.ofVec_toVec,
-    cubeAmbientHilbertWspKernel_coordinate] using h
+    cubeAmbientHilbertWspKernel_coordinate] using! h
 
 /-- The explicit finite-dimensional coordinate factor in the reverse
 Hilbert-vector comparison. -/
@@ -508,7 +512,7 @@ theorem cubeAmbientHilbertWspESeminorm_rpow_le_coordinateGagliardoPowerEnergy
             Gagliardo.cubeGagliardoESeminorm Q s.1 p.exponent (fun x => F x i)) ^
               p.exponent.toReal := by
       simpa only [cubeAmbientHilbertWspESeminorm, HilbertVec.ofVec_toVec,
-        HilbertVec.toVec, cubeAmbientHilbertWspKernel_coordinate] using hvector
+        HilbertVec.toVec, cubeAmbientHilbertWspKernel_coordinate] using! hvector
     _ ≤ ‖(d : ℝ)‖ₑ ^ p.exponent.toReal *
         ((d : ℝ≥0∞) ^ (p.exponent.toReal - 1) *
           cubeCoordinateGagliardoPowerEnergy Q s p F) := by

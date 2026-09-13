@@ -76,16 +76,8 @@ private theorem pairedComponentSum_le
 private theorem sq_sum_four_le_const_sum_sq (a b c d : ℝ) :
     (a + b + c + d) ^ 2 ≤
       4 * (a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2) := by
-  have h :=
-    sq_sum_le_card_mul_sum_sq
-      (s := Finset.univ) (f := fun i : Fin 4 =>
-        match i with
-        | ⟨0, _⟩ => a
-        | ⟨1, _⟩ => b
-        | ⟨2, _⟩ => c
-        | _ => d)
-  norm_num at h ⊢
-  simpa [Fin.sum_univ_four, add_assoc, add_comm, add_left_comm] using h
+  nlinarith [sq_nonneg (a - b), sq_nonneg (a - c), sq_nonneg (a - d),
+    sq_nonneg (b - c), sq_nonneg (b - d), sq_nonneg (c - d)]
 
 private theorem norm_sq_le_vecNormSq {d : ℕ} (v : Vec d) :
     ‖v‖ ^ 2 ≤ vecNormSq v := by
@@ -477,7 +469,7 @@ theorem paired_weakNormSquares_special_le_componentIntegrals
               (WeakNormsMaximizer.fluxConstantTailAtScale
                 (m : ℤ) (k : ℤ) t q0_e) ^ 2)) := by
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   dsimp only
   let β := section53CoarseFluctuationBeta hP4
   let s := hP4.sLower + 2 * β
@@ -540,7 +532,7 @@ theorem paired_weakNormSquares_special_le_componentIntegrals
       hGradWeakSqInt.const_mul σ
     have hF : Integrable (fun a : RegCoeffField d => σ⁻¹ * (fluxWeak a) ^ 2) P :=
       hFluxWeakSqInt.const_mul σ⁻¹
-    simpa [W] using hG.add hF
+    simpa [W] using! hG.add hF
   have hHigh := integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
       hP hstat hStruct hP4 hkm e he
   rcases integral_paired_mismatchTermSquares_special_le_coarseFluctuationTerms_uniform
@@ -612,9 +604,9 @@ theorem paired_weakNormSquares_special_le_componentIntegrals
     let HML : RegCoeffField d → ℝ := fun a => HM a + K ^ 2 * L a
     let TC : RegCoeffField d → ℝ := fun _ => K ^ 2 * T
     have hHMInt : Integrable HM P := by
-      simpa [HM] using hHInt.add (hMInt.const_mul (K ^ 2))
+      simpa [HM] using! hHInt.add (hMInt.const_mul (K ^ 2))
     have hHMLInt : Integrable HML P := by
-      simpa [HML] using hHMInt.add (hLInt.const_mul (K ^ 2))
+      simpa [HML] using! hHMInt.add (hLInt.const_mul (K ^ 2))
     have hTCInt : Integrable TC P := by
       simpa [TC] using integrable_const (K ^ 2 * T : ℝ)
     have hBody :
@@ -784,7 +776,7 @@ theorem paired_weakNormSquares_special_le_coarseFluctuationTerms
     exact mul_nonneg (by norm_num) hC0_nonneg
   refine ⟨C, hC_nonneg, ?_⟩
   intro P hP hstat hStruct hP4 hparams k m hkm e he hGradSq hFluxSq
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   subst params
   let β := section53CoarseFluctuationBeta hP4
   let s := hP4.sLower + 2 * β

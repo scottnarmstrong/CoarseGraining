@@ -112,10 +112,10 @@ theorem ResponseJ_cubeSet_eq_openCubeSet_of_triadicCube_reproved {d : ℕ} [NeZe
   let z : Vec d := fun i => (Q.index i : ℝ) * cubeScaleFactor Q
   have hcube :
       cubeSet Q = translateSet z (cubeSet (originCube d Q.scale)) := by
-    simpa [z] using cubeSet_eq_translateSet_originCube_of_triadicCube Q
+    simpa [z] using! cubeSet_eq_translateSet_originCube_of_triadicCube Q
   have hopen :
       openCubeSet Q = translateSet z (openCubeSet (originCube d Q.scale)) := by
-    simpa [z] using openCubeSet_eq_translateSet_originCube_of_triadicCube Q
+    simpa [z] using! openCubeSet_eq_translateSet_originCube_of_triadicCube Q
   calc
     ResponseJ (cubeSet Q) p q a
         = ResponseJ (translateSet z (cubeSet (originCube d Q.scale))) p q a := by
@@ -255,7 +255,7 @@ theorem normalizedBlockResponseMax_le_maxDescendantNormalizedBlockResponseAtScal
     normalizedBlockResponseMax Q a a0 ≤
       maxDescendantNormalizedBlockResponseAtScale Q k a a0 := by
   classical
-  letI := isFiniteMeasureVolumeMeasureOnCubeSet Q
+  let := isFiniteMeasureVolumeMeasureOnCubeSet Q
   let j : ℕ := Int.toNat (Q.scale - k)
   have hj : (j : ℤ) = Q.scale - k := by
     dsimp [j]
@@ -338,7 +338,7 @@ theorem normalizedBlockResponseMax_le_maxDescendantNormalizedBlockResponseAtScal
     have hRk : R ∈ descendantsAtScale Q k := by
       rw [descendantsAtScale_eq_descendantsAtDepth Q hk]
       simpa [j] using hR
-    letI := isFiniteMeasureVolumeMeasureOnCubeSet R
+    let := isFiniteMeasureVolumeMeasureOnCubeSet R
     have hEllR :
         IsEllipticFieldOn lam Lam (cubeSet R) a :=
       IsEllipticFieldOn.mono hEll (measurableSet_cubeSet R)

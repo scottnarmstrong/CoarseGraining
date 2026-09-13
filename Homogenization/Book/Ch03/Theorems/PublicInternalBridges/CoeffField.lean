@@ -473,7 +473,7 @@ theorem blockJ_cubeSet_publicCoeffField_eq_ch02_doubledResponseJ
     BlockJ (cubeSet R) P Q' (publicCoeffField Q a) =
       Ch02.doubledResponseJ (Ch02.cubeDomain R) (a.coeffOn R) P Q' := by
   let A : CoeffField d := publicCoeffField Q a
-  letI := isFiniteMeasureVolumeMeasureOnCubeSet R
+  let := isFiniteMeasureVolumeMeasureOnCubeSet R
   have hsubOpen : openCubeSet R ⊆ openCubeSet Q :=
     openCubeSet_subset_of_mem_descendantsAtScale hk hR
   let aRpw : Ch02.CoeffOn (Ch02.cubeDomain R) :=

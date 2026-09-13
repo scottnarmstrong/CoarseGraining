@@ -114,7 +114,7 @@ private theorem integral_vecDot_grad_const_eq_zero
     (α10 : H10Function (openCubeSet (originCube d m))) (c : Vec d) :
     ∫ x in openCubeSet (originCube d m),
         vecDot (α10.toH1Function.grad x) c ∂volume = 0 := by
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   have hmz :
       (fun i => ∫ x in openCubeSet (originCube d m),
         α10.toH1Function.grad x i ∂volume) = 0 :=
@@ -131,7 +131,7 @@ private theorem integral_vecDot_grad_const_eq_zero
             ∑ i, α10.toH1Function.grad x i * c i ∂volume := rfl
     _ = ∑ i, ∫ x in openCubeSet (originCube d m),
             α10.toH1Function.grad x i * c i ∂volume :=
-          MeasureTheory.integral_finset_sum _ (fun i _ => hInt i)
+          MeasureTheory.integral_finsetSum _ (fun i _ => hInt i)
     _ = ∑ i, (∫ x in openCubeSet (originCube d m),
             α10.toH1Function.grad x i ∂volume) * c i := by
           refine Finset.sum_congr rfl (fun i _ => ?_)
@@ -162,7 +162,7 @@ private theorem coupledWeakForm_aux {P : BlockVec d}
         Z.flux x) :
     CoupledWeakForm a (openCubeSet (originCube d m)) P.2 v vstar := by
   intro φ φstar hMemSum
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   -- abbreviations
   set Av : Vec d → Vec d := fun x => matVecMul (a x) (v.grad x) with hAv
   set As : Vec d → Vec d := fun x => matVecMul (matTranspose (a x)) (vstar.grad x) with hAs
@@ -340,7 +340,7 @@ theorem exists_coupledRepresentation
             2 * vecDot (vstar.grad x) (matVecMul (symmPart (a x)) (vstar.grad x))) := by
   classical
   set U := openCubeSet (originCube d m) with hUdef
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   have hUopen : IsOpen U := isOpen_openCubeSet (originCube d m)
   -- Ellipticity transferred to the open cube.
   have hEllO : IsEllipticFieldOn 1 Θ U a :=

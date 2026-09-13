@@ -157,7 +157,7 @@ theorem shiftedOneStepContraction_homogenizationScale_of_local_shifted_budget
     have hβeq_k :
         section53CoarseFluctuationBeta hP4k =
           section53CoarseFluctuationBetaParams params := by
-      simpa [hP4k, QuantitativeCoarseGrainedEllipticity.scaleNormalized] using hβeq
+      simpa [hP4k, QuantitativeCoarseGrainedEllipticity.scaleNormalized] using! hβeq
     have hshift :=
       shiftedWidetildeThetaAtScale_restrictionScaleNormalizedLaw hP hStruct hP4
         (η := section53CoarseFluctuationBetaParams params)

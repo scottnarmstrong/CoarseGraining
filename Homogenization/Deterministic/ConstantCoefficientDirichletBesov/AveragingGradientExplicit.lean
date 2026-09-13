@@ -82,7 +82,6 @@ theorem euclideanCoordDeriv_averagingField_coord_sq_le
     dsimp [A, overlapCentersAtDepthContaining]
     refine Finset.sum_filter_of_ne ?_
     intro S hS hb
-    dsimp [b, a]
     by_contra hxS
     have hzero : euclideanCoordDeriv k (P.weight S) x = 0 :=
       P.coordDeriv_zero_of_not_mem_overlap (S := S) (x := x) k

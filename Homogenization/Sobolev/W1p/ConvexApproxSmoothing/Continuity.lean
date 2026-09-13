@@ -68,7 +68,7 @@ theorem ae_eq_fderiv_convexApproxSmoothRepresentative_apply_basisVec
       Continuous
         (fun x => (1 - ε) *
           Homogenization.convexApproxSmoothRepresentative U ρ gi x0 r ε x) := by
-    simpa using continuous_const.mul hgi_smooth.continuous
+    simpa using! continuous_const.mul hgi_smooth.continuous
   have hclassLoc :
       MeasureTheory.LocallyIntegrableOn
         (fun x => (fderiv ℝ
@@ -85,29 +85,34 @@ theorem ae_eq_fderiv_convexApproxSmoothRepresentative_apply_basisVec
 
 theorem continuous_convexApproxSample_right {d : ℕ} (x0 : Vec d) (r ε : ℝ) (x : Vec d) :
     Continuous (fun z : Vec d => convexApproxSample x0 z r ε x) := by
-  simpa [convexApproxSample] using
-    continuous_const.add
-      (continuous_const.smul
-        (continuous_const.sub (continuous_const.smul continuous_id)))
+  simpa [convexApproxSample] using!
+    (continuous_const : Continuous (fun _ : Vec d => (1 - ε) • x)).add
+      ((continuous_const : Continuous (fun _ : Vec d => ε)).smul
+        ((continuous_const : Continuous (fun _ : Vec d => x0)).sub
+          ((continuous_const : Continuous (fun _ : Vec d => r)).smul
+            (continuous_id : Continuous (fun z : Vec d => z)))))
 
 theorem continuous_convexApproxSample_prod {d : ℕ} (x0 : Vec d) (r ε : ℝ) :
     Continuous (fun p : Vec d × Vec d => convexApproxSample x0 p.2 r ε p.1) := by
-  simpa [convexApproxSample] using
-    (continuous_const.smul continuous_fst).add
-      (continuous_const.smul
-        (continuous_const.sub (continuous_const.smul continuous_snd)))
+  simpa [convexApproxSample] using!
+    ((continuous_const : Continuous (fun _ : Vec d × Vec d => 1 - ε)).smul
+        (continuous_fst : Continuous (fun p : Vec d × Vec d => p.1))).add
+      ((continuous_const : Continuous (fun _ : Vec d × Vec d => ε)).smul
+        ((continuous_const : Continuous (fun _ : Vec d × Vec d => x0)).sub
+          ((continuous_const : Continuous (fun _ : Vec d × Vec d => r)).smul
+            (continuous_snd : Continuous (fun p : Vec d × Vec d => p.2)))))
 
 theorem continuous_convexApproxIntegrand_right {d : ℕ} {ρ u : Vec d → ℝ}
     (hρ : Continuous ρ) (hu : Continuous u)
     (x0 : Vec d) (r ε : ℝ) (x : Vec d) :
     Continuous (fun z => convexApproxIntegrand ρ u x0 r ε x z) := by
-  simpa [convexApproxIntegrand] using
+  simpa [convexApproxIntegrand] using!
     hρ.mul (hu.comp (continuous_convexApproxSample_right x0 r ε x))
 
 theorem continuous_convexApproxIntegrand_left {d : ℕ} {ρ u : Vec d → ℝ}
     (hu : Continuous u) (x0 z : Vec d) (r ε : ℝ) :
     Continuous (fun x => convexApproxIntegrand ρ u x0 r ε x z) := by
-  simpa [convexApproxIntegrand] using
+  simpa [convexApproxIntegrand] using!
     continuous_const.mul (hu.comp (continuous_convexApproxSample x0 z r ε))
 
 theorem continuous_convexApproxIntegrand_prod {d : ℕ} {ρ u : Vec d → ℝ}
@@ -117,7 +122,7 @@ theorem continuous_convexApproxIntegrand_prod {d : ℕ} {ρ u : Vec d → ℝ}
   have hρ' : Continuous (fun p : Vec d × Vec d => ρ p.2) := hρ.comp continuous_snd
   have hu' : Continuous (fun p : Vec d × Vec d => u (convexApproxSample x0 p.2 r ε p.1)) :=
     hu.comp (continuous_convexApproxSample_prod x0 r ε)
-  simpa [convexApproxIntegrand] using hρ'.mul hu'
+  simpa [convexApproxIntegrand] using! hρ'.mul hu'
 
 theorem tsupport_convexApproxIntegrand_subset {d : ℕ} {ρ u : Vec d → ℝ}
     (x0 : Vec d) (r ε : ℝ) (x : Vec d) :
@@ -129,7 +134,7 @@ theorem tsupport_convexApproxIntegrand_subset {d : ℕ} {ρ u : Vec d → ℝ}
 theorem hasCompactSupport_convexApproxIntegrand {d : ℕ} {ρ u : Vec d → ℝ}
     (hρ : HasCompactSupport ρ) (x0 : Vec d) (r ε : ℝ) (x : Vec d) :
     HasCompactSupport (fun z => convexApproxIntegrand ρ u x0 r ε x z) := by
-  simpa [convexApproxIntegrand] using
+  simpa [convexApproxIntegrand] using!
     (hρ.mul_right : HasCompactSupport
       (fun z => ρ z * u (convexApproxSample x0 z r ε x)))
 
@@ -150,7 +155,7 @@ theorem continuous_convexApproxDifferenceIntegrand {d : ℕ} {ρ u : Vec d → �
 theorem hasCompactSupport_convexApproxDifferenceIntegrand {d : ℕ} {ρ u : Vec d → ℝ}
     (hρ_compact : HasCompactSupport ρ) (x0 : Vec d) (r ε : ℝ) (x : Vec d) :
     HasCompactSupport (fun z => ρ z * (u (convexApproxSample x0 z r ε x) - u x)) := by
-  simpa using
+  simpa using!
     (hρ_compact.mul_right : HasCompactSupport
       (fun z => ρ z * (u (convexApproxSample x0 z r ε x) - u x)))
 
@@ -173,7 +178,7 @@ theorem continuous_convexApproxWeightedOscillation {d : ℕ} {ρ u : Vec d → �
 theorem hasCompactSupport_convexApproxWeightedOscillation {d : ℕ} {ρ u : Vec d → ℝ}
     (hρ_compact : HasCompactSupport ρ) (x0 : Vec d) (r ε : ℝ) (x : Vec d) :
     HasCompactSupport (fun z => ρ z * |u (convexApproxSample x0 z r ε x) - u x|) := by
-  simpa using
+  simpa using!
     (hρ_compact.mul_right : HasCompactSupport
       (fun z => ρ z * |u (convexApproxSample x0 z r ε x) - u x|))
 
@@ -190,7 +195,7 @@ theorem integrable_convexApproxKernelMulConst {d : ℕ} {ρ : Vec d → ℝ}
     MeasureTheory.Integrable (fun z => ρ z * c) := by
   have hcont : Continuous (fun z => ρ z * c) := hρ.mul continuous_const
   have hcomp : HasCompactSupport (fun z => ρ z * c) := by
-    simpa using (hρ_compact.mul_right : HasCompactSupport (fun z => ρ z * c))
+    simpa using! (hρ_compact.mul_right : HasCompactSupport (fun z => ρ z * c))
   exact hcont.integrable_of_hasCompactSupport hcomp
 
 theorem continuous_convexApproxSmoothing {d : ℕ} {ρ u : Vec d → ℝ}
@@ -199,8 +204,8 @@ theorem continuous_convexApproxSmoothing {d : ℕ} {ρ u : Vec d → ℝ}
     Continuous (convexApproxSmoothing ρ u x0 r ε) := by
   have hcont :
       Continuous (Function.uncurry (fun x z => convexApproxIntegrand ρ u x0 r ε x z)) := by
-    simpa [Function.uncurry] using continuous_convexApproxIntegrand_prod hρ hu x0 r ε
-  simpa [convexApproxSmoothing] using
+    simpa [Function.uncurry] using! continuous_convexApproxIntegrand_prod hρ hu x0 r ε
+  simpa [convexApproxSmoothing] using!
     (continuous_parametric_integral_of_continuous
       (μ := MeasureTheory.volume)
       (f := fun x z => convexApproxIntegrand ρ u x0 r ε x z)
@@ -225,7 +230,7 @@ theorem continuous_convexApproxFDerivIntegrand_right {d : ℕ} {ρ u : Vec d →
   have hfderiv :
       Continuous (fun z => fderiv ℝ u (convexApproxSample x0 z r ε x)) :=
     (hu.continuous_fderiv (by simp)).comp (continuous_convexApproxSample_right x0 r ε x)
-  simpa [convexApproxFDerivIntegrand] using hscalar.smul hfderiv
+  simpa [convexApproxFDerivIntegrand] using! hscalar.smul hfderiv
 
 theorem hasCompactSupport_convexApproxFDerivIntegrand {d : ℕ} {ρ u : Vec d → ℝ}
     (hρ_compact : HasCompactSupport ρ) (x0 : Vec d) (r ε : ℝ) (x : Vec d) :
@@ -368,9 +373,10 @@ theorem hasFDerivAt_convexApproxSmoothing_of_contDiff {d : ℕ} {ρ u : Vec d �
   have hmain :
       HasFDerivAt (fun x' => ∫ z, F x' z ∂μ) (∫ z, F' x z ∂μ) x := by
     exact hasFDerivAt_integral_of_dominated_of_fderiv_le
-      (x₀ := x) (μ := μ) (ε := 1) (F := F) (F' := F') (bound := bound)
-      zero_lt_one hF_meas hF_int hF'_meas h_bound hbound_integrable h_diff
-  simpa [convexApproxSmoothing, μ, F, F'] using hmain
+      (x₀ := x) (μ := μ) (s := Metric.ball x 1) (hs := Metric.ball_mem_nhds x zero_lt_one)
+      (F := F) (F' := F') (bound := bound)
+      hF_meas hF_int hF'_meas h_bound hbound_integrable h_diff
+  simpa [convexApproxSmoothing, μ, F, F'] using! hmain
 
 theorem fderiv_convexApproxSmoothing_of_contDiff {d : ℕ} {ρ u : Vec d → ℝ}
     (hρ : IsConvexApproxKernel ρ) (hu : ContDiff ℝ 1 u)

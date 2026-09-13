@@ -132,7 +132,7 @@ theorem normalizedAverage_eq_zero_of_mem_solenoidalZeroNormalTraceHilbertL2
     (hg : g ∈ SolenoidalZeroNormalTraceHilbertL2 U hU hne) :
     (hU.toBoundedMeasurableDomain hne).average g (by
       change MeasureTheory.Integrable g (volumeMeasureOn U)
-      letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
+      let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
         hU.isFiniteMeasure_restrict_volume
       exact (MeasureTheory.Lp.memLp g).integrable (by norm_num : (1 : ENNReal) ≤ 2)) = 0 :=
   PotentialSolenoidalExact.average_eq_zero_of_mem_solenoidalZeroNormalTrace hU hne g hg

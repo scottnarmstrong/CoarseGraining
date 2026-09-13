@@ -170,7 +170,7 @@ theorem normalizedBlockResponseValueSet_bddAbove_of_mem_descendantsAtScale
   have hEllRpw :
       IsEllipticFieldOn aRpw.lam aRpw.Lam
         (cubeDomain R : Set (Vec d)) aRpw.toCoeffField := by
-    simpa [aRpw, cubeDomain_coe, A] using hEllR
+    simpa [aRpw, cubeDomain_coe, A] using! hEllR
   have hJ :
       doubledResponseJ (cubeDomain R) (a.coeffOn R) P Q' =
         BlockJ (openCubeSet R) P Q' A := by
@@ -220,7 +220,7 @@ theorem normalizedBlockResponseValueSet_bddAbove_of_mem_descendantsAtScale
     rw [blockVecDot_ofFullBlockVec_self_eq_fullBlockVecNormSq]
     exact fullBlockVecNormSq_mulVec_le_rowAbsSqBound_of_eq_one _ he
   rw [hJ]
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet R)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet R)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet R).isFiniteMeasure_restrict_volume
   calc
@@ -288,7 +288,7 @@ theorem normalizedBlockResponseMax_le_uniform_of_mem_descendantsAtScale
   have hEllRpw :
       IsEllipticFieldOn aRpw.lam aRpw.Lam
         (cubeDomain R : Set (Vec d)) aRpw.toCoeffField := by
-    simpa [aRpw, cubeDomain_coe, A] using hEllR
+    simpa [aRpw, cubeDomain_coe, A] using! hEllR
   have hJ :
       doubledResponseJ (cubeDomain R) (a.coeffOn R) P Q' =
         BlockJ (openCubeSet R) P Q' A := by
@@ -338,7 +338,7 @@ theorem normalizedBlockResponseMax_le_uniform_of_mem_descendantsAtScale
     rw [blockVecDot_ofFullBlockVec_self_eq_fullBlockVecNormSq]
     exact fullBlockVecNormSq_mulVec_le_rowAbsSqBound_of_eq_one _ he
   rw [hJ, ← hB]
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet R)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet R)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet R).isFiniteMeasure_restrict_volume
   calc

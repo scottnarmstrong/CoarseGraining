@@ -154,7 +154,7 @@ theorem integral_abs_finsetSum_pow_rpow_inv_le_rosenthal_uniform_descendantsAtSc
         intro R _hR
         exact hLp_int R.1 (mem_descendantsAtScaleScaleColorClass_iff.mp R.2).1
       have h_sum :=
-        memLp_finset_sum
+        memLp_finsetSum
           ((descendantsAtScaleScaleColorClass Q k c).attach)
           (fun R hR =>
             (integrable_norm_rpow_iff

@@ -155,7 +155,7 @@ theorem stronglyMeasurable_canonicalMinimizer_carrier
   have hExists : ∀ m : ℕ, ∀ ω : Ω, ∃ n : ℕ, energy ω n ≤ Mu U P (A ω).toFun + ε m := by
     intro m ω
     have hmu : Mu U P (A ω).toFun = ⨅ n : ℕ, energy ω n := by
-      simpa [energy, U, ξ] using
+      simpa [energy, U, ξ] using!
         mu_eq_iInf_blockEnergyAverage_canonicalAEEMuGenerator Q k (slicePt Q A hSlice ω) P
     have hlt : (⨅ n : ℕ, energy ω n) < (⨅ n : ℕ, energy ω n) + ε m := by
       have hpos : 0 < ε m := by simp only [ε]; positivity
@@ -195,11 +195,12 @@ theorem stronglyMeasurable_canonicalMinimizer_carrier
       intro m
       change candidate (index m ω) - H.constantField P ∈
         (canonicalAEEMuCorrectionSpaceData Q).correctionSpace
-      simp [candidate, H, a, U, canonicalAEEMuOperatorSystemData,
-        canonicalAEEMuCorrectionSpaceData, canonicalAEEPotentialSolenoidalL2Data,
-        AEEMuOperatorSystemData.toMuHilbertRealization,
-        MuOperatorRealization.toMuHilbertRealization, MuHilbertRealization.ofOperator,
-        sub_eq_add_neg, add_assoc, add_comm]
+      have hconst : H.constantField P = blockVecToHilbertBlockL2Const (U := U) P := rfl
+      have hcand : candidate (index m ω) =
+          blockVecToHilbertBlockL2Const (U := U) P +
+            (canonicalMuCorrectionGeneratorEmbedding U (ξ (index m ω)) : HilbertBlockL2 U) := rfl
+      rw [hcand, hconst, add_sub_cancel_left]
+      exact (canonicalMuCorrectionGeneratorEmbedding U (ξ (index m ω))).2
     have hnear :
         ∀ m : ℕ,
           quadraticEnergy H.energyBilin (candidate (index m ω)) ≤
@@ -212,7 +213,7 @@ theorem stronglyMeasurable_canonicalMinimizer_carrier
       have hqe :
           quadraticEnergy H.energyBilin (candidate (index m ω)) =
             energy ω (index m ω) := by
-        simpa [H, a, candidate, energy, U, ξ] using
+        simpa [H, a, candidate, energy, U, ξ] using!
           canonicalAEEMuOperatorSystemData_quadraticEnergy_generatorAffine_eq_blockEnergyAverage
             Q k a P (ξ (index m ω))
       have hmu :
@@ -221,7 +222,7 @@ theorem stronglyMeasurable_canonicalMinimizer_carrier
               (affineMinimizerMap K H.energyBilin H.energyCoercive (H.constantField P)) := by
         simpa [H, a, K, U, MuHilbertRealization.muCandidate, MuHilbertProblem.muCandidate,
           MuHilbertRealization.minimizerMap, MuHilbertProblem.minimizerMap,
-          parameterAffineMinimizerMap] using
+          parameterAffineMinimizerMap] using!
           mu_eq_canonicalAEEMuCandidate Q k a P
       calc
         quadraticEnergy H.energyBilin (candidate (index m ω))
@@ -239,7 +240,7 @@ theorem stronglyMeasurable_canonicalMinimizer_carrier
           affineMinimizerMap K H.energyBilin H.energyCoercive (H.constantField P)) :=
     stronglyMeasurable_of_tendsto atTop hApprox_strong hlim
   simpa [U, K, MuHilbertRealization.minimizerMap, MuHilbertProblem.minimizerMap,
-    parameterAffineMinimizerMap] using hAffine
+    parameterAffineMinimizerMap] using! hAffine
 
 /-- **Carrier fixed-test energy-pairing measurability against the canonical
 minimizer.**  Generic re-aim of
@@ -279,7 +280,7 @@ theorem measurable_energyBilin_fixed_canonicalMinimizer_carrier
   have hExists : ∀ m : ℕ, ∀ ω : Ω, ∃ n : ℕ, energy ω n ≤ Mu U P (A ω).toFun + ε m := by
     intro m ω
     have hmu : Mu U P (A ω).toFun = ⨅ n : ℕ, energy ω n := by
-      simpa [energy, U, ξ] using
+      simpa [energy, U, ξ] using!
         mu_eq_iInf_blockEnergyAverage_canonicalAEEMuGenerator Q k (slicePt Q A hSlice ω) P
     have hlt : (⨅ n : ℕ, energy ω n) < (⨅ n : ℕ, energy ω n) + ε m := by
       have hpos : 0 < ε m := by simp only [ε]; positivity
@@ -343,11 +344,12 @@ theorem measurable_energyBilin_fixed_canonicalMinimizer_carrier
       intro m
       change candidate (index m ω) - H.constantField P ∈
         (canonicalAEEMuCorrectionSpaceData Q).correctionSpace
-      simp [candidate, H, a, U, canonicalAEEMuOperatorSystemData,
-        canonicalAEEMuCorrectionSpaceData, canonicalAEEPotentialSolenoidalL2Data,
-        AEEMuOperatorSystemData.toMuHilbertRealization,
-        MuOperatorRealization.toMuHilbertRealization, MuHilbertRealization.ofOperator,
-        sub_eq_add_neg, add_assoc, add_comm]
+      have hconst : H.constantField P = blockVecToHilbertBlockL2Const (U := U) P := rfl
+      have hcand : candidate (index m ω) =
+          blockVecToHilbertBlockL2Const (U := U) P +
+            (canonicalMuCorrectionGeneratorEmbedding U (ξ (index m ω)) : HilbertBlockL2 U) := rfl
+      rw [hcand, hconst, add_sub_cancel_left]
+      exact (canonicalMuCorrectionGeneratorEmbedding U (ξ (index m ω))).2
     have hnear :
         ∀ m : ℕ,
           quadraticEnergy H.energyBilin (candidate (index m ω)) ≤
@@ -360,7 +362,7 @@ theorem measurable_energyBilin_fixed_canonicalMinimizer_carrier
       have hqe :
           quadraticEnergy H.energyBilin (candidate (index m ω)) =
             energy ω (index m ω) := by
-        simpa [H, a, candidate, energy, U, ξ] using
+        simpa [H, a, candidate, energy, U, ξ] using!
           canonicalAEEMuOperatorSystemData_quadraticEnergy_generatorAffine_eq_blockEnergyAverage
             Q k a P (ξ (index m ω))
       have hmu :
@@ -369,7 +371,7 @@ theorem measurable_energyBilin_fixed_canonicalMinimizer_carrier
               (affineMinimizerMap K H.energyBilin H.energyCoercive (H.constantField P)) := by
         simpa [H, a, K, U, MuHilbertRealization.muCandidate, MuHilbertProblem.muCandidate,
           MuHilbertRealization.minimizerMap, MuHilbertProblem.minimizerMap,
-          parameterAffineMinimizerMap] using
+          parameterAffineMinimizerMap] using!
           mu_eq_canonicalAEEMuCandidate Q k a P
       calc
         quadraticEnergy H.energyBilin (candidate (index m ω))
@@ -387,7 +389,7 @@ theorem measurable_energyBilin_fixed_canonicalMinimizer_carrier
         Tendsto (fun m : ℕ => candidate (index m ω)) atTop
           (𝓝 (H.minimizerMap P)) := by
       simpa [H, K, MuHilbertRealization.minimizerMap, MuHilbertProblem.minimizerMap,
-        parameterAffineMinimizerMap] using hHilbert
+        parameterAffineMinimizerMap] using! hHilbert
     exact (H.energyBilin y).continuous.tendsto (H.minimizerMap P) |>.comp hHilbert'
   have hStrong :
       MeasureTheory.StronglyMeasurable

@@ -139,7 +139,7 @@ theorem aestronglyMeasurable_applyFn (M : PointwiseHilbertVecOperatorField U)
       MeasureTheory.AEStronglyMeasurable M.field (volumeMeasureOn U) :=
     M.measurable_field.aestronglyMeasurable (μ := volumeMeasureOn U)
   have hF := MeasureTheory.Lp.aestronglyMeasurable (μ := volumeMeasureOn U) F
-  simpa [applyFn, evalCLM] using
+  simpa [applyFn, evalCLM] using!
     ContinuousLinearMap.aestronglyMeasurable_comp₂ (L := evalCLM) hfield hF
 
 theorem memHilbertVectorL2_applyFn (M : PointwiseHilbertVecOperatorField U)
@@ -317,7 +317,7 @@ noncomputable def hilbertCoeffOperatorField {d : ℕ} {lam Lam : ℝ}
     calc
       ‖matToHilbertOperator d (fun i j => if x ∈ U then a x i j else 0)‖
           = ‖HilbertVec.applyMat (0 : Mat d)‖ := by
-              rw [hAx, matToHilbertOperator_apply]
+              rw [hAx]; exact congrArg norm (matToHilbertOperator_apply 0)
       _ = 0 := by simp
       _ ≤ max Lam 0 := le_max_right _ _
 
@@ -385,10 +385,8 @@ noncomputable def hilbertSymmCoeffOperatorField {d : ℕ} {lam Lam : ℝ}
     rw [hdef]
     exact hEll.1
   have hmeasSymm : Measurable (fun x : Vec d => symmPart (aExt x)) := by
-    rw [measurable_pi_iff]
-    intro i
-    rw [measurable_pi_iff]
-    intro j
+    refine measurable_pi_iff.2 fun i => ?_
+    refine measurable_pi_iff.2 fun j => ?_
     have hij : Measurable (fun x : Vec d => aExt x i j) :=
       measurable_pi_iff.1 (measurable_pi_iff.1 haExt i) j
     have hji : Measurable (fun x : Vec d => aExt x j i) :=

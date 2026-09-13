@@ -193,7 +193,7 @@ theorem norm_sub_integralAverage_le_volumeAverage_integral_norm_fderiv_mul_norm_
   have hconstInt : MeasureTheory.IntegrableOn (fun _ : Vec d => u x) U := by
     simp [MeasureTheory.IntegrableOn]
   have hsubInt : MeasureTheory.IntegrableOn (fun y => u x - u y) U := by
-    simpa using hconstInt.sub hu
+    simpa using! hconstInt.sub hu
   have hleftInt : MeasureTheory.IntegrableOn (fun y => ‖u x - u y‖) U := hsubInt.norm
   have hmono :
       (fun y => ‖u x - u y‖) ≤ᵐ[volumeMeasureOn U]
@@ -257,7 +257,7 @@ private theorem setIntegral_intervalIntegral_norm_fderiv_mul_norm_sub_along_segm
           ‖fderiv ℝ u (segmentBlend x t y)‖ * ‖x - y‖)
         ((MeasureTheory.volume.restrict (Set.uIoc (0 : ℝ) 1)).prod
           (MeasureTheory.volume.restrict U)) := by
-    simpa [Function.uncurry, Set.uIoc_of_le zero_le_one] using hprod_int
+    simpa [Function.uncurry, Set.uIoc_of_le zero_le_one] using! hprod_int
   simpa [Set.uIoc_of_le zero_le_one] using
     (MeasureTheory.intervalIntegral_integral_swap
       (μ := MeasureTheory.volume.restrict U)

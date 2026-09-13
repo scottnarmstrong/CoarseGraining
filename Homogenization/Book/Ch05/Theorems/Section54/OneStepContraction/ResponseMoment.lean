@@ -368,7 +368,7 @@ theorem coarseFluctuationResponseMomentAtScale_zero_le_unitMomentWeightAtScale
     (m : ℕ) (e : Vec d) (he : Ch02.vecNorm e = 1) :
     coarseFluctuationResponseMomentAtScale hP hStruct hP4 0 m e ≤
       coarseFluctuationUnitMomentWeightAtScale hP hStruct hP4 m := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let ζ := section53CoarseFluctuationZeta hP4
   let ξ := hP4.xi
   let σ := sigmaHatAtScale hP hStruct (m : ℤ)
@@ -422,7 +422,7 @@ theorem coarseFluctuationResponseMomentAtScale_zero_le_unitMomentWeightAtScale
           (specialPAtScale hP hStruct (m : ℤ) e)
           (specialQAtScale hP hStruct (m : ℤ) e) a
   have hX_meas : AEMeasurable X P := by
-    simpa [X] using
+    simpa [X] using!
       hP.aemeasurable_restrictionResponseJObservableCubeSet
         (originCube d 0)
         (specialPAtScale hP hStruct (m : ℤ) e)
@@ -458,7 +458,7 @@ theorem coarseFluctuationResponseMomentAtScale_zero_le_unitMomentWeightAtScale
   have hYLower_mem : MemLp YLower (ξ : ENNReal) P := by
     simpa [YLower] using hI_mem.const_mul σ
   have hY_mem : MemLp Y (ξ : ENNReal) P := by
-    simpa [Y] using hYUpper_mem.add hYLower_mem
+    simpa [Y] using! hYUpper_mem.add hYLower_mem
   have hpoint : X ≤ᵐ[P] Y := by
     simpa [X, Y, YUpper, YLower, L, I, σ] using
       responseJ_special_pointwise_le_weighted_factors

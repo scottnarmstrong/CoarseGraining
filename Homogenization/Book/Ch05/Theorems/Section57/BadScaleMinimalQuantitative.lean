@@ -154,7 +154,7 @@ theorem exists_quantitative_shifted_quenchedLocalizedEstimate_interpolated
   · simpa [K, S, b, L, ctop, τ, η, w, ρtop, ρbottom, ρcrude,
       Cbottom, Ctop, Kbottom, Kcrude, W, M, ρgap, C₀] using hR
   intro P hP hStruct hΓ hσ_eq hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry

@@ -57,7 +57,7 @@ theorem deGiorgi_one_sided_core {d : ℕ} (hd : 3 ≤ d) :
                         {x | x ∈ axisCube z L ∧ m₀ + k < w₂.toFun x}).toReal)) →
           ∀ᵐ x ∂(volumeMeasureOn (axisCube z L)), w₁.toFun x ≤ m₀ + Cd * L * E₀ := by
   classical
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   -- Sobolev constants (dimensional).
   obtain ⟨C_F, hC_F0, hF⟩ := matchedPair_sobolev hd
   obtain ⟨CE, hCEpos, hEmb⟩ := cube_sobolev_embedding hd
@@ -102,7 +102,7 @@ theorem deGiorgi_one_sided_core {d : ℕ} (hd : 3 ≤ d) :
   have hUdom : IsOpenBoundedConvexDomain (axisCube z L) :=
     isOpenBoundedConvexDomain_axisCube z L
   have hUmeas : MeasurableSet (axisCube z L) := (isOpen_axisCube z L).measurableSet
-  haveI hμfinI : IsFiniteMeasure (volumeMeasureOn (axisCube z L)) :=
+  have hμfinI : IsFiniteMeasure (volumeMeasureOn (axisCube z L)) :=
     hUdom.isBoundedDomain.isFiniteMeasure_restrict_volume
   have hab : (z : Vec d) ≤ fun i => z i + L := fun i => le_add_of_nonneg_right hL.le
   have hVolU_top : volume (axisCube z L) ≠ ⊤ := by
@@ -165,11 +165,11 @@ theorem deGiorgi_one_sided_core {d : ℕ} (hd : 3 ≤ d) :
       intro w; rw [ne_eq, max_eq_right_iff, not_le]; constructor <;> intro h <;> linarith
     have hset1 : {x | x ∈ axisCube z L ∧ fk.toFun x ≠ 0}
         = {x | x ∈ axisCube z L ∧ m₀ + k < w₁.toFun x} := by
-      ext x; simp only [Set.mem_setOf_eq, hfk_tf]
+      ext x; simp only [Set.mem_ofPred_eq, hfk_tf]
       exact and_congr_right fun _ => hmaxne (w₁.toFun x)
     have hset2 : {x | x ∈ axisCube z L ∧ gk.toFun x ≠ 0}
         = {x | x ∈ axisCube z L ∧ m₀ + k < w₂.toFun x} := by
-      ext x; simp only [Set.mem_setOf_eq, hgk_tf]
+      ext x; simp only [Set.mem_ofPred_eq, hgk_tf]
       exact and_congr_right fun _ => hmaxne (w₂.toFun x)
     have hzero : volume {x | x ∈ axisCube z L ∧ fk.toFun x ≠ 0}
         + volume {x | x ∈ axisCube z L ∧ gk.toFun x ≠ 0} ≤ volume (axisCube z L) := by
@@ -307,7 +307,7 @@ theorem deGiorgi_one_sided_core {d : ℕ} (hd : 3 ≤ d) :
     rw [hf0_tf] at hx
     have hxmax : max (w₁.toFun x - (m₀ + 0)) 0 = 0 := hx
     have hle0 : w₁.toFun x - (m₀ + 0) ≤ 0 := by
-      by_contra h; push_neg at h; rw [max_eq_left h.le] at hxmax; linarith
+      by_contra h; push Not at h; rw [max_eq_left h.le] at hxmax; linarith
     rw [← hE0]; simp only [mul_zero, add_zero]; linarith
   · -- `0 < E₀`: run the iteration engine.
     set K : ℝ := Cd * L * E₀ with hK_def
@@ -360,11 +360,10 @@ theorem deGiorgi_one_sided_core {d : ℕ} (hd : 3 ≤ d) :
       have h2 : (0 : ℝ)
           ≤ (volume {x | x ∈ axisCube z L ∧ m₀ + deGiorgiLevel K n < w₂.toFun x}).toReal :=
         ENNReal.toReal_nonneg
-      simp only
       linarith
     refine (MeasureTheory.ae_iff).mpr ?_
     have hset : {x | ¬ (w₁.toFun x ≤ m₀ + Cd * L * E₀)} = {x | m₀ + K < w₁.toFun x} := by
-      ext x; rw [hK_def]; simp only [Set.mem_setOf_eq, not_le]
+      ext x; rw [hK_def]; simp only [Set.mem_ofPred_eq, not_le]
     rw [hset]
     show (volume.restrict (axisCube z L)) {x | m₀ + K < w₁.toFun x} = 0
     rw [Measure.restrict_apply' hUmeas]

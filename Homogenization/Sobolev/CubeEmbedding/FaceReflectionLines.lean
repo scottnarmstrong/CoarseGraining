@@ -71,7 +71,7 @@ theorem hasDerivAt_insertNth_reflect {n : ℕ} (a : ℝ) (i : Fin (n + 1))
   have hinner : HasDerivAt (fun t : ℝ => 2 * a - t) (-1) t₀ := by
     simpa using (hasDerivAt_id t₀).const_sub (2 * a)
   have hcomp := (hasDerivAt_insertNth i z (2 * a - t₀)).scomp t₀ hinner
-  simpa using hcomp
+  simpa using! hcomp
 
 /-- Directional derivative of `v` along the insertion line in direction `i`. -/
 theorem hasDerivAt_comp_insertNth {n : ℕ} {v : Vec (n + 1) → ℝ}

@@ -110,7 +110,7 @@ theorem of_isEllipticFieldOn {d : ℕ} {U : Set (Vec d)} {a : CoeffField d}
 theorem energy {d : ℕ} {U : Set (Vec d)} {a : CoeffField d}
     (hInt : ResponseLinearIntegrabilityData U a) (w : AHarmonicFunction a U) :
     MeasureTheory.IntegrableOn (scalarVariationEnergyIntegrand a w) U := by
-  simpa [scalarVariationEnergyIntegrand] using hInt.cross w w
+  simpa [scalarVariationEnergyIntegrand] using! hInt.cross w w
 
 theorem firstVariation {d : ℕ} {U : Set (Vec d)} {a : CoeffField d}
     (hInt : ResponseLinearIntegrabilityData U a) (p q : Vec d)
@@ -122,9 +122,9 @@ theorem firstVariation {d : ℕ} {U : Set (Vec d)} {a : CoeffField d}
   have hsub :
       MeasureTheory.IntegrableOn
         (fun x => vecDot q (w.toH1.grad x) - vecDot p (matVecMul (a x) (w.toH1.grad x))) U := by
-    simpa [sub_eq_add_neg, MeasureTheory.IntegrableOn] using
+    simpa [sub_eq_add_neg, MeasureTheory.IntegrableOn] using!
       hgrad.integrable.sub hflux.integrable
-  simpa [scalarFirstVariationIntegrand, sub_eq_add_neg, MeasureTheory.IntegrableOn] using
+  simpa [scalarFirstVariationIntegrand, sub_eq_add_neg, MeasureTheory.IntegrableOn] using!
     hsub.integrable.sub hcross.integrable
 
 theorem response {d : ℕ} {U : Set (Vec d)} {a : CoeffField d}
@@ -402,7 +402,7 @@ theorem basic_cg_identities_first_variation_eq_of_isResponseMaximizer {d : ℕ}
   have hsub_qp :
       MeasureTheory.IntegrableOn
         (fun x => vecDot q (w.toH1.grad x) - vecDot p (matVecMul (a x) (w.toH1.grad x))) U := by
-    simpa [MeasureTheory.IntegrableOn] using
+    simpa [MeasureTheory.IntegrableOn] using!
       (hInt.grad q w).integrable.sub (hInt.flux p w).integrable
   have havg :
       volumeAverage U (scalarFirstVariationIntegrand U a p q u w) =

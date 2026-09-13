@@ -87,7 +87,7 @@ theorem exists_cubeDirichletDivergenceProblem_of_memLp_normalizedCubeMeasure
       CubeDirichletDivergenceProblem Q w h := by
   let U : Set (Vec d) := openCubeSet Q
   let a : CoeffField d := identityCoeffField d
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [U, volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   have hRealize :
@@ -100,7 +100,7 @@ theorem exists_cubeDirichletDivergenceProblem_of_memLp_normalizedCubeMeasure
   have hhOpen : MemVectorL2 U h := by
     simpa [U] using memVectorL2_openCubeSet_of_memLp_normalizedCubeMeasure Q hh
   have hneg : MemVectorL2 U (fun x => -h x) := by
-    simpa [Pi.neg_apply] using hhOpen.neg
+    simpa [Pi.neg_apply] using! hhOpen.neg
   rcases
       exists_isZeroTraceDirichletRhsWeakSolution_of_potentialZeroTraceClosureRealization
         (a := a) (U := U) (g := fun x => -h x)
@@ -192,7 +192,7 @@ theorem dirichletDivergence_solutionComparison_integral_identity
   have hSigmaL2Open :
       MemVectorL2 (openCubeSet Q)
         (fun x => matVecMul (scalarMatrix (d := d) sigma0) (w x)) := by
-    simpa [matVecMul_scalarMatrix] using hwL2Open.const_smul sigma0
+    simpa [matVecMul_scalarMatrix] using! hwL2Open.const_smul sigma0
   have hSigmaVInt :
       MeasureTheory.IntegrableOn
         (fun x => vecDot (matVecMul (scalarMatrix (d := d) sigma0) (w x))
@@ -343,7 +343,7 @@ theorem dirichletDivergence_fluxComparison_integral_identity
   have hSigmaL2Open :
       MemVectorL2 (openCubeSet Q)
         (fun x => matVecMul (scalarMatrix (d := d) sigma0) (w x)) := by
-    simpa [matVecMul_scalarMatrix] using hwL2Open.const_smul sigma0
+    simpa [matVecMul_scalarMatrix] using! hwL2Open.const_smul sigma0
   have hSigmaHInt :
       MeasureTheory.IntegrableOn
         (fun x => vecDot (matVecMul (scalarMatrix (d := d) sigma0) (w x)) (h x))

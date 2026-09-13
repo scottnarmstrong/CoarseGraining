@@ -369,7 +369,7 @@ theorem component_memLp_normalizedCubeMeasure_of_memVectorL2_cubeSet_ch1 {d : �
       MeasureTheory.MemLp (fun x => F x i) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
   intro i
   let π : Vec d →L[ℝ] ℝ := ContinuousLinearMap.proj i
-  simpa using
+  simpa [π, Function.comp_def, ContinuousLinearMap.proj_apply] using!
     π.comp_memLp' (memLp_normalizedCubeMeasure_of_memVectorL2_cubeSet_ch1 Q hF)
 
 theorem cubeBesovNegativeVectorPartialSeminormTwo_le_dualToCircFiniteLossCoefficient_mul_normalizedDual

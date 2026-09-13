@@ -584,7 +584,7 @@ theorem solution_l2_close_harmonic_of_coarseFluxResponse_qone_of_aHarmonicFuncti
   have hqone :
       cubeBesovNegativeVectorSeminorm Q s (fluxDefect a a0 u.toH1.grad) ≤
         qoneCoarseFluxResponseBound Q a a0 s u := by
-    simpa [fluxDefect, qoneCoarseFluxResponseBound] using
+    simpa [fluxDefect, qoneCoarseFluxResponseBound] using!
       coarseFluxResponse_qone_of_aHarmonicFunction
         (Q := Q) (a := a) (a0 := a0) (s := s)
         hs_pos hEll ha0 ha0symm u hsum
@@ -900,7 +900,7 @@ theorem solution_l2_close_harmonic_of_homogeneous_coarseFluxDefect_le
       (IsH1DirichletRhsWeakSolutionOn.of_aHarmonicFunction u)
       (IsH1DirichletRhsWeakSolutionOn.of_aHarmonicFunction v)
       hzeroTrace hcoarseFluxDefectH1
-  simpa [homogeneousCoarseGrainingRhs] using hH1
+  simpa [homogeneousCoarseGrainingRhs] using! hH1
 
 end
 

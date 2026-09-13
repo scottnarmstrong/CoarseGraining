@@ -76,12 +76,12 @@ private theorem responseMagicIdentitiesTheory_zero_dim
         responseJ U a (0 : Vec 0)
           (matVecMul (Book.Ch02.sigmaStarCoarse U a - Book.Ch02.kappaCoarse U a)
             (0 : Vec 0)) = 0 := by
-      simpa [matVecMul] using hJ
+      simpa [matVecMul] using! hJ
     have hJb :
         responseJ U a.transpose (0 : Vec 0)
           (matVecMul (Book.Ch02.sigmaStarCoarse U a + Book.Ch02.kappaCoarse U a)
             (0 : Vec 0)) = 0 := by
-      simpa [matVecMul] using hJAdj
+      simpa [matVecMul] using! hJAdj
     rw [hJa, hJb]
     simp [vecDot, matVecMul]
 
@@ -403,7 +403,7 @@ theorem responseMagicIdentitiesTheory
   by_cases hd : d = 0
   · subst d
     exact responseMagicIdentitiesTheory_zero_dim U a
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     exact responseMagicIdentitiesTheory_of_neZero U a
 
 end BookCh02

@@ -208,7 +208,7 @@ theorem localizedZeroTraceFunctionOn_dilate {d : ℕ} {Ω V Ω' V' : Set (Vec d)
   intro η hη hη_compact hη_sub
   let ζ : Vec d → ℝ := fun x => η (r • x)
   have hζ_smooth : ContDiff ℝ (⊤ : ℕ∞) ζ := by
-    simpa [ζ] using hη.comp (contDiff_const_smul r)
+    simpa [ζ] using! hη.comp (contDiff_const_smul r)
   have hζ_compact : HasCompactSupport ζ := by
     have hr_ne : r ≠ 0 := hr.ne'
     show HasCompactSupport (η ∘ Homeomorph.smulOfNeZero r hr_ne)
@@ -373,7 +373,7 @@ theorem normalizedL2SqOnSet_dilate_eq {d : ℕ} {k : ℤ}
       v.toH1.toFun =ᵐ[volumeMeasureOn (r • V)]
         fun x => r * u.toH1.toFun (Ch02.undilateVec k x) :=
     MeasureTheory.ae_restrict_of_ae_restrict_of_subset htarget_subset
-      (by simpa [r] using hDilation.value_ae_eq)
+      (by simpa [r] using! hDilation.value_ae_eq)
   have hsquares :
       (fun x : Vec d => v.toH1.toFun x ^ (2 : ℕ))
         =ᵐ[volumeMeasureOn (r • V)]
@@ -478,7 +478,7 @@ theorem normalizedAverage_dilate_solution_eq {d : ℕ} {k : ℤ}
           funext x
           simp [Ch02.undilateVec, r, smul_smul, Ch02.triadicDilationFactor_ne_zero k]
     _ = r * volumeAverage (openCubeSet Q) u.toH1.toFun := by
-          simpa [smul_eq_mul] using
+          simpa [smul_eq_mul] using!
             volumeAverage_smul (openCubeSet Q) r u.toH1.toFun
     _ = Ch02.triadicDilationFactor k *
         Ch01.Legacy.normalizedAverage Q u.toH1.toFun := by

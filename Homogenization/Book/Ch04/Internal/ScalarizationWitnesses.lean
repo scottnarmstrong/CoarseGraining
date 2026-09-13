@@ -89,7 +89,7 @@ theorem annealedSigmaStarAtScale_isScalarMatrix_of_sigmaStarInv {d : ℕ}
     (P : RestrictionCoeffLaw d) (n : ℤ)
     (hScalar : IsScalarMatrix (annealedSigmaStarInvAtScale P n)) :
     IsScalarMatrix (annealedSigmaStarAtScale P n) := by
-  simpa [annealedSigmaStarAtScale, annealedSigmaStar] using isScalarMatrix_inv hScalar
+  simpa [annealedSigmaStarAtScale, annealedSigmaStar] using! isScalarMatrix_inv hScalar
 
 theorem annealedKappaAtScale_eq_zero_of_sigmaStarInvKappaMean_eq_zero {d : ℕ}
     (P : RestrictionCoeffLaw d) (n : ℤ)

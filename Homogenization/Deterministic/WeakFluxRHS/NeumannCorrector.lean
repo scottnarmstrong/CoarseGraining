@@ -24,7 +24,7 @@ private theorem isFiniteMeasureVolumeMeasureOnCubeSet_weakFluxRHS {d : ℕ}
     (Q : TriadicCube d) :
     MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) := by
   let U : Set (Vec d) := cubeSet Q
-  letI : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_cubeSet_lt_top Q⟩
+  let : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_cubeSet_lt_top Q⟩
   change MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict U)
   infer_instance
 
@@ -83,14 +83,22 @@ noncomputable def h1CoerciveEstimate_cubeSet {d : ℕ} [NeZero d]
         simpa using hset.symm.trans u.meanZero }
   have hvalue :
       u.valueL2Norm = uOpen.valueL2Norm := by
-    dsimp [H1MeanZeroFunction.valueL2Norm, H1MeanZeroFunction.toScalarL2,
+    dsimp only [H1MeanZeroFunction.valueL2Norm, H1MeanZeroFunction.toScalarL2,
       H1Function.toScalarL2, Homogenization.toScalarL2, uOpen]
-    simp [volumeMeasureOn, volume_restrict_cubeSet_eq_volume_restrict_openCubeSet Q]
+    rw [MeasureTheory.Lp.norm_toLp, MeasureTheory.Lp.norm_toLp]
+    refine congrArg ENNReal.toReal ?_
+    rw [volumeMeasureOn, volumeMeasureOn,
+      volume_restrict_cubeSet_eq_volume_restrict_openCubeSet Q,
+      H1Function.toFun_toOpenCubeSet]
   have hgrad :
       u.gradientL2Norm = uOpen.gradientL2Norm := by
-    dsimp [H1MeanZeroFunction.gradientL2Norm, H1MeanZeroFunction.gradToVectorL2,
+    dsimp only [H1MeanZeroFunction.gradientL2Norm, H1MeanZeroFunction.gradToVectorL2,
       H1Function.gradToVectorL2, Homogenization.toVectorL2, uOpen]
-    simp [volumeMeasureOn, volume_restrict_cubeSet_eq_volume_restrict_openCubeSet Q]
+    rw [MeasureTheory.Lp.norm_toLp, MeasureTheory.Lp.norm_toLp]
+    refine congrArg ENNReal.toReal ?_
+    rw [volumeMeasureOn, volumeMeasureOn,
+      volume_restrict_cubeSet_eq_volume_restrict_openCubeSet Q,
+      H1Function.grad_toOpenCubeSet]
   calc
     u.valueL2Norm = uOpen.valueL2Norm := hvalue
     _ ≤ hCopen.constant * uOpen.gradientL2Norm := hCopen.bound uOpen
@@ -101,17 +109,17 @@ private theorem cubeAverageVec_sub_of_memVectorL2 {d : ℕ} (Q : TriadicCube d)
     (hu : MemVectorL2 (cubeSet Q) u) (hv : MemVectorL2 (cubeSet Q) v) :
     cubeAverageVec Q (fun x => u x - v x) =
       cubeAverageVec Q u - cubeAverageVec Q v := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) :=
     isFiniteMeasureVolumeMeasureOnCubeSet_weakFluxRHS Q
   funext i
   have hui :
       MeasureTheory.MemLp (fun x => u x i) (2 : ENNReal)
         (volumeMeasureOn (cubeSet Q)) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
   have hvi :
       MeasureTheory.MemLp (fun x => v x i) (2 : ENNReal)
         (volumeMeasureOn (cubeSet Q)) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hv
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hv
   have hui_int :
       MeasureTheory.Integrable (fun x => u x i) (volumeMeasureOn (cubeSet Q)) :=
     hui.integrable (by norm_num : (1 : ENNReal) ≤ (2 : ENNReal))
@@ -141,7 +149,7 @@ private theorem cubeAverageVec_eq_of_eq_on_cubeSet_weakFluxRHS {d : ℕ}
 theorem cubeAverageVec_centered_eq_zero {d : ℕ} (Q : TriadicCube d)
     (g : Vec d → Vec d) (hg : MemVectorL2 (cubeSet Q) g) :
     cubeAverageVec Q (fun x => g x - cubeAverageVec Q g) = 0 := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) :=
     isFiniteMeasureVolumeMeasureOnCubeSet_weakFluxRHS Q
   have hconst_mem :
       MemVectorL2 (cubeSet Q) (fun _ : Vec d => cubeAverageVec Q g) :=
@@ -198,7 +206,7 @@ theorem residualFlux_zeroNormalTrace
     (hg : MemVectorL2 (cubeSet Q) g) :
     IsSolenoidalZeroNormalTraceOn (cubeSet Q)
       (fun x => matVecMul (a x) (ω.toH1MeanZero.toH1Function.grad x) - g x) := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) :=
     isFiniteMeasureVolumeMeasureOnCubeSet_weakFluxRHS Q
   exact ω.weakSolution.residual_zeroNormalTrace hEll hg
 
@@ -263,7 +271,7 @@ theorem cubeAverageVec_flux_eq_zero_of_centered_rhs
     (hg : MemVectorL2 (cubeSet Q) g) :
     cubeAverageVec Q
       (fun x => matVecMul (a x) (ω.toH1MeanZero.toH1Function.grad x)) = 0 := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) :=
     isFiniteMeasureVolumeMeasureOnCubeSet_weakFluxRHS Q
   have hconst_mem :
       MemVectorL2 (cubeSet Q) (fun _ : Vec d => cubeAverageVec Q g) :=
@@ -289,7 +297,7 @@ theorem exists_aHarmonicRemainder_of_potential_solenoidal_centered
     ∃ w : AHarmonicFunction a (cubeSet Q),
       ∀ x ∈ cubeSet Q,
         u x = w.toH1.grad x + ω.toH1MeanZero.toH1Function.grad x := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) :=
     isFiniteMeasureVolumeMeasureOnCubeSet_weakFluxRHS Q
   rcases hu_potential with ⟨v, hv⟩
   let wH1 : H1Function (cubeSet Q) := v - ω.toH1MeanZero.toH1Function
@@ -598,7 +606,7 @@ theorem exists_centeredCorrector_aHarmonicRemainder_of_parent_potential_solenoid
       ∃ w : AHarmonicFunction a (cubeSet R),
         ∀ x ∈ cubeSet R,
           u x = w.toH1.grad x + ω.toH1MeanZero.toH1Function.grad x := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet R)) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet R)) :=
     isFiniteMeasureVolumeMeasureOnCubeSet_weakFluxRHS R
   have hconst_mem :
       MemVectorL2 (cubeSet R) (fun _ : Vec d => cubeAverageVec R g) :=

@@ -138,7 +138,7 @@ theorem lowerImage_memVectorL2_of_memVectorL2_of_isEllipticFieldOn {d : ℕ}
   have hShift :
       MemVectorL2 U
         (fun x => X.flux x - matVecMul (skewPart (a x)) (X.potential x)) := by
-    simpa [sub_eq_add_neg] using hFlux.sub hSkewPot
+    simpa [sub_eq_add_neg] using! hFlux.sub hSkewPot
   have hInv :
       MemVectorL2 U
         (fun x =>
@@ -183,7 +183,7 @@ theorem upper_add_flux_eq_matVecMul_potential_add_lowerImage_of_isEllipticFieldO
       X.flux x =
         matVecMul (symmPart (a x)) lower +
           matVecMul (skewPart (a x)) (X.potential x) := by
-    simpa [lower] using
+    simpa [lower] using!
       blockMatVecMul_blockMatrixOfCoeff_snd_recover_flux_of_isEllipticMatrix
         (A := a x) (hEll.2 x hx) (p := X.potential x) (q := X.flux x)
   have hsplit : a x = symmPart (a x) + skewPart (a x) := by
@@ -220,13 +220,13 @@ theorem upperImage_memVectorL2_of_memVectorL2_of_isEllipticFieldOn {d : ℕ}
   let lower : Vec d → Vec d :=
     fun x => (blockMatVecMul (blockCoeffField a x) (X.eval x)).2
   have hPotLower : MemVectorL2 U (fun x => X.potential x + lower x) := by
-    simpa [lower, Pi.add_apply] using hPot.add hLower
+    simpa [lower, Pi.add_apply] using! hPot.add hLower
   have hA :
       MemVectorL2 U (fun x => matVecMul (a x) (X.potential x + lower x)) :=
     memVectorL2_matVecMul_of_isEllipticFieldOn hEll hPotLower
   have hUpper' :
       MemVectorL2 U (fun x => matVecMul (a x) (X.potential x + lower x) - X.flux x) := by
-    simpa [sub_eq_add_neg] using hA.sub hFlux
+    simpa [sub_eq_add_neg] using! hA.sub hFlux
   have hEq :
       (fun x => (blockMatVecMul (blockCoeffField a x) (X.eval x)).1)
         =ᵐ[volumeMeasureOn U]
@@ -389,7 +389,7 @@ theorem isDoubledResponseField_of_blockResponseSpace {d : ℕ}
       · exact hY.2.2
     simpa [doubledFieldOfBlockState, blockStateOfDoubled,
       doubledBlockPairingIntegrand, blockCoeffField]
-      using hX.2.2 (blockStateOfDoubled Y) hYOld
+      using! hX.2.2 (blockStateOfDoubled Y) hYOld
 
 theorem doubledFieldOfSolutions_flux_memL2_of_isEllipticFieldOn {d : ℕ}
     (U : Domain d) (a : CoeffOn U)
@@ -409,7 +409,7 @@ theorem doubledFieldOfSolutions_flux_memL2_of_isEllipticFieldOn {d : ℕ}
         (fun x => matVecMul (a.transpose.toCoeffField x) (vStar.toH1.grad x)) := by
     simpa [Homogenization.adjointCoeffField] using
       memVectorL2_matVecMul_of_isEllipticFieldOn hEllAdj vStar.toH1.grad_memVectorL2
-  simpa [doubledFieldOfSolutions, sub_eq_add_neg] using hv.sub hvStar
+  simpa [doubledFieldOfSolutions, sub_eq_add_neg] using! hv.sub hvStar
 
 theorem doubledFieldOfSolutions_mem_responseField_of_isEllipticFieldOn {d : ℕ}
     (U : Domain d) (a : CoeffOn U)
@@ -419,7 +419,7 @@ theorem doubledFieldOfSolutions_mem_responseField_of_isEllipticFieldOn {d : ℕ}
   have hOld :
       BlockResponseSpace a.toCoeffField (U : Set (Vec d))
         (blockResponsePairState a.toCoeffField v vStar) := by
-    simpa [Homogenization.adjointCoeffField] using
+    simpa [Homogenization.adjointCoeffField] using!
       blockResponse_pair_mem_responseSpace_of_isEllipticFieldOn
         (a := a.toCoeffField) hEll v vStar
   have hFlux :=
@@ -455,7 +455,7 @@ theorem response_space_by_solutions_of_isEllipticFieldOn {d : ℕ}
         (a := a.toCoeffField) U.isDomain hOld hLowerL2 hEll
         with ⟨u, vStarOld, hhalf⟩
     let vStar : Solution U a.transpose := by
-      simpa [Homogenization.adjointCoeffField] using vStarOld
+      simpa [Homogenization.adjointCoeffField] using! vStarOld
     refine ⟨solutionSMul U a (1 / 2 : ℝ) u,
       solutionSMul U a.transpose (1 / 2 : ℝ) vStar, ?_⟩
     have hEq :

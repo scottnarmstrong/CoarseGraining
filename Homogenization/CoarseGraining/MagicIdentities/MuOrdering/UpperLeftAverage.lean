@@ -113,7 +113,7 @@ private theorem integrableOn_blockMatrixOfCoeff_upperLeft_entry_of_isEllipticFie
         Measurable (fun x α β =>
           toFullBlockMat (blockMatrixOfCoeff (aExt x)) α β) :=
       measurable_toFullBlockMat_blockCoeffField haExt
-    simpa [coeffExt] using
+    simpa [coeffExt] using!
       (measurable_pi_iff.1 (measurable_pi_iff.1 hblock (Sum.inl i)) (Sum.inl j))
   have hfinite : MeasureTheory.volume U ≠ ⊤ := by
     simpa [volumeMeasureOn] using

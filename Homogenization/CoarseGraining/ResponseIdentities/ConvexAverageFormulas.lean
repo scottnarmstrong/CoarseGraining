@@ -18,7 +18,7 @@ theorem averageGradientOfIsEllipticFieldOn_of_isOpenBoundedConvexDomain
     (fun i => volumeAverage U (fun x => (v : AHarmonicFunction a U).toH1.grad x i)) =
       fun i => ResponseJ U p q a + ResponseJ U 0 (Pi.single i 1) a -
         ResponseJ U p (q - Pi.single i 1) a := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   rcases GradientBasisData.nonempty_of_isOpenBoundedConvexDomain
       (U := U) (a := a) hne hU hEll with ⟨basis⟩
@@ -32,7 +32,7 @@ theorem averageFluxOfIsEllipticFieldOn_of_isOpenBoundedConvexDomain
       (fun x => matVecMul (a x) ((v : AHarmonicFunction a U).toH1.grad x) i)) =
       fun i => ResponseJ U (p - Pi.single i 1) q a -
         ResponseJ U p q a - ResponseJ U (Pi.single i 1) 0 a := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   rcases FluxBasisData.nonempty_of_isOpenBoundedConvexDomain
       (U := U) (a := a) hne hU hEll with ⟨basis⟩
@@ -46,7 +46,7 @@ theorem averageGradientFormulaOfIsEllipticFieldOn_of_isOpenBoundedConvexDomain
     (hS : IsSigmaStarCoarse U a sigmaStar) (hK : IsKappaCoarse U a sigmaStar kappa) :
     (fun i => volumeAverage U (fun x => (v : AHarmonicFunction a U).toH1.grad x i)) =
       -p + matVecMul sigmaStar⁻¹ (q + matVecMul kappa p) := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   rcases GradientBasisData.nonempty_of_isOpenBoundedConvexDomain
       (U := U) (a := a) hne hU hEll with ⟨basis⟩
@@ -64,7 +64,7 @@ theorem averageFluxFormulaOfIsEllipticFieldOn_of_isOpenBoundedConvexDomain
       (fun x => matVecMul (a x) ((v : AHarmonicFunction a U).toH1.grad x) i)) =
       q - matVecMul (matTranspose kappa) (matVecMul sigmaStar⁻¹ q) -
         matVecMul (bCoarse sigma sigmaStar kappa) p := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   rcases FluxBasisData.nonempty_of_isOpenBoundedConvexDomain
       (U := U) (a := a) hne hU hEll with ⟨basis⟩
@@ -80,7 +80,7 @@ theorem averageGradientFormulaCanonicalOfIsEllipticFieldOn_of_isOpenBoundedConve
     (hdet : IsUnit sigmaStar.det) :
     (fun i => volumeAverage U (fun x => (v : AHarmonicFunction a U).toH1.grad x i)) =
       -p + matVecMul (sigmaStarInvCoarse U a) (q + matVecMul (kappaCoarse U a) p) := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   rcases GradientBasisData.nonempty_of_isOpenBoundedConvexDomain
       (U := U) (a := a) hne hU hEll with ⟨basis⟩
@@ -99,7 +99,7 @@ theorem averageFluxFormulaCanonicalOfIsEllipticFieldOn_of_isOpenBoundedConvexDom
       (fun x => matVecMul (a x) ((v : AHarmonicFunction a U).toH1.grad x) i)) =
       q - matVecMul (matTranspose (kappaCoarse U a)) (matVecMul (sigmaStarInvCoarse U a) q) -
         matVecMul (bCoarse (sigmaCoarse U a) (sigmaStarCoarse U a) (kappaCoarse U a)) p := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   rcases FluxBasisData.nonempty_of_isOpenBoundedConvexDomain
       (U := U) (a := a) hne hU hEll with ⟨basis⟩
@@ -117,7 +117,7 @@ theorem
     (fun i => volumeAverage U (fun x => (v : AHarmonicFunction a U).toH1.grad x i)) =
       -p + matVecMul (deterministicCoarseBlockMatrix U a).lowerRight q -
         matVecMul (deterministicCoarseBlockMatrix U a).lowerLeft p := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   rcases GradientBasisData.nonempty_of_isOpenBoundedConvexDomain
       (U := U) (a := a) hne hU hEll with ⟨basis⟩
@@ -137,7 +137,7 @@ theorem
       (fun x => matVecMul (a x) ((v : AHarmonicFunction a U).toH1.grad x) i)) =
       q + matVecMul (deterministicCoarseBlockMatrix U a).upperRight q -
         matVecMul (deterministicCoarseBlockMatrix U a).upperLeft p := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   rcases FluxBasisData.nonempty_of_isOpenBoundedConvexDomain
       (U := U) (a := a) hne hU hEll with ⟨basis⟩
@@ -155,7 +155,7 @@ theorem averageGradientFormulaCoarseBlockMatrixOfIsEllipticFieldOn_of_isOpenBoun
     (fun i => volumeAverage U (fun x => (v : AHarmonicFunction a U).toH1.grad x i)) =
       -p + matVecMul (coarseBlockMatrix U a).lowerRight q -
         matVecMul (coarseBlockMatrix U a).lowerLeft p := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   rcases GradientBasisData.nonempty_of_isOpenBoundedConvexDomain
       (U := U) (a := a) hne hU hEll with ⟨basis⟩
@@ -175,7 +175,7 @@ theorem averageFluxFormulaCoarseBlockMatrixOfIsEllipticFieldOn_of_isOpenBoundedC
       (fun x => matVecMul (a x) ((v : AHarmonicFunction a U).toH1.grad x) i)) =
       q + matVecMul (coarseBlockMatrix U a).upperRight q -
         matVecMul (coarseBlockMatrix U a).upperLeft p := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   rcases FluxBasisData.nonempty_of_isOpenBoundedConvexDomain
       (U := U) (a := a) hne hU hEll with ⟨basis⟩

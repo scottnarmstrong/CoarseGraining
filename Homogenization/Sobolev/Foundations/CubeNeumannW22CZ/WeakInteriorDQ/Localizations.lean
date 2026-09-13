@@ -94,7 +94,7 @@ noncomputable def localizedMulContDiffHasCompactSupportToAmbient
         memScalarL2_mul_euclideanGradient_coord_of_contDiff_hasCompactSupport_tsupport_subset
           (U := U) (V := V) hV_meas hφ hφ_compact hφ_sub w.memL2 i
       simpa [Dφ, euclideanGradient, euclideanCoordDeriv, mul_comm] using hderiv
-    simpa [Dφ, Pi.add_apply, MemScalarL2, volumeMeasureOn] using hfirst.add hsecond
+    simpa [Dφ, Pi.add_apply, MemScalarL2, volumeMeasureOn] using! hfirst.add hsecond
   · intro i ψ hψ_smooth hψ_compact hψ_sub
     let ei : Vec d := basisVec i
     let dφ : Vec d → ℝ := fun x => (fderiv ℝ φ x) ei
@@ -138,7 +138,7 @@ noncomputable def localizedMulContDiffHasCompactSupportToAmbient
       simpa [dψ, ei] using hψ_compact.fderiv_apply (𝕜 := ℝ) ei
     have hψφ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψφ := hφ.mul hψ_smooth
     have hψφ_compact : HasCompactSupport ψφ := by
-      simpa [ψφ] using hψ_compact.mul_left (f := φ)
+      simpa [ψφ] using! hψ_compact.mul_left (f := φ)
     have hψφ_sub : tsupport ψφ ⊆ V :=
       (tsupport_mul_subset_left (f := φ) (g := ψ)).trans hφ_sub
     have hdψφ_cont : Continuous (fun x => (fderiv ℝ ψφ x) ei) := by
@@ -159,7 +159,7 @@ noncomputable def localizedMulContDiffHasCompactSupportToAmbient
     have hmul1_cont : Continuous (fun x => φ x * dψ x) :=
       hφ_cont.mul hdψ_cont
     have hmul1_compact : HasCompactSupport (fun x => φ x * dψ x) := by
-      simpa using hdψ_compact.mul_left (f := φ)
+      simpa using! hdψ_compact.mul_left (f := φ)
     have hw_mul1_int :
         MeasureTheory.Integrable (fun x => w x * (φ x * dψ x))
           (MeasureTheory.volume.restrict V) := by
@@ -168,7 +168,7 @@ noncomputable def localizedMulContDiffHasCompactSupportToAmbient
     have hmul2_cont : Continuous (fun x => ψ x * dφ x) :=
       hψ_cont.mul hdφ_cont
     have hmul2_compact : HasCompactSupport (fun x => ψ x * dφ x) := by
-      simpa [mul_comm] using hdφ_compact.mul_left (f := ψ)
+      simpa [mul_comm] using! hdφ_compact.mul_left (f := ψ)
     have hw_mul2_int :
         MeasureTheory.Integrable (fun x => w x * (ψ x * dφ x))
           (MeasureTheory.volume.restrict V) := by
@@ -198,7 +198,7 @@ noncomputable def localizedMulContDiffHasCompactSupportToAmbient
       have hψ_diff : DifferentiableAt ℝ ψ x :=
         (hψ_smooth.contDiffAt).differentiableAt (by simp)
       rw [show ψφ = φ * ψ by rfl, fderiv_mul hφ_diff hψ_diff]
-      simp [dφ, dψ, ei, ContinuousLinearMap.add_apply, smul_eq_mul]
+      simp [dφ, dψ, ei, add_apply, smul_eq_mul]
     have hleft_eq :
         ∫ x in V, (φ x * w x) * dψ x ∂MeasureTheory.volume =
           ∫ x in V, w x * (φ x * dψ x) ∂MeasureTheory.volume := by
@@ -339,7 +339,7 @@ noncomputable def localizedSqCutoffForwardDifferenceQuotientToAmbient
   simp [localizedSqCutoffForwardDifferenceQuotientToAmbient]
   rw [show (fderiv ℝ (fun x => η x ^ 2) x) (basisVec j) =
       2 * η x * euclideanGradient η x j by
-        simpa [euclideanCoordDeriv] using euclideanCoordDeriv_sq hη j x]
+        simpa [euclideanCoordDeriv] using! euclideanCoordDeriv_sq hη j x]
   ring_nf
   exact Or.inl trivial
 
@@ -436,7 +436,7 @@ theorem memH10_localizedMul_of_contDiff_hasCompactSupport_tsupport_subset
   rcases hF with ⟨w, rfl⟩
   by_cases hts : tsupport φ = ∅
   · have hφ_zero : φ = 0 := tsupport_eq_empty_iff.mp hts
-    simpa [hφ_zero] using (memH10_zero (U := U))
+    simpa [hφ_zero] using! (memH10_zero (U := U))
   · obtain ⟨x0, hx0⟩ : (tsupport φ).Nonempty := Set.nonempty_iff_ne_empty.mpr hts
     have hx0V : x0 ∈ V := hφ_sub hx0
     rcases Metric.mem_nhds_iff.mp (hV.isOpen.mem_nhds hx0V) with ⟨r, hr_pos, hr_sub⟩
@@ -541,7 +541,7 @@ theorem memH10_localizedMul_of_contDiff_hasCompactSupport_tsupport_subset
           exact hφ.mul (hψ_smooth n)
         approx_hasCompactSupport := by
           intro n
-          simpa [mul_comm] using hφ_compact.mul_left (f := ψ n)
+          simpa [mul_comm] using! hφ_compact.mul_left (f := ψ n)
         approx_support_subset := by
           intro n
           exact ((tsupport_mul_subset_left (f := φ) (g := ψ n)).trans hφ_sub).trans hVU
@@ -590,7 +590,7 @@ theorem memH10_localizedMul_of_contDiff_hasCompactSupport_tsupport_subset
             exact MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
               hdiff_mem.aestronglyMeasurable φ
           refine tendsto_of_tendsto_of_tendsto_of_le_of_le
-            tendsto_const_nhds ?_ (fun n => zero_le _) hupper
+            tendsto_const_nhds ?_ (fun n => zero_le) hupper
           simpa using hconst_tendsto
         tendsto_approx_grad := by
           intro i
@@ -701,20 +701,20 @@ theorem memH10_localizedMul_of_contDiff_hasCompactSupport_tsupport_subset
                 ((hψ_smooth n).contDiffAt).differentiableAt (by simp)
               rw [show (fun y => φ y * ψ n y) = φ * ψ n by rfl,
                 fderiv_mul hφ_diff hψ_diff]
-              simp [A, B, dφ, wφ, smul_eq_mul, ContinuousLinearMap.add_apply]
+              simp [A, B, dφ, wφ, smul_eq_mul, add_apply]
               ring
             rw [hEq]
             refine (MeasureTheory.eLpNorm_add_le hA_mem.aestronglyMeasurable
               hB_mem.aestronglyMeasurable (by norm_num)).trans ?_
             refine add_le_add ?_ ?_
-            · simpa [A, mul_comm, mul_left_comm, mul_assoc] using
+            · simpa [A, mul_comm, mul_left_comm, mul_assoc] using!
                 (MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
                   hbase_grad_mem.aestronglyMeasurable φ)
-            · simpa [B, dφ, mul_comm, mul_left_comm, mul_assoc] using
+            · simpa [B, dφ, mul_comm, mul_left_comm, mul_assoc] using!
                 (MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
                   hbase_mem.aestronglyMeasurable dφ)
           refine tendsto_of_tendsto_of_tendsto_of_le_of_le
-            tendsto_const_nhds ?_ (fun n => zero_le _) hupper
+            tendsto_const_nhds ?_ (fun n => zero_le) hupper
           simpa [zero_add] using hsum_tendsto }, rfl⟩
 
 end WeakPoissonEquationOn

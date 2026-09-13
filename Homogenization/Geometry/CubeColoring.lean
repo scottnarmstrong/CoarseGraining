@@ -151,7 +151,7 @@ theorem disjoint_cubeSet_of_scale_eq_of_ne {d : ℕ} {R S : TriadicCube d}
   intro x hxR hxS
   have hindex_ne : ∃ i, R.index i ≠ S.index i := by
     by_contra h
-    push_neg at h
+    push Not at h
     apply hneq
     cases R with
     | mk scaleR indexR =>
@@ -214,7 +214,7 @@ theorem cubeScaleFactor_le_dist_of_ne_of_mem_descendantsAtScaleColorClass {d : �
       _ = cubeColor S := ((mem_descendantsAtScaleColorClass_iff.mp hS).2).symm
   have hindex_ne : ∃ i, R.index i ≠ S.index i := by
     by_contra h
-    push_neg at h
+    push Not at h
     apply hneq
     cases R with
     | mk scaleR indexR =>

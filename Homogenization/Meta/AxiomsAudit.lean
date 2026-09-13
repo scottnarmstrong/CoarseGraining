@@ -1,6 +1,5 @@
 import Homogenization.Book.Ch05.Theorems.Public
 import Homogenization.Book.MainResults
-import Homogenization.HighContrast.Scale.Final
 
 /-!
 # Axiom audit
@@ -19,8 +18,3 @@ those dependencies for inspection (see CI logs).
 -- The uniformly-elliptic headline theorems exposed in `MainResults.lean`.
 #print axioms Homogenization.Book.MainResults.annealedConvergence_uniformEllipticity
 #print axioms Homogenization.Book.MainResults.homogenizationComparison_uniformEllipticity
-
--- The polynomial homogenization length scale theorem (d > 2, uniform
--- ellipticity), from Armstrong--Kuusi--Loher, *Homogenization at a polynomial
--- scale in high contrast* (to appear).
-#print axioms Homogenization.homogenizationScale_polynomial_of_unitRange

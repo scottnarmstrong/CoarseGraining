@@ -89,7 +89,7 @@ noncomputable def bennettTailTerm (a : ℝ) (n : ℕ) : ℝ :=
   a ^ (n + 2) / (Nat.factorial (n + 2) : ℝ)
 
 theorem summable_bennettTailTerm (a : ℝ) : Summable (bennettTailTerm a) := by
-  simpa [bennettTailTerm] using
+  simpa [bennettTailTerm] using!
     ((_root_.summable_nat_add_iff 2).2 (Real.summable_pow_div_factorial a))
 
 /-- Scalar Bennett envelope on `[-y, y]`, proved by comparing the exponential
@@ -519,11 +519,11 @@ theorem measureReal_absTailEvent_finset_sum_le_bennett_of_iIndepFun_of_abs_le_of
     rw [mem_union, mem_upperTailEvent, mem_upperTailEvent]
     exact lt_abs.mp (by simpa [absTailEvent, upperTailEvent] using hω)
   have h_indep_neg : iIndepFun Xneg μ := by
-    simpa [Xneg, Function.comp] using
+    simpa [Xneg, Function.comp] using!
       h_indep.comp (fun _ => fun x : ℝ => -x) (fun _ => measurable_neg)
   have h_meas_neg : ∀ i, Measurable (Xneg i) := by
     intro i
-    simpa [Xneg] using (h_meas i).neg
+    simpa [Xneg] using h_meas i
   have hv_neg : 0 < ∑ i ∈ s, ProbabilityTheory.moment (Xneg i) 2 μ := by
     simpa [Xneg, ProbabilityTheory.moment] using hv
   have hXbdd_neg : ∀ i ∈ s, ∀ᵐ ω ∂μ, |Xneg i ω| ≤ y := by

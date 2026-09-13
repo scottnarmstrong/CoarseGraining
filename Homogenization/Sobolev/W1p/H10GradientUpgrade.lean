@@ -13,7 +13,7 @@ is constructed internally by inwardly mollifying the global zero extension.
 
 namespace Homogenization
 
-open Filter MeasureTheory Set Topology
+open _root_.Filter MeasureTheory Set Topology
 open scoped ENNReal
 
 noncomputable section
@@ -29,7 +29,7 @@ private theorem tendsto_eLpNorm_restrict_of_tendsto_global
       eLpNorm (f n) p (volume.restrict U) ≤ eLpNorm (f n) p volume := fun n =>
     eLpNorm_mono_measure (f n) Measure.restrict_le_self
   exact tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds h
-    (Filter.Eventually.of_forall fun _ => zero_le _) (Filter.Eventually.of_forall hle)
+    (Filter.Eventually.of_forall fun _ => zero_le) (Filter.Eventually.of_forall hle)
 
 private noncomputable def inwardApproximation
     {d : ℕ} {U : Set (Vec d)} (u : H10Function U)

@@ -178,9 +178,9 @@ theorem measurable_toHilbertMatrixL2_carrier
     (hUopen : IsOpen U) (hUfinite : MeasureTheory.volume U ≠ ⊤) :
     @Measurable Ω (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U)) mΩ (borel _)
       (fun ω => AEEQuantitativeEllipticSlice.toHilbertMatrixL2 (rawSlice A hSlice ω)) := by
-  haveI : Fact ((2 : ENNReal) ≠ ⊤) := ⟨ENNReal.ofNat_ne_top⟩
-  letI : MeasurableSpace (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U)) := borel _
-  haveI : BorelSpace (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U)) := ⟨rfl⟩
+  have : Fact ((2 : ENNReal) ≠ ⊤) := ⟨ENNReal.ofNat_ne_top⟩
+  let : MeasurableSpace (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U)) := borel _
+  have : BorelSpace (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U)) := ⟨rfl⟩
   obtain ⟨u, hu, hSmooth⟩ :=
     exists_dense_smoothProbeSequence_of_dense_smoothProbeSet (U := U)
       (dense_smoothCompactSupportHilbertMatrixL2_tsupport_subset hUopen hUfinite)
@@ -422,10 +422,10 @@ theorem measurable_toHilbertMatrixL2_carrier_cubeSet
       (fun ω =>
         AEEQuantitativeEllipticSlice.toHilbertMatrixL2
           (rawSlice (U := cubeSet Q) (k := k) A hSlice ω)) := by
-  haveI : Fact ((2 : ENNReal) ≠ ⊤) := ⟨ENNReal.ofNat_ne_top⟩
-  letI : MeasurableSpace (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn (cubeSet Q))) :=
+  have : Fact ((2 : ENNReal) ≠ ⊤) := ⟨ENNReal.ofNat_ne_top⟩
+  let : MeasurableSpace (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn (cubeSet Q))) :=
     borel _
-  haveI : BorelSpace (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn (cubeSet Q))) := ⟨rfl⟩
+  have : BorelSpace (MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn (cubeSet Q))) := ⟨rfl⟩
   obtain ⟨u, hu, hSmooth⟩ :=
     exists_dense_smoothProbeSequence_of_dense_smoothProbeSet (U := cubeSet Q)
       (dense_smoothCompactSupportHilbertMatrixL2_tsupport_subset_cubeSet Q)

@@ -85,13 +85,13 @@ theorem ae_abs_centeredJMinusCutoffWeightedChildAtScale_le_jUpperWeakNormManuscr
   have hOneSub_meas :
       AEStronglyMeasurable (fun x : Vec d => (1 : ℝ) - φ x)
         (volumeMeasureOn (cubeSet Q)) := by
-    simpa [sub_eq_add_neg] using
+    simpa [sub_eq_add_neg] using!
       (aestronglyMeasurable_const (b := (1 : ℝ))).sub
         (by simpa [Q] using hφ_meas)
   have hOneSub_bound :
       ∀ᵐ x ∂ volumeMeasureOn (cubeSet Q),
         ‖(1 : ℝ) - φ x‖ ≤ |(1 : ℝ)| + B := by
-    filter_upwards [by simpa [Q] using hφ_bound] with x hx
+    filter_upwards [by simpa [Q] using! hφ_bound] with x hx
     calc
       ‖(1 : ℝ) - φ x‖ = |(1 : ℝ) - φ x| := Real.norm_eq_abs _
       _ ≤ |(1 : ℝ)| + |φ x| := by

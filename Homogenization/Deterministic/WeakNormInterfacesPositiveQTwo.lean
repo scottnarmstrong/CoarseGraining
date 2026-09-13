@@ -38,7 +38,7 @@ theorem cubeAverageVec_sub_const {d : ℕ} (Q : TriadicCube d) (u : Vec d → Ve
     cubeAverageVec Q (fun x => u x - c) = cubeAverageVec Q u - c := by
   funext i
   have hui : MeasureTheory.MemLp (fun x => u x i) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
   have hui_int : MeasureTheory.Integrable (fun x => u x i) (normalizedCubeMeasure Q) :=
     hui.integrable (by norm_num)
   have hc_int : MeasureTheory.Integrable (fun _ : Vec d => c i) (normalizedCubeMeasure Q) :=
@@ -63,10 +63,10 @@ theorem cubeAverageVec_sub_memLp {d : ℕ} (Q : TriadicCube d)
   funext i
   have hui : MeasureTheory.MemLp (fun x => u x i) (2 : ℝ≥0∞)
       (normalizedCubeMeasure Q) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
   have hvi : MeasureTheory.MemLp (fun x => v x i) (2 : ℝ≥0∞)
       (normalizedCubeMeasure Q) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hv
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hv
   have hui_int : MeasureTheory.Integrable (fun x => u x i)
       (normalizedCubeMeasure Q) :=
     hui.integrable (by norm_num)

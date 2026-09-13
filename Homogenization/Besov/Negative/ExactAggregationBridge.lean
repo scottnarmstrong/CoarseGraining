@@ -51,11 +51,11 @@ theorem exactAggregation_ofReal_finiteSup_le_iSup (a : ℕ → ℝ) (N : ℕ) :
     ENNReal.ofReal ((Finset.range (N + 1)).sup' ⟨0, by simp⟩ a) ≤
       ⨆ i : ℕ, ENNReal.ofReal (a i) := by
   change exactAggregationOfRealSupHom
-    ((Finset.range (N + 1)).sup' ⟨0, by simp⟩ a) ≤ _
+    ((Finset.range (N + 1)).sup' Finset.nonempty_range_add_one a) ≤ _
   rw [map_finset_sup' exactAggregationOfRealSupHom]
   apply Finset.sup'_le
   intro i hi
-  simpa [Function.comp_apply] using le_iSup (fun i : ℕ => ENNReal.ofReal (a i)) i
+  simpa [Function.comp_apply] using! le_iSup (fun i : ℕ => ENNReal.ofReal (a i)) i
 
 /-- A pointwise finite-term bridge transports a legacy finite real `ℓ^q`
 aggregation directly into an infinite exact `tsum` aggregation. -/
@@ -87,7 +87,7 @@ theorem exactAggregation_ofReal_finiteSup_le_iSup_of_term_eq
     ENNReal.ofReal ((Finset.range (N + 1)).sup' ⟨0, by simp⟩ a) ≤
       ⨆ i : ℕ, b i := by
   change exactAggregationOfRealSupHom
-    ((Finset.range (N + 1)).sup' ⟨0, by simp⟩ a) ≤ _
+    ((Finset.range (N + 1)).sup' Finset.nonempty_range_add_one a) ≤ _
   rw [map_finset_sup' exactAggregationOfRealSupHom]
   apply Finset.sup'_le
   intro i hi

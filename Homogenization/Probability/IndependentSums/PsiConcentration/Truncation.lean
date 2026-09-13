@@ -54,7 +54,7 @@ theorem upperTruncation_le (X : Ω → ℝ) (L : ℝ) (ω : Ω) :
 theorem upperTruncation_measurable {X : Ω → ℝ} {L : ℝ}
     (hX : Measurable X) :
     Measurable (upperTruncation X L) := by
-  simpa [upperTruncation] using hX.min measurable_const
+  exact hX.min measurable_const
 
 theorem iIndepFun_upperTruncation {X : ι → Ω → ℝ} {L : ℝ}
     (h_indep : iIndepFun X μ) :
@@ -63,7 +63,7 @@ theorem iIndepFun_upperTruncation {X : ι → Ω → ℝ} {L : ℝ}
   have hg : ∀ i, Measurable (g i) := by
     intro i
     simpa [g] using (measurable_id.min measurable_const)
-  simpa [g, upperTruncation, Function.comp] using h_indep.comp g hg
+  exact h_indep.comp g hg
 
 omit [MeasurableSpace Ω] in
 /-- If a finite sum exceeds `a`, then either the corresponding upper-truncated
@@ -186,8 +186,10 @@ private theorem exp_sub_one_sub_id_le_half_sq_mul_exp_max (z : ℝ) :
     have hu : UniqueDiffOn ℝ (Set.Icc 0 z) := uniqueDiffOn_Icc hzpos
     obtain ⟨ξ, hξ, hξeq⟩ :=
       taylor_mean_remainder_lagrange_iteratedDeriv
-        (f := Real.exp) (x₀ := 0) (x := z) (n := 1) hzpos
+        (f := Real.exp) (x₀ := 0) (x := z) (n := 1) hzpos.ne
         (Real.contDiff_exp.contDiffOn)
+    rw [Set.uIoo_of_le hz] at hξ
+    rw [Set.uIcc_of_le hz] at hξeq
     have hderiv0 : derivWithin Real.exp (Set.Icc 0 z) 0 = 1 := by
       simpa using ((Real.hasDerivAt_exp 0).hasDerivWithinAt).derivWithin
         (hu.uniqueDiffWithinAt (by exact ⟨le_rfl, hzpos.le⟩))
@@ -212,11 +214,11 @@ private theorem exp_sub_one_sub_id_le_half_sq_mul_exp_max (z : ℝ) :
     have hu : UniqueDiffOn ℝ (Set.Icc 0 u) := uniqueDiffOn_Icc hupos
     obtain ⟨ξ, hξ, hξeq⟩ :=
       taylor_mean_remainder_lagrange_iteratedDeriv
-        (f := fun s : ℝ => Real.exp (-s)) (x₀ := 0) (x := u) (n := 1) hupos
-        (by
-          simpa using
-            ((Real.contDiff_exp.comp (by fun_prop)).contDiffOn :
-              ContDiffOn ℝ 2 (fun s : ℝ => Real.exp (-s)) (Set.Icc 0 u)))
+        (f := fun s : ℝ => Real.exp (-s)) (x₀ := 0) (x := u) (n := 1) hupos.ne
+        ((Real.contDiff_exp.comp (by fun_prop)).contDiffOn :
+          ContDiffOn ℝ (1 + 1) (fun s : ℝ => Real.exp (-s)) (Set.uIcc 0 u))
+    rw [Set.uIoo_of_le hupos.le] at hξ
+    rw [Set.uIcc_of_le hupos.le] at hξeq
     have hderiv0 : derivWithin (fun s : ℝ => Real.exp (-s)) (Set.Icc 0 u) 0 = -1 := by
       have hderivAt : HasDerivAt (fun s : ℝ => Real.exp (-s)) (-1) 0 := by
         simpa using ((hasDerivAt_id 0).neg.exp)
@@ -234,7 +236,7 @@ private theorem exp_sub_one_sub_id_le_half_sq_mul_exp_max (z : ℝ) :
       rw [← htaylor, hξeq, hiter]
       norm_num [Nat.factorial]
     have hformula : Real.exp (-u) - (1 + -u) = Real.exp (-ξ) * u ^ (2 : ℕ) / 2 := by
-      simpa using hformula0
+      simpa [sub_eq_add_neg] using hformula0
     have husq_nonneg : 0 ≤ u ^ (2 : ℕ) / 2 := by positivity
     have haux : Real.exp z - (1 + z) ≤ u ^ (2 : ℕ) / 2 := by
       calc

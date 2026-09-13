@@ -70,7 +70,7 @@ private theorem sqWeightedMeasure_univ_ne_top_of_memLp_two_finitePNeumann
     {μ : Measure α} {f : α → E} (hf : MemLp f 2 μ) :
     sqWeightedMeasure f μ Set.univ ≠ ∞ := by
   rw [sqWeightedMeasure, MeasureTheory.withDensity_apply _ MeasurableSet.univ]
-  simpa only [Measure.restrict_univ, ← ofReal_norm_eq_enorm,
+  simpa only [Measure.restrict_univ, ← ofReal_norm,
     ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) zero_le_two,
     ENNReal.toReal_ofNat, Real.rpow_two] using
     (MeasureTheory.lintegral_rpow_enorm_lt_top_of_eLpNorm_lt_top
@@ -84,9 +84,9 @@ private theorem sqWeightedMeasure_univ_eq_eLpNorm_two_sq_finitePNeumann
   rw [sqWeightedMeasure, MeasureTheory.withDensity_apply _ MeasurableSet.univ,
     Measure.restrict_univ]
   change (∫⁻ x, ENNReal.ofReal (‖f x‖ ^ (2 : ℕ)) ∂μ) = _
-  simp_rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]
+  simp_rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]
   rw [← ENNReal.rpow_natCast,
-    MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num),
+    MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num),
     ← ENNReal.rpow_mul]
   norm_num
 
@@ -111,7 +111,7 @@ private theorem lintegral_ofReal_norm_rpow_div_ne_top_of_memLp_finitePNeumann
   exact ENNReal.mul_ne_top
     (ENNReal.inv_ne_top.2 (ENNReal.ofReal_ne_zero_iff.mpr hb))
     (by
-      simpa only [← ofReal_norm_eq_enorm,
+      simpa only [← ofReal_norm,
         ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) ENNReal.toReal_nonneg] using
         (MeasureTheory.lintegral_rpow_enorm_lt_top_of_eLpNorm_lt_top
           (ne_of_gt (zero_lt_one.trans p.one_lt)) p.lt_top.ne
@@ -162,7 +162,7 @@ private theorem sqWeightedMeasure_neumannReflected_oneLevel_tail_finiteP
       let T : HilbertVec d →L[ℝ] Vec d :=
         (HilbertVec.continuousLinearEquivVec d).toContinuousLinearMap
       simpa only [MemVectorL2, volumeMeasureOn, Function.comp_def,
-        HilbertVec.toVec_ofVec, T] using T.comp_memLp' hopen)
+        HilbertVec.toVec_ofVec, T] using! T.comp_memLp' hopen)
     hsolution hlevel
 
 private theorem finiteLp_oneLevel_tail_restrict_neumann
@@ -325,7 +325,7 @@ private theorem finiteLp_integrated_tail_of_parameters_neumann
   have hg_base : MemLp (hilbertifyVecField h.toField) q.exponent μ := by
     simpa only [μ, centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-      hilbertifyVecField] using h.euclideanMemLp
+      hilbertifyVecField] using! h.euclideanMemLp
   have hg : MemLp g q.exponent μ := by
     simpa only [g] using hg_base.const_smul sigma0⁻¹
   have hC : C ≠ ∞ := ENNReal.mul_ne_top (ENNReal.pow_ne_top (by norm_num))
@@ -375,7 +375,7 @@ private theorem eLpNorm_rpow_eq_lintegral_finitePNeumann
     {μ : Measure α} (p : FiniteLpExponent) (f : α → E) :
     (eLpNorm f p.exponent μ) ^ p.exponent.toReal =
       ∫⁻ x, ENNReal.ofReal (‖f x‖ ^ p.exponent.toReal) ∂μ := by
-  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm
+  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
     (ne_of_gt (zero_lt_one.trans p.one_lt)) p.lt_top.ne,
     ← ENNReal.rpow_mul]
   have hp : p.exponent.toReal ≠ 0 :=
@@ -383,7 +383,7 @@ private theorem eLpNorm_rpow_eq_lintegral_finitePNeumann
   rw [one_div, inv_mul_cancel₀ hp, ENNReal.rpow_one]
   apply MeasureTheory.lintegral_congr
   intro x
-  rw [← ofReal_norm_eq_enorm,
+  rw [← ofReal_norm,
     ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) ENNReal.toReal_nonneg]
 
 private theorem lintegral_eq_ofReal_mul_div_finitePNeumann
@@ -519,7 +519,7 @@ private theorem finiteLp_low_term_of_l2_control_neumann
         (eLpNorm g q.exponent (centeredCubeDomain d m).normalizedVolume) ^
           q.exponent.toReal := by
   let μ : Measure (Vec d) := (centeredCubeDomain d m).normalizedVolume
-  letI : IsProbabilityMeasure μ := ⟨by
+  let : IsProbabilityMeasure μ := ⟨by
     dsimp only [μ]
     exact (centeredCubeDomain d m).normalizedVolume_apply_univ⟩
   have htwoq : (2 : ℝ≥0∞) ≤ q.exponent := by
@@ -588,7 +588,7 @@ private theorem neumannReflectedGoodLambdaCutoff_sq_eq_normalized_energy
   let V : ℝ := cubeVolume (originCube d m)
   have hs : 0 < s := by
     dsimp only [s]
-    simpa [cubeScaleFactor] using zpow_pos (by norm_num : (0 : ℝ) < 3) m
+    simpa [cubeScaleFactor] using! zpow_pos (by norm_num : (0 : ℝ) < 3) m
   have hL : 0 < L := by
     dsimp only [L]
     positivity
@@ -659,8 +659,7 @@ private theorem neumannReflectedGoodLambdaCutoff_sq_eq_normalized_energy
   · apply mul_nonneg
     · exact inv_nonneg.mpr (pow_nonneg
         (mul_nonneg (by norm_num) (reflectedStoppingRadius_pos m depth).le) _)
-    · dsimp only [neumannReflectedSourceSquaredEnergy]
-      apply mul_nonneg (pow_nonneg (by norm_num) _)
+    · apply mul_nonneg (pow_nonneg (by norm_num) _)
       apply add_nonneg
       · exact MeasureTheory.integral_nonneg fun _ ↦ sq_nonneg _
       · exact mul_nonneg (mul_nonneg (sq_nonneg _) (sq_nonneg _))
@@ -698,18 +697,18 @@ private theorem neumannReflectedGoodLambdaCutoff_le_normalized_datum_energy
   have hgbase : MemLp (hilbertifyVecField h.toField) 2 μ := by
     simpa only [μ, centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-      hilbertifyVecField] using h.euclideanMemL2
+      hilbertifyVecField] using! h.euclideanMemL2
   have hg : MemLp g 2 μ := by simpa only [g] using hgbase.const_smul sigma0⁻¹
   have hnormSource := centeredCubeH1MeanZeroScalarDivergence_cz_two
     m sigma0 h.toLpTwo u hsigma0 hsolution
   have hnorm : eLpNorm f 2 μ ≤ eLpNorm g 2 μ := by
     rw [eLpNorm_const_smul]
-    rw [← ofReal_norm_eq_enorm, Real.norm_of_nonneg (inv_nonneg.mpr hsigma0.le),
+    rw [← ofReal_norm, Real.norm_of_nonneg (inv_nonneg.mpr hsigma0.le),
       ENNReal.ofReal_inv_of_pos hsigma0]
     simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
       BoundedMeasurableDomain.normalizedLpENorm, FiniteLpExponent.two_exponent,
       euclideanNorm_eq_norm_ofVec, eLpNorm_norm, μ, f, g, hilbertifyVecField]
-      using hnormSource
+      using! hnormSource
   have hnormR := (ENNReal.toReal_le_toReal hf.eLpNorm_lt_top.ne
       hg.eLpNorm_lt_top.ne).mpr hnorm
   have hsq := (sq_le_sq₀ ENNReal.toReal_nonneg ENNReal.toReal_nonneg).mpr hnormR
@@ -764,15 +763,15 @@ private theorem neumannReflectedGoodLambdaCutoff_le_q_datum_norm
   have hgbase : MemLp (hilbertifyVecField h.toField) 2 μ := by
     simpa only [μ, centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-      hilbertifyVecField] using h.euclideanMemL2
+      hilbertifyVecField] using! h.euclideanMemL2
   have hg2 : MemLp g 2 μ := by simpa only [g] using hgbase.const_smul sigma0⁻¹
   have hgqbase : MemLp (hilbertifyVecField h.toField) q.exponent μ := by
     simpa only [μ, centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-      hilbertifyVecField] using h.euclideanMemLp
+      hilbertifyVecField] using! h.euclideanMemLp
   have hgq : MemLp g q.exponent μ := by
     simpa only [g] using hgqbase.const_smul sigma0⁻¹
-  letI : IsProbabilityMeasure μ := ⟨by
+  let : IsProbabilityMeasure μ := ⟨by
     dsimp only [μ]
     exact (centeredCubeDomain d m).normalizedVolume_apply_univ⟩
   have htwoq : (2 : ℝ≥0∞) ≤ q.exponent := by
@@ -795,7 +794,7 @@ private theorem neumannReflectedGoodLambdaCutoff_le_q_datum_norm
   calc
     neumannReflectedGoodLambdaCutoff m depth eps sigma0 u h.toField ≤
         C * Real.sqrt (∫ x, ‖g x‖ ^ (2 : ℕ) ∂μ) := by
-      simpa only [μ, g, C] using hcut
+      simpa only [μ, g, C] using! hcut
     _ = C * (eLpNorm g 2 μ).toReal := by rw [hsqrt]
     _ ≤ C * (eLpNorm g q.exponent μ).toReal := by
       apply mul_le_mul_of_nonneg_left hnormR
@@ -870,7 +869,7 @@ private theorem finiteLp_norm_bound_of_parameters_neumann
   have hgbase : MemLp (hilbertifyVecField h.toField) q.exponent μ := by
     simpa only [μ, centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-      hilbertifyVecField] using h.euclideanMemLp
+      hilbertifyVecField] using! h.euclideanMemLp
   have hg : MemLp g q.exponent μ := by
     simpa only [g] using hgbase.const_smul sigma0⁻¹
   have hJg : (∫⁻ x, ENNReal.ofReal (‖g x‖ ^ q.exponent.toReal /
@@ -958,21 +957,21 @@ theorem centeredCubeH1MeanZeroNeumannDivergence_cz_of_two_lt
   let g : Vec d → HilbertVec d := sigma0⁻¹ • hilbertifyVecField h.toField
   have henergy : eLpNorm f 2 μ ≤ eLpNorm g 2 μ := by
     rw [eLpNorm_const_smul]
-    rw [← ofReal_norm_eq_enorm,
+    rw [← ofReal_norm,
       Real.norm_of_nonneg (inv_nonneg.mpr hsigma0.le),
       ENNReal.ofReal_inv_of_pos hsigma0]
     simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
       BoundedMeasurableDomain.normalizedLpENorm, FiniteLpExponent.two_exponent,
-      euclideanNorm_eq_norm_ofVec, eLpNorm_norm, μ, f, g, hilbertifyVecField] using
+      euclideanNorm_eq_norm_ofVec, eLpNorm_norm, μ, f, g, hilbertifyVecField] using!
       (centeredCubeH1MeanZeroScalarDivergence_cz_two m sigma0 h.toLpTwo u hsigma0
         hsolution)
   have hgbase : MemLp (hilbertifyVecField h.toField) q.exponent μ := by
     simpa only [μ, centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-      hilbertifyVecField] using h.euclideanMemLp
+      hilbertifyVecField] using! h.euclideanMemLp
   have hg : MemLp g q.exponent μ := by simpa only [g] using hgbase.const_smul sigma0⁻¹
   by_cases hYzero : eLpNorm g q.exponent μ = 0
-  · letI : IsProbabilityMeasure μ := ⟨by
+  · let : IsProbabilityMeasure μ := ⟨by
       dsimp only [μ]
       exact (centeredCubeDomain d m).normalizedVolume_apply_univ⟩
     have htwoq : (2 : ℝ≥0∞) ≤ q.exponent := by
@@ -1001,7 +1000,7 @@ theorem centeredCubeH1MeanZeroNeumannDivergence_cz_of_two_lt
         q.exponent u.toH1Function.grad = 0 := by
       simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
         BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-        MeasureTheory.eLpNorm_norm, f, μ, hilbertifyVecField] using hfqzero
+        MeasureTheory.eLpNorm_norm, f, μ, hilbertifyVecField] using! hfqzero
     rw [htargetzero]
     exact bot_le
   · let lambda0 : ℝ := neumannReflectedGoodLambdaCutoff m depth eps sigma0 u h.toField +
@@ -1043,13 +1042,13 @@ theorem centeredCubeH1MeanZeroNeumannDivergence_cz_of_two_lt
       rfl
     rw [hleft]
     rw [MeasureTheory.eLpNorm_const_smul] at hbound
-    rw [← ofReal_norm_eq_enorm,
+    rw [← ofReal_norm,
       Real.norm_of_nonneg (inv_nonneg.mpr hsigma0.le),
       ENNReal.ofReal_inv_of_pos hsigma0] at hbound
     simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
       BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
       MeasureTheory.eLpNorm_norm, μ, f, g, C, theta, B, cM, cdata, rho, L,
-      mul_assoc] using hbound
+      mul_assoc] using! hbound
 
 end CubeCalderonZygmund
 

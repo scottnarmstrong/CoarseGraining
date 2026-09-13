@@ -28,7 +28,7 @@ theorem integral_abs_symmetrizedFinsetSum_pow_le_rosenthal
           (2 * rosenthalBennettIntegralConst *
             (Real.sqrt p * Real.sqrt (∑ i ∈ s, ProbabilityTheory.moment (X i) 2 μ))) ^ p := by
   classical
-  letI : Nonempty ↥s := ⟨⟨hs.choose, hs.choose_spec⟩⟩
+  let : Nonempty ↥s := ⟨⟨hs.choose, hs.choose_spec⟩⟩
   let Y : ↥s → Ω × Ω → ℝ := fun i ω => X i ω.1 - X i ω.2
   have hs_univ : (Finset.univ : Finset ↥s).Nonempty := Finset.univ_nonempty
   have hp_real : 2 ≤ (p : ℝ) := by exact_mod_cast hp
@@ -72,7 +72,7 @@ theorem integral_abs_symmetrizedFinsetSum_pow_le_rosenthal
   have hlin :=
     integral_abs_finsetSum_rpow_le_rosenthal_of_identDistrib_neg
       (μ := μ.prod μ) (X := Y) (s := Finset.univ) hs_univ hp_real h_indepY
-      (fun i => by simpa [Y] using ((h_meas i).comp measurable_fst).sub ((h_meas i).comp measurable_snd))
+      (fun i => by simpa [Y] using! ((h_meas i).comp measurable_fst).sub ((h_meas i).comp measurable_snd))
       h_sq_intY h_symmY hmax_intY
   have hmax_bound :
       ∫ ω : Ω × Ω, ((Finset.univ.sup' hs_univ fun i : ↥s => |Y i ω|) ^ p) ∂(μ.prod μ) ≤
@@ -238,7 +238,7 @@ theorem integrable_abs_symmetrizedFinsetSum_pow_of_rosenthal
     (hmax_int : Integrable (fun ω => (s.sup' hs (fun i => |X i ω|)) ^ p) μ) :
     Integrable (fun ω : Ω × Ω => |symmetrizedFinsetSum X s ω| ^ p) (μ.prod μ) := by
   classical
-  letI : Nonempty ↥s := ⟨⟨hs.choose, hs.choose_spec⟩⟩
+  let : Nonempty ↥s := ⟨⟨hs.choose, hs.choose_spec⟩⟩
   let Y : ↥s → Ω × Ω → ℝ := fun i ω => X i ω.1 - X i ω.2
   have hs_univ : (Finset.univ : Finset ↥s).Nonempty := Finset.univ_nonempty
   have hp_real : 2 ≤ (p : ℝ) := by exact_mod_cast hp
@@ -281,7 +281,7 @@ theorem integrable_abs_symmetrizedFinsetSum_pow_of_rosenthal
   have hint :=
     integrable_abs_finsetSum_rpow_of_identDistrib_neg
       (μ := μ.prod μ) (X := Y) (s := Finset.univ) hs_univ hp_real h_indepY
-      (fun i => by simpa [Y] using ((h_meas i).comp measurable_fst).sub ((h_meas i).comp measurable_snd))
+      (fun i => by simpa [Y] using! ((h_meas i).comp measurable_fst).sub ((h_meas i).comp measurable_snd))
       h_sq_intY h_symmY hmax_intY
   have hsum_eq :
       ∀ ω : Ω × Ω, ∑ i ∈ (Finset.univ : Finset ↥s), Y i ω = symmetrizedFinsetSum X s ω := by
@@ -289,7 +289,6 @@ theorem integrable_abs_symmetrizedFinsetSum_pow_of_rosenthal
     simpa [Y] using sum_univ_subtype_eq_symmetrizedFinsetSum (X := X) (s := s) ω
   convert hint using 1
   ext ω
-  change |symmetrizedFinsetSum X s ω| ^ p = |∑ i ∈ (Finset.univ : Finset ↥s), Y i ω| ^ (p : ℝ)
   rw [show |symmetrizedFinsetSum X s ω| ^ p = |symmetrizedFinsetSum X s ω| ^ (p : ℝ) by
     rw [Real.rpow_natCast]]
   rw [← hsum_eq ω]
@@ -446,7 +445,7 @@ theorem integral_abs_symmetrizedFinsetSum_rpow_le_rosenthal
           (2 * rosenthalBennettIntegralConst *
             (Real.sqrt p * Real.sqrt (∑ i ∈ s, ProbabilityTheory.moment (X i) 2 μ))) ^ p := by
   classical
-  letI : Nonempty ↥s := ⟨⟨hs.choose, hs.choose_spec⟩⟩
+  let : Nonempty ↥s := ⟨⟨hs.choose, hs.choose_spec⟩⟩
   let Y : ↥s → Ω × Ω → ℝ := fun i ω => X i ω.1 - X i ω.2
   have hs_univ : (Finset.univ : Finset ↥s).Nonempty := Finset.univ_nonempty
   have hp_one : 1 ≤ p := le_trans (by norm_num) hp
@@ -484,7 +483,7 @@ theorem integral_abs_symmetrizedFinsetSum_rpow_le_rosenthal
   have hlin :=
     integral_abs_finsetSum_rpow_le_rosenthal_of_identDistrib_neg
       (μ := μ.prod μ) (X := Y) (s := Finset.univ) hs_univ hp h_indepY
-      (fun i => by simpa [Y] using ((h_meas i).comp measurable_fst).sub ((h_meas i).comp measurable_snd))
+      (fun i => by simpa [Y] using! ((h_meas i).comp measurable_fst).sub ((h_meas i).comp measurable_snd))
       h_sq_intY h_symmY hmax_intY
   have hmax_bound :
       ∫ ω : Ω × Ω, (Finset.univ.sup' hs_univ fun i : ↥s => |Y i ω|) ^ p ∂(μ.prod μ) ≤
@@ -634,7 +633,7 @@ theorem integrable_abs_symmetrizedFinsetSum_rpow_of_rosenthal
     (hmax_int : Integrable (fun ω => (s.sup' hs (fun i => |X i ω|)) ^ p) μ) :
     Integrable (fun ω : Ω × Ω => |symmetrizedFinsetSum X s ω| ^ p) (μ.prod μ) := by
   classical
-  letI : Nonempty ↥s := ⟨⟨hs.choose, hs.choose_spec⟩⟩
+  let : Nonempty ↥s := ⟨⟨hs.choose, hs.choose_spec⟩⟩
   let Y : ↥s → Ω × Ω → ℝ := fun i ω => X i ω.1 - X i ω.2
   have hs_univ : (Finset.univ : Finset ↥s).Nonempty := Finset.univ_nonempty
   have hp_one : 1 ≤ p := le_trans (by norm_num) hp
@@ -671,7 +670,7 @@ theorem integrable_abs_symmetrizedFinsetSum_rpow_of_rosenthal
   have hint :=
     integrable_abs_finsetSum_rpow_of_identDistrib_neg
       (μ := μ.prod μ) (X := Y) (s := Finset.univ) hs_univ hp h_indepY
-      (fun i => by simpa [Y] using ((h_meas i).comp measurable_fst).sub ((h_meas i).comp measurable_snd))
+      (fun i => by simpa [Y] using! ((h_meas i).comp measurable_fst).sub ((h_meas i).comp measurable_snd))
       h_sq_intY h_symmY hmax_intY
   have hsum_eq :
       ∀ ω : Ω × Ω, ∑ i ∈ (Finset.univ : Finset ↥s), Y i ω = symmetrizedFinsetSum X s ω := by

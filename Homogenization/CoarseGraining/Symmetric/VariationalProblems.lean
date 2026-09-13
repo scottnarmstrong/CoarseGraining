@@ -195,7 +195,7 @@ theorem averageFlux_eq_sigmaCoarse_mul_of_isResponseMaximizer {d : ℕ}
     ScalarCanonicalMaximizer.averageFluxFormulaCanonical_p_zero_of_isSymmetricCoeffField
       (v := v) (ha := ha) (hA := hA) (hS := hS) (hK := hK)
       (hSigma := hSigma) (hdet := hdet) (hInt := hInt) vFlux
-  simpa [v, volumeAverageVec, matVecMul_neg, neg_matVecMul] using hAvg
+  simpa [v, volumeAverageVec, matVecMul_neg, neg_matVecMul] using! hAvg
 
 theorem averageFlux_eq_sigmaCoarse_mul_of_isSymmetricCoeffField_of_isEllipticFieldOn {d : ℕ}
     {a : CoeffField d} {U : Set (Vec d)}
@@ -389,7 +389,7 @@ theorem averageGradient_eq_sigmaStarInvCoarse_mul_of_isResponseMaximizer {d : �
     ScalarCanonicalMaximizer.averageGradientFormulaCanonical_zero_q_of_isSymmetricCoeffField
       (v := v) (ha := ha) (hA := hA) (hS := hS) (hK := hK)
       (hdet := hdet) (hInt := hInt) vGrad
-  simpa [v, volumeAverageVec] using hAvg
+  simpa [v, volumeAverageVec] using! hAvg
 
 theorem averageGradient_eq_sigmaStarInvCoarse_mul_of_isSymmetricCoeffField_of_isEllipticFieldOn
     {d : ℕ} {a : CoeffField d} {U : Set (Vec d)}

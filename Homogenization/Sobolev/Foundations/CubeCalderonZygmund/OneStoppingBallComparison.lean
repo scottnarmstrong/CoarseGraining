@@ -82,7 +82,7 @@ theorem stoppingComparisonParent_eLpNorm_two_bounds_of_stop_lastExit
   let parentRadius : ℝ := stoppingComparisonParentMultiplier depth * r
   have hrnonneg : 0 ≤ r := hr.le
   have hparent_mem : parentRadius ∈ Icc r R := by
-    simpa only [stoppingComparisonParentMultiplier] using
+    simpa only [parentRadius, stoppingComparisonParentMultiplier] using!
       (stoppingComparisonParentRadius_mem_Icc_of_le hrnonneg depth hcutoff)
   have hparent_energy : goodLambdaCombinedEnergy f g eps x parentRadius ≤ level :=
     hlast parentRadius hparent_mem
@@ -196,7 +196,7 @@ theorem exists_stoppingComparison_harmonic_remainder
     (stoppingComparisonParentCorner x r depth) (stoppingComparisonParentSide r depth)
       hL (u - w.toH1Function) hwHarm
   refine ⟨w, hwHarm, hwbound, ?_, ?_⟩
-  · simpa only [hilbertifyVecField] using hvGain.1
+  · simpa only [hilbertifyVecField] using! hvGain.1
   · have hvfield : hilbertifyVecField (u - w.toH1Function).grad =
         hilbertifyVecField u.grad + (-hilbertifyVecField w.toH1Function.grad) := by
       funext y

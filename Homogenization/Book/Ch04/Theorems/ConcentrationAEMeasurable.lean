@@ -87,7 +87,7 @@ theorem isBigO_gammaSigma_iff_of_map_eq_map
         μ.real (absTailEvent X (A * t)) =
           μ.real (absTailEvent Y (A * t)) := by
       simpa [s, absTailEvent, Measure.map_apply hX_meas hs,
-        Measure.map_apply hY_meas hs] using hmass_real
+        Measure.map_apply hY_meas hs] using! hmass_real
     rw [← hXY]
     exact hX ht
   · intro hY t ht
@@ -101,7 +101,7 @@ theorem isBigO_gammaSigma_iff_of_map_eq_map
         μ.real (absTailEvent Y (A * t)) =
           μ.real (absTailEvent X (A * t)) := by
       simpa [s, absTailEvent, Measure.map_apply hX_meas hs,
-        Measure.map_apply hY_meas hs] using hmass_real.symm
+        Measure.map_apply hY_meas hs] using! hmass_real.symm
     rw [← hYX]
     exact hY ht
 
@@ -147,7 +147,7 @@ theorem isBigOWith_gammaSigma_iff_of_map_eq_map
         μ.real (upperTailEvent X (A * t)) =
           μ.real (upperTailEvent Y (A * t)) := by
       simpa [s, upperTailEvent, Measure.map_apply hX_meas hs,
-        Measure.map_apply hY_meas hs] using hmass_real
+        Measure.map_apply hY_meas hs] using! hmass_real
     rw [← hXY]
     exact hX ht
   · intro hY t ht
@@ -161,7 +161,7 @@ theorem isBigOWith_gammaSigma_iff_of_map_eq_map
         μ.real (upperTailEvent Y (A * t)) =
           μ.real (upperTailEvent X (A * t)) := by
       simpa [s, upperTailEvent, Measure.map_apply hX_meas hs,
-        Measure.map_apply hY_meas hs] using hmass_real.symm
+        Measure.map_apply hY_meas hs] using! hmass_real.symm
     rw [← hYX]
     exact hY ht
 

@@ -136,7 +136,7 @@ theorem maximizer_unique_ae_of_isEllipticFieldOn {d : ℕ}
   have hEllAdj :
       IsEllipticFieldOn a.transpose.lam a.transpose.Lam (U : Set (Vec d))
         a.transpose.toCoeffField := by
-    simpa [Homogenization.adjointCoeffField] using
+    simpa [Homogenization.adjointCoeffField] using!
       isEllipticFieldOn_adjointCoeffField hEll
   have hUniqueAdj := responseGradientUniquenessTheory_of_isEllipticFieldOn U a.transpose hEllAdj
   have hvSame :=
@@ -175,7 +175,7 @@ theorem maximizer_add_sameAE_of_isEllipticFieldOn {d : ℕ}
   have hEllAdj :
       IsEllipticFieldOn a.transpose.lam a.transpose.Lam (U : Set (Vec d))
         a.transpose.toCoeffField := by
-    simpa [Homogenization.adjointCoeffField] using
+    simpa [Homogenization.adjointCoeffField] using!
       isEllipticFieldOn_adjointCoeffField hEll
   have hLinearAdj := responseGradientLinearityTheory_of_isEllipticFieldOn U a.transpose hEllAdj
   have hv12' :
@@ -222,7 +222,7 @@ theorem maximizer_smul_sameAE_of_isEllipticFieldOn {d : ℕ}
   have hEllAdj :
       IsEllipticFieldOn a.transpose.lam a.transpose.Lam (U : Set (Vec d))
         a.transpose.toCoeffField := by
-    simpa [Homogenization.adjointCoeffField] using
+    simpa [Homogenization.adjointCoeffField] using!
       isEllipticFieldOn_adjointCoeffField hEll
   have hLinearAdj := responseGradientLinearityTheory_of_isEllipticFieldOn U a.transpose hEllAdj
   have hvc' :

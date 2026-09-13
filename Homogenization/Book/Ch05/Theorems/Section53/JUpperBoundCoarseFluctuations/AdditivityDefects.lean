@@ -40,8 +40,7 @@ private theorem integrable_responseDefectAverageAtScale
     (hDesc : ∀ R, R ∈ descendantsAtScale (originCube d m) n →
       Integrable (Ch04.restrictionResponseJObservableCubeSet R p q) P) :
     Integrable (WeakNormsMaximizer.responseDefectAverageAtScale m n p q) P := by
-  simpa [responseDefectAverageAtScale_eq_responseJAdditivityDefectAtScale] using
-    JUpperBoundWeakNorms.integrable_responseJAdditivityDefectAtScale
+  exact JUpperBoundWeakNorms.integrable_responseJAdditivityDefectAtScale
       hnm p q hParent hDesc
 
 /-- A.e. nonnegativity of the response defect in the notation of the
@@ -50,8 +49,7 @@ private theorem responseDefectAverageAtScale_nonneg_ae
     {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
     (hP : Ch04.RestrictionLawCarrier P) {n m : ℤ} (hnm : n ≤ m) (p q : Vec d) :
     0 ≤ᵐ[P] WeakNormsMaximizer.responseDefectAverageAtScale m n p q := by
-  simpa [responseDefectAverageAtScale_eq_responseJAdditivityDefectAtScale] using
-    JUpperBoundWeakNorms.responseJAdditivityDefectAtScale_nonneg_ae
+  exact JUpperBoundWeakNorms.responseJAdditivityDefectAtScale_nonneg_ae
       hP hnm p q
 
 /-- Law-facing tau conversion for the response defect as it appears in the
@@ -206,7 +204,7 @@ theorem integrable_sq_weighted_sqrt_responseDefectAverageAtScale
   have hYInt : Integrable Y P := by
     have hsum :
         Integrable (fun a : RegCoeffField d => ∑ n ∈ S, w n * D n a) P :=
-      integrable_finset_sum S
+      integrable_finsetSum S
         (fun n hn => (hDInt n hn).const_mul (w n))
     exact hsum.const_mul (∑ n ∈ S, w n)
   have hsumAEMeas :
@@ -227,7 +225,7 @@ theorem integrable_sq_weighted_sqrt_responseDefectAverageAtScale
     filter_upwards with a
     simp [Finset.sum_apply]
   have hXAEMeas : AEStronglyMeasurable X P := by
-    simpa [X] using hsumAEMeas.pow 2
+    simpa [X] using! hsumAEMeas.pow 2
   have hPoint : ∀ᵐ a ∂P, X a ≤ Y a := by
     filter_upwards [hDNonneg_all] with a hnonneg
     have hCauchy :=
@@ -289,7 +287,7 @@ theorem integral_sq_weighted_sqrt_responseDefectAverageAtScale_le_sum_weights_mu
   have hYInt : Integrable Y P := by
     have hsum :
         Integrable (fun a : RegCoeffField d => ∑ n ∈ S, w n * D n a) P :=
-      integrable_finset_sum S
+      integrable_finsetSum S
         (fun n hn => (hDInt n hn).const_mul (w n))
     exact hsum.const_mul (∑ n ∈ S, w n)
   have hsumAEMeas :
@@ -310,7 +308,7 @@ theorem integral_sq_weighted_sqrt_responseDefectAverageAtScale_le_sum_weights_mu
     filter_upwards with a
     simp [Finset.sum_apply]
   have hXAEMeas : AEStronglyMeasurable X P := by
-    simpa [X] using hsumAEMeas.pow 2
+    simpa [X] using! hsumAEMeas.pow 2
   have hPoint : ∀ᵐ a ∂P, X a ≤ Y a := by
     filter_upwards [hDNonneg_all] with a hnonneg
     have hCauchy :=
@@ -336,7 +334,7 @@ theorem integral_sq_weighted_sqrt_responseDefectAverageAtScale_le_sum_weights_mu
       _ =
           (∑ n ∈ S, w n) *
             ∑ n ∈ S, ∫ a, w n * D n a ∂P := by
-          rw [integral_finset_sum S
+          rw [integral_finsetSum S
             (fun n hn => (hDInt n hn).const_mul (w n))]
       _ =
           (∑ n ∈ S, w n) *

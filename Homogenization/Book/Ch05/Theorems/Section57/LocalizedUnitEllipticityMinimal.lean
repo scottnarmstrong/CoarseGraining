@@ -285,7 +285,7 @@ theorem measureReal_unitEllipticityBadScaleRow_le_weighted
       w ^ N * (w ^ r * Real.exp (-((A * ρ ^ r) ^ hΓ.sigma))) := by
   classical
   intro scale w A ρ ht hαt hA_one
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (((N + r : ℕ) : ℤ))
   let D : Finset (TriadicCube d) := descendantsAtScale Q 0
   let lam : ℝ := unitEllipticityEnvelopeThreshold t α (N + r) N / scale
@@ -398,7 +398,7 @@ theorem measureReal_unitEllipticityBadScaleEvent_le_weighted_kernel
           weightedGeometricExpKernelConst w (ρ ^ hΓ.sigma)) := by
   classical
   intro scale w A ρ ht hαt hA_one
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let E : ℕ → Fin 1 → Set (RegCoeffField d) :=
     fun r _ =>
       {a : RegCoeffField d |
@@ -467,7 +467,7 @@ theorem measureReal_badTailEvent_unitEllipticityBadScaleEvent_le_weighted_kernel
         (Real.exp (-(A ^ hΓ.sigma)) *
           weightedGeometricExpKernelConst w (ρ ^ hΓ.sigma)) := by
   intro scale w A ρ ht hα hαt hA_one
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hmono :
       P.real
           (badTailEvent
@@ -556,7 +556,7 @@ theorem exists_quantitative_threshold_unitEllipticityBadTail_le_interpolated_tai
   refine ⟨R, ?_, ?_⟩
   · simpa [η, w, W, ρunit, Kunit, M, ρgap, C₀] using hR
   intro P hP hStruct hΓ hσ_eq
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let scale : ℝ := thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat
   let Blead : ℝ := smallBottomTailDenominator scale η σ
   let Btail : ℝ := 2 * Blead
@@ -822,7 +822,7 @@ theorem exists_unitEllipticityMinimalScale_interpolated
                 Real.sqrt (((3 : ℝ) ^ m / X aω) ^ (-α))) ^ (2 : ℕ) := by
   intro η ht hα_nonneg hαt
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let w : ℝ := ((3 ^ d : ℕ) : ℝ)
   let W : ℝ := max 1 w
   let ρunit : ℝ := (3 : ℝ) ^ (2 * t - α)

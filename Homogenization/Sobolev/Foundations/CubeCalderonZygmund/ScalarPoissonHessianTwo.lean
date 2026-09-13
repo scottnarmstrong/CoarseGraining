@@ -55,8 +55,13 @@ theorem exists_scalarPoisson_hessianHilbertMat_normalizedCubeMeasure_le_two
         eLpNorm H.frobeniusMagnitude 2 (normalizedCubeMeasure Q) := by
     apply eLpNorm_congr_norm_ae
     exact ae_of_all _ fun x ↦ by
+      have hnonneg : 0 ≤ matrixFrobeniusMagnitude (fun i j ↦ H.hess i j x) :=
+        matrixFrobeniusMagnitude_nonneg _
+      have habs : |matrixFrobeniusMagnitude (fun i j ↦ H.hess i j x)| =
+          matrixFrobeniusMagnitude (fun i j ↦ H.hess i j x) :=
+        abs_of_nonneg hnonneg
       simpa only [HasWeakHessianOn.frobeniusMagnitude, Real.norm_eq_abs,
-        abs_of_nonneg (matrixFrobeniusMagnitude_nonneg _)] using
+        habs] using!
         (matrixFrobeniusMagnitude_eq_norm_hilbertMat_ofMat
           (fun i j ↦ H.hess i j x)).symm
   have hleft :

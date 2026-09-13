@@ -1,4 +1,6 @@
-import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability
+import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.LowerVariants
+import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.PowIntegrable
+import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.UnitDescendantSup
 
 namespace Homogenization
 namespace Book
@@ -123,9 +125,9 @@ private theorem norm_toEuclideanCLM_sq_integrable_of_entry_memLp_two
   let S : RegCoeffField d → ℝ := fun a => ∑ α : BlockCoord d, ∑ β : BlockCoord d, |Z a α β|
   have hS_mem : MemLp S (2 : ENNReal) P := by
     dsimp [S]
-    refine memLp_finset_sum _ ?_
+    refine memLp_finsetSum _ ?_
     intro α _hα
-    refine memLp_finset_sum _ ?_
+    refine memLp_finsetSum _ ?_
     intro β _hβ
     simpa [Real.norm_eq_abs] using (hZ_entry α β).norm
   have hS_sq_int : Integrable (fun a => S a ^ 2) P := by
@@ -414,7 +416,7 @@ theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
       (fun a : RegCoeffField d =>
         blockMatEntry (coarseBlockMatrix (cubeSet (originCube d (n : ℤ))) a) α β)
       (2 : ENNReal) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (n : ℤ)
   let X : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField Q hP4.sUpper (.finite 1) a
@@ -424,9 +426,9 @@ theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
     simpa [X, Q] using
       hP.aemeasurable_LambdaSqCoeffField_finite_one (originCube d (n : ℤ)) hP4.sUpper_pos
   have hY_meas : AEMeasurable Y P := by
-    simpa [Y, Q] using
-      (hP.aemeasurable_lambdaSqCoeffField_finite_one
-        (originCube d (n : ℤ)) hP4.sLower_pos).inv
+    simpa [Y, Q] using!
+      hP.aemeasurable_lambdaSqCoeffField_finite_one
+        (originCube d (n : ℤ)) hP4.sLower_pos
   have hX_nonneg : ∀ᵐ a ∂P, 0 ≤ X a :=
     Filter.Eventually.of_forall fun a =>
       Ch04.LambdaSqCoeffField_finite_nonneg Q a hP4.sUpper_pos
@@ -469,7 +471,7 @@ theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
       ∀ᵐ a ∂P,
         |blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β| ≤
           X a + Y a := by
-    simpa [X, Y, Q] using
+    simpa [X, Y, Q] using!
       blockMatEntry_abs_le_factor_sum_ae
         hP (originCube d (n : ℤ)) hP4.sUpper_pos hP4.sLower_pos α β
   have hEntry_abs_sq :
@@ -489,7 +491,7 @@ theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_originCub
     Integrable
       (Ch04.fullBlockNormalizedFluctuationOperatorNormSqAtScale
         hP hStruct m (originCube d (n : ℤ))) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (n : ℤ)
   let b := hP.barSigmaAtScale hStruct m
   let c := hP.barSigmaStarAtScale hStruct m
@@ -510,7 +512,7 @@ theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_originCub
                     toFullBlockMat Abar δ γ)) *
                 D γ β)
           (2 : ENNReal) P := by
-      refine memLp_finset_sum (s := (Finset.univ : Finset (BlockCoord d)))
+      refine memLp_finsetSum (s := (Finset.univ : Finset (BlockCoord d)))
         (p := (2 : ENNReal)) ?_
       intro γ _hγ
       have hinner :
@@ -521,7 +523,7 @@ theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_originCub
                   (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) δ γ -
                     toFullBlockMat Abar δ γ))
             (2 : ENNReal) P := by
-        refine memLp_finset_sum (s := (Finset.univ : Finset (BlockCoord d)))
+        refine memLp_finsetSum (s := (Finset.univ : Finset (BlockCoord d)))
           (p := (2 : ENNReal)) ?_
         intro δ _hδ
         have hbase :
@@ -538,7 +540,7 @@ theorem integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_originCub
             simpa [Q, toFullBlockMat, blockMatEntry] using
               memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
                 hP hStruct hP4 n δ γ
-          simpa using hentry.sub
+          exact hentry.sub
             (memLp_const
               (c := toFullBlockMat Abar δ γ) (μ := P) (p := (2 : ENNReal)))
         exact hbase.const_mul (D α δ)

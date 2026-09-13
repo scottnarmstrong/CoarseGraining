@@ -60,7 +60,7 @@ noncomputable def swapVecContinuousLinearEquiv {d : ℕ} (i j : Fin d) :
   have h :=
     Homeomorph.piCongrLeft_apply_apply (Y := fun _ : Fin d => ℝ) (Equiv.swap i j) x
       (Equiv.swap i j k)
-  simpa [swapVecContinuousLinearEquiv, matVecMul_swap_eq_comp] using h
+  simpa [swapVecContinuousLinearEquiv, matVecMul_swap_eq_comp] using! h
 
 @[simp] theorem swapVecContinuousLinearEquiv_symm_apply {d : ℕ} (i j : Fin d) (x : Vec d) :
     (swapVecContinuousLinearEquiv i j).symm x = matVecMul (Matrix.swap ℝ i j) x := by
@@ -126,12 +126,12 @@ private theorem measurePreserving_signFlipVecContinuousLinearEquiv {d : ℕ} (i 
     MeasureTheory.MeasurePreserving (signFlipVecContinuousLinearEquiv i) MeasureTheory.volume
       MeasureTheory.volume := by
   classical
-  simpa [signFlipVecContinuousLinearEquiv_apply] using
+  simpa [signFlipVecContinuousLinearEquiv_apply] using!
     (MeasureTheory.volume_preserving_pi fun j : Fin d =>
       by
         by_cases h : j = i
         · subst h
-          simpa using
+          simpa using!
             (MeasureTheory.Measure.measurePreserving_neg
               (MeasureTheory.volume : MeasureTheory.Measure ℝ))
         · simpa [h] using
@@ -141,7 +141,7 @@ private theorem measurePreserving_signFlipVecContinuousLinearEquiv {d : ℕ} (i 
 private theorem measurePreserving_swapVecContinuousLinearEquiv {d : ℕ} (i j : Fin d) :
     MeasureTheory.MeasurePreserving (swapVecContinuousLinearEquiv i j) MeasureTheory.volume
       MeasureTheory.volume := by
-  simpa [swapVecContinuousLinearEquiv] using
+  simpa [swapVecContinuousLinearEquiv] using!
     (MeasureTheory.volume_measurePreserving_piCongrLeft
       (fun _ : Fin d => ℝ) (Equiv.swap i j))
 
@@ -202,7 +202,7 @@ private theorem fderiv_comp_signFlipVecContinuousLinearEquiv_apply_basisVec {d :
       fderiv ℝ (fun y => φ (T y)) x =
         (fderiv ℝ φ (T x)).comp (fderiv ℝ T x) := by
     simpa [T] using
-      (fderiv_comp' (f := T) (g := φ) x hφ (signFlipVecContinuousLinearEquiv i).differentiableAt)
+      (fderiv_fun_comp (f := T) (g := φ) x hφ (signFlipVecContinuousLinearEquiv i).differentiableAt)
   have hlin : fderiv ℝ T x = (signFlipVecContinuousLinearEquiv i).toContinuousLinearMap := by
     simpa [T] using ((signFlipVecContinuousLinearEquiv i).toContinuousLinearMap.fderiv (x := x))
   have hb :
@@ -235,7 +235,7 @@ private theorem fderiv_comp_swapVecContinuousLinearEquiv_apply_basisVec {d : ℕ
       fderiv ℝ (fun y => φ (T y)) x =
         (fderiv ℝ φ (T x)).comp (fderiv ℝ T x) := by
     simpa [T] using
-      (fderiv_comp' (f := T) (g := φ) x hφ (swapVecContinuousLinearEquiv i j).differentiableAt)
+      (fderiv_fun_comp (f := T) (g := φ) x hφ (swapVecContinuousLinearEquiv i j).differentiableAt)
   have hlin : fderiv ℝ T x = (swapVecContinuousLinearEquiv i j).toContinuousLinearMap := by
     simpa [T] using ((swapVecContinuousLinearEquiv i j).toContinuousLinearMap.fderiv (x := x))
   have hb :

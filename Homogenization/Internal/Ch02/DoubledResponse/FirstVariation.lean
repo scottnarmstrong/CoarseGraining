@@ -39,7 +39,7 @@ theorem first_variation_scalar_representatives_of_isEllipticFieldOn {d : ℕ}
   have hEllAdj :
       IsEllipticFieldOn a.transpose.lam a.transpose.Lam (U : Set (Vec d))
         a.transpose.toCoeffField := by
-    simpa [Homogenization.adjointCoeffField] using
+    simpa [Homogenization.adjointCoeffField] using!
       isEllipticFieldOn_adjointCoeffField hEll
   have hFirst := responseFirstVariationTheory_of_isEllipticFieldOn U a hEll
   have hFirstAdj := responseFirstVariationTheory_of_isEllipticFieldOn U a.transpose hEllAdj
@@ -65,7 +65,7 @@ theorem first_variation_scalar_representatives_of_isEllipticFieldOn {d : ℕ}
       volumeAverage (U : Set (Vec d))
         (scalarFirstVariationIntegrand (U : Set (Vec d)) a.transpose.toCoeffField
           (pStar + p) (qStar + q) vStar z2) = 0 at hfirstStarPublic
-    simpa [Homogenization.adjointCoeffField] using hfirstStarPublic
+    simpa [Homogenization.adjointCoeffField] using! hfirstStarPublic
   have hSplit :=
     volumeAverage_blockFirstVariationIntegrand_pair_half_eq_scalarFirstVariation_sum_of_isEllipticFieldOn
       (a := a.toCoeffField) U.measurableSet hEll p pStar q qStar v w2 vStar z2
@@ -132,7 +132,7 @@ theorem first_variation_scalar_representatives_of_isEllipticFieldOn {d : ℕ}
   let Pconst : BlockState d := { potential := fun _ => p, flux := fun _ => q }
   have hPconst :
       MemBlockL2 (U : Set (Vec d)) Pconst.eval := by
-    simpa [Pconst, BlockState.eval, blockField] using
+    simpa [Pconst, BlockState.eval, blockField] using!
       memBlockL2_blockField
         (MeasureTheory.memLp_const (μ := volumeMeasureOn (U : Set (Vec d))) (c := p))
         (MeasureTheory.memLp_const (μ := volumeMeasureOn (U : Set (Vec d))) (c := q))
@@ -158,7 +158,7 @@ theorem first_variation_scalar_representatives_of_isEllipticFieldOn {d : ℕ}
       MeasureTheory.IntegrableOn
         (fun x => blockVecDot (qStar, pStar) ((blockStateOfDoubled T).eval x))
         (U : Set (Vec d)) := by
-    simpa [MeasureTheory.IntegrableOn, blockVecDot] using
+    simpa [MeasureTheory.IntegrableOn, blockVecDot] using!
       hQpot.integrable.add hQflux.integrable
   have hPInt :
       MeasureTheory.IntegrableOn
@@ -167,18 +167,18 @@ theorem first_variation_scalar_representatives_of_isEllipticFieldOn {d : ℕ}
             (blockMatVecMul (blockMatrixField a x) ((blockStateOfDoubled T).eval x)))
         (U : Set (Vec d)) := by
     simpa [Pconst, blockPairingIntegrand, BlockState.eval,
-      book_blockMatrixField_eq_blockCoeffField] using
+      book_blockMatrixField_eq_blockCoeffField] using!
       blockPairingIntegrand_integrableOn_of_memBlockL2_of_isEllipticFieldOn
         (U := (U : Set (Vec d))) (a := a.toCoeffField)
         (X := Pconst) (Y := blockStateOfDoubled T) hPconst hTmem hEll
   have hf : MeasureTheory.IntegrableOn f (U : Set (Vec d)) := by
     simpa [f, doubledResponseFirstVariationLeft, T, blockStateOfDoubled,
-      DoubledField.eval, sub_eq_add_neg, MeasureTheory.IntegrableOn] using
+      DoubledField.eval, sub_eq_add_neg, MeasureTheory.IntegrableOn] using!
       hQInt.integrable.sub hPInt.integrable
   have hg : MeasureTheory.IntegrableOn g (U : Set (Vec d)) := by
     simpa [g, doubledResponseFirstVariationRight, S, T, blockStateOfDoubled,
       DoubledField.eval, blockPairingIntegrand, BlockState.eval, blockMatrixField,
-      book_blockMatrixField_eq_blockCoeffField] using
+      book_blockMatrixField_eq_blockCoeffField] using!
       blockPairingIntegrand_integrableOn_of_memBlockL2_of_isEllipticFieldOn
         (U := (U : Set (Vec d))) (a := a.toCoeffField)
         (X := blockStateOfDoubled T) (Y := blockStateOfDoubled S)

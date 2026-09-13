@@ -71,7 +71,7 @@ theorem memScalarL2_openCubeSet_succ_originCube_cubeCoordinateFoldReflectedScala
       (fun x =>
         cubeCoordinateFoldReflectedScalar (originCube d m) F x -
           cubeCoordinateFoldReflectedScalar (originCube d m) U x) := by
-  simpa using
+  simpa using!
     memScalarL2_openCubeSet_succ_originCube_cubeCoordinateFoldReflectedScalar
       (m := m) hFU
 

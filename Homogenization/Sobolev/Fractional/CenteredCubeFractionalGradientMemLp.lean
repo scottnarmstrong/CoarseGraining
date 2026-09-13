@@ -41,7 +41,7 @@ theorem centeredCubeH10ScalarDivergence_grad_memLp
       BoundedMeasurableDomain.normalizedLpENorm, centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
       euclideanNorm_eq_norm_ofVec, MeasureTheory.eLpNorm_norm, hField] using
-      hC m sigma0 hField w hsigma0 (by simpa only [hField] using hsolution)
+      hC m sigma0 hField w hsigma0 (by simpa only [hField] using! hsolution)
   have hgrad_l2 : MemLp (fun x => HilbertVec.ofVec (w.toH1Function.grad x)) 2
       (normalizedCubeMeasure (originCube d m)) := by
     rw [MeasureTheory.memLp_piLp_iff]

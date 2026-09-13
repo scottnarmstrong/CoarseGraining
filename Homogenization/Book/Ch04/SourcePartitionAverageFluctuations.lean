@@ -34,7 +34,7 @@ private theorem isBigO_gammaSigma_iff_of_map_eq_map
     have hfg :
         P.real (absTailEvent f (A * t)) = P.real (absTailEvent g (A * t)) := by
       simpa [s, absTailEvent, Measure.map_apply hf hs, Measure.map_apply hg hs]
-        using hmass_real
+        using! hmass_real
     rw [← hfg]
     exact h ht
   · intro h t ht
@@ -47,7 +47,7 @@ private theorem isBigO_gammaSigma_iff_of_map_eq_map
     have hgf :
         P.real (absTailEvent g (A * t)) = P.real (absTailEvent f (A * t)) := by
       simpa [s, absTailEvent, Measure.map_apply hf hs, Measure.map_apply hg hs]
-        using hmass_real.symm
+        using! hmass_real.symm
     rw [← hgf]
     exact h ht
 
@@ -69,7 +69,7 @@ private theorem isBigO_psiSigma_iff_of_map_eq_map
     have hfg :
         P.real (absTailEvent f (A * t)) = P.real (absTailEvent g (A * t)) := by
       simpa [s, absTailEvent, Measure.map_apply hf hs, Measure.map_apply hg hs]
-        using hmass_real
+        using! hmass_real
     rw [← hfg]
     exact h ht
   · intro h t ht
@@ -82,7 +82,7 @@ private theorem isBigO_psiSigma_iff_of_map_eq_map
     have hgf :
         P.real (absTailEvent g (A * t)) = P.real (absTailEvent f (A * t)) := by
       simpa [s, absTailEvent, Measure.map_apply hf hs, Measure.map_apply hg hs]
-        using hmass_real.symm
+        using! hmass_real.symm
     rw [← hgf]
     exact h ht
 
@@ -225,7 +225,7 @@ theorem isBigO_psiSigma_sourceCenteredTranslatedDescendantAverage_of_sourceUnitR
       (IsSourceLocalRandomVariable.const (cubeSet R) (measurableSet_cubeSet R) μ0)
   have hZ_int : ∀ R ∈ descendantsAtScale (originCube d m) n, Integrable (Z R) P := by
     intro R hR
-    simpa [Z] using (hY_int R hR).sub (integrable_const μ0)
+    simpa [Z] using! (hY_int R hR).sub (integrable_const μ0)
   have hZ_tail :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
         IsBigO P (psiSigma σ) (Z R) K := by

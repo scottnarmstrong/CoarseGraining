@@ -55,7 +55,7 @@ theorem
   let U : Set (Vec d) := openCubeSet (originCube d n)
   let hCube : IsOpenBoundedConvexDomain U := by
     simpa [U] using isOpenBoundedConvexDomain_openCubeSet (originCube d n)
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn, U] using hCube.isFiniteMeasure_restrict_volume
   let system : MuOperatorSystemData U a :=
     R.toMuOperatorSystemDataOfIsEllipticFieldOn hEll
@@ -86,7 +86,7 @@ theorem
   let U : Set (Vec d) := openCubeSet (originCube d n)
   let hCube : IsOpenBoundedConvexDomain U := by
     simpa [U] using isOpenBoundedConvexDomain_openCubeSet (originCube d n)
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn, U] using hCube.isFiniteMeasure_restrict_volume
   let system : MuOperatorSystemData U a :=
     R.toMuOperatorSystemDataOfIsEllipticFieldOn hEll
@@ -178,7 +178,7 @@ theorem
   let U : Set (Vec d) := openCubeSet (originCube d n)
   let hCube : IsOpenBoundedConvexDomain U := by
     simpa [U] using isOpenBoundedConvexDomain_openCubeSet (originCube d n)
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn, U] using hCube.isFiniteMeasure_restrict_volume
   let system : MuOperatorSystemData U a :=
     R.toMuOperatorSystemDataOfIsEllipticFieldOn hEll
@@ -268,9 +268,9 @@ theorem
     Mu (openCubeSet (originCube d n)) (0, q0) a =
       ResponseJ (openCubeSet (originCube d n)) 0 q0 a := by
   let U : Set (Vec d) := openCubeSet (originCube d n)
-  letI : Fact (MeasureTheory.volume U < ⊤) :=
+  let : Fact (MeasureTheory.volume U < ⊤) :=
     ⟨volume_openCubeSet_originCube_lt_top (d := d) n⟩
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn, U] using
       (isOpenBoundedConvexDomain_openCubeSet (originCube d n)).isFiniteMeasure_restrict_volume
   rcases hData with ⟨hEll, hCompat⟩
@@ -351,9 +351,9 @@ theorem
     Mu (openCubeSet (originCube d n)) (0, q0) a =
       ResponseJ (openCubeSet (originCube d n)) 0 q0 a := by
   let U : Set (Vec d) := openCubeSet (originCube d n)
-  letI : Fact (MeasureTheory.volume U < ⊤) :=
+  let : Fact (MeasureTheory.volume U < ⊤) :=
     ⟨volume_openCubeSet_originCube_lt_top (d := d) n⟩
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn, U] using
       (isOpenBoundedConvexDomain_openCubeSet (originCube d n)).isFiniteMeasure_restrict_volume
   let hEll : IsEllipticFieldOn lam Lam U a := Classical.choose hData
@@ -398,9 +398,9 @@ theorem
     Mu (openCubeSet (originCube d n)) (p0, 0) a =
       ResponseJ (openCubeSet (originCube d n)) p0 0 a := by
   let U : Set (Vec d) := openCubeSet (originCube d n)
-  letI : Fact (MeasureTheory.volume U < ⊤) :=
+  let : Fact (MeasureTheory.volume U < ⊤) :=
     ⟨volume_openCubeSet_originCube_lt_top (d := d) n⟩
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn, U] using
       (isOpenBoundedConvexDomain_openCubeSet (originCube d n)).isFiniteMeasure_restrict_volume
   let hEll : IsEllipticFieldOn lam Lam U a := Classical.choose hData
@@ -495,9 +495,9 @@ theorem
     ResponseJ (openCubeSet (originCube d n)) p0 q0 a =
       Mu (openCubeSet (originCube d n)) (-p0, q0) a - vecDot p0 q0 := by
   let U : Set (Vec d) := openCubeSet (originCube d n)
-  letI : Fact (MeasureTheory.volume U < ⊤) :=
+  let : Fact (MeasureTheory.volume U < ⊤) :=
     ⟨volume_openCubeSet_originCube_lt_top (d := d) n⟩
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn, U] using
       (isOpenBoundedConvexDomain_openCubeSet (originCube d n)).isFiniteMeasure_restrict_volume
   let hEll : IsEllipticFieldOn lam Lam U a := Classical.choose hData
@@ -608,7 +608,7 @@ theorem
   let U : Set (Vec d) := openCubeSet (originCube d n)
   let hCube : IsOpenBoundedConvexDomain U := by
     simpa [U] using isOpenBoundedConvexDomain_openCubeSet (originCube d n)
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn, U] using hCube.isFiniteMeasure_restrict_volume
   let system : MuOperatorSystemData U a :=
     R.toMuOperatorSystemDataOfIsEllipticFieldOn

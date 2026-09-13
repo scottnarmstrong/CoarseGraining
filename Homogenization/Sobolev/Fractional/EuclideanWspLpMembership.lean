@@ -18,7 +18,7 @@ noncomputable section
 private theorem gagliardoCubeMeasure_diagonal_eq_zero {d : ℕ} [NeZero d]
     (Q : TriadicCube d) :
     Gagliardo.gagliardoCubeMeasure Q (Set.diagonal (Vec d)) = 0 := by
-  letI : IsFiniteMeasure (cubeMeasure Q) :=
+  let : IsFiniteMeasure (cubeMeasure Q) :=
     ⟨lt_top_iff_ne_top.mpr (cubeMeasure_apply_univ_ne_top Q)⟩
   rw [Gagliardo.gagliardoCubeMeasure]
   apply Measure.measure_prod_null isClosed_diagonal.measurableSet |>.mpr
@@ -55,7 +55,7 @@ private theorem aestronglyMeasurable_cubeEuclideanWspKernel_of_memLp
     exact hFcube.comp_quasiMeasurePreserving Measure.quasiMeasurePreserving_snd
   have hpair : AEStronglyMeasurable (fun z : Vec d × Vec d =>
       HilbertVec.ofVec (F z.1 - F z.2)) μ := by
-    simpa only [map_sub] using hfst.sub hsnd
+    simpa only [map_sub] using! hfst.sub hsnd
   have hdist : Continuous (fun z : Vec d × Vec d => euclideanDist z.1 z.2) := by
     have hh : Continuous (fun z : Vec d × Vec d => HilbertVec.ofVec (z.1 - z.2)) :=
       (HilbertVec.ofVecL d).continuous.comp (continuous_fst.sub continuous_snd)
@@ -72,13 +72,13 @@ private theorem aestronglyMeasurable_cubeEuclideanWspKernel_of_memLp
       HilbertVec.ofVec (F z.1 - F z.2)) (μ.restrict D) := hpair.restrict
   have hkernel : AEStronglyMeasurable (cubeEuclideanWspKernel s p F)
       (μ.restrict D) := by
-    simpa only [cubeEuclideanWspKernel_apply] using hscalar.smul hrestrictPair
+    simpa only [cubeEuclideanWspKernel_apply] using! hscalar.smul hrestrictPair
   have hdiag : μ (Set.diagonal (Vec d)) = 0 := by
     dsimp only [μ]
     exact gagliardoCubeMeasure_diagonal_eq_zero Q
   have hDae : ∀ᵐ z ∂μ, z ∈ D := by
     rw [ae_iff]
-    simpa [D] using hdiag
+    simpa [D] using! hdiag
   have hrestrict : μ.restrict D = μ := Measure.restrict_eq_self_of_ae_mem hDae
   simpa only [hrestrict] using hkernel
 
@@ -101,7 +101,7 @@ theorem memCubeEuclideanWsp_of_memLp_of_eSeminorm_lt_top
     unfold MemCubeEuclideanWsp
     rw [hkernel]
     exact MemLp.zero
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     exact ⟨aestronglyMeasurable_cubeEuclideanWspKernel_of_memLp hF, hsemi⟩
 
 end

@@ -70,7 +70,7 @@ theorem isSymmetricDirichletAdmissible_zero_dim
     funext x
     exact Subsingleton.elim _ _
   rw [IsSymmetricDirichletAdmissible, hzero]
-  simpa using
+  simpa using!
     Book.Ch01.potentialZeroTraceFieldOn_of_h10
       (U := (U : Set (Vec 0))) (0 : H10Function (U : Set (Vec 0)))
 

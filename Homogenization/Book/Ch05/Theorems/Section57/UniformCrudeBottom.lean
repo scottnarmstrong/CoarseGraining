@@ -55,7 +55,7 @@ theorem measureReal_shiftedCrude_badPairEvent_quenchedProbeEnvelope_eq_zero_of_g
   dsimp only
   intro hnm hqm hlam
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>
@@ -99,7 +99,7 @@ theorem measureReal_shiftedCrude_badPairEvent_quenchedProbeEnvelope_eq_zero_of_g
   have htail_measure : P.real tailSet = 0 := by
     have hmeasure := MeasureTheory.measure_congr htail_empty_ae
     exact by
-      simpa [tailSet] using congrArg ENNReal.toReal hmeasure
+      simpa [tailSet] using! congrArg ENNReal.toReal hmeasure
   have hsubset :
       badPairEvent Hshift t αbad q m n ⊆ tailSet := by
     intro aω hbad
@@ -183,7 +183,7 @@ theorem measureReal_shiftedCrudeBottomPairEvent_quenchedProbeEnvelope_le_weighte
   dsimp only
   intro ha ht hαt hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -335,7 +335,7 @@ theorem measureReal_shiftedCrudeBottomPairEvent_quenchedProbeEnvelope_eq_zero_ga
   dsimp only
   intro ha ht hαt hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -467,7 +467,7 @@ theorem measureReal_shiftedCrudeBottomBadScaleEvent_quenchedProbeEnvelope_eq_zer
   dsimp only
   intro ha ht hαt hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -562,7 +562,7 @@ theorem measureReal_shiftedCrudeBottomBadScaleEvent_quenchedProbeEnvelope_le_wei
   dsimp only
   intro ha ht hαt hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P

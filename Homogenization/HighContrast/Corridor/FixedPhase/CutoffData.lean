@@ -156,8 +156,8 @@ theorem coreSqGrad_nonneg (ℓ : ℝ) (σ : Vec d) (k : Fin d → ℤ) (x : Vec 
 theorem continuous_coreSqGrad (ℓ : ℝ) (σ : Vec d) (k : Fin d → ℤ) :
     Continuous (coreSqGrad ℓ σ k) := by
   have hf : Continuous (fderiv ℝ (coreCutoff ℓ σ k)) :=
-    (coreCutoff_contDiff ℓ σ k).continuous_fderiv (by exact_mod_cast le_top)
-  refine continuous_finset_sum _ (fun i _ => ?_)
+    (coreCutoff_contDiff ℓ σ k).continuous_fderiv (by simp)
+  refine continuous_finsetSum _ (fun i _ => ?_)
   exact (hf.clm_apply continuous_const).pow 2
 
 /-- The squared gradient is supported in the closed enlargement, hence globally

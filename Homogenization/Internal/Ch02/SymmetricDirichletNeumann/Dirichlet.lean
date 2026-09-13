@@ -242,7 +242,7 @@ theorem symmetricDirichletEnergyValue_eq_of_isAffineDirichletSolution
               hfU.add hfCross
             have hfZ_smul :
                 MeasureTheory.IntegrableOn ((1 / 2 : ℝ) • fZ) Uset := by
-              simpa [Pi.smul_apply, smul_eq_mul] using
+              simpa [Pi.smul_apply, smul_eq_mul] using!
                 (hfZ.const_mul (1 / 2 : ℝ))
             change
               volumeAverage Uset ((fU + fCross) + ((1 / 2 : ℝ) • fZ)) =

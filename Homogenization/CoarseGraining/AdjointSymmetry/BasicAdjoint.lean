@@ -94,7 +94,7 @@ theorem isBlockMuAdmissible_flipFlux {d : ℕ} {U : Set (Vec d)} {P : BlockVec d
     IsBlockMuAdmissible U (blockVecFlipFlux P) X.flipFlux := by
   rcases hX with ⟨hpotL2, hpot, hsolL2, hsol⟩
   refine ⟨?_, ?_, ?_, ?_⟩
-  · simpa [BlockState.flipFlux] using hpotL2
+  · simpa [BlockState.flipFlux] using! hpotL2
   · simpa [IsBlockMuAdmissible, blockVecFlipFlux, BlockState.flipFlux] using hpot
   · convert hsolL2.neg using 1
     funext x
@@ -107,7 +107,7 @@ theorem blockEnergyDensity_adjointCoeffField_flipFlux {d : ℕ}
     (a : CoeffField d) (X : BlockState d) (x : Vec d) :
     blockEnergyDensity (adjointCoeffField a) X.flipFlux x =
       blockEnergyDensity a X x := by
-  simpa [adjointCoeffField] using
+  simpa [adjointCoeffField] using!
     blockEnergyDensity_matTranspose_flipFlux (a := a) (X := X) (x := x)
 
 theorem volumeAverage_blockEnergyDensity_adjointCoeffField_flipFlux {d : ℕ}

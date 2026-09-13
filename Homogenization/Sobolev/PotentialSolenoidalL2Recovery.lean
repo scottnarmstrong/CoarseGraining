@@ -46,7 +46,7 @@ theorem memScalarL2_coord_of_memVectorL2
     {f : Vec d → Vec d} (hf : MemVectorL2 U f) (i : Fin d) :
     MemScalarL2 U (fun x => f x i) := by
   let π : Vec d →L[ℝ] ℝ := ContinuousLinearMap.proj i
-  simpa [MemScalarL2, MemVectorL2, volumeMeasureOn] using π.comp_memLp' hf
+  simpa [MemScalarL2, MemVectorL2, volumeMeasureOn] using! π.comp_memLp' hf
 
 theorem integrableOn_coord_of_memVectorL2
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
@@ -62,7 +62,7 @@ theorem integrableOn_vecDot_const_left_of_memVectorL2
   have hsum :
       MeasureTheory.IntegrableOn (fun x => ∑ i, p i * f x i) U := by
     simpa [MeasureTheory.IntegrableOn, volumeMeasureOn] using
-      (MeasureTheory.integrable_finset_sum
+      (MeasureTheory.integrable_finsetSum
         (μ := volumeMeasureOn U)
         Finset.univ
         (fun i _ => (integrableOn_coord_of_memVectorL2 hf i).integrable.const_mul (p i)))
@@ -75,7 +75,7 @@ theorem integrableOn_vecDot_of_memVectorL2
   have hsum :
       MeasureTheory.IntegrableOn (fun x => ∑ i, f x i * g x i) U := by
     simpa [MeasureTheory.IntegrableOn, volumeMeasureOn] using
-      (MeasureTheory.integrable_finset_sum
+      (MeasureTheory.integrable_finsetSum
         (μ := volumeMeasureOn U)
         Finset.univ
         (fun i _ =>
@@ -92,7 +92,7 @@ theorem integral_vecDot_const_left_eq_zero_of_integral_eq_zero_coords
   rw [show (fun x => vecDot p (f x)) = fun x => ∑ i, p i * f x i by
     funext x
     simp [vecDot]]
-  rw [MeasureTheory.integral_finset_sum]
+  rw [MeasureTheory.integral_finsetSum]
   · refine Finset.sum_eq_zero ?_
     intro i hi
     rw [MeasureTheory.integral_const_mul]
@@ -184,13 +184,13 @@ theorem integrableOn_pairing_affine
   have hsum123 :
       MeasureTheory.IntegrableOn
         (fun x => (vecDot p q) + vecDot p (X.flux x) + vecDot (X.potential x) q) U := by
-    simpa [MeasureTheory.IntegrableOn] using hsum12.integrable.add hpotInt.integrable
+    simpa [MeasureTheory.IntegrableOn] using! hsum12.integrable.add hpotInt.integrable
   have hsum :
       MeasureTheory.IntegrableOn
         (fun x =>
           ((vecDot p q) + vecDot p (X.flux x) + vecDot (X.potential x) q) +
             vecDot (X.potential x) (X.flux x)) U := by
-    simpa [MeasureTheory.IntegrableOn] using hsum123.integrable.add hpairInt.integrable
+    simpa [MeasureTheory.IntegrableOn] using! hsum123.integrable.add hpairInt.integrable
   have hEq :
       (fun x => vecDot (p + X.potential x) (q + X.flux x)) =
         (fun x =>
@@ -235,7 +235,7 @@ theorem integral_pairing_affine_eq_volume_mul_vecDot_of_integral_eq_zero
   have hsum123 :
       MeasureTheory.IntegrableOn
         (fun x => (vecDot p q) + vecDot p (X.flux x) + vecDot (X.potential x) q) U := by
-    simpa [MeasureTheory.IntegrableOn] using hsum12.integrable.add hpotInt.integrable
+    simpa [MeasureTheory.IntegrableOn] using! hsum12.integrable.add hpotInt.integrable
   have hfluxTerm :
       ∫ x in U, vecDot p (X.flux x) ∂MeasureTheory.volume = 0 :=
     integral_vecDot_const_left_eq_zero_of_integral_eq_zero_coords
@@ -393,7 +393,7 @@ theorem PotentialSolenoidalL2Data.mem_potentialZeroTrace_of_mem_blockPotentialZe
         (t := K)).2 hsub
   have hclosure' : M.blockPotentialZeroTraceSolenoidalZeroNormalTrace ≤ K := by
     intro Y hY
-    exact hclosure (by simpa [M] using hY)
+    exact hclosure (by simpa [M] using! hY)
   exact hclosure' hX
 
 theorem PotentialSolenoidalL2Data.mem_solenoidalZeroNormalTrace_of_mem_blockPotentialZeroTraceSolenoidalZeroNormalTrace_ofSubmoduleClosures
@@ -419,7 +419,7 @@ theorem PotentialSolenoidalL2Data.mem_solenoidalZeroNormalTrace_of_mem_blockPote
         (t := K)).2 hsub
   have hclosure' : M.blockPotentialZeroTraceSolenoidalZeroNormalTrace ≤ K := by
     intro Y hY
-    exact hclosure (by simpa [M] using hY)
+    exact hclosure (by simpa [M] using! hY)
   exact hclosure' hX
 
 /-- The pointwise block correction fields with exact zero-trace / zero-normal-trace
@@ -433,14 +433,14 @@ def correctionFieldSubmodule {d : ℕ} (U : Set (Vec d)) :
       IsSolenoidalZeroNormalTraceOn U (fun x => (F x).2)}
   zero_mem' := by
     refine ⟨MeasureTheory.MemLp.zero, ?_, ?_⟩
-    · simpa using (isPotentialZeroTraceOn_zero (U := U))
-    · simpa using (isSolenoidalZeroNormalTraceOn_zero (U := U))
+    · simpa using! (isPotentialZeroTraceOn_zero (U := U))
+    · simpa using! (isSolenoidalZeroNormalTraceOn_zero (U := U))
   add_mem' := by
     intro F G hF hG
     rcases hF with ⟨hFmem, hFpot, hFsol⟩
     rcases hG with ⟨hGmem, hGpot, hGsol⟩
     refine ⟨hFmem.add hGmem, ?_, ?_⟩
-    · simpa using isPotentialZeroTraceOn_add hFpot hGpot
+    · simpa using! isPotentialZeroTraceOn_add hFpot hGpot
     · exact
         isSolenoidalZeroNormalTraceOn_add_of_memVectorL2
           (memVectorL2_snd_of_memBlockL2 (U := U) hFmem)
@@ -451,8 +451,8 @@ def correctionFieldSubmodule {d : ℕ} (U : Set (Vec d)) :
     intro c F hF
     rcases hF with ⟨hFmem, hFpot, hFsol⟩
     refine ⟨hFmem.const_smul c, ?_, ?_⟩
-    · simpa using isPotentialZeroTraceOn_smul hFpot c
-    · simpa using isSolenoidalZeroNormalTraceOn_smul hFsol c
+    · simpa using! isPotentialZeroTraceOn_smul hFpot c
+    · simpa using! isSolenoidalZeroNormalTraceOn_smul hFsol c
 
 namespace correctionFieldSubmodule
 
@@ -545,7 +545,7 @@ theorem correctionFieldSubmoduleToBlockSubmodule_surjective_of_potentialZeroTrac
         (U := U) (blockSndCLM (U := U) X) hsolMem⟩
   refine ⟨F, ?_⟩
   apply Subtype.ext
-  simpa [F, correctionFieldSubmoduleToBlockSubmodule] using
+  simpa [F, correctionFieldSubmoduleToBlockSubmodule] using!
     toBlockL2OfComponents_blockFstCLM_blockSndCLM (U := U) X
 
 end PotentialSolenoidalL2RecoveryData
@@ -599,10 +599,10 @@ theorem IsSolenoidalOn.of_test_of_contDiff_of_memVectorL2
         ∀ᶠ n in Filter.atTop, MeasureTheory.Integrable (Fn n) μ := by
       refine Filter.Eventually.of_forall ?_
       intro n
-      simpa [Fn, gi, D, μ, MeasureTheory.IntegrableOn] using
+      simpa [Fn, gi, D, μ, MeasureTheory.IntegrableOn] using!
         (hgi_mem.integrable_mul (hD_coord n i))
     have hf_int : MeasureTheory.Integrable f μ := by
-      simpa [f, gi, μ, MeasureTheory.IntegrableOn] using
+      simpa [f, gi, μ, MeasureTheory.IntegrableOn] using!
         (hgi_mem.integrable_mul (φ.toH1Function.gradMemL2 i))
     have hL1_bound :
         ∀ n,
@@ -636,7 +636,7 @@ theorem IsSolenoidalOn.of_test_of_contDiff_of_memVectorL2
             Filter.atTop (nhds 0) := by
         simpa [mul_zero] using hscaled
       exact tendsto_of_tendsto_of_tendsto_of_le_of_le
-        tendsto_const_nhds hscaled0 (fun _ => zero_le') hL1_bound
+        tendsto_const_nhds hscaled0 (fun _ => zero_le) hL1_bound
     have hL1_diff :
         Filter.Tendsto
           (fun n => MeasureTheory.eLpNorm (fun x => Fn n x - f x) 1 μ)
@@ -651,7 +651,8 @@ theorem IsSolenoidalOn.of_test_of_contDiff_of_memVectorL2
         ring
       rw [hEq]
       exact hL1
-    exact MeasureTheory.tendsto_integral_of_L1' (μ := μ) (f := f) hf_int hFn_int hL1_diff
+    exact MeasureTheory.tendsto_integral_of_L1' (μ := μ) (f := f)
+      hf_int.aestronglyMeasurable hFn_int hL1_diff
   have hIntegral_tendsto :
       Filter.Tendsto (fun n => ∫ x in U, vecDot (g x) (D n x) ∂MeasureTheory.volume)
         Filter.atTop
@@ -663,7 +664,7 @@ theorem IsSolenoidalOn.of_test_of_contDiff_of_memVectorL2
       rw [show (fun x => vecDot (g x) (D n x)) = fun x => ∑ i, g x i * D n x i by
             funext x
             simp [vecDot, D]]
-      rw [MeasureTheory.integral_finset_sum]
+      rw [MeasureTheory.integral_finsetSum]
       intro i hi
       exact ((CorrectionFieldData.memScalarL2_coord_of_memVectorL2 hg i).integrable_mul
         (hD_coord n i))
@@ -674,7 +675,7 @@ theorem IsSolenoidalOn.of_test_of_contDiff_of_memVectorL2
             fun x => ∑ i, g x i * φ.toH1Function.grad x i by
             funext x
             simp [vecDot]]
-      rw [MeasureTheory.integral_finset_sum]
+      rw [MeasureTheory.integral_finsetSum]
       intro i hi
       exact ((CorrectionFieldData.memScalarL2_coord_of_memVectorL2 hg i).integrable_mul
         (φ.toH1Function.gradMemL2 i))
@@ -685,7 +686,7 @@ theorem IsSolenoidalOn.of_test_of_contDiff_of_memVectorL2
           Filter.atTop
           (nhds (∑ i, ∫ x in U, g x i * φ.toH1Function.grad x i ∂MeasureTheory.volume)) := by
       simpa using
-        tendsto_finset_sum Finset.univ (fun i _ => hcoord_tendsto i)
+        tendsto_finsetSum Finset.univ (fun i _ => hcoord_tendsto i)
     rw [hEq_limit]
     exact hsum
   have hzero_tendsto :
@@ -897,7 +898,7 @@ noncomputable def
     simpa [L,
       PotentialSolenoidalL2RecoveryData.correctionFieldSubmoduleToBlockSubmodule,
       correctionFieldSubmodule.toCorrectionFieldData_toBlockField]
-      using congrArg Subtype.val hX
+      using! congrArg Subtype.val hX
 
 end Representatives
 

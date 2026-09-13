@@ -52,7 +52,7 @@ theorem gns_coord {m : ℕ} (hd : 3 ≤ m + 1) {ψ : Vec (m + 1) → ℝ}
         * ∑ i, eLpNorm (fun x => fderiv ℝ ψ x (basisVec i)) 2
           (volume : Measure (Vec (m + 1))) := by
   refine (gns_contDiff_compactSupport hd hψ hcs).trans (mul_le_mul_right ?_ _)
-  have hcont : Continuous (fderiv ℝ ψ) := hψ.continuous_fderiv le_rfl
+  have hcont : Continuous (fderiv ℝ ψ) := hψ.continuous_fderiv (by simp)
   have hsum_eq : (fun x => ∑ i, ‖fderiv ℝ ψ x (basisVec i)‖)
       = ∑ i, (fun x => ‖fderiv ℝ ψ x (basisVec i)‖) := by
     funext x; rw [Finset.sum_apply]
@@ -126,7 +126,7 @@ theorem cubeSobolevEmbedding {d : ℕ} (hd : 3 ≤ d) :
   set C0 : ℝ≥0∞ := Cgns * Cd * ((((m + 1) * 32 : ℕ)) : ℝ≥0∞) with hC0
   have hC0_lt : C0 < ⊤ := by
     rw [hC0]; exact ENNReal.mul_lt_top (ENNReal.mul_lt_top hCgns_lt hCd_lt) (ENNReal.natCast_lt_top _)
-  refine ⟨C0.toNNReal + 1, add_pos_of_nonneg_of_pos (zero_le _) one_pos, fun z L hL u => ?_⟩
+  refine ⟨C0.toNNReal + 1, add_pos_of_nonneg_of_pos (zero_le) one_pos, fun z L hL u => ?_⟩
   -- geometry
   set hi : Vec (m + 1) := fun k => z k + L with hhi
   have hlt : ∀ k, z k < hi k := fun k => by simp only [hhi]; linarith
@@ -137,9 +137,9 @@ theorem cubeSobolevEmbedding {d : ℕ} (hd : 3 ≤ d) :
           + ENNReal.ofReal L⁻¹ * eLpNorm u.toFun 2 (volume.restrict (Box z hi)))
   have hUbox : IsOpenBoundedConvexDomain (Box z hi) := isOpenBoundedConvexDomain_Box z hi
   have hU3 : IsOpenBoundedConvexDomain (Box3 z hi) := isOpenBoundedConvexDomain_Box _ _
-  haveI hfin3 : IsFiniteMeasure (volume.restrict (Box3 z hi)) :=
+  have hfin3 : IsFiniteMeasure (volume.restrict (Box3 z hi)) :=
     hU3.isFiniteMeasure_restrict_volume
-  haveI hlf3 : IsLocallyFiniteMeasure (volume.restrict (Box3 z hi)) := inferInstance
+  have hlf3 : IsLocallyFiniteMeasure (volume.restrict (Box3 z hi)) := inferInstance
   -- fold extension
   have Ext := foldExtension z hi hlt u
   set Eu : H1Function (Box3 z hi) := Ext.Eu with hEu
@@ -233,10 +233,10 @@ theorem cubeSobolevEmbedding {d : ℕ} (hd : 3 ≤ d) :
     with hbinf
   have hb_tend : Filter.Tendsto b Filter.atTop (nhds binf) := by
     rw [hbdef, hbinf]
-    refine ENNReal.Tendsto.const_mul (tendsto_finset_sum _ fun i _ => ?_) (Or.inr hCgns_lt.ne)
+    refine ENNReal.Tendsto.const_mul (tendsto_finsetSum _ fun i _ => ?_) (Or.inr hCgns_lt.ne)
     refine tendsto_eLpNorm_of_tendsto_sub (by norm_num)
       (fun k => ((((w.approx_smooth k).of_le (by exact_mod_cast le_top) :
-          ContDiff ℝ 1 (ψ k)).continuous_fderiv le_rfl).clm_apply
+          ContDiff ℝ 1 (ψ k)).continuous_fderiv (by simp)).clm_apply
         continuous_const).aestronglyMeasurable)
       (w.toH1Function.gradMemL2 i).aestronglyMeasurable
       (w.toH1Function.gradMemL2 i).eLpNorm_lt_top.ne ?_
@@ -304,7 +304,7 @@ theorem cubeSobolevEmbedding {d : ℕ} (hd : 3 ≤ d) :
     have haesm2 : AEStronglyMeasurable (fun x => Eu.toFun x * (fderiv ℝ χ x) (basisVec i))
         (volume.restrict (Box3 z hi)) :=
       Eu.memL2.aestronglyMeasurable.mul
-        (((hχ_smooth.continuous_fderiv (by exact_mod_cast le_top)).clm_apply continuous_const).aestronglyMeasurable)
+        (((hχ_smooth.continuous_fderiv (by simp)).clm_apply continuous_const).aestronglyMeasurable)
     refine (eLpNorm_add_le haesm1 haesm2 (by norm_num)).trans (add_le_add ?_ ?_)
     · refine le_trans (eLpNorm_mono_ae (Filter.Eventually.of_forall fun x => ?_))
         (Ext.grad_eLpNorm_le i)

@@ -167,7 +167,7 @@ private theorem weightedAverage_add_const {d : ℕ} {U : Domain d}
     (P : DomainPartition U) (f : P.Cell → ℝ) (c : ℝ) :
     P.weightedAverage (fun i => f i + c) = P.weightedAverage f + c := by
   classical
-  letI : Fintype P.Cell := P.instFintype
+  let : Fintype P.Cell := P.instFintype
   unfold DomainPartition.weightedAverage
   calc
     ∑ i : P.Cell, P.weight i * (f i + c) =
@@ -186,7 +186,7 @@ private theorem weightedAverage_const_mul {d : ℕ} {U : Domain d}
     (P : DomainPartition U) (c : ℝ) (f : P.Cell → ℝ) :
     P.weightedAverage (fun i => c * f i) = c * P.weightedAverage f := by
   classical
-  letI : Fintype P.Cell := P.instFintype
+  let : Fintype P.Cell := P.instFintype
   unfold DomainPartition.weightedAverage
   rw [Finset.mul_sum]
   refine Finset.sum_congr rfl ?_
@@ -198,7 +198,7 @@ private theorem vecDot_matVecMul_weightedMatAverage {d : ℕ} {U : Domain d}
     vecDot x (matVecMul (P.weightedMatAverage F) y) =
       P.weightedAverage fun i => vecDot x (matVecMul (F i) y) := by
   classical
-  letI : Fintype P.Cell := P.instFintype
+  let : Fintype P.Cell := P.instFintype
   simp [DomainPartition.weightedMatAverage, DomainPartition.weightedAverage,
     vecDot, matVecMul, Finset.mul_sum, mul_assoc, mul_left_comm, mul_comm]
   ring_nf
@@ -220,7 +220,7 @@ private theorem blockVecDot_blockMatVecMul_weightedBlockAverage {d : ℕ}
     blockVecDot X (blockMatVecMul (P.weightedBlockAverage F) X) =
       P.weightedAverage fun i => blockVecDot X (blockMatVecMul (F i) X) := by
   classical
-  letI : Fintype P.Cell := P.instFintype
+  let : Fintype P.Cell := P.instFintype
   rcases X with ⟨p, q⟩
   rw [blockMatVecMul, blockVecDot, vecDot_add_right, vecDot_add_right]
   change
@@ -367,7 +367,7 @@ theorem responseJ_eq_block_quadratic {d : ℕ}
   by_cases hd : d = 0
   · subst d
     exact responseJ_eq_block_quadratic_zero_dim U a p q
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     let b : CoeffOn U := pointwiseCoeffOn U a
     have hbEll :
         IsEllipticFieldOn b.lam b.Lam (U : Set (Vec d)) b.toCoeffField := by
@@ -480,7 +480,7 @@ private theorem coarseBlockMatrix_quadratic_split {d : ℕ}
   by_cases hd : d = 0
   · subst d
     exact coarseBlockMatrix_quadratic_split_zero_dim U a p q
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     let b : CoeffOn U := pointwiseCoeffOn U a
     have hbEll :
         IsEllipticFieldOn b.lam b.Lam (U : Set (Vec d)) b.toCoeffField := by
@@ -604,7 +604,7 @@ private theorem adjoint_coarse_matrices_of_isEllipticFieldOn {d : ℕ}
       Book.Ch02.sigmaStarInvCoarse U a.transpose =
           Homogenization.sigmaStarInvCoarse (U : Set (Vec d))
             (adjointCoeffField a.toCoeffField) := by
-            simpa [CoeffOn.transpose, adjointCoeffField] using
+            simpa [CoeffOn.transpose, adjointCoeffField] using!
               book_sigmaStarInvCoarse_eq_sigmaStarInvCoarse U a.transpose
       _ = Homogenization.sigmaStarInvCoarse (U : Set (Vec d)) a.toCoeffField :=
             hSInvOld
@@ -614,7 +614,7 @@ private theorem adjoint_coarse_matrices_of_isEllipticFieldOn {d : ℕ}
       Book.Ch02.sigmaStarCoarse U a.transpose =
           Homogenization.sigmaStarCoarse (U : Set (Vec d))
             (adjointCoeffField a.toCoeffField) := by
-            simpa [CoeffOn.transpose, adjointCoeffField] using
+            simpa [CoeffOn.transpose, adjointCoeffField] using!
               book_sigmaStarCoarse_eq_sigmaStarCoarse U a.transpose
       _ = Homogenization.sigmaStarCoarse (U : Set (Vec d)) a.toCoeffField :=
             hStarOld
@@ -624,7 +624,7 @@ private theorem adjoint_coarse_matrices_of_isEllipticFieldOn {d : ℕ}
       Book.Ch02.sigmaCoarse U a.transpose =
           Homogenization.sigmaCoarse (U : Set (Vec d))
             (adjointCoeffField a.toCoeffField) := by
-            simpa [CoeffOn.transpose, adjointCoeffField] using
+            simpa [CoeffOn.transpose, adjointCoeffField] using!
               book_sigmaCoarse_eq_sigmaCoarse U a.transpose
       _ = Homogenization.sigmaCoarse (U : Set (Vec d)) a.toCoeffField :=
             hSigmaOld
@@ -634,7 +634,7 @@ private theorem adjoint_coarse_matrices_of_isEllipticFieldOn {d : ℕ}
       Book.Ch02.kappaCoarse U a.transpose =
           Homogenization.kappaCoarse (U : Set (Vec d))
             (adjointCoeffField a.toCoeffField) := by
-            simpa [CoeffOn.transpose, adjointCoeffField] using
+            simpa [CoeffOn.transpose, adjointCoeffField] using!
               book_kappaCoarse_eq_kappaCoarse U a.transpose
       _ = -(Homogenization.kappaCoarse (U : Set (Vec d)) a.toCoeffField) :=
             hKappaOld
@@ -653,7 +653,7 @@ private theorem adjoint_coarse_matrices {d : ℕ}
   · subst d
     refine ⟨Subsingleton.elim _ _, Subsingleton.elim _ _,
       Subsingleton.elim _ _, Subsingleton.elim _ _⟩
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     let b : CoeffOn U := pointwiseCoeffOn U a
     have hbEll :
         IsEllipticFieldOn b.lam b.Lam (U : Set (Vec d)) b.toCoeffField := by
@@ -800,7 +800,7 @@ private theorem block_matrix_subadditive {d : ℕ}
         (P.weightedBlockAverage fun i => Book.Ch02.coarseBlockMatrix (P.cell i) (aCell i)) := by
   intro P aCell hCell X
   classical
-  letI : Fintype P.Cell := P.instFintype
+  let : Fintype P.Cell := P.instFintype
   rcases X with ⟨p, q⟩
   have hSub :=
     (Book.Ch02.responseSubadditivityAndScalingTheory U a).responseJ_subadditive

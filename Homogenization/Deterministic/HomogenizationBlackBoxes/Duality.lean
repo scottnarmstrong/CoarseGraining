@@ -40,7 +40,7 @@ theorem isEllipticFieldOn_constantCoeffField {d : ℕ} {U : Set (Vec d)}
     have hpiece :
         Measurable (U.piecewise (fun _ : Vec d => a0 i j) (fun _ => 0)) :=
       measurable_const.piecewise hU measurable_const
-    simpa [Set.piecewise, constantCoeffField] using hpiece
+    simpa [Set.piecewise, constantCoeffField] using! hpiece
   · intro x hx
     simpa [constantCoeffField] using ha0
 
@@ -177,17 +177,17 @@ theorem of_aHarmonicFunctions {d : ℕ} {U : Set (Vec d)}
     simpa [constantCoeffField] using v.isHarmonic.2
   have hvNegFluxL2 :
       MemVectorL2 U (fun x => -matVecMul a0 (v.toH1.grad x)) := by
-    simpa [Pi.smul_apply] using hvFluxL2.const_smul (-1 : ℝ)
+    simpa [Pi.smul_apply] using! hvFluxL2.const_smul (-1 : ℝ)
   have hvNegSol :
       IsSolenoidalOn U (fun x => -matVecMul a0 (v.toH1.grad x)) := by
-    simpa [Pi.smul_apply] using isSolenoidalOn_smul hvSol (-1 : ℝ)
+    simpa [Pi.smul_apply] using! isSolenoidalOn_smul hvSol (-1 : ℝ)
   have hfluxSol :
       IsSolenoidalOn U
         ((fun x => matVecMul (a x) (u.toH1.grad x)) +
           fun x => -matVecMul a0 (v.toH1.grad x)) :=
     isSolenoidalOn_add_of_memVectorL2 huFluxL2 hvNegFluxL2 huSol hvNegSol
   constructor
-  · simpa [fluxComparison, Pi.add_apply, sub_eq_add_neg] using hfluxSol
+  · simpa [fluxComparison, Pi.add_apply, sub_eq_add_neg] using! hfluxSol
   · exact hzeroTrace
 
 /--

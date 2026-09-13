@@ -88,11 +88,9 @@ theorem isBigO_gammaSigma_max_two_expLogSq
     have hL2_nonneg : 0 ≤ L2 := by dsimp [L2]; positivity
     have hA₁_le : A₁ ≤ Real.exp ((max C₁ C₂) * L2) := by
       refine Real.exp_le_exp.mpr ?_
-      dsimp [A₁]
       exact mul_le_mul_of_nonneg_right (le_max_left C₁ C₂) hL2_nonneg
     have hA₂_le : A₂ ≤ Real.exp ((max C₁ C₂) * L2) := by
       refine Real.exp_le_exp.mpr ?_
-      dsimp [A₂]
       exact mul_le_mul_of_nonneg_right (le_max_right C₁ C₂) hL2_nonneg
     have hmax_le : max A₁ A₂ ≤ Real.exp ((max C₁ C₂) * L2) :=
       max_le hA₁_le hA₂_le
@@ -541,7 +539,7 @@ theorem exists_homogenizationComparison_controlledFactors_interpolated_expLogSq
     nlinarith
   refine ⟨Cscale, hCscale_pos, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   obtain ⟨X₁, hX₁O, hX₁_one, hX₁ae⟩ :=
     hLaw₁ hP hStruct hΓ hσ_eq hparams
   obtain ⟨X₂, hX₂O, hX₂_one, hX₂ae⟩ :=

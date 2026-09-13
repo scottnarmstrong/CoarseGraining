@@ -38,12 +38,12 @@ private theorem memScalarL2 (φ : H1WeakTestFunction U) : MemScalarL2 U φ := by
 
 private theorem deriv_continuous (φ : H1WeakTestFunction U) (i : Fin d) :
     Continuous (φ.deriv i) := by
-  simpa [H1WeakTestFunction.deriv] using
+  simpa [H1WeakTestFunction.deriv] using!
     (φ.smooth.continuous_fderiv (by simp)).clm_apply continuous_const
 
 private theorem deriv_compactSupport (φ : H1WeakTestFunction U) (i : Fin d) :
     HasCompactSupport (φ.deriv i) := by
-  simpa [H1WeakTestFunction.deriv] using
+  simpa [H1WeakTestFunction.deriv] using!
     φ.compactSupport.fderiv_apply (𝕜 := ℝ) (basisVec i)
 
 private theorem deriv_memScalarL2 (φ : H1WeakTestFunction U) (i : Fin d) :

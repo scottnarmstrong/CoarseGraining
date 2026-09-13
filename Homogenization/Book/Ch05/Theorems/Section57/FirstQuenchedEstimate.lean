@@ -49,7 +49,7 @@ theorem firstQuenchedEstimate_concentrationStep
       (d := d) hσ_pos hσ_le_two
   refine ⟨C, hC_pos, ?_⟩
   intro Pμ hPμ_inst hPμ hstat hunit P Qv θ hθ_pos htail n m hn hnm R hR
-  letI : IsProbabilityMeasure Pμ := hPμ_inst
+  let : IsProbabilityMeasure Pμ := hPμ_inst
   have hfluct :
       IsBigOWith Pμ (gammaSigma σ)
         (fun a =>
@@ -103,7 +103,7 @@ theorem firstQuenchedEstimate_limitNormalized_concentration
     exact pow_pos hcard_pos 2
   refine ⟨C, mul_pos hCconc_pos hCdim_pos, ?_⟩
   intro Pμ hPμ hStruct hΓ hσ_eq e he n m hn hnm R hR
-  letI : IsProbabilityMeasure Pμ := hPμ.isProbability
+  let : IsProbabilityMeasure Pμ := hPμ.isProbability
   let Pvec : BlockVec d := scalarLimitInvSqrtBlockVec hPμ hStruct e
   let Qvec : BlockVec d := scalarLimitSqrtBlockVec hPμ hStruct e
   let base : ℝ := thetaAtScale hPμ hStruct (0 : ℤ) * hΓ.thetaHat
@@ -206,7 +206,7 @@ theorem firstQuenchedEstimate_limitNormalized
   refine ⟨Cconc * G, Centry, α, mul_pos hCconc_pos hG_pos,
     hCentry_pos, hα_pos, ?_⟩
   intro Pμ hPμ hStruct hΓ hσ_eq hparams e he_norm n m hnm
-  letI : IsProbabilityMeasure Pμ := hPμ.isProbability
+  let : IsProbabilityMeasure Pμ := hPμ.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale Pμ
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
@@ -329,7 +329,7 @@ theorem firstQuenchedEstimate_limitNormalized_uniformAnnealedExponent
     exact mul_pos hGammaConst_pos (Real.rpow_pos_of_pos hparams_xi_pos _)
   refine ⟨Cconc * G, mul_pos hCconc_pos hG_pos, ?_⟩
   intro Pμ hPμ hStruct hΓ hσ_eq hparams e he_norm n m hnm
-  letI : IsProbabilityMeasure Pμ := hPμ.isProbability
+  let : IsProbabilityMeasure Pμ := hPμ.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale Pμ
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry

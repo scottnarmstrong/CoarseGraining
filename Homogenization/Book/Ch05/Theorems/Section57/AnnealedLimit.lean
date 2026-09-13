@@ -54,7 +54,7 @@ private theorem exponentialDecay_tendsto_zero {α : ℝ} (hα : 0 < α) :
   have hpow :
       Tendsto (fun x : ℝ => Real.rpow (3 : ℝ) x) atBot (𝓝 (0 : ℝ)) :=
     tendsto_rpow_atBot_of_base_gt_one (3 : ℝ) (by norm_num : (1 : ℝ) < 3)
-  simpa [mul_comm] using hpow.comp hlinear
+  simpa [mul_comm] using! hpow.comp hlinear
 
 private theorem le_of_forall_le_one_add_mul
     {a b : ℝ} (hb : 0 ≤ b)

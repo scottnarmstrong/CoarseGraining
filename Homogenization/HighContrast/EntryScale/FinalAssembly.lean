@@ -1,4 +1,0 @@
-import Homogenization.HighContrast.EntryScale.FinalAssembly.P1
-import Homogenization.HighContrast.EntryScale.FinalAssembly.P2
-import Homogenization.HighContrast.EntryScale.FinalAssembly.P3
-import Homogenization.HighContrast.EntryScale.FinalAssembly.P4

@@ -346,9 +346,13 @@ theorem lintegral_rpow_le_of_isBigOWith_gammaSigma_unit
   have hDomInt :
       IntegrableOn (fun t : ℝ => Real.exp 1 * (t ^ (p - 1) * Real.exp (-(t ^ σ))))
         (Set.Ioi 0) := by
-    simpa [mul_assoc, mul_left_comm, mul_comm] using
+    show Integrable (fun t : ℝ => Real.exp 1 * (t ^ (p - 1) * Real.exp (-(t ^ σ))))
+      (volume.restrict (Set.Ioi 0))
+    have hraw :=
       (integrableOn_rpow_mul_exp_neg_rpow_of_pos (σ := σ) (p := p) hσ hp_pos).const_mul
         (Real.exp 1)
+    simp only [mul_assoc, mul_comm] at hraw ⊢
+    exact hraw
   have hDomNonneg :
       0 ≤ᵐ[volume.restrict (Set.Ioi (0 : ℝ))]
         fun t : ℝ => Real.exp 1 * (t ^ (p - 1) * Real.exp (-(t ^ σ))) := by

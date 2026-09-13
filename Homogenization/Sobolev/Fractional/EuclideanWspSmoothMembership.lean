@@ -110,9 +110,9 @@ private theorem smoothWspPowerKernel_integrable_gagliardoCubeMeasure {d : ℕ} [
   let C : ℝ := Classical.choose hUbd
   have hC : 0 < C := (Classical.choose_spec hUbd).1
   have hU_meas : MeasurableSet U := measurableSet_cubeSet Q
-  letI : IsFiniteMeasure μ := by
+  let : IsFiniteMeasure μ := by
     simpa only [μ, cubeMeasure, U] using hUbd.isFiniteMeasure_restrict_volume
-  letI : SFinite μ := inferInstance
+  let : SFinite μ := inferInstance
   have hsub : U ⊆ Metric.ball (0 : Vec d) (2 * C) := by
     intro x hx
     rw [mem_ball, dist_zero_right]
@@ -336,7 +336,7 @@ private theorem smoothTest_kernel_norm_le_lipschitz_majorant {d : ℕ} [NeZero d
 private theorem gagliardoCubeMeasure_diagonal_eq_zero {d : ℕ} [NeZero d]
     (Q : TriadicCube d) :
     Gagliardo.gagliardoCubeMeasure Q (Set.diagonal (Vec d)) = 0 := by
-  letI : IsFiniteMeasure (cubeMeasure Q) :=
+  let : IsFiniteMeasure (cubeMeasure Q) :=
     ⟨lt_top_iff_ne_top.mpr (cubeMeasure_apply_univ_ne_top Q)⟩
   rw [Gagliardo.gagliardoCubeMeasure]
   apply Measure.measure_prod_null isClosed_diagonal.measurableSet |>.mpr
@@ -382,7 +382,7 @@ private theorem aestronglyMeasurable_cubeEuclideanWspKernel_of_smoothTest
     gagliardoCubeMeasure_diagonal_eq_zero Q
   have hDae : ∀ᵐ z ∂μ, z ∈ D := by
     rw [ae_iff]
-    simpa [D] using hdiag
+    simpa [D] using! hdiag
   have hrestrict : μ.restrict D = μ := Measure.restrict_eq_self_of_ae_mem hDae
   have hmeas : AEStronglyMeasurable (cubeEuclideanWspKernel s p h.toField)
       (μ.restrict D) :=
@@ -392,7 +392,7 @@ private theorem aestronglyMeasurable_cubeEuclideanWspKernel_of_smoothTest
 private theorem ae_mem_cubeSet_prod_gagliardoCubeMeasure {d : ℕ}
     (Q : TriadicCube d) :
     ∀ᵐ z ∂Gagliardo.gagliardoCubeMeasure Q, z.1 ∈ cubeSet Q ∧ z.2 ∈ cubeSet Q := by
-  letI : IsFiniteMeasure (cubeMeasure Q) :=
+  let : IsFiniteMeasure (cubeMeasure Q) :=
     ⟨lt_top_iff_ne_top.mpr (cubeMeasure_apply_univ_ne_top Q)⟩
   have hbase : ∀ᵐ z ∂(cubeMeasure Q).prod (cubeMeasure Q),
       z.1 ∈ cubeSet Q ∧ z.2 ∈ cubeSet Q := by
@@ -443,7 +443,7 @@ theorem memCubeEuclideanWsp {d : ℕ} {Q : TriadicCube d} {s : FractionalOrder}
     unfold MemCubeEuclideanWsp
     rw [hkernel]
     exact MemLp.zero
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     exact memCubeEuclideanWsp_of_smoothTest_neZero h
 
 end CubeEuclideanWspSmoothTest

@@ -396,8 +396,10 @@ theorem boundaryForcedCaccioppoliCoreEnergy_le_two_mul_remainder_add_corrector
       u.toH1.grad =ᵐ[volumeMeasureOn V]
         fun y => wDatum.toH1.grad y + ρOpen.toH1Function.grad y := by
     exact Filter.Eventually.of_forall fun y => by
-      simp [wDatum, ρOpen, boundaryForcedCaccioppoliRemainderOpenH1,
-        sub_eq_add_neg]
+      simp only [wDatum, ρOpen, boundaryForcedCaccioppoliRemainderDatum_toH1,
+        boundaryForcedCaccioppoliRemainderOpenH1_grad,
+        boundaryForcedCaccioppoliCorrectorOpenH10_grad]
+      abel
   have htriangle :
       volumeAverage V
           (coefficientEnergyDensity (publicCoeffField Q a) u.toH1.grad) ≤
@@ -490,7 +492,9 @@ theorem boundaryForcedCaccioppoliRemainder_parentL2_le_two_mul_forced_add_correc
           (u.toH1.toFun y - ρOpen.toH1Function.toFun y) ^ 2 ≤
             2 * u.toH1.toFun y ^ 2 + 2 * ρOpen.toH1Function.toFun y ^ 2 := by
         nlinarith [sq_nonneg (u.toH1.toFun y + ρOpen.toH1Function.toFun y)]
-      simpa [wDatum, ρOpen, boundaryForcedCaccioppoliRemainderOpenH1] using hsq
+      simpa only [wDatum, ρOpen, boundaryForcedCaccioppoliRemainderDatum_toH1,
+        boundaryForcedCaccioppoliRemainderOpenH1_toFun,
+        boundaryForcedCaccioppoliCorrectorOpenH10_toFun] using hsq
   have havg_raw :
       volumeAverage U (fun y => wDatum.toH1.toFun y ^ 2) ≤
         volumeAverage U

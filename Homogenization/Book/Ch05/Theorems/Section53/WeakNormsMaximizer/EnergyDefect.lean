@@ -118,7 +118,7 @@ theorem cubeAverageVec_parentChildCanonicalGradientMismatchOnDependentFamily_eq_
       Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun =
         cubeAverageVec R parentGrad := by
     simpa [F, parentGrad, JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube,
-      JUpperBoundWeakNorms.canonicalMaximizerSolutionOnCube] using
+      JUpperBoundWeakNorms.canonicalMaximizerSolutionOnCube] using!
       Ch04.canonicalScalarResponseGradientAverageCubeSet_eq_cubeAverageVec_canonicalMaximizer
         a ha hR p q
   have hchild_avg :
@@ -127,7 +127,7 @@ theorem cubeAverageVec_parentChildCanonicalGradientMismatchOnDependentFamily_eq_
     have hRR : R ∈ descendantsAtDepth R 0 := by
       simp [descendantsAtDepth_zero]
     simpa [F, childGrad, JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube,
-      JUpperBoundWeakNorms.canonicalMaximizerSolutionOnCube] using
+      JUpperBoundWeakNorms.canonicalMaximizerSolutionOnCube] using!
       Ch04.canonicalScalarResponseGradientAverageCubeSet_eq_cubeAverageVec_canonicalMaximizer
         a ha hRR p q
   calc
@@ -174,7 +174,7 @@ theorem cubeAverageVec_parentChildCanonicalFluxMismatchOnDependentFamily_eq_ch04
         cubeAverageVec R parentFlux := by
     simpa [F, parentFlux, JUpperBoundWeakNorms.canonicalMaximizerFluxOnCube,
       JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube,
-      JUpperBoundWeakNorms.canonicalMaximizerSolutionOnCube] using
+      JUpperBoundWeakNorms.canonicalMaximizerSolutionOnCube] using!
       Ch04.canonicalScalarResponseFluxAverageCubeSet_eq_cubeAverageVec_canonicalMaximizerFlux
         a ha hR p q
   have hchild_avg :
@@ -184,7 +184,7 @@ theorem cubeAverageVec_parentChildCanonicalFluxMismatchOnDependentFamily_eq_ch04
       simp [descendantsAtDepth_zero]
     simpa [F, childFlux, JUpperBoundWeakNorms.canonicalMaximizerFluxOnCube,
       JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube,
-      JUpperBoundWeakNorms.canonicalMaximizerSolutionOnCube] using
+      JUpperBoundWeakNorms.canonicalMaximizerSolutionOnCube] using!
       Ch04.canonicalScalarResponseFluxAverageCubeSet_eq_cubeAverageVec_canonicalMaximizerFlux
         a ha hRR p q
   calc
@@ -220,7 +220,7 @@ noncomputable def parentChildCanonicalDifferenceSolutionOnDependentFamily
               (φ.toH1Function.grad x))
           (openCubeSet R) volume := by
     intro φ
-    simpa [parent, Ch02.cubeDomain_coe] using
+    simpa [parent, Ch02.cubeDomain_coe] using!
       integrableOn_vecDot_of_memVectorL2
         (Ch02.Solution.flux_memVectorL2 parent)
         φ.toH1Function.grad_memVectorL2
@@ -254,10 +254,21 @@ theorem parentChildCanonicalDifferenceSolutionOnDependentFamily_grad
           JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube R
             ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn R)
             p q x := by
+  have hgrad :
+      (parentChildCanonicalDifferenceSolutionOnDependentFamily a ha Q hR p q).toH1.grad =
+        (JUpperBoundWeakNorms.parentResponseSolutionOnDependentFamilyRestrictedToCube
+              a ha Q hR p q).toH1.grad +
+          (-1 : ℝ) •
+            (JUpperBoundWeakNorms.canonicalMaximizerSolutionOnCube R
+                ((Ch04.triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha).coeffOn R)
+                p q).toH1.grad :=
+    rfl
   funext x i
-  simp [parentChildCanonicalDifferenceSolutionOnDependentFamily,
-    JUpperBoundWeakNorms.parentResponseSolutionOnDependentFamilyRestrictedToCube_grad,
-    JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube, sub_eq_add_neg]
+  rw [hgrad]
+  simp only [JUpperBoundWeakNorms.parentResponseSolutionOnDependentFamilyRestrictedToCube_grad,
+    JUpperBoundWeakNorms.canonicalMaximizerGradientOnCube,
+    Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, sub_eq_add_neg]
+  ring
 
 /-- The averaged gradient of the parent-child difference solution is the raw
 parent-minus-child gradient cube average. -/

@@ -91,7 +91,7 @@ noncomputable def continuousKResidualNorm {d : ℕ} (F : UnitCubeEuclideanL2Fiel
     (fun x => F x - G.toField x) (by
       have hsub := F.euclideanMemL2.sub G.euclideanMemL2
       simpa only [euclideanNorm_eq_norm_ofVec, HilbertVec.ofVec, PiLp.toLp_apply,
-        Pi.sub_apply] using hsub.norm)
+        Pi.sub_apply] using! hsub.norm)
 
 /-- The normalized Frobenius `L²` weak-gradient quantity in the continuous
 `K`-functional. -/
@@ -231,7 +231,7 @@ theorem continuousKSeminormIntegrand_aemeasurable {d : ℕ}
     AEMeasurable (continuousKSeminormIntegrand s F)
       (MeasureTheory.volume.restrict (Set.Ioo (0 : ℝ) 1)) := by
   unfold continuousKSeminormIntegrand
-  simpa only [pow_two, mul_assoc, mul_left_comm, mul_comm] using
+  simpa only [Pi.mul_def, pow_two, mul_assoc, mul_left_comm, mul_comm] using!
     (continuousKSeminormWeight_aemeasurable s).mul
       ((continuousKFunctionalOnOpenScale_aemeasurable F).mul
         (continuousKFunctionalOnOpenScale_aemeasurable F)).ennreal_ofReal

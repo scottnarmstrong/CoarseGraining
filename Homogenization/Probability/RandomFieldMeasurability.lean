@@ -240,7 +240,7 @@ theorem measurable_symmCoeffField {d : ℕ} :
       measurable_coeffField_entry (d := d) x i j
     have hji : Measurable (fun a : CoeffField d => a x j i) :=
       measurable_coeffField_entry (d := d) x j i
-    simpa [symmCoeffField, symmPart_eq_smul_add_transpose, matTranspose] using
+    simpa [symmCoeffField, symmPart_eq_smul_add_transpose, matTranspose] using!
       (measurable_const.mul (hij.add hji))
   · refine measurable_localSigma_of_local (T := symmCoeffField) ?_ V hV
     intro W hW
@@ -257,7 +257,7 @@ theorem measurable_skewCoeffField {d : ℕ} :
       measurable_coeffField_entry (d := d) x i j
     have hji : Measurable (fun a : CoeffField d => a x j i) :=
       measurable_coeffField_entry (d := d) x j i
-    simpa [skewCoeffField, skewPart_eq_smul_sub_transpose, matTranspose] using
+    simpa [skewCoeffField, skewPart_eq_smul_sub_transpose, matTranspose] using!
       (measurable_const.mul (hij.sub hji))
   · refine measurable_localSigma_of_local (T := skewCoeffField) ?_ V hV
     intro W hW
@@ -307,7 +307,7 @@ theorem mem_iff_of_measurableSet_pointwiseLocalSigma_of_pointwiseAgreementOn {d 
     intro t ht
     exact ht hab
   have hsC : @MeasurableSet (CoeffField d) (MeasurableSpace.generateFrom C) s := by
-    simpa [PointwiseLocalSigma, C] using hs
+    simpa [PointwiseLocalSigma, C] using! hs
   exact (MeasurableSpace.forall_generateFrom_mem_iff_mem_iff (S := C) (x := a) (y := b)).2
     hC s hsC
 

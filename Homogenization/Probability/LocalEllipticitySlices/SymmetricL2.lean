@@ -18,7 +18,7 @@ theorem memVectorL2_matVecMul_symmPart {d : ℕ} {lam Lam : ℝ}
   rw [MemVectorL2] at hf ⊢
   refine (MeasureTheory.memLp_pi_iff).2 ?_
   intro i
-  refine MeasureTheory.memLp_finset_sum
+  refine MeasureTheory.memLp_finsetSum
     (s := Finset.univ)
     (f := fun j : Fin d => fun x : Vec d => symmPart (a x) i j * f x j) ?_
   intro j _hj
@@ -42,7 +42,7 @@ theorem memVectorL2_matVecMul_symmPart {d : ℕ} {lam Lam : ℝ}
     have hsum :
         MeasureTheory.AEStronglyMeasurable
           (fun x : Vec d => a x i j + a x j i) (volumeMeasureOn U) := by
-      simpa using hcoeff_i.add hcoeff_j
+      simpa using! hcoeff_i.add hcoeff_j
     simpa [symmPart, div_eq_mul_inv] using hsum.mul_const ((2 : ℝ)⁻¹)
   have hterm_meas :
       MeasureTheory.AEStronglyMeasurable

@@ -46,7 +46,7 @@ private theorem enorm_cubeEuclideanWspGraphPointOfField {d : ℕ}
         F.euclideanMemWsp.toLp (cubeEuclideanWspKernel s p F.toField))‖ₑ = _
   rw [enorm_eq_nnnorm, PiLp.nnnorm_eq_sum p.lt_top.ne]
   rw [one_div, ENNReal.coe_rpow_of_nonneg _ (inv_nonneg.mpr ENNReal.toReal_nonneg),
-    ENNReal.coe_finset_sum]
+    ENNReal.ofNNReal_finsetSum]
   simp_rw [ENNReal.coe_rpow_of_nonneg _ ENNReal.toReal_nonneg]
   rw [Fintype.sum_bool]
   change (‖F.euclideanMemWsp.toLp (cubeEuclideanWspKernel s p F.toField)‖ₑ ^
@@ -54,7 +54,7 @@ private theorem enorm_cubeEuclideanWspGraphPointOfField {d : ℕ}
       ‖cubeEuclideanWspGraphFieldScale Q s •
         F.euclideanMemLp.toLp (fun x => HilbertVec.ofVec (F.toField x))‖ₑ ^
           p.exponent.toReal) ^ p.exponent.toReal⁻¹ = _
-  rw [enorm_smul, Lp.enorm_toLp, Lp.enorm_toLp]
+  rw [enorm_smul, Lp.enorm_toLp F.euclideanMemWsp, Lp.enorm_toLp F.euclideanMemLp]
   have hlp : eLpNorm (fun x => HilbertVec.ofVec (F.toField x)) p.exponent
       (normalizedCubeMeasure Q) =
       (cubeBoundedMeasurableDomain Q).normalizedEuclideanLpENorm
@@ -98,13 +98,13 @@ private noncomputable def cubeEuclideanWspFieldSub {d : ℕ}
     (F G : CubeEuclideanWspField Q s p) : CubeEuclideanWspField Q s p where
   toField := fun x => F.toField x - G.toField x
   euclideanMemLp := by
-    simpa only [HilbertVec.ofVecL_apply] using F.euclideanMemLp.sub G.euclideanMemLp
+    simpa only [HilbertVec.ofVecL_apply] using! F.euclideanMemLp.sub G.euclideanMemLp
   euclideanMemWsp := by
     change MemLp (cubeEuclideanWspKernel s p
       (fun x => F.toField x - G.toField x)) p.exponent
       (Gagliardo.gagliardoCubeMeasure Q)
     rw [cubeEuclideanWspKernel_sub]
-    simpa only [Pi.sub_apply] using F.euclideanMemWsp.sub G.euclideanMemWsp
+    simpa only [Pi.sub_apply] using! F.euclideanMemWsp.sub G.euclideanMemWsp
 
 private theorem cubeEuclideanWspGraphPointOfField_sub {d : ℕ}
     {Q : TriadicCube d} {s : FractionalOrder} {p : FiniteLpExponent}
@@ -187,8 +187,8 @@ private theorem cubeEuclideanNormalizedFieldPairing_integrable {d : ℕ}
       (normalizedCubeMeasure Q) := by
     intro i
     simpa only [HilbertVec.ofVec, PiLp.toLp_apply] using G.euclideanMemL2.eval_piLp i
-  simpa only [vecDot] using
-    integrable_finset_sum Finset.univ fun i _ => (hF i).integrable_mul (hG i)
+  simpa only [vecDot] using!
+    integrable_finsetSum Finset.univ fun i _ => (hF i).integrable_mul (hG i)
 
 private theorem fieldPairing_sub_smoothPairing {d : ℕ}
     {Q : TriadicCube d} {s : FractionalOrder} {p : FiniteLpExponent}
@@ -221,7 +221,7 @@ private theorem abs_fieldPairing_sub_smoothPairing_le_l2 {d : ℕ}
   rw [fieldPairing_sub_smoothPairing]
   apply CubeCalderonZygmund.INTERNAL.abs_integral_vecDot_le_eLpNorm_toReal_mul
   · simpa only [FiniteLpExponent.two_exponent] using F.euclideanMemLp
-  · simpa only [HilbertVec.ofVecL_apply, sub_eq_add_neg, add_comm] using
+  · simpa only [HilbertVec.ofVecL_apply, sub_eq_add_neg, add_comm] using!
       G.euclideanMemL2.sub h.euclideanMemLp_two
 
 private theorem ennreal_abs_smoothPairing_le_negativeDual_mul_full {d : ℕ}
@@ -240,7 +240,7 @@ private theorem ennreal_abs_smoothPairing_le_negativeDual_mul_full {d : ℕ}
         CubeEuclideanWspSmoothTest.completedPairingExtension_apply_graphToCompleted F hD h]
       exact (Real.enorm_eq_ofReal_abs _).symm
     _ ≤ ‖E‖ₑ * ‖CubeEuclideanWspSmoothTest.graphToCompleted h‖ₑ :=
-      E.le_opNorm_enorm _
+      E.le_opENorm _
     _ = cubeEuclideanNegativeWspSmoothDualENorm Q s p F *
         cubeEuclideanWspFullENorm Q s p.conjugate h.toField := by
       rw [show E = CubeEuclideanWspSmoothTest.completedPairingExtension F hD by rfl,
@@ -296,7 +296,7 @@ private theorem cubeEuclideanNormalizedFieldPairing_eq_zero_of_fullENorm_eq_zero
   filter_upwards [hzero] with x hx
   have hx' : G.toField x = 0 := by
     have h := congrArg (HilbertVec.continuousLinearEquivVec d) hx
-    simpa only [HilbertVec.continuousLinearEquivVec_apply] using h
+    simpa only [HilbertVec.continuousLinearEquivVec_apply] using! h
   rw [hx']
   simpa only [Pi.zero_apply] using (vecDot_zero_right (F.toField x))
 

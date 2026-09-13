@@ -56,7 +56,7 @@ theorem measurableSet_coord_openStrip {d : ℕ}
 theorem measurableSet_cubeSet {d : ℕ} (S : TriadicCube d) :
     MeasurableSet (cubeSet S) := by
   classical
-  simpa [cubeSet, Set.iInter_setOf] using
+  simpa [cubeSet, Set.iInter_ofPred] using
     (MeasurableSet.iInter fun i : Fin d =>
       measurableSet_coord_halfOpenStrip i
         ((((S.index i : ℝ) - (3 / 2 : ℝ)) * cubeScaleFactor S))
@@ -65,7 +65,7 @@ theorem measurableSet_cubeSet {d : ℕ} (S : TriadicCube d) :
 theorem measurableSet_openCubeSet {d : ℕ} (S : TriadicCube d) :
     MeasurableSet (openCubeSet S) := by
   classical
-  simpa [openCubeSet, Set.iInter_setOf] using
+  simpa [openCubeSet, Set.iInter_ofPred] using
     (MeasurableSet.iInter fun i : Fin d =>
       measurableSet_coord_openStrip i
         ((((S.index i : ℝ) - (3 / 2 : ℝ)) * cubeScaleFactor S))

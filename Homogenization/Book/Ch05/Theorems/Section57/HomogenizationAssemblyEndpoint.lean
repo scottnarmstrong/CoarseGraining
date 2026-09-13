@@ -99,7 +99,7 @@ theorem exists_homogenizationComparison_controlledFactors_uniformEndpoint_expLog
     nlinarith
   refine ⟨Cscale, hCscale_pos, ?_⟩
   intro P hP hStruct hInf hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   obtain ⟨X₁, hX₁O, hX₁_one, hX₁ae⟩ :=
     hLaw₁ hP hStruct hInf hparams
   obtain ⟨X₂, hX₂O, hX₂_one, hX₂ae⟩ :=

@@ -218,7 +218,7 @@ theorem blockResponse_upperImage_orthogonal_of_mem_responseSpace {d : ℕ}
   let Z : BlockState d := { potential := Y, flux := 0 }
   have hZ : IsBlockTestOn U Z := by
     refine ⟨hY, ?_⟩
-    simpa [Z] using (isSolenoidalZeroNormalTraceOn_zero (U := U))
+    simpa [Z] using! (isSolenoidalZeroNormalTraceOn_zero (U := U))
   have hzero := horth Z hZ
   have hrewrite :
       ∫ x in U,
@@ -242,7 +242,7 @@ theorem blockResponse_lowerImage_orthogonal_of_mem_responseSpace {d : ℕ}
   let Z : BlockState d := { potential := 0, flux := Y }
   have hZ : IsBlockTestOn U Z := by
     refine ⟨?_, hY⟩
-    simpa [Z] using (isPotentialZeroTraceOn_zero (U := U))
+    simpa [Z] using! (isPotentialZeroTraceOn_zero (U := U))
   have hzero := horth Z hZ
   have hrewrite :
       ∫ x in U,
@@ -342,7 +342,7 @@ theorem blockResponse_memBlockL2_of_mem_responseSpace_of_integrabilityData {d : 
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
     (hX : BlockResponseSpace a U X) (hInt : BlockResponseIntegrabilityData U a X) :
     MemBlockL2 U X.eval := by
-  simpa [BlockState.eval, blockField] using
+  simpa [BlockState.eval, blockField] using!
     memBlockL2_blockField
       (blockResponse_potential_memL2_of_mem_responseSpace hX)
       hInt.flux_memL2

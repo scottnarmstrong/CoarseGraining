@@ -140,14 +140,14 @@ theorem gradCoordH1Function_weakDivergence {d : ℕ} {U : Set (Vec d)}
       MeasureTheory.Integrable (fun x => H.hess i k x * euclideanCoordDeriv k φ x)
         (MeasureTheory.volume.restrict U) := by
     intro k
-    simpa [MemScalarL2, volumeMeasureOn, Pi.mul_apply] using
+    simpa [MemScalarL2, volumeMeasureOn, Pi.mul_apply] using!
       (H.hess_memL2 i k).integrable_mul (hderiv_memL2 k)
   have hgrad_int : ∀ k : Fin d,
       MeasureTheory.Integrable
         (fun x => u.grad x k * euclideanCoordSecondDeriv i k φ x)
         (MeasureTheory.volume.restrict U) := by
     intro k
-    simpa [MemScalarL2, volumeMeasureOn, Pi.mul_apply] using
+    simpa [MemScalarL2, volumeMeasureOn, Pi.mul_apply] using!
       (u.grad_memL2 k).integrable_mul (hsecond_memL2 k)
   have htest := h.test (euclideanCoordDeriv i φ)
     (contDiff_euclideanCoordDeriv hφ i)
@@ -180,7 +180,7 @@ theorem gradCoordH1Function_weakDivergence {d : ℕ} {U : Set (Vec d)}
               _ = ∑ k : Fin d,
                   ∫ x in U, u.grad x k * euclideanCoordSecondDeriv i k φ x
                     ∂MeasureTheory.volume := by
-                    rw [MeasureTheory.integral_finset_sum]
+                    rw [MeasureTheory.integral_finsetSum]
                     intro k _
                     exact hgrad_int k
       _ = ∫ x in U, F x * euclideanCoordDeriv i φ x
@@ -247,7 +247,7 @@ theorem gradCoordH1Function_weakDivergence {d : ℕ} {U : Set (Vec d)}
             _ = ∑ k : Fin d,
                 ∫ x in U, H.hess i k x * euclideanCoordDeriv k φ x
                   ∂MeasureTheory.volume := by
-                rw [MeasureTheory.integral_finset_sum]
+                rw [MeasureTheory.integral_finsetSum]
                 intro k _
                 exact hhess_int k
     _ = ∑ k : Fin d,

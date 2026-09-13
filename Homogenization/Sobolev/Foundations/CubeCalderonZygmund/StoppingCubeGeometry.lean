@@ -55,7 +55,7 @@ theorem axisCube_stoppingAxisCubeCorner_ae_eq_closedBall {d : ℕ} [NeZero d]
   rw [axisCube_stoppingAxisCubeCorner_eq_ball x hS hr]
   have hsphere : ∀ᵐ y ∂volume, y ∉ Metric.sphere x (S * r) := by
     rw [ae_iff]
-    simpa using (volume_sphere_eq_zero (d := d) x (S * r))
+    simpa using! (volume_sphere_eq_zero (d := d) x (S * r))
   filter_upwards [hsphere] with y hy
   apply propext
   constructor
@@ -162,7 +162,7 @@ theorem stoppingComparison_concentricDepth_axisCube_ae_eq_closedBall
   rw [stoppingComparison_concentricDepth_axisCube_eq_ball x hr n]
   have hsphere : ∀ᵐ y ∂volume, y ∉ Metric.sphere x (5 * r) := by
     rw [ae_iff]
-    simpa using (volume_sphere_eq_zero (d := d) x (5 * r))
+    simpa using! (volume_sphere_eq_zero (d := d) x (5 * r))
   filter_upwards [hsphere] with y hy
   apply propext
   constructor

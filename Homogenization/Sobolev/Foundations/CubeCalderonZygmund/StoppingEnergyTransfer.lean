@@ -169,32 +169,32 @@ theorem goodLambdaCombinedEnergy_eq_tail_transfer
     by_cases hyB : y ∈ B
     · rw [Set.indicator_of_mem hyB]
       by_cases hyA : y ∈ A
-      · have hyA' : level / 2 < ‖f y‖ := by simpa only [A] using hyA
+      · have hyA' : level / 2 < ‖f y‖ := by simpa only [A] using! hyA
         have hyAB : y ∈ A ∩ B := ⟨hyA, hyB⟩
         rw [Set.indicator_of_mem hyAB]
         by_cases hyC : y ∈ C
-        · have hyC' : ε * level / 2 < ‖g y‖ := by simpa only [C] using hyC
+        · have hyC' : ε * level / 2 < ‖g y‖ := by simpa only [C] using! hyC
           have hyCB : y ∈ C ∩ B := ⟨hyC, hyB⟩
           rw [Set.indicator_of_mem hyCB, Set.indicator_of_mem hyB]
           simpa only [if_pos hyA', if_pos hyC'] using
             (combined_sq_le_tail_split (a := ‖f y‖) (b := ‖g y‖) hε hlevel
               (norm_nonneg _) (norm_nonneg _))
-        · have hyC' : ¬ ε * level / 2 < ‖g y‖ := by simpa only [C] using hyC
+        · have hyC' : ¬ ε * level / 2 < ‖g y‖ := by simpa only [C] using! hyC
           rw [Set.indicator_of_notMem (fun h : y ∈ C ∩ B => hyC h.1),
             Set.indicator_of_mem hyB]
           simpa only [if_pos hyA', if_neg hyC'] using
             (combined_sq_le_tail_split (a := ‖f y‖) (b := ‖g y‖) hε hlevel
               (norm_nonneg _) (norm_nonneg _))
-      · have hyA' : ¬ level / 2 < ‖f y‖ := by simpa only [A] using hyA
+      · have hyA' : ¬ level / 2 < ‖f y‖ := by simpa only [A] using! hyA
         rw [Set.indicator_of_notMem (fun h : y ∈ A ∩ B => hyA h.1)]
         by_cases hyC : y ∈ C
-        · have hyC' : ε * level / 2 < ‖g y‖ := by simpa only [C] using hyC
+        · have hyC' : ε * level / 2 < ‖g y‖ := by simpa only [C] using! hyC
           have hyCB : y ∈ C ∩ B := ⟨hyC, hyB⟩
           rw [Set.indicator_of_mem hyCB, Set.indicator_of_mem hyB]
           simpa only [if_neg hyA', if_pos hyC'] using
             (combined_sq_le_tail_split (a := ‖f y‖) (b := ‖g y‖) hε hlevel
               (norm_nonneg _) (norm_nonneg _))
-        · have hyC' : ¬ ε * level / 2 < ‖g y‖ := by simpa only [C] using hyC
+        · have hyC' : ¬ ε * level / 2 < ‖g y‖ := by simpa only [C] using! hyC
           rw [Set.indicator_of_notMem (fun h : y ∈ C ∩ B => hyC h.1),
             Set.indicator_of_mem hyB]
           simpa only [if_neg hyA', if_neg hyC'] using

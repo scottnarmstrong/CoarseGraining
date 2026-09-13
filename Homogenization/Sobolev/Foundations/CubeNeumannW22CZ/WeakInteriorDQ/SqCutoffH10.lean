@@ -355,7 +355,14 @@ noncomputable def localizedSqShiftedCutoffBackwardDifferenceQuotientToAmbient
       fun x =>
         η (euclideanCoordShift (-step) i x) ^ 2 *
           euclideanBackwardDifferenceQuotient step i u.toFun x := by
-  simp [localizedSqShiftedCutoffBackwardDifferenceQuotientToAmbient]
+  funext x
+  unfold localizedSqShiftedCutoffBackwardDifferenceQuotientToAmbient
+  dsimp only
+  refine (congrFun (localizedMulContDiffHasCompactSupportToAmbient_toFun
+    (w := _) (hV_meas := _) (hVU := _) (hφ := _) (hφ_compact := _) (hφ_sub := _)) x).trans ?_
+  exact congrArg (fun y => η (euclideanCoordShift (-step) i x) ^ 2 * y)
+    (H1Function.backwardDifferenceQuotientOn_toFun (u := u) (h := step) (i := i)
+      (hVopen := _) (hVU := _) (hVshift := _) x)
 
 theorem localizedSqShiftedCutoffBackwardDifferenceQuotientToAmbient_grad_eq_shift
     (u : H1Function U) (hV : IsOpenBoundedConvexDomain V) (hVU : V ⊆ U)
@@ -370,9 +377,56 @@ theorem localizedSqShiftedCutoffBackwardDifferenceQuotientToAmbient_grad_eq_shif
       (localizedSqCutoffForwardDifferenceQuotientToAmbient
         (U := U) (V := V) u hV hVU step i hVshift
         hη hη_compact hη_sub).grad (euclideanCoordShift (-step) i x) := by
+  have hW : IsOpenBoundedConvexDomain (translateSet (step • basisVec i) V) := by
+    simpa using IsOpenBoundedConvexDomain.translateSet hV (step • basisVec i)
+  have hWU : translateSet (step • basisVec i) V ⊆ U := by
+    intro y hy
+    have hyV : y - step • basisVec i ∈ V := by
+      simpa using (mem_translateSet_iff_sub_mem).1 hy
+    have hyShift : y - step • basisVec i ∈
+        translateSet ((-step) • basisVec i) U :=
+      hVshift hyV
+    have hyU :
+        (y - step • basisVec i) - (-step) • basisVec i ∈ U :=
+      (mem_translateSet_iff_sub_mem).1 hyShift
+    simpa [sub_eq_add_neg, neg_smul, add_assoc, add_left_comm, add_comm] using hyU
+  have hWshift : translateSet (step • basisVec i) V ⊆ translateSet (step • basisVec i) U := by
+    intro y hy
+    have hyV : y - step • basisVec i ∈ V := by
+      simpa using (mem_translateSet_iff_sub_mem).1 hy
+    exact (mem_translateSet_iff_sub_mem).2 (hVU hyV)
+  have hηshift : ContDiff ℝ (⊤ : ℕ∞) (fun y => η (euclideanCoordShift (-step) i y)) := by
+    simpa using contDiff_comp_euclideanCoordShift hη (-step) i
+  have hηshift_compact : HasCompactSupport (fun y => η (euclideanCoordShift (-step) i y)) := by
+    simpa using hasCompactSupport_comp_euclideanCoordShift hη_compact (-step) i
+  have hηshift_sub : tsupport (fun y => η (euclideanCoordShift (-step) i y)) ⊆
+      translateSet (step • basisVec i) V := by
+    intro y hy
+    have hxpre : y - step • basisVec i ∈ tsupport η := by
+      have hxpre' : y + (-step) • basisVec i ∈ tsupport η := by
+        rw [show (fun z => η (euclideanCoordShift (-step) i z)) =
+              η ∘ Homeomorph.addRight ((-step) • basisVec i) by
+            funext z
+            rfl,
+            tsupport_comp_eq_preimage η (Homeomorph.addRight ((-step) • basisVec i))] at hy
+        exact hy
+      simpa [euclideanCoordShift, sub_eq_add_neg, neg_smul] using hxpre'
+    exact (mem_translateSet_iff_sub_mem).2 (hη_sub hxpre)
+  have hval :
+      localizedSqShiftedCutoffBackwardDifferenceQuotientToAmbient
+          (U := U) (V := V) u hV hVU step i hVshift hη hη_compact hη_sub
+        = localizedMulContDiffHasCompactSupportToAmbient
+            (U := U) (V := translateSet (step • basisVec i) V)
+            (u.backwardDifferenceQuotientOn step i hW.isOpen hWU hWshift)
+            hW.isOpen.measurableSet hWU
+            (φ := fun y => η (euclideanCoordShift (-step) i y) ^ 2)
+            (contDiff_sq hηshift) (hasCompactSupport_sq hηshift_compact)
+            ((tsupport_sq_subset
+              (fun y => η (euclideanCoordShift (-step) i y))).trans hηshift_sub) :=
+    rfl
+  rw [hval]
   ext j
-  simp [localizedSqShiftedCutoffBackwardDifferenceQuotientToAmbient,
-    localizedSqCutoffForwardDifferenceQuotientToAmbient,
+  simp [localizedSqCutoffForwardDifferenceQuotientToAmbient,
     euclideanCoordShift, sub_eq_add_neg, neg_smul, add_left_comm, add_comm]
   left
   simpa [euclideanCoordDeriv, euclideanCoordShift, sub_eq_add_neg, neg_smul] using

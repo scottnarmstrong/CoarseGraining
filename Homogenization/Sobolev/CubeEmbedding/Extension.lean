@@ -47,7 +47,7 @@ theorem Box3_eq_Box (lo hi : Vec d) :
 /-- A concrete closed ball inside a nonempty base box. -/
 theorem exists_ball_subset_Box (lo hi : Vec d) (hlt : ∀ k, lo k < hi k) (hd : 0 < d) :
     ∃ (x0 : Vec d) (r : ℝ), 0 < r ∧ Metric.closedBall x0 r ⊆ Box lo hi := by
-  haveI : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
+  have : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
   have hne : (Finset.univ : Finset (Fin d)).Nonempty := Finset.univ_nonempty
   set m : ℝ := Finset.univ.inf' hne (fun k => hi k - lo k) with hm
   have hm_pos : 0 < m := by
@@ -275,7 +275,7 @@ def foldExtension {m : ℕ} (lo hi : Vec (m + 1)) (hlt : ∀ k, lo k < hi k)
       (fun x i => fderiv ℝ (wn n) (Fold lo hi x) (basisVec i) * foldSign (lo i) (hi i) (x i)) := by
     intro n i
     have hcont : Continuous (fun y => fderiv ℝ (wn n) y (basisVec i)) :=
-      (((hw_smooth n).of_le (by exact_mod_cast le_top) : ContDiff ℝ 1 (wn n)).continuous_fderiv le_rfl).clm_apply
+      (((hw_smooth n).of_le (by exact_mod_cast le_top) : ContDiff ℝ 1 (wn n)).continuous_fderiv (by simp)).clm_apply
         continuous_const
     refine ⟨((hcont.measurable.comp hFold_meas).mul
       (measurable_foldSign_comp lo hi i)).aestronglyMeasurable, ?_⟩
@@ -306,9 +306,11 @@ def foldExtension {m : ℕ} (lo hi : Vec (m + 1)) (hlt : ∀ k, lo k < hi k)
         (volume.restrict (Box3 lo hi))
         = Cd * eLpNorm (fun x => (A n).toFun x - u.toFun x) 2 (volume.restrict (Box lo hi)) := by
       intro n
-      rw [show (fun x => wn n (Fold lo hi x) - g (Fold lo hi x))
-          = fun x => (fun y => wn n y - g y) (Fold lo hi x) from rfl,
-        eLpNorm_foldComp ((hw_meas n).sub hg_meas) lo hi hlt]
+      have hcomp : eLpNorm (fun x => wn n (Fold lo hi x) - g (Fold lo hi x)) 2
+            (volume.restrict (Box3 lo hi))
+          = Cd * eLpNorm (fun y => wn n y - g y) 2 (volume.restrict (Box lo hi)) :=
+        eLpNorm_foldComp ((hw_meas n).sub hg_meas) lo hi hlt
+      rw [hcomp]
       congr 1
       refine eLpNorm_congr_ae ?_
       filter_upwards [ae_restrict_mem (isOpen_Box lo hi).measurableSet, hg_ae] with x hxU hgx
@@ -341,9 +343,13 @@ def foldExtension {m : ℕ} (lo hi : Vec (m + 1)) (hlt : ∀ k, lo k < hi k)
             = (fderiv ℝ (wn n) (Fold lo hi x) (basisVec i) - gi i (Fold lo hi x))
               * foldSign (lo i) (hi i) (x i) by ring, norm_mul]
         exact mul_le_of_le_one_right (norm_nonneg _) (norm_foldSign_le_one _ _ _)
-      · rw [eLpNorm_foldComp
-          ((((hw_smooth n).of_le (by exact_mod_cast le_top) : ContDiff ℝ 1 (wn n)).continuous_fderiv le_rfl).clm_apply
-            continuous_const |>.measurable.sub (hgi_meas i)) lo hi hlt]
+      · have hcomp : eLpNorm (fun x => (fun y => fderiv ℝ (wn n) y (basisVec i) - gi i y) (Fold lo hi x))
+            2 (volume.restrict (Box3 lo hi))
+          = Cd * eLpNorm (fun y => fderiv ℝ (wn n) y (basisVec i) - gi i y) 2 (volume.restrict (Box lo hi)) :=
+          eLpNorm_foldComp
+            ((((hw_smooth n).of_le (by exact_mod_cast le_top) : ContDiff ℝ 1 (wn n)).continuous_fderiv (by simp)).clm_apply
+              continuous_const |>.measurable.sub (hgi_meas i)) lo hi hlt
+        rw [hcomp]
         have hae : (fun y => fderiv ℝ (wn n) y (basisVec i) - gi i y)
             =ᵐ[volume.restrict (Box lo hi)] (fun x => (A n).grad x i - u.grad x i) := by
           filter_upwards [ae_restrict_mem (isOpen_Box lo hi).measurableSet, hgi_ae i]
@@ -358,7 +364,7 @@ def foldExtension {m : ℕ} (lo hi : Vec (m + 1)) (hlt : ∀ k, lo k < hi k)
         (Or.inr hCd_lt.ne)
       rwa [mul_zero] at this
     exact tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hrhs
-      (fun n => zero_le _) hbound
+      (fun n => zero_le) hbound
   -- assemble
   exact
     { Eu :=

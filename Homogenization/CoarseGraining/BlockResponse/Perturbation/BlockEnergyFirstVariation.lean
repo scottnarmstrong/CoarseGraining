@@ -128,8 +128,8 @@ theorem scalarFirstVariation_zero_right_of_ae_eq_blockResponsePairHalfState_of_i
         (a := a) hEll w zeroAdj)
   have hYtest : IsBlockTestOn U Ycorr := by
     refine ⟨?_, ?_⟩
-    · simpa [Ycorr] using hAdm.isPotentialZeroTrace
-    · simpa [Ycorr] using hAdm.isSolenoidalZeroNormalTrace
+    · simpa [Ycorr] using! hAdm.isPotentialZeroTrace
+    · simpa [Ycorr] using! hAdm.isSolenoidalZeroNormalTrace
   have horth :
       ∫ x in U,
         blockVecDot (Ycorr.eval x)
@@ -143,7 +143,7 @@ theorem scalarFirstVariation_zero_right_of_ae_eq_blockResponsePairHalfState_of_i
       blockResponse_lowerImage_pair_half_ae_eq_gradDiff_of_isEllipticFieldOn
         (a := a) hEll w zeroAdj
     filter_upwards [h] with x hx
-    simpa [T, zeroAdj, blockResponsePairHalfState, blockResponsePairState] using hx
+    simpa [T, zeroAdj, blockResponsePairHalfState, blockResponsePairState] using! hx
   have hBlock :
       volumeAverage U
         (blockFirstVariationIntegrand a (0, (0 : Vec d)) (q, (0 : Vec d)) Xpair T) = 0 := by
@@ -260,8 +260,8 @@ theorem scalarFirstVariation_neg_left_zero_of_ae_eq_blockResponsePairHalfState_o
         (a := a) hEll w zeroAdj)
   have hYtest : IsBlockTestOn U Ycorr := by
     refine ⟨?_, ?_⟩
-    · simpa [Ycorr] using hAdm.isPotentialZeroTrace
-    · simpa [Ycorr] using hAdm.isSolenoidalZeroNormalTrace
+    · simpa [Ycorr] using! hAdm.isPotentialZeroTrace
+    · simpa [Ycorr] using! hAdm.isSolenoidalZeroNormalTrace
   have horth :
       ∫ x in U,
         blockVecDot (Ycorr.eval x)
@@ -426,8 +426,8 @@ theorem scalarFirstVariation_neg_left_right_of_ae_eq_blockResponsePairHalfState_
         (a := a) hEll w zeroAdj)
   have hYtest : IsBlockTestOn U Ycorr := by
     refine ⟨?_, ?_⟩
-    · simpa [Ycorr] using hAdm.isPotentialZeroTrace
-    · simpa [Ycorr] using hAdm.isSolenoidalZeroNormalTrace
+    · simpa [Ycorr] using! hAdm.isPotentialZeroTrace
+    · simpa [Ycorr] using! hAdm.isSolenoidalZeroNormalTrace
   have horth :
       ∫ x in U,
         blockVecDot (Ycorr.eval x)
@@ -441,7 +441,7 @@ theorem scalarFirstVariation_neg_left_right_of_ae_eq_blockResponsePairHalfState_
       blockResponse_lowerImage_pair_half_ae_eq_gradDiff_of_isEllipticFieldOn
         (a := a) hEll w zeroAdj
     filter_upwards [h] with x hx
-    simpa [T, zeroAdj, blockResponsePairHalfState, blockResponsePairState] using hx
+    simpa [T, zeroAdj, blockResponsePairHalfState, blockResponsePairState] using! hx
   have hUpperT :
       (fun x =>
         (blockMatVecMul (blockCoeffField a x) (T.eval x)).1)

@@ -47,7 +47,7 @@ theorem lintegral_truncNorm_div_rpow_eq_weighted_layercake
   have hthreshold (t : ℝ) :
       {x | t < g x} = {x | a * t < truncNorm f m x} := by
     ext x
-    simp only [Set.mem_setOf_eq, g]
+    simp only [Set.mem_ofPred_eq, g]
     rw [lt_div_iff₀ ha]
     ring_nf
   rw [hpow] at h_layer

@@ -146,7 +146,7 @@ theorem Internal.barSigmaStarInv_pos_of_integrable_coarseFullBlockMatrixAtCube
     (hPrim : Internal.AnnealedPrimitiveScalarizationData (d := d) P n)
     (hBlock : Integrable (coarseFullBlockMatrixAtCube (originCube d n)) P) :
     0 < hPrim.barSigmaStarInv := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let F : RegCoeffField d → Mat d :=
     fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).lowerRight
   have hFint : Integrable F P := by
@@ -177,7 +177,7 @@ theorem Internal.barB_pos_of_integrable_coarseFullBlockMatrixAtCube
     (hPrim : Internal.AnnealedPrimitiveScalarizationData (d := d) P n)
     (hBlock : Integrable (coarseFullBlockMatrixAtCube (originCube d n)) P) :
     0 < hPrim.barB := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let F : RegCoeffField d → Mat d :=
     fun a => (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun).upperLeft
   have hFint : Integrable F P := by
@@ -223,7 +223,7 @@ theorem Internal.one_le_primitive_contrast_of_integrable_coarseFullBlockMatrixAt
     (hPrim : Internal.AnnealedPrimitiveScalarizationData (d := d) P n)
     (hBlock : Integrable (coarseFullBlockMatrixAtCube (originCube d n)) P) :
     1 ≤ hPrim.contrast := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let e : Vec d := Pi.single (0 : Fin d) 1
   let s : ℝ := hPrim.barSigmaStarInv
   let b : ℝ := hPrim.barB

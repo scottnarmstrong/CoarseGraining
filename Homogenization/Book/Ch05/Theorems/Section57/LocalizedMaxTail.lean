@@ -42,7 +42,7 @@ theorem measureReal_localizedLimitNormalizedJMax_sub_const_tail_le_card_mul_exp
       (D.card : ℝ) * Real.exp (-(lam ^ σ)) := by
   intro D
   classical
-  letI : IsProbabilityMeasure Pμ := hP.isProbability
+  let : IsProbabilityMeasure Pμ := hP.isProbability
   have hD : D.Nonempty :=
     descendantsAtScale_originCube_nat_nonempty
       (d := d) (m := m) (n := n) (le_of_lt hnm)
@@ -88,7 +88,7 @@ theorem measureReal_localizedNormalizedProbeJMax_sub_const_tail_le_card_mul_card
       (S.card : ℝ) * ((D.card : ℝ) * Real.exp (-(lam ^ σ))) := by
   intro D S
   classical
-  letI : IsProbabilityMeasure Pμ := hP.isProbability
+  let : IsProbabilityMeasure Pμ := hP.isProbability
   have hS : S.Nonempty := by
     let α : BlockCoord d := Classical.choice inferInstance
     exact ⟨(α, α, NormalizedProbeKind.coord), by simp [S]⟩
@@ -111,7 +111,8 @@ theorem measureReal_localizedNormalizedProbeJMax_sub_const_tail_le_card_mul_card
         localizedLimitNormalizedJMax hP hStruct m n (normalizedProbeVec i) a)
       (T := c + A * lam)
       (R := (D.card : ℝ) * Real.exp (-(lam ^ σ))) hS htailS
-  simpa [localizedNormalizedProbeJMax, S, hS] using htail
+  simpa only [localizedNormalizedProbeJMax, S, hS, Finset.sup'_apply, Finset.sup'_eq_sup,
+    Finset.sup_apply, Pi.sup_apply] using! htail
 
 /-- Direct finite-union tail for the localized descendant maximum, using
 symmetric `Γσ` tails. -/
@@ -133,7 +134,7 @@ theorem measureReal_localizedLimitNormalizedJMax_tail_le_card_mul_exp_of_isBigO
       (D.card : ℝ) * Real.exp (-(lam ^ σ)) := by
   intro D
   classical
-  letI : IsProbabilityMeasure Pμ := hP.isProbability
+  let : IsProbabilityMeasure Pμ := hP.isProbability
   have hD : D.Nonempty :=
     descendantsAtScale_originCube_nat_nonempty
       (d := d) (m := m) (n := n) (le_of_lt hnm)
@@ -179,7 +180,7 @@ theorem measureReal_localizedNormalizedProbeJMax_tail_le_card_mul_card_mul_exp_o
       (S.card : ℝ) * ((D.card : ℝ) * Real.exp (-(lam ^ σ))) := by
   intro D S
   classical
-  letI : IsProbabilityMeasure Pμ := hP.isProbability
+  let : IsProbabilityMeasure Pμ := hP.isProbability
   have hS : S.Nonempty := by
     let α : BlockCoord d := Classical.choice inferInstance
     exact ⟨(α, α, NormalizedProbeKind.coord), by simp [S]⟩
@@ -202,7 +203,8 @@ theorem measureReal_localizedNormalizedProbeJMax_tail_le_card_mul_card_mul_exp_o
         localizedLimitNormalizedJMax hP hStruct m n (normalizedProbeVec i) a)
       (T := A * lam)
       (R := (D.card : ℝ) * Real.exp (-(lam ^ σ))) hS htailS
-  simpa [localizedNormalizedProbeJMax, S, hS] using htail
+  simpa only [localizedNormalizedProbeJMax, S, hS, Finset.sup'_apply, Finset.sup'_eq_sup,
+    Finset.sup_apply, Pi.sup_apply] using! htail
 
 /-- Localized first-quenched estimate for the finite-probe maximum, kept as a
 probability-level finite union bound rather than a logarithmically inflated
@@ -246,7 +248,7 @@ theorem measureReal_localizedFirstQuenchedEstimate_normalizedProbeJMax_tail_noLo
   refine ⟨Cfluct, Centry, alpha, hCfluct, hCentry, halpha, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams ell n m lam hlam helln hnm
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
@@ -332,7 +334,7 @@ theorem measureReal_localizedFirstQuenchedEstimate_normalizedProbeJMax_tail_noLo
   refine ⟨Cfluct, hCfluct, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams ell n m lam hlam helln hnm
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry

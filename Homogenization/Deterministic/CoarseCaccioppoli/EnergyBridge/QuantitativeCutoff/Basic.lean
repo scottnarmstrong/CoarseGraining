@@ -669,7 +669,7 @@ theorem normalized_quantitativeCubeCutoff_canonicalFun_basic_controls
     simpa [φ, smul_eq_mul] using hη_smooth.const_smul A⁻¹
   have hφ_compact : HasCompactSupport φ := by
     have hmul : HasCompactSupport ((fun _ : Vec d => A⁻¹) * η) := hη_compact.mul_left
-    simpa [φ, Pi.mul_apply] using hmul
+    simpa [φ, Pi.mul_apply] using! hmul
   have hφ_tsupport_subset : tsupport φ ⊆ tsupport η := by
     have hsupp : Function.support φ ⊆ tsupport η := by
       intro x hx

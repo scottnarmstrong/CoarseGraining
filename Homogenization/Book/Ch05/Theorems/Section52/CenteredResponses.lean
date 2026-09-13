@@ -34,7 +34,7 @@ theorem integrable_restrictionCenteredResponseJObservableCubeSet
     (Q : TriadicCube d) (p q : Vec d)
     (hJ : Integrable (Ch04.restrictionResponseJObservableCubeSet Q p q) P) :
     Integrable (restrictionCenteredResponseJObservableCubeSet hP hStruct m Q p q) P := by
-  simpa [restrictionCenteredResponseJObservableCubeSet] using
+  simpa [restrictionCenteredResponseJObservableCubeSet] using!
     hJ.sub (integrable_const _)
 
 theorem integrable_restrictionCenteredResponseJStarObservableCubeSet
@@ -53,7 +53,7 @@ theorem integrable_restrictionCenteredResponseJStarObservableCubeSet
           (Measure.map (adjointReg (d := d)) P) := by rwa [hAdj]
       simpa [Function.comp_def] using
         hFmap.comp_measurable (measurable_adjointReg (d := d))
-  simpa [restrictionCenteredResponseJStarObservableCubeSet] using
+  simpa [restrictionCenteredResponseJStarObservableCubeSet] using!
     hJAdj.sub (integrable_const _)
 
 theorem integral_restrictionCenteredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_sub
@@ -143,7 +143,7 @@ theorem expectedCenteredResponseJAtScale_eq_annealedResponseJAtScale_sub
       Ch04.annealedResponseJAtScale P m p q -
         scalarizedResponseCenteringTerm hP hStruct m p q := by
   simpa [expectedCenteredResponseJAtScale, Ch04.annealedResponseJAtScale,
-    Ch04.responseJAtScale, Ch04.restrictionResponseJObservableCubeSet] using
+    Ch04.responseJAtScale, Ch04.restrictionResponseJObservableCubeSet] using!
       integral_restrictionCenteredResponseJObservableCubeSet_eq_expectedResponseJCubeSet_sub
         hP hStruct m (originCube d m) p q hJ
 
@@ -157,7 +157,7 @@ theorem expectedCenteredResponseJStarAtScale_eq_annealedResponseJAtScale_sub
       Ch04.annealedResponseJAtScale P m p q -
         scalarizedResponseCenteringTerm hP hStruct m p q := by
   simpa [expectedCenteredResponseJStarAtScale, Ch04.annealedResponseJAtScale,
-    Ch04.responseJAtScale, Ch04.restrictionResponseJObservableCubeSet] using
+    Ch04.responseJAtScale, Ch04.restrictionResponseJObservableCubeSet] using!
       integral_restrictionCenteredResponseJStarObservableCubeSet_eq_expectedResponseJCubeSet_sub
         hAdj hP hStruct m (originCube d m) p q hJ
 
@@ -169,7 +169,7 @@ theorem expectedCenteredResponseJAtScale_eq_centeredResponseExpectationFormula
     (hBlock : Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d m)) P) :
     expectedCenteredResponseJAtScale hP hStruct m p q =
       centeredResponseExpectationFormula hP hStruct m p q := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hJ :
       Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P :=
     hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube
@@ -197,7 +197,7 @@ theorem expectedCenteredResponseJStarAtScale_eq_centeredResponseExpectationFormu
     (hBlock : Integrable (Ch04.coarseFullBlockMatrixAtCube (originCube d m)) P) :
     expectedCenteredResponseJStarAtScale hP hStruct m p q =
       centeredResponseExpectationFormula hP hStruct m p q := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hJ :
       Integrable (Ch04.restrictionResponseJObservableCubeSet (originCube d m) p q) P :=
     hP.integrable_restrictionResponseJObservableCubeSet_of_integrable_coarseFullBlockMatrixAtCube

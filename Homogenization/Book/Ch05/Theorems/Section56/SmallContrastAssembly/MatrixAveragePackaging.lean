@@ -37,7 +37,7 @@ theorem fullBlockFluctuationMatrixWithNormalizer_isSymm_of_isSymmetricBlockMat
       (Matrix.conjTranspose S * (toFullBlockMat A - toFullBlockMat Abar) * S).IsHermitian :=
     Matrix.isHermitian_conjTranspose_mul_mul S hHerm
   simpa [fullBlockFluctuationMatrixWithNormalizer, A, Abar, Matrix.conjTranspose,
-    Matrix.IsHermitian, Matrix.IsSymm] using hconj
+    Matrix.IsHermitian, Matrix.IsSymm] using! hconj
 
 theorem fullBlockFluctuationMatrixWithNormalizer_isSymm_ae
     {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
@@ -57,7 +57,6 @@ theorem descendantsAverageFullBlockMat_isSymm
     (descendantsAverageFullBlockMat Q j F).IsSymm := by
   ext α β
   unfold descendantsAverageFullBlockMat descendantsAverage
-  simp only [Matrix.transpose_apply]
   refine congrArg (fun x => ((descendantsAtDepth Q j).card : ℝ)⁻¹ * x) ?_
   exact Finset.sum_congr rfl fun R hR => by
     exact (hF R hR).apply α β
@@ -233,9 +232,9 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
           (fun a : RegCoeffField d =>
             Section54.VarianceBoundGoodScale.fullBlockProbeSqBudget (M a)) P := by
     unfold Section54.VarianceBoundGoodScale.fullBlockProbeSqBudget
-    refine (MeasureTheory.integrable_finset_sum _ ?_).const_mul _
+    refine (MeasureTheory.integrable_finsetSum _ ?_).const_mul _
     intro α _hα
-    refine (MeasureTheory.integrable_finset_sum _ ?_).const_mul _
+    refine (MeasureTheory.integrable_finsetSum _ ?_).const_mul _
     intro β _hβ
     simpa [M] using hterm_int α β
   have hpoint :
@@ -279,12 +278,12 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
     unfold Section54.VarianceBoundGoodScale.fullBlockProbeSqBudget
     rw [integral_const_mul]
     congr 1
-    rw [integral_finset_sum]
+    rw [integral_finsetSum]
     · congr
       ext α
       rw [integral_const_mul]
       congr 1
-      rw [integral_finset_sum]
+      rw [integral_finsetSum]
       · congr
         ext β
         let f : RegCoeffField d → ℝ :=
@@ -327,7 +326,7 @@ theorem descendantsAverageFluctuationOperatorNormSqWithNormalizer_integral_le_pr
       · intro β _hβ
         exact hterm_int α β
     · intro α _hα
-      exact (MeasureTheory.integrable_finset_sum _ fun β _hβ =>
+      exact (MeasureTheory.integrable_finsetSum _ fun β _hβ =>
         hterm_int α β).const_mul _
   have hbudget_bound :
       ∫ a, Section54.VarianceBoundGoodScale.fullBlockProbeSqBudget (M a) ∂P ≤

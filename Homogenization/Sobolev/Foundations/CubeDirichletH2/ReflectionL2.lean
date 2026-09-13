@@ -188,7 +188,7 @@ theorem memVectorL2_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionVectorF
             (MeasureTheory.volume.restrict (cell choice)) := by
         simpa [Function.comp_def] using
           (cubeFaceReflectionCellFoldLinear choice).comp_memLp' hcomp
-      simpa [smul_eq_mul] using
+      simpa [smul_eq_mul] using!
         hlinear.const_smul (cubeDirichletOddReflectionCellSign choice)
     exact MeasureTheory.MemLp.ae_eq (by
       filter_upwards

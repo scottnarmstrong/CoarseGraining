@@ -143,7 +143,7 @@ theorem dense_smoothCompactScalarL2 {d : ℕ} {U : Set (Vec d)} :
       ∃ g : Vec d → ℝ,
       ∃ hgL2 : MemScalarL2 U g,
         f = hgL2.toLp g ∧ ContDiff ℝ (⊤ : ℕ∞) g ∧ HasCompactSupport g} := by
-  haveI : Fact (1 ≤ (2 : ENNReal)) := ⟨by norm_num⟩
+  have : Fact (1 ≤ (2 : ENNReal)) := ⟨by norm_num⟩
   have hDenseAE :=
     MeasureTheory.Lp.dense_hasCompactSupport_contDiff
       (E := Vec d) (F := ℝ) (μ := volumeMeasureOn U)
@@ -175,16 +175,17 @@ theorem exists_contDiff_scalarL2_tsupport_subset_eLpNorm_sub_le
     hgL2.eLpNorm_indicator_le (p := (2 : ENNReal)) (by norm_num)
       ENNReal.ofNat_ne_top hε
   obtain ⟨K, hKU, hK_compact, hK_closed, hμK⟩ :=
-    hUopen.measurableSet.exists_isCompact_isClosed_diff_lt (μ := MeasureTheory.volume)
+    hUopen.measurableSet.exists_isCompact_isClosed_sdiff_lt (μ := MeasureTheory.volume)
       hUfinite ((ENNReal.ofReal_pos.mpr hδpos).ne')
   rcases exists_compact_closed_between hK_compact hUopen hKU with
     ⟨L, hL_compact, hL_closed, hKL, hLU⟩
-  rcases exists_smooth_one_nhds_of_subset_interior (I := 𝓘(ℝ, Vec d)) hK_closed hKL with
-    ⟨η, hη_one, hη_zero, hη_range⟩
+  obtain ⟨η, hη_one, hη_zero, hη_range⟩ :=
+    exists_contMDiffMap_one_nhds_of_subset_interior (n := ⊤) (I := 𝓘(ℝ, Vec d))
+      hK_closed hKL
   let φ : Vec d → ℝ := fun x => η x • g x
   have hη_cont : ContDiff ℝ (⊤ : ℕ∞) η := η.contMDiff.contDiff
   have hφ_cont : ContDiff ℝ (⊤ : ℕ∞) φ := by
-    simpa [φ] using hη_cont.smul hg_cont
+    simpa [φ] using! hη_cont.smul hg_cont
   have hφ_support : Function.support φ ⊆ L := by
     intro x hx
     by_contra hxL
@@ -202,7 +203,7 @@ theorem exists_contDiff_scalarL2_tsupport_subset_eLpNorm_sub_le
   have hμsmall : volumeMeasureOn U (U \ K) ≤ ENNReal.ofReal δ := by
     unfold volumeMeasureOn
     rw [MeasureTheory.Measure.restrict_apply (hUopen.measurableSet.diff hK_closed.measurableSet)]
-    simpa [Set.inter_eq_self_of_subset_left (Set.diff_subset : U \ K ⊆ U)] using hμK.le
+    simpa [Set.inter_eq_self_of_subset_left (Set.sdiff_subset : U \ K ⊆ U)] using hμK.le
   have hindicator := hδ (U \ K) (hUopen.measurableSet.diff hK_closed.measurableSet) hμsmall
   calc
     MeasureTheory.eLpNorm (g - φ) 2 (volumeMeasureOn U)
@@ -233,7 +234,7 @@ theorem dense_smoothCompactSupportScalarL2_tsupport_subset
       ∃ hgL2 : MemScalarL2 U g,
         f = hgL2.toLp g ∧ ContDiff ℝ (⊤ : ℕ∞) g ∧ HasCompactSupport g ∧
           tsupport g ⊆ U} := by
-  haveI : Fact (1 ≤ (2 : ENNReal)) := ⟨by norm_num⟩
+  have : Fact (1 ≤ (2 : ENNReal)) := ⟨by norm_num⟩
   intro f
   refine (mem_closure_iff_nhds_basis Metric.nhds_basis_closedBall).2 fun ε hε => ?_
   have hε2 : 0 < ε / 2 := by positivity
@@ -330,7 +331,7 @@ noncomputable def smul {d : ℕ} {U : Set (Vec d)}
     smooth := by
       simpa using φ.smooth.const_smul c
     compactSupport := by
-      simpa using φ.compactSupport.smul_left (f := fun _ : Vec d => c)
+      simpa using! φ.compactSupport.smul_left (f := fun _ : Vec d => c)
     support_subset := by
       exact
         (tsupport_smul_subset_right (fun _ : Vec d => c) (φ : Vec d → ℝ)).trans
@@ -400,7 +401,7 @@ noncomputable def h1WeakTestScalarL2Submodule {d : ℕ} (U : Set (Vec d)) :
         smooth := by
           simpa using φ.smooth.const_smul c
         compactSupport := by
-          simpa using φ.compactSupport.smul_left (f := fun _ : Vec d => c)
+          simpa using! φ.compactSupport.smul_left (f := fun _ : Vec d => c)
         support_subset := by
           exact
             (tsupport_smul_subset_right (fun _ : Vec d => c) (φ : Vec d → ℝ)).trans
@@ -449,7 +450,7 @@ theorem dense_h1WeakTestScalarL2Submodule
     {d : ℕ} {U : Set (Vec d)} (hUopen : IsOpen U)
     (hUfinite : MeasureTheory.volume U ≠ ⊤) :
     Dense (h1WeakTestScalarL2Submodule (d := d) U : Set (ScalarL2 U)) := by
-  simpa [h1WeakTestScalarL2Submodule] using
+  simpa [h1WeakTestScalarL2Submodule] using!
     denseRange_h1WeakTestFunction_toScalarL2 hUopen hUfinite
 
 /-- Equality of scalar `L²` classes forces zero squared distance for any

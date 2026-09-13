@@ -67,7 +67,7 @@ theorem firstQuenchedEstimate_limitNormalized_logSqEntry_noXi
   obtain ⟨Cfluct, hCfluct_pos, hfluct⟩ := hfinite hσ
   refine ⟨CentryScale, Cfluct, hCentryScale_pos, hCfluct_pos, ?_⟩
   intro Pμ hPμ hStruct hΓ hσ_eq hparams e he_norm n m hnm
-  letI : IsProbabilityMeasure Pμ := hPμ.isProbability
+  let : IsProbabilityMeasure Pμ := hPμ.isProbability
   let hΓold : GammaSigmaCoarseGrainedEllipticity Pμ hPμ hStruct :=
     hΓ.withInternalXi
   let Nold : ℕ :=

@@ -155,7 +155,7 @@ theorem rawOverlapWeight_fderiv_eq_zero_of_not_mem_overlapCubeSet {d : ℕ}
     funext y
     simp [rawOverlapWeight, hS, factor]
   rw [hraw_fun]
-  rw [fderiv_finset_prod (u := (Finset.univ : Finset (Fin d)))
+  rw [fderiv_finsetProd (u := (Finset.univ : Finset (Fin d)))
     (g := fun i y => factor i y)]
   · apply Finset.sum_eq_zero
     intro i _hi
@@ -193,7 +193,7 @@ theorem norm_fderiv_rawOverlapWeight_le {d : ℕ}
     funext y
     simp [rawOverlapWeight, hS, factor]
   rw [hraw_fun]
-  rw [fderiv_finset_prod (u := (Finset.univ : Finset (Fin d)))
+  rw [fderiv_finsetProd (u := (Finset.univ : Finset (Fin d)))
     (g := fun i y => factor i y)]
   · calc
       ‖∑ i ∈ (Finset.univ : Finset (Fin d)),
@@ -574,7 +574,7 @@ theorem abs_inv_overlapWeightDenomSafe_coordDeriv_le {d : ℕ}
       euclideanCoordDeriv i (fun y : Vec d => (D y)⁻¹) x =
         -((D x) ^ 2)⁻¹ * euclideanCoordDeriv i D x := by
     unfold euclideanCoordDeriv
-    rw [fderiv_comp' (x := x) (differentiableAt_inv hD_ne) hD_diff]
+    rw [fderiv_fun_comp (x := x) (differentiableAt_inv hD_ne) hD_diff]
     rw [fderiv_inv]
     simp [ContinuousLinearMap.comp_apply, smul_eq_mul, mul_comm]
   have hdraw :

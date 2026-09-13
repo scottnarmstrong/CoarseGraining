@@ -163,7 +163,7 @@ theorem iIndepFun_sub_comp_fst_comp_snd_prod
   have hg : ∀ i, Measurable (g i) := by
     intro i
     exact measurable_fst.sub measurable_snd
-  simpa [g] using
+  simpa [g] using!
     (iIndepFun_prodMk_comp_fst_comp_snd_prod (μ := μ) (X := X) h_indep h_meas).comp g hg
 
 /-- A first-minus-second coordinate difference is symmetric on the product
@@ -222,12 +222,12 @@ theorem sup'_abs_sub_pow_le
   have hA_nonneg : 0 ≤ A := by
     have hnonneg : 0 ≤ |X hs.choose ω.1| := abs_nonneg _
     have hle : |X hs.choose ω.1| ≤ A := by
-      simpa [A] using (Finset.le_sup' (f := fun i => |X i ω.1|) hs.choose_spec)
+      exact Finset.le_sup' (f := fun i => |X i ω.1|) hs.choose_spec
     exact le_trans hnonneg hle
   have hB_nonneg : 0 ≤ B := by
     have hnonneg : 0 ≤ |X hs.choose ω.2| := abs_nonneg _
     have hle : |X hs.choose ω.2| ≤ B := by
-      simpa [B] using (Finset.le_sup' (f := fun i => |X i ω.2|) hs.choose_spec)
+      exact Finset.le_sup' (f := fun i => |X i ω.2|) hs.choose_spec
     exact le_trans hnonneg hle
   have hsup_nonneg : 0 ≤ s.sup' hs (fun i => |X i ω.1 - X i ω.2|) := by
     have hnonneg : 0 ≤ |X hs.choose ω.1 - X hs.choose ω.2| := abs_nonneg _
@@ -241,9 +241,9 @@ theorem sup'_abs_sub_pow_le
     refine Finset.sup'_le hs _ ?_
     intro i hi
     have hAi : |X i ω.1| ≤ A := by
-      simpa [A] using (Finset.le_sup' (f := fun i => |X i ω.1|) hi)
+      exact Finset.le_sup' (f := fun i => |X i ω.1|) hi
     have hBi : |X i ω.2| ≤ B := by
-      simpa [B] using (Finset.le_sup' (f := fun i => |X i ω.2|) hi)
+      exact Finset.le_sup' (f := fun i => |X i ω.2|) hi
     calc
       |X i ω.1 - X i ω.2| ≤ |X i ω.1| + |X i ω.2| := by
         simpa [sub_eq_add_neg] using abs_add_le (X i ω.1) (-X i ω.2)
@@ -269,12 +269,12 @@ theorem sup'_abs_sub_rpow_le
   have hA_nonneg : 0 ≤ A := by
     have hnonneg : 0 ≤ |X hs.choose ω.1| := abs_nonneg _
     have hle : |X hs.choose ω.1| ≤ A := by
-      simpa [A] using (Finset.le_sup' (f := fun i => |X i ω.1|) hs.choose_spec)
+      exact Finset.le_sup' (f := fun i => |X i ω.1|) hs.choose_spec
     exact le_trans hnonneg hle
   have hB_nonneg : 0 ≤ B := by
     have hnonneg : 0 ≤ |X hs.choose ω.2| := abs_nonneg _
     have hle : |X hs.choose ω.2| ≤ B := by
-      simpa [B] using (Finset.le_sup' (f := fun i => |X i ω.2|) hs.choose_spec)
+      exact Finset.le_sup' (f := fun i => |X i ω.2|) hs.choose_spec
     exact le_trans hnonneg hle
   have hsup_nonneg : 0 ≤ s.sup' hs (fun i => |X i ω.1 - X i ω.2|) := by
     have hnonneg : 0 ≤ |X hs.choose ω.1 - X hs.choose ω.2| := abs_nonneg _
@@ -288,9 +288,9 @@ theorem sup'_abs_sub_rpow_le
     refine Finset.sup'_le hs _ ?_
     intro i hi
     have hAi : |X i ω.1| ≤ A := by
-      simpa [A] using (Finset.le_sup' (f := fun i => |X i ω.1|) hi)
+      exact Finset.le_sup' (f := fun i => |X i ω.1|) hi
     have hBi : |X i ω.2| ≤ B := by
-      simpa [B] using (Finset.le_sup' (f := fun i => |X i ω.2|) hi)
+      exact Finset.le_sup' (f := fun i => |X i ω.2|) hi
     calc
       |X i ω.1 - X i ω.2| ≤ |X i ω.1| + |X i ω.2| := by
         simpa [sub_eq_add_neg] using abs_add_le (X i ω.1) (-X i ω.2)
@@ -643,7 +643,7 @@ theorem sup'_univ_subtype_eq_sup'
     {α : Type*} [SemilatticeSup α] {s : Finset ι}
     (hs : s.Nonempty) (hs_univ : (Finset.univ : Finset ↥s).Nonempty) (f : ι → α) :
     (Finset.univ : Finset ↥s).sup' hs_univ (fun i : ↥s => f i) = s.sup' hs f := by
-  simpa [Finset.univ_eq_attach, Finset.attach_map_val] using
+  simpa [Finset.univ_eq_attach, Finset.attach_map_val] using!
     (Finset.sup'_comp_eq_map
       (s := s.attach)
       (f := Function.Embedding.subtype fun x => x ∈ s)

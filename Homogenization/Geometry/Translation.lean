@@ -75,7 +75,7 @@ theorem measurePreserving_subRight_restrict_translateSet {d : ℕ} (z : Vec d) (
         (MeasureTheory.volume : MeasureTheory.Measure (Vec d))
         MeasureTheory.volume :=
     measurePreserving_add_right (MeasureTheory.volume : MeasureTheory.Measure (Vec d)) (-z)
-  simpa [preimage_addNeg_eq_translateSet (z := z) U] using
+  simpa [preimage_addNeg_eq_translateSet (z := z) U, sub_eq_add_neg] using
     MeasurePreserving.restrict_preimage_emb hμ (Homeomorph.subRight z).measurableEmbedding U
 
 theorem measurePreserving_addRight_restrict_translateSet {d : ℕ} (z : Vec d) (U : Set (Vec d)) :

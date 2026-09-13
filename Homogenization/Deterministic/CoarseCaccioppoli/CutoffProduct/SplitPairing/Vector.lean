@@ -67,7 +67,7 @@ theorem abs_cubeAverage_vecDot_scalar_smul_le_split_collapsed_note_terms_of_cont
       hfluxNegS hproj hξ hderiv hGcirc1 hGcircS hBgCent_bound
   have hconstVecInfty :
       MeasureTheory.MemLp (fun x => (cubeAverage Q u) • ξ x) ∞ (normalizedCubeMeasure Q) := by
-    simpa [Pi.smul_apply] using hξLp.const_smul (cubeAverage Q u)
+    simpa [Pi.smul_apply] using! hξLp.const_smul (cubeAverage Q u)
   have hconstVec2 :
       MeasureTheory.MemLp (fun x => (cubeAverage Q u) • ξ x) (2 : ℝ≥0∞)
         (normalizedCubeMeasure Q) :=
@@ -78,7 +78,7 @@ theorem abs_cubeAverage_vecDot_scalar_smul_le_split_collapsed_note_terms_of_cont
   have hcentVec2 :
       MeasureTheory.MemLp (fun x => (u x - cubeAverage Q u) • ξ x) (2 : ℝ≥0∞)
         (normalizedCubeMeasure Q) := by
-    simpa [cubeFluctuation] using
+    simpa [cubeFluctuation] using!
       hξLp.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) huFluct
   have hfluxComp :
       ∀ i : Fin d, MeasureTheory.MemLp (fun x => flux x i) (2 : ℝ≥0∞)
@@ -89,38 +89,38 @@ theorem abs_cubeAverage_vecDot_scalar_smul_le_split_collapsed_note_terms_of_cont
       ∀ i : Fin d, MeasureTheory.MemLp (fun x => ((cubeAverage Q u) • ξ x) i) (2 : ℝ≥0∞)
         (normalizedCubeMeasure Q) := by
     intro i
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hconstVec2
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hconstVec2
   have hcentComp :
       ∀ i : Fin d, MeasureTheory.MemLp (fun x => ((u x - cubeAverage Q u) • ξ x) i)
         (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
     intro i
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hcentVec2
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hcentVec2
   have hIntConstComp :
       ∀ i : Fin d,
         MeasureTheory.Integrable
           (fun x => flux x i * (((cubeAverage Q u) • ξ x) i))
           (normalizedCubeMeasure Q) := by
     intro i
-    simpa using (hfluxComp i).integrable_mul (hconstComp i)
+    simpa using! (hfluxComp i).integrable_mul (hconstComp i)
   have hIntCentComp :
       ∀ i : Fin d,
         MeasureTheory.Integrable
           (fun x => flux x i * (((u x - cubeAverage Q u) • ξ x) i))
           (normalizedCubeMeasure Q) := by
     intro i
-    simpa using (hfluxComp i).integrable_mul (hcentComp i)
+    simpa using! (hfluxComp i).integrable_mul (hcentComp i)
   have hIntConst :
       MeasureTheory.Integrable
         (fun x => vecDot (flux x) ((cubeAverage Q u) • ξ x))
         (normalizedCubeMeasure Q) := by
     simpa [vecDot] using
-      (MeasureTheory.integrable_finset_sum Finset.univ (fun i _ => hIntConstComp i))
+      (MeasureTheory.integrable_finsetSum Finset.univ (fun i _ => hIntConstComp i))
   have hIntCent :
       MeasureTheory.Integrable
         (fun x => vecDot (flux x) ((u x - cubeAverage Q u) • ξ x))
         (normalizedCubeMeasure Q) := by
     simpa [vecDot] using
-      (MeasureTheory.integrable_finset_sum Finset.univ (fun i _ => hIntCentComp i))
+      (MeasureTheory.integrable_finsetSum Finset.univ (fun i _ => hIntCentComp i))
   have hsplitFun :
       (fun x => vecDot (flux x) (u x • ξ x)) =
         (fun x => vecDot (flux x) ((cubeAverage Q u) • ξ x) +
@@ -238,7 +238,7 @@ theorem
       hfluxNegS hproj hξ hderiv hGcirc1 hGcircS hBgCent_bound
   have hconstVecInfty :
       MeasureTheory.MemLp (fun x => (cubeAverage Q u) • ξ x) ∞ (normalizedCubeMeasure Q) := by
-    simpa [Pi.smul_apply] using hξLp.const_smul (cubeAverage Q u)
+    simpa [Pi.smul_apply] using! hξLp.const_smul (cubeAverage Q u)
   have hconstVec2 :
       MeasureTheory.MemLp (fun x => (cubeAverage Q u) • ξ x) (2 : ℝ≥0∞)
         (normalizedCubeMeasure Q) :=
@@ -249,7 +249,7 @@ theorem
   have hcentVec2 :
       MeasureTheory.MemLp (fun x => (u x - cubeAverage Q u) • ξ x) (2 : ℝ≥0∞)
         (normalizedCubeMeasure Q) := by
-    simpa [cubeFluctuation] using
+    simpa [cubeFluctuation] using!
       hξLp.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) huFluct
   have hfluxComp :
       ∀ i : Fin d, MeasureTheory.MemLp (fun x => flux x i) (2 : ℝ≥0∞)
@@ -260,38 +260,38 @@ theorem
       ∀ i : Fin d, MeasureTheory.MemLp (fun x => ((cubeAverage Q u) • ξ x) i) (2 : ℝ≥0∞)
         (normalizedCubeMeasure Q) := by
     intro i
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hconstVec2
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hconstVec2
   have hcentComp :
       ∀ i : Fin d, MeasureTheory.MemLp (fun x => ((u x - cubeAverage Q u) • ξ x) i)
         (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
     intro i
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hcentVec2
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hcentVec2
   have hIntConstComp :
       ∀ i : Fin d,
         MeasureTheory.Integrable
           (fun x => flux x i * (((cubeAverage Q u) • ξ x) i))
           (normalizedCubeMeasure Q) := by
     intro i
-    simpa using (hfluxComp i).integrable_mul (hconstComp i)
+    simpa using! (hfluxComp i).integrable_mul (hconstComp i)
   have hIntCentComp :
       ∀ i : Fin d,
         MeasureTheory.Integrable
           (fun x => flux x i * (((u x - cubeAverage Q u) • ξ x) i))
           (normalizedCubeMeasure Q) := by
     intro i
-    simpa using (hfluxComp i).integrable_mul (hcentComp i)
+    simpa using! (hfluxComp i).integrable_mul (hcentComp i)
   have hIntConst :
       MeasureTheory.Integrable
         (fun x => vecDot (flux x) ((cubeAverage Q u) • ξ x))
         (normalizedCubeMeasure Q) := by
     simpa [vecDot] using
-      (MeasureTheory.integrable_finset_sum Finset.univ (fun i _ => hIntConstComp i))
+      (MeasureTheory.integrable_finsetSum Finset.univ (fun i _ => hIntConstComp i))
   have hIntCent :
       MeasureTheory.Integrable
         (fun x => vecDot (flux x) ((u x - cubeAverage Q u) • ξ x))
         (normalizedCubeMeasure Q) := by
     simpa [vecDot] using
-      (MeasureTheory.integrable_finset_sum Finset.univ (fun i _ => hIntCentComp i))
+      (MeasureTheory.integrable_finsetSum Finset.univ (fun i _ => hIntCentComp i))
   have hsplitFun :
       (fun x => vecDot (flux x) (u x • ξ x)) =
         (fun x => vecDot (flux x) ((cubeAverage Q u) • ξ x) +

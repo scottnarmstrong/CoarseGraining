@@ -90,9 +90,11 @@ theorem abs_cutoffProductTermOnDependentFamily_le_scaledWeakNormProduct
         (by simpa [flux] using canonicalMaximizerFluxDefectOnCube_memLp Q aQ p q q0)
         (by
           intro N
-          simpa [u, F, aQ, gradWeak, canonicalMaximizerPotentialDefectH1OnCube_grad] using
+          have hraw :=
             cubeBesovNegativeVectorPartialSeminorm_canonicalMaximizerGradientDefectOnDependentFamily_le_ch04WeakNorm
-              a ha Q hs_pos N p q p0)
+              a ha Q hs_pos N p q p0
+          unfold canonicalMaximizerGradientDefectOnCube at hraw
+          simpa [u, F, aQ, gradWeak, canonicalMaximizerPotentialDefectH1OnCube_grad] using hraw)
         (by
           intro N
           simpa [flux, F, aQ, fluxWeak] using

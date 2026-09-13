@@ -77,7 +77,7 @@ theorem doubledResponseTheory_ofAEEq {d : ℕ}
             DoubledField.SameAE (U := U)
               (doubledFieldOfSolutions b vb vStarb)
               (doubledFieldOfSolutions a va vStara) := by
-          simpa [va, vStara] using doubledSameAE_symm hSame
+          simpa [va, vStara] using! doubledSameAE_symm hSame
         exact isDoubledResponseField_of_sameAE U b hSame' hAfield_b
       exact isDoubledResponseField_of_sameAE U b hXsame hBfield
   doubled_response_by_scalar := by
@@ -118,7 +118,7 @@ theorem doubledResponseTheory_ofAEEq {d : ℕ}
           (doubledFieldOfScalarMaximizers b vb vStarb)
           (doubledFieldOfScalarMaximizers a va vStara) := by
       have hAB := doubledFieldOfScalarMaximizers_sameAE_ofAEEq h va vStara
-      simpa [va, vStara] using doubledSameAE_symm hAB
+      simpa [va, vStara] using! doubledSameAE_symm hAB
     exact
       isDoubledResponseMaximizer_of_sameAE U b (p, q) (qStar, pStar)
         hSame hAmax_b

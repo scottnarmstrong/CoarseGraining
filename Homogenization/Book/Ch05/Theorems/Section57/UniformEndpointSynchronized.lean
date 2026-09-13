@@ -96,7 +96,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_soft_hig
   dsimp only
   intro hnm hqm ht hαt
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let hΓ2 := hInf.toGammaSigma 2 (by norm_num : (0 : ℝ) < 2)
   have hΓ2_params : hΓ2.params = params := by
     simpa [hΓ2, GammaInfinityCoarseGrainedEllipticity.toGammaSigma] using hparams
@@ -156,7 +156,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_soft_hig
                   ((D.card : ℝ) * Real.exp (-(highLam ^ (2 : ℝ)))) := by
             simpa [K, x, ell, selectedBadPairScale, N0, Hshift, D, S,
               highScale, T, highLam, hΓ2,
-              GammaInfinityCoarseGrainedEllipticity.toGammaSigma] using
+              GammaInfinityCoarseGrainedEllipticity.toGammaSigma] using!
               hraw hell hnm hqm hlam
           have hmono :
               P.real (highBottomPairEvent Hshift K a t αbad q m n) ≤
@@ -251,7 +251,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_eq_zero_of_
   dsimp only
   intro hnm hqm hnq hαt hcrudeA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -393,7 +393,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_weighted
   dsimp only
   intro ht hαt htb hDen hDen_dom
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -622,7 +622,7 @@ theorem measureReal_shiftedHighBottomBadScaleEvent_quenchedProbeEnvelope_le_weig
   dsimp only
   intro ht hαt htb hDen hDen_dom hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -730,7 +730,7 @@ theorem measureReal_shiftedCrudeBottomPairEvent_quenchedProbeEnvelope_eq_zero_ga
   dsimp only
   intro ha ht hαt hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -885,7 +885,7 @@ theorem measureReal_shiftedCrudeBottomBadScaleEvent_quenchedProbeEnvelope_eq_zer
   dsimp only
   intro ha ht hαt hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P

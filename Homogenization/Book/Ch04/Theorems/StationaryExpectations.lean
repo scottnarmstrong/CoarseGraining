@@ -253,7 +253,7 @@ theorem expectedResponseJCubeSet_eq_originCube_of_stationary
             (X := fun U a => ResponseJ U p q a)
             (U := cubeSet (originCube d R.scale))
             (by
-              simpa [restrictionResponseJObservableCubeSet] using
+              simpa [restrictionResponseJObservableCubeSet] using!
                 hP.aestronglyMeasurable_restrictionResponseJObservableCubeSet
                   (originCube d R.scale) p q)
             (responseJCubeSet_translation_covariant p q)
@@ -394,7 +394,7 @@ theorem integral_fullBlockNormalizedFluctuationOperatorNormSqAtScale_eq_originCu
               fullBlockNormalizedFluctuationOperatorNormSq hP hStruct center U a)
             (U := cubeSet (originCube d R.scale))
             (by
-              simpa [fullBlockNormalizedFluctuationOperatorNormSqAtScale] using
+              simpa [fullBlockNormalizedFluctuationOperatorNormSqAtScale] using!
                 hOrigin.aestronglyMeasurable)
             (fullBlockNormalizedFluctuationOperatorNormSq_translation_covariant
               hP hStruct center)
@@ -493,7 +493,7 @@ theorem integral_descendantsAverage_fullBlockNormalizedFluctuationOperatorNormSq
             hP hStruct center R) P := by
     intro R hR
     have hRscale : R ∈ descendantsAtScale (originCube d m) n := by
-      simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using hR
+      simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using! hR
     exact
       hP.integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_of_mem_descendantsAtScale_originCube
         hstat hStruct center hn hnm hRscale hOrigin
@@ -525,7 +525,7 @@ theorem integral_descendantsAverage_fullBlockNormalizedFluctuationOperatorNormSq
         refine Finset.sum_congr rfl ?_
         intro R hR
         have hRscale : R ∈ descendantsAtScale (originCube d m) n := by
-          simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using hR
+          simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using! hR
         have hscale : R.scale = n :=
           scale_eq_of_mem_descendantsAtScale_originCube hnm hRscale
         have hR_nonneg : 0 ≤ R.scale := by
@@ -637,7 +637,7 @@ theorem integral_descendantsAverage_restrictionResponseJObservableCubeSet_eq_ori
         Integrable (restrictionResponseJObservableCubeSet R p q) P := by
     intro R hR
     exact hJ R (by
-      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using hR)
+      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using! hR)
   calc
     ∫ a,
         descendantsAverage (originCube d m) (Int.toNat (m - n))
@@ -678,7 +678,7 @@ theorem integral_weightedDescendantsAverage_restrictionResponseJObservableCubeSe
           weight R * restrictionResponseJObservableCubeSet R p q a) P := by
     intro R hR
     have hRscale : R ∈ descendantsAtScale (originCube d m) n := by
-      simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using hR
+      simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using! hR
     exact (hJ R hRscale).const_mul (weight R)
   calc
     ∫ a,
@@ -698,7 +698,7 @@ theorem integral_weightedDescendantsAverage_restrictionResponseJObservableCubeSe
         refine Finset.sum_congr rfl ?_
         intro R hR
         have hRscale : R ∈ descendantsAtScale (originCube d m) n := by
-          simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using hR
+          simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using! hR
         have hstationary :
             expectedResponseJCubeSet P R p q =
               expectedResponseJCubeSet P (originCube d n) p q :=

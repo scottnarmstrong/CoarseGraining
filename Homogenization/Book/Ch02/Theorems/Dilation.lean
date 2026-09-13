@@ -242,7 +242,7 @@ theorem dilate_restrictsTo {d : ℕ} (k : ℤ) {Q R : TriadicCube d}
     exact
       MeasureTheory.ae_restrict_of_ae_restrict_of_subset hsub
         (by
-          simpa using
+          simpa using!
             Homogenization.Internal.Ch02.BookCh02.pointwiseCoeffField_ae_eq
               (cubeDomain Q) aQ)
   have hsource :
@@ -351,7 +351,7 @@ noncomputable def dilate {d : ℕ} (k : ℤ)
       exact
         MeasureTheory.ae_restrict_of_ae_restrict_of_subset hsub_source
           (by
-            simpa using
+            simpa using!
               Homogenization.Internal.Ch02.BookCh02.pointwiseCoeffField_ae_eq
                 (cubeDomain Qs) (a.coeffOn Qs))
     have hsource :
@@ -363,7 +363,7 @@ noncomputable def dilate {d : ℕ} (k : ℤ)
       hpointR.trans (hrest.trans hpointQ_on_R.symm)
     have hpull := eventuallyEq_comp_undilate_of_ae_eq k hsource
     simpa [dilatedCoeffOnAt, Qs, Rs, dilateCube_dilateCube_neg,
-      dilateCoeffField] using hpull
+      dilateCoeffField] using! hpull
 
 /-- The concrete coefficient-family dilation satisfies the public dilation
 relation. -/

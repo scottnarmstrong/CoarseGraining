@@ -1,4 +1,4 @@
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite
+import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.SmallTail
 
 namespace Homogenization
 namespace Book

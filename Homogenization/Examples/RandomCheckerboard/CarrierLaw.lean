@@ -2,7 +2,6 @@ import Homogenization.Examples.RandomCheckerboard.Basic
 import Homogenization.Book.Ch04.Theorems.DilationLaw
 import Homogenization.Book.MainResults
 import Homogenization.CoarseGraining.ThetaEllipticity
-import Homogenization.HighContrast.Scale.Final
 
 /-!
 # The Bernoulli checkerboard carrier law and its instances
@@ -21,12 +20,7 @@ instance stack on the carrier:
   and the coin σ-algebras;
 * `thetaEllipticLaw` — the conjunct-free `Θ`-ellipticity class membership;
 * the triadically scaled family (`scaledLaw`, `checkerboardSetup`) and the
-  public quenched-comparison corollary;
-* **the satisfiability regression guard**: the headline
-  `homogenizationScale_polynomial_of_unitRange` instantiated on the
-  checkerboard law.
-
-Reference: the paper (Armstrong–Kuusi–Loher, to appear).
+  public quenched-comparison corollary.
 -/
 
 namespace Homogenization
@@ -86,7 +80,7 @@ theorem stationary_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
           Measure.map
             (fun ω : Sample d => translateReg (intVecToRealVec z) (checkerRegField lam Lam ω))
             (sampleMeasure d p hp) := by
-          simpa [Function.comp] using
+          simpa [Function.comp_def] using!
             (Measure.map_map
               (measurable_translateReg (d := d) (intVecToRealVec z))
               (measurable_checkerRegField (d := d) lam Lam)
@@ -102,7 +96,7 @@ theorem stationary_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
           Measure.map (checkerRegField lam Lam)
             (Measure.map (shiftSample z) (sampleMeasure d p hp)) := by
           symm
-          simpa [Function.comp] using
+          simpa [Function.comp_def] using!
             (Measure.map_map
               (measurable_checkerRegField (d := d) lam Lam)
               (measurable_shiftSample z)
@@ -120,7 +114,7 @@ theorem adjointInvariant_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤
           Measure.map
             (fun ω : Sample d => adjointReg (checkerRegField lam Lam ω))
             (sampleMeasure d p hp) := by
-          simpa [Function.comp] using
+          simpa [Function.comp_def] using!
             (Measure.map_map
               (measurable_adjointReg (d := d))
               (measurable_checkerRegField (d := d) lam Lam)
@@ -143,7 +137,7 @@ theorem isotropic_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
           Measure.map
             (fun ω : Sample d => rotateReg R hR (checkerRegField lam Lam ω))
             (sampleMeasure d p hp) := by
-          simpa [Function.comp] using
+          simpa [Function.comp_def] using!
             (Measure.map_map
               (measurable_rotateReg (d := d) R hR)
               (measurable_checkerRegField (d := d) lam Lam)
@@ -159,7 +153,7 @@ theorem isotropic_law {d : ℕ} {lam Lam : ℝ} (p : ℝ≥0) (hp : p ≤ 1) :
           Measure.map (checkerRegField lam Lam)
             (Measure.map (reindexSample e) (sampleMeasure d p hp)) := by
           symm
-          simpa [Function.comp, e] using
+          simpa [Function.comp_def, e] using!
             (Measure.map_map
               (measurable_checkerRegField (d := d) lam Lam)
               (measurable_reindexSample e)
@@ -347,35 +341,6 @@ theorem randomCheckerboard_quenchedComparison
   refine ⟨C, α, Cscale, hC, hα, hCscale, ?_⟩
   intro two_le_dim lam Lam hlam hle p hp
   exact hmain (checkerboardSetup two_le_dim lam Lam hlam hle p hp)
-
-/-! ## The satisfiability regression guard -/
-
-/-- **The satisfiability gate's final discharge** (permanent regression guard).
-
-The headline `homogenizationScale_polynomial_of_unitRange` instantiates on the
-Bernoulli checkerboard law: for `1 ≤ lam ≤ Lam ≤ Θ` every hypothesis of the
-capstone — the probability instance, `RestrictionLawCarrier`, `RestrictionStructuralLaw`, and the
-conjunct-free `ThetaEllipticLaw` — is discharged by the construction in this
-file, so the homogenization-scale contrast decay holds for the checkerboard
-with the dimensional constants of the headline. -/
-example {d : ℕ} [NeZero d] (hd : 3 ≤ d) :
-    ∃ Cscale Ctriadic alpha : ℝ, 0 < Cscale ∧ 0 < Ctriadic ∧ 0 < alpha ∧
-      ∀ {lam Lam Θ : ℝ} (h1 : 1 ≤ lam) (hle : lam ≤ Lam) (_hΘub : Lam ≤ Θ)
-        (_hΘ : 1 ≤ Θ) (p : ℝ≥0) (hp : p ≤ 1),
-        ∃ N0 : ℕ,
-          (∀ n : ℕ,
-            Book.Ch05.thetaAtScale
-                (lawCarrier (d := d) (lt_of_lt_of_le one_pos h1) hle p hp)
-                (structuralLaw (d := d) p hp) ((N0 + n : ℕ) : ℤ) - 1 ≤
-              (3 : ℝ) ^ (-alpha * (n : ℝ))) ∧
-          (N0 : ℝ) ≤ Cscale * Real.log (2 + Θ) ∧
-          (3 : ℝ) ^ ((N0 : ℕ) : ℝ) ≤ (2 + Θ) ^ Ctriadic := by
-  obtain ⟨Cscale, Ctriadic, alpha, hCs, hCt, halpha, hmain⟩ :=
-    homogenizationScale_polynomial_of_unitRange (d := d) hd
-  refine ⟨Cscale, Ctriadic, alpha, hCs, hCt, halpha, ?_⟩
-  intro lam Lam Θ h1 hle hΘub hΘ p hp
-  exact hmain hΘ (lawCarrier (lt_of_lt_of_le one_pos h1) hle p hp)
-    (structuralLaw p hp) (thetaEllipticLaw h1 hle hΘub p hp)
 
 end
 

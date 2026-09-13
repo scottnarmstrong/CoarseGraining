@@ -88,7 +88,7 @@ instance {d : ℕ} {U : Set (Vec d)} : Add (H1Function U) where
       memL2 := u.memL2.add v.memL2
       gradMemL2 := by
         intro i
-        simpa [Pi.add_apply] using (u.gradMemL2 i).add (v.gradMemL2 i)
+        simpa [Pi.add_apply] using! (u.gradMemL2 i).add (v.gradMemL2 i)
       hasWeakGradient := by
         intro i φ hφ hφ_supp hφ_sub
         let dφ : Vec d → ℝ := fun x => (fderiv ℝ φ x) (basisVec i)
@@ -258,7 +258,7 @@ noncomputable def toFunGradAddMonoidHom {d : ℕ} {U : Set (Vec d)} :
   map_zero' := rfl
   map_add' _ _ := rfl
 
-instance {d : ℕ} {U : Set (Vec d)} : Module ℝ (H1Function U) :=
+noncomputable instance {d : ℕ} {U : Set (Vec d)} : Module ℝ (H1Function U) :=
   Function.Injective.module ℝ
     toFunGradAddMonoidHom
     (toFunGrad_injective (d := d) (U := U))
@@ -292,7 +292,7 @@ noncomputable def mulContDiffMemLpTop {d : ℕ} {U : Set (Vec d)}
     have hsecond :
         MeasureTheory.MemLp (fun x => u x * dφ x) 2 μU := by
       simpa [dφ, Dφ, μU, mul_comm] using u.memL2.mul' (hdφ_memTop i)
-    simpa [dφ, Dφ, Pi.add_apply] using hfirst.add hsecond
+    simpa [dφ, Dφ, Pi.add_apply] using! hfirst.add hsecond
   · intro i ψ hψ_smooth hψ_compact hψ_sub
     let ei : Vec d := basisVec i
     let dφ : Vec d → ℝ := fun x => (fderiv ℝ φ x) ei
@@ -312,7 +312,7 @@ noncomputable def mulContDiffMemLpTop {d : ℕ} {U : Set (Vec d)}
       simpa [dψ] using hψ_compact.fderiv_apply (𝕜 := ℝ) ei
     have hψφ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψφ := hφ.mul hψ_smooth
     have hψφ_compact : HasCompactSupport ψφ := by
-      simpa [ψφ] using hψ_compact.mul_left (f := φ)
+      simpa [ψφ] using! hψ_compact.mul_left (f := φ)
     have hdψφ_cont : Continuous (fun x => (fderiv ℝ ψφ x) ei) := by
       simpa [ei] using
         (hψφ_smooth.continuous_fderiv (by simp)).clm_apply continuous_const
@@ -330,14 +330,14 @@ noncomputable def mulContDiffMemLpTop {d : ℕ} {U : Set (Vec d)}
       (u.gradMemL2 i).locallyIntegrable (by norm_num)
     have hmul1_cont : Continuous (fun x => φ x * dψ x) := hφ_cont.mul hdψ_cont
     have hmul1_compact : HasCompactSupport (fun x => φ x * dψ x) := by
-      simpa using hdψ_compact.mul_left (f := φ)
+      simpa using! hdψ_compact.mul_left (f := φ)
     have hu_mul1_int :
         MeasureTheory.Integrable (fun x => u x * (φ x * dψ x)) μU := by
       simpa [smul_eq_mul, μU, mul_assoc] using
         hu_loc.integrable_smul_right_of_hasCompactSupport hmul1_cont hmul1_compact
     have hmul2_cont : Continuous (fun x => ψ x * dφ x) := hψ_cont.mul hdφ_cont
     have hmul2_compact : HasCompactSupport (fun x => ψ x * dφ x) := by
-      simpa using hψ_compact.mul_right (f' := dφ)
+      simpa using! hψ_compact.mul_right (f' := dφ)
     have hu_mul2_int :
         MeasureTheory.Integrable (fun x => u x * (ψ x * dφ x)) μU := by
       simpa [smul_eq_mul, μU, mul_assoc] using
@@ -363,7 +363,7 @@ noncomputable def mulContDiffMemLpTop {d : ℕ} {U : Set (Vec d)}
       have hψ_diff : DifferentiableAt ℝ ψ x :=
         (hψ_smooth.contDiffAt).differentiableAt (by simp)
       rw [show ψφ = φ * ψ by rfl, fderiv_mul hφ_diff hψ_diff]
-      simp [dφ, dψ, ei, ContinuousLinearMap.add_apply, smul_eq_mul]
+      simp [dφ, dψ, ei, smul_eq_mul]
     have hleft_eq :
         ∫ x, (φ x * u x) * dψ x ∂μU =
           ∫ x, u x * (φ x * dψ x) ∂μU := by
@@ -480,7 +480,7 @@ noncomputable def mulContDiffHasCompactSupport {d : ℕ} {U : Set (Vec d)}
     have hsecond :
         MeasureTheory.MemLp (fun x => u x * dφ x) 2 μU := by
       simpa [dφ, μU, mul_comm] using u.memL2.mul' hdφ_memTop
-    simpa [dφ, Dφ, Pi.add_apply] using hfirst.add hsecond
+    simpa [dφ, Dφ, Pi.add_apply] using! hfirst.add hsecond
   · intro i ψ hψ_smooth hψ_compact hψ_sub
     let ei : Vec d := basisVec i
     let dφ : Vec d → ℝ := fun x => (fderiv ℝ φ x) ei
@@ -502,7 +502,7 @@ noncomputable def mulContDiffHasCompactSupport {d : ℕ} {U : Set (Vec d)}
       simpa [dψ] using hψ_compact.fderiv_apply (𝕜 := ℝ) ei
     have hψφ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψφ := hφ.mul hψ_smooth
     have hψφ_compact : HasCompactSupport ψφ := by
-      simpa [ψφ] using hψ_compact.mul_left (f := φ)
+      simpa [ψφ] using! hψ_compact.mul_left (f := φ)
     have hdψφ_cont : Continuous (fun x => (fderiv ℝ ψφ x) ei) := by
       simpa [ei] using
         (hψφ_smooth.continuous_fderiv (by simp)).clm_apply continuous_const
@@ -520,14 +520,14 @@ noncomputable def mulContDiffHasCompactSupport {d : ℕ} {U : Set (Vec d)}
       (u.gradMemL2 i).locallyIntegrable (by norm_num)
     have hmul1_cont : Continuous (fun x => φ x * dψ x) := hφ_cont.mul hdψ_cont
     have hmul1_compact : HasCompactSupport (fun x => φ x * dψ x) := by
-      simpa using hdψ_compact.mul_left (f := φ)
+      simpa using! hdψ_compact.mul_left (f := φ)
     have hu_mul1_int :
         MeasureTheory.Integrable (fun x => u x * (φ x * dψ x)) μU := by
       simpa [smul_eq_mul, μU, mul_assoc] using
         hu_loc.integrable_smul_right_of_hasCompactSupport hmul1_cont hmul1_compact
     have hmul2_cont : Continuous (fun x => ψ x * dφ x) := hψ_cont.mul hdφ_cont
     have hmul2_compact : HasCompactSupport (fun x => ψ x * dφ x) := by
-      simpa [mul_comm] using hdφ_compact.mul_left (f := ψ)
+      simpa [mul_comm] using! hdφ_compact.mul_left (f := ψ)
     have hu_mul2_int :
         MeasureTheory.Integrable (fun x => u x * (ψ x * dφ x)) μU := by
       simpa [smul_eq_mul, μU, mul_assoc] using
@@ -553,7 +553,7 @@ noncomputable def mulContDiffHasCompactSupport {d : ℕ} {U : Set (Vec d)}
       have hψ_diff : DifferentiableAt ℝ ψ x :=
         (hψ_smooth.contDiffAt).differentiableAt (by simp)
       rw [show ψφ = φ * ψ by rfl, fderiv_mul hφ_diff hψ_diff]
-      simp [dφ, dψ, ei, ContinuousLinearMap.add_apply, smul_eq_mul]
+      simp [dφ, dψ, ei, smul_eq_mul]
     have hleft_eq :
         ∫ x, (φ x * u x) * dψ x ∂μU =
           ∫ x, u x * (φ x * dψ x) ∂μU := by

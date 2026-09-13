@@ -373,7 +373,7 @@ theorem meanZeroNeumannPoissonSolution_norm_gradToHilbertVectorL2_le {d : ℕ}
       cubeMeanZeroH1CoerciveConstant Q *
         ‖Homogenization.toScalarL2
           (memL2On_openCubeSet_of_memLp_normalizedCubeMeasure Q hF)‖ := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   let hF_open : MemScalarL2 (openCubeSet Q) F :=
@@ -456,7 +456,7 @@ theorem meanZeroNeumannPoissonSolution_sum_cubeLpNorm_grad_le {d : ℕ}
           cubeMeanZeroH1CoerciveConstant Q *
         (cubeVolume Q + 1)) *
         cubeLpNorm Q (2 : ℝ≥0∞) F := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   let hC : H1CoerciveEstimate (openCubeSet Q) :=
@@ -514,7 +514,7 @@ theorem meanZeroNeumannPoissonSolution_sum_cubeLpNorm_grad_le {d : ℕ}
           refine mul_le_mul_of_nonneg_left ?_ hA_nonneg
           exact mul_le_mul_of_nonneg_left
             (by
-              simpa [hC, H1MeanZeroFunction.gradToHilbertVectorL2] using
+              simpa [hC, H1MeanZeroFunction.gradToHilbertVectorL2] using!
                 meanZeroNeumannPoissonSolution_norm_gradToHilbertVectorL2_le Q hF W)
             (Nat.cast_nonneg d)
     _ ≤ A * ((d : ℝ) * (hC.constant * (B * cubeLpNorm Q (2 : ℝ≥0∞) F))) := by
@@ -541,7 +541,7 @@ theorem meanZeroNeumannPoissonSolution_sum_cubeLpNorm_grad_le_exact {d : ℕ}
           cubeMeanZeroH1CoerciveConstant Q *
         (cubeVolume Q) ^ (1 / 2 : ℝ)) *
         cubeLpNorm Q (2 : ℝ≥0∞) F := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   let hC : H1CoerciveEstimate (openCubeSet Q) :=
@@ -596,7 +596,7 @@ theorem meanZeroNeumannPoissonSolution_sum_cubeLpNorm_grad_le_exact {d : ℕ}
           refine mul_le_mul_of_nonneg_left ?_ hA_nonneg
           exact mul_le_mul_of_nonneg_left
             (by
-              simpa [hC, H1MeanZeroFunction.gradToHilbertVectorL2] using
+              simpa [hC, H1MeanZeroFunction.gradToHilbertVectorL2] using!
                 meanZeroNeumannPoissonSolution_norm_gradToHilbertVectorL2_le Q hF W)
             (Nat.cast_nonneg d)
     _ = A * ((d : ℝ) *

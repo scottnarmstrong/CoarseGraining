@@ -53,7 +53,9 @@ private theorem inwardMollification_supportSet_compact {d : ℕ} {U : Set (Vec d
   apply IsCompact.image
   · exact (isCompact_closedBall (0 : Vec d) (ε * r)).add
       hU.isBoundedDomain.isBounded.isCompact_closure
-  · exact (continuous_const.smul continuous_id).add continuous_const
+  · exact
+      ((continuous_const : Continuous fun _ : Vec d => (1 + ε)⁻¹).smul continuous_id).add
+        (continuous_const : Continuous fun _ : Vec d => (ε * (1 + ε)⁻¹) • x0)
 
 private theorem scaledBall_translate_mem {d : ℕ} {x0 t : Vec d} {r ε : ℝ}
     (hε : 0 < ε) (ht : t ∈ Metric.closedBall (0 : Vec d) (ε * r)) :
@@ -117,7 +119,7 @@ theorem contDiff_inwardMollification {d : ℕ} {ρ g : Vec d → ℝ}
   have haff : ContDiff ℝ (⊤ : ℕ∞)
       (fun x : Vec d => (1 + ε) • x - ε • x0) := by
     simpa using (contDiff_const.smul contDiff_id).sub contDiff_const
-  simpa [inwardMollification] using hconv.comp haff
+  simpa [inwardMollification] using! hconv.comp haff
 
 /-- The topological support of inward mollification lies strictly in the
 domain, provided the input field is supported in the domain closure. -/
@@ -158,7 +160,7 @@ theorem tsupport_inwardMollification_subset {d : ℕ} {U : Set (Vec d)}
     refine ⟨(1 + ε) • x - ε • x0, ?_, ?_⟩
     · apply hh_support
       change h ((1 + ε) • x - ε • x0) ≠ 0
-      simpa only [inwardMollification, h, k] using hx
+      simpa only [inwardMollification, h, k] using! hx
     · exact (inwardMollification_affine_eq x x0 hε).symm
   have htsupportK : tsupport (inwardMollification ρ g x0 r ε) ⊆ K :=
     closure_minimal hraw hK_compact.isClosed

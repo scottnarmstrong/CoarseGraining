@@ -133,14 +133,12 @@ theorem isSourceLocalRandomVariable_toFullBlockMat_coarseBlockMatrix_cubeSet
     IsSourceLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q)
       (fun a : Source.Coarse.Carrier d =>
         toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.1)) := by
-  letI : MeasurableSpace (Source.Coarse.Carrier d) :=
+  let : MeasurableSpace (Source.Coarse.Carrier d) :=
     Source.Coarse.localSigma (cubeSet Q) (measurableSet_cubeSet Q)
   change @Measurable (Source.Coarse.Carrier d) (FullBlockMat d)
     (Source.Coarse.localSigma (cubeSet Q) (measurableSet_cubeSet Q)) _ _
-  rw [measurable_pi_iff]
-  intro x
-  rw [measurable_pi_iff]
-  intro y
+  refine measurable_pi_iff.2 fun x => ?_
+  refine measurable_pi_iff.2 fun y => ?_
   cases x with
   | inl i =>
       cases y with
@@ -197,14 +195,12 @@ theorem isSourceLocalRandomVariable_neg_coarseBlockMatrix_lowerLeft_cubeSet
     IsSourceLocalRandomVariable (cubeSet Q) (measurableSet_cubeSet Q)
       (fun a : Source.Coarse.Carrier d =>
         -((coarseBlockMatrix (cubeSet Q) a.1).lowerLeft)) := by
-  letI : MeasurableSpace (Source.Coarse.Carrier d) :=
+  let : MeasurableSpace (Source.Coarse.Carrier d) :=
     Source.Coarse.localSigma (cubeSet Q) (measurableSet_cubeSet Q)
   change @Measurable (Source.Coarse.Carrier d) (Mat d)
     (Source.Coarse.localSigma (cubeSet Q) (measurableSet_cubeSet Q)) _ _
-  rw [measurable_pi_iff]
-  intro i
-  rw [measurable_pi_iff]
-  intro j
+  refine measurable_pi_iff.2 fun i => ?_
+  refine measurable_pi_iff.2 fun j => ?_
   exact (isSourceLocalRandomVariable_coarseBlockMatrix_lowerLeft_apply_cubeSet Q i j).neg
 
 private theorem isSourceLocalRandomVariable_descendantsAverage
@@ -216,7 +212,7 @@ private theorem isSourceLocalRandomVariable_descendantsAverage
       (fun a => descendantsAverage Q j (fun R => F R a)) := by
   classical
   let D : Finset (TriadicCube d) := descendantsAtDepth Q j
-  letI : MeasurableSpace (Source.Coarse.Carrier d) :=
+  let : MeasurableSpace (Source.Coarse.Carrier d) :=
     Source.Coarse.localSigma (cubeSet Q) (measurableSet_cubeSet Q)
   have hsum : Measurable (fun a : Source.Coarse.Carrier d => D.sum (fun R => F R a)) := by
     refine Finset.measurable_sum D ?_
@@ -224,7 +220,7 @@ private theorem isSourceLocalRandomVariable_descendantsAverage
     exact (hF R (by simpa [D] using hR)).mono
       (measurableSet_cubeSet R) (measurableSet_cubeSet Q)
       (cubeSet_subset_of_mem_descendantsAtDepth (by simpa [D] using hR))
-  simpa [descendantsAverage, D] using hsum.const_mul ((D.card : ℝ)⁻¹)
+  simpa [descendantsAverage, D] using! hsum.const_mul ((D.card : ℝ)⁻¹)
 
 /-- The finite descendant average of a coarse energy is exact-source local on
 the parent cube. -/

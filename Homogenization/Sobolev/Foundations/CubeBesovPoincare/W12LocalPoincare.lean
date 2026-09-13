@@ -86,7 +86,7 @@ theorem cubeBesovOscillation_two_le_cubeScaleFactor_mul_normalizedW1pSeminorm
   have hdomain : openOverlapCubeSet S = openCubeSet Q := by
     dsimp [S]
     ext x
-    simp only [openOverlapCubeSet, openCubeSet, Set.mem_setOf_eq]
+    simp only [openOverlapCubeSet, openCubeSet, Set.mem_ofPred_eq]
     constructor <;> intro hx i <;> rcases hx i with ⟨hlo, hhi⟩
     · have hscale : cubeScaleFactor (middleChildCube Q) = cubeScaleFactor Q / 3 := by
         simpa [middleChildCube] using
@@ -131,7 +131,7 @@ theorem cubeBesovOscillation_two_le_cubeScaleFactor_mul_normalizedW1pSeminorm
         (cubeScaleFactor Q * cubeBesovW12LocalPoincareConstant d) *
           cubeLpNorm Q (2 : ℝ≥0∞) u.grad := by
     simpa [cubeBesovOscillation, cubeFluctuation, S, v, vS,
-      cubeBesovW12LocalPoincareConstant, mul_comm] using hlocal
+      cubeBesovW12LocalPoincareConstant, mul_comm] using! hlocal
   have hgrad := cubeLpNorm_grad_le_cubeLpNorm_euclideanGrad Q u
   calc
     cubeBesovOscillation Q (2 : ℝ≥0∞) u.toFun ≤

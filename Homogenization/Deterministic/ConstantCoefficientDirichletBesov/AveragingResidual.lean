@@ -638,7 +638,8 @@ theorem exists_lintegral_ofReal_vecNormSq_sub_averagingField_le
                     ENNReal.ofReal
                       (vecNormSq (h x - overlapCubeAverageVec S h))
                     ∂ normalizedOverlapCubeMeasure S))) := by
-          exact mul_le_mul_of_nonneg_left hoverlap (zero_le (M : ℝ≥0∞))
+          exact mul_le_mul_of_nonneg_left hoverlap
+            (zero_le : (0 : ℝ≥0∞) ≤ (M : ℝ≥0∞))
     _ =
           (M : ℝ≥0∞) * (3 ^ d : ℝ≥0∞) *
             (((overlapCentersAtDepth Q j).card : ℝ≥0∞)⁻¹ *
@@ -765,7 +766,7 @@ theorem exists_cubeLpNorm_sq_sub_averagingField_le_mul_depthAverage
         (((M : ℝ≥0∞) * (3 ^ d : ℝ≥0∞) *
           ((Fintype.card (Fin d) : ℝ≥0∞) * B)).toReal) := by
     refine ENNReal.toReal_mono hright_ne ?_
-    exact mul_le_mul_of_nonneg_left hA_le (zero_le _)
+    exact mul_le_mul_of_nonneg_left hA_le (zero_le)
   have hB_toReal :
       B.toReal = cubeBesovOverlappingPositiveVectorDepthAverage Q h j := by
     have hfin :

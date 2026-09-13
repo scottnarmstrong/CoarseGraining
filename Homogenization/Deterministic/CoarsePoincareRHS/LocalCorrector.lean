@@ -27,7 +27,7 @@ theorem cubeAverageVec_eq_of_eq_add_grad_on_cubeSet
   have hvi :
       MeasureTheory.MemLp (fun x => v x i) (2 : ENNReal)
         (volumeMeasureOn (cubeSet Q)) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hv
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hv
   have hvi_int :
       MeasureTheory.Integrable (fun x => v x i) (volumeMeasureOn (cubeSet Q)) :=
     hvi.integrable (by norm_num : (1 : ENNReal) ≤ (2 : ENNReal))

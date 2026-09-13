@@ -38,7 +38,7 @@ theorem integrable_abs_pow_restrictionCenteredDescendantAverage_of_stationary_of
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_aemeas : AEMeasurable (Y (cubeSet (originCube d n))) P := by
-    simpa [Y] using hX0_aemeas.sub measurable_const.aemeasurable
+    simpa [Y] using! hX0_aemeas.sub measurable_const.aemeasurable
   have hY0Lp_int :
       Integrable (fun a => |Y (cubeSet (originCube d n)) a| ^ p) P := by
     simpa [Y, μ0, restrictionCenteredOriginObservable] using hX0Lp_int
@@ -46,7 +46,7 @@ theorem integrable_abs_pow_restrictionCenteredDescendantAverage_of_stationary_of
   have hZ_aemeas :
       ∀ R ∈ descendantsAtScale (originCube d m) n, AEMeasurable (Z R) P := by
     intro R hR
-    simpa [Z] using (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
+    simpa [Z] using! (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
   have hZ_int :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
         Integrable (fun a => |Z R a| ^ p) P := by
@@ -76,7 +76,7 @@ theorem integrable_abs_pow_restrictionCenteredDescendantAverage_of_stationary_of
               (cubeSet (originCube d n)) := by
               simp [hscaleR]
     have hYR_aemeas : AEMeasurable (Y (cubeSet R)) P := by
-      simpa [Y] using (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
+      simpa [Y] using! (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
     have hmap :
         Measure.map (Y (cubeSet R)) P =
           Measure.map (Y (cubeSet (originCube d n))) P := by
@@ -99,7 +99,7 @@ theorem integrable_abs_pow_restrictionCenteredDescendantAverage_of_stationary_of
     fun a => ∑ R ∈ descendantsAtScale (originCube d m) n, Z R a
   have hS_memLp : MemLp S (p : ENNReal) P := by
     dsimp [S]
-    refine memLp_finset_sum _ ?_
+    refine memLp_finsetSum _ ?_
     intro R hR
     refine (integrable_norm_rpow_iff
       (hZ_aemeas R hR).aestronglyMeasurable
@@ -159,7 +159,7 @@ theorem integrable_abs_pow_restrictionCenteredDescendantAverageOnCube_of_station
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_aemeas : AEMeasurable (Y (cubeSet (originCube d n))) P := by
-    simpa [Y] using hX0_aemeas.sub measurable_const.aemeasurable
+    simpa [Y] using! hX0_aemeas.sub measurable_const.aemeasurable
   have hY0Lp_int :
       Integrable (fun a => |Y (cubeSet (originCube d n)) a| ^ p) P := by
     simpa [Y, μ0, restrictionCenteredOriginObservable] using hX0Lp_int
@@ -167,7 +167,7 @@ theorem integrable_abs_pow_restrictionCenteredDescendantAverageOnCube_of_station
   have hZ_aemeas :
       ∀ R ∈ descendantsAtScale Q n, AEMeasurable (Z R) P := by
     intro R hR
-    simpa [Z] using (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
+    simpa [Z] using! (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
   have hZ_int :
       ∀ R ∈ descendantsAtScale Q n,
         Integrable (fun a => |Z R a| ^ p) P := by
@@ -195,7 +195,7 @@ theorem integrable_abs_pow_restrictionCenteredDescendantAverageOnCube_of_station
               (cubeSet (originCube d n)) := by
               simp [hscaleR]
     have hYR_aemeas : AEMeasurable (Y (cubeSet R)) P := by
-      simpa [Y] using (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
+      simpa [Y] using! (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
     have hmap :
         Measure.map (Y (cubeSet R)) P =
           Measure.map (Y (cubeSet (originCube d n))) P := by
@@ -218,7 +218,7 @@ theorem integrable_abs_pow_restrictionCenteredDescendantAverageOnCube_of_station
     fun a => ∑ R ∈ descendantsAtScale Q n, Z R a
   have hS_memLp : MemLp S (p : ENNReal) P := by
     dsimp [S]
-    refine memLp_finset_sum _ ?_
+    refine memLp_finsetSum _ ?_
     intro R hR
     refine (integrable_norm_rpow_iff
       (hZ_aemeas R hR).aestronglyMeasurable
@@ -282,7 +282,7 @@ theorem integrable_finsetSup_abs_restrictionCenteredDescendantAverageOnCube_pow_
       Integrable
         (fun a : RegCoeffField d =>
           ∑ Q ∈ parents, |restrictionCenteredDescendantAverageOnCube P Q n X a| ^ p) P :=
-    MeasureTheory.integrable_finset_sum parents fun Q hQ =>
+    MeasureTheory.integrable_finsetSum parents fun Q hQ =>
       integrable_abs_pow_restrictionCenteredDescendantAverageOnCube_of_stationary
         (d := d) (Q := Q) (n := n) (P := P) (p := p)
         hn (hparent_scale Q hQ) hPstat X hX_cov hX0_aemeas

@@ -23,7 +23,7 @@ theorem cubeEuclideanWspKernel_congr_ae {d : ℕ} {Q : TriadicCube d}
     (hFG : F =ᵐ[normalizedCubeMeasure Q] G) :
     cubeEuclideanWspKernel s p F =ᵐ[Gagliardo.gagliardoCubeMeasure Q]
       cubeEuclideanWspKernel s p G := by
-  haveI : SFinite (cubeMeasure Q) := by
+  have : SFinite (cubeMeasure Q) := by
     unfold cubeMeasure
     infer_instance
   have hcube : F =ᵐ[cubeMeasure Q] G :=

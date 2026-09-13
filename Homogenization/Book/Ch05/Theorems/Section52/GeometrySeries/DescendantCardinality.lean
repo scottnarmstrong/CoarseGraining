@@ -396,7 +396,7 @@ theorem upper_unitDescendantSup_momentRoot_le_card_mul_origin
         Ch04.LambdaMomentAtScale P 0 s ξ := by
   classical
   intro D hD
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : TriadicCube d → RegCoeffField d → ℝ :=
     fun U a => Ch04.LambdaSqCoeffField U s (.finite 1) a
   let X0 : RegCoeffField d → ℝ :=
@@ -537,7 +537,7 @@ theorem lower_unitDescendantSup_momentRoot_le_card_mul_origin
         Ch04.lambdaInvMomentAtScale P 0 s ξ := by
   classical
   intro D hD
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let X : TriadicCube d → RegCoeffField d → ℝ :=
     fun U a => (Ch04.lambdaSqCoeffField U s (.finite 1) a)⁻¹
   let X0 : RegCoeffField d → ℝ :=
@@ -573,7 +573,7 @@ theorem lower_unitDescendantSup_momentRoot_le_card_mul_origin
       have hcov :=
         Ch04.lambdaSqCoeffField_originCube_zero_translateByInt_ae
           hP hStruct.stationary z s (.finite 1)
-      filter_upwards [by simpa [X, X0, hUeq] using hcov] with a ha
+      filter_upwards [by simpa [X, X0, hUeq] using! hcov] with a ha
       simpa [X, X0, hUeq] using congrArg Inv.inv ha
     have hmap :
         Measure.map (X U) P = Measure.map X0 P := by
@@ -605,7 +605,7 @@ theorem lower_unitDescendantSup_momentRoot_le_card_mul_origin
       have hcov :=
         Ch04.lambdaSqCoeffField_originCube_zero_translateByInt_ae
           hP hStruct.stationary z s (.finite 1)
-      filter_upwards [by simpa [X, X0, hUeq] using hcov] with a ha
+      filter_upwards [by simpa [X, X0, hUeq] using! hcov] with a ha
       simpa [X, X0, hUeq] using congrArg Inv.inv ha
     have hmap :
         Measure.map (X U) P = Measure.map X0 P := by

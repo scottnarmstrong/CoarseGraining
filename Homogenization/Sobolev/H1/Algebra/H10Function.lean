@@ -9,7 +9,7 @@ instance {d : ℕ} {U : Set (Vec d)} : Zero (H10Function U) where
       approx := fun _ => 0
       approx_smooth := by
         intro n
-        simpa using (contDiff_zero_fun : ContDiff ℝ (⊤ : ℕ∞) (fun _ : Vec d => (0 : ℝ)))
+        simpa using! (contDiff_zero_fun : ContDiff ℝ (⊤ : ℕ∞) (fun _ : Vec d => (0 : ℝ)))
       approx_hasCompactSupport := by
         intro n
         simpa using (HasCompactSupport.zero : HasCompactSupport (0 : Vec d → ℝ))
@@ -31,7 +31,7 @@ instance {d : ℕ} {U : Set (Vec d)} : SMul ℝ (H10Function U) where
         simpa [smul_eq_mul] using (u.approx_smooth n).const_smul c
       approx_hasCompactSupport := by
         intro n
-        simpa [Pi.smul_apply, smul_eq_mul] using
+        simpa [Pi.smul_apply, smul_eq_mul] using!
           (u.approx_hasCompactSupport n).smul_left (f := fun _ : Vec d => c)
       approx_support_subset := by
         intro n
@@ -101,8 +101,8 @@ instance {d : ℕ} {U : Set (Vec d)} : SMul ℝ (H10Function U) where
                   (fderiv ℝ (u.approx n) x) (basisVec i) - u.toH1Function.grad x i) := by
             funext x
             have hfd : fderiv ℝ (fun y => c * u.approx n y) x = c • fderiv ℝ (u.approx n) x := by
-              simpa [smul_eq_mul] using
-                congrFun (fderiv_const_smul_of_field (𝕜 := ℝ) (f := u.approx n) c) x
+              simpa [smul_eq_mul] using!
+                congrFun (fderiv_const_smul_field (𝕜 := ℝ) (f := u.approx n) c) x
             rw [hfd]
             have hgrad : (c • u.toH1Function).grad x i = c * u.grad x i := by
               rfl
@@ -182,7 +182,7 @@ instance {d : ℕ} {U : Set (Vec d)} : Add (H10Function U) where
               Filter.atTop (nhds (0 + 0)) :=
           u.tendsto_approx.add v.tendsto_approx
         refine tendsto_of_tendsto_of_tendsto_of_le_of_le
-          tendsto_const_nhds ?_ (fun n => zero_le _) hupper
+          tendsto_const_nhds ?_ (fun n => zero_le) hupper
         simpa using hsum
       tendsto_approx_grad := by
         intro i
@@ -271,7 +271,7 @@ instance {d : ℕ} {U : Set (Vec d)} : Add (H10Function U) where
               Filter.atTop (nhds (0 + 0)) :=
           (u.tendsto_approx_grad i).add (v.tendsto_approx_grad i)
         refine tendsto_of_tendsto_of_tendsto_of_le_of_le
-          tendsto_const_nhds ?_ (fun n => zero_le _) hupper
+          tendsto_const_nhds ?_ (fun n => zero_le) hupper
         simpa using hsum }
 
 instance {d : ℕ} {U : Set (Vec d)} : Sub (H10Function U) where
@@ -303,7 +303,7 @@ noncomputable def mulContDiffMemLpTop {d : ℕ} {U : Set (Vec d)}
   · intro n
     exact hφ.mul (u.approx_smooth n)
   · intro n
-    simpa using (u.approx_hasCompactSupport n).mul_left (f := φ)
+    simpa using! (u.approx_hasCompactSupport n).mul_left (f := φ)
   · intro n
     exact (tsupport_mul_subset_right (f := φ) (g := u.approx n)).trans
       (u.approx_support_subset n)
@@ -345,7 +345,7 @@ noncomputable def mulContDiffMemLpTop {d : ℕ} {U : Set (Vec d)}
       exact MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
         hdiff_mem.aestronglyMeasurable φ
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le
-      tendsto_const_nhds ?_ (fun n => zero_le _) hupper
+      tendsto_const_nhds ?_ (fun n => zero_le) hupper
     simpa using hconst_tendsto
   · intro i
     let dφ : Vec d → ℝ := fun x => Dφ x i
@@ -442,20 +442,20 @@ noncomputable def mulContDiffMemLpTop {d : ℕ} {U : Set (Vec d)}
         rw [show (fun y => φ y * u.approx n y) = φ * u.approx n by rfl,
           fderiv_mul hφ_diff hu_diff]
         simp [A, B, dφ, Dφ, uφ, H1Function.mulContDiffMemLpTop_grad,
-          smul_eq_mul, ContinuousLinearMap.add_apply]
+          smul_eq_mul]
         ring
       rw [hEq]
       refine (MeasureTheory.eLpNorm_add_le hA_mem.aestronglyMeasurable
         hB_mem.aestronglyMeasurable (by norm_num)).trans ?_
       refine add_le_add ?_ ?_
-      · simpa [A, mul_comm, mul_left_comm, mul_assoc] using
+      · simpa [A, mul_comm, mul_left_comm, mul_assoc] using!
           (MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
             hbase_grad_mem.aestronglyMeasurable φ)
-      · simpa [B, dφ, mul_comm, mul_left_comm, mul_assoc] using
+      · simpa [B, dφ, mul_comm, mul_left_comm, mul_assoc] using!
           (MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
             hbase_mem.aestronglyMeasurable dφ)
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le
-      tendsto_const_nhds ?_ (fun n => zero_le _) hupper
+      tendsto_const_nhds ?_ (fun n => zero_le) hupper
     simpa [zero_add] using hsum_tendsto
 
 @[simp] theorem mulContDiffMemLpTop_toFun {d : ℕ} {U : Set (Vec d)}
@@ -508,7 +508,7 @@ noncomputable def mulContDiffHasCompactSupport {d : ℕ} {U : Set (Vec d)}
   · intro n
     exact hφ.mul (u.approx_smooth n)
   · intro n
-    simpa using (u.approx_hasCompactSupport n).mul_left (f := φ)
+    simpa using! (u.approx_hasCompactSupport n).mul_left (f := φ)
   · intro n
     exact (tsupport_mul_subset_right (f := φ) (g := u.approx n)).trans
       (u.approx_support_subset n)
@@ -550,7 +550,7 @@ noncomputable def mulContDiffHasCompactSupport {d : ℕ} {U : Set (Vec d)}
       exact MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
         hdiff_mem.aestronglyMeasurable φ
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le
-      tendsto_const_nhds ?_ (fun n => zero_le _) hupper
+      tendsto_const_nhds ?_ (fun n => zero_le) hupper
     simpa using hconst_tendsto
   · intro i
     let dφ : Vec d → ℝ := fun x => Dφ x i
@@ -654,20 +654,20 @@ noncomputable def mulContDiffHasCompactSupport {d : ℕ} {U : Set (Vec d)}
         rw [show (fun y => φ y * u.approx n y) = φ * u.approx n by rfl,
           fderiv_mul hφ_diff hu_diff]
         simp [A, B, dφ, Dφ, uφ, H1Function.mulContDiffHasCompactSupport_grad,
-          smul_eq_mul, ContinuousLinearMap.add_apply]
+          smul_eq_mul]
         ring
       rw [hEq]
       refine (MeasureTheory.eLpNorm_add_le hA_mem.aestronglyMeasurable
         hB_mem.aestronglyMeasurable (by norm_num)).trans ?_
       refine add_le_add ?_ ?_
-      · simpa [A, mul_comm, mul_left_comm, mul_assoc] using
+      · simpa [A, mul_comm, mul_left_comm, mul_assoc] using!
           (MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
             hbase_grad_mem.aestronglyMeasurable φ)
-      · simpa [B, dφ, mul_comm, mul_left_comm, mul_assoc] using
+      · simpa [B, dφ, mul_comm, mul_left_comm, mul_assoc] using!
           (MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
             hbase_mem.aestronglyMeasurable dφ)
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le
-      tendsto_const_nhds ?_ (fun n => zero_le _) hupper
+      tendsto_const_nhds ?_ (fun n => zero_le) hupper
     simpa [zero_add] using hsum_tendsto
 
 @[simp] theorem mulContDiffHasCompactSupport_toFun {d : ℕ} {U : Set (Vec d)}
@@ -700,7 +700,7 @@ noncomputable def mulSmoothCutoff {d : ℕ} {U : Set (Vec d)} (u : H10Function U
   · intro n
     exact hφ.mul (u.approx_smooth n)
   · intro n
-    simpa using (u.approx_hasCompactSupport n).mul_left (f := φ)
+    simpa using! (u.approx_hasCompactSupport n).mul_left (f := φ)
   · intro n
     exact (tsupport_mul_subset_left (f := φ) (g := u.approx n)).trans hφ_sub
   ·
@@ -741,7 +741,7 @@ noncomputable def mulSmoothCutoff {d : ℕ} {U : Set (Vec d)} (u : H10Function U
       exact MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
         hdiff_mem.aestronglyMeasurable φ
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le
-      tendsto_const_nhds ?_ (fun n => zero_le _) hupper
+      tendsto_const_nhds ?_ (fun n => zero_le) hupper
     simpa using hconst_tendsto
   · intro i
     let dφ : Vec d → ℝ := fun x => Dφ x i
@@ -843,21 +843,20 @@ noncomputable def mulSmoothCutoff {d : ℕ} {U : Set (Vec d)} (u : H10Function U
         have hu_diff : DifferentiableAt ℝ (u.approx n) x :=
           ((u.approx_smooth n).contDiffAt).differentiableAt (by simp)
         rw [show (fun y => φ y * u.approx n y) = φ * u.approx n by rfl, fderiv_mul hφ_diff hu_diff]
-        simp [A, B, dφ, Dφ, uφ, H1Function.mulContDiffHasCompactSupport_grad, smul_eq_mul,
-          ContinuousLinearMap.add_apply]
+        simp [A, B, dφ, Dφ, uφ, H1Function.mulContDiffHasCompactSupport_grad, smul_eq_mul]
         ring
       rw [hEq]
       refine (MeasureTheory.eLpNorm_add_le hA_mem.aestronglyMeasurable hB_mem.aestronglyMeasurable
         (by norm_num)).trans ?_
       refine add_le_add ?_ ?_
-      · simpa [A, mul_comm, mul_left_comm, mul_assoc] using
+      · simpa [A, mul_comm, mul_left_comm, mul_assoc] using!
           (MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
             hbase_grad_mem.aestronglyMeasurable φ)
-      · simpa [B, dφ, mul_comm, mul_left_comm, mul_assoc] using
+      · simpa [B, dφ, mul_comm, mul_left_comm, mul_assoc] using!
           (MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
             hbase_mem.aestronglyMeasurable dφ)
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le
-      tendsto_const_nhds ?_ (fun n => zero_le _) hupper
+      tendsto_const_nhds ?_ (fun n => zero_le) hupper
     simpa [zero_add] using hsum_tendsto
 
 @[simp] theorem mulSmoothCutoff_toFun {d : ℕ} {U : Set (Vec d)} (u : H10Function U)

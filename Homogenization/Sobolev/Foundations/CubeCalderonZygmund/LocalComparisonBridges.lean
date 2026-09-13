@@ -55,7 +55,7 @@ private theorem eLpNorm_two_rpow_eq_lintegral_enorm
     {α E : Type*} [MeasurableSpace α] [ENorm E]
     (μ : Measure α) (F : α → E) :
     (eLpNorm F 2 μ) ^ (2 : ℝ) = ∫⁻ x, ‖F x‖ₑ ^ (2 : ℝ) ∂μ := by
-  rw [eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num)]
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]
   rw [← ENNReal.rpow_mul]
   norm_num
 

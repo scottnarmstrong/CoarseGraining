@@ -99,7 +99,7 @@ theorem abs_neg_integral_forwardDifferenceQuotient_mul_fderiv_openCube_innerCube
             vecNormSq
               ((uQ.forwardDifferenceQuotientOn step i hV.isOpen hVU hVshift).grad x)
             ∂MeasureTheory.volume ≤ R := by
-    simpa [R] using
+    simpa only [R, one_div] using!
       h.directDifferenceQuotient_quantitativeCubeCutoff_openCube_innerCube_energy_quarter_le_forcing_sq_add_quantitative_lower_h1_terms_of_step_abs_le
         hf hV hstep i η hη_sub hinnerV θ hVν hν_nonneg hνσ hσ₁_lt_one
         hσ₂_nonneg hσ₂_lt_one hstep_abs
@@ -186,7 +186,7 @@ theorem abs_neg_integral_forwardDifferenceQuotient_mul_fderiv_openCube_innerCube
             vecNormSq
               ((uQ.forwardDifferenceQuotientOn step i hV.isOpen hVU hVshift).grad x)
             ∂MeasureTheory.volume ≤ R := by
-    simpa [R] using
+    simpa only [R, one_div] using!
       h.directDifferenceQuotient_quantitativeCubeCutoff_openCube_innerCube_energy_quarter_le_forcing_sq_add_quantitative_lower_h1_terms_of_step_abs_le
         hf hV hstep i η hη_sub hinnerV θ hVν hν_nonneg hνσ hσ₁_lt_one
         hσ₂_nonneg hσ₂_lt_one hstep_abs
@@ -348,7 +348,7 @@ theorem neg_integral_forwardDifferenceQuotient_mul_fderiv_openCube_innerCube_eq_
             vecNormSq
               ((uQ.forwardDifferenceQuotientOn step i hV.isOpen hVU hVshift).grad x)
             ∂MeasureTheory.volume ≤ R := by
-    simpa [R] using
+    simpa only [R, one_div] using!
       h.directDifferenceQuotient_quantitativeCubeCutoff_openCube_innerCube_energy_quarter_le_forcing_sq_add_quantitative_lower_h1_terms_of_step_abs_le
         hf hV hstep i η hη_sub hinnerV θ hVν hν_nonneg hνσ hσ₁_lt_one
         hσ₂_nonneg hσ₂_lt_one hstep_abs

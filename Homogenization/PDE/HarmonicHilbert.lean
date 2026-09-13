@@ -71,7 +71,7 @@ noncomputable instance instInnerProductSpace (M : PotentialSolenoidalL2Data U)
 noncomputable instance instCompleteSpace (M : PotentialSolenoidalL2Data U)
     (hEll : IsEllipticFieldOn lam Lam U a) :
     CompleteSpace (Space (U := U) (a := a) M hEll) := by
-  simpa [Space, closedSubmodule] using
+  simpa [Space, closedSubmodule] using!
     (closedSubmodule (U := U) (a := a) M hEll).isClosed.completeSpace_coe
 
 /-- The ambient Hilbert-vector `L²` field represented by a harmonic-gradient
@@ -138,7 +138,7 @@ noncomputable def ofAHarmonicFunction (M : PotentialSolenoidalL2Data U)
   rw [ClosedSubmodule.mem_inf]
   constructor
   · rw [ClosedSubmodule.mem_comap]
-    simpa [H1Function.gradToHilbertVectorL2, H1Function.gradToVectorL2] using
+    simpa [H1Function.gradToHilbertVectorL2, H1Function.gradToVectorL2] using!
       M.mem_potential u.toH1.grad_memVectorL2 u.isHarmonic.1
   · rw [ClosedSubmodule.mem_comap]
     let hcoeff :
@@ -430,7 +430,7 @@ theorem integral_vecDot_eq_zero_of_mem_potential_closure
   let ℓ : VectorL2 U →L[ℝ] ℝ := vectorPairingCLM (U := U) hg
   have hKClosed : IsClosed ((LinearMap.ker ℓ.toLinearMap : Submodule ℝ (VectorL2 U)) :
       Set (VectorL2 U)) := by
-    simpa [LinearMap.mem_ker] using
+    simpa [LinearMap.mem_ker] using!
       isClosed_singleton.preimage (ContinuousLinearMap.continuous ℓ)
   let K : ClosedSubmodule ℝ (VectorL2 U) :=
     ⟨LinearMap.ker ℓ.toLinearMap, hKClosed⟩

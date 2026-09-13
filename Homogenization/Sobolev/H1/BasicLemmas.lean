@@ -89,7 +89,7 @@ theorem HasWeakPartialDerivOn.of_contDiff {d : ℕ} {U : Set (Vec d)}
         ((hfderiv_f_cont.mul hφ_cont).integrable_of_hasCompactSupport hφ_supp.mul_left)
         ((hf_cont.mul hfderiv_φ_cont).integrable_of_hasCompactSupport hφ_fderiv_supp.mul_left)
         ((hf_cont.mul hφ_cont).integrable_of_hasCompactSupport hφ_supp.mul_left)
-        hf_diff hφ_diff
+        (fun x _ => hf_diff.differentiableAt) (fun x _ => hφ_diff.differentiableAt)
   ·
     intro x hx
     have hx_notin : x ∉ tsupport φ := fun hx' => hx (hφ_sub hx')
@@ -292,7 +292,7 @@ theorem memH1_of_contDiffOnIsSobolevRegularDomain
     {f : Vec d → ℝ} (hf : ContDiff ℝ 1 f) :
     MemH1 U f :=
   by
-    simpa using
+    simpa using!
       (H1Function.ofContDiffOnIsSobolevRegularDomain (U := U) hU hf).memH1
 
 theorem memH1_of_contDiffOnIsOpenBoundedConvexDomain
@@ -300,7 +300,7 @@ theorem memH1_of_contDiffOnIsOpenBoundedConvexDomain
     {f : Vec d → ℝ} (hf : ContDiff ℝ 1 f) :
     MemH1 U f :=
   by
-    simpa using
+    simpa using!
       (H1Function.ofContDiffOnIsOpenBoundedConvexDomain (U := U) hU hf).memH1
 
 end Homogenization

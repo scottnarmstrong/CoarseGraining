@@ -31,8 +31,8 @@ private theorem foldComp_line_integral {v : Vec (n + 1) → ℝ}
           * (fderiv ℝ φ (j.insertNth t z)) (basisVec j))
       = -(∫ t, ((fderiv ℝ v (Fold lo hi (j.insertNth t z))) (basisVec j)
               * foldSign (lo j) (hi j) ((j.insertNth t z : Vec (n + 1)) j)) * φ (j.insertNth t z)) := by
-  have hvd : Differentiable ℝ v := hv.differentiable le_rfl
-  have hvf : Continuous (fderiv ℝ v) := hv.continuous_fderiv le_rfl
+  have hvd : Differentiable ℝ v := hv.differentiable (by simp)
+  have hvf : Continuous (fderiv ℝ v) := hv.continuous_fderiv (by simp)
   have hφd : Differentiable ℝ φ := hφ.differentiable (by simp)
   have hφf : Continuous (fderiv ℝ φ) := hφ.continuous_fderiv (by simp)
   set w : Vec n := fun m => foldR (lo (j.succAbove m)) (hi (j.succAbove m)) (z m) with hw
@@ -133,7 +133,7 @@ theorem hasWeakPartialDerivOn_univ_foldComp {v : Vec (n + 1) → ℝ}
       (fun x => (fderiv ℝ v (Fold lo hi x)) (basisVec j)
         * foldSign (lo j) (hi j) (x j)) := by
   intro φ hφ hφc _hφsub
-  have hvf : Continuous (fderiv ℝ v) := hv.continuous_fderiv le_rfl
+  have hvf : Continuous (fderiv ℝ v) := hv.continuous_fderiv (by simp)
   have hφf : Continuous (fderiv ℝ φ) := hφ.continuous_fderiv (by simp)
   have hFold_cont : Continuous (Fold lo hi) := continuous_Fold lo hi hlohi
   have hvFold_cont : Continuous (fun x => v (Fold lo hi x)) := hv.continuous.comp hFold_cont

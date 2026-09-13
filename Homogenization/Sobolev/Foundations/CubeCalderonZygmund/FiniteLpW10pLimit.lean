@@ -16,7 +16,7 @@ canonical limiting gradient.
 
 namespace Homogenization
 
-open MeasureTheory Filter Topology
+open MeasureTheory _root_.Filter Topology
 open scoped ENNReal BigOperators
 
 noncomputable section
@@ -82,19 +82,19 @@ private theorem tendsto_eLpNorm_finiteLpSolutionApproximation_grad_pair
         (Filter.atTop ×ˢ Filter.atTop) Filter.atTop)
   have hfst_norm : Filter.Tendsto (fun nk : ℕ × ℕ => eLpNorm (F nk.1)
       q.exponent (volume.restrict (openCubeSet (originCube d m)))) Filter.atTop (nhds 0) := by
-    simpa only [F, finiteLpW10pSolutionApproximation_grad, Du] using hbase.comp hfst
+    simpa only [F, finiteLpW10pSolutionApproximation_grad, Du] using! hbase.comp hfst
   have hsnd_norm : Filter.Tendsto (fun nk : ℕ × ℕ => eLpNorm (F nk.2)
       q.exponent (volume.restrict (openCubeSet (originCube d m)))) Filter.atTop (nhds 0) := by
-    simpa only [F, finiteLpW10pSolutionApproximation_grad, Du] using hbase.comp hsnd
+    simpa only [F, finiteLpW10pSolutionApproximation_grad, Du] using! hbase.comp hsnd
   have hsum := hfst_norm.add hsnd_norm
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds
-    (by simpa using hsum) (fun _ => zero_le _) (fun nk => ?_)
+    (by simpa using hsum) (fun _ => zero_le) (fun nk => ?_)
   have hfn : MemLp (F nk.1) q.exponent
       (volume.restrict (openCubeSet (originCube d m))) := by
     rw [memLp_piLp_iff]
     intro i
     simpa only [F, Function.comp_apply, HilbertVec.ofVec, PiLp.toLp_apply,
-      Pi.sub_apply] using
+      Pi.sub_apply] using!
       ((finiteLpW10pSolutionApproximation q m hsigma0 h nk.1).gradMemLp i).sub
         (finiteLpGradientLimit_gradMemLp q m hsigma0 h i)
   have hfk : MemLp (F nk.2) q.exponent
@@ -102,7 +102,7 @@ private theorem tendsto_eLpNorm_finiteLpSolutionApproximation_grad_pair
     rw [memLp_piLp_iff]
     intro i
     simpa only [F, Function.comp_apply, HilbertVec.ofVec, PiLp.toLp_apply,
-      Pi.sub_apply] using
+      Pi.sub_apply] using!
       ((finiteLpW10pSolutionApproximation q m hsigma0 h nk.2).gradMemLp i).sub
         (finiteLpGradientLimit_gradMemLp q m hsigma0 h i)
   have heq : (fun x => HilbertVec.ofVec
@@ -133,9 +133,9 @@ private theorem tendsto_sum_eLpNorm_finiteLpSolutionApproximation_gradCoord_pair
         ((finiteLpW10pSolutionApproximation q m hsigma0 h nk.1).grad x -
           (finiteLpW10pSolutionApproximation q m hsigma0 h nk.2).grad x))
       q.exponent (volume.restrict (openCubeSet (originCube d m)))) Filter.atTop (nhds 0) := by
-    simpa only [mul_zero] using ENNReal.Tendsto.const_mul hvec (Or.inr ENNReal.coe_ne_top)
+    simpa only [mul_zero] using! ENNReal.Tendsto.const_mul hvec (Or.inr ENNReal.coe_ne_top)
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hright
-    (fun _ => zero_le _) (fun nk => ?_)
+    (fun _ => zero_le) (fun nk => ?_)
   calc
     ∑ i : Fin d, eLpNorm (fun x =>
         (finiteLpW10pSolutionApproximation q m hsigma0 h nk.1).grad x i -
@@ -310,7 +310,7 @@ private theorem cauchySeq_finiteLpW10pSolutionApproximationLp
     {d : ℕ} [NeZero d] (q : FiniteLpExponent) (m : ℤ) {sigma0 : ℝ}
     (hsigma0 : 0 < sigma0) (h : CubeEuclideanLpField (originCube d m) q) :
     CauchySeq (finiteLpW10pSolutionApproximationLp q m hsigma0 h) := by
-  letI : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
+  let : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
   rw [Lp.cauchySeq_Lp_iff_cauchySeq_eLpNorm]
   have hpair := tendsto_eLpNorm_finiteLpW10pSolutionApproximation_pair q m hsigma0 h
   refine hpair.congr' ?_
@@ -336,7 +336,7 @@ private theorem tendsto_finiteLpW10pSolutionApproximationLp
     (hsigma0 : 0 < sigma0) (h : CubeEuclideanLpField (originCube d m) q) :
     Filter.Tendsto (finiteLpW10pSolutionApproximationLp q m hsigma0 h) Filter.atTop
       (nhds (finiteLpW10pSolutionLimitLp q m hsigma0 h)) := by
-  letI : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
+  let : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
   exact Classical.choose_spec (cauchySeq_tendsto_of_complete
     (cauchySeq_finiteLpW10pSolutionApproximationLp q m hsigma0 h))
 
@@ -348,7 +348,7 @@ private theorem tendsto_eLpNorm_finiteLpW10pSolutionApproximation_sub_limitLp
         finiteLpW10pSolutionLimitLp q m hsigma0 h x)
       q.exponent (volume.restrict (openCubeSet (originCube d m)))) Filter.atTop
       (nhds 0) := by
-  letI : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
+  let : Fact (1 ≤ q.exponent) := ⟨q.one_lt.le⟩
   have htend := (Lp.tendsto_Lp_iff_tendsto_eLpNorm'
     (finiteLpW10pSolutionApproximationLp q m hsigma0 h)
     (finiteLpW10pSolutionLimitLp q m hsigma0 h)).1

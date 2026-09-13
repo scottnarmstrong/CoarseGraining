@@ -40,7 +40,7 @@ private theorem weak_divergence_identity_of_h10
     (v : H10Function U) :
     sigma0 * ∫ x in U, vecDot (w.grad x) (v.toH1Function.grad x) ∂volume =
       -∫ x in U, vecDot (h x) (v.toH1Function.grad x) ∂volume := by
-  simpa only [H10Function.toW10pOfExponentLETwo_grad] using
+  simpa only [H10Function.toW10pOfExponentLETwo_grad] using!
     weak_divergence_identity_of_w10p FiniteLpExponent.two le_rfl w h hh sigma0
       hweak (v.toW10pOfExponentLETwo FiniteLpExponent.two le_rfl)
 
@@ -66,7 +66,7 @@ private theorem parent_adjoint_gradient_cz
     (memVectorL2_sourceParentFiniteLpExtension m p h)
   have hv : IsCenteredCubeH10ScalarDivergenceSolution (m + 1) 1 v hP.toLpTwo := by
     intro psi
-    simpa only [v] using INTERNAL.openCubeSetScalarDivergenceSolution_normalized_weak
+    simpa only [v] using! INTERNAL.openCubeSetScalarDivergenceSolution_normalized_weak
       (m + 1) (by norm_num : (0 : ℝ) < 1) hP.toField
       (memVectorL2_sourceParentFiniteLpExtension m p h) psi
   have hbound := hC (m + 1) 1 hP v (by norm_num) hv
@@ -140,7 +140,7 @@ private theorem exists_parent_adjoint_value_bound
     simpa only [hP, v, BoundedMeasurableDomain.normalizedEuclideanLpENorm,
       BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
       eLpNorm_norm, centeredCubeDomain,
-      cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure] using
+      cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure] using!
       hCcz m h
   have hvgrad2 : MemLp (hilbertifyVecField v.toH1Function.grad) 2
       (normalizedCubeMeasure (originCube d (m + 1))) := by
@@ -455,7 +455,7 @@ private theorem exists_reflected_source_row_setup
         (cubeDirichletOddReflectionHessianRowVectorField
           (originCube d m) i (fun y j ↦ H.hess i j y) x) := by
     simpa only [r, U, hilbertifyVecField,
-      HasWeakHessianOn.gradCoordH1Function_grad] using hid
+      HasWeakHessianOn.gradCoordH1Function_grad] using! hid
   have hrnorm : eLpNorm r.toFun q.exponent
       ((normalizedCubeMeasure (originCube d (m + 1))).restrict U) ≤ B := by
     let Q : TriadicCube d := originCube d m
@@ -521,7 +521,8 @@ private theorem exists_reflected_source_row_setup
             funext j; by_cases hji : j = i
             · subst j; simp
             · simp [hji]
-          rw [hs, PiLp.norm_toLp_single]
+          rw [hs]
+          exact PiLp.norm_single (2 : ℝ≥0∞) (fun _ : Fin d ↦ ℝ) i (FR x)
       rw [hnorm]
       exact hFRq.eLpNorm_lt_top
   have hbnorm : eLpNorm (hilbertifyVecField b) q.exponent
@@ -538,7 +539,8 @@ private theorem exists_reflected_source_row_setup
             funext j; by_cases hji : j = i
             · subst j; simp
             · simp [hji]
-          rw [hs, PiLp.norm_toLp_single]
+          rw [hs]
+          exact PiLp.norm_single (2 : ℝ≥0∞) (fun _ : Fin d ↦ ℝ) i (FR x)
       _ = eLpNorm F q.exponent (normalizedCubeMeasure (originCube d m)) := by
         simpa only [FR] using
           eLpNorm_normalizedCubeMeasure_succ_originCube_cubeDirichletOddReflectionScalar F q
@@ -571,7 +573,7 @@ private noncomputable def sourceHessianRowRadialDatum
   INTERNAL.cubeRadialTruncationL2LpField (originCube d m) q
     (fun x j ↦ H.hess i j x)
     (by
-      simpa only [hilbertifyVecField] using
+      simpa only [hilbertifyVecField] using!
         (H.hessianHilbertRow_memLp_two i).aestronglyMeasurable) n
 
 private theorem sourceHessianRowRadialDatum_memVectorL2
@@ -612,7 +614,7 @@ private theorem reflected_datum_parent_transport
         exact MeasureTheory.ae_of_all _ fun x ↦ by
           change ‖HilbertVec.ofVec (fun j ↦ if j = i then FR x else 0)‖ = ‖FR x‖
           rw [hsingle x]
-          exact PiLp.norm_toLp_single 2 (fun _ : Fin d ↦ ℝ) i (FR x)
+          exact PiLp.norm_single (2 : ℝ≥0∞) (fun _ : Fin d ↦ ℝ) i (FR x)
     _ = eLpNorm F q.exponent (normalizedCubeMeasure (originCube d m)) := by
       simpa only [FR] using
         eLpNorm_normalizedCubeMeasure_succ_originCube_cubeDirichletOddReflectionScalar F q
@@ -653,7 +655,7 @@ private theorem source_gradient_below_two_bound
     BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
     MeasureTheory.eLpNorm_norm, centeredCubeDomain,
     cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-    ENNReal.ofReal_one, inv_one, mul_one] using
+    ENNReal.ofReal_one, inv_one, mul_one] using!
     hC m 1 F u (by simpa only [centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure] using hF2)
       (by simpa only [centeredCubeDomain,
@@ -730,7 +732,7 @@ private theorem source_hessian_row_radial_norm_eq_moment_rpow
         (fun x => HilbertVec.ofVec (fun j => H.hess i j x)) x ∂
           normalizedCubeMeasure (originCube d m)) ^
         (1 - q.exponent.toReal⁻¹) := by
-  letI : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
+  let : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
   have hmoment := INTERNAL.eLpNorm_hilbertRadialTruncation_rpow_conjugate_eq_truncatedMoment
     (μ := normalizedCubeMeasure (originCube d m)) q n
     (fun x => HilbertVec.ofVec (fun j => H.hess i j x))
@@ -809,7 +811,7 @@ private theorem row_weak_test_expanded
     simpa only [Vdη, euclideanGradient, euclideanCoordDeriv, mul_comm] using hbase
   have hτgrad : (fun x => τ.toH1Function.grad x) =ᵐ[volume.restrict U]
       fun x => Vη x + Vdη x := by
-    simpa only [τ, Vη, Vdη, euclideanGradient, euclideanCoordDeriv] using
+    simpa only [τ, Vη, Vdη, euclideanGradient, euclideanCoordDeriv] using!
       WeakPoissonEquationOn.mulContDiffHasCompactSupportToH10_grad_ae
         v hU hη hη_compact hη_sub
   have hIint : IntegrableOn (fun x => vecDot (r.grad x) (Vη x)) U volume :=
@@ -958,7 +960,7 @@ private theorem parent_weak_test_expanded
     simpa only [Rdη, euclideanGradient, euclideanCoordDeriv, mul_comm] using hbase
   have hσUgrad : (fun x => σU.toH1Function.grad x) =ᵐ[volume.restrict U]
       fun x => Rη x + Rdη x := by
-    simpa only [σU, Rη, Rdη, euclideanGradient, euclideanCoordDeriv] using
+    simpa only [σU, Rη, Rdη, euclideanGradient, euclideanCoordDeriv] using!
       WeakPoissonEquationOn.mulContDiffHasCompactSupportToH10_grad_ae
         r hU hη hη_compact hη_sub
   have hσPgrad : σP.toH1Function.grad = σU.zeroExtensionGrad := by
@@ -1047,7 +1049,7 @@ private theorem parent_weak_test_expanded
         ring
       _ = _ := by rw [Finset.mul_sum]
   rw [hI, hA] at hparent_test
-  simpa only [Rη, Rdη] using hparent_test
+  simpa only [Rη, Rdη] using! hparent_test
 
 private theorem localized_four_term_bound
     {J D E A Hterm BD BE BA BH : ℝ}
@@ -1079,7 +1081,7 @@ private theorem normalized_holder_pairing
         (normalizedCubeMeasure Q)).toReal *
       (eLpNorm (fun x => HilbertVec.ofVec (G x)) q.conjugate.exponent
         (normalizedCubeMeasure Q)).toReal := by
-  letI : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
+  let : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
   exact INTERNAL.abs_integral_vecDot_le_eLpNorm_toReal_mul hF hG
 
 private theorem rowValue_restrict_transport
@@ -1146,7 +1148,7 @@ private theorem restricted_raw_holder_vec
           (normalizedCubeMeasure Q)).toReal *
         (eLpNorm (fun x => HilbertVec.ofVec (G x)) q.conjugate.exponent
           (normalizedCubeMeasure Q)).toReal := by
-  letI : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
+  let : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
   let μ : Measure (Vec d) := normalizedCubeMeasure Q
   let Iraw : ℝ := ∫ x in U, vecDot (F x) (G x) ∂volume
   let Inorm : ℝ := ∫ x, vecDot (F x) (Set.indicator U G x) ∂μ
@@ -1245,7 +1247,7 @@ private theorem scalar_single_hilbert_memLp_and_norm
       eLpNorm f p μ := by
     apply eLpNorm_congr_norm_ae
     apply ae_of_all; intro x
-    rw [PiLp.norm_toLp_single]
+    exact PiLp.norm_single (2 : ℝ≥0∞) (fun _ : Fin d ↦ ℝ) i (f x)
   exact ⟨⟨hmeas, henorm.symm ▸ hf.eLpNorm_lt_top⟩, henorm⟩
 
 private theorem localized_Hterm_raw_bound
@@ -1874,7 +1876,7 @@ private theorem source_hessian_row_htrunc_of_raw_term_bounds
     (fun x => HilbertVec.ofVec (R x)) x ∂normalizedCubeMeasure Q
   have hmoment := source_hessian_row_radial_pairing_moment q Hsrc i n
   have hT : T = ENNReal.ofReal (∫ x, vecDot (G x) (R x) ∂normalizedCubeMeasure Q) := by
-    simpa only [T, R, G, vecDot_comm] using hmoment
+    simpa only [T, R, G, vecDot_comm] using! hmoment
   have hJ : cubeVolume Q *
       (∫ x, vecDot (G x) (R x) ∂normalizedCubeMeasure Q) =
       D + E - 2 * A - Hterm := by
@@ -2001,7 +2003,7 @@ private theorem actual_mutual_identity_package
   have hrowH10 : ∀ φ : H10Function U,
       ∫ x in U, vecDot (r.grad x) (φ.toH1Function.grad x) ∂volume =
         -∫ x in U, vecDot (b x) (φ.toH1Function.grad x) ∂volume := by
-    letI : IsFiniteMeasure (volume.restrict U) := by
+    let : IsFiniteMeasure (volume.restrict U) := by
       simpa using hU.isFiniteMeasure_restrict_volume
     simpa only [one_mul] using
       weak_divergence_identity_of_h10 r b hb2 1 (by
@@ -2218,7 +2220,7 @@ private theorem actual_mutual_raw_term_bounds
     have hrowid' : r.grad =ᵐ[volume.restrict U] Rref := by
       filter_upwards [hrowid] with x hx
       apply_fun (fun z : HilbertVec d ↦ z.toVec) at hx
-      simpa only [HilbertVec.toVec_ofVec] using hx
+      simpa only [HilbertVec.toVec_ofVec] using! hx
     have hleft :
         (∫ x in U, vecDot (GP.toField x)
           (fun j ↦ η x * Rref x j + r x *
@@ -2239,9 +2241,9 @@ private theorem actual_mutual_raw_term_bounds
             euclideanGradient (η : Vec d → ℝ) x j) ∂volume := hleft
       _ = D + E - 2 * A - Hterm := by
         simpa only [Qp, U, G, GP, v, D, E, A, Hterm] using hid
-  · simpa only [D] using hD
-  · simpa only [E, Kg] using hE
-  · simpa only [A, Kg] using hA
+  · simpa only [D] using! hD
+  · simpa only [E, Kg] using! hE
+  · simpa only [A, Kg] using! hA
   · simpa only [Hterm, Kl] using hH
   · exact hvgradBound
 
@@ -2403,7 +2405,7 @@ private theorem row_eLpNorm_of_raw_term_bounds
       (normalizedCubeMeasure (originCube d m)) ≤ K := by
   let R : Vec d → HilbertVec d := fun x ↦ HilbertVec.ofVec (fun j ↦ Hsrc.hess i j x)
   have hRtwo : MemLp R 2 (normalizedCubeMeasure (originCube d m)) := by
-    simpa only [R] using Hsrc.hessianHilbertRow_memLp_two_normalizedCubeMeasure
+    simpa only [R] using! Hsrc.hessianHilbertRow_memLp_two_normalizedCubeMeasure
       (originCube d m) i
   have hqreal : 1 < q.exponent.toReal := by
     rw [← ENNReal.toReal_one]

@@ -44,7 +44,7 @@ theorem exists_cubeVectorKFunctional_le_mul_sqrt_depthAverage
     dsimp [B]
     exact mul_nonneg ht_nonneg G.relativeGradientCoordL2NormSum_nonneg
   have hres' : A ≤ Cres * Real.sqrt D := by
-    simpa [A, D, G] using hres
+    simpa [A, D, G] using! hres
   have hgrad' : B ≤ Cgrad * Real.sqrt D := by
     simpa [B, D, G, t] using hgrad
   have hcomp_value_le_sum :

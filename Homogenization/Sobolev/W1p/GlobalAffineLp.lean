@@ -179,7 +179,7 @@ private theorem tendsto_eLpNorm_comp_globalAffineExpansion_sub_zero_of_continuou
   obtain ⟨R, hR⟩ := hcompact.isCompact.isBounded.subset_closedBall (0 : Vec d)
   let B : Set (Vec d) := Metric.closedBall 0 (R + ‖x0‖)
   have hB_meas : MeasurableSet B := Metric.isClosed_closedBall.measurableSet
-  letI : IsFiniteMeasure (volume.restrict B) :=
+  let : IsFiniteMeasure (volume.restrict B) :=
     ⟨by
       simpa [B] using (measure_closedBall_lt_top (μ := volume) (x := (0 : Vec d))
         (r := R + ‖x0‖))⟩

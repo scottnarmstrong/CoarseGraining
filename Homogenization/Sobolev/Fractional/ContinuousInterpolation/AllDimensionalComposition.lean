@@ -92,7 +92,7 @@ theorem euclideanHsEnergy_le_mul_triadicContinuousKSampleEnergy_all_dim
       rw [euclideanHsEnergy_zero_dim, triadicContinuousKSampleEnergy_zero_dim]
       simp
   | succ d =>
-      letI : NeZero (Nat.succ d) := ⟨Nat.succ_ne_zero d⟩
+      let : NeZero (Nat.succ d) := ⟨Nat.succ_ne_zero d⟩
       calc
         euclideanHsEnergy s F = euclideanHsEnergy s F.measurableRepresentative :=
           F.euclideanHsEnergy_eq_measurableRepresentative s
@@ -116,7 +116,7 @@ theorem triadicContinuousKSampleEnergy_le_mul_euclideanHsEnergy_all_dim
       rw [triadicContinuousKSampleEnergy_zero_dim, euclideanHsEnergy_zero_dim]
       simp
   | succ d =>
-      letI : NeZero (Nat.succ d) := ⟨Nat.succ_ne_zero d⟩
+      let : NeZero (Nat.succ d) := ⟨Nat.succ_ne_zero d⟩
       calc
         triadicContinuousKSampleEnergy s F =
             triadicContinuousKSampleEnergy s F.measurableRepresentative :=

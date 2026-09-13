@@ -340,7 +340,7 @@ theorem AEEQuantitativeEllipticSlice.measurable_integrableWeightedFullBlockCoeff
         (fun x => (2 * C) * ‖w x‖)
         (fun n => (hs_prod_int n).aestronglyMeasurable)
         hbound_int hbound hlim
-  letI : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
+  let : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
     AEEQuantitativeEllipticSlice.localMeasurableSpace U k
   exact measurable_of_tendsto_metrizable hs_meas hs_tendsto
 
@@ -428,7 +428,7 @@ theorem measurable_blockEnergyAverage_aeeQuantitativeSlice
     @Measurable {a : CoeffField d // AEEQuantitativeEllipticSlice U k a}
       ℝ (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel ℝ)
       (fun a => blockEnergyAverage U a.1 X) := by
-  letI : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
+  let : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
     AEEQuantitativeEllipticSlice.localMeasurableSpace U k
   exact measurable_blockEnergyAverage_comp_of_measurable_weightedFullBlockCoeffEntryIntegrals
     (A := fun a : {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} => a.1)
@@ -451,7 +451,7 @@ theorem measurable_blockPairingAverage_aeeQuantitativeSlice
     @Measurable {a : CoeffField d // AEEQuantitativeEllipticSlice U k a}
       ℝ (AEEQuantitativeEllipticSlice.localMeasurableSpace U k) (borel ℝ)
       (fun a => blockPairingAverage U a.1 X Y) := by
-  letI : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
+  let : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} :=
     AEEQuantitativeEllipticSlice.localMeasurableSpace U k
   exact measurable_blockPairingAverage_comp_of_measurable_weightedFullBlockCoeffEntryIntegrals
     (A := fun a : {a : CoeffField d // AEEQuantitativeEllipticSlice U k a} => a.1)
@@ -606,10 +606,10 @@ theorem measurable_galerkinAffineMinimizer_canonicalAEEMuGenerator_aeeQuantitati
             (canonicalMuCorrectionGeneratorEmbedding (cubeSet Q) (e i) :
               HilbertBlockL2 (cubeSet Q)))) := by
   classical
-  letI : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice (cubeSet Q) k a} :=
+  let : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice (cubeSet Q) k a} :=
     AEEQuantitativeEllipticSlice.localMeasurableSpace (cubeSet Q) k
-  letI : MeasurableSpace (HilbertBlockL2 (cubeSet Q)) := borel _
-  letI : BorelSpace (HilbertBlockL2 (cubeSet Q)) := ⟨rfl⟩
+  let : MeasurableSpace (HilbertBlockL2 (cubeSet Q)) := borel _
+  let : BorelSpace (HilbertBlockL2 (cubeSet Q)) := ⟨rfl⟩
   let B :
       {a : CoeffField d // AEEQuantitativeEllipticSlice (cubeSet Q) k a} →
         HilbertBlockL2 (cubeSet Q) →L[ℝ] HilbertBlockL2 (cubeSet Q) →L[ℝ] ℝ :=
@@ -659,7 +659,7 @@ theorem measurable_galerkinAffineMinimizer_canonicalAEEMuGenerator_aeeQuantitati
       Measurable fun y : HilbertBlockL2 (cubeSet Q) =>
         blockVecToHilbertBlockL2Const (U := cubeSet Q) P + y :=
     (continuous_const.add continuous_id).measurable
-  simpa [B, x, ebasis, galerkinAffineMinimizer] using hTranslate.comp hCorr
+  simpa [B, x, ebasis, galerkinAffineMinimizer] using! hTranslate.comp hCorr
 
 /-- Slice-local strong measurability of the selected canonical doubled-`Mu`
 Hilbert minimizer, once the canonical finite Galerkin approximants satisfy the
@@ -701,9 +701,9 @@ theorem stronglyMeasurable_canonicalAEEMuHilbertMinimizer_aeeQuantitativeSlice_c
           (canonicalAEEMuCorrectionSpaceData Q).correctionSpace
           H.energyBilin H.energyCoercive (H.constantField P)) := by
   classical
-  letI : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice (cubeSet Q) k a} :=
+  let : MeasurableSpace {a : CoeffField d // AEEQuantitativeEllipticSlice (cubeSet Q) k a} :=
     AEEQuantitativeEllipticSlice.localMeasurableSpace (cubeSet Q) k
-  letI : MeasurableSpace (HilbertBlockL2 (cubeSet Q)) := borel _
+  let : MeasurableSpace (HilbertBlockL2 (cubeSet Q)) := borel _
   let K : ClosedSubmodule ℝ (HilbertBlockL2 (cubeSet Q)) :=
     (canonicalAEEMuCorrectionSpaceData Q).correctionSpace
   let B :
@@ -747,11 +747,7 @@ theorem stronglyMeasurable_canonicalAEEMuHilbertMinimizer_aeeQuantitativeSlice_c
       refine K.toSubmodule.sum_mem ?_
       intro i _hi
       refine K.toSubmodule.smul_mem _ ?_
-      change
-        (canonicalMuCorrectionGeneratorEmbedding (cubeSet Q) (e m i) :
-            HilbertBlockL2 (cubeSet Q)) ∈
-          (canonicalAEEMuCorrectionSpaceData Q).correctionSpace
-      simp [canonicalAEEMuCorrectionSpaceData, canonicalAEEPotentialSolenoidalL2Data]
+      exact (canonicalMuCorrectionGeneratorEmbedding (cubeSet Q) (e m i)).2
     have hdiff :
         galerkinAffineMinimizer (B a) (x a) (ebasis m) - x a =
           galerkinCorrection (B a) (x a) (ebasis m) := by
@@ -795,7 +791,7 @@ theorem measurable_subtype_mk_aeeQuantitativeSlice_of_isLocalSigmaMeasurableOn
   apply Measurable.of_comap_le
   unfold AEEQuantitativeEllipticSlice.localMeasurableSpace
   rw [MeasurableSpace.comap_comp]
-  simpa [As, IsPointwiseLocalSigmaMeasurableOn, Function.comp] using hA.comap_le
+  simpa [As, IsPointwiseLocalSigmaMeasurableOn, Function.comp] using! hA.comap_le
 
 theorem measurable_blockEnergyAverage_comp_aeeQuantitativeSlice
     {Ω : Type*} [MeasurableSpace Ω]
@@ -876,7 +872,8 @@ theorem measurable_blockEnergyAverage_comp_countable_aeeQuantitativeSlice_cover
   have hfm : ∀ k : ℕ, Measurable (f k) := by
     intro k
     have hA_sub : IsPointwiseLocalSigmaMeasurableOn (fun ω : t k => A ω.1) U := by
-      simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp] using hA.comp measurable_subtype_coe
+      simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp] using!
+        hA.comp measurable_subtype_coe
     have hSlice_sub :
         ∀ ω : t k,
           AEEQuantitativeEllipticSlice U k ((fun ω : t k => A ω.1) ω) := by
@@ -938,7 +935,7 @@ theorem aemeasurable_blockEnergyAverage_comp_countable_aeeQuantitativeSlice_cove
     | none => exact measurable_const
     | some k =>
         have hA_sub : IsPointwiseLocalSigmaMeasurableOn (fun ω : cover (some k) => A ω.1) U := by
-          simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp, cover] using
+          simpa [IsPointwiseLocalSigmaMeasurableOn, Function.comp, cover] using!
             hA.comp measurable_subtype_coe
         have hSlice_sub :
             ∀ ω : cover (some k),

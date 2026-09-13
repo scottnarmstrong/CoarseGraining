@@ -68,7 +68,7 @@ abbrev RestrictionCoeffLaw (d : ℕ) :=
 
 /-- The measurable restriction-local coefficient-field sigma algebra on a
 measurable observation set (carrier version). -/
-abbrev restrictionSigma {d : ℕ} (U : Set (Vec d)) (hU : MeasurableSet U) :
+noncomputable abbrev restrictionSigma {d : ℕ} (U : Set (Vec d)) (hU : MeasurableSet U) :
     MeasurableSpace (RegCoeffField d) :=
   Homogenization.RestrictionSigmaR U hU
 

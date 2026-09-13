@@ -124,7 +124,7 @@ theorem volumeAverage_le_volumeAverage_of_le_on
   have hsub :
       volumeAverage U (fun x => g x - f x) =
         volumeAverage U g - volumeAverage U f := by
-    simpa using (volumeAverage_sub hg hf : volumeAverage U (g - f) = _)
+    simpa using! (volumeAverage_sub hg hf : volumeAverage U (g - f) = _)
   linarith
 
 theorem vecNormSq_volumeAverage_le_volumeAverage_vecNormSq
@@ -145,7 +145,7 @@ theorem vecNormSq_volumeAverage_le_volumeAverage_vecNormSq
     simpa [vecNormSq] using integrableOn_vecDot_of_memVectorL2 hf hf
   have hhalfInt :
       MeasureTheory.IntegrableOn ((1 / 2 : ℝ) • fun x => vecNormSq (f x)) U := by
-    simpa [smul_eq_mul] using hsqInt.integrable.smul (1 / 2 : ℝ)
+    simpa [smul_eq_mul] using! hsqInt.integrable.smul (1 / 2 : ℝ)
   have hconstInt :
       MeasureTheory.IntegrableOn (fun _ : Vec d => (1 / 2 : ℝ) * vecNormSq avg) U := by
     exact MeasureTheory.integrable_const _
@@ -234,7 +234,7 @@ theorem hasQuadraticMu_openCubeSet_originCube_of_hasOpenCubeEllipticRecoveryData
     (hData : HasOpenCubeEllipticRecoveryData (d := d) n R (lam := lam) (Lam := Lam) a) :
     HasQuadraticMu (openCubeSet (originCube d n)) a := by
   let U : Set (Vec d) := openCubeSet (originCube d n)
-  letI : Fact (MeasureTheory.volume U < ⊤) :=
+  let : Fact (MeasureTheory.volume U < ⊤) :=
     ⟨volume_openCubeSet_originCube_lt_top (d := d) n⟩
   rcases hData with ⟨hEll, hCompat⟩
   simpa [U] using
@@ -253,7 +253,7 @@ theorem exists_coarseBlockMatrix_openCubeSet_originCube_of_hasOpenCubeEllipticRe
     (hData : HasOpenCubeEllipticRecoveryData (d := d) n R (lam := lam) (Lam := Lam) a) :
     ∃ Abar : BlockMat d, IsCoarseBlockMatrix (openCubeSet (originCube d n)) a Abar := by
   let U : Set (Vec d) := openCubeSet (originCube d n)
-  letI : Fact (MeasureTheory.volume U < ⊤) :=
+  let : Fact (MeasureTheory.volume U < ⊤) :=
     ⟨volume_openCubeSet_originCube_lt_top (d := d) n⟩
   rcases hData with ⟨hEll, hCompat⟩
   simpa [U] using

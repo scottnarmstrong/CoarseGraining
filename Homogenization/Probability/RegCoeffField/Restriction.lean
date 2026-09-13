@@ -26,6 +26,7 @@ noncomputable section
 
 variable {d : ℕ}
 
+set_option warn.classDefReducibility false in
 /-- The restriction σ-algebra on the carrier: the comap of the canonical carrier
 σ-algebra along the restriction endomorphism `restrictReg U hU`. -/
 def RestrictionSigmaR (U : Set (Vec d)) (hU : MeasurableSet U) :

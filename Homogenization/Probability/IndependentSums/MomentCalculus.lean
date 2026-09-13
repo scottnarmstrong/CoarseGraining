@@ -66,7 +66,8 @@ theorem integrable_abs_sub_integral_rpow_of_integrable_abs_rpow
   have hmem : MemLp f (ENNReal.ofReal p) μ :=
     memLp_of_integrable_abs_rpow hp_pos hf hfp
   have hcenter : MemLp (fun ω => f ω - ∫ z, f z ∂μ) (ENNReal.ofReal p) μ := by
-    simpa using hmem.sub (memLp_const (∫ z, f z ∂μ))
+    show MemLp (f - fun _ => ∫ z, f z ∂μ) (ENNReal.ofReal p) μ
+    exact hmem.sub (memLp_const (∫ z, f z ∂μ))
   have hcenter_int :
       Integrable (fun ω => ‖f ω - ∫ z, f z ∂μ‖ ^ (ENNReal.ofReal p).toReal) μ :=
     (integrable_norm_rpow_iff hcenter.1 hp_enn_ne_zero ENNReal.ofReal_ne_top).mpr hcenter
@@ -136,7 +137,7 @@ theorem integrable_abs_finsetSum_rpow
     exact memLp_of_integrable_abs_rpow hp_pos (h_meas i hi) (hLp_int i hi)
   have hsum_memLp :
       MemLp (fun ω => ∑ i ∈ s, f i ω) (ENNReal.ofReal p) μ :=
-    memLp_finset_sum s h_memLp
+    memLp_finsetSum s h_memLp
   have hsum_int := hsum_memLp.integrable_norm_rpow
     (by simp [ENNReal.ofReal_eq_zero, not_le.mpr hp_pos]) ENNReal.ofReal_ne_top
   simpa [Real.norm_eq_abs, ENNReal.toReal_ofReal hp_pos.le] using hsum_int
@@ -157,7 +158,7 @@ theorem integral_abs_finsetSum_rpow_rpow_inv_le_sum
     intro i hi
     exact memLp_of_integrable_abs_rpow hp_pos (h_meas i hi) (hLp_int i hi)
   have hg_memLp : MemLp g (ENNReal.ofReal p) μ := by
-    simpa [g] using memLp_finset_sum s h_memLp
+    simpa [g] using memLp_finsetSum s h_memLp
   have hg_eq : g = ∑ i ∈ s, f i := by
     funext ω
     simp [g]

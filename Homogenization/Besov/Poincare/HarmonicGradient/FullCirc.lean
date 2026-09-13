@@ -327,7 +327,7 @@ theorem tendsto_cubeBesovDepthWeight_mul_L2_descendantsAverage_sum_components_ci
                   (fun x => G x i)) ^ 2))) := by
     unfold descendantsAverage
     refine Filter.Tendsto.const_mul _ ?_
-    refine tendsto_finset_sum (descendantsAtDepth Q j) ?_
+    refine tendsto_finsetSum (descendantsAtDepth Q j) ?_
     intro R hR
     have hsum :
         Filter.Tendsto
@@ -340,7 +340,7 @@ theorem tendsto_cubeBesovDepthWeight_mul_L2_descendantsAverage_sum_components_ci
             (∑ i : Fin d,
               cubeBesovCircNorm R 1 (2 : ℝ≥0∞) (1 : ℝ≥0∞)
                 (fun x => G x i))) := by
-      refine tendsto_finset_sum Finset.univ ?_
+      refine tendsto_finsetSum Finset.univ ?_
       intro i hi
       have hGR :
           MeasureTheory.MemLp (fun x => G x i) (2 : ℝ≥0∞)

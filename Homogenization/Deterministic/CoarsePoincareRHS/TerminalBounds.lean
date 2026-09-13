@@ -87,7 +87,7 @@ theorem cubeBesovNegativeVectorDepthAverage_le_cubeAverage_vecNormSq_of_memLp {d
     intro i
     have hui :
         MeasureTheory.MemLp (fun x => u x i) (2 : ENNReal) (normalizedCubeMeasure Q) := by
-      simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+      simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
     have hle :=
       cubeBesovCircDepthAverage_le_cubeLpNorm_rpow
         (Q := Q) (p := (2 : ENNReal)) (u := fun x => u x i) (j := j)
@@ -115,7 +115,7 @@ theorem cubeBesovNegativeVectorDepthAverage_le_cubeAverage_vecNormSq_of_memLp {d
             have hui :
                 MeasureTheory.MemLp (fun x => u x i) (2 : ENNReal)
                   (normalizedCubeMeasure Q) := by
-              simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+              simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
             have hint :
                 MeasureTheory.Integrable (fun x => ‖u x i‖ ^ (2 : ℝ))
                   (normalizedCubeMeasure Q) :=
@@ -344,7 +344,7 @@ theorem coarsePoincareRHSSn_le_l2Average_of_memLp {d : ℕ}
       intro i
       have hui :
           MeasureTheory.MemLp (fun x => u x i) (2 : ENNReal) (normalizedCubeMeasure Q) := by
-        simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+        simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
       have hint :
           MeasureTheory.Integrable (fun x => ‖u x i‖ ^ (2 : ℝ))
             (normalizedCubeMeasure Q) :=
@@ -355,7 +355,7 @@ theorem coarsePoincareRHSSn_le_l2Average_of_memLp {d : ℕ}
       have hsum_int :
           MeasureTheory.Integrable (fun x => ∑ i : Fin d, u x i * u x i)
             (normalizedCubeMeasure Q) := by
-        exact MeasureTheory.integrable_finset_sum Finset.univ (fun i hi => hInt i)
+        exact MeasureTheory.integrable_finsetSum Finset.univ (fun i hi => hInt i)
       simpa [vecNormSq, vecDot] using hsum_int
     exact integrableOn_of_integrable_normalizedCubeMeasure (Q := Q) hvec_int
   have hconst :

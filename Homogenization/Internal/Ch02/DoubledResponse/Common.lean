@@ -107,7 +107,7 @@ noncomputable def solutionSMul {d : ℕ} (U : Domain d) (a : CoeffOn U)
     (c : ℝ) (u : Solution U a) : Solution U a :=
   { toH1 := c • u.toH1
     isHarmonic := by
-      simpa using isAHarmonicGradient_smul u.isHarmonic c }
+      simpa using! isAHarmonicGradient_smul u.isHarmonic c }
 
 noncomputable def doubledResponseFirstVariationLeft {d : ℕ}
     (U : Domain d) (a : CoeffOn U) (P Q : BlockVec d)

@@ -125,7 +125,7 @@ theorem exists_perCore_minimizer_energy_le [NeZero d] (hd : 3 ≤ d) {m : ℤ} {
             blockVecDot (Z.eval x) (blockMatVecMul (blockCoeffField c x) (Z.eval x)))
           ≤ Cd * Θ * ((3 : ℝ) ^ m) ^ 2 * ℓ ^ (d - 2) * (Θ * vecNormSq P.1 + vecNormSq P.2) := by
   classical
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   have hℓ0 : (0 : ℝ) < ℓ := by linarith
   have hΘ0 : (0 : ℝ) < Θ := lt_of_lt_of_le one_pos hΘ
   set R : ℝ := (3 : ℝ) ^ m with hRdef
@@ -236,7 +236,7 @@ theorem exists_perCore_minimizer_energy_le_uniform [NeZero d] (hd : 3 ≤ d) :
   obtain ⟨CdS, hCdS0, hstampU⟩ := coupled_stampacchia_uniform hd
   refine ⟨514 * 3 ^ d + 514 * CdS ^ 2 * (d : ℝ) * 256 * 3 ^ d, by positivity, ?_⟩
   intro m Θ hΘ ℓ hℓ4 hℓL σ P c hEll K
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   have hℓ0 : (0 : ℝ) < ℓ := by linarith
   have hΘ0 : (0 : ℝ) < Θ := lt_of_lt_of_le one_pos hΘ
   set R : ℝ := (3 : ℝ) ^ m with hRdef

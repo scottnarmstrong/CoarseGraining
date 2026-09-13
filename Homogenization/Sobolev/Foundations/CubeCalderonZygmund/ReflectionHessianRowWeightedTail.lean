@@ -57,7 +57,7 @@ theorem reflectedHessianRow_sqWeightedMeasure_parent_tail
   have htail :
       {x | a < ‖Hrow x‖} = {x | a < ‖Hodd x‖} := by
     ext x
-    simp only [Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq]
     rw [hnorm x]
   change sqWeightedMeasure Hrow volume
       ({x | a < ‖Hrow x‖} ∩ openCubeSet (originCube d (m + 1))) = _

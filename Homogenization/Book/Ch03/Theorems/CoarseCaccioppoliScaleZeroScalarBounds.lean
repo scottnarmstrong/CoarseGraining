@@ -53,7 +53,7 @@ private theorem fin_card_real_ge_one (d : ℕ) [NeZero d] :
     (1 : ℝ) ≤ (Fintype.card (Fin d) : ℝ) := by
   have hd_pos : 0 < d := Nat.pos_of_ne_zero (NeZero.ne d)
   have hcard : 1 ≤ Fintype.card (Fin d) := by
-    simpa [Fintype.card_fin] using hd_pos
+    simpa [Fintype.card_fin] using! hd_pos
   exact_mod_cast hcard
 
 private theorem one_le_mul_of_one_le_of_one_le {a b : ℝ}

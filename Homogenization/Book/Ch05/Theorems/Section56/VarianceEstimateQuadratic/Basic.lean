@@ -403,7 +403,7 @@ theorem memLp_two_normalizedBlockJTraceAverage_from_P4_of_stationary
         dsimp [j]
         exact Nat.sub_le n k
       exact sub_nonneg.mpr (by exact_mod_cast hj_le)
-    exact MeasureTheory.memLp_finset_sum Finset.univ
+    exact MeasureTheory.memLp_finsetSum Finset.univ
       (fun α _hα =>
         memLp_two_blockJObservableCubeSetBlockVec_from_P4_of_stationary
           hP hStruct hP4 R hR_nonneg
@@ -439,7 +439,7 @@ theorem integrable_normalizedBlockJTraceAverageSq_from_P4_of_stationary
   have hmem :=
     memLp_two_normalizedBlockJTraceAverage_from_P4_of_stationary
       hP hStruct hP4 m n k hk
-  simpa [normalizedBlockJTraceAverageSq, Real.norm_eq_abs, sq_abs] using
+  simpa [normalizedBlockJTraceAverageSq, Real.norm_eq_abs, sq_abs] using!
     hmem.integrable_norm_pow (by norm_num : (2 : ℕ) ≠ 0)
 
 theorem doubledResponseJ_eq_blockJObservableCubeSetBlockVec_of_aelocallyUniformlyEllipticField

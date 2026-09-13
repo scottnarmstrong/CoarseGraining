@@ -81,7 +81,7 @@ theorem recoveredField_lowerImage_memVectorL2_zero_right_of_isEllipticFieldOn
         (fun x =>
           (R.recoveredField system (0, q)).flux x -
             matVecMul (skewPart (a x)) ((R.recoveredField system (0, q)).potential x)) := by
-    simpa [sub_eq_add_neg] using hFlux.sub hSkewPot
+    simpa [sub_eq_add_neg] using! hFlux.sub hSkewPot
   have hInv :
       MemVectorL2 U
         (fun x =>
@@ -143,7 +143,7 @@ theorem recoveredField_upperImage_memVectorL2_zero_right_of_isEllipticFieldOn
             matVecMul (skewPart (a x))
               ((blockMatVecMul (blockCoeffField a x)
                 ((R.recoveredField system (0, q)).eval x)).2)) := by
-    simpa [Pi.add_apply] using hSymmPot.add hSkewLower
+    simpa [Pi.add_apply] using! hSymmPot.add hSkewLower
   have hEq :
       (fun x =>
         (blockMatVecMul (blockCoeffField a x)
@@ -421,7 +421,7 @@ theorem recoveredField_lowerImage_memVectorL2_of_isEllipticFieldOn
       MemVectorL2 U
         (fun x => X.flux x -
           matVecMul (skewPart (a x)) (X.potential x)) := by
-    simpa [sub_eq_add_neg] using hFlux.sub hSkewPot
+    simpa [sub_eq_add_neg] using! hFlux.sub hSkewPot
   have hInv :
       MemVectorL2 U
         (fun x =>
@@ -495,7 +495,7 @@ theorem recoveredField_upperImage_memVectorL2_of_isEllipticFieldOn
           matVecMul (symmPart (a x)) (X.potential x) +
             matVecMul (skewPart (a x))
               ((blockMatVecMul (blockCoeffField a x) (X.eval x)).2)) := by
-    simpa [Pi.add_apply] using hSymmPot.add hSkewLower
+    simpa [Pi.add_apply] using! hSymmPot.add hSkewLower
   have hEq :
       (fun x =>
         (blockMatVecMul (blockCoeffField a x) (X.eval x)).1) =

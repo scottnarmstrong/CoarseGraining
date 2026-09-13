@@ -38,7 +38,7 @@ def foldedCubeLowerFaceMeanZeroH1Test {d : ℕ}
     (hφ : ContDiff ℝ (⊤ : ℕ∞) φ) (x : Vec d) :
     (foldedCubeUpperFaceMeanZeroH1Test Q i hφ).toH1Function.grad x =
       euclideanGradient (foldedCubeUpperFaceTest Q i φ) x := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) :=
     (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   simp [foldedCubeUpperFaceMeanZeroH1Test]
 
@@ -47,7 +47,7 @@ def foldedCubeLowerFaceMeanZeroH1Test {d : ℕ}
     (hφ : ContDiff ℝ (⊤ : ℕ∞) φ) (x : Vec d) :
     (foldedCubeLowerFaceMeanZeroH1Test Q i hφ).toH1Function.grad x =
       euclideanGradient (foldedCubeLowerFaceTest Q i φ) x := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) :=
     (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   simp [foldedCubeLowerFaceMeanZeroH1Test]
 
@@ -69,7 +69,7 @@ theorem setIntegral_mul_foldedCubeUpperFaceMeanZeroH1Test_eq_of_cubeAverage_eq_z
         ∂MeasureTheory.volume =
       ∫ x in openCubeSet Q,
         F x * foldedCubeUpperFaceTest Q i φ x ∂MeasureTheory.volume := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) :=
     (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   let c : ℝ := integralAverage (openCubeSet Q) (foldedCubeUpperFaceH1Test Q i hφ)
   have hFint_zero :
@@ -112,7 +112,7 @@ theorem setIntegral_mul_foldedCubeLowerFaceMeanZeroH1Test_eq_of_cubeAverage_eq_z
         ∂MeasureTheory.volume =
       ∫ x in openCubeSet Q,
         F x * foldedCubeLowerFaceTest Q i φ x ∂MeasureTheory.volume := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) :=
     (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   let c : ℝ := integralAverage (openCubeSet Q) (foldedCubeLowerFaceH1Test Q i hφ)
   have hFint_zero :
@@ -607,7 +607,7 @@ theorem memScalarL2_openCubeSet_union_upperFaceReflectedScalar {d : ℕ}
       (p := (2 : ℝ≥0∞)) (measurableSet_openCubeSet Q)
       hmain hreflected
   simpa [MemScalarL2, volumeMeasureOn, upperFaceReflectedScalar, U, S, R,
-    Set.piecewise] using hpiece
+    Set.piecewise] using! hpiece
 
 /-- The lower-face reflected scalar forcing is `L²` on the doubled
 cube-neighbor domain whenever the original forcing is `L²` on `Q`. -/
@@ -653,7 +653,7 @@ theorem memScalarL2_openCubeSet_union_lowerFaceReflectedScalar {d : ℕ}
       (p := (2 : ℝ≥0∞)) (measurableSet_openCubeSet Q)
       hmain hreflected
   simpa [MemScalarL2, volumeMeasureOn, lowerFaceReflectedScalar, U, S, R,
-    Set.piecewise] using hpiece
+    Set.piecewise] using! hpiece
 
 /-- The upper-face reflected vector field is `L²` on the doubled
 cube-neighbor domain whenever the original vector field is `L²` on `Q`. -/
@@ -700,7 +700,7 @@ theorem memVectorL2_openCubeSet_union_upperFaceReflectedVectorField {d : ℕ}
       (p := (2 : ℝ≥0∞)) (measurableSet_openCubeSet Q)
       hmain hreflected
   simpa [MemVectorL2, volumeMeasureOn, upperFaceReflectedVectorField, U, S, R,
-    Set.piecewise] using hpiece
+    Set.piecewise] using! hpiece
 
 /-- The lower-face reflected vector field is `L²` on the doubled
 cube-neighbor domain whenever the original vector field is `L²` on `Q`. -/
@@ -747,7 +747,7 @@ theorem memVectorL2_openCubeSet_union_lowerFaceReflectedVectorField {d : ℕ}
       (p := (2 : ℝ≥0∞)) (measurableSet_openCubeSet Q)
       hmain hreflected
   simpa [MemVectorL2, volumeMeasureOn, lowerFaceReflectedVectorField, U, S, R,
-    Set.piecewise] using hpiece
+    Set.piecewise] using! hpiece
 
 /-- The one-coordinate slab-reflected scalar forcing is `L²` on the
 lower/original/upper face-neighbor slab whenever the original forcing is `L²`
@@ -824,7 +824,7 @@ theorem memScalarL2_cubeFaceNeighborSlabSet_faceNeighborSlabReflectedScalar
       (measurableSet_openCubeSet (cubeLowerFaceNeighbor Q i))
       hleft htail
   simpa [MemScalarL2, volumeMeasureOn, faceNeighborSlabReflectedScalar,
-    Set.piecewise, S, L, M, U, lower, upper] using hpiece
+    Set.piecewise, S, L, M, U, lower, upper] using! hpiece
 
 /-- The one-coordinate slab-reflected vector field is `L²` on the
 lower/original/upper face-neighbor slab whenever the original vector field is
@@ -903,7 +903,7 @@ theorem memVectorL2_cubeFaceNeighborSlabSet_faceNeighborSlabReflectedVectorField
       (measurableSet_openCubeSet (cubeLowerFaceNeighbor Q i))
       hleft htail
   simpa [MemVectorL2, volumeMeasureOn, faceNeighborSlabReflectedVectorField,
-    Set.piecewise, S, L, M, U, lower, upper] using hpiece
+    Set.piecewise, S, L, M, U, lower, upper] using! hpiece
 
 end
 

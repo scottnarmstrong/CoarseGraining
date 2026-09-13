@@ -100,9 +100,9 @@ theorem section56_norm_toEuclideanCLM_sq_integrable_of_entry_memLp_two
   let S : RegCoeffField d → ℝ := fun a => ∑ α : BlockCoord d, ∑ β : BlockCoord d, |Z a α β|
   have hS_mem : MemLp S (2 : ENNReal) P := by
     dsimp [S]
-    refine memLp_finset_sum _ ?_
+    refine memLp_finsetSum _ ?_
     intro α _hα
-    refine memLp_finset_sum _ ?_
+    refine memLp_finsetSum _ ?_
     intro β _hβ
     simpa [Real.norm_eq_abs] using (hZ_entry α β).norm
   have hS_sq_int : Integrable (fun a => S a ^ 2) P := by
@@ -143,7 +143,7 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_f
       (fun a : RegCoeffField d =>
         fullBlockFluctuationOperatorNormSqWithNormalizer hP hStruct center S
           (cubeSet (originCube d (n : ℤ))) a) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (n : ℤ)
   let Abar : BlockMat d := Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct center
   let Z : RegCoeffField d → FullBlockMat d :=
@@ -163,7 +163,7 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_f
                     toFullBlockMat Abar δ γ)) *
                 S γ β)
           (2 : ENNReal) P := by
-      refine memLp_finset_sum (s := (Finset.univ : Finset (BlockCoord d)))
+      refine memLp_finsetSum (s := (Finset.univ : Finset (BlockCoord d)))
         (p := (2 : ENNReal)) ?_
       intro γ _hγ
       have hinner :
@@ -174,7 +174,7 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_f
                   (toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun) δ γ -
                     toFullBlockMat Abar δ γ))
             (2 : ENNReal) P := by
-        refine memLp_finset_sum (s := (Finset.univ : Finset (BlockCoord d)))
+        refine memLp_finsetSum (s := (Finset.univ : Finset (BlockCoord d)))
           (p := (2 : ENNReal)) ?_
         intro δ _hδ
         have hbase :
@@ -191,7 +191,7 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_f
             simpa [Q, toFullBlockMat, blockMatEntry] using
               Homogenization.Book.Ch05.Section52.memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
                 hP hStruct hP4 n δ γ
-          simpa using hentry.sub
+          simpa using! hentry.sub
             (memLp_const
               (c := toFullBlockMat Abar δ γ) (μ := P) (p := (2 : ENNReal)))
         exact hbase.const_mul (Matrix.transpose S α δ)
@@ -327,7 +327,7 @@ theorem aemeasurable_fullBlockFluctuationMatrixWithNormalizer_cubeSet
         (fun a : RegCoeffField d =>
           toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P :=
     hP.aemeasurable_coarseFullBlockMatrix_cubeSet Q
-  simpa [fullBlockFluctuationMatrixWithNormalizer, Abar, g] using hg.comp_aemeasurable hM
+  simpa [fullBlockFluctuationMatrixWithNormalizer, Abar, g] using! hg.comp_aemeasurable hM
 
 theorem aemeasurable_descendantsAverageFluctuationMatrixWithNormalizer
     {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
@@ -388,7 +388,7 @@ theorem aemeasurable_descendantsAverageFluctuationOperatorNormSqWithNormalizer
     have hcont : Continuous g :=
       ((continuous_norm.comp L.continuous_of_finiteDimensional).pow 2)
     exact hcont.measurable
-  simpa [descendantsAverageFluctuationOperatorNormSqWithNormalizer, g] using
+  simpa [descendantsAverageFluctuationOperatorNormSqWithNormalizer, g] using!
     hg.comp_aemeasurable
       (aemeasurable_descendantsAverageFluctuationMatrixWithNormalizer
         hP hStruct center S Q j)
@@ -457,7 +457,7 @@ theorem memLp_two_blockJTraceAverageWithNormalizers_from_P4_of_stationary
         dsimp [j]
         exact Nat.sub_le n k
       exact sub_nonneg.mpr (by exact_mod_cast hj_le)
-    exact MeasureTheory.memLp_finset_sum Finset.univ
+    exact MeasureTheory.memLp_finsetSum Finset.univ
       (fun α _hα =>
         memLp_two_blockJObservableCubeSetBlockVec_from_P4_of_stationary
           hP hStruct hP4 R hR_nonneg
@@ -490,7 +490,7 @@ theorem integrable_blockJTraceAverageSqWithNormalizers_from_P4_of_stationary
   have hmem :=
     memLp_two_blockJTraceAverageWithNormalizers_from_P4_of_stationary
       hP hStruct hP4 m n k hk S T
-  simpa [blockJTraceAverageSqWithNormalizers, Real.norm_eq_abs, sq_abs] using
+  simpa [blockJTraceAverageSqWithNormalizers, Real.norm_eq_abs, sq_abs] using!
     hmem.integrable_norm_pow (by norm_num : (2 : ℕ) ≠ 0)
 
 /-- Integrated Section 5.6 variance estimate with quadratic `J` error and

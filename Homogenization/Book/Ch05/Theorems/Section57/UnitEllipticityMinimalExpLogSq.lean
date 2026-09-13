@@ -81,7 +81,7 @@ theorem exists_unitEllipticityMinimalScale_interpolated_expLogSq
       hη_pos hA_pos hp_nonneg
   refine ⟨Cscale, hCscale_pos, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let scale : ℝ := thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat
   let Blead : ℝ := smallBottomTailDenominator scale η σ
   let Btail : ℝ := 2 * Blead

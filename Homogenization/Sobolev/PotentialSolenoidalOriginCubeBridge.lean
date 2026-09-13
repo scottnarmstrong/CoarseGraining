@@ -130,7 +130,7 @@ theorem isSolenoidalZeroNormalTraceOn_openCubeSet_originCube_of_cubeSet
           vecDot (g x) ((φ.toCubeSetOriginCube.grad) x) ∂MeasureTheory.volume =
         ∫ x in openCubeSet (originCube d n),
           vecDot (g x) (φ.grad x) ∂MeasureTheory.volume := by
-    simpa using
+    simpa using!
       (setIntegral_cubeSet_originCube_eq_setIntegral_openCubeSet_originCube
         (d := d) (n := n)
         (f := fun x => vecDot (g x) ((φ.toCubeSetOriginCube.grad) x)))
@@ -153,8 +153,8 @@ theorem IsPotentialZeroTraceOn.integral_eq_zero_openCubeSet_originCube
   ext i
   let U : Set (Vec d) := openCubeSet (originCube d n)
   let μ := MeasureTheory.volume.restrict U
-  haveI : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_openCubeSet_originCube_lt_top_bridge (d := d) n⟩
-  haveI : MeasureTheory.IsFiniteMeasure μ := inferInstance
+  have : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_openCubeSet_originCube_lt_top_bridge (d := d) n⟩
+  have : MeasureTheory.IsFiniteMeasure μ := inferInstance
   let D : ℕ → Vec d → ℝ := fun m x => (fderiv ℝ (u.approx m) x) (basisVec i)
   have hD_integrable : ∀ m, MeasureTheory.Integrable (D m) MeasureTheory.volume := by
     intro m
@@ -185,8 +185,8 @@ theorem IsPotentialZeroTraceOn.integral_eq_zero_openCubeSet_originCube
           (by simp)
           (by simpa [D] using hD_integrable m)
           (by simpa using happrox_integrable)
-          (differentiable_const (c := (1 : ℝ)))
-          ((u.approx_smooth m).differentiable (by simp))
+          (fun x _ => differentiableAt_const (c := (1 : ℝ)))
+          (fun x _ => ((u.approx_smooth m).differentiable (by simp)).differentiableAt)
       simpa [D] using h
     have hzero_off : ∀ x, x ∉ U → D m x = 0 := by
       intro x hx
@@ -248,7 +248,7 @@ theorem IsPotentialZeroTraceOn.integral_eq_zero_openCubeSet_originCube
       simpa [zero_mul] using hscaled
     exact tendsto_of_tendsto_of_tendsto_of_le_of_le
       tendsto_const_nhds hscaled0
-      (fun _ => zero_le')
+      (fun _ => zero_le)
       hL1_bound
   have hconv :
       Filter.Tendsto
@@ -258,7 +258,7 @@ theorem IsPotentialZeroTraceOn.integral_eq_zero_openCubeSet_originCube
     MeasureTheory.tendsto_integral_of_L1'
       (μ := μ)
       (f := fun x => u.toH1Function.grad x i)
-      hfi
+      hfi.aestronglyMeasurable
       hD_integrable_restrict
       hL1
   have hEq : (fun m => ∫ x, D m x ∂μ) = fun _ => (0 : ℝ) := by

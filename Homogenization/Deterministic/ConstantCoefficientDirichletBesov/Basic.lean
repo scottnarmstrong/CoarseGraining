@@ -128,7 +128,7 @@ theorem vecNormSq_cubeAverageVec_le_sum_cubeAverage_sq_of_memLp {d : ℕ}
     intro i
     have hui : MeasureTheory.MemLp (fun x => u x i)
         (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-      simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+      simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
     exact sq_cubeAverage_le_cubeAverage_sq_of_memLp Q (fun x => u x i) hui
   calc
     vecNormSq (cubeAverageVec Q u)
@@ -181,7 +181,7 @@ theorem enorm_rpow_two_le_ofReal_vecNormSq {d : ℕ} (v : Vec d) :
   calc
     ‖v‖ₑ ^ (2 : ℝ)
         = ENNReal.ofReal (‖v‖ ^ (2 : ℝ)) := by
-          rw [← ofReal_norm_eq_enorm]
+          rw [← ofReal_norm]
           rw [ENNReal.ofReal_rpow_of_nonneg (norm_nonneg v) (by norm_num)]
     _ ≤ ENNReal.ofReal (vecNormSq v) :=
           ENNReal.ofReal_le_ofReal hnorm_sq
@@ -198,7 +198,7 @@ theorem ofReal_vecNormSq_le_card_mul_enorm_rpow_two {d : ℕ} (v : Vec d) :
         (Fintype.card (Fin d) : ℝ≥0∞) * ‖v‖ₑ ^ (2 : ℝ) := by
           rw [ENNReal.ofReal_mul (Nat.cast_nonneg _)]
           rw [ENNReal.ofReal_natCast]
-          rw [← ofReal_norm_eq_enorm]
+          rw [← ofReal_norm]
           rw [ENNReal.ofReal_rpow_of_nonneg (norm_nonneg v) (by norm_num)]
           rw [Real.rpow_two]
 
@@ -214,7 +214,7 @@ theorem H1Function.norm_gradToVectorL2_le_gradientCoordL2NormSum
     simpa [μ] using (v.grad_memL2 j).norm
   have hD_mem : MeasureTheory.MemLp D (2 : ℝ≥0∞) μ := by
     have hsum :=
-      MeasureTheory.memLp_finset_sum (μ := μ) (p := (2 : ℝ≥0∞))
+      MeasureTheory.memLp_finsetSum (μ := μ) (p := (2 : ℝ≥0∞))
         (s := Finset.univ)
         (f := fun j : Fin d => fun x : Vec d => ‖v.grad x j‖)
         (fun j _hj => hcoord_mem j)
@@ -315,7 +315,7 @@ theorem cubeLpNorm_two_sq_le_cubeAverage_vecNormSq {d : ℕ}
     have hF_vol : MeasureTheory.MemLp F (2 : ENNReal)
         (MeasureTheory.volume.restrict (cubeSet Q)) := by
       simpa [MemVectorL2, volumeMeasureOn] using hF_open
-    simpa using
+    simpa using!
       hF_vol.integrable_norm_rpow
         (by norm_num : (2 : ENNReal) ≠ 0)
         (by norm_num : (2 : ENNReal) ≠ ⊤)
@@ -359,7 +359,7 @@ theorem abs_cubeAverage_vecDot_le_card_mul_cubeLpNorm_two_mul {d : ℕ}
     have hGi : MeasureTheory.MemLp (fun x => G x i) (2 : ℝ≥0∞)
         (normalizedCubeMeasure Q) :=
       memLp_component_of_memLp G i hG
-    simpa [Pi.mul_apply] using hFi.integrable_mul hGi
+    simpa [Pi.mul_apply] using! hFi.integrable_mul hGi
   calc
     |cubeAverage Q (fun x => vecDot (F x) (G x))|
         ≤ ∑ i, |cubeBesovPairing Q (fun x => F x i) (fun x => G x i)| :=

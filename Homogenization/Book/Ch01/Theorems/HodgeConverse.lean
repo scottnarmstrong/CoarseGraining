@@ -20,7 +20,7 @@ theorem potentialField_of_orthogonal_to_solenoidalZeroNormalTrace_boundedOpenCon
         SolenoidalZeroNormalTraceFieldOn U g →
           ∫ x in U, vecDot (g x) (f x) ∂MeasureTheory.volume = 0) :
     PotentialFieldOn U f := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
     hU.isFiniteMeasure_restrict_volume
   have hcriterion : Homogenization.HodgeConverseCriterion U :=
     Homogenization.hodgeConverseCriterion_of_isOpenBoundedConvexDomain hU

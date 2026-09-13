@@ -40,8 +40,8 @@ noncomputable def CubeEuclideanLpField.measurableRepresentative {d : ℕ}
 theorem CubeEuclideanLpField.measurable_measurableRepresentative {d : ℕ}
     {Q : TriadicCube d} {p : FiniteLpExponent}
     (F : CubeEuclideanLpField Q p) : Measurable F.measurableRepresentative := by
-  letI : MeasurableSpace (HilbertVec d) := borel (HilbertVec d)
-  letI : BorelSpace (HilbertVec d) := ⟨rfl⟩
+  let : MeasurableSpace (HilbertVec d) := borel (HilbertVec d)
+  let : BorelSpace (HilbertVec d) := ⟨rfl⟩
   unfold measurableRepresentative
   dsimp only
   exact (HilbertVec.continuousLinearEquivVec d).continuous.measurable.comp
@@ -173,15 +173,13 @@ theorem cubeEuclideanPositiveBesovOverlapESeminorm_congr_ae {d : ℕ}
       cubeEuclideanPositiveBesovOverlapESeminorm Q s p G := by
   rw [cubeEuclideanPositiveBesovOverlapESeminorm_eq,
     cubeEuclideanPositiveBesovOverlapESeminorm_eq]
-  congr 1
-  apply tsum_congr
-  intro j
-  congr 1
-  apply Finset.sum_congr rfl
-  intro S _
+  refine congrArg (· ^ (1 / p.exponent.toReal)) ?_
+  refine tsum_congr fun j => ?_
+  refine congrArg (HMul.hMul _) ?_
+  refine Finset.sum_congr rfl fun S _ => ?_
   rw [euclideanOverlapLocalENorm_congr_ae p S.2 hFG]
 
-private def exactOverlapScalarPIntegrableOfEuclideanField {d : ℕ}
+private theorem exactOverlapScalarPIntegrableOfEuclideanField {d : ℕ}
     (Q : TriadicCube d) (p : FiniteLpExponent) (F : CubeEuclideanLpField Q p)
     (i : Fin d) : ExactOverlapIntegrable Q (fun x => F x i) where
   root := (cubeEuclideanLp_coordinate_memLp F i).integrable p.one_lt.le
@@ -484,11 +482,11 @@ theorem exactOverlapScalarPSeminorm_le_dimension_mul_cubeEuclideanOverlap
         cubeEuclideanCoordinateExactOverlapPowerEnergy Q s p F := by
     unfold cubeEuclideanCoordinateExactOverlapPowerEnergy
     exact Finset.single_le_sum
-      (fun k _ => zero_le
+      (fun k _ => (zero_le : (0 : ℝ≥0∞) ≤
         ((exactOverlapFiniteSeminorm (exactOverlapScalarPParameters s p) Q
           (fun x => F x k)
           (exactOverlapScalarPIntegrableOfEuclideanField Q p F k)) ^
-            p.exponent.toReal))
+            p.exponent.toReal)))
       (Finset.mem_univ i)
   have hpower :
       (exactOverlapFiniteSeminorm (exactOverlapScalarPParameters s p) Q

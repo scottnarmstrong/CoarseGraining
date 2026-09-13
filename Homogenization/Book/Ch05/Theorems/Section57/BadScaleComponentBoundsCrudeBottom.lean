@@ -63,7 +63,7 @@ theorem measureReal_shiftedCrudeBottomPairEvent_quenchedProbeEnvelope_le_weighte
   dsimp only
   intro ha ht hαt hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -228,7 +228,7 @@ theorem measureReal_shiftedCrudeBottomBadScaleEvent_quenchedProbeEnvelope_le_wei
   intro Centry a t αbad P hP hStruct hΓ hσ_eq hparams q
   dsimp only
   intro ha ht hαt hA_one
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P

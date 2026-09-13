@@ -165,7 +165,7 @@ theorem inter_compl_corridorSet_eq_iUnion_coreBox {ℓ : ℝ} (hℓ : 0 < ℓ) (
     (hK : ∀ k : Fin d → ℤ, (coreBox ℓ σ k ∩ U).Nonempty → k ∈ K) :
     U \ corridorSet ℓ σ = ⋃ k : {k // k ∈ K}, (U ∩ coreBox ℓ σ k.1) := by
   ext x
-  simp only [Set.mem_diff, Set.mem_iUnion, Set.mem_inter_iff]
+  simp only [Set.mem_sdiff, Set.mem_iUnion, Set.mem_inter_iff]
   constructor
   · rintro ⟨hxU, hxnc⟩
     have hxc : x ∈ (corridorSet ℓ σ)ᶜ := hxnc
@@ -217,7 +217,7 @@ theorem blockEnergyAverage_glueField_corePatch_eq_phaseSplitEnergy
           + ∫ x in U \ corridorSet ℓ σ,
               blockEnergyDensity (glueField ℓ σ Θ (corePatch ℓ σ K y)) X x
                 ∂MeasureTheory.volume :=
-    (MeasureTheory.integral_inter_add_diff hcorrM hfint).symm
+    (MeasureTheory.integral_inter_add_sdiff hcorrM hfint).symm
   -- corridor piece equals the corridor constant
   have hcorrEq :
       (∫ x in U ∩ corridorSet ℓ σ,

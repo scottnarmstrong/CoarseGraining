@@ -25,7 +25,7 @@ conjugate is strictly bigger than two. -/
 theorem conjugate_toReal_gt_two_of_lt_two (q : FiniteLpExponent)
     (hq : q.exponent.toReal < 2) :
     2 < q.conjugate.exponent.toReal := by
-  letI : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
+  let : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
   have hq1 : 1 < q.exponent.toReal := by
     rw [← ENNReal.toReal_one]
     exact (ENNReal.toReal_lt_toReal (by norm_num) q.lt_top.ne).mpr q.one_lt
@@ -123,7 +123,7 @@ theorem norm_hilbertRadialTruncation_rpow_conjugate {α : Type*} {d : ℕ}
     ‖hilbertRadialTruncation q.exponent.toReal n F x‖ ^
         q.conjugate.exponent.toReal =
       if ‖F x‖ ≤ (n : ℝ) then ‖F x‖ ^ q.exponent.toReal else 0 := by
-  letI : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
+  let : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
   have hq1 : 1 < q.exponent.toReal := by
     rw [← ENNReal.toReal_one]
     exact (ENNReal.toReal_lt_toReal (by norm_num) q.lt_top.ne).mpr q.one_lt
@@ -160,7 +160,7 @@ theorem eLpNorm_vecDot_le_mul {α : Type*} {d : ℕ} [MeasurableSpace α]
     (eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm hF.1 hG.1
       (fun x y : HilbertVec d => inner ℝ x y) 1
       (Filter.Eventually.of_forall (fun x => by
-        simpa using norm_inner_le_norm (𝕜 := ℝ)
+        simpa using! norm_inner_le_norm (𝕜 := ℝ)
           (HilbertVec.ofVec (F x)) (HilbertVec.ofVec (G x)))))
 
 /-- The bounded radial test field has the expected uniform pointwise bound. -/
@@ -195,7 +195,7 @@ theorem aestronglyMeasurable_vectorRadialTruncation {α : Type*} {d : ℕ}
   have hG : AEStronglyMeasurable (hilbertRadialTruncation q n G) μ :=
     aestronglyMeasurable_hilbertRadialTruncation hF
   simpa only [vectorRadialTruncation, G, HilbertVec.continuousLinearEquivVec_apply]
-    using (HilbertVec.continuousLinearEquivVec d).continuous.comp_aestronglyMeasurable hG
+    using! (HilbertVec.continuousLinearEquivVec d).continuous.comp_aestronglyMeasurable hG
 
 /-- The vector radial truncation has a direct `L²` membership form for the
 adjoint divergence solver. -/

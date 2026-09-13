@@ -149,7 +149,7 @@ private theorem rpow_neg_two_mul_sq_le_sqrt_delta
   have hA_m2 : Real.rpow A (-2 : ℝ) = A⁻¹ ^ (2 : ℕ) := by
     calc
       Real.rpow A (-2 : ℝ) = (Real.rpow A (2 : ℝ))⁻¹ := by
-        simpa using (Real.rpow_neg hA_pos.le (2 : ℝ))
+        simp
       _ = (A ^ (2 : ℕ))⁻¹ := by
         exact congrArg Inv.inv (Real.rpow_natCast A 2)
       _ = A⁻¹ ^ (2 : ℕ) := by
@@ -193,7 +193,7 @@ private theorem rpow_neg_two_mul_self_le_sqrt_delta
   have hA_m2 : Real.rpow A (-2 : ℝ) = A⁻¹ ^ (2 : ℕ) := by
     calc
       Real.rpow A (-2 : ℝ) = (Real.rpow A (2 : ℝ))⁻¹ := by
-        simpa using (Real.rpow_neg hA_pos.le (2 : ℝ))
+        simp
       _ = (A ^ (2 : ℕ))⁻¹ := by
         exact congrArg Inv.inv (Real.rpow_natCast A 2)
       _ = A⁻¹ ^ (2 : ℕ) := by

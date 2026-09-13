@@ -205,7 +205,7 @@ theorem lower_unitDescendant_lambdaInv_integrable_abs_pow
     have hcov :=
       Ch04.lambdaSqCoeffField_originCube_zero_translateByInt_ae
         hP hStruct.stationary z s (.finite 1)
-    filter_upwards [by simpa [X0, hUeq] using hcov] with a ha
+    filter_upwards [by simpa [X0, hUeq] using! hcov] with a ha
     simpa [X0, hUeq] using congrArg Inv.inv ha
   have hmap :
       Measure.map (fun a : RegCoeffField d => (Ch04.lambdaSqCoeffField U s (.finite 1) a)⁻¹) P =
@@ -350,7 +350,7 @@ theorem lowerFactorPowerIntegrableAtScale_from_P4
         ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) hP4.sLower (.finite 1) a)⁻¹) ^
           hP4.xi) P := by
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let s : ℝ := hP4.sLower
   let ξ : ℕ := hP4.xi
   let D : Finset (TriadicCube d) := descendantsAtScale (originCube d (m : ℤ)) 0
@@ -426,7 +426,7 @@ theorem lowerFactorPowerIntegrableAtScale_from_P4
   have hlarge_nonneg :
       ∀ n ∈ section52LargeScaleSet m, ∀ a, 0 ≤ large n a := by
     intro n hn a
-    simpa [large, s, scalarization, base, hn] using
+    simpa [large, s, scalarization, base, hn] using!
       lowerLargeScalePositiveExcess_nonneg_source
         hP hStruct hs_nonneg hn a
   have hG_nonneg : ∀ o ∈ I, ∀ a, 0 ≤ G o a := by
@@ -467,7 +467,7 @@ theorem lowerFactorPowerIntegrableAtScale_from_P4
             simpa [I] using ho
           rcases Finset.mem_image.mp hsome with ⟨k, hk, hkn⟩
           exact Option.some.inj hkn ▸ hk
-        simpa [G, large, s, scalarization, base, hn] using
+        simpa [G, large, s, scalarization, base, hn] using!
           lowerLargeScalePositiveExcess_aemeasurable_source
             hP hStruct (r := s) hn
   have hsmall_int : Integrable (fun a : RegCoeffField d => |small a| ^ ξ) P := by
@@ -519,7 +519,7 @@ theorem lowerFactorPowerIntegrableAtScale_from_P4
           lowerLargeScalePositiveExcess_integrable_abs_pow_source
             hP hStruct (sSource := s) (r := s) (ξ := ξ)
             hs hξ_one hξ_two hP4.lower_inv_moment_integrable hn
-        simpa [G, large, s, scalarization, base, Real.norm_eq_abs, hn] using hInt
+        simpa [G, large, s, scalarization, base, Real.norm_eq_abs, hn] using! hInt
   let X : RegCoeffField d → ℝ :=
     fun a => (Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) s (.finite 1) a)⁻¹
   have hX_aemeas : AEMeasurable X P :=

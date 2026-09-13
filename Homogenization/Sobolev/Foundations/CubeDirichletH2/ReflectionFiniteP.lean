@@ -125,7 +125,7 @@ private theorem lintegral_cubeFaceReflectionCellCube_cubeDirichletOddReflectionV
           apply MeasureTheory.lintegral_congr_ae
           filter_upwards [MeasureTheory.ae_restrict_mem
             (measurableSet_openCubeSet (cubeFaceReflectionCellCube Q choice))] with x hx
-          simpa only [ofReal_norm_eq_enorm] using congrArg
+          simpa only [ofReal_norm] using congrArg
             (fun t : ℝ => ENNReal.ofReal t ^ p.exponent.toReal)
             (norm_hilbertVec_ofVec_cubeDirichletOddReflectionVectorField_eq_cell
               Q choice G hx)
@@ -241,9 +241,9 @@ theorem eLpNorm_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionVectorField
       ((3 : ℝ≥0∞) ^ d) ^ (1 / p.exponent.toReal) *
         MeasureTheory.eLpNorm (fun x => HilbertVec.ofVec (G x)) p.exponent
           (MeasureTheory.volume.restrict (openCubeSet Q)) := by
-  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm
+  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
       (finiteLpExponent_ne_zero p) p.lt_top.ne,
-    MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm
+    MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
       (finiteLpExponent_ne_zero p) p.lt_top.ne,
     lintegral_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionVectorField]
   rw [ENNReal.mul_rpow_of_nonneg _ _
@@ -462,9 +462,9 @@ theorem eLpNorm_cubeFaceReflectionCellCube_cubeDirichletOddReflectionVectorField
         (openCubeSet (cubeFaceReflectionCellCube Q choice))) =
       MeasureTheory.eLpNorm (fun x => HilbertVec.ofVec (G x)) p.exponent
         (MeasureTheory.volume.restrict (openCubeSet Q)) := by
-  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm
+  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
       (finiteLpExponent_ne_zero p) p.lt_top.ne,
-    MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm
+    MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
       (finiteLpExponent_ne_zero p) p.lt_top.ne,
     lintegral_cubeFaceReflectionCellCube_cubeDirichletOddReflectionVectorField]
 

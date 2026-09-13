@@ -75,7 +75,7 @@ private theorem exists_gradCoord_const_ae_on_innerHalf {Q : TriadicCube 1}
   obtain ⟨uS, huSval, huSgrad, H, hHbound⟩ :=
     exists_innerHalf_hasWeakHessianOn_harmonic h
   let V := scaledOpenCubeSet Q (1 / 2 : ℝ)
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn V) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn V) := by
     dsimp [V, volumeMeasureOn]
     exact (isOpenBoundedConvexDomain_scaledOpenCubeSet_of_pos Q
       (by norm_num)).isFiniteMeasure_restrict_volume
@@ -143,7 +143,7 @@ theorem harmonic_gradCoord_memLp_centralDescendant_oneDim
   obtain ⟨c, hc⟩ := exists_gradCoord_const_ae_on_innerHalf h
   let R : TriadicCube 1 := centralDescendant Q 1
   have hRsub : cubeSet R ⊆ scaledOpenCubeSet Q (1 / 2 : ℝ) := by
-    simpa [R, centralDescendant] using middleChildCube_subset_innerHalf Q
+    simpa [R, centralDescendant] using! middleChildCube_subset_innerHalf Q
   have hRac : MeasureTheory.Measure.AbsolutelyContinuous (normalizedCubeMeasure R)
       (MeasureTheory.volume.restrict (scaledOpenCubeSet Q (1 / 2 : ℝ))) := by
     rw [normalizedCubeMeasure, cubeMeasure]

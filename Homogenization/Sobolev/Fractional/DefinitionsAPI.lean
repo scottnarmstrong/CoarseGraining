@@ -66,7 +66,7 @@ theorem cubeGagliardoESeminorm_eq_smul_gagliardoESeminormOn
     cubeGagliardoESeminorm Q s p u =
       ENNReal.ofReal (cubeVolume Q)⁻¹ ^ (1 / p).toReal •
         gagliardoESeminormOn (Homogenization.cubeSet Q) s p u := by
-  haveI : SFinite (MeasureTheory.volume.restrict (Homogenization.cubeSet Q)) :=
+  have : SFinite (MeasureTheory.volume.restrict (Homogenization.cubeSet Q)) :=
     inferInstance
   rw [Internal.cubeGagliardoESeminorm_def, gagliardoESeminormOn,
     gagliardoCubeMeasure, Homogenization.normalizedCubeMeasure,
@@ -115,7 +115,7 @@ theorem cubeGagliardoESeminorm_translate (shift : Fin d → ℤ)
   -- volumes agree
   have hvol : cubeVolume (translateCube shift Q) = cubeVolume Q := rfl
   -- the Gagliardo product measure is the pushforward under the pair translation
-  haveI : SFinite (MeasureTheory.volume.restrict (Homogenization.cubeSet Q)) :=
+  have : SFinite (MeasureTheory.volume.restrict (Homogenization.cubeSet Q)) :=
     inferInstance
   have hprod : gagliardoCubeMeasure (translateCube shift Q) =
       Measure.map (Prod.map ⇑T ⇑T) (gagliardoCubeMeasure Q) := by

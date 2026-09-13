@@ -74,8 +74,8 @@ theorem coupled_stampacchia (hd : 3 ≤ d) {m : ℤ} {Θ : ℝ} {a : CoeffField 
         |vstar.toFun x - (1 / 2 : ℝ) * vecDot p x + c|
           ≤ Cd * (3 : ℝ) ^ m * Real.sqrt (Θ * vecNormSq p + vecNormSq q)) := by
   classical
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d m))) :=
+  have : NeZero d := ⟨by omega⟩
+  have : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d m))) :=
     isFiniteMeasure_openCubeSet_originCube (d := d) m
   have hUbcd : IsOpenBoundedConvexDomain (openCubeSet (originCube d m)) :=
     isOpenBoundedConvexDomain_openCubeSet (originCube d m)
@@ -126,14 +126,14 @@ theorem coupled_stampacchia (hd : 3 ≤ d) {m : ℤ} {Θ : ℝ} {a : CoeffField 
     intro w hw t
     rw [volumeMeasureOn, MeasureTheory.Measure.restrict_apply
       (measurableSet_lt measurable_const hw)]
-    congr 1; ext x; simp only [Set.mem_inter_iff, Set.mem_setOf_eq]; tauto
+    congr 1; ext x; simp only [Set.mem_inter_iff, Set.mem_ofPred_eq]; tauto
   have hμconv_lt : ∀ (w : Vec d → ℝ), Measurable w → ∀ t : ℝ,
       (volumeMeasureOn (openCubeSet (originCube d m))) {x | w x < t}
         = volume {x | x ∈ openCubeSet (originCube d m) ∧ w x < t} := by
     intro w hw t
     rw [volumeMeasureOn, MeasureTheory.Measure.restrict_apply
       (measurableSet_lt hw measurable_const)]
-    congr 1; ext x; simp only [Set.mem_inter_iff, Set.mem_setOf_eq]; tauto
+    congr 1; ext x; simp only [Set.mem_inter_iff, Set.mem_ofPred_eq]; tauto
   have hunivvol :
       (volumeMeasureOn (openCubeSet (originCube d m))) Set.univ
         = volume (openCubeSet (originCube d m)) := by
@@ -177,12 +177,12 @@ theorem coupled_stampacchia (hd : 3 ≤ d) {m : ℤ} {Θ : ℝ} {a : CoeffField 
     have e1 : volume {x | x ∈ openCubeSet (originCube d m) ∧ -m₀ < w₁'.toFun x}
         = volume {x | x ∈ openCubeSet (originCube d m) ∧ w₁.toFun x < m₀} := by
       rw [hvol_ae w₁'.toFun (fun x => -w₁.toFun x) hw1'neg (-m₀)]
-      congr 1; ext x; simp only [Set.mem_setOf_eq]
+      congr 1; ext x; simp only [Set.mem_ofPred_eq]
       constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1, by linarith⟩
     have e2 : volume {x | x ∈ openCubeSet (originCube d m) ∧ -m₀ < w₂'.toFun x}
         = volume {x | x ∈ openCubeSet (originCube d m) ∧ w₂.toFun x < m₀} := by
       rw [hvol_ae w₂'.toFun (fun x => -w₂.toFun x) hw2'neg (-m₀)]
-      congr 1; ext x; simp only [Set.mem_setOf_eq]
+      congr 1; ext x; simp only [Set.mem_ofPred_eq]
       constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1, by linarith⟩
     rw [e1, e2, ← hμconv_lt w₁.toFun hw1meas m₀, ← hμconv_lt w₂.toFun hw2meas m₀, ← hunivvol]
     exact hlow
@@ -260,8 +260,8 @@ theorem coupled_stampacchia_uniform (hd : 3 ≤ d) :
   obtain ⟨Cd, hCd0, hcore⟩ := deGiorgi_one_sided_core (d := d) hd
   refine ⟨2 * Real.sqrt d * Cd, by positivity, ?_⟩
   intro m Θ a hEll p q v vstar hCWF htrace
-  haveI : NeZero d := ⟨by omega⟩
-  haveI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d m))) :=
+  have : NeZero d := ⟨by omega⟩
+  have : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d m))) :=
     isFiniteMeasure_openCubeSet_originCube (d := d) m
   have hUbcd : IsOpenBoundedConvexDomain (openCubeSet (originCube d m)) :=
     isOpenBoundedConvexDomain_openCubeSet (originCube d m)
@@ -304,14 +304,14 @@ theorem coupled_stampacchia_uniform (hd : 3 ≤ d) :
     intro w hw t
     rw [volumeMeasureOn, MeasureTheory.Measure.restrict_apply
       (measurableSet_lt measurable_const hw)]
-    congr 1; ext x; simp only [Set.mem_inter_iff, Set.mem_setOf_eq]; tauto
+    congr 1; ext x; simp only [Set.mem_inter_iff, Set.mem_ofPred_eq]; tauto
   have hμconv_lt : ∀ (w : Vec d → ℝ), Measurable w → ∀ t : ℝ,
       (volumeMeasureOn (openCubeSet (originCube d m))) {x | w x < t}
         = volume {x | x ∈ openCubeSet (originCube d m) ∧ w x < t} := by
     intro w hw t
     rw [volumeMeasureOn, MeasureTheory.Measure.restrict_apply
       (measurableSet_lt hw measurable_const)]
-    congr 1; ext x; simp only [Set.mem_inter_iff, Set.mem_setOf_eq]; tauto
+    congr 1; ext x; simp only [Set.mem_inter_iff, Set.mem_ofPred_eq]; tauto
   have hunivvol :
       (volumeMeasureOn (openCubeSet (originCube d m))) Set.univ
         = volume (openCubeSet (originCube d m)) := by
@@ -350,12 +350,12 @@ theorem coupled_stampacchia_uniform (hd : 3 ≤ d) :
     have e1 : volume {x | x ∈ openCubeSet (originCube d m) ∧ -m₀ < w₁'.toFun x}
         = volume {x | x ∈ openCubeSet (originCube d m) ∧ w₁.toFun x < m₀} := by
       rw [hvol_ae w₁'.toFun (fun x => -w₁.toFun x) hw1'neg (-m₀)]
-      congr 1; ext x; simp only [Set.mem_setOf_eq]
+      congr 1; ext x; simp only [Set.mem_ofPred_eq]
       constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1, by linarith⟩
     have e2 : volume {x | x ∈ openCubeSet (originCube d m) ∧ -m₀ < w₂'.toFun x}
         = volume {x | x ∈ openCubeSet (originCube d m) ∧ w₂.toFun x < m₀} := by
       rw [hvol_ae w₂'.toFun (fun x => -w₂.toFun x) hw2'neg (-m₀)]
-      congr 1; ext x; simp only [Set.mem_setOf_eq]
+      congr 1; ext x; simp only [Set.mem_ofPred_eq]
       constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1, by linarith⟩
     rw [e1, e2, ← hμconv_lt w₁.toFun hw1meas m₀, ← hμconv_lt w₂.toFun hw2meas m₀, ← hunivvol]
     exact hlow

@@ -243,7 +243,10 @@ private theorem integral_sqNorm_openParentDatumExtension_single_le
       FR x * FR x := by
     intro x
     change ‖HilbertVec.ofVec (datum x)‖ ^ (2 : ℕ) = FR x * FR x
-    rw [hdatumPoint, PiLp.norm_toLp_single, Real.norm_eq_abs, sq_abs]
+    rw [hdatumPoint]
+    have hkey : ‖HilbertVec.ofVec (Pi.single i (FR x))‖ = ‖FR x‖ :=
+      PiLp.norm_single (2 : ℝ≥0∞) (fun _ : Fin d => ℝ) i (FR x)
+    rw [hkey, Real.norm_eq_abs, sq_abs]
     ring
   have hzero :
       (fun x ↦ ‖hilbertifyVecField (openParentDatumExtension U datum) x‖ ^
@@ -379,7 +382,7 @@ theorem exists_hasWeakHessianOn_sqWeightedMeasure_oneLevel_tail_originCube
         (cubeDirichletOddReflectionHessianRowVectorField
           (originCube d m) i R x) := by
     simpa only [rowU, R, U, hilbertifyVecField,
-      HasWeakHessianOn.gradCoordH1Function_grad] using hidentified
+      HasWeakHessianOn.gradCoordH1Function_grad] using! hidentified
   have hQsource : openParentGradientExtension U rowU =ᵐ[volume.restrict Q] row := by
     have hrestricted := hUrow.filter_mono
       (ae_mono (Measure.restrict_mono hQU le_rfl))
@@ -483,7 +486,8 @@ theorem exists_hasWeakHessianOn_sqWeightedMeasure_oneLevel_tail_originCube
     have hnorm : ∀ x, ‖(hilbertifyVecField datum) x‖ = ‖FR x‖ := by
       intro x
       change ‖HilbertVec.ofVec (datum x)‖ = ‖FR x‖
-      rw [hdatumPoint, PiLp.norm_toLp_single]
+      rw [hdatumPoint]
+      exact PiLp.norm_single (2 : ℝ≥0∞) (fun _ : Fin d => ℝ) i (FR x)
     have hmeasure : sqWeightedMeasure (hilbertifyVecField datum) volume =
         sqWeightedMeasure FR volume := by
       apply MeasureTheory.withDensity_congr_ae
@@ -492,7 +496,7 @@ theorem exists_hasWeakHessianOn_sqWeightedMeasure_oneLevel_tail_originCube
     have htail : {x | eps * level / 2 < ‖(hilbertifyVecField datum) x‖} =
         {x | eps * level / 2 < ‖FR x‖} := by
       ext x
-      simp only [Set.mem_setOf_eq]
+      simp only [Set.mem_ofPred_eq]
       rw [hnorm x]
     have hindicator' :
         sqWeightedMeasure
@@ -549,7 +553,7 @@ theorem exists_hasWeakHessianOn_sqWeightedMeasure_oneLevel_tail_originCube
               ({x | eps * level / 2 < ‖F x‖} ∩ Q))) := by
       apply mul_le_mul_right
       apply add_le_add
-      · simpa only [U, Q, row, hilbertifyVecField] using hself
+      · simpa only [U, Q, row, hilbertifyVecField] using! hself
       · exact mul_le_mul_right hdatumTail _
     _ = ((3 : ℝ≥0∞) ^ d) * oneStoppingBallCoefficient depth G *
         (ENNReal.ofReal ((M / 2) ^ (2 - q.exponent.toReal)) +

@@ -105,7 +105,7 @@ theorem exists_shifted_quenchedLocalizedEstimate_interpolated_expLogSq
       hσ_pos hCfluct hCcrude ha ht
   refine ⟨Cscale, hCscale_pos, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
@@ -280,7 +280,7 @@ theorem exists_aboveEntry_quenchedLocalizedEstimate_interpolated_expLogSq_parame
     positivity
   refine ⟨Ctotal, hCtotal_pos, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
@@ -447,7 +447,7 @@ theorem exists_quenchedLocalizedEstimate_interpolated_expLogSq_parameterAlpha
       hCentryEntry_pos
   refine ⟨Cscale, hCscale_pos, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   classical
   let K : ℝ := quenchedProbeEnvelopeConst d
   let S : Finset (NormalizedProbeIndex d) := Finset.univ
@@ -638,7 +638,7 @@ theorem exists_quenchedLocalizedEstimate_interpolated_expLogSq_uniformAnnealedEx
       hCentryEntry_pos
   refine ⟨Cscale, hCscale_pos, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   classical
   let K : ℝ := quenchedProbeEnvelopeConst d
   let S : Finset (NormalizedProbeIndex d) := Finset.univ

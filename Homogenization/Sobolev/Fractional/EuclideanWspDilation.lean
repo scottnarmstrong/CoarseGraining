@@ -80,10 +80,10 @@ private theorem euclideanWspDilation_pair_measure_map {d : ℕ}
   let T := euclideanWspDilationEquiv (d := d) k
   have hnorm := euclideanWspDilation_measurePreserving k Q
   have hcube := euclideanWspDilation_cubeMeasure_map k Q
-  haveI : SFinite (cubeMeasure Q) := by
+  have : SFinite (cubeMeasure Q) := by
     unfold cubeMeasure
     infer_instance
-  haveI : SFinite (cubeMeasure (Book.Ch02.dilateCube k Q)) := by
+  have : SFinite (cubeMeasure (Book.Ch02.dilateCube k Q)) := by
     unfold cubeMeasure
     infer_instance
   change Measure.map (Prod.map T T)
@@ -142,9 +142,9 @@ theorem cubeEuclideanNormalizedLpENorm_dilate {d : ℕ}
   unfold BoundedMeasurableDomain.normalizedLpENorm
   rw [cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
     cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
-  rw [eLpNorm_eq_lintegral_rpow_enorm
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
     (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne,
-    eLpNorm_eq_lintegral_rpow_enorm
+    eLpNorm_eq_lintegral_rpow_enorm_toReal
       (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne]
   congr 1
   rw [MeasurePreserving.lintegral_map_equiv _ T hMP]
@@ -173,7 +173,7 @@ theorem cubeEuclideanWspESeminorm_dilate {d : ℕ}
       fun z => r ^ a • cubeEuclideanWspKernel s p
         (fun x => F (Book.Ch02.dilateVec k x)) z := by
     funext z
-    simpa only [Function.comp_apply, r, a] using cubeEuclideanWspKernel_dilate k s p F z
+    simpa only [Function.comp_apply, r, a] using! cubeEuclideanWspKernel_dilate k s p F z
   rw [cubeEuclideanWspESeminorm,
     euclideanWspDilation_pair_measure_target_eq_smul_map]
   rw [eLpNorm_smul_measure_of_ne_top p.lt_top.ne]
@@ -199,7 +199,6 @@ theorem cubeEuclideanWspESeminorm_dilate {d : ℕ}
           (Gagliardo.gagliardoCubeMeasure Q)
   congr 1
   congr 1
-  change (d : ℝ) * (1 / p.exponent).toReal + a = -s.1
   simp only [one_div, ENNReal.toReal_inv]
   dsimp only [a]
   ring
@@ -231,7 +230,7 @@ theorem memCubeEuclideanWsp_dilate_iff {d : ℕ}
         cubeEuclideanWspKernel s p
           (fun x => F (Book.Ch02.dilateVec k x)) := by
     funext z
-    simpa only [Function.comp_apply] using cubeEuclideanWspKernel_dilate k s p F z
+    simpa only [Function.comp_apply] using! cubeEuclideanWspKernel_dilate k s p F z
   change MemLp (cubeEuclideanWspKernel s p F) p.exponent
       (Gagliardo.gagliardoCubeMeasure (Book.Ch02.dilateCube k Q)) ↔
     MemLp (cubeEuclideanWspKernel s p

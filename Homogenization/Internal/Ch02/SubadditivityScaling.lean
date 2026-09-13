@@ -75,10 +75,15 @@ private noncomputable def coeffOnOfIsEllipticFieldOn {d : ℕ}
     have hentry :
         Measurable fun x : Vec d =>
           restrictCoeffField (U : Set (Vec d)) a x i j := by
+      classical
       have hij := (measurable_pi_iff.1 (measurable_pi_iff.1 hEll.1 i) j)
-      convert hij using 1
-      funext x
-      by_cases hx : x ∈ (U : Set (Vec d)) <;> simp [restrictCoeffField, hx]
+      have heq :
+          (fun x : Vec d => restrictCoeffField (U : Set (Vec d)) a x i j)
+            = fun x : Vec d => if x ∈ U.carrier then a x i j else 0 := by
+        funext x
+        by_cases hx : x ∈ U.carrier <;> simp [restrictCoeffField, hx]
+      rw [heq]
+      exact hij
     exact hentry.aestronglyMeasurable
   aeElliptic := by
     filter_upwards [MeasureTheory.ae_restrict_mem U.measurableSet] with x hx
@@ -91,7 +96,7 @@ private theorem scaled_pointwise_aeeq {d : ℕ} (U : Domain d)
       fun x => c • ap.toCoeffField x := by
   intro ap
   have hap : ap.toCoeffField =ᵐ[volumeMeasureOn (U : Set (Vec d))] a.toCoeffField := by
-    simpa [ap] using pointwiseCoeffOn_ae_eq U a
+    simpa [ap] using! pointwiseCoeffOn_ae_eq U a
   exact hscaled.trans <| hap.symm.mono fun x hx => by
     simp [hx]
 
@@ -108,7 +113,7 @@ private theorem responseJ_homogeneous_public {d : ℕ}
     coeffOnOfIsEllipticFieldOn U (c • ap.toCoeffField)
       (isEllipticFieldOn_smul hc hEllAp)
   have hbcap : CoeffOn.AEEq b cap := by
-    simpa [cap] using scaled_pointwise_aeeq U a b hscaled
+    simpa [cap] using! scaled_pointwise_aeeq U a b hscaled
   have hapa : CoeffOn.AEEq ap a := by
     simpa [ap] using pointwiseCoeffOn_ae_eq U a
   calc
@@ -179,7 +184,7 @@ private theorem coarse_matrices_homogeneous_public_of_neZero {d : ℕ} [NeZero d
     coeffOnOfIsEllipticFieldOn U (c • ap.toCoeffField)
       (isEllipticFieldOn_smul hc hEllAp)
   have hbcap : CoeffOn.AEEq b cap := by
-    simpa [cap] using scaled_pointwise_aeeq U a b hscaled
+    simpa [cap] using! scaled_pointwise_aeeq U a b hscaled
   have hapa : CoeffOn.AEEq ap a := by
     simpa [ap] using pointwiseCoeffOn_ae_eq U a
   rcases oldCanonicalData_of_pointwiseCoeffOn U a with
@@ -193,7 +198,7 @@ private theorem coarse_matrices_homogeneous_public_of_neZero {d : ℕ} [NeZero d
       Book.Ch02.sigmaCoarse U b =
           Book.Ch02.sigmaCoarse U cap := sigmaCoarse_eq_ofAEEq hbcap
       _ = Homogenization.sigmaCoarse (U : Set (Vec d)) (c • ap.toCoeffField) := by
-            simpa [cap] using book_sigmaCoarse_eq_sigmaCoarse U cap
+            simpa [cap] using! book_sigmaCoarse_eq_sigmaCoarse U cap
       _ = c • Homogenization.sigmaCoarse (U : Set (Vec d)) ap.toCoeffField :=
             hSigmaOld
       _ = c • Book.Ch02.sigmaCoarse U ap := by
@@ -204,7 +209,7 @@ private theorem coarse_matrices_homogeneous_public_of_neZero {d : ℕ} [NeZero d
       Book.Ch02.sigmaStarCoarse U b =
           Book.Ch02.sigmaStarCoarse U cap := sigmaStarCoarse_eq_ofAEEq hbcap
       _ = Homogenization.sigmaStarCoarse (U : Set (Vec d)) (c • ap.toCoeffField) := by
-            simpa [cap] using book_sigmaStarCoarse_eq_sigmaStarCoarse U cap
+            simpa [cap] using! book_sigmaStarCoarse_eq_sigmaStarCoarse U cap
       _ = c • Homogenization.sigmaStarCoarse (U : Set (Vec d)) ap.toCoeffField :=
             hStarOld
       _ = c • Book.Ch02.sigmaStarCoarse U ap := by
@@ -215,7 +220,7 @@ private theorem coarse_matrices_homogeneous_public_of_neZero {d : ℕ} [NeZero d
       Book.Ch02.kappaCoarse U b =
           Book.Ch02.kappaCoarse U cap := kappaCoarse_eq_ofAEEq hbcap
       _ = Homogenization.kappaCoarse (U : Set (Vec d)) (c • ap.toCoeffField) := by
-            simpa [cap] using book_kappaCoarse_eq_kappaCoarse U cap
+            simpa [cap] using! book_kappaCoarse_eq_kappaCoarse U cap
       _ = c • Homogenization.kappaCoarse (U : Set (Vec d)) ap.toCoeffField :=
             hKappaOld
       _ = c • Book.Ch02.kappaCoarse U ap := by
@@ -232,7 +237,7 @@ private theorem coarse_matrices_homogeneous_public {d : ℕ}
   by_cases hd : d = 0
   · subst d
     refine ⟨Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _⟩
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     exact coarse_matrices_homogeneous_public_of_neZero U a hc hscaled
 
 private theorem responseJ_subadditive_public {d : ℕ}
@@ -244,7 +249,7 @@ private theorem responseJ_subadditive_public {d : ℕ}
           P.weightedAverage fun i => responseJ (P.cell i) (aCell i) p q := by
   intro P aCell hCell p q
   classical
-  letI : Fintype P.Cell := P.instFintype
+  let : Fintype P.Cell := P.instFintype
   rcases P.triadic_realization with ⟨root, depth, hU, e, hcell⟩
   let ap : CoeffOn U := pointwiseCoeffOn U a
   have hEllAp :
@@ -287,9 +292,9 @@ private theorem responseJ_subadditive_public {d : ℕ}
     have hapaCell :
         ap.toCoeffField =ᵐ[volumeMeasureOn (P.cell i : Set (Vec d))]
           a.toCoeffField := by
-      simpa [volumeMeasureOn] using
+      simpa [volumeMeasureOn] using!
         (MeasureTheory.ae_restrict_of_ae_restrict_of_subset hsub
-          (by simpa [volumeMeasureOn, ap] using pointwiseCoeffOn_ae_eq U a))
+          (by simpa [volumeMeasureOn, ap] using! pointwiseCoeffOn_ae_eq U a))
     have hAPCell : CoeffOn.AEEq apCell (aCell i) := by
       exact hapaCell.trans (hCell i).symm
     calc

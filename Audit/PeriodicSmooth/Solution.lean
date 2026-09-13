@@ -231,7 +231,7 @@ private theorem locallyL2_eq_repo {d : ℕ} (Q : TriadicCube d) (φ : Vec d → 
       simpa [toRepoCube_ofRepoCube] using hR
     have := h j (ofRepoCube R) hR'
     rw [_root_.Homogenization.cubeBesovConjExponent, conjExponent_two]
-    simpa [toRepoCube_ofRepoCube] using this
+    simpa [toRepoCube_ofRepoCube] using! this
   · intro h j R hR
     have hR' := h j (toRepoCube R) ((mem_descendants_toRepo Q R j).2 hR)
     rw [_root_.Homogenization.cubeBesovConjExponent, conjExponent_two] at hR'
@@ -400,7 +400,7 @@ private def fieldEquiv (d : ℕ) :
 private theorem dirac_eq_map_ofRepoField {d : ℕ} (a₀ : CoefficientField d) :
     (Measure.dirac a₀ : Measure (CoefficientField d)) =
       Measure.map (ofRepoField (d := d)) (Measure.dirac (toRepoField a₀)) := by
-  rw [Measure.map_dirac measurable_ofRepoField, ofRepoField_toRepoField]
+  rw [Measure.map_dirac' measurable_ofRepoField, ofRepoField_toRepoField]
 
 private theorem ae_dirac_iff_repo {d : ℕ} (a₀ : CoefficientField d)
     {p : CoefficientField d → Prop} :

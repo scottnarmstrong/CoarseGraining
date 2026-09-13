@@ -58,7 +58,7 @@ theorem aestronglyMeasurable_applyFn (M : PointwiseHilbertBlockOperatorField U)
     ContinuousLinearMap.flip (ContinuousLinearMap.apply ℝ (HilbertBlockVec d))
   have hfield := M.measurable_field.aestronglyMeasurable (μ := volumeMeasureOn U)
   have hF := MeasureTheory.Lp.aestronglyMeasurable (μ := volumeMeasureOn U) F
-  simpa [applyFn, evalCLM] using
+  simpa [applyFn, evalCLM] using!
     ContinuousLinearMap.aestronglyMeasurable_comp₂ (L := evalCLM) hfield hF
 
 theorem memHilbertBlockL2_applyFn (M : PointwiseHilbertBlockOperatorField U)
@@ -233,7 +233,7 @@ theorem measurable_fullEntriesToHilbertOperator {d : ℕ} {α : Type*}
 theorem measurable_matrix_transpose_entry {d : ℕ} {α : Type*} [MeasurableSpace α]
     {A : α → Fin d → Fin d → ℝ} (hA : Measurable A) (i j : Fin d) :
     Measurable (fun x => matTranspose (A x) i j) := by
-  simpa [matTranspose] using (measurable_pi_iff.1 (measurable_pi_iff.1 hA j) i)
+  simpa [matTranspose] using! (measurable_pi_iff.1 (measurable_pi_iff.1 hA j) i)
 
 theorem measurable_symmPart_entry {d : ℕ} {α : Type*} [MeasurableSpace α]
     {A : α → Fin d → Fin d → ℝ} (hA : Measurable A) (i j : Fin d) :

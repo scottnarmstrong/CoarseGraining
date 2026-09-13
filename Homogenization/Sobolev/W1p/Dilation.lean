@@ -51,7 +51,7 @@ noncomputable def dilate {a : ℝ} (ha : 0 < a)
   · intro i φ hφ hφ_supp hφ_sub
     let ψ : Vec d → ℝ := fun y => φ (a • y)
     have hψ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-      simpa [ψ] using hφ.comp (contDiff_const_smul a)
+      simpa [ψ] using! hφ.comp (contDiff_const_smul a)
     have hψ_supp : HasCompactSupport ψ := by
       show HasCompactSupport (φ ∘ Homeomorph.smulOfNeZero a ha_ne)
       simpa [ψ, Function.comp] using
@@ -178,7 +178,7 @@ noncomputable def unscale {a : ℝ} (ha : 0 < a)
   · intro i φ hφ hφ_supp hφ_sub
     let ψ : Vec d → ℝ := fun y => φ (a⁻¹ • y)
     have hψ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-      simpa [ψ] using hφ.comp (contDiff_const_smul a⁻¹)
+      simpa [ψ] using! hφ.comp (contDiff_const_smul a⁻¹)
     have hψ_supp : HasCompactSupport ψ := by
       show HasCompactSupport (φ ∘ Homeomorph.smulOfNeZero a⁻¹ (inv_ne_zero ha.ne'))
       simpa [ψ, Function.comp] using
@@ -332,7 +332,7 @@ theorem eLpNorm_unscale_toFun {a : ℝ} (ha : 0 < a) (hp_top : p ≠ ∞)
     MeasureTheory.eLpNorm (u.unscale ha).toFun p (volumeMeasureOn U) =
       ENNReal.ofReal ((a ^ d)⁻¹) ^ (1 / p).toReal *
         MeasureTheory.eLpNorm u.toFun p (volumeMeasureOn (a • U)) := by
-  simpa using eLpNorm_comp_smul_eq (U := U) (p := p) ha hp_top
+  simpa using! eLpNorm_comp_smul_eq (U := U) (p := p) ha hp_top
     u.memLp.aestronglyMeasurable
 
 /-- The scalar value `L^p` seminorm under pullback by positive dilation. -/
@@ -501,7 +501,7 @@ theorem eLpNorm_dilate_toFun {a : ℝ} (ha : 0 < a) (hp_top : p ≠ ∞)
     MeasureTheory.eLpNorm (u.dilate ha).toFun p (volumeMeasureOn (a • U)) =
       ENNReal.ofReal (((a⁻¹) ^ d)⁻¹) ^ (1 / p).toReal *
         MeasureTheory.eLpNorm u.toFun p (volumeMeasureOn U) := by
-  simpa using eLpNorm_comp_dilate_eq (U := U) (p := p) ha hp_top
+  simpa using! eLpNorm_comp_dilate_eq (U := U) (p := p) ha hp_top
     u.memLp.aestronglyMeasurable
 
 /-- The scalar value `L^p` seminorm under positive dilation. -/

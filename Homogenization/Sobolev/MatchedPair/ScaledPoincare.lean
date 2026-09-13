@@ -126,7 +126,7 @@ noncomputable def axisCubeMeanZeroCoerciveEstimate
 theorem axisCubeMeanZeroCoerciveEstimate_constant
     (z : Homogenization.Vec d) {L : ℝ} (hL : 0 < L) :
     (axisCubeMeanZeroCoerciveEstimate z hL).constant = L * unitMeanZeroPoincareConst d := by
-  letI : MeasureTheory.IsFiniteMeasure
+  let : MeasureTheory.IsFiniteMeasure
       (volumeMeasureOn (L • axisCube (0 : Homogenization.Vec d) 1)) := by
     rw [smul_axisCube_zero_one L hL]
     exact isFiniteMeasure_volumeMeasureOn_axisCube 0 L
@@ -218,7 +218,7 @@ theorem norm_toScalarL2_untranslate_eq {U : Set (Homogenization.Vec d)} (z : Hom
   have hμ := measurePreserving_addRight_restrict_translateSet (d := d) z U
   have hcomp := MeasureTheory.eLpNorm_comp_measurePreserving
     (g := u.toFun) (p := (2 : ℝ≥0∞)) u.memL2.aestronglyMeasurable hμ
-  simpa [H1Function.untranslate_toFun, Function.comp, volumeMeasureOn] using hcomp
+  simpa [H1Function.untranslate_toFun, Function.comp, volumeMeasureOn] using! hcomp
 
 /-- Translation preserves the coordinate-sum gradient `L²` norm. -/
 theorem gradientCoordL2NormSum_untranslate_eq {U : Set (Homogenization.Vec d)}
@@ -233,7 +233,7 @@ theorem gradientCoordL2NormSum_untranslate_eq {U : Set (Homogenization.Vec d)}
   have hcomp := MeasureTheory.eLpNorm_comp_measurePreserving
     (g := fun x => u.grad x i) (p := (2 : ℝ≥0∞))
     (u.gradMemL2 i).aestronglyMeasurable hμ
-  simpa [H1Function.untranslate_grad, Function.comp, volumeMeasureOn] using hcomp
+  simpa [H1Function.untranslate_grad, Function.comp, volumeMeasureOn] using! hcomp
 
 /-- Rewriting the domain along a set equality preserves the `L²` value norm. -/
 theorem norm_toScalarL2_h10_congr {U V : Set (Homogenization.Vec d)}

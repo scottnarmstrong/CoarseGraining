@@ -103,32 +103,30 @@ noncomputable def toBlockL2 {d : ℕ} {U : Set (Vec d)} {F : Vec d → BlockVec 
 /-- Extract `L²` control of the first block component from block `L²` control. -/
 theorem memVectorL2_fst_of_memBlockL2 {d : ℕ} {U : Set (Vec d)}
     {F : Vec d → BlockVec d} (hF : MemBlockL2 U F) :
-    MemVectorL2 U (fun x => (F x).1) := by
-  simpa [MemVectorL2, MemBlockL2, volumeMeasureOn] using
-    (ContinuousLinearMap.fst ℝ (Vec d) (Vec d)).comp_memLp' hF
+    MemVectorL2 U (fun x => (F x).1) :=
+  (ContinuousLinearMap.fst ℝ (Vec d) (Vec d)).comp_memLp' hF
 
 /-- Extract `L²` control of the second block component from block `L²` control. -/
 theorem memVectorL2_snd_of_memBlockL2 {d : ℕ} {U : Set (Vec d)}
     {F : Vec d → BlockVec d} (hF : MemBlockL2 U F) :
-    MemVectorL2 U (fun x => (F x).2) := by
-  simpa [MemVectorL2, MemBlockL2, volumeMeasureOn] using
-    (ContinuousLinearMap.snd ℝ (Vec d) (Vec d)).comp_memLp' hF
+    MemVectorL2 U (fun x => (F x).2) :=
+  (ContinuousLinearMap.snd ℝ (Vec d) (Vec d)).comp_memLp' hF
 
 /-- Reinterpret a plain block `L²` witness as a Hilbert-block `L²` witness. -/
 theorem memHilbertBlockL2_hilbertifyBlockField {d : ℕ} {U : Set (Vec d)}
     {F : Vec d → BlockVec d} (hF : MemBlockL2 U F) :
-    MemHilbertBlockL2 U (hilbertifyBlockField F) := by
+    MemHilbertBlockL2 U (hilbertifyBlockField F) :=
   let T : BlockVec d →L[ℝ] HilbertBlockVec d :=
     ((HilbertBlockVec.continuousLinearEquivBlockVec d).symm).toContinuousLinearMap
-  simpa [hilbertifyBlockField] using T.comp_memLp' hF
+  T.comp_memLp' hF
 
 /-- Reinterpret a plain vector `L²` witness as a Hilbert-vector `L²` witness. -/
 theorem memHilbertVectorL2_hilbertifyVecField {d : ℕ} {U : Set (Vec d)}
     {f : Vec d → Vec d} (hf : MemVectorL2 U f) :
-    MemHilbertVectorL2 U (hilbertifyVecField f) := by
+    MemHilbertVectorL2 U (hilbertifyVecField f) :=
   let T : Vec d →L[ℝ] HilbertVec d :=
     ((HilbertVec.continuousLinearEquivVec d).symm).toContinuousLinearMap
-  simpa [hilbertifyVecField] using T.comp_memLp' hf
+  T.comp_memLp' hf
 
 /-- Promote a Hilbert-vector `MemLp` witness to the ambient `HilbertVectorL2`
 type. -/
@@ -336,8 +334,7 @@ theorem toHilbertVectorL2OfVecField_sub {f g : Vec d → Vec d}
     memHilbertVectorL2_hilbertifyVecField hf
   let hgH : MemHilbertVectorL2 U (hilbertifyVecField g) :=
     memHilbertVectorL2_hilbertifyVecField hg
-  simpa [toHilbertVectorL2OfVecField, hilbertifyVecField, sub_eq_add_neg] using
-    MeasureTheory.MemLp.toLp_sub hfH hgH
+  exact MeasureTheory.MemLp.toLp_sub hfH hgH
 
 theorem toHilbertVectorL2OfVecField_add {f g : Vec d → Vec d}
     (hf : MemVectorL2 U f) (hg : MemVectorL2 U g) :
@@ -347,8 +344,7 @@ theorem toHilbertVectorL2OfVecField_add {f g : Vec d → Vec d}
     memHilbertVectorL2_hilbertifyVecField hf
   let hgH : MemHilbertVectorL2 U (hilbertifyVecField g) :=
     memHilbertVectorL2_hilbertifyVecField hg
-  simpa [toHilbertVectorL2OfVecField, hilbertifyVecField] using
-    MeasureTheory.MemLp.toLp_add hfH hgH
+  exact MeasureTheory.MemLp.toLp_add hfH hgH
 
 theorem hilbertVectorL2ToVectorL2_vectorL2ToHilbertVectorL2 (f : VectorL2 U) :
     hilbertVectorL2ToVectorL2 (U := U) (vectorL2ToHilbertVectorL2 (U := U) f) = f := by
@@ -566,10 +562,9 @@ noncomputable def hilbertBlockVecPotentialCLM {d : ℕ} :
     HilbertBlockVec d →L[ℝ] HilbertVec d where
   toLinearMap :=
     PiLp.projₗ (2 : ENNReal) (𝕜 := ℝ) (β := fun _ : Fin 2 => HilbertVec d) 0
-  cont := by
-    simpa [HilbertBlockVec.potential] using
-      (PiLp.continuous_apply (p := (2 : ENNReal))
-        (β := fun _ : Fin 2 => HilbertVec d) (0 : Fin 2))
+  cont :=
+    PiLp.continuous_apply (p := (2 : ENNReal))
+      (β := fun _ : Fin 2 => HilbertVec d) (0 : Fin 2)
 
 /-- Continuous linear projection from a Hilbert block vector to its flux
 component. -/
@@ -577,10 +572,9 @@ noncomputable def hilbertBlockVecFluxCLM {d : ℕ} :
     HilbertBlockVec d →L[ℝ] HilbertVec d where
   toLinearMap :=
     PiLp.projₗ (2 : ENNReal) (𝕜 := ℝ) (β := fun _ : Fin 2 => HilbertVec d) 1
-  cont := by
-    simpa [HilbertBlockVec.flux] using
-      (PiLp.continuous_apply (p := (2 : ENNReal))
-        (β := fun _ : Fin 2 => HilbertVec d) (1 : Fin 2))
+  cont :=
+    PiLp.continuous_apply (p := (2 : ENNReal))
+      (β := fun _ : Fin 2 => HilbertVec d) (1 : Fin 2)
 
 @[simp] theorem hilbertBlockVecPotentialCLM_apply {d : ℕ} (X : HilbertBlockVec d) :
     hilbertBlockVecPotentialCLM X = X.potential :=

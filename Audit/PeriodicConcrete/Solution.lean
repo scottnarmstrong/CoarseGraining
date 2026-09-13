@@ -224,7 +224,7 @@ private theorem locallyL2OnDescendants_toRepo {d : ℕ} (Q : TriadicCube d)
       simpa [toRepo_ofRepoCube] using hR
     have hAudit := h j (ofRepoCube R) hR'
     rw [_root_.Homogenization.cubeBesovConjExponent, conj_two]
-    simpa [toRepo_ofRepoCube] using hAudit
+    simpa [toRepo_ofRepoCube] using! hAudit
 
 private theorem isDualTest_toRepo {d : ℕ} (Q : TriadicCube d) (φ : Vec d → ℝ) :
     _root_.Homogenization.CubeBesovDualFullTest (toRepoCube Q) comparisonS
@@ -617,7 +617,7 @@ theorem periodicConcrete_comparison
   -- The Dirac law of the audit carrier pushes forward to the repository law.
   have hmap : Measure.map (toRepoReg (d := d)) (periodicLaw d) =
       Measure.dirac (_root_.Homogenization.Examples.Periodic.mFieldReg (d := d)) := by
-    rw [periodicLaw, Measure.map_dirac measurable_toRepoReg, toRepoReg_periodicField]
+    rw [periodicLaw, Measure.map_dirac' measurable_toRepoReg, toRepoReg_periodicField]
   refine ⟨sigmaBar, hsigma, fun a => X (toRepoReg a), ?_, ?_⟩
   · -- The minimal-scale package transports along the pushforward.
     obtain ⟨hXone, hXtail⟩ := hX

@@ -81,7 +81,7 @@ theorem upperTwoBetaFactorPowerIntegrableAtScale_from_P4
         (Ch04.LambdaSqCoeffField (originCube d (m : ℤ))
           (hP4.sUpper + 2 * section53CoarseFluctuationBeta hP4) (.finite 1) a) ^
           hP4.xi) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let rUpper := hP4.sUpper + 2 * section53CoarseFluctuationBeta hP4
   let X : RegCoeffField d → ℝ := fun a =>
     Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) rUpper (.finite 1) a
@@ -131,7 +131,7 @@ theorem lowerTwoBetaFactorPowerIntegrableAtScale_from_P4
         ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ))
           (hP4.sLower + 2 * section53CoarseFluctuationBeta hP4) (.finite 1) a)⁻¹) ^
           hP4.xi) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let rLower := hP4.sLower + 2 * section53CoarseFluctuationBeta hP4
   let X : RegCoeffField d → ℝ := fun a =>
     (Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹
@@ -415,7 +415,7 @@ theorem twoBetaShiftedWidetildeThetaAtScale_shifted_bound_homogenizationScale
   have hxi_k : hP4k.xi = xi := by
     simpa [hP4k, QuantitativeCoarseGrainedEllipticity.scaleNormalized] using hxi
   have hβ_k : section53CoarseFluctuationBeta hP4k = β := by
-    simpa [hP4k, QuantitativeCoarseGrainedEllipticity.scaleNormalized] using hβeq
+    simpa [hP4k, QuantitativeCoarseGrainedEllipticity.scaleNormalized] using! hβeq
   have hbound := hC hPk hStructPk hP4k hxi_k hβ_k m
   have htwo :
       shiftedWidetildeThetaAtScale Pk (m : ℤ) hP4k (2 * β) =

@@ -36,7 +36,7 @@ theorem integral_finsetSup_abs_pow_rpow_inv_le_card_rpow_mul
     exact Nat.pos_iff_ne_zero.mp (lt_of_lt_of_le zero_lt_one hp)
   have hsum_int :
       Integrable (fun ω => ∑ i ∈ s, |X i ω| ^ p) μ :=
-    MeasureTheory.integrable_finset_sum s hX_int
+    MeasureTheory.integrable_finsetSum s hX_int
   have hsup_aemeas :
       AEMeasurable (fun ω => s.sup' hs (fun i => |X i ω|)) μ := by
     have h :
@@ -107,7 +107,7 @@ theorem integral_finsetSup_abs_pow_rpow_inv_le_card_rpow_mul
             exact Finset.single_le_sum
               (f := fun j => |X j ω| ^ p) (fun j _ => by positivity) hi
       _ = ∑ i ∈ s, ∫ ω, |X i ω| ^ p ∂μ := by
-        simpa using integral_finset_sum (μ := μ) s hX_int
+        simpa using integral_finsetSum (μ := μ) s hX_int
   have hsum_le :
       ∑ i ∈ s, ∫ ω, |X i ω| ^ p ∂μ ≤ (s.card : ℝ) * K ^ p := by
     calc
@@ -343,7 +343,7 @@ theorem integral_abs_restrictionCenteredDescendantAverage_le_of_restrictionUnitR
             Real.sqrt ((descendantsAtScale (originCube d m) n).card : ℝ) * K) := by
   let X0 : RegCoeffField d → ℝ := restrictionCenteredOriginObservable P n X
   have hX0c_aemeas : AEMeasurable X0 P := by
-    simpa [X0, restrictionCenteredOriginObservable] using hX0_aemeas.sub measurable_const.aemeasurable
+    simpa [X0, restrictionCenteredOriginObservable] using! hX0_aemeas.sub measurable_const.aemeasurable
   have hX0_two_int :
       Integrable (fun a => |X0 a| ^ (2 : ℕ)) P := by
     have hξ_ne_zero : ξ ≠ 0 := by omega

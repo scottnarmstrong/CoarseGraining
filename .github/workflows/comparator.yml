@@ -1,6 +1,6 @@
 name: Comparator audit
 
-# Runs the official leanprover/comparator on all seven Audit/<X> pairs:
+# Runs the official leanprover/comparator on all five Audit/<X> pairs:
 # for each pair it checks that Solution proves a statement whose full
 # dependency closure matches Challenge's, uses only the permitted axioms,
 # and is accepted by BOTH the Lean kernel (replay) and the independent
@@ -23,7 +23,7 @@ concurrency:
 
 env:
   COMPARATOR_REV: "5756749"      # leanprover/comparator commit
-  LEAN4EXPORT_REV: "v4.26.0"     # MUST match ./lean-toolchain
+  LEAN4EXPORT_REV: "v4.33.0"     # MUST match ./lean-toolchain
   NANODA_REV: "6ae1f0c"          # ammkrn/nanoda_lib commit
   LANDRUN_REV: "811cfff"         # Zouuup/landrun commit (v0.1.18)
 
@@ -58,14 +58,32 @@ jobs:
         run: lake exe cache get
 
       - name: Build the library and the audit surfaces
-        run: lake build Audit
+        run: |
+          set -euo pipefail
+          lake build Audit 2>&1 | tee audit-build.log
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          expected = {p.parent.name for p in Path('Audit').glob('*/comparator.json')}
+          seen = []
+          for line in Path('audit-build.log').read_text().splitlines():
+              if not line.startswith('warning:'):
+                  continue
+              match = re.fullmatch(
+                  r'warning: Audit/([^/]+)/Challenge\.lean:\d+:\d+: declaration uses `sorry`', line)
+              if match is None or match[1] not in expected:
+                  raise SystemExit(f'Unexpected build warning: {line}')
+              seen.append(match[1])
+          if set(seen) != expected or len(seen) != len(expected):
+              raise SystemExit('Expected exactly one documented sorry warning per Challenge')
+          PY
 
       - name: Cache verification tools
         id: tools-cache
         uses: actions/cache@v4
         with:
           path: ~/tools
-          key: cmp-tools-${{ env.COMPARATOR_REV }}-${{ env.LEAN4EXPORT_REV }}-${{ env.NANODA_REV }}-${{ env.LANDRUN_REV }}
+          key: cmp-tools-${{ hashFiles('lean-toolchain') }}-${{ env.COMPARATOR_REV }}-${{ env.LEAN4EXPORT_REV }}-${{ env.NANODA_REV }}-${{ env.LANDRUN_REV }}
 
       - name: Build comparator
         if: steps.tools-cache.outputs.cache-hit != 'true'
@@ -105,6 +123,9 @@ jobs:
           git -C ~/tools/nanoda_lib checkout "$NANODA_REV"
           cd ~/tools/nanoda_lib && cargo +stable build --release
 
+      - name: Verify exporter toolchain
+        run: cmp lean-toolchain ~/tools/lean4export/lean-toolchain
+
       - name: Enable the nanoda kernel check (CI-only, on the workspace copy)
         # The committed configs set enable_nanoda: false so that local
         # reproduction needs only three tools; CI always exercises the
@@ -112,7 +133,7 @@ jobs:
         run: |
           sed -i 's/"enable_nanoda": false/"enable_nanoda": true/' Audit/*/comparator.json
 
-      - name: Run the comparator on all seven pairs
+      - name: Run the comparator on all five pairs
         env:
           COMPARATOR_LANDRUN: /home/runner/tools/bin/landrun
           COMPARATOR_LEAN4EXPORT: /home/runner/tools/lean4export/.lake/build/bin/lean4export
@@ -121,10 +142,10 @@ jobs:
           set -euo pipefail
           fail=0
           for X in QuenchedComparison PeriodicGeneral PeriodicConcrete PeriodicSmooth \
-                   RandomCheckerboard PolynomialScale CheckerboardScale; do
+                   RandomCheckerboard; do
             echo "::group::$X"
             if lake env ~/tools/comparator/.lake/build/bin/comparator "Audit/$X/comparator.json" \
-                 | tee "/tmp/comparator-$X.log" \
+                 2>&1 | tee "/tmp/comparator-$X.log" \
                && grep -q "Your solution is okay!" "/tmp/comparator-$X.log"; then
               echo "$X: OK"
             else

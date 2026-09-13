@@ -76,7 +76,7 @@ private theorem euclideanWspTranslation_pair_measurePreserving {d : ℕ}
       exact (measurePreserving_add_right volume _).map_eq
     rw [cubeMeasure, cubeMeasure, ← hpre, ← Measure.restrict_map T.measurable
       (measurableSet_cubeSet (translateCube shift Q)), hmapT]
-  haveI : SFinite (cubeMeasure Q) := by
+  have : SFinite (cubeMeasure Q) := by
     unfold cubeMeasure
     infer_instance
   refine ⟨(T.prodCongr T).measurable, ?_⟩
@@ -115,9 +115,9 @@ theorem cubeEuclideanNormalizedLpENorm_translate {d : ℕ}
   unfold BoundedMeasurableDomain.normalizedLpENorm
   rw [cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
     cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
-  rw [eLpNorm_eq_lintegral_rpow_enorm
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
     (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne,
-    eLpNorm_eq_lintegral_rpow_enorm
+    eLpNorm_eq_lintegral_rpow_enorm_toReal
       (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne]
   congr 1
   rw [MeasurePreserving.lintegral_map_equiv _ T hMP]

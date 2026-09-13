@@ -313,7 +313,7 @@ theorem measureReal_shiftedBadPairEvent_quenchedProbeEnvelope_le_soft_two_branch
   dsimp only
   intro hnm hqm
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let x : ℝ :=
     αbad * ((m - q : ℕ) : ℝ) - t * ((m - n : ℕ) : ℝ)

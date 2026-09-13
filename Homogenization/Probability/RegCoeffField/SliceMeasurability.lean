@@ -111,7 +111,7 @@ theorem setOf_aeRestrict_isEllipticMatrix_eq_slicePart {U : Set (Vec d)} (hUopen
     {a : RegCoeffField d | ∀ᵐ x ∂(volume.restrict U), IsEllipticMatrix lam Lam (a x)}
       = slicePart U lam Lam := by
   ext a
-  simp only [slicePart, Set.mem_setOf_eq, Set.mem_iInter]
+  simp only [slicePart, Set.mem_ofPred_eq, Set.mem_iInter]
   exact aeRestrict_isEllipticMatrix_iff_forall_ratBall hUopen lam Lam a
 
 /-! ## The free conjuncts of the AEE slice on the carrier -/
@@ -163,7 +163,7 @@ theorem measurableSet_localSigmaR_aeeSlice (Q : TriadicCube d) (k : ℕ) :
         = {a : RegCoeffField d |
             ∀ᵐ x ∂(volume.restrict (openCubeSet Q)), IsEllipticMatrix lam Lam (a x)} := by
     ext a
-    simp only [Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq]
     rw [aeeQuantitativeEllipticSlice_carrier_iff (cubeSet Q) (measurableSet_cubeSet Q) k a]
     show (∀ᵐ x ∂(volume.restrict (cubeSet Q)), IsEllipticMatrix lam Lam (a x)) ↔ _
     exact ae_restrict_cubeSet_iff

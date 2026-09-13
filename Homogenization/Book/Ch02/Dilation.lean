@@ -324,16 +324,20 @@ noncomputable def dilate {d : ℕ} {k : ℤ} {Q : TriadicCube d}
             IsSolenoidalOn.dilateSet hs hset u.isHarmonic.2
         refine IsSolenoidalOn.congr_ae ?_ hsolPull
         exact hCoeff.coeff_ae_eq.mono fun x hx => by
-          simp [sourceFlux, vH1, s, undilateVec, dilateCoeffField, hx] }
+          simp only [sourceFlux, vH1, s, undilateVec, dilateCoeffField, hx]
+          rfl }
   exact
     { toSolution := v
       isDilation :=
         { value_ae_eq := Filter.Eventually.of_forall fun x => by
-            simp [v, vH1, s, undilateVec]
+            simp only [v, vH1, s, undilateVec]
+            rfl
           grad_ae_eq := Filter.Eventually.of_forall fun x => by
-            simp [v, vH1, s, undilateVec]
+            simp only [v, vH1, s, undilateVec]
+            rfl
           flux_ae_eq := hCoeff.coeff_ae_eq.mono fun x hx => by
-            simp [v, vH1, s, undilateVec, dilateCoeffField, hx] } }
+            simp only [v, vH1, s, undilateVec, dilateCoeffField, hx]
+            rfl } }
 
 /-- Inverse transport for a dilated public solution.  This is used to show
 that dilation identifies the whole response value set, not just one chosen
@@ -372,8 +376,21 @@ noncomputable def undilate {d : ℕ} {k : ℤ} {Q : TriadicCube d}
                 matVecMul (dilateCoeffField k a.toCoeffField (s • y))
                   (v.toH1.grad (s • y))) :=
           IsSolenoidalOn.undilateSet hs hset htarget
-        simpa [wH1, s, dilateCoeffField, undilateVec, smul_smul,
-          triadicDilationFactor_ne_zero k] using hpull }
+        have hfun :
+            (fun x : Vec d => matVecMul (a.toCoeffField x) (wH1.grad x)) =
+              fun y =>
+                matVecMul (dilateCoeffField k a.toCoeffField (s • y))
+                  (v.toH1.grad (s • y)) := by
+          funext y
+          have hcoeff : a.toCoeffField y = dilateCoeffField k a.toCoeffField (s • y) := by
+            simp only [dilateCoeffField, undilateVec, s, smul_smul,
+              inv_mul_cancel₀ (triadicDilationFactor_ne_zero k), one_smul]
+          have hgrad : wH1.grad y = v.toH1.grad (s • y) := by
+            simp only [wH1]
+            exact H1Function.undilateSet_grad hs hset v.toH1 y
+          rw [hcoeff, hgrad]
+        rw [hfun]
+        exact hpull }
 
 theorem undilate_isDilation {d : ℕ} {k : ℤ} {Q : TriadicCube d}
     {a : CoeffOn (cubeDomain Q)}
@@ -382,14 +399,39 @@ theorem undilate_isDilation {d : ℕ} {k : ℤ} {Q : TriadicCube d}
     (v : Solution (cubeDomain (dilateCube k Q)) b) :
     IsCubeDilation hCoeff (undilate hCoeff v) v := by
   let s : ℝ := triadicDilationFactor k
+  have hs : 0 < s := triadicDilationFactor_pos k
+  have hset :
+      ((cubeDomain (dilateCube k Q) : Domain d) : Set (Vec d)) =
+        s • ((cubeDomain Q : Domain d) : Set (Vec d)) := by
+    simpa [s, cubeDomain_coe] using openCubeSet_dilateCube k Q
+  have hToH1 : (undilate hCoeff v).toH1 = v.toH1.undilateSet hs hset := rfl
+  have hgrad : ∀ x : Vec d, (undilate hCoeff v).toH1.grad x = v.toH1.grad (s • x) := by
+    intro x
+    rw [hToH1]
+    exact H1Function.undilateSet_grad hs hset v.toH1 x
+  have hval : ∀ x : Vec d,
+      (undilate hCoeff v).toH1.toFun x = s⁻¹ * v.toH1.toFun (s • x) := by
+    intro x
+    rw [hToH1]
+    exact H1Function.undilateSet_toFun hs hset v.toH1 x
+  have hcancel_smul : ∀ x : Vec d, s • (s⁻¹ • x) = x := by
+    intro x
+    rw [smul_smul, mul_inv_cancel₀ (triadicDilationFactor_ne_zero k), one_smul]
+  have hcancel_mul : ∀ t : ℝ, s * (s⁻¹ * t) = t := by
+    intro t
+    rw [← mul_assoc, mul_inv_cancel₀ (triadicDilationFactor_ne_zero k), one_mul]
   refine
-    { value_ae_eq := Filter.Eventually.of_forall fun x => by
-        simp [undilate, undilateVec, smul_smul, triadicDilationFactor_ne_zero k]
-      grad_ae_eq := Filter.Eventually.of_forall fun x => by
-        simp [undilate, undilateVec, smul_smul, triadicDilationFactor_ne_zero k]
-      flux_ae_eq := hCoeff.coeff_ae_eq.mono fun x hx => by
-        simp [undilate, undilateVec, dilateCoeffField, smul_smul,
-          triadicDilationFactor_ne_zero k, hx] }
+    { value_ae_eq := Filter.Eventually.of_forall fun x => ?_
+      grad_ae_eq := Filter.Eventually.of_forall fun x => ?_
+      flux_ae_eq := hCoeff.coeff_ae_eq.mono fun x hx => ?_ }
+  · show v.toH1.toFun x = s * (undilate hCoeff v).toH1.toFun (s⁻¹ • x)
+    rw [hval (s⁻¹ • x), hcancel_smul x, hcancel_mul (v.toH1.toFun x)]
+  · show v.toH1.grad x = (undilate hCoeff v).toH1.grad (s⁻¹ • x)
+    rw [hgrad (s⁻¹ • x), hcancel_smul x]
+  · have hx' : b.toCoeffField x = a.toCoeffField (s⁻¹ • x) := hx
+    show matVecMul (b.toCoeffField x) (v.toH1.grad x) =
+        matVecMul (a.toCoeffField (s⁻¹ • x)) ((undilate hCoeff v).toH1.grad (s⁻¹ • x))
+    rw [hx', hgrad (s⁻¹ • x), hcancel_smul x]
 
 theorem CubeDilation.is_solution {d : ℕ} {k : ℤ} {Q : TriadicCube d}
     {a : CoeffOn (cubeDomain Q)}

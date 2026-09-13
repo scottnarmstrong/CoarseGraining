@@ -56,7 +56,7 @@ theorem cubeLpNorm_originCube_comp_addRight_eq_of_memLp {d : ℕ}
       cubeLpNorm Q (2 : ℝ≥0∞) F := by
   unfold cubeLpNorm
   exact congrArg ENNReal.toReal (by
-    simpa [Function.comp] using
+    simpa [Function.comp] using!
       (MeasureTheory.eLpNorm_comp_measurePreserving
         (g := F) (p := (2 : ℝ≥0∞)) hF.aestronglyMeasurable
         (measurePreserving_addRight_normalizedCubeMeasure_originCube Q)))

@@ -102,7 +102,7 @@ theorem eventually_forall_abs_fderiv_unitConvexApproxSequence_apply_basisVec_sub
     ∀ᶠ n : ℕ in Filter.atTop, ∀ ⦃x : Vec d⦄, x ∈ U →
       |(fderiv ℝ (unitConvexApproxSequence u x0 r n) x) (basisVec i) -
           (fderiv ℝ u x) (basisVec i)| ≤ δ := by
-  simpa [unitConvexApproxSequence] using
+  simpa [unitConvexApproxSequence] using!
     (eventually_forall_abs_fderiv_convexApproxSmoothing_apply_basisVec_sub_le_of_contDiff
       hU (isConvexApproxKernel_unitConvexApproxKernel (d := d)) hu hball hr
       tendsto_unitConvexApproxScale_zero
@@ -156,7 +156,7 @@ theorem tendsto_eLpNorm_fderiv_convexApproxSmoothing_apply_basisVec_sub_zero_of_
     (fderiv ℝ (convexApproxSmoothing ρ u x0 r (ε n)) x) (basisVec i) -
       (fderiv ℝ u x) (basisVec i)
   let μ := MeasureTheory.volume.restrict U
-  letI : MeasureTheory.IsFiniteMeasure μ := hU.isFiniteMeasure_restrict_volume
+  let : MeasureTheory.IsFiniteMeasure μ := hU.isFiniteMeasure_restrict_volume
   have hU_meas : MeasurableSet U := hU.isOpen.measurableSet
   have hpow_ne_top : μ Set.univ ^ (1 / p.toReal) ≠ ⊤ := by
     refine (ENNReal.rpow_lt_top_of_nonneg (by positivity) ?_).ne
@@ -254,7 +254,7 @@ theorem tendsto_eLpNorm_fderiv_unitConvexApproxSequence_apply_basisVec_sub_zero_
               (fderiv ℝ u x) (basisVec i))
           p (MeasureTheory.volume.restrict U))
       Filter.atTop (nhds 0) := by
-  simpa [unitConvexApproxSequence] using
+  simpa [unitConvexApproxSequence] using!
     (tendsto_eLpNorm_fderiv_convexApproxSmoothing_apply_basisVec_sub_zero_of_contDiff
       hU (isConvexApproxKernel_unitConvexApproxKernel (d := d)) hp hu hball hr
       tendsto_unitConvexApproxScale_zero
@@ -278,7 +278,7 @@ theorem tendsto_eLpNorm_sub_zero_convexApproxSmoothing_of_continuous
       Filter.atTop (nhds 0) := by
   let f : ℕ → Vec d → ℝ := fun n x => convexApproxSmoothing ρ u x0 r (ε n) x - u x
   let μ := MeasureTheory.volume.restrict U
-  letI : MeasureTheory.IsFiniteMeasure μ := hU.isFiniteMeasure_restrict_volume
+  let : MeasureTheory.IsFiniteMeasure μ := hU.isFiniteMeasure_restrict_volume
   have hU_meas : MeasurableSet U := hU.isOpen.measurableSet
   have hpow_ne_top : μ Set.univ ^ (1 / p.toReal) ≠ ⊤ := by
     refine (ENNReal.rpow_lt_top_of_nonneg (by positivity) ?_).ne
@@ -504,7 +504,7 @@ theorem tendsto_eLpNorm_sub_zero_convexApproxSmoothing_of_memLpOn
     have hεn_lt_one : ε n < 1 := by linarith
     have happrox' :
         MeasureTheory.eLpNorm (fun x => u x - (g : Vec d → ℝ) x) p μ ≤ δ := by
-      simpa using happrox
+      simpa using! happrox
     calc
       MeasureTheory.eLpNorm
           (fun x =>

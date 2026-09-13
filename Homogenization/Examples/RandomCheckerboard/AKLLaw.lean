@@ -43,8 +43,18 @@ private theorem measurable_regularCheckerCarrier_local {d : ℕ} {Θ : ℝ}
       (checkerRegField 1 Θ) :=
     (measurable_checkerRegField_restrictionSigmaR 1 Θ U.1 U.2).mono le_rfl
       (localSigmaR_le_restrictionSigmaR U.1 U.2)
-  rw [measurable_iff_comap_le, Source.AKL.regularLocalSigma,
-    MeasurableSpace.comap_comp]
+  rw [measurable_iff_comap_le, Source.AKL.regularLocalSigma]
+  have hcomp :
+      MeasurableSpace.comap (regularCheckerCarrier hΘ)
+        (MeasurableSpace.comap
+          (Subtype.val : Source.AKL.RegularAKLCarrier d Θ → RegCoeffField d)
+          (LocalSigmaR U.1)) =
+      MeasurableSpace.comap
+        ((Subtype.val : Source.AKL.RegularAKLCarrier d Θ → RegCoeffField d) ∘
+          regularCheckerCarrier hΘ)
+        (LocalSigmaR U.1) :=
+    MeasurableSpace.comap_comp
+  rw [hcomp]
   exact hregular.comap_le
 
 private theorem measurable_checkerCarrier_local {d : ℕ} {Θ : ℝ}
@@ -58,7 +68,7 @@ private theorem measurable_checkerCarrier_local {d : ℕ} {Θ : ℝ}
 private theorem measurable_checkerCarrier {d : ℕ} {Θ : ℝ} (hΘ : 1 ≤ Θ) :
     @Measurable (Sample d) (Source.AKL.Carrier d Θ) inferInstance
       (Source.AKL.globalSigma d Θ) (checkerCarrier hΘ) := by
-  simpa only [Source.AKL.globalSigma] using
+  simpa only [Source.AKL.globalSigma] using!
     (measurable_checkerCarrier_local hΘ
       (⟨Set.univ, MeasurableSet.univ⟩ : Source.AKL.BorelRegion d)).mono
         (sampleCellsSigma_le _) le_rfl
@@ -74,7 +84,7 @@ instance instIsProbabilityMeasure_law (d : ℕ) (Θ : ℝ) (hΘ : 1 ≤ Θ)
     (p : ℝ≥0) (hp : p ≤ 1) :
     @IsProbabilityMeasure (Source.AKL.Carrier d Θ) (Source.AKL.globalSigma d Θ)
       (law d Θ hΘ p hp) := by
-  letI : MeasurableSpace (Source.AKL.Carrier d Θ) := Source.AKL.globalSigma d Θ
+  let : MeasurableSpace (Source.AKL.Carrier d Θ) := Source.AKL.globalSigma d Θ
   rw [law]
   exact Measure.isProbabilityMeasure_map (measurable_checkerCarrier hΘ).aemeasurable
 
@@ -116,7 +126,7 @@ private theorem translate_checkerCarrier {d : ℕ} {Θ : ℝ} (hΘ : 1 ≤ Θ)
 /-- The AKL quotient checkerboard law is invariant under integer translations. -/
 theorem stationary_law {d : ℕ} {Θ : ℝ} (hΘ : 1 ≤ Θ)
     (p : ℝ≥0) (hp : p ≤ 1) : Source.AKL.Stationary (law d Θ hΘ p hp) := by
-  letI : MeasurableSpace (Source.AKL.Carrier d Θ) := Source.AKL.globalSigma d Θ
+  let : MeasurableSpace (Source.AKL.Carrier d Θ) := Source.AKL.globalSigma d Θ
   intro z
   rw [law]
   calc
@@ -124,7 +134,7 @@ theorem stationary_law {d : ℕ} {Θ : ℝ} (hΘ : 1 ≤ Θ)
         (Measure.map (checkerCarrier hΘ) (sampleMeasure d p hp)) =
         Measure.map (fun ω : Sample d => Source.AKL.translate z (checkerCarrier hΘ ω))
           (sampleMeasure d p hp) := by
-      simpa [Function.comp] using Measure.map_map
+      simpa [Function.comp] using! Measure.map_map
         (Source.AKL.measurable_translate_global z) (measurable_checkerCarrier hΘ)
         (μ := sampleMeasure d p hp)
     _ = Measure.map (fun ω : Sample d => checkerCarrier hΘ (shiftSample z ω))
@@ -135,7 +145,7 @@ theorem stationary_law {d : ℕ} {Θ : ℝ} (hΘ : 1 ≤ Θ)
     _ = Measure.map (checkerCarrier hΘ)
           (Measure.map (shiftSample z) (sampleMeasure d p hp)) := by
       symm
-      simpa [Function.comp] using Measure.map_map (measurable_checkerCarrier hΘ)
+      simpa [Function.comp] using! Measure.map_map (measurable_checkerCarrier hΘ)
         (measurable_shiftSample z) (μ := sampleMeasure d p hp)
     _ = Measure.map (checkerCarrier hΘ) (sampleMeasure d p hp) := by
       rw [sampleMeasure_map_shiftSample z p hp]
@@ -144,7 +154,7 @@ theorem stationary_law {d : ℕ} {Θ : ℝ} (hΘ : 1 ≤ Θ)
 separation relation. -/
 theorem unitRangeDependent_law {d : ℕ} {Θ : ℝ} (hΘ : 1 ≤ Θ)
     (p : ℝ≥0) (hp : p ≤ 1) : Source.AKL.UnitRangeDependent (law d Θ hΘ p hp) := by
-  letI : MeasurableSpace (Source.AKL.Carrier d Θ) := Source.AKL.globalSigma d Θ
+  let : MeasurableSpace (Source.AKL.Carrier d Θ) := Source.AKL.globalSigma d Θ
   intro U V hUV
   rw [law]
   have hcells : Disjoint (cellsMeeting U.1) (cellsMeeting V.1) :=

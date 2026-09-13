@@ -268,7 +268,7 @@ theorem cubeUpperFaceReflection_mem_openCubeSet_of_mem_neighbor {d : ℕ}
     constructor <;> nlinarith [hscale]
   · have hxj := hx j
     simpa [openCubeSet, cubeUpperFaceNeighbor, coordIndexShift, cubeUpperFaceReflection,
-      cubeUpperFaceCoord, translateCube, hji] using hxj
+      cubeUpperFaceCoord, translateCube, hji] using! hxj
 
 theorem cubeUpperFaceReflection_mem_neighbor_of_mem_openCubeSet {d : ℕ}
     (Q : TriadicCube d) (i : Fin d) {x : Vec d}
@@ -285,7 +285,7 @@ theorem cubeUpperFaceReflection_mem_neighbor_of_mem_openCubeSet {d : ℕ}
     constructor <;> nlinarith [hscale]
   · have hxj := hx j
     simpa [openCubeSet, cubeUpperFaceNeighbor, coordIndexShift, cubeUpperFaceReflection,
-      cubeUpperFaceCoord, translateCube, hji] using hxj
+      cubeUpperFaceCoord, translateCube, hji] using! hxj
 
 theorem cubeLowerFaceReflection_mem_openCubeSet_of_mem_neighbor {d : ℕ}
     (Q : TriadicCube d) (i : Fin d) {x : Vec d}
@@ -302,7 +302,7 @@ theorem cubeLowerFaceReflection_mem_openCubeSet_of_mem_neighbor {d : ℕ}
     constructor <;> nlinarith [hscale]
   · have hxj := hx j
     simpa [openCubeSet, cubeLowerFaceNeighbor, coordIndexShift, cubeLowerFaceReflection,
-      cubeLowerFaceCoord, translateCube, hji] using hxj
+      cubeLowerFaceCoord, translateCube, hji] using! hxj
 
 theorem cubeLowerFaceReflection_mem_neighbor_of_mem_openCubeSet {d : ℕ}
     (Q : TriadicCube d) (i : Fin d) {x : Vec d}
@@ -319,7 +319,7 @@ theorem cubeLowerFaceReflection_mem_neighbor_of_mem_openCubeSet {d : ℕ}
     constructor <;> nlinarith [hscale]
   · have hxj := hx j
     simpa [openCubeSet, cubeLowerFaceNeighbor, coordIndexShift, cubeLowerFaceReflection,
-      cubeLowerFaceCoord, translateCube, hji] using hxj
+      cubeLowerFaceCoord, translateCube, hji] using! hxj
 
 /-- The open cube is disjoint from its same-scale upper face neighbor. -/
 theorem disjoint_openCubeSet_cubeUpperFaceNeighbor {d : ℕ}

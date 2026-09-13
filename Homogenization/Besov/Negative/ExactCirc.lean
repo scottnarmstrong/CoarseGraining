@@ -100,8 +100,7 @@ structure ExactCircIntegrable {d : ℕ} (Q : TriadicCube d) (f : Vec d → ℝ) 
     MeasureTheory.Integrable f (Homogenization.normalizedCubeMeasure R)
 
 /-- Canonical block-integrability data for the zero function. -/
-@[nolint defLemma]
-def exactCircZeroIntegrable {d : ℕ} (Q : TriadicCube d) :
+theorem exactCircZeroIntegrable {d : ℕ} (Q : TriadicCube d) :
     ExactCircIntegrable Q (fun _ : Vec d => (0 : ℝ)) where
   block := fun _ _ _ => MeasureTheory.integrable_zero _ _ _
 

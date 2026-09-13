@@ -38,7 +38,7 @@ private theorem cubeEuclideanWspKernel_two_enorm_rpow_eq_centeredCubeEuclideanHs
     (F : CenteredCubeEuclideanL2Field d m) (z : Vec d × Vec d) :
     ‖cubeEuclideanWspKernel s FiniteLpExponent.two F z‖ₑ ^ (2 : ℝ) =
       centeredCubeEuclideanHsIntegrand s F z := by
-  rw [← ofReal_norm_eq_enorm]
+  rw [← ofReal_norm]
   rw [ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) zero_le_two]
   rw [norm_cubeEuclideanWspKernel]
   norm_num

@@ -71,8 +71,11 @@ theorem quenchedMinimalScaleIndex_le_of_goodTail
     quenchedMinimalScaleIndex N0 Bad ω ≤ M := by
   classical
   let hgood : hasGoodTailFrom N0 Bad ω := ⟨M, hN0M, hM⟩
-  have hmin := Nat.find_min' hgood ⟨hN0M, hM⟩
-  simpa [quenchedMinimalScaleIndex, hgood] using hmin
+  have hidx_eq : quenchedMinimalScaleIndex N0 Bad ω = Nat.find hgood := by
+    unfold quenchedMinimalScaleIndex
+    rw [dif_pos hgood]
+  rw [hidx_eq]
+  exact Nat.find_min' hgood ⟨hN0M, hM⟩
 
 omit [MeasurableSpace Ω] in
 theorem mem_badTailEvent_of_lt_quenchedMinimalScaleIndex

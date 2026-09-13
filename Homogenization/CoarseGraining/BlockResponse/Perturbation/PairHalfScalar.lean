@@ -39,7 +39,7 @@ private theorem blockResponse_integrand_pair_half_eq_pointwise_scalar_split_of_p
         vecDot (ξ x) (matVecMul (symmPart (a x)) (ξ x)) +
           vecDot (η x) (matVecMul (symmPart (a x)) (η x)) := by
     unfold blockEnergyDensity
-    simpa [Y, BlockState.eval] using
+    simpa [Y, BlockState.eval] using!
       pointwiseBlockEnergy_pair_eq_symmPart_sum_of_isUnit_det_symmPart
         (a x) (hdet x) (ξ x) (η x)
   rw [hsmul]
@@ -108,7 +108,7 @@ theorem blockResponse_integrand_pair_half_eq_scalarResponse_sum_on_of_isElliptic
         vecDot (u.toH1.grad x) (matVecMul (symmPart (a x)) (u.toH1.grad x)) +
           vecDot (v.toH1.grad x) (matVecMul (symmPart (a x)) (v.toH1.grad x)) := by
     unfold blockEnergyDensity
-    simpa [Y, BlockState.eval] using
+    simpa [Y, BlockState.eval] using!
       pointwiseBlockEnergy_pair_eq_symmPart_sum_of_isUnit_det_symmPart
         (a x) (isUnit_det_symmPart_of_isEllipticMatrix (hEll.2 x hx))
         (u.toH1.grad x) (v.toH1.grad x)
@@ -149,7 +149,7 @@ theorem volumeAverage_blockResponseIntegrand_pair_half_eq_scalarResponse_sum_of_
   have hu_half :
       MeasureTheory.IntegrableOn
         (fun x => (1 / 2 : ℝ) * scalarResponseIntegrand U a (p - pStar) (qStar - q) u x) U := by
-    simpa [MeasureTheory.IntegrableOn, smul_eq_mul] using
+    simpa [MeasureTheory.IntegrableOn, smul_eq_mul] using!
       hu_resp.integrable.smul (1 / 2 : ℝ)
   have hv_half :
       MeasureTheory.IntegrableOn
@@ -157,7 +157,7 @@ theorem volumeAverage_blockResponseIntegrand_pair_half_eq_scalarResponse_sum_of_
           (1 / 2 : ℝ) *
             scalarResponseIntegrand U (Homogenization.adjointCoeffField a)
               (pStar + p) (qStar + q) v x) U := by
-    simpa [MeasureTheory.IntegrableOn, smul_eq_mul] using
+    simpa [MeasureTheory.IntegrableOn, smul_eq_mul] using!
       hv_resp.integrable.smul (1 / 2 : ℝ)
   have hbridge :
       volumeAverage U
@@ -196,7 +196,7 @@ theorem volumeAverage_blockResponseIntegrand_pair_half_eq_scalarResponse_sum_of_
       volumeAverage U
           (fun x => (1 / 2 : ℝ) * scalarResponseIntegrand U a (p - pStar) (qStar - q) u x) =
         (1 / 2 : ℝ) * volumeAverage U (scalarResponseIntegrand U a (p - pStar) (qStar - q) u) := by
-    simpa [smul_eq_mul] using
+    simpa [smul_eq_mul] using!
       (volumeAverage_smul U (1 / 2 : ℝ)
         (scalarResponseIntegrand U a (p - pStar) (qStar - q) u))
   have hv_avg :
@@ -209,7 +209,7 @@ theorem volumeAverage_blockResponseIntegrand_pair_half_eq_scalarResponse_sum_of_
           volumeAverage U
             (scalarResponseIntegrand U (Homogenization.adjointCoeffField a)
               (pStar + p) (qStar + q) v) := by
-    simpa [smul_eq_mul] using
+    simpa [smul_eq_mul] using!
       (volumeAverage_smul U (1 / 2 : ℝ)
         (scalarResponseIntegrand U (Homogenization.adjointCoeffField a)
           (pStar + p) (qStar + q) v))

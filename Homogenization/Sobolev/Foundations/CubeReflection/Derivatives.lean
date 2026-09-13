@@ -83,7 +83,7 @@ theorem contDiff_foldedCoordFaceTest {d : ℕ}
     {φ : Vec d → ℝ} (hφ : ContDiff ℝ (⊤ : ℕ∞) φ)
     (a : ℝ) (i : Fin d) :
     ContDiff ℝ (⊤ : ℕ∞) (foldedCoordFaceTest a i φ) := by
-  simpa [foldedCoordFaceTest, Function.comp] using
+  simpa [foldedCoordFaceTest, Function.comp] using!
     hφ.add (hφ.comp (contDiff_coordFaceReflection a i))
 
 theorem contDiff_foldedCubeUpperFaceTest {d : ℕ}
@@ -126,7 +126,7 @@ theorem hasCompactSupport_foldedCoordFaceTest {d : ℕ}
     {φ : Vec d → ℝ} (hφ : HasCompactSupport φ)
     (a : ℝ) (i : Fin d) :
     HasCompactSupport (foldedCoordFaceTest a i φ) := by
-  simpa [foldedCoordFaceTest] using
+  simpa [foldedCoordFaceTest] using!
     hφ.add (hasCompactSupport_comp_coordFaceReflection hφ a i)
 
 theorem hasCompactSupport_foldedCubeUpperFaceTest {d : ℕ}
@@ -166,7 +166,7 @@ theorem euclideanGradient_foldedCoordFaceTest {d : ℕ}
   ext k
   unfold euclideanGradient euclideanCoordDeriv
   rw [hderiv]
-  rw [ContinuousLinearMap.add_apply]
+  rw [add_apply]
   rw [show fderiv ℝ (fun y => φ (coordFaceReflection a i y)) x (basisVec k) =
       euclideanCoordDeriv k (fun y => φ (coordFaceReflection a i y)) x by rfl]
   rw [euclideanCoordDeriv_comp_coordFaceReflection hφ a i k x]

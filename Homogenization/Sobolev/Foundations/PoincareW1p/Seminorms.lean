@@ -105,7 +105,7 @@ theorem memLp_fderiv_of_contDiffOnIsOpenBoundedConvexDomain
   have hCD : ∀ x ∈ closure U, ‖fderiv ℝ f x‖ ≤ CD :=
     Classical.choose_spec
       (hclosure_compact.exists_bound_of_continuousOn hfderiv_cont.continuousOn)
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   refine MeasureTheory.MemLp.of_bound
     (μ := volumeMeasureOn U) hfderiv_cont.aestronglyMeasurable CD ?_
@@ -181,7 +181,7 @@ theorem fderivLpNorm_le_gradientCoordLpSeminormSum_ofContDiffOnIsOpenBoundedConv
       u.gradientCoordLpSeminormSum := by
   let hf1 : ContDiff ℝ 1 f := hf.of_le (by simp)
   let μ : MeasureTheory.Measure (Vec d) := volumeMeasureOn U
-  letI : MeasureTheory.IsFiniteMeasure μ := by
+  let : MeasureTheory.IsFiniteMeasure μ := by
     dsimp [μ, volumeMeasureOn]
     exact hU.isFiniteMeasure_restrict_volume
   let u : W1pFunction U p := W1pFunction.ofContDiffOnIsOpenBoundedConvexDomain hU hf1
@@ -209,7 +209,7 @@ theorem fderivLpNorm_le_gradientCoordLpSeminormSum_ofContDiffOnIsOpenBoundedConv
       W1pFunction.ofContDiffOnIsSobolevRegularDomain] using (u.grad_memLp i).norm
   have hD_mem : MeasureTheory.MemLp D p μ := by
     have hsum :=
-      MeasureTheory.memLp_finset_sum (μ := μ) (p := p)
+      MeasureTheory.memLp_finsetSum (μ := μ) (p := p)
         (s := Finset.univ) (f := fun i : Fin d => fun x : Vec d => ‖dg i x‖)
         (fun i hi => hdi_mem i)
     simpa [D] using hsum

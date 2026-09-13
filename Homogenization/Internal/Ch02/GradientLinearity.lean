@@ -15,12 +15,8 @@ open Book.Ch02
 private theorem scalarFirstVariationIntegrand_addOfIntegrable {d : ℕ}
     (U : Set (Vec d)) (a : CoeffField d)
     (p1 q1 p2 q2 : Vec d) (v1 v2 w : AHarmonicFunction a U)
-    (hv1_int : ∀ φ : H10Function U,
-      MeasureTheory.IntegrableOn
-        (fun x => vecDot (matVecMul (a x) (v1.toH1.grad x)) (φ.toH1Function.grad x)) U)
-    (hv2_int : ∀ φ : H10Function U,
-      MeasureTheory.IntegrableOn
-        (fun x => vecDot (matVecMul (a x) (v2.toH1.grad x)) (φ.toH1Function.grad x)) U) :
+    (hv1_int : weakFluxIntegrable U a v1)
+    (hv2_int : weakFluxIntegrable U a v2) :
     scalarFirstVariationIntegrand U a (p1 + p2) (q1 + q2)
         (AHarmonicFunction.addOfIntegrable v1 v2 hv1_int hv2_int) w =
       scalarFirstVariationIntegrand U a p1 q1 v1 w +
@@ -108,12 +104,12 @@ theorem responseGradientLinearityTheory_of_isEllipticFieldOn {d : ℕ}
       AHarmonicFunction.addOfIntegrable v1 v2 (hInt.weakFlux v1) (hInt.weakFlux v2)
     have hsum :
         Book.Ch02.IsResponseMaximizer U a (p1 + p2) (q1 + q2) vsum := by
-      simpa [vsum, hInt] using
+      simpa [vsum, hInt] using!
         addOfIntegrable_isResponseMaximizer_of_isEllipticFieldOn
           U a hEll p1 q1 p2 q2 v1 v2 h1 h2
     have hUnique := responseGradientUniquenessTheory_of_isEllipticFieldOn U a hEll
     have hsame := hUnique.unique_gradient (p1 + p2) (q1 + q2) v12 vsum h12 hsum
-    simpa [vsum, AHarmonicFunction.grad_addOfIntegrable] using hsame
+    simpa [vsum, AHarmonicFunction.grad_addOfIntegrable] using! hsame
   smul_gradient := by
     intro c p q vc v hc hv
     let vscaled : Solution U a := c • v
@@ -121,7 +117,7 @@ theorem responseGradientLinearityTheory_of_isEllipticFieldOn {d : ℕ}
       exact smul_isResponseMaximizer_of_isEllipticFieldOn U a hEll c p q v hv
     have hUnique := responseGradientUniquenessTheory_of_isEllipticFieldOn U a hEll
     have hsame := hUnique.unique_gradient (c • p) (c • q) vc vscaled hc hscaled
-    simpa [vscaled, AHarmonicFunction.grad_smul] using hsame
+    simpa [vscaled, AHarmonicFunction.grad_smul] using! hsame
 
 /-- Note-facing Chapter 2 gradient linearity from the public a.e. coefficient
 interface. -/

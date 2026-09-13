@@ -79,7 +79,7 @@ theorem tendsto_gStep {c : ℝ} {δ : ℕ → ℝ} (hδpos : ∀ n, 0 < δ n)
   · rw [if_neg hct]
     have hev : ∀ᶠ n in atTop, gStep c (δ n) t = 0 :=
       Filter.Eventually.of_forall fun n =>
-        gStep_eq_zero (hδpos n) (by push_neg at hct; linarith [(hδpos n).le])
+        gStep_eq_zero (hδpos n) (by push Not at hct; linarith [(hδpos n).le])
     exact Tendsto.congr' (hev.mono fun n hn => hn.symm) tendsto_const_nhds
 
 theorem abs_GApprox_le (c δ t : ℝ) : |GApprox c δ t| ≤ |t - c| := by
@@ -126,7 +126,7 @@ theorem abs_GApprox_sub_le {c δ : ℝ} (hδ : 0 < δ) (t : ℝ) :
         have hhead : 0 ≤ ∫ s in c..(c + 2 * δ), gStep c δ s :=
           intervalIntegral.integral_nonneg (by linarith) (fun s _ => gStep_nonneg c δ s)
         rw [hsplit, htail]; linarith
-      · push_neg at h2
+      · push Not at h2
         have hpos : 0 ≤ GApprox c δ t :=
           intervalIntegral.integral_nonneg htc.le (fun s _ => gStep_nonneg c δ s)
         linarith
@@ -149,7 +149,7 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
   -- `G` is `M`-Lipschitz and differentiable.
   have hGdiff : Differentiable ℝ G := hG.differentiable (by norm_num)
   have hGlip : LipschitzWith M.toNNReal G := lipschitzWith_of_abs_deriv_le hM hGdiff hderiv
-  haveI : IsFiniteMeasure (volumeMeasureOn U) := hU.isBoundedDomain.isFiniteMeasure_restrict_volume
+  have : IsFiniteMeasure (volumeMeasureOn U) := hU.isBoundedDomain.isFiniteMeasure_restrict_volume
   -- Empty domain: the pairing identity is trivial.
   rcases U.eq_empty_or_nonempty with hempty | hne
   · subst hempty
@@ -375,9 +375,9 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
     have hofR1 : Tendsto (fun n => ENNReal.ofReal (1 - e n)) atTop (𝓝 1) := by
       have : Tendsto (fun n => (1 : ℝ) - e n) atTop (𝓝 1) := by
         simpa using tendsto_const_nhds.sub he_tendsto
-      simpa using (ENNReal.continuous_ofReal.tendsto 1).comp this
+      simpa using! (ENNReal.continuous_ofReal.tendsto 1).comp this
     have hofR0 : Tendsto (fun n => ENNReal.ofReal (e n)) atTop (𝓝 0) := by
-      simpa using (ENNReal.continuous_ofReal.tendsto 0).comp he_tendsto
+      simpa using! (ENNReal.continuous_ofReal.tendsto 0).comp he_tendsto
     have hrhs : Tendsto
         (fun n => ENNReal.ofReal (1 - e n) *
             eLpNorm (fun x => smi n x - u.grad x i) 2 (volumeMeasureOn U)
@@ -387,7 +387,7 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
         (Or.inr (by norm_num))
       simpa using h1.add h2
     exact tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hrhs
-      (fun n => zero_le _) hbound
+      (fun n => zero_le) hbound
   -- Function-side convergence `G ∘ w (σ k) → G ∘ u` in `L²`.
   have hun_conv : Tendsto
       (fun k => eLpNorm (fun x => un (σ k) x - G (u.toFun x)) 2 (volumeMeasureOn U))
@@ -404,7 +404,7 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
         (hwu_L2.comp hσ_mono.tendsto_atTop) (Or.inr ENNReal.ofReal_ne_top)
       simpa using this
     exact tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hrhs
-      (fun k => zero_le _) hle
+      (fun k => zero_le) hle
   -- Gradient-side convergence `gn (σ k) → G'(u)·∂ᵢu` in `L²` (Term A + Term B).
   have hgn_conv : Tendsto
       (fun k => eLpNorm (fun x => gn (σ k) x - deriv G (u.toFun x) * u.grad x i) 2
@@ -468,7 +468,7 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
           (hDwn_conv.comp hσ_mono.tendsto_atTop) (Or.inr ENNReal.ofReal_ne_top)
         simpa using this
       exact tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hrhs
-        (fun k => zero_le _) hTA_le
+        (fun k => zero_le) hTA_le
     -- Combine: the gradient difference splits into Term A plus Term B.
     have hsplit : ∀ k, eLpNorm (fun x => gn (σ k) x - deriv G (u.toFun x) * u.grad x i) 2
           (volumeMeasureOn U)
@@ -490,7 +490,7 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
           + eLpNorm (fun x => TB k x) 2 (volumeMeasureOn U)) atTop (𝓝 0) := by
       simpa using hTA_conv.add hTB_conv
     exact tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hsum
-      (fun k => zero_le _) hsplit
+      (fun k => zero_le) hsplit
   -- Apply the L²-limit closure keystone along the subsequence.
   exact hasWeakPartialDerivOn_of_tendsto_L2
     hGu_memL2 hg_memL2 (fun k => hun_memL2 (σ k)) (fun k => hgn_memL2 (σ k))

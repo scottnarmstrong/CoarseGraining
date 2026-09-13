@@ -31,7 +31,7 @@ private theorem openCubeSet_eq_axisCube (Q : TriadicCube d) :
     intro j
     ring
   ext x
-  simp only [openCubeSet, axisCube, Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ,
+  simp only [openCubeSet, axisCube, Set.mem_ofPred_eq, Set.mem_pi, Set.mem_univ,
     forall_true_left, Set.mem_Ioo]
   simp_rw [hupper]
 
@@ -72,7 +72,7 @@ theorem exists_gradCoord_criticalLp_bound (hd : 3 ≤ d) :
   have haxis : P (axisCube z (cubeScaleFactor Q)) := by
     intro v K i
     simpa [P, HasWeakHessianOn.gradCoordH1Function_apply,
-      HasWeakHessianOn.gradCoordH1Function_grad_apply] using
+      HasWeakHessianOn.gradCoordH1Function_grad_apply] using!
       hC z (cubeScaleFactor Q) hscale_pos (K.gradCoordH1Function i)
   exact hset.symm ▸ haxis
 

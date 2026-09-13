@@ -71,7 +71,7 @@ theorem hasPotentialZeroTraceClosureRealization_of_isOpenBoundedConvexDomain
       F ∈ closure ((potentialZeroTraceSubmodule U : Submodule ℝ (VectorL2 U)) :
         Set (VectorL2 U)) := by
     have hFSub : F ∈ (potentialZeroTraceSubmodule U).topologicalClosure := hF
-    simpa [Submodule.topologicalClosure_coe] using hFSub
+    simpa [Submodule.topologicalClosure_coe] using! hFSub
   -- Step 2: Package the range of `gradientCLM` as a closed set, and use
   -- continuity of `vectorL2ToHilbertVectorL2` to push the closure through.
   let S : Set (HilbertVectorL2 U) :=

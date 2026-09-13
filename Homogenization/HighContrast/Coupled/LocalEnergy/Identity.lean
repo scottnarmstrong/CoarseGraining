@@ -126,7 +126,7 @@ omit [NeZero d] in
 /-- `V = ∇v − ½p ∈ L²`. -/
 theorem memVectorL2_centeredGrad (v : H1Function U) (P : BlockVec d) :
     MemVectorL2 U (fun x => v.grad x - (1/2:ℝ)•P.1) := by
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   exact v.grad_memVectorL2.sub (memVectorL2_const ((1/2:ℝ)•P.1))
 
 omit [NeZero d] in
@@ -159,7 +159,7 @@ theorem integrableOn_bulkIntegrand {a : CoeffField d} {Θ : ℝ}
     (hEllO : IsEllipticFieldOn 1 Θ U a)
     (hη : ContDiff ℝ (⊤ : ℕ∞) η) (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1) :
     IntegrableOn (bulkIntegrand a v vstar P η) U := by
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   have hE : bulkIntegrand a v vstar P η
       = fun x => sqCutoff η x
           * vecDot (P.2 - (1/2:ℝ)•matVecMul (a x) P.1) (v.grad x - (1/2:ℝ)•P.1)
@@ -169,16 +169,16 @@ theorem integrableOn_bulkIntegrand {a : CoeffField d} {Θ : ℝ}
   rw [hE]
   have hF1 : MemVectorL2 U (fun x => P.2 - (1/2:ℝ)•matVecMul (a x) P.1) := by
     have h2 : MemVectorL2 U (fun x => (1/2:ℝ)•matVecMul (a x) P.1) := by
-      simpa using
+      simpa using!
         (memVectorL2_matVecMul_of_isEllipticFieldOn hEllO (memVectorL2_const P.1)).const_smul (1/2:ℝ)
-    simpa using (memVectorL2_const P.2).sub h2
+    simpa using! (memVectorL2_const P.2).sub h2
   have hF2 : MemVectorL2 U (fun x => (1/2:ℝ)•matVecMul (matTranspose (a x)) P.1) := by
     have hEllAdj : IsEllipticFieldOn 1 Θ U (Homogenization.adjointCoeffField a) :=
       isEllipticFieldOn_adjointCoeffField hEllO
     have hb : MemVectorL2 U (fun x => matVecMul (matTranspose (a x)) P.1) := by
       simpa [Homogenization.adjointCoeffField] using
         memVectorL2_matVecMul_of_isEllipticFieldOn hEllAdj (memVectorL2_const P.1)
-    simpa using hb.const_smul (1/2:ℝ)
+    simpa using! hb.const_smul (1/2:ℝ)
   refine (integrableOn_memLpTop_mul_vecDot (memLpTop_sqCutoff_cube hη hIcc) hF1
       (memVectorL2_centeredGrad v P)).sub ?_
   exact integrableOn_memLpTop_mul_vecDot (memLpTop_sqCutoff_cube hη hIcc) hF2
@@ -191,7 +191,7 @@ theorem integrableOn_cutoffIntegrand {a : CoeffField d} {Θ : ℝ}
     (hη : ContDiff ℝ (⊤ : ℕ∞) η) (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1)
     (hGη : ∀ x i, |fderiv ℝ η x (basisVec i)| ≤ Gη) (c : ℝ) :
     IntegrableOn (cutoffIntegrand a v vstar P c η) U := by
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   have hEllAdj : IsEllipticFieldOn 1 Θ U (Homogenization.adjointCoeffField a) :=
     isEllipticFieldOn_adjointCoeffField hEllO
   have hu : MemScalarL2 U (centeredPotential m v P.1 c).toFun := (centeredPotential m v P.1 c).memL2
@@ -226,7 +226,7 @@ theorem energyIntegral_eq_bulk_add_cutoff
     (∫ x in U, energyIntegrand a v vstar P η x)
       = (∫ x in U, bulkIntegrand a v vstar P η x)
         + (∫ x in U, cutoffIntegrand a v vstar P c η x) := by
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   classical
   -- the smooth test pair and its admissibility
   set φ := testFun hη hIcc hGη (centeredPotential m v P.1 c) with hφdef

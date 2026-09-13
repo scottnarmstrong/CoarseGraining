@@ -105,8 +105,23 @@ theorem sum_setLIntegral_overlap_prod_le (Q : TriadicCube d) (j : ℕ)
         ∫⁻ z, (ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S).indicator
           (fun _ => (1 : ℝ≥0∞)) z * f z ∂ν :=
     fun S _hS => hind _ (measurableSet_overlap_prod S)
-  rw [Finset.sum_congr rfl hrewrite, ← lintegral_finset_sum _ (fun S _hS =>
-    ((measurable_const.indicator (measurableSet_overlap_prod S)).mul hf))]
+  have hsum_eq :
+      (∑ S ∈ ScalarOverlap.centersAtDepth Q j,
+          ∫⁻ z in ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S, f z ∂ν) =
+        ∑ S ∈ ScalarOverlap.centersAtDepth Q j,
+          ∫⁻ z, (ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S).indicator
+            (fun _ => (1 : ℝ≥0∞)) z * f z ∂ν :=
+    Finset.sum_congr rfl hrewrite
+  have hlint_eq :
+      (∫⁻ z, ∑ S ∈ ScalarOverlap.centersAtDepth Q j,
+          (ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S).indicator
+            (fun _ => (1 : ℝ≥0∞)) z * f z ∂ν) =
+        ∑ S ∈ ScalarOverlap.centersAtDepth Q j,
+          ∫⁻ z, (ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S).indicator
+            (fun _ => (1 : ℝ≥0∞)) z * f z ∂ν :=
+    lintegral_finsetSum _ (fun S _hS =>
+      ((measurable_const.indicator (measurableSet_overlap_prod S)).mul hf))
+  rw [hsum_eq, ← hlint_eq]
   have hpoint : ∀ z,
       (∑ S ∈ ScalarOverlap.centersAtDepth Q j,
         (ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S).indicator

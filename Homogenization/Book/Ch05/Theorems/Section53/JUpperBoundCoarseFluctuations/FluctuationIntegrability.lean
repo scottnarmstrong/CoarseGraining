@@ -298,7 +298,7 @@ private theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
       (fun a : RegCoeffField d =>
         blockMatEntry (coarseBlockMatrix (cubeSet (originCube d (n : ℤ))) a.toFun) α β)
       (2 : ENNReal) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (n : ℤ)
   let X : RegCoeffField d → ℝ :=
     fun a => Ch04.LambdaSqCoeffField Q hP4.sUpper (.finite 1) a
@@ -308,9 +308,8 @@ private theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
     simpa [X, Q] using
       hP.aemeasurable_LambdaSqCoeffField_finite_one (originCube d (n : ℤ)) hP4.sUpper_pos
   have hY_meas : AEMeasurable Y P := by
-    simpa [Y, Q] using
-      (hP.aemeasurable_lambdaSqCoeffField_finite_one
-        (originCube d (n : ℤ)) hP4.sLower_pos).inv
+    exact (hP.aemeasurable_lambdaSqCoeffField_finite_one
+      (originCube d (n : ℤ)) hP4.sLower_pos).inv
   have hX_nonneg : ∀ᵐ a ∂P, 0 ≤ X a :=
     Filter.Eventually.of_forall fun a =>
       Ch04.LambdaSqCoeffField_finite_nonneg Q a hP4.sUpper_pos
@@ -353,7 +352,7 @@ private theorem memLp_two_blockMatEntry_coarseBlockMatrix_cubeSet_from_P4
       ∀ᵐ a ∂P,
         |blockMatEntry (coarseBlockMatrix (cubeSet Q) a.toFun) α β| ≤
           X a + Y a := by
-    simpa [X, Y, Q] using
+    simpa [X, Y, Q] using!
       blockMatEntry_abs_le_factor_sum_ae
         hP (originCube d (n : ℤ)) hP4.sUpper_pos hP4.sLower_pos α β
   have hEntry_abs_sq :
@@ -375,7 +374,7 @@ theorem memLp_two_restrictionResponseJObservableCubeSet_originCube_from_P4
       (Ch04.restrictionResponseJObservableCubeSet (originCube d (k : ℤ)) p q)
       (2 : ENNReal) P := by
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (k : ℤ)
   let M : RegCoeffField d → BlockMat d := fun a => coarseBlockMatrix (cubeSet Q) a.toFun
   let quad : RegCoeffField d → ℝ :=
@@ -412,12 +411,12 @@ theorem memLp_two_restrictionResponseJObservableCubeSet_originCube_from_P4
       MemLp (fun a : RegCoeffField d => vecDot q (matVecMul (M a).lowerRight q))
         (2 : ENNReal) P := by
     simp [vecDot, matVecMul]
-    refine memLp_finset_sum (s := (Finset.univ : Finset (Fin d))) ?_
+    refine memLp_finsetSum (s := (Finset.univ : Finset (Fin d))) ?_
     intro i _hi
     have hinner :
         MemLp (fun a : RegCoeffField d => ∑ j : Fin d, (M a).lowerRight i j * q j)
           (2 : ENNReal) P := by
-      refine memLp_finset_sum (s := (Finset.univ : Finset (Fin d))) ?_
+      refine memLp_finsetSum (s := (Finset.univ : Finset (Fin d))) ?_
       intro j _hj
       simpa [mul_comm] using (hLR_entry i j).const_mul (q j)
     exact hinner.const_mul (q i)
@@ -425,12 +424,12 @@ theorem memLp_two_restrictionResponseJObservableCubeSet_originCube_from_P4
       MemLp (fun a : RegCoeffField d => vecDot q (matVecMul (M a).lowerLeft p))
         (2 : ENNReal) P := by
     simp [vecDot, matVecMul]
-    refine memLp_finset_sum (s := (Finset.univ : Finset (Fin d))) ?_
+    refine memLp_finsetSum (s := (Finset.univ : Finset (Fin d))) ?_
     intro i _hi
     have hinner :
         MemLp (fun a : RegCoeffField d => ∑ j : Fin d, (M a).lowerLeft i j * p j)
           (2 : ENNReal) P := by
-      refine memLp_finset_sum (s := (Finset.univ : Finset (Fin d))) ?_
+      refine memLp_finsetSum (s := (Finset.univ : Finset (Fin d))) ?_
       intro j _hj
       simpa [mul_comm] using (hLL_entry i j).const_mul (p j)
     exact hinner.const_mul (q i)
@@ -438,18 +437,18 @@ theorem memLp_two_restrictionResponseJObservableCubeSet_originCube_from_P4
       MemLp (fun a : RegCoeffField d => vecDot p (matVecMul (M a).upperLeft p))
         (2 : ENNReal) P := by
     simp [vecDot, matVecMul]
-    refine memLp_finset_sum (s := (Finset.univ : Finset (Fin d))) ?_
+    refine memLp_finsetSum (s := (Finset.univ : Finset (Fin d))) ?_
     intro i _hi
     have hinner :
         MemLp (fun a : RegCoeffField d => ∑ j : Fin d, (M a).upperLeft i j * p j)
           (2 : ENNReal) P := by
-      refine memLp_finset_sum (s := (Finset.univ : Finset (Fin d))) ?_
+      refine memLp_finsetSum (s := (Finset.univ : Finset (Fin d))) ?_
       intro j _hj
       simpa [mul_comm] using (hUL_entry i j).const_mul (p j)
     exact hinner.const_mul (p i)
   have hquad :
       MemLp quad (2 : ENNReal) P := by
-    simpa [quad] using
+    simpa [quad] using!
       (((hLR.const_mul (1 / 2 : ℝ)).sub
           (memLp_const (c := vecDot p q) (μ := P) (p := (2 : ENNReal)))).sub hLL).add
         (hUL.const_mul (1 / 2 : ℝ))
@@ -480,7 +479,7 @@ theorem memLp_two_restrictionResponseJObservableCubeSet_cubeSet_from_P4_of_stati
         hP hStruct hP4 n p q
     have hn : ((n : ℕ) : ℤ) = R.scale := by
       simpa [n] using Int.toNat_of_nonneg hR_nonneg
-    simpa [X, Ch04.restrictionResponseJObservableCubeSet, hn] using hbase
+    simpa [X, Ch04.restrictionResponseJObservableCubeSet, hn] using! hbase
   have hOrigin_map :
       MemLp X (2 : ENNReal) (Measure.map (translateReg (intVecToRealVec z)) P) := by
     simpa [hstat z] using hOrigin
@@ -508,7 +507,7 @@ theorem memLp_zeta_restrictionResponseJObservableCubeSet_cubeSet_from_P4_of_stat
     (R : TriadicCube d) (hR_nonneg : 0 ≤ R.scale) (p q : Vec d) :
     MemLp (Ch04.restrictionResponseJObservableCubeSet R p q)
       (ENNReal.ofReal (section53CoarseFluctuationZeta hP4)) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let ζ := section53CoarseFluctuationZeta hP4
   have hζ_le_two : ENNReal.ofReal ζ ≤ (2 : ENNReal) := by
     rw [← ENNReal.ofReal_ofNat]
@@ -533,7 +532,7 @@ theorem memLp_zeta_descendantsAverage_restrictionResponseJObservableCubeSet_orig
   refine Ch04.memLp_descendantsAverage_restrictionResponseJObservableCubeSet ?_
   intro R hR
   have hRscaleMem : R ∈ descendantsAtScale (originCube d m) k := by
-    simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR
+    simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using! hR
   have hRscale : R.scale = k := scale_eq_of_mem_descendantsAtScale hRscaleMem
   exact
     memLp_zeta_restrictionResponseJObservableCubeSet_cubeSet_from_P4_of_stationary
@@ -586,7 +585,7 @@ theorem integral_rpow_restrictionResponseJObservableCubeSet_cubeSet_eq_originCub
               exact
                 ((Real.continuous_rpow_const hζ_nonneg).measurable.comp_aemeasurable
                   (by
-                    simpa [Ch04.restrictionResponseJObservableCubeSet] using
+                    simpa [Ch04.restrictionResponseJObservableCubeSet] using!
                       hP.aemeasurable_restrictionResponseJObservableCubeSet
                         (originCube d R.scale) p q)).aestronglyMeasurable)
             (restrictionResponseJObservableCubeSet_rpow_translation_covariant ζ p q)
@@ -657,7 +656,7 @@ theorem integral_rpow_descendantsAverage_restrictionResponseJObservableCubeSet_o
           Real.rpow
             (Ch04.restrictionResponseJObservableCubeSet (originCube d k) p q a) ζ ∂P := by
   dsimp only
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let ζ := section53CoarseFluctuationZeta hP4
   let Q : TriadicCube d := originCube d m
   let j : ℕ := Int.toNat (m - k)
@@ -741,7 +740,7 @@ theorem integral_rpow_descendantsAverage_restrictionResponseJObservableCubeSet_o
     refine Ch04.integrable_descendantsAverage ?_
     intro R hR
     have hRscaleMem : R ∈ descendantsAtScale (originCube d m) k := by
-      simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR
+      simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using! hR
     have hRscale : R.scale = k := scale_eq_of_mem_descendantsAtScale hRscaleMem
     have hstat_eq :=
       integral_rpow_restrictionResponseJObservableCubeSet_cubeSet_eq_originCube_of_stationary
@@ -789,7 +788,7 @@ theorem integral_rpow_descendantsAverage_restrictionResponseJObservableCubeSet_o
               Real.rpow (Ch04.restrictionResponseJObservableCubeSet R p q a) ζ) P := by
       intro R hR
       have hRscaleMem : R ∈ descendantsAtScale (originCube d m) k := by
-        simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR
+        simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using! hR
       have hRscale : R.scale = k := scale_eq_of_mem_descendantsAtScale hRscaleMem
       have hR_mem :
           MemLp (Ch04.restrictionResponseJObservableCubeSet R p q)
@@ -834,7 +833,7 @@ theorem integral_rpow_descendantsAverage_restrictionResponseJObservableCubeSet_o
           refine Finset.sum_congr rfl ?_
           intro R hR
           have hRscaleMem : R ∈ descendantsAtScale (originCube d m) k := by
-            simpa [Q, j, D, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using hR
+            simpa [Q, j, D, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm] using! hR
           have hRscale : R.scale = k := scale_eq_of_mem_descendantsAtScale hRscaleMem
           have hR_nonneg : 0 ≤ R.scale := by simpa [hRscale] using hk_nonneg
           calc

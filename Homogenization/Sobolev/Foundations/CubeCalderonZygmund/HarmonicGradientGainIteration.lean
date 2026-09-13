@@ -70,7 +70,7 @@ noncomputable def harmonicGradientGain_two_zero (d : ℕ) :
   · intro Q u _ i
     simpa using u.grad_memL2_normalizedCubeMeasure i
   · intro Q u _ i
-    simpa only [centralDescendant_zero, one_mul] using
+    simpa only [centralDescendant_zero, one_mul] using!
       (Finset.single_le_sum
         (fun j _ => (bot_le : 0 ≤ MeasureTheory.eLpNorm (fun x => u.grad x j) 2
           (normalizedCubeMeasure Q)))
@@ -228,7 +228,7 @@ private theorem openCubeSet_eq_axisCube {d : ℕ} (Q : TriadicCube d) :
     intro j
     ring
   ext x
-  simp only [openCubeSet, axisCube, Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ,
+  simp only [openCubeSet, axisCube, Set.mem_ofPred_eq, Set.mem_pi, Set.mem_univ,
     forall_true_left, Set.mem_Ioo]
   simp_rw [hupper]
 
@@ -433,7 +433,7 @@ private theorem centralChild_normalized_hessian_energy_bound {d : ℕ} :
           exact raw_eLpNorm_two_toReal_eq_scale_pow_mul_cubeLpNorm Q _ (hQmem j)
       _ = _ := by rw [Finset.mul_sum]
   have hscaleP : cubeScaleFactor P = cubeScaleFactor Q / 3 := by
-    simpa [P] using cubeScaleFactor_childCube Q (fun _ => (1 : Fin 3))
+    simpa [P] using! cubeScaleFactor_childCube Q (fun _ => (1 : Fin 3))
   have hscaleQpos : 0 < cubeScaleFactor Q := by
     simpa [cubeScaleFactor] using zpow_pos (by norm_num : (0 : ℝ) < 3) Q.scale
   have hscalePpos : 0 < cubeScaleFactor P := by rw [hscaleP]; positivity
@@ -559,7 +559,7 @@ private theorem sum_fin_le_natCast_mul {d : ℕ} (f : Fin d → ℝ≥0∞) (A :
 private theorem row_sum_le_double_sum {d : ℕ} (f : Fin d → Fin d → ℝ≥0∞) (i : Fin d) :
     (∑ j : Fin d, f i j) ≤ ∑ k : Fin d, ∑ j : Fin d, f k j := by
   exact Finset.single_le_sum
-    (fun k _ => zero_le (∑ j : Fin d, f k j))
+    (fun k _ => (zero_le : (0 : ℝ≥0∞) ≤ ∑ j : Fin d, f k j))
     (Finset.mem_univ i)
 
 private noncomputable def hessianGradCoordToW1p {d : ℕ} {U : Set (Vec d)}
@@ -620,7 +620,7 @@ noncomputable def HarmonicGradientGain.upgrade {d : ℕ} (hd : 0 < d)
   have hKpos : 0 < K := by
     dsimp [K]
     rw [ENNReal.mul_pos_iff]
-    refine ⟨hCpos, lt_of_lt_of_le ?_ (le_add_of_nonneg_right (zero_le _))⟩
+    refine ⟨hCpos, lt_of_lt_of_le ?_ (le_add_of_nonneg_right (zero_le))⟩
     rw [ENNReal.mul_pos_iff, ENNReal.mul_pos_iff]
     exact ⟨⟨hdpos, G.constant_pos⟩, hApos⟩
   have hKtop : K ≠ ∞ := by
@@ -698,7 +698,7 @@ noncomputable def HarmonicGradientGain.upgrade {d : ℕ} (hd : 0 < d)
             MeasureTheory.eLpNorm (fun x => HP.hess i k x) 2
               (normalizedCubeMeasure P) := by
       intro j
-      simpa [HD, v, hD_eq] using G.bound P v hv j
+      simpa [HD, v, hD_eq] using! G.bound P v hv j
     have hsum : ∑ j : Fin d,
         MeasureTheory.eLpNorm (fun x => HD.hess i j x) r.exponent
             (normalizedCubeMeasure D) ≤
@@ -722,7 +722,7 @@ noncomputable def HarmonicGradientGain.upgrade {d : ℕ} (hd : 0 < d)
         ∑ a : Fin d, ∑ b : Fin d,
           MeasureTheory.eLpNorm (fun x => HP.hess a b x) 2
             (normalizedCubeMeasure P) ≤ A * R := by
-      simpa [P, HP, R] using henergy
+      simpa [P, HP, R] using! henergy
     have hgradient : ENNReal.ofReal (cubeScaleFactor D) *
         ∑ j : Fin d, MeasureTheory.eLpNorm (fun x => HD.hess i j x) r.exponent
           (normalizedCubeMeasure D) ≤
@@ -755,9 +755,9 @@ noncomputable def HarmonicGradientGain.upgrade {d : ℕ} (hd : 0 < d)
         _ = _ := by ring
     let w : W1pFunction (openCubeSet D) r.exponent := hessianGradCoordToW1p HD i r
       (memLpOn_openCubeSet_of_memLp_normalizedCubeMeasure D (by
-        simpa [HD, HP, H1Function.restrict] using G.restrict_one_more Q u h i))
+        simpa [HD, HP, H1Function.restrict] using! G.restrict_one_more Q u h i))
       (fun j => memLpOn_openCubeSet_of_memLp_normalizedCubeMeasure D (by
-        simpa [HD, v, hD_eq] using G.memLp P v hv j))
+        simpa [HD, v, hD_eq] using! G.memLp P v hv j))
     have hsob := hC D w
     have hsob' : MeasureTheory.eLpNorm (fun x => u.grad x i) q.exponent
         (normalizedCubeMeasure D) ≤ C *
@@ -796,7 +796,7 @@ noncomputable def HarmonicGradientGain.downgrade {d : ℕ} {r s : FiniteLpExpone
     HarmonicGradientGain d s depth := by
   refine ⟨G.constant, G.constant_pos, G.constant_ne_top, ?_, ?_⟩
   · intro Q u h i
-    letI : MeasureTheory.IsProbabilityMeasure
+    let : MeasureTheory.IsProbabilityMeasure
         (normalizedCubeMeasure (centralDescendant Q depth)) :=
       ⟨normalizedCubeMeasure_apply_univ _⟩
     refine ⟨(G.memLp Q u h i).aestronglyMeasurable, ?_⟩
@@ -808,7 +808,7 @@ noncomputable def HarmonicGradientGain.downgrade {d : ℕ} {r s : FiniteLpExpone
         ((ENNReal.sum_ne_top).2 fun j _ =>
           (u.grad_memL2_normalizedCubeMeasure j).eLpNorm_ne_top)))
   · intro Q u h i
-    letI : MeasureTheory.IsProbabilityMeasure
+    let : MeasureTheory.IsProbabilityMeasure
         (normalizedCubeMeasure (centralDescendant Q depth)) :=
       ⟨normalizedCubeMeasure_apply_univ _⟩
     exact (MeasureTheory.eLpNorm_le_eLpNorm_of_exponent_le hsr
@@ -1096,14 +1096,14 @@ noncomputable def harmonicGradientGain_finiteTarget_oneDim
       apply ennreal_le_of_toReal_le hleftmem.eLpNorm_ne_top
         (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hrightmem.eLpNorm_ne_top)
       simpa [cubeLpNorm, centralDescendant_succ, ENNReal.toReal_mul,
-        ENNReal.toReal_ofReal hCpos.le] using hreal
+        ENNReal.toReal_ofReal hCpos.le] using! hreal
     have hsingle : MeasureTheory.eLpNorm (fun x => u.grad x (0 : Fin 1)) 2
         (normalizedCubeMeasure Q) ≤ ∑ j : Fin 1,
           MeasureTheory.eLpNorm (fun x => u.grad x j) 2 (normalizedCubeMeasure Q) := by
       exact (by simpa only using (Finset.single_le_sum
         (s := Finset.univ) (f := fun j : Fin 1 =>
           MeasureTheory.eLpNorm (fun x => u.grad x j) 2 (normalizedCubeMeasure Q))
-        (fun j _ => zero_le _) (Finset.mem_univ (0 : Fin 1))))
+        (fun j _ => zero_le) (Finset.mem_univ (0 : Fin 1))))
     exact hscalar.trans (mul_le_mul_right hsingle _)
 
 noncomputable def harmonicEuclideanGradientGain_finiteTarget_oneDim

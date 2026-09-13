@@ -87,7 +87,7 @@ theorem exists_isRestrictionLocalRandomVariable_ae_eq_Mu_cubeSet
   · -- `Y` is `LocalSigmaR (cubeSet Q)`-measurable, hence restriction-local.
     have hY_localSigma :
         @Measurable (RegCoeffField d) ℝ (LocalSigmaR (cubeSet Q)) _ Y := by
-      letI : MeasurableSpace (RegCoeffField d) := LocalSigmaR (cubeSet Q)
+      let : MeasurableSpace (RegCoeffField d) := LocalSigmaR (cubeSet Q)
       have hcover_meas : ∀ i : Option ℕ, MeasurableSet (cover i) := by
         intro i
         cases i with

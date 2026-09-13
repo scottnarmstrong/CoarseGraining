@@ -16,7 +16,7 @@ private theorem coarseBBlockNorm_le_uniform_of_isEllipticFieldOn_of_openCubeDete
   rcases hData with ⟨sigma, sigmaStar, kappa, hA, hS, hK, hSigma, hdet⟩
   let U := openCubeSet R
   let hOpenR : IsOpenBoundedConvexDomain U := isOpenBoundedConvexDomain_openCubeSet R
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hOpenR.isFiniteMeasure_restrict_volume
   have hvol : (MeasureTheory.volume U).toReal ≠ 0 := by
     simpa [U, volume_openCubeSet_toReal] using (cubeVolume_pos R).ne'
@@ -75,7 +75,7 @@ private theorem coarseSigmaStarInvBlockNorm_le_uniform_of_isEllipticFieldOn_of_o
   rcases hData with ⟨sigma, sigmaStar, kappa, hA, hS, hK, hSigma, hdet⟩
   let U := openCubeSet R
   let hOpenR : IsOpenBoundedConvexDomain U := isOpenBoundedConvexDomain_openCubeSet R
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hOpenR.isFiniteMeasure_restrict_volume
   have hvol : (MeasureTheory.volume U).toReal ≠ 0 := by
     simpa [U, volume_openCubeSet_toReal] using (cubeVolume_pos R).ne'

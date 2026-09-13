@@ -64,7 +64,6 @@ theorem isBlockTestOn_sub_of_isBlockMuAdmissible
           (fun x => X.potential x - X'.potential x) := by
       funext x
       simp [Pi.add_apply, sub_eq_add_neg]
-      ring_nf
     rw [hfun] at hpot
     exact hpot
   · -- flux part: same combination, with L² integrability for the normal-trace add
@@ -82,7 +81,6 @@ theorem isBlockTestOn_sub_of_isBlockMuAdmissible
           (fun x => X.flux x - X'.flux x) := by
       funext x
       simp [Pi.add_apply, sub_eq_add_neg]
-      ring_nf
     rw [hfun] at hsol
     exact hsol
 
@@ -92,7 +90,7 @@ omit [NeZero d] in
 /-- Finite-measure instance for the centered open cube. -/
 private theorem isFiniteMeasure_volumeMeasureOn_openCubeSet_originCube (m : ℤ) :
     MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d m))) := by
-  letI : Fact (MeasureTheory.volume (openCubeSet (originCube d m)) < ⊤) :=
+  let : Fact (MeasureTheory.volume (openCubeSet (originCube d m)) < ⊤) :=
     ⟨volume_openCubeSet_originCube_lt_top (d := d) m⟩
   change MeasureTheory.IsFiniteMeasure
     (MeasureTheory.volume.restrict (openCubeSet (originCube d m)))
@@ -109,7 +107,7 @@ private theorem exists_openCube_minimizer
           blockEnergyAverage (openCubeSet (originCube d m)) a Z ∧
         BlockResponseSpace a (openCubeSet (originCube d m)) Z := by
   classical
-  letI := isFiniteMeasure_volumeMeasureOn_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_volumeMeasureOn_openCubeSet_originCube (d := d) m
   obtain ⟨R, hData⟩ :=
     openCubeOriginEllipticRecoveryExistence (d := d) (lam := 1) (Lam := Θ) m a hEllO
   obtain ⟨hEllR, hCompat⟩ := hData
@@ -231,7 +229,7 @@ private theorem toHilbert_eq_minimizerMap_of_admissible_energy_eq
       (R.toMuHilbertRealization
         (R.toMuOperatorSystemDataOfIsEllipticFieldOn hEllR
           (volume_openCubeSet_originCube_toReal_pos (d := d) m))).minimizerMap P := by
-  letI := isFiniteMeasure_volumeMeasureOn_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_volumeMeasureOn_openCubeSet_originCube (d := d) m
   set hvol := volume_openCubeSet_originCube_toReal_pos (d := d) m with hvoldef
   set system := R.toMuOperatorSystemDataOfIsEllipticFieldOn hEllR hvol with hsystem
   set H := R.toMuHilbertRealization system with hH
@@ -293,7 +291,7 @@ theorem cubeBlockMinimizer_ae_unique
     (fun x => Z.eval x) =ᵐ[volumeMeasureOn (cubeSet (originCube d m))]
       (fun x => Z'.eval x) := by
   classical
-  letI := isFiniteMeasure_volumeMeasureOn_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_volumeMeasureOn_openCubeSet_originCube (d := d) m
   -- transport hypotheses to the open cube
   have hEllO : IsEllipticFieldOn 1 Θ (openCubeSet (originCube d m)) a :=
     hEll.mono (measurableSet_openCubeSet (originCube d m))

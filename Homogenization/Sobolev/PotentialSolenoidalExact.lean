@@ -172,7 +172,7 @@ theorem integral_eq_zero_of_mem_solenoidalZeroNormalTrace {d : ℕ} [NeZero d]
     {U : Set (Vec d)} (hU : IsOpenBoundedConvexDomain U)
     (g : HilbertVectorL2 U) (hg : g ∈ solenoidalZeroNormalTrace U) :
     ∫ x, g x ∂volumeMeasureOn U = 0 := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
     hU.isFiniteMeasure_restrict_volume
   apply integral_eq_zero_of_forall_integral_inner_eq_zero ℝ g
     ((MeasureTheory.Lp.memLp g).integrable (by norm_num : (1 : ENNReal) ≤ 2))
@@ -209,10 +209,10 @@ theorem average_eq_zero_of_mem_solenoidalZeroNormalTrace {d : ℕ} [NeZero d]
     (g : HilbertVectorL2 U) (hg : g ∈ solenoidalZeroNormalTrace U) :
     (hU.toBoundedMeasurableDomain hne).average g (by
       change MeasureTheory.Integrable g (volumeMeasureOn U)
-      letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
+      let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
         hU.isFiniteMeasure_restrict_volume
       exact (MeasureTheory.Lp.memLp g).integrable (by norm_num : (1 : ENNReal) ≤ 2)) = 0 := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
     hU.isFiniteMeasure_restrict_volume
   rw [BoundedMeasurableDomain.average, BoundedMeasurableDomain.normalizedVolume,
     MeasureTheory.integral_smul_measure]

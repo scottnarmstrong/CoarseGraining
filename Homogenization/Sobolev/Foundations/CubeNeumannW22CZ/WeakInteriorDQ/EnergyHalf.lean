@@ -85,11 +85,11 @@ theorem neg_integral_forwardDifferenceQuotient_mul_fderiv_h1WeakTest_add
   have hGφ_int :
       MeasureTheory.Integrable (fun x => G x * φ x)
         (MeasureTheory.volume.restrict V) := by
-    simpa [volumeMeasureOn] using hG.integrable_mul hφV
+    simpa [volumeMeasureOn] using! hG.integrable_mul hφV
   have hGψ_int :
       MeasureTheory.Integrable (fun x => G x * ψ x)
         (MeasureTheory.volume.restrict V) := by
-    simpa [volumeMeasureOn] using hG.integrable_mul hψV
+    simpa [volumeMeasureOn] using! hG.integrable_mul hψV
   have hlin :
       ∫ x in V, G x * (φ.add ψ) x ∂MeasureTheory.volume =
         ∫ x in V, G x * φ x ∂MeasureTheory.volume +
@@ -164,7 +164,7 @@ theorem neg_integral_forwardDifferenceQuotient_mul_fderiv_h1WeakTest_smul
   have hGφ_int :
       MeasureTheory.Integrable (fun x => G x * φ x)
         (MeasureTheory.volume.restrict V) := by
-    simpa [volumeMeasureOn] using hG.integrable_mul hφV
+    simpa [volumeMeasureOn] using! hG.integrable_mul hφV
   have hlin :
       ∫ x in V, G x * (φ.smul c) x ∂MeasureTheory.volume =
         c * ∫ x in V, G x * φ x ∂MeasureTheory.volume := by
@@ -427,7 +427,7 @@ theorem integrableOn_sq_cutoff_cross_of_memScalarL2_memVectorL2
           ∑ j : Fin d,
             w x * (G x j * (2 * η x * euclideanGradient η x j)))
         (volumeMeasureOn V) := by
-    refine MeasureTheory.integrable_finset_sum (μ := volumeMeasureOn V)
+    refine MeasureTheory.integrable_finsetSum (μ := volumeMeasureOn V)
       Finset.univ ?_
     intro j hj
     have hGj : MemScalarL2 V (fun x => G x j) :=
@@ -1009,7 +1009,7 @@ theorem eighth_integral_sq_localizedSqCutoffForwardDifferenceQuotientToAmbient_g
     exact (F.gradMemL2 i).mono_measure
       (MeasureTheory.Measure.restrict_mono_set MeasureTheory.volume hVU)
   have hGsq_int : MeasureTheory.IntegrableOn (fun x => G x ^ 2) V := by
-    simpa [pow_two, MeasureTheory.IntegrableOn, volumeMeasureOn] using
+    simpa [pow_two, MeasureTheory.IntegrableOn, volumeMeasureOn] using!
       hG_memV.integrable_mul hG_memV
   have hleft_int :
       MeasureTheory.IntegrableOn (fun x => (1 / 8 : ℝ) * G x ^ 2) V :=
@@ -1042,7 +1042,7 @@ theorem eighth_integral_sq_localizedSqCutoffForwardDifferenceQuotientToAmbient_g
         (V := V) (w := w) (η := η) hw hη hη_compact
   have hE_int : MeasureTheory.IntegrableOn E V := by
     have hhalf := hE_two.const_mul ((2 : ℝ)⁻¹)
-    simpa [E, mul_assoc, mul_left_comm, mul_comm] using hhalf
+    simpa [E, mul_assoc, mul_left_comm, mul_comm] using! hhalf
   have hright_int :
       MeasureTheory.IntegrableOn
         (fun x => (1 / 4 : ℝ) * (η x ^ 2 * vecNormSq (A x)) + E x) V :=

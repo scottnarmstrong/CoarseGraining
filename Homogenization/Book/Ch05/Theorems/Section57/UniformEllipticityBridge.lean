@@ -368,7 +368,7 @@ theorem LambdaSqCoeffField_pow_integrable_of_uniformEllipticityBounds
     Integrable
       (fun a : RegCoeffField d =>
         (Ch04.LambdaSqCoeffField Q s (.finite 1) a) ^ ξ) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let C : ℝ := uniformUpperBlockConst d lam Lam
   have hC : 0 ≤ C := by
     simpa [C] using uniformUpperBlockConst_nonneg hUE.lam_pos hUE.lam_le_Lam
@@ -398,7 +398,7 @@ theorem lambdaSqCoeffField_inv_pow_integrable_of_uniformEllipticityBounds
     Integrable
       (fun a : RegCoeffField d =>
         ((Ch04.lambdaSqCoeffField Q s (.finite 1) a)⁻¹) ^ ξ) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let C : ℝ := uniformLowerInvBlockConst d lam
   have hC : 0 ≤ C := by
     simpa [C] using uniformLowerInvBlockConst_nonneg hUE.lam_pos
@@ -435,7 +435,7 @@ theorem LambdaMomentAtScale_le_of_uniformEllipticityBounds
     (n : ℤ) (hs : 0 < s) {ξ : ℕ} (hξ : 1 ≤ ξ) :
     Ch04.LambdaMomentAtScale P n s ξ ≤
       uniformUpperBlockConst d lam Lam := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let C : ℝ := uniformUpperBlockConst d lam Lam
   have hC : 0 ≤ C := by
     simpa [C] using uniformUpperBlockConst_nonneg hUE.lam_pos hUE.lam_le_Lam
@@ -477,7 +477,7 @@ theorem lambdaInvMomentAtScale_le_of_uniformEllipticityBounds
     (n : ℤ) (hs : 0 < s) {ξ : ℕ} (hξ : 1 ≤ ξ) :
     Ch04.lambdaInvMomentAtScale P n s ξ ≤
       uniformLowerInvBlockConst d lam := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let C : ℝ := uniformLowerInvBlockConst d lam
   have hC : 0 ≤ C := by
     simpa [C] using uniformLowerInvBlockConst_nonneg hUE.lam_pos

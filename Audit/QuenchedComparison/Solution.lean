@@ -689,7 +689,7 @@ private theorem toRepoLawCarrier {d : ℕ} [NeZero d] (S : Setup d) :
     _root_.Homogenization.Book.Ch04.RestrictionLawCarrier
       (Measure.map (toRepoField (d := d)) S.P) where
   isProbability := by
-    haveI := S.isProbability
+    have := S.isProbability
     exact Measure.isProbabilityMeasure_map measurable_toRepoField.aemeasurable
   ae_locally_uniformly_elliptic := by
     refine (ae_map_toRepoField_iff (μ := S.P)).2 ?_

@@ -101,6 +101,7 @@ noncomputable def entryTest {d : ℕ} (i j : Fin d) (φ : Vec d → ℝ)
     (a : RawCoeffField d) : ℝ :=
   ∫ x, a x i j * φ x ∂volume
 
+set_option warn.classDefReducibility false in
 /-- The observable σ-algebra on raw fields: point evaluations together with
 all compactly supported bounded entry integrals.
 
@@ -112,11 +113,13 @@ def pointwiseFieldSigma (d : ℕ) : MeasurableSpace (RawCoeffField d) := by
   exact @MeasurableSpace.pi (Vec d) (fun _ => Mat d)
     (fun _ => instMeasurableSpaceMat d)
 
+set_option warn.classDefReducibility false in
 def probeFieldSigma (d : ℕ) : MeasurableSpace (RawCoeffField d) :=
   MeasurableSpace.generateFrom
     {s | ∃ (i j : Fin d) (φ : Vec d → ℝ), IsProbe φ ∧
       ∃ t : Set ℝ, MeasurableSet t ∧ s = entryTest i j φ ⁻¹' t}
 
+set_option warn.classDefReducibility false in
 def observableFieldSigma (d : ℕ) : MeasurableSpace (RawCoeffField d) :=
   pointwiseFieldSigma d ⊔ probeFieldSigma d
 

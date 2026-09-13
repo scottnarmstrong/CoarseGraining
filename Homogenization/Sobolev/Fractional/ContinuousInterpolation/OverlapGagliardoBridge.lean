@@ -135,7 +135,7 @@ theorem coordinateGagliardoEnergy_le_mul_extendedVectorOverlapBesovEnergy {d : �
               ⨆ N : ℕ, ENNReal.ofReal
                 ((cubeBesovOverlapPartialSeminorm (originCube d 0) s.1
                   (2 : ℝ≥0∞) (2 : ℝ≥0∞) N (fun x => F x i)) ^ 2) := by
-        simpa only [ENNReal.toReal_ofNat, Real.rpow_two] using
+        simpa only [ENNReal.toReal_ofNat, Real.rpow_two] using!
           Gagliardo.gagliardo_rpow_le_iSup_partialSeminorm
             (originCube d 0) s.2.1.le s.2.2.le (p := (2 : ℝ≥0∞))
             (by norm_num) (by norm_num)
@@ -190,7 +190,7 @@ private theorem ofReal_sq_vectorPartialSeminorm_le_mul_coordinateGagliardoEnergy
           (Gagliardo.cubeGagliardoESeminorm (originCube d 0) s.1
             (2 : ℝ≥0∞) (fun x => F x i)) ^ (2 : ℝ) := by
     intro i
-    simpa only [P, ENNReal.toReal_ofNat, Real.rpow_two] using
+    simpa only [P, ENNReal.toReal_ofNat, Real.rpow_two] using!
       Gagliardo.ofReal_partialSeminorm_rpow_le_gagliardo
         (originCube d 0) s.2.1.le (p := (2 : ℝ≥0∞))
         (by norm_num) (by norm_num)

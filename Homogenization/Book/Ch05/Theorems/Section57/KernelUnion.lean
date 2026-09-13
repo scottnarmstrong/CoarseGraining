@@ -45,7 +45,7 @@ theorem measureReal_iUnion_unpair_le_exp_two_kernel
   have hunpair_inj : Function.Injective (Nat.unpair : ℕ → ℕ × ℕ) :=
     Nat.pairEquiv.symm.injective
   have hkernel_unpair : Summable fun k : ℕ => kernel (Nat.unpair k) := by
-    simpa [Function.comp] using hkernel_prod.comp_injective hunpair_inj
+    simpa [Function.comp] using! hkernel_prod.comp_injective hunpair_inj
   have hg : Summable g := by
     simpa [g] using hkernel_unpair.mul_left C
   have hf : Summable f := by
@@ -63,7 +63,7 @@ theorem measureReal_iUnion_unpair_le_exp_two_kernel
     calc
       (∑' k : ℕ, kernel (Nat.unpair k))
           = ∑' p : ℕ × ℕ, kernel p := by
-            simpa [kernel, Nat.pairEquiv] using
+            simpa [kernel, Nat.pairEquiv] using!
               (Nat.pairEquiv.symm.tsum_eq kernel)
       _ ≤ Real.exp (-(A ^ η)) *
           geometricExpKernelConst ρ₁ η * geometricExpKernelConst ρ₂ η := by

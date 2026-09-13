@@ -35,7 +35,7 @@ theorem integrableOn_memLpTop_mul_vecDot {U : Set (Vec d)} {h : Vec d → ℝ}
     integrableOn_vecDot_of_memVectorL2 hF hG
   have hmul : Integrable (h * fun x => vecDot (F x) (G x)) (volumeMeasureOn U) :=
     hvd.mul_of_top_right hh
-  simpa [Pi.mul_apply] using hmul
+  simpa [Pi.mul_apply] using! hmul
 
 /-- **Cutoff-type integrability.**  `u · (F · g)` is `L¹` when `u, F ∈ L²`
 and every coordinate of `g` lies in `L∞`. -/
@@ -51,11 +51,11 @@ theorem integrableOn_scalarL2_mul_vecDot_memLpTop {U : Set (Vec d)} {u : Vec d �
     rw [vecDot, Finset.mul_sum]
     exact Finset.sum_congr rfl (fun i _ => by ring)
   rw [hrw]
-  refine MeasureTheory.integrable_finset_sum Finset.univ (fun i _ => ?_)
+  refine MeasureTheory.integrable_finsetSum Finset.univ (fun i _ => ?_)
   have hi : Integrable (fun x => u x * F x i) (volumeMeasureOn U) :=
     hu.integrable_mul (memScalarL2_coord_of_memVectorL2 hF i)
   have := hi.mul_of_top_left (hg i)
-  simpa [Pi.mul_apply] using this
+  simpa [Pi.mul_apply] using! this
 
 end
 

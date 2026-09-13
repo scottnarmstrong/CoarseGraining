@@ -215,7 +215,7 @@ theorem responseStationaryAHarmonicFunction_firstVariation_integral_eq_zero
         (fun x =>
           vecDot q (vectorField W x) -
             vecDot p (matVecMul (a x) (vectorField W x))) U := by
-    simpa [sub_eq_add_neg, MeasureTheory.IntegrableOn] using
+    simpa [sub_eq_add_neg, MeasureTheory.IntegrableOn] using!
       (integrableOn_vecDot_of_memVectorL2
           (memVectorL2_const (U := U) q) (MeasureTheory.Lp.memLp (vectorField W))).integrable.sub
         (integrableOn_vecDot_of_memVectorL2
@@ -286,7 +286,7 @@ theorem nonempty_of_isOpenBoundedConvexDomain
     (hne : Set.Nonempty U) (hU : IsOpenBoundedConvexDomain U)
     (hEll : IsEllipticFieldOn lam Lam U a) (p q : Vec d) :
     Nonempty (ScalarCanonicalMaximizer U p q a) := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   exact nonempty_of_hodgeConverseCriterion_of_isEllipticFieldOn
     (U := U) (a := a) hne
@@ -385,7 +385,7 @@ theorem nonempty_of_isOpenBoundedConvexDomain
     (hne : Set.Nonempty U) (hU : IsOpenBoundedConvexDomain U)
     (hEll : IsEllipticFieldOn lam Lam U a) :
     Nonempty (GradientBasisData U a) := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   exact nonempty_of_hodgeConverseCriterion_of_isEllipticFieldOn
     (U := U) (a := a) hne
@@ -411,7 +411,7 @@ theorem nonempty_of_isOpenBoundedConvexDomain
     (hne : Set.Nonempty U) (hU : IsOpenBoundedConvexDomain U)
     (hEll : IsEllipticFieldOn lam Lam U a) :
     Nonempty (FluxBasisData U a) := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   exact nonempty_of_hodgeConverseCriterion_of_isEllipticFieldOn
     (U := U) (a := a) hne

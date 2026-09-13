@@ -27,12 +27,12 @@ theorem isBlockMuAdmissible_translateSet {d : ℕ} {U : Set (Vec d)} {P : BlockV
     IsBlockMuAdmissible (translateSet z U) P (X.translate z) := by
   rcases hX with ⟨hpotL2, hpot, hsolL2, hsol⟩
   refine ⟨?_, ?_, ?_, ?_⟩
-  · simpa [BlockState.translate] using
+  · simpa [BlockState.translate] using!
       hpotL2.comp_measurePreserving
         (measurePreserving_subRight_restrict_translateSet (d := d) z U)
   · simpa [BlockState.translate, sub_eq_add_neg, add_assoc] using
       isPotentialZeroTraceOn_translateSet (f := fun x => X.potential x - P.1) hpot z
-  · simpa [BlockState.translate] using
+  · simpa [BlockState.translate] using!
       hsolL2.comp_measurePreserving
         (measurePreserving_subRight_restrict_translateSet (d := d) z U)
   · simpa [BlockState.translate, sub_eq_add_neg, add_assoc] using
@@ -247,7 +247,7 @@ theorem blockResponseIntegrabilityData_translateSet {d : ℕ} (z : Vec d) {U : S
     (hX : BlockResponseIntegrabilityData U (translateCoeffField z a) X) :
     BlockResponseIntegrabilityData (translateSet z U) a (X.translate z) := by
   refine ⟨?_, ?_⟩
-  · simpa [BlockState.translate] using
+  · simpa [BlockState.translate] using!
       hX.flux_memL2.comp_measurePreserving
         (measurePreserving_subRight_restrict_translateSet (d := d) z U)
   · have hInt :

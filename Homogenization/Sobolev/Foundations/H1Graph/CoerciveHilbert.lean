@@ -45,7 +45,7 @@ noncomputable instance : InnerProductSpace ℝ (H1CoerciveHilbertSpace (U := U))
   exact inferInstanceAs (InnerProductSpace ℝ (h1CoerciveHilbertSubmodule (U := U)))
 
 noncomputable instance : CompleteSpace (H1CoerciveHilbertSpace (U := U)) := by
-  simpa [H1CoerciveHilbertSpace, h1CoerciveHilbertSubmodule, h1CoerciveHilbertClosedSubmodule] using
+  simpa [H1CoerciveHilbertSpace, h1CoerciveHilbertSubmodule, h1CoerciveHilbertClosedSubmodule] using!
     (h1CoerciveHilbertClosedSubmodule (U := U)).isClosed.completeSpace_coe
 
 /-- The scalar `L²(U)` value component of a point in the coercive Hilbert
@@ -99,7 +99,8 @@ noncomputable def forcingFunctionalCLM {f : Vec d → Vec d}
     (hf : MemVectorL2 U f) (z : H1CoerciveHilbertSpace (U := U)) :
     forcingFunctionalCLM (U := U) hf z =
       inner ℝ (Homogenization.toHilbertVectorL2OfVecField hf) (gradient (U := U) z) := by
-  simp [forcingFunctionalCLM, gradient]
+  simp only [forcingFunctionalCLM, ContinuousLinearMap.comp_apply, gradientCLM_apply]
+  rfl
 
 /-- The scalar forcing functional `z ↦ ⟪F, z⟫` on the coercive Hilbert graph. -/
 noncomputable def scalarForcingFunctionalCLM {F : Vec d → ℝ}
@@ -112,7 +113,8 @@ noncomputable def scalarForcingFunctionalCLM {F : Vec d → ℝ}
     (hF : MemScalarL2 U F) (z : H1CoerciveHilbertSpace (U := U)) :
     scalarForcingFunctionalCLM (U := U) hF z =
       inner ℝ (Homogenization.toScalarL2 hF) (value (U := U) z) := by
-  simp [scalarForcingFunctionalCLM, value]
+  simp only [scalarForcingFunctionalCLM, ContinuousLinearMap.comp_apply, valueCLM_apply]
+  rfl
 
 /-- The Riesz representative of the forcing functional on the coercive Hilbert
 graph. -/
@@ -394,7 +396,7 @@ theorem gradientProblemSolution_firstVariation {f : Vec d → Vec d}
         (gradientProblemSolution (U := U) hf hC).gradToHilbertVectorL2
         u.gradToHilbertVectorL2 =
       gradientPairing hf u := by
-  simpa [gradientProblemSolution] using
+  simpa [gradientProblemSolution] using!
     (H1CoerciveHilbert.gradientBilin_gradientProblemSolution_apply
       (d := d)
       (U := U) hf hC
@@ -410,7 +412,7 @@ theorem gradientProblemSolution_firstVariation_eq_integral {f : Vec d → Vec d}
   let v : H1MeanZeroFunction U := gradientProblemSolution (U := U) hf hC
   have hpair :
       gradientPairing v.toH1Function.grad_memVectorL2 u = gradientPairing hf u := by
-    simpa [v] using gradientProblemSolution_firstVariation (d := d) (U := U) hf hC u
+    simpa [v] using! gradientProblemSolution_firstVariation (d := d) (U := U) hf hC u
   calc
     ∫ x in U, vecDot (v.toH1Function.grad x) (u.toH1Function.grad x)
         ∂MeasureTheory.volume = gradientPairing v.toH1Function.grad_memVectorL2 u := by

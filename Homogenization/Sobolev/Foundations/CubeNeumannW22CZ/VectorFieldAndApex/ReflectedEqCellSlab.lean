@@ -342,16 +342,16 @@ theorem faceNeighborSlab_reflectedVectorField_weakEquationOnSlab_of_compactSuppo
   have hGopen : MemVectorL2 M G := by
     simpa [MemVectorL2, volumeMeasureOn, G, M] using
       W.w.toH1Function.grad_memVectorL2
-  letI : MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict M) := by
+  let : MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict M) := by
     simpa [M] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   let ψU : Vec d → ℝ := fun z => φ (cubeUpperFaceReflection Q i z)
   let ψL : Vec d → ℝ := fun z => φ (cubeLowerFaceReflection Q i z)
   have hψU : ContDiff ℝ (⊤ : ℕ∞) ψU := by
-    simpa [ψU, cubeUpperFaceReflection] using
+    simpa [ψU, cubeUpperFaceReflection] using!
       hφ.comp (contDiff_coordFaceReflection (cubeUpperFaceCoord Q i) i)
   have hψL : ContDiff ℝ (⊤ : ℕ∞) ψL := by
-    simpa [ψL, cubeLowerFaceReflection] using
+    simpa [ψL, cubeLowerFaceReflection] using!
       hφ.comp (contDiff_coordFaceReflection (cubeLowerFaceCoord Q i) i)
   have hψUs : HasCompactSupport ψU := by
     simpa [ψU] using hasCompactSupport_comp_cubeUpperFaceReflection hφs Q i
@@ -410,12 +410,12 @@ theorem faceNeighborSlab_reflectedVectorField_weakEquationOnSlab_of_compactSuppo
       MeasureTheory.Integrable
         (fun x => F x * φ (cubeUpperFaceReflection Q i x))
         (MeasureTheory.volume.restrict M) := by
-    simpa [ψU] using hFopen.integrable_mul hψUL2
+    simpa [ψU] using! hFopen.integrable_mul hψUL2
   have hFlowerReflected :
       MeasureTheory.Integrable
         (fun x => F x * φ (cubeLowerFaceReflection Q i x))
         (MeasureTheory.volume.restrict M) := by
-    simpa [ψL] using hFopen.integrable_mul hψLL2
+    simpa [ψL] using! hFopen.integrable_mul hψLL2
   have hUpperEq : gradM + gradU = forceM + forceU := by
     simpa [gradM, gradU, forceM, forceU, G, M, U] using
       W.upperFace_reflectedGradient_pairing_eq_reflectedRhs
@@ -450,7 +450,7 @@ theorem faceNeighborSlab_reflectedVectorField_weakEquationOnSlab_of_compactSuppo
       (hφ_cont.memLp_of_hasCompactSupport hφs).restrict S
   have hforceSlabInt :
       MeasureTheory.Integrable forceSlab (MeasureTheory.volume.restrict S) := by
-    simpa [forceSlab] using hFslab.integrable_mul hφSlab
+    simpa [forceSlab] using! hFslab.integrable_mul hφSlab
   have hLsub : L ⊆ S := by
     intro x hx
     exact Or.inl (Or.inl hx)

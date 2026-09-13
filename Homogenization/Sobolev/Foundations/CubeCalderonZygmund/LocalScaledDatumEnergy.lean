@@ -38,7 +38,7 @@ theorem eLpNorm_hilbertify_grad_two_eq_ofReal_norm_gradToHilbertVectorL2
     eLpNorm (hilbertifyVecField u.grad) 2 (volume.restrict U) =
         ‖hu.toLp (hilbertifyVecField u.grad)‖ₑ := (Lp.enorm_toLp hu).symm
     _ = ENNReal.ofReal ‖hu.toLp (hilbertifyVecField u.grad)‖ :=
-      (ofReal_norm_eq_enorm _).symm
+      (ofReal_norm _).symm
     _ = ENNReal.ofReal ‖u.gradToHilbertVectorL2‖ := by
       rfl
 
@@ -55,7 +55,7 @@ theorem eLpNorm_hilbertifyVecField_two_eq_ofReal_norm_toHilbertVectorL2
     eLpNorm (hilbertifyVecField H) 2 (volume.restrict U) =
         ‖hHH.toLp (hilbertifyVecField H)‖ₑ := (Lp.enorm_toLp hHH).symm
     _ = ENNReal.ofReal ‖hHH.toLp (hilbertifyVecField H)‖ :=
-      (ofReal_norm_eq_enorm _).symm
+      (ofReal_norm _).symm
     _ = ENNReal.ofReal ‖toHilbertVectorL2OfVecField hH‖ := by
       rfl
 
@@ -82,7 +82,7 @@ theorem axisCubeNormalized_eLpNorm_harmonicCorrection_le_scaledDatum
     rw [MeasureTheory.eLpNorm_const_smul,
       eLpNorm_hilbertify_grad_two_eq_ofReal_norm_gradToHilbertVectorL2,
       eLpNorm_hilbertifyVecField_two_eq_ofReal_norm_toHilbertVectorL2 hH]
-    rw [← ofReal_norm_eq_enorm, Real.norm_of_nonneg (inv_nonneg.mpr hsigma0.le),
+    rw [← ofReal_norm, Real.norm_of_nonneg (inv_nonneg.mpr hsigma0.le),
       ← ENNReal.ofReal_mul (inv_nonneg.mpr hsigma0.le)]
     exact ENNReal.ofReal_le_ofReal henergy
   change eLpNorm (hilbertifyVecField w.grad) 2 (axisCubeNormalizedMeasure z L) ≤

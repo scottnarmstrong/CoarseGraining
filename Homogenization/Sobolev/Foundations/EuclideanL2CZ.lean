@@ -56,7 +56,7 @@ theorem contDiff_sq {d : ℕ} {u : Vec d → ℝ}
 theorem hasCompactSupport_sq {d : ℕ} {u : Vec d → ℝ}
     (hu : HasCompactSupport u) :
     HasCompactSupport (fun x => u x ^ 2) := by
-  simpa [pow_two, Pi.mul_apply] using (hu.mul_right (f' := u))
+  simpa [pow_two, Pi.mul_apply] using! (hu.mul_right (f' := u))
 
 /-- Squaring a scalar test function does not enlarge topological support. -/
 theorem tsupport_sq_subset {d : ℕ} (u : Vec d → ℝ) :
@@ -75,7 +75,7 @@ theorem euclideanCoordDeriv_sq {d : ℕ} {u : Vec d → ℝ}
     congrArg (fun L : Vec d →L[ℝ] ℝ => L (basisVec i))
       (fderiv_pow (𝕜 := ℝ) (f := u) (x := x) 2 hd)
   simpa [pow_one, two_nsmul, smul_eq_mul, mul_assoc, mul_comm, mul_left_comm]
-    using hpow
+    using! hpow
 
 /-- Euclidean gradient of a squared scalar test function. -/
 theorem euclideanGradient_sq {d : ℕ} {u : Vec d → ℝ}
@@ -163,7 +163,7 @@ theorem continuous_vecNormSq_euclideanGradient_of_contDiff
     (hu : ContDiff ℝ (⊤ : ℕ∞) u) :
     Continuous (fun x => vecNormSq (euclideanGradient u x)) := by
   unfold vecNormSq vecDot euclideanGradient
-  exact continuous_finset_sum Finset.univ fun i _ =>
+  exact continuous_finsetSum Finset.univ fun i _ =>
     ((contDiff_euclideanCoordDeriv hu i).continuous).mul
       ((contDiff_euclideanCoordDeriv hu i).continuous)
 
@@ -185,10 +185,10 @@ theorem hasCompactSupport_vecNormSq_euclideanGradient
     intro s
     induction s using Finset.induction_on with
     | empty =>
-        simpa [F] using
+        simpa [F] using!
           (HasCompactSupport.zero : HasCompactSupport (0 : Vec d → ℝ))
     | insert a s has ih =>
-        simpa [Finset.sum_insert has, F] using (hF a).add ih
+        simpa [Finset.sum_insert has, F] using! (hF a).add ih
   simpa [F] using hsum Finset.univ
 
 theorem contDiff_euclideanCoordSecondDeriv {d : ℕ} {u : Vec d → ℝ}
@@ -222,12 +222,12 @@ theorem hasCompactSupport_euclideanCoordLaplacian {d : ℕ} {u : Vec d → ℝ}
     intro s
     induction s using Finset.induction_on with
     | empty =>
-        simpa [f] using
+        simpa [f] using!
           (HasCompactSupport.zero : HasCompactSupport (0 : Vec d → ℝ))
     | insert a s has ih =>
         have ha : HasCompactSupport (f a) := by
           simpa [f] using hasCompactSupport_euclideanCoordSecondDeriv hu a a
-        simpa [Finset.sum_insert has, f] using ha.add ih
+        simpa [Finset.sum_insert has, f] using! ha.add ih
   simpa [f] using hs Finset.univ
 
 theorem euclideanCoordSecondDeriv_eq_fderiv_fderiv {d : ℕ} {u : Vec d → ℝ}
@@ -342,7 +342,8 @@ theorem integral_mul_euclideanCoordDeriv_eq_neg_integral_euclideanCoordDeriv_mul
   simpa [euclideanCoordDeriv] using
     (integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable
       (μ := volume) (v := basisVec i)
-      hfderiv_g hf_gderiv hfg hf_diff hg_diff)
+      hfderiv_g hf_gderiv hfg
+      (fun x _ => hf_diff.differentiableAt) (fun x _ => hg_diff.differentiableAt))
 
 /-- Smooth compactly supported weak-solution test by `-Δu`.
 
@@ -369,7 +370,7 @@ theorem integral_vecDot_euclideanGradient_euclideanGradient_neg_laplacian_eq_lap
         (f := euclideanCoordDeriv i u) (g := fun y => -L y)
         (contDiff_euclideanCoordDeriv hu i) hL.neg
         (hasCompactSupport_euclideanCoordDeriv hu_supp i) i
-    simpa [L, euclideanCoordSecondDeriv, integral_neg] using h
+    simpa [L, euclideanCoordSecondDeriv, integral_neg] using! h
   have hleftInt :
       ∀ i : Fin d,
         Integrable
@@ -398,14 +399,14 @@ theorem integral_vecDot_euclideanGradient_euclideanGradient_neg_laplacian_eq_lap
     _ = ∑ i : Fin d,
           ∫ x, euclideanCoordDeriv i u x *
             euclideanCoordDeriv i (fun y => -L y) x ∂volume := by
-          exact integral_finset_sum Finset.univ (fun i _ => hleftInt i)
+          exact integral_finsetSum Finset.univ (fun i _ => hleftInt i)
     _ = ∑ i : Fin d,
           ∫ x, euclideanCoordSecondDeriv i i u x * L x ∂volume := by
           apply Finset.sum_congr rfl
           intro i _hi
           exact hcomp i
     _ = ∫ x, ∑ i : Fin d, euclideanCoordSecondDeriv i i u x * L x ∂volume := by
-          exact (integral_finset_sum Finset.univ (fun i _ => hrightInt i)).symm
+          exact (integral_finsetSum Finset.univ (fun i _ => hrightInt i)).symm
     _ = ∫ x, (L x) ^ 2 ∂volume := by
           apply integral_congr_ae
           exact Filter.Eventually.of_forall fun x => by
@@ -429,7 +430,7 @@ theorem integral_euclideanCoordSecondDeriv_sq_eq_integral_diag_mul_diag {d : ℕ
           euclideanCoordSecondDeriv i j u x ∂volume =
         - ∫ x, euclideanCoordThirdDeriv i j j u x *
           euclideanCoordDeriv i u x ∂volume := by
-    simpa [euclideanCoordSecondDeriv, euclideanCoordThirdDeriv] using
+    simpa [euclideanCoordSecondDeriv, euclideanCoordThirdDeriv] using!
       (integral_mul_euclideanCoordDeriv_eq_neg_integral_euclideanCoordDeriv_mul
         (f := euclideanCoordSecondDeriv i j u) (g := euclideanCoordDeriv i u)
         (contDiff_euclideanCoordSecondDeriv hu i j)
@@ -440,7 +441,7 @@ theorem integral_euclideanCoordSecondDeriv_sq_eq_integral_diag_mul_diag {d : ℕ
           euclideanCoordSecondDeriv i i u x ∂volume =
         - ∫ x, euclideanCoordThirdDeriv j j i u x *
           euclideanCoordDeriv i u x ∂volume := by
-    simpa [euclideanCoordSecondDeriv, euclideanCoordThirdDeriv] using
+    simpa [euclideanCoordSecondDeriv, euclideanCoordThirdDeriv] using!
       (integral_mul_euclideanCoordDeriv_eq_neg_integral_euclideanCoordDeriv_mul
         (f := euclideanCoordSecondDeriv j j u) (g := euclideanCoordDeriv i u)
         (contDiff_euclideanCoordSecondDeriv hu j j)
@@ -492,7 +493,7 @@ theorem integral_sum_euclideanCoordSecondDeriv_sq_eq_integral_euclideanCoordLapl
       (hasCompactSupport_euclideanCoordSecondDeriv hu_supp i i)
   have hsum_int : ∀ i : Fin d, Integrable (fun x : Vec d => ∑ j : Fin d, f i j x) := by
     intro i
-    exact integrable_finset_sum Finset.univ (fun j _ => hdiag_int i j)
+    exact integrable_finsetSum Finset.univ (fun j _ => hdiag_int i j)
   calc
     (∑ i : Fin d, ∑ j : Fin d,
       ∫ x, (euclideanCoordSecondDeriv i j u x) ^ 2 ∂volume)
@@ -506,10 +507,10 @@ theorem integral_sum_euclideanCoordSecondDeriv_sq_eq_integral_euclideanCoordLapl
     _ = ∑ i : Fin d, ∫ x, ∑ j : Fin d, f i j x ∂volume := by
           apply Finset.sum_congr rfl
           intro i _hi
-          exact (integral_finset_sum Finset.univ
+          exact (integral_finsetSum Finset.univ
             (f := fun j x => f i j x) (fun j _ => hdiag_int i j)).symm
     _ = ∫ x, ∑ i : Fin d, ∑ j : Fin d, f i j x ∂volume := by
-          exact (integral_finset_sum Finset.univ
+          exact (integral_finsetSum Finset.univ
             (f := fun i x => ∑ j : Fin d, f i j x) (fun i _ => hsum_int i)).symm
     _ = ∫ x, (euclideanCoordLaplacian u x) ^ 2 ∂volume := by
           apply integral_congr_ae

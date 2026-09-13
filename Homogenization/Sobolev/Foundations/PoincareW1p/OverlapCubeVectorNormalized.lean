@@ -34,7 +34,7 @@ private theorem scalarOverlap_cubeAverage_eq_integralAverage_open {d : ℕ}
     (S : TriadicCube d) (f : Vec d → ℝ) :
     ScalarOverlap.cubeAverage S f = integralAverage (openOverlapCubeSet S) f := by
   simpa only [ScalarOverlap.cubeAverage, ScalarOverlap.cubeVolume,
-    ScalarOverlap.cubeSet, ScalarOverlap.scaleFactor] using
+    ScalarOverlap.cubeSet, ScalarOverlap.scaleFactor] using!
     overlapCubeAverage_eq_integralAverage_openOverlapCubeSet S f
 
 private theorem scalar_overlap_coordinate_normalized_bound {d : ℕ} [NeZero d]
@@ -58,7 +58,7 @@ private theorem scalar_overlap_coordinate_normalized_bound {d : ℕ} [NeZero d]
   have hraw := hPoincare S w
   have havg : ScalarOverlap.cubeAverageVec S V.toField i =
       integralAverage (openOverlapCubeSet S) w.toFun := by
-    simpa [ScalarOverlap.cubeAverageVec, w] using
+    simpa [ScalarOverlap.cubeAverageVec, w] using!
       (scalarOverlap_cubeAverage_eq_integralAverage_open S (fun x => V.toField x i))
   change ENNReal.toReal (eLpNorm
       (fun x => w.toFun x - integralAverage (openOverlapCubeSet S) w.toFun)
@@ -74,7 +74,7 @@ private theorem scalar_overlap_coordinate_normalized_bound {d : ℕ} [NeZero d]
   have hA : 0 ≤ A := ENNReal.toReal_nonneg
   have hmul := mul_le_mul_of_nonneg_left hraw hA
   simpa [A, w, havg, ENNReal.toReal_mul, Finset.mul_sum, mul_assoc,
-    mul_left_comm, mul_comm] using hmul
+    mul_left_comm, mul_comm] using! hmul
 
 private theorem memLp_overlap_vector_residual {d : ℕ} {Q S : TriadicCube d}
     {j : ℕ} (q : FiniteLpExponent) (hS : S ∈ ScalarOverlap.centersAtDepth Q j)
@@ -198,10 +198,6 @@ theorem exists_overlapCubeVector_normalized_poincare_constant {d : ℕ} [NeZero 
       (ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top)
       hMmem.eLpNorm_ne_top
   refine (ENNReal.toReal_le_toReal hRmem.eLpNorm_ne_top hright_top).mp ?_
-  change ENNReal.toReal
-      (eLpNorm (fun x => HilbertVec.ofVec (R x)) q.exponent μ) ≤
-    ENNReal.toReal (ENNReal.ofReal K * ENNReal.ofReal (overlapCubeScaleFactor S) *
-      eLpNorm (fun x => HilbertMat.ofMat (V.jacobian x)) q.exponent μ)
   have hvec' : ENNReal.toReal
       (eLpNorm (fun x => HilbertVec.ofVec (R x)) q.exponent μ) ≤
         (d : ℝ) * ∑ i : Fin d,

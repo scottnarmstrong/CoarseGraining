@@ -18,12 +18,12 @@ theorem cubeBesovDualPartialNorm_projection_le_max_mul_cubeBesovCircPartialNorm 
   let qConj : ℝ≥0∞ := cubeBesovConjExponent q
   have hpHolder : ENNReal.HolderConjugate p pConj := by
     simpa [pConj, cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hp
-  letI : ENNReal.HolderConjugate p pConj := hpHolder
-  letI : ENNReal.HolderConjugate pConj p := inferInstance
+  let : ENNReal.HolderConjugate p pConj := hpHolder
+  let : ENNReal.HolderConjugate pConj p := inferInstance
   have hqHolder : ENNReal.HolderConjugate q qConj := by
     simpa [qConj, cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hq
-  letI : ENNReal.HolderConjugate q qConj := hqHolder
-  letI : ENNReal.HolderConjugate qConj q := inferInstance
+  let : ENNReal.HolderConjugate q qConj := hqHolder
+  let : ENNReal.HolderConjugate qConj q := inferInstance
   have hpConj : 1 ≤ pConj := by
     simpa [pConj] using (ENNReal.HolderConjugate.one_le (p := pConj) (q := p))
   have hqConj : 1 ≤ qConj := by
@@ -114,12 +114,12 @@ theorem abs_cubeBesovPairing_projection_le_max_mul_cubeBesovCircPartialNorm_of_d
   let qConj : ℝ≥0∞ := cubeBesovConjExponent q
   have hpHolder : ENNReal.HolderConjugate p pConj := by
     simpa [pConj, cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hp
-  letI : ENNReal.HolderConjugate p pConj := hpHolder
-  letI : ENNReal.HolderConjugate pConj p := inferInstance
+  let : ENNReal.HolderConjugate p pConj := hpHolder
+  let : ENNReal.HolderConjugate pConj p := inferInstance
   have hqHolder : ENNReal.HolderConjugate q qConj := by
     simpa [qConj, cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hq
-  letI : ENNReal.HolderConjugate q qConj := hqHolder
-  letI : ENNReal.HolderConjugate qConj q := inferInstance
+  let : ENNReal.HolderConjugate q qConj := hqHolder
+  let : ENNReal.HolderConjugate qConj q := inferInstance
   have hpConj : 1 ≤ pConj := by
     simpa [pConj] using (ENNReal.HolderConjugate.one_le (p := pConj) (q := p))
   have hqConj : 1 ≤ qConj := by
@@ -191,12 +191,12 @@ theorem abs_cubeBesovPairing_projection_le_max_mul_cubeBesovCircNormEntry_of_dua
   let qConj : ℝ≥0∞ := cubeBesovConjExponent q
   have hpHolder : ENNReal.HolderConjugate p pConj := by
     simpa [pConj, cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hp
-  letI : ENNReal.HolderConjugate p pConj := hpHolder
-  letI : ENNReal.HolderConjugate pConj p := inferInstance
+  let : ENNReal.HolderConjugate p pConj := hpHolder
+  let : ENNReal.HolderConjugate pConj p := inferInstance
   have hqHolder : ENNReal.HolderConjugate q qConj := by
     simpa [qConj, cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hq
-  letI : ENNReal.HolderConjugate q qConj := hqHolder
-  letI : ENNReal.HolderConjugate qConj q := inferInstance
+  let : ENNReal.HolderConjugate q qConj := hqHolder
+  let : ENNReal.HolderConjugate qConj q := inferInstance
   have hpConj : 1 ≤ pConj := by
     simpa [pConj] using (ENNReal.HolderConjugate.one_le (p := pConj) (q := p))
   have hpDouble : cubeBesovConjExponent pConj = p := by

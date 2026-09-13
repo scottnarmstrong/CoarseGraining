@@ -99,15 +99,18 @@ noncomputable def entryTest {d : ℕ} (i j : Fin d) (φ : Vec d → ℝ)
     (a : RawCoeffField d) : ℝ :=
   ∫ x, a x i j * φ x ∂volume
 
+set_option warn.classDefReducibility false in
 def pointwiseFieldSigma (d : ℕ) : MeasurableSpace (RawCoeffField d) := by
   exact @MeasurableSpace.pi (Vec d) (fun _ => Mat d)
     (fun _ => instMeasurableSpaceMat d)
 
+set_option warn.classDefReducibility false in
 def probeFieldSigma (d : ℕ) : MeasurableSpace (RawCoeffField d) :=
   MeasurableSpace.generateFrom
     {s | ∃ (i j : Fin d) (φ : Vec d → ℝ), IsProbe φ ∧
       ∃ t : Set ℝ, MeasurableSet t ∧ s = entryTest i j φ ⁻¹' t}
 
+set_option warn.classDefReducibility false in
 /-- The observable σ-algebra on raw fields: point evaluations together with all
 compactly supported bounded entry integrals.
 
@@ -520,7 +523,7 @@ noncomputable def checkerboardField {d : ℕ} (lam Lam : ℝ) (ω : Sample d) :
 
 /-- A single Bernoulli(`p`) coin. -/
 def coinMeasure (p : ℝ≥0) (hp : p ≤ 1) : Measure Bool :=
-  (PMF.bernoulli p hp).toMeasure
+  ProbabilityTheory.bernoulliMeasure true false ⟨(p : ℝ), NNReal.coe_nonneg p, by exact_mod_cast hp⟩
 
 /-- Independent Bernoulli(`p`) coins, one per unit cell. -/
 def coinSampleMeasure (d : ℕ) (p : ℝ≥0) (hp : p ≤ 1) : Measure (Sample d) :=

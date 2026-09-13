@@ -39,7 +39,7 @@ theorem memVectorL2_neg_matVecMul_const {d : ℕ} {U : Set (Vec d)}
         (c := p))
   have hbase : MemVectorL2 U (fun x => matVecMul (a x) p) :=
     memVectorL2_matVecMul_of_isEllipticFieldOn hEll hp
-  simpa [Pi.smul_apply] using hbase.const_smul (-1 : ℝ)
+  simpa [Pi.smul_apply] using! hbase.const_smul (-1 : ℝ)
 
 theorem memVectorL2_const_vec {d : ℕ} {U : Set (Vec d)}
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)] (q : Vec d) :

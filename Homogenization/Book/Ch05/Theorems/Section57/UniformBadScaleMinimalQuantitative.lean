@@ -142,7 +142,7 @@ theorem exists_quantitative_shifted_quenchedLocalizedEstimate_uniformEndpoint
   · simpa [K, S, b, L, ctop, η, w, ρtop, ρbottom,
       Cbottom, Ctop, Kbottom, W, M, ρgap, C₀] using hR
   intro P hP hStruct hInf hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hInf.toQuantitativeCoarseGrainedEllipticity Centry

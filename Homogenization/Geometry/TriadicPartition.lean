@@ -421,7 +421,7 @@ theorem disjoint_cubeSet_childCube_of_ne {d : ℕ} (Q : TriadicCube d)
   intro x hx₁ hx₂
   have hdiff : ∃ i, digits₁ i ≠ digits₂ i := by
     by_contra h
-    push_neg at h
+    push Not at h
     apply hneq
     funext i
     exact h i

@@ -80,10 +80,9 @@ private theorem measurable_centeredCube_scalar_gagliardoKernel {d : ℕ} {m : �
     (hF : Measurable F) (i : Fin d) :
     Measurable (Gagliardo.gagliardoKernel s.1 (2 : ℝ≥0∞) (fun x => F x i)) := by
   unfold Gagliardo.gagliardoKernel
-  apply Measurable.smul
-  · exact measurable_dist.pow measurable_const
-  · exact ((continuous_apply i).measurable.comp (hF.comp measurable_fst)).sub
-      ((continuous_apply i).measurable.comp (hF.comp measurable_snd))
+  exact (measurable_dist.pow measurable_const).smul
+    (((continuous_apply i).measurable.comp (hF.comp measurable_fst)).sub
+      ((continuous_apply i).measurable.comp (hF.comp measurable_snd)))
 
 private theorem measurable_centeredCube_scalar_gagliardoKernel_enorm_sq
     {d : ℕ} {m : ℤ} (s : FractionalOrder)
@@ -104,7 +103,7 @@ private theorem centeredCubeCoordinateGagliardoEnergy_eq_lintegral_sum {d : ℕ}
   unfold centeredCubeCoordinateGagliardoEnergy
   rw [Finset.sum_congr rfl fun i _ =>
     sq_centeredCube_scalar_cubeGagliardoESeminorm_eq_lintegral s (fun x => F x i)]
-  rw [← lintegral_finset_sum' Finset.univ]
+  rw [← lintegral_finsetSum' Finset.univ]
   intro i _
   exact (measurable_centeredCube_scalar_gagliardoKernel_enorm_sq s F hF i).aemeasurable
 
@@ -414,10 +413,10 @@ private theorem centeredCube_ae_eq_measurableRepresentative_on_overlap
         F.ae_eq_measurableRepresentative
   intro j S hS
   rw [ScalarOverlap.normalizedCubeMeasure_eq_smul_restrict_of_mem_centersAtDepth hS]
-  apply (Measure.ae_smul_measure_iff ?_).2
-  · exact ae_restrict_of_ae hroot
-  · exact ENNReal.ofReal_ne_zero_iff.2
+  have hc : (ENNReal.ofReal (cubeVolume (originCube d m) / ScalarOverlap.cubeVolume S)) ≠ 0 :=
+    ENNReal.ofReal_ne_zero_iff.2
       (div_pos (cubeVolume_pos (originCube d m)) (ScalarOverlap.cubeVolume_pos S))
+  exact (Measure.ae_ennreal_smul_measure_iff hc).2 (ae_restrict_of_ae hroot)
 
 /-- The exact Euclidean overlap seminorm is unchanged by passage to the
 canonical globally measurable representative. -/

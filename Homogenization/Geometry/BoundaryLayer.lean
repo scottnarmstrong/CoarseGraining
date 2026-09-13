@@ -49,11 +49,11 @@ private theorem cubeScaleFactor_pos {d : ℕ} (Q : TriadicCube d) : 0 < cubeScal
 
 theorem cubeBoundary_subset_cubeSet {d : ℕ} (Q : TriadicCube d) :
     cubeBoundary Q ⊆ cubeSet Q :=
-  Set.diff_subset
+  Set.sdiff_subset
 
 theorem cubeBoundaryLayer_subset_cubeSet {d : ℕ} (Q : TriadicCube d) (t : ℝ) :
     cubeBoundaryLayer Q t ⊆ cubeSet Q :=
-  Set.diff_subset
+  Set.sdiff_subset
 
 theorem cubeShrunkSet_anti {d : ℕ} (Q : TriadicCube d) :
     Antitone (cubeShrunkSet Q) := by
@@ -124,7 +124,7 @@ theorem cubeShrunkSet_eq_empty_of_half_le {d : ℕ} [NeZero d] (Q : TriadicCube 
 theorem cubeBoundaryLayer_eq_cubeSet_of_half_le {d : ℕ} [NeZero d] (Q : TriadicCube d) {t : ℝ}
     (ht : (1 / 2 : ℝ) ≤ t) :
     cubeBoundaryLayer Q t = cubeSet Q := by
-  rw [cubeBoundaryLayer, cubeShrunkSet_eq_empty_of_half_le Q ht, Set.diff_empty]
+  rw [cubeBoundaryLayer, cubeShrunkSet_eq_empty_of_half_le Q ht, Set.sdiff_empty]
 
 theorem center_mem_cubeShrunkSet_of_lt_half {d : ℕ} (Q : TriadicCube d) {t : ℝ}
     (ht : t < (1 / 2 : ℝ)) :

@@ -174,7 +174,7 @@ theorem eLpNorm_le_rpow_of_truncatedMoment
     (hq : 0 < q) (hF : AEStronglyMeasurable F μ)
     (htrunc : ∀ n : ℕ, ∫⁻ x, truncatedMoment q n F x ∂μ ≤ A) :
     eLpNorm F (ENNReal.ofReal q) μ ≤ A ^ q⁻¹ := by
-  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm
+  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
     (ENNReal.ofReal_pos.mpr hq |>.ne') ENNReal.ofReal_ne_top,
     ENNReal.toReal_ofReal hq.le, one_div]
   exact ENNReal.rpow_le_rpow
@@ -200,7 +200,7 @@ theorem abs_integral_vecDot_le_eLpNorm_toReal_mul
     refine MemLp.of_bilin (r := 1)
       (b := fun x y : HilbertVec d => inner ℝ x y) (c := 1) hF hG hfm' ?_
     filter_upwards with x
-    simpa using norm_inner_le_norm (𝕜 := ℝ)
+    simpa using! norm_inner_le_norm (𝕜 := ℝ)
       (HilbertVec.ofVec (F x)) (HilbertVec.ofVec (G x))
   have hfLp : MemLp f 1 μ := by
     simpa only [f, HilbertVec.inner_def] using hfLp'
@@ -302,7 +302,7 @@ theorem cubeRadialTruncation_memVectorL2
       (volumeMeasureOn (openCubeSet Q))) (n : ℕ) :
     MemVectorL2 (openCubeSet Q)
       (cubeRadialTruncationL2LpField Q q F hF n).toField := by
-  letI : IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) :=
+  let : IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) :=
     (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   have hqone : 1 < q.exponent.toReal := by
     rw [← ENNReal.toReal_one]
@@ -325,7 +325,7 @@ noncomputable def centeredCube_radialTruncationL2LpField
     (isOpenBoundedConvexDomain_openCubeSet (originCube d m)).isFiniteMeasure_restrict_volume
   have hFraw : AEStronglyMeasurable (fun x => HilbertVec.ofVec (F x))
       (volumeMeasureOn U) := by
-    simpa only [F, hilbertifyVecField] using
+    simpa only [F, hilbertifyVecField] using!
       (memHilbertVectorL2_hilbertifyVecField u.toH1Function.grad_memVectorL2).aestronglyMeasurable
   have hqone : 1 < q.exponent.toReal := by
     rw [← ENNReal.toReal_one]
@@ -356,11 +356,11 @@ theorem centeredCube_radialTruncation_memVectorL2
       (centeredCube_radialTruncationL2LpField m q u n).toField := by
   let U : Set (Vec d) := openCubeSet (originCube d m)
   let F : Vec d → Vec d := u.toH1Function.grad
-  letI : IsFiniteMeasure (volumeMeasureOn U) :=
+  let : IsFiniteMeasure (volumeMeasureOn U) :=
     (isOpenBoundedConvexDomain_openCubeSet (originCube d m)).isFiniteMeasure_restrict_volume
   have hFraw : AEStronglyMeasurable (fun x => HilbertVec.ofVec (F x))
       (volumeMeasureOn U) := by
-    simpa only [F, hilbertifyVecField] using
+    simpa only [F, hilbertifyVecField] using!
       (memHilbertVectorL2_hilbertifyVecField u.toH1Function.grad_memVectorL2).aestronglyMeasurable
   have hqone : 1 < q.exponent.toReal := by
     rw [← ENNReal.toReal_one]
@@ -400,7 +400,7 @@ theorem ofReal_vecDot_vectorRadialTruncation_eq_truncatedMoment
     have hxmem : x ∈ {y | ‖HilbertVec.ofVec (F y)‖ ≤ (n : ℝ)} := hx'
     rw [if_pos hx, truncatedMoment, Set.indicator_of_mem hxmem]
     have hq0 : 0 ≤ q := by linarith
-    rw [← ofReal_norm_eq_enorm (HilbertVec.ofVec (F x))]
+    rw [← ofReal_norm (HilbertVec.ofVec (F x))]
     simpa only [euclideanNorm_eq_norm_ofVec] using
       (ENNReal.ofReal_rpow_of_nonneg
         (norm_nonneg (HilbertVec.ofVec (F x))) hq0).symm
@@ -418,7 +418,7 @@ theorem eLpNorm_hilbertRadialTruncation_rpow_conjugate_eq_truncatedMoment
     (eLpNorm (hilbertRadialTruncation q.exponent.toReal n F)
       q.conjugate.exponent μ) ^ q.conjugate.exponent.toReal =
       ∫⁻ x, truncatedMoment q.exponent.toReal n F x ∂μ := by
-  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm
+  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
     (ne_of_gt (zero_lt_one.trans q.conjugate.one_lt)) q.conjugate.lt_top.ne,
     ← ENNReal.rpow_mul]
   have hqnonzero : q.conjugate.exponent.toReal ≠ 0 := by
@@ -427,13 +427,13 @@ theorem eLpNorm_hilbertRadialTruncation_rpow_conjugate_eq_truncatedMoment
   rw [one_div, inv_mul_cancel₀ hqnonzero, ENNReal.rpow_one]
   apply lintegral_congr
   intro x
-  rw [← ofReal_norm_eq_enorm,
+  rw [← ofReal_norm,
     ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) ENNReal.toReal_nonneg,
     norm_hilbertRadialTruncation_rpow_conjugate]
   by_cases hx : ‖F x‖ ≤ (n : ℝ)
   · have hxmem : x ∈ {y | ‖F y‖ ≤ (n : ℝ)} := hx
     rw [if_pos hx, truncatedMoment, Set.indicator_of_mem hxmem]
-    rw [← ofReal_norm_eq_enorm,
+    rw [← ofReal_norm,
       ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) ENNReal.toReal_nonneg]
   · have hxmem : x ∉ {y | ‖F y‖ ≤ (n : ℝ)} := hx
     rw [if_neg hx, truncatedMoment, Set.indicator_of_notMem hxmem]
@@ -571,7 +571,7 @@ theorem eLpNorm_le_of_truncated_cross_bound
       J = (J ^ q⁻¹) ^ q := by
         rw [← ENNReal.rpow_mul, inv_mul_cancel₀ hq0, ENNReal.rpow_one]
       _ ≤ B ^ q := ENNReal.rpow_le_rpow hroot (by linarith)
-  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm
+  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
     (ENNReal.ofReal_pos.mpr (by linarith : 0 < q) |>.ne') ENNReal.ofReal_ne_top,
     ENNReal.toReal_ofReal (by linarith : 0 ≤ q)]
   have hmoment : (∫⁻ x, ‖F x‖ₑ ^ q ∂μ) ≤ A ^ q := by
@@ -636,7 +636,7 @@ private theorem centeredCubeH10ScalarDivergence_cz_of_one_lt_of_lt_two
   let μ : Measure (Vec d) := (centeredCubeDomain d m).normalizedVolume
   let F : Vec d → HilbertVec d := hilbertifyVecField u.toH1Function.grad
   let H : Vec d → HilbertVec d := hilbertifyVecField h.toField
-  letI : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
+  let : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
   have hqreal : 1 < q.exponent.toReal := by
     rw [← ENNReal.toReal_one]
     exact (ENNReal.toReal_lt_toReal (by norm_num) q.lt_top.ne).mpr q.one_lt
@@ -645,7 +645,7 @@ private theorem centeredCubeH10ScalarDivergence_cz_of_one_lt_of_lt_two
   have hHq : MemLp H q.exponent μ := by
     simpa only [H, μ, centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-      hilbertifyVecField] using h.euclideanMemLp
+      hilbertifyVecField] using! h.euclideanMemLp
   have hFmeas : AEStronglyMeasurable F μ := hFtwo.aestronglyMeasurable
   let A : ℝ≥0∞ := C * (ENNReal.ofReal sigma0)⁻¹ * eLpNorm H q.exponent μ
   have hmain : eLpNorm F q.exponent μ ≤ A := by
@@ -674,7 +674,7 @@ private theorem centeredCubeH10ScalarDivergence_cz_of_one_lt_of_lt_two
         (vecDot (u.toH1Function.grad x) (G x)) =
           INTERNAL.truncatedMoment q.exponent.toReal n F x := by
       filter_upwards with x
-      simpa only [F, G, Gfield] using
+      simpa only [F, G, Gfield] using!
         INTERNAL.ofReal_vecDot_vectorRadialTruncation_eq_truncatedMoment
           hqreal n u.toH1Function.grad x
     have hJ : (∫⁻ x, INTERNAL.truncatedMoment q.exponent.toReal n F x ∂μ) =
@@ -686,13 +686,13 @@ private theorem centeredCubeH10ScalarDivergence_cz_of_one_lt_of_lt_two
     have hvsolution : IsCenteredCubeH10ScalarDivergenceSolution m sigma0 v
         Gfield.toLpTwo := by
       intro psi
-      simpa only [v, G, Gfield] using
+      simpa only [v, G, Gfield] using!
         INTERNAL.openCubeSetScalarDivergenceSolution_normalized_weak m hsigma0 G hGtwo psi
     have hvbound := hC m sigma0 Gfield v hsigma0 hvsolution
     have hGq : MemLp (hilbertifyVecField G) q.conjugate.exponent μ := by
       simpa only [μ, G, Gfield, centeredCubeDomain,
         cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-        hilbertifyVecField] using Gfield.euclideanMemLp
+        hilbertifyVecField] using! Gfield.euclideanMemLp
     have hVtwo : MemLp (hilbertifyVecField v.toH1Function.grad) 2 μ := by
       simpa only [v, μ] using INTERNAL.centeredCube_memLp_hilbertGradient_two v
     have hVbound : eLpNorm (hilbertifyVecField v.toH1Function.grad)
@@ -700,7 +700,7 @@ private theorem centeredCubeH10ScalarDivergence_cz_of_one_lt_of_lt_two
           eLpNorm (hilbertifyVecField G) q.conjugate.exponent μ := by
       simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
         BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-        MeasureTheory.eLpNorm_norm, μ, v, G, Gfield, hilbertifyVecField] using hvbound
+        MeasureTheory.eLpNorm_norm, μ, v, G, Gfield, hilbertifyVecField] using! hvbound
     have hVq : MemLp (hilbertifyVecField v.toH1Function.grad)
         q.conjugate.exponent μ := by
       refine ⟨hVtwo.aestronglyMeasurable, ?_⟩
@@ -713,7 +713,7 @@ private theorem centeredCubeH10ScalarDivergence_cz_of_one_lt_of_lt_two
         sigma0 * ∫ x, vecDot (u.toH1Function.grad x) (psi.toH1Function.grad x) ∂μ =
           -∫ x, vecDot (h.toField x) (psi.toH1Function.grad x) ∂μ := by
       intro psi
-      simpa only [μ] using hsolution psi
+      simpa only [μ] using! hsolution psi
     have hcross := INTERNAL.openCubeSetScalarDivergenceSolution_normalized_cross_pairing
       m hsigma0 u h.toField G huweak hGtwo
     have hholder := INTERNAL.abs_integral_vecDot_le_eLpNorm_toReal_mul
@@ -721,7 +721,7 @@ private theorem centeredCubeH10ScalarDivergence_cz_of_one_lt_of_lt_two
     have hGmoment : (eLpNorm (hilbertifyVecField G) q.conjugate.exponent μ) ^
         q.conjugate.exponent.toReal =
           ∫⁻ x, INTERNAL.truncatedMoment q.exponent.toReal n F x ∂μ := by
-      simpa only [μ, F, G, Gfield, hilbertifyVecField] using
+      simpa only [μ, F, G, Gfield, hilbertifyVecField] using!
         INTERNAL.eLpNorm_hilbertRadialTruncation_rpow_conjugate_eq_truncatedMoment q n F
     have hreal : q.exponent.toReal.HolderConjugate q.conjugate.exponent.toReal :=
       ENNReal.HolderConjugate.toReal hqreal
@@ -772,7 +772,7 @@ private theorem centeredCubeH10ScalarDivergence_cz_of_one_lt_of_lt_two
           ac_rfl
   simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
     BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-    MeasureTheory.eLpNorm_norm, F, H, μ, A] using hmain
+    MeasureTheory.eLpNorm_norm, F, H, μ, A] using! hmain
 
 /-- The supplied-solution cube Calderón--Zygmund estimate for every finite
 exponent.  The `q<2` branch is obtained by adjoint duality, the `q=2` branch

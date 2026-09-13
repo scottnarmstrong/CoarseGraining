@@ -66,7 +66,7 @@ theorem integral_poissonGradient_vecDot_grad_eq_sum_coord
         ∫ x in openCubeSet Q,
           (h.poissonSolutionFor u).w.toH1Function.grad x i * u.grad x i
             ∂MeasureTheory.volume := by
-          rw [MeasureTheory.integral_finset_sum]
+          rw [MeasureTheory.integral_finsetSum]
           intro i _hi
           exact (memScalarL2_coord_of_memVectorL2
               (U := openCubeSet Q)

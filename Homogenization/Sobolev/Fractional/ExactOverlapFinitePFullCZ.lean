@@ -50,11 +50,11 @@ theorem exists_exactOverlapFiniteP_full_cz
   let hscaled : Vec d → Vec d := fun x => sigma0⁻¹ • h.toField x
   have hscaled_l2 : MemLp (fun x => HilbertVec.ofVec (hscaled x)) 2
       (normalizedCubeMeasure Q) := by
-    simpa only [hscaled, ← (HilbertVec.ofVecL d).map_smul] using
+    simpa only [hscaled, ← (HilbertVec.ofVecL d).map_smul] using!
       h.euclideanMemL2.const_smul sigma0⁻¹
   have hscaled_q : MemLp (fun x => HilbertVec.ofVec (hscaled x)) q.exponent
       (normalizedCubeMeasure Q) := by
-    simpa only [hscaled, ← (HilbertVec.ofVecL d).map_smul] using
+    simpa only [hscaled, ← (HilbertVec.ofVecL d).map_smul] using!
       h.euclideanMemLp.const_smul sigma0⁻¹
   have hproblem : CubeDirichletDivergenceProblem Q w hscaled := by
     simpa only [Q, hscaled] using

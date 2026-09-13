@@ -83,10 +83,10 @@ private theorem regularBilinearTest_eq_sum_entryTestR {d : ℕ}
     ring
   unfold regularBilinearTest
   simp_rw [hpoint]
-  rw [integral_finset_sum]
+  rw [integral_finsetSum]
   · apply Finset.sum_congr rfl
     intro i _
-    rw [integral_finset_sum]
+    rw [integral_finsetSum]
     · apply Finset.sum_congr rfl
       intro j _
       rw [integral_const_mul]
@@ -94,7 +94,7 @@ private theorem regularBilinearTest_eq_sum_entryTestR {d : ℕ}
     · intro j _
       exact (integrable_entry_mul_probe i j hprobe a).const_mul (e' i * e j)
   · intro i _
-    apply integrable_finset_sum
+    apply integrable_finsetSum
     intro j _
     exact (integrable_entry_mul_probe i j hprobe a).const_mul (e' i * e j)
 
@@ -127,8 +127,8 @@ theorem measurable_coarseToRegular_smoothLocal {d : ℕ} (U : Set (Vec d))
     (hU : MeasurableSet U) :
     @Measurable (Carrier d) (RegCoeffField d) (localSigma U hU)
       (SmoothLocalSigmaR U) coarseToRegular := by
-  letI : MeasurableSpace (Carrier d) := localSigma U hU
-  letI : MeasurableSpace (RegCoeffField d) := SmoothLocalSigmaR U
+  let : MeasurableSpace (Carrier d) := localSigma U hU
+  let : MeasurableSpace (RegCoeffField d) := SmoothLocalSigmaR U
   apply measurable_generateFrom
   rintro s ⟨i, j, φ, hφsmooth, hφcompact, hφU, ⟨t, ht, rfl⟩⟩
   change MeasurableSet ((fun a : Carrier d => entryTestR i j φ (coarseToRegular a)) ⁻¹' t)
@@ -172,7 +172,7 @@ integral sigma algebras. -/
 theorem measurable_coarseToRegular_smoothGlobal {d : ℕ} :
     @Measurable (Carrier d) (RegCoeffField d) (globalSigma d)
       (SmoothGlobalSigmaR d) coarseToRegular := by
-  simpa [globalSigma, SmoothGlobalSigmaR] using
+  simpa [globalSigma, SmoothGlobalSigmaR] using!
     measurable_coarseToRegular_smoothLocal (d := d) Set.univ MeasurableSet.univ
 
 /-- Coarse local integral information is measurable in the pullback of the

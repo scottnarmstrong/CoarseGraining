@@ -35,7 +35,7 @@ theorem exists_centeredNeumannCorrector_aHarmonicRemainder_of_h1DirichletRhsWeak
       ∃ w : AHarmonicFunction a (cubeSet Q),
         ∀ x ∈ cubeSet Q,
           u.grad x = w.toH1.grad x + ω.toH1MeanZero.toH1Function.grad x := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) :=
     isFiniteMeasureVolumeMeasureOnCubeSet_rhs Q
   have hconst_mem :
       MemVectorL2 (cubeSet Q) (fun _ : Vec d => cubeAverageVec Q g) :=

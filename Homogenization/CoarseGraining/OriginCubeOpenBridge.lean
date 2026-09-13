@@ -530,7 +530,7 @@ theorem bCoarse_sigmaCoarse_sigmaStarCoarse_kappaCoarse_cubeSet_originCube_eq_op
       ((isSigmaStarCoarse_cubeSet_originCube_iff_openCubeSet (n := n)).1 hS)
       ((isKappaCoarse_cubeSet_originCube_iff_openCubeSet (n := n)).1 hK) hdet]
 
-noncomputable def originCubeOpenBridge {d : ℕ} [NeZero d] (n : ℤ) :
+theorem originCubeOpenBridge {d : ℕ} [NeZero d] (n : ℤ) :
     OriginCubeOpenBridge (d := d) n where
   coarseBlockMatrix_eq := coarseBlockMatrix_cubeSet_originCube_eq_openCubeSet (d := d) n
 

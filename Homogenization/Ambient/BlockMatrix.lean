@@ -282,7 +282,7 @@ theorem isUnit_det_smul {d : ℕ} {A : Mat d} (hdet : IsUnit A.det)
 theorem nonsing_inv_smul {d : ℕ} {A : Mat d} (c : ℝ) (hc : c ≠ 0)
     (hdet : IsUnit A.det) :
     (c • A)⁻¹ = c⁻¹ • A⁻¹ := by
-  letI : Invertible c := invertibleOfNonzero hc
+  let : Invertible c := invertibleOfNonzero hc
   simpa using (Matrix.inv_smul (A := A) c hdet)
 
 theorem basis_sum_pairing {d : ℕ} (M : Mat d) (i j : Fin d) :

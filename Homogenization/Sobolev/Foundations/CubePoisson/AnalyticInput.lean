@@ -168,7 +168,7 @@ theorem cubePoissonRhs_memL2_normalizedCubeMeasure
         (2 : ℝ≥0∞) (normalizedCubeMeasure Q) :=
     MeasureTheory.memLp_const
       (μ := normalizedCubeMeasure Q) (p := (2 : ℝ≥0∞)) (cubeAverage Q (fun x => u x))
-  simpa [H1Function.cubePoissonRhs, cubeFluctuation] using hu.sub hconst
+  simpa [H1Function.cubePoissonRhs, cubeFluctuation] using! hu.sub hconst
 
 theorem cubeAverage_cubePoissonRhs (u : H1Function (openCubeSet Q)) :
     cubeAverage Q (u.cubePoissonRhs Q) = 0 := by
@@ -194,7 +194,7 @@ noncomputable def toMeanZeroOnCube (Q : TriadicCube d)
     (u : H1Function (openCubeSet Q)) (x : Vec d) :
     u.toMeanZeroOnCube Q x = u.cubePoissonRhs Q x := by
   unfold H1Function.toMeanZeroOnCube
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   have havg :
@@ -207,7 +207,7 @@ noncomputable def toMeanZeroOnCube (Q : TriadicCube d)
     (u : H1Function (openCubeSet Q)) (x : Vec d) :
     (u.toMeanZeroOnCube Q).toH1Function.grad x = u.grad x := by
   unfold H1Function.toMeanZeroOnCube
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   simp

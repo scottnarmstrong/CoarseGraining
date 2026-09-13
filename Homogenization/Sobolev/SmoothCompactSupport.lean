@@ -67,7 +67,7 @@ compatibility needed when symmetric test classes are used in dual suprema. -/
   ext x i
   change (fderiv ℝ (fun y => -φ y) x) (basisVec i) =
     -(fderiv ℝ (φ : Vec d → ℝ) x) (basisVec i)
-  rw [fderiv_fun_neg, ContinuousLinearMap.neg_apply]
+  rw [fderiv_fun_neg, neg_apply]
 
 end SmoothCompactSupportFunction
 

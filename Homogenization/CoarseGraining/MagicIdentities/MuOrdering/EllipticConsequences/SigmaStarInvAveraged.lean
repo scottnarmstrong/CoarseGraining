@@ -105,7 +105,7 @@ theorem sigmaStarInvCoarse_le_average_blockMatrixOfCoeff_lowerRight_of_mu_zero_r
       volumeAverage U (fun x => (1 / 2 : ℝ) * vecDot q (matVecMul ((blockMatrixOfCoeff (a x)).lowerRight) q)) =
         (1 / 2 : ℝ) *
           volumeAverage U (fun x => vecDot q (matVecMul ((blockMatrixOfCoeff (a x)).lowerRight) q)) := by
-    simpa [smul_eq_mul] using
+    simpa [smul_eq_mul] using!
       (volumeAverage_smul U (1 / 2 : ℝ)
         (fun x => vecDot q (matVecMul ((blockMatrixOfCoeff (a x)).lowerRight) q)))
   rw [hAvgHalf] at hMuLe

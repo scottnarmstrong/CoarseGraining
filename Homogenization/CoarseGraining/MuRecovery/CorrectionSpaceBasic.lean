@@ -108,7 +108,7 @@ theorem affineField_memBlockL2
     (memVectorL2_const (U := U) P.1).add Z.potential_memL2
   have hflux : MemVectorL2 U ((fun _ : Vec d => P.2) + Z.flux) :=
     (memVectorL2_const (U := U) P.2).add Z.flux_memL2
-  simpa [MuCorrectionSpaceRecoveryData.affineField, blockField] using
+  simpa [MuCorrectionSpaceRecoveryData.affineField, blockField] using!
     memBlockL2_blockField hpot hflux
 
 omit [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)] in
@@ -317,7 +317,7 @@ theorem recoveredField_memBlockL2
     (memVectorL2_const (U := U) P.1).add Y.potential_memL2
   have hflux : MemVectorL2 U ((fun _ : Vec d => P.2) + Y.flux) :=
     (memVectorL2_const (U := U) P.2).add Y.flux_memL2
-  simpa [MuCorrectionSpaceRecoveryData.recoveredField, blockField] using
+  simpa [MuCorrectionSpaceRecoveryData.recoveredField, blockField] using!
     memBlockL2_blockField hpot hflux
 
 theorem recoveredField_admissible
@@ -328,13 +328,13 @@ theorem recoveredField_admissible
   let Y := MuCorrectionSpaceRecoveryData.repr R
     (MuCorrectionSpaceRecoveryData.correctionPart R system P)
   refine ⟨?_, ?_, ?_, ?_⟩
-  · simpa [MuCorrectionSpaceRecoveryData.recoveredField, constVecField] using
+  · simpa [MuCorrectionSpaceRecoveryData.recoveredField, constVecField] using!
       Y.potential_memL2
-  · simpa [MuCorrectionSpaceRecoveryData.recoveredField, constVecField] using
+  · simpa [MuCorrectionSpaceRecoveryData.recoveredField, constVecField] using!
       Y.isPotentialZeroTrace
-  · simpa [MuCorrectionSpaceRecoveryData.recoveredField, constVecField] using
+  · simpa [MuCorrectionSpaceRecoveryData.recoveredField, constVecField] using!
       Y.flux_memL2
-  · simpa [MuCorrectionSpaceRecoveryData.recoveredField, constVecField] using
+  · simpa [MuCorrectionSpaceRecoveryData.recoveredField, constVecField] using!
       Y.isSolenoidalZeroNormalTrace
 
 theorem recoveredField_integral_pairing_openCubeSet_originCube
@@ -348,7 +348,7 @@ theorem recoveredField_integral_pairing_openCubeSet_originCube
       (MeasureTheory.volume (openCubeSet (originCube d n))).toReal * vecDot P.1 P.2 := by
   let Y := MuCorrectionSpaceRecoveryData.repr R
     (MuCorrectionSpaceRecoveryData.correctionPart R system P)
-  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y] using
+  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y] using!
     (CorrectionFieldData.integral_pairing_affine_eq_volume_mul_vecDot
       (U := openCubeSet (originCube d n))
       (hU := isSobolevRegularDomain_openCubeSet_originCube_recovery (d := d) n)
@@ -365,7 +365,7 @@ theorem recoveredField_integral_pairing_cubeSet_originCube
       (MeasureTheory.volume (cubeSet (originCube d n))).toReal * vecDot P.1 P.2 := by
   let Y := MuCorrectionSpaceRecoveryData.repr R
     (MuCorrectionSpaceRecoveryData.correctionPart R system P)
-  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y] using
+  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y] using!
     (CorrectionFieldData.integral_pairing_affine_eq_volume_mul_vecDot
       (U := cubeSet (originCube d n))
       (hU := isSobolevRegularDomain_cubeSet_originCube_recovery (d := d) n)
@@ -382,7 +382,7 @@ theorem recoveredField_integrableOn_pairing_openCubeSet_originCube
       (openCubeSet (originCube d n)) := by
   let Y := MuCorrectionSpaceRecoveryData.repr R
     (MuCorrectionSpaceRecoveryData.correctionPart R system P)
-  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y] using
+  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y] using!
     Y.integrableOn_pairing_affine P.1 P.2
 
 theorem recoveredField_integrableOn_pairing_cubeSet_originCube
@@ -396,7 +396,7 @@ theorem recoveredField_integrableOn_pairing_cubeSet_originCube
       (cubeSet (originCube d n)) := by
   let Y := MuCorrectionSpaceRecoveryData.repr R
     (MuCorrectionSpaceRecoveryData.correctionPart R system P)
-  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y] using
+  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y] using!
     Y.integrableOn_pairing_affine P.1 P.2
 
 theorem recoveredField_average_pairing_openCubeSet_originCube
@@ -449,7 +449,7 @@ theorem recoveredField_average_state_openCubeSet_originCube
   have hvol :
       (MeasureTheory.volume (openCubeSet (originCube d n))).toReal ≠ 0 :=
     (volume_openCubeSet_originCube_toReal_pos_recovery (d := d) n).ne'
-  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y, volumeAverage, integralAverage] using
+  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y, volumeAverage, integralAverage] using!
     (CorrectionFieldData.average_state_affine
       (U := openCubeSet (originCube d n))
       (hU := isSobolevRegularDomain_openCubeSet_originCube_recovery (d := d) n)
@@ -471,7 +471,7 @@ theorem recoveredField_average_state_cubeSet_originCube
   have hvol :
       (MeasureTheory.volume (cubeSet (originCube d n))).toReal ≠ 0 :=
     (volume_cubeSet_originCube_toReal_pos_recovery (d := d) n).ne'
-  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y, volumeAverage, integralAverage] using
+  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y, volumeAverage, integralAverage] using!
     (CorrectionFieldData.average_state_affine
       (U := cubeSet (originCube d n))
       (hU := isSobolevRegularDomain_cubeSet_originCube_recovery (d := d) n)
@@ -489,7 +489,7 @@ theorem recoveredField_average_state_of_isSobolevRegularDomain
         (fun x => (R.recoveredField system P).flux x i))) = P := by
   let Y := MuCorrectionSpaceRecoveryData.repr R
     (MuCorrectionSpaceRecoveryData.correctionPart R system P)
-  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y, volumeAverage, integralAverage] using
+  simpa [MuCorrectionSpaceRecoveryData.recoveredField, Y, volumeAverage, integralAverage] using!
     (CorrectionFieldData.average_state_affine
       (U := U)
       (hU := hU)
@@ -625,7 +625,7 @@ theorem blockPairingAverage_repr_recoveredField_eq_zero
       flux := (R.repr Y).flux }
   have hZ :
       MemBlockL2 U Z.eval := by
-    simpa [Z, CorrectionFieldData.toBlockField, blockField] using
+    simpa [Z, CorrectionFieldData.toBlockField, blockField] using!
       (R.repr Y).memBlockL2_toBlockField
   have hrepr :
       toHilbertBlockL2OfBlockField (U := U) hZ = Y := by
@@ -633,7 +633,7 @@ theorem blockPairingAverage_repr_recoveredField_eq_zero
       toHilbertBlockL2OfBlockField (U := U) hZ
           = blockL2ToHilbertBlockL2 (U := U) (R.repr Y).toBlockL2 := by
               symm
-              simpa [CorrectionFieldData.toBlockL2, Z, CorrectionFieldData.toBlockField] using
+              simpa [CorrectionFieldData.toBlockL2, Z, CorrectionFieldData.toBlockField] using!
                 (Homogenization.blockL2ToHilbertBlockL2_toBlockL2
                   (U := U)
                   (F := (R.repr Y).toBlockField)
@@ -648,7 +648,7 @@ theorem blockPairingAverage_repr_recoveredField_eq_zero
             (toHilbertBlockL2OfBlockField (U := U) (R.recoveredField_memBlockL2 system P))
             (toHilbertBlockL2OfBlockField (U := U) hZ) := by
               symm
-              simpa [H] using
+              simpa [H] using!
                 system.toMuOperatorRealization.energyBilin_eq_blockPairingAverage_of_blockState
                   (X := Z)
                   (Y := R.recoveredField system P)
@@ -697,7 +697,7 @@ theorem blockPairingAverage_correction_eq_zero
       flux := g }
   have hZ :
       MemBlockL2 U Z.eval := by
-    simpa [Z, BlockState.eval, blockField] using memBlockL2_blockField hf hg
+    simpa [Z, BlockState.eval, blockField] using! memBlockL2_blockField hf hg
   have hY :
       toHilbertBlockL2OfBlockField (U := U) hZ = Y := by
     apply MeasureTheory.Lp.ext
@@ -713,7 +713,7 @@ theorem blockPairingAverage_correction_eq_zero
             (toHilbertBlockL2OfBlockField (U := U) (R.recoveredField_memBlockL2 system P))
             (toHilbertBlockL2OfBlockField (U := U) hZ) := by
               symm
-              simpa [H] using
+              simpa [H] using!
                 system.toMuOperatorRealization.energyBilin_eq_blockPairingAverage_of_blockState
                   (X := Z)
                   (Y := R.recoveredField system P)

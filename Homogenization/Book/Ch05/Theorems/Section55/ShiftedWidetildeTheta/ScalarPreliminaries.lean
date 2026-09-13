@@ -88,7 +88,7 @@ theorem upperShiftedFactorPowerIntegrableAtScale_from_P4
         (Ch04.LambdaSqCoeffField (originCube d (m : ℤ))
           (hP4.sUpper + section53CoarseFluctuationBeta hP4) (.finite 1) a) ^
           hP4.xi) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let rUpper := hP4.sUpper + section53CoarseFluctuationBeta hP4
   let X : RegCoeffField d → ℝ := fun a =>
     Ch04.LambdaSqCoeffField (originCube d (m : ℤ)) rUpper (.finite 1) a
@@ -135,7 +135,7 @@ theorem lowerShiftedFactorPowerIntegrableAtScale_from_P4
         ((Ch04.lambdaSqCoeffField (originCube d (m : ℤ))
           (hP4.sLower + section53CoarseFluctuationBeta hP4) (.finite 1) a)⁻¹) ^
           hP4.xi) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let rLower := hP4.sLower + section53CoarseFluctuationBeta hP4
   let X : RegCoeffField d → ℝ := fun a =>
     (Ch04.lambdaSqCoeffField (originCube d (m : ℤ)) rLower (.finite 1) a)⁻¹

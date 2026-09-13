@@ -92,7 +92,7 @@ theorem centeredCubeH10ScalarDivergence_fractional_cz_full
       euclideanMemLp := h.euclideanMemLp
       euclideanMemL2 := h.euclideanMemL2 }
   have hLpRaw := hCLp m sigma0 hField w hsigma0 (by
-    simpa only [Q, hField] using hsolution)
+    simpa only [Q, hField] using! hsolution)
   have hLp :
       (cubeBoundedMeasurableDomain Q).normalizedEuclideanLpENorm q.exponent
           w.toH1Function.grad ≤

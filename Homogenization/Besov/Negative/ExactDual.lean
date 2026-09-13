@@ -30,7 +30,8 @@ theorem exactDualConjExponent_one_le (p : ℝ) (hp : 1 < p) :
     1 ≤ exactDualConjExponent p :=
   (exactDualConjExponent_one_lt p hp).le
 
-private noncomputable def exactDualHolderConjugateENNReal (p : ℝ) (hp : 1 < p) :
+set_option warn.classDefReducibility false in
+private theorem exactDualHolderConjugateENNReal (p : ℝ) (hp : 1 < p) :
     ENNReal.HolderConjugate (ENNReal.ofReal p)
       (ENNReal.ofReal (exactDualConjExponent p)) := by
   let h := exactDualConjExponent_holder p hp
@@ -63,10 +64,10 @@ noncomputable def exactDualPairingFromHolder {d : ℕ} (Q : TriadicCube d)
     (hg : MeasureTheory.MemLp g (ENNReal.ofReal (exactDualConjExponent p))
       (Homogenization.normalizedCubeMeasure Q)) : ℝ≥0∞ :=
   exactDualNormalizedPairing Q f g (by
-    letI : ENNReal.HolderConjugate (ENNReal.ofReal p)
+    let : ENNReal.HolderConjugate (ENNReal.ofReal p)
         (ENNReal.ofReal (exactDualConjExponent p)) :=
       exactDualHolderConjugateENNReal p hp
-    simpa only [Pi.mul_apply] using hf.integrable_mul hg)
+    simpa only [Pi.mul_apply] using! hf.integrable_mul hg)
 
 theorem exactDualPairingFromHolder_eq {d : ℕ} (Q : TriadicCube d)
     (p : ℝ) (f g : Vec d → ℝ)

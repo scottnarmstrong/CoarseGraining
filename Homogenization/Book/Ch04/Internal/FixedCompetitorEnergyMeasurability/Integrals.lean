@@ -103,7 +103,7 @@ theorem integrableOn_fullBlockCoord_mul_of_memBlockL2 {d : ℕ} {U : Set (Vec d)
     {F : Vec d → BlockVec d} (hF : MemBlockL2 U F) (α β : BlockCoord d) :
     MeasureTheory.IntegrableOn
       (fun x => toFullBlockVec (F x) α * toFullBlockVec (F x) β) U := by
-  simpa [MeasureTheory.IntegrableOn, volumeMeasureOn] using
+  simpa [MeasureTheory.IntegrableOn, volumeMeasureOn] using!
     (memScalarL2_fullBlockCoord_of_memBlockL2 hF α).integrable_mul
       (memScalarL2_fullBlockCoord_of_memBlockL2 hF β)
 
@@ -293,9 +293,9 @@ theorem measurable_l2WeightedHilbertMatrixLipschitzIntegral
     @Measurable Ω ℝ mΩ (borel ℝ)
       (fun ω => ∫ x, w x * Q (F ω x) ∂volumeMeasureOn U) := by
   let H := MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U)
-  letI : MeasurableSpace Ω := mΩ
-  letI : MeasurableSpace H := borel H
-  haveI : BorelSpace H := ⟨rfl⟩
+  let : MeasurableSpace Ω := mΩ
+  let : MeasurableSpace H := borel H
+  have : BorelSpace H := ⟨rfl⟩
   let hQ0 : LipschitzWith K (fun A : HilbertMat d => Q A - Q (0 : HilbertMat d)) :=
     LipschitzWith.sub_const_right_real hQ (Q (0 : HilbertMat d))
   let G : MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U) → ScalarL2 U :=
@@ -307,7 +307,7 @@ theorem measurable_l2WeightedHilbertMatrixLipschitzIntegral
           (hQ0.compLp (by simp) :
             MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U) → ScalarL2 U) :=
       hQ0.continuous_compLp (by simp)
-    simpa [G] using hcomp.add continuous_const
+    simpa [G] using! hcomp.add continuous_const
   have hpair_cont :
       Continuous fun F : MeasureTheory.Lp (HilbertMat d) 2 (volumeMeasureOn U) =>
         inner ℝ (toScalarL2 hw) (G F) :=
@@ -665,7 +665,7 @@ theorem QuantitativeEllipticSlice.measurable_integrableWeightedFullBlockCoeffEnt
         (fun x => (2 * C) * ‖w x‖)
         (fun n => (hs_prod_int n).aestronglyMeasurable)
         hbound_int hbound hlim
-  letI : MeasurableSpace {a : CoeffField d // QuantitativeEllipticSlice U k a} :=
+  let : MeasurableSpace {a : CoeffField d // QuantitativeEllipticSlice U k a} :=
     QuantitativeEllipticSlice.localMeasurableSpace U k
   exact measurable_of_tendsto_metrizable hs_meas hs_tendsto
 
@@ -770,7 +770,7 @@ theorem integrable_blockPairingEntryWeight_of_memBlockL2 {d : ℕ} {U : Set (Vec
     {X Y : BlockState d} (hX : MemBlockL2 U X.eval) (hY : MemBlockL2 U Y.eval)
     (α β : BlockCoord d) :
     MeasureTheory.Integrable (blockPairingEntryWeight X Y α β) (volumeMeasureOn U) := by
-  simpa [blockPairingEntryWeight, MeasureTheory.IntegrableOn, volumeMeasureOn] using
+  simpa [blockPairingEntryWeight, MeasureTheory.IntegrableOn, volumeMeasureOn] using!
     (memScalarL2_fullBlockCoord_of_memBlockL2 hX α).integrable_mul
       (memScalarL2_fullBlockCoord_of_memBlockL2 hY β)
 
@@ -862,15 +862,15 @@ theorem blockEnergyAverage_eq_sum_weightedFullBlockCoeffEntryIntegrals {d : ℕ}
             blockEnergyEntryWeight X α β x * toFullBlockMat (blockCoeffField a x) α β by
         funext x
         exact blockEnergyDensity_eq_sum_entryWeights a X x]
-  rw [MeasureTheory.integral_finset_sum]
+  rw [MeasureTheory.integral_finsetSum]
   · congr 1
     apply Finset.sum_congr rfl
     intro α _
-    rw [MeasureTheory.integral_finset_sum]
+    rw [MeasureTheory.integral_finsetSum]
     intro β _
     simpa [MeasureTheory.IntegrableOn] using hInt α β
   · intro α _
-    exact MeasureTheory.integrable_finset_sum
+    exact MeasureTheory.integrable_finsetSum
       Finset.univ
       (fun β _ => by
         simpa [MeasureTheory.IntegrableOn] using hInt α β)
@@ -897,15 +897,15 @@ theorem blockPairingAverage_eq_sum_weightedFullBlockCoeffEntryIntegrals {d : ℕ
             blockPairingEntryWeight X Y α β x * toFullBlockMat (blockCoeffField a x) α β by
         funext x
         exact blockPairingIntegrand_eq_sum_entryWeights a X Y x]
-  rw [MeasureTheory.integral_finset_sum]
+  rw [MeasureTheory.integral_finsetSum]
   · congr 1
     apply Finset.sum_congr rfl
     intro α _
-    rw [MeasureTheory.integral_finset_sum]
+    rw [MeasureTheory.integral_finsetSum]
     intro β _
     simpa [MeasureTheory.IntegrableOn] using hInt α β
   · intro α _
-    exact MeasureTheory.integrable_finset_sum
+    exact MeasureTheory.integrable_finsetSum
       Finset.univ
       (fun β _ => by
         simpa [MeasureTheory.IntegrableOn] using hInt α β)
@@ -1064,7 +1064,7 @@ theorem measurable_blockEnergyAverage_quantitativeSlice
     @Measurable {a : CoeffField d // QuantitativeEllipticSlice U k a}
       ℝ (QuantitativeEllipticSlice.localMeasurableSpace U k) (borel ℝ)
       (fun a => blockEnergyAverage U a.1 X) := by
-  letI : MeasurableSpace {a : CoeffField d // QuantitativeEllipticSlice U k a} :=
+  let : MeasurableSpace {a : CoeffField d // QuantitativeEllipticSlice U k a} :=
     QuantitativeEllipticSlice.localMeasurableSpace U k
   exact measurable_blockEnergyAverage_comp_of_measurable_weightedFullBlockCoeffEntryIntegrals
     (A := fun a : {a : CoeffField d // QuantitativeEllipticSlice U k a} => a.1)

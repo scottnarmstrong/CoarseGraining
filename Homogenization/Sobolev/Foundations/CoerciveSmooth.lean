@@ -118,7 +118,7 @@ theorem fderivL2Norm_le_gradientCoordL2NormSum_ofContDiff
     ((hf1.continuous_fderiv (by simp)).memLp_of_hasCompactSupport (hf_supp.fderiv (𝕜 := ℝ))).toLp
       (fderiv ℝ f)
   have hd_cont : Continuous D := by
-    refine continuous_finset_sum _ fun i _ => ?_
+    refine continuous_finsetSum _ fun i _ => ?_
     exact ((hf1.continuous_fderiv (by simp)).clm_apply continuous_const).norm
   have hd_mem : MeasureTheory.MemLp D 2 MeasureTheory.volume :=
     hd_cont.memLp_of_hasCompactSupport <|

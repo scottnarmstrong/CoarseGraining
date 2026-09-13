@@ -48,9 +48,9 @@ theorem holderConjugate (p : FiniteLpExponent) :
     p.conjugate.conjugate = p := by
   apply eq_of_exponent_eq
   change ENNReal.conjExponent (ENNReal.conjExponent p.exponent) = p.exponent
-  letI : ENNReal.HolderConjugate p.exponent
+  let : ENNReal.HolderConjugate p.exponent
       (ENNReal.conjExponent p.exponent) := holderConjugate p
-  letI : ENNReal.HolderConjugate (ENNReal.conjExponent p.exponent)
+  let : ENNReal.HolderConjugate (ENNReal.conjExponent p.exponent)
       p.exponent := (holderConjugate p).symm
   exact ENNReal.HolderConjugate.conjExponent_eq
 

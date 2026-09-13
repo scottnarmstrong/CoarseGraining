@@ -1,9 +1,0 @@
-import Homogenization.HighContrast.EntryScale.RawHighContrastWeakNorm.P1
-import Homogenization.HighContrast.EntryScale.RawHighContrastWeakNorm.P2
-import Homogenization.HighContrast.EntryScale.RawHighContrastWeakNorm.P3
-import Homogenization.HighContrast.EntryScale.RawHighContrastWeakNorm.P4
-import Homogenization.HighContrast.EntryScale.RawHighContrastWeakNorm.P5
-import Homogenization.HighContrast.EntryScale.RawHighContrastWeakNorm.P6
-import Homogenization.HighContrast.EntryScale.RawHighContrastWeakNorm.P7
-import Homogenization.HighContrast.EntryScale.RawHighContrastWeakNorm.P8
-import Homogenization.HighContrast.EntryScale.RawHighContrastWeakNorm.P9

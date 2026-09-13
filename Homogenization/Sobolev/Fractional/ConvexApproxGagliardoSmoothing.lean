@@ -233,13 +233,13 @@ theorem lintegral_enorm_rpow_integral_le_lintegral_lintegral
       · congr 1
         apply lintegral_congr
         intro z
-        rw [← ofReal_norm_eq_enorm,
+        rw [← ofReal_norm,
           ← ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) hq0]
       · exact Filter.Eventually.of_forall fun _ => Real.rpow_nonneg (norm_nonneg _) _
       · exact hxp.aestronglyMeasurable
     calc
       ‖∫ z, H z x ∂ν‖ₑ ^ q = ENNReal.ofReal (‖∫ z, H z x ∂ν‖ ^ q) := by
-        rw [← ofReal_norm_eq_enorm,
+        rw [← ofReal_norm,
           ← ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) hq0]
       _ ≤ ENNReal.ofReal (∫ z, ‖H z x‖ ^ q ∂ν) := ENNReal.ofReal_le_ofReal hreal
       _ = ENNReal.ofReal (∫⁻ z, ‖H z x‖ₑ ^ q ∂ν).toReal := by rw [hpow_eq]
@@ -266,7 +266,7 @@ theorem lintegral_convexApproxKernelAverage_rpow_le
       (μ.prod (convexApproxKernelMeasure ρ))) :
     ∫⁻ x, ‖∫ z in tsupport ρ, ρ z • H z x‖ₑ ^ q ∂μ ≤
       ∫⁻ z, ∫⁻ x, ‖H z x‖ₑ ^ q ∂μ ∂convexApproxKernelMeasure ρ := by
-  letI : IsProbabilityMeasure (convexApproxKernelMeasure ρ) :=
+  let : IsProbabilityMeasure (convexApproxKernelMeasure ρ) :=
     isProbabilityMeasure_convexApproxKernelMeasure hρ
   have hintegral : ∀ x,
       (∫ z in tsupport ρ, ρ z • H z x) =
@@ -298,7 +298,7 @@ theorem lintegral_diagonalConvexApproxAverage_rpow_le
       ∫⁻ z, ∫⁻ xy,
         ‖K (diagonalConvexApproxSample x0 z r ε xy)‖ₑ ^ q ∂μ
           ∂convexApproxKernelMeasure ρ := by
-  letI : IsProbabilityMeasure (convexApproxKernelMeasure ρ) :=
+  let : IsProbabilityMeasure (convexApproxKernelMeasure ρ) :=
     isProbabilityMeasure_convexApproxKernelMeasure hρ
   have haverage : ∀ xy,
       diagonalConvexApproxAverage ρ K x0 r ε xy =

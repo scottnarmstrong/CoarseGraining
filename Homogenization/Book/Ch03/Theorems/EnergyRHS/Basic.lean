@@ -52,7 +52,7 @@ theorem cubeAverage_vecNormSq_le_card_mul_cubeLpNorm_two_sq
         (cubeSet Q) MeasureTheory.volume := by
     have h := hF_vol.integrable_norm_rpow (by norm_num : (2 : ENNReal) ≠ 0)
       (by norm_num : (2 : ENNReal) ≠ ⊤)
-    simpa using h
+    simpa using! h
   have havg :
       cubeAverage Q (fun x => vecNormSq (F x)) ≤
         cubeAverage Q (fun x => card * ‖F x‖ ^ (2 : ℕ)) := by

@@ -69,7 +69,7 @@ theorem ennreal_abs_cubeBesovPairing_coordinate_le_cubeEuclideanNegativeBesovESe
   classical
   by_cases hd : d = 0
   · exact Fin.elim0 (by simpa [hd] using i)
-  haveI : NeZero d := ⟨hd⟩
+  have : NeZero d := ⟨hd⟩
   let hWsp := h.toCubeEuclideanWspField
   have hFmem : MeasureTheory.MemLp (fun x => F.toField x i)
       FiniteLpExponent.two.exponent (normalizedCubeMeasure Q) :=
@@ -86,7 +86,7 @@ theorem ennreal_abs_cubeBesovPairing_coordinate_le_cubeEuclideanNegativeBesovESe
     integrableOn_of_integrable_normalizedCubeMeasure Q
       (hhmem.integrable p.conjugate.one_lt.le)
   obtain ⟨Cbound, hCbound, hhbound⟩ := smooth_coordinate_bounded_on_cube h i
-  letI : ENNReal.HolderConjugate p.conjugate.exponent p.exponent :=
+  let : ENNReal.HolderConjugate p.conjugate.exponent p.exponent :=
     p.holderConjugate.symm
   have hconj : cubeBesovConjExponent p.conjugate.exponent = p.exponent := by
     simpa only [cubeBesovConjExponent] using

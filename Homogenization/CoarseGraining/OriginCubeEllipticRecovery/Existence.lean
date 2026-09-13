@@ -66,8 +66,8 @@ private theorem isEllipticFieldOn_translateCoeffField_of_translateSet
   · have hshift : Measurable (fun x : Vec d => x + z) :=
       (continuous_id.add continuous_const).measurable
     have hcomp :
-        Measurable (fun x i j => if x + z ∈ translateSet z U then a (x + z) i j else 0) := by
-      simpa [Function.comp] using hEll.1.comp hshift
+        Measurable (fun x i j => if x + z ∈ translateSet z U then a (x + z) i j else 0) :=
+      hEll.1.comp hshift
     have hEq :
         (fun x i j => if x + z ∈ translateSet z U then a (x + z) i j else 0) =
           (fun x i j => if x ∈ U then translateCoeffField z a x i j else 0) := by
@@ -95,7 +95,7 @@ private theorem isEllipticFieldOn_translateCoeffField_of_translateSet
         simp [sub_eq_add_neg, add_assoc]
       rw [mem_translateSet_iff_sub_mem, hadd_sub]
       exact hx
-    simpa [translateCoeffField] using hEll.2 (x + z) hxt
+    exact hEll.2 (x + z) hxt
 
 /--
 Reduce the descendant recovery-family burden for coarse Poincare to one
@@ -125,7 +125,7 @@ theorem
     have htranslate :
         IsEllipticFieldOn lam Lam
           (translateSet z (openCubeSet (originCube d R.scale))) a := by
-      simpa [z, openCubeSet_eq_translateSet_originCube_of_triadicCube R] using hEllR
+      simpa [z, openCubeSet_eq_translateSet_originCube_of_triadicCube R] using! hEllR
     exact isEllipticFieldOn_translateCoeffField_of_translateSet
       (U := openCubeSet (originCube d R.scale)) (a := a) z htranslate
   simpa [z] using hOrigin R.scale (translateCoeffField z a) hEllOrigin
@@ -155,7 +155,7 @@ theorem
     have htranslate :
         IsEllipticFieldOn lam Lam
           (translateSet z (openCubeSet (originCube d R.scale))) a := by
-      simpa [z, openCubeSet_eq_translateSet_originCube_of_triadicCube R] using hEllR
+      simpa [z, openCubeSet_eq_translateSet_originCube_of_triadicCube R] using! hEllR
     exact isEllipticFieldOn_translateCoeffField_of_translateSet
       (U := openCubeSet (originCube d R.scale)) (a := a) z htranslate
   simpa [z] using hOrigin R.scale (translateCoeffField z a) hEllOrigin
@@ -185,7 +185,7 @@ theorem
   let U : Set (Vec d) := openCubeSet (originCube d n)
   have hCube : IsOpenBoundedConvexDomain U := by
     simpa [U] using isOpenBoundedConvexDomain_openCubeSet (originCube d n)
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn, U] using hCube.isFiniteMeasure_restrict_volume
   let R : PotentialSolenoidalL2RecoveryData U :=
     potentialSolenoidalL2RecoveryData_ofSubmoduleClosures_of_potentialZeroTraceClosureRealization
@@ -252,7 +252,7 @@ theorem
         toHilbertBlockL2OfBlockField (U := U)
             ((R.toMuCorrectionSpaceRecoveryData).recoveredField_memBlockL2 system P) =
           H.minimizerMap P := by
-      simpa [H, R, system, PotentialSolenoidalL2RecoveryData.toMuHilbertRealization] using
+      simpa [H, R, system, PotentialSolenoidalL2RecoveryData.toMuHilbertRealization] using!
         (R.toMuCorrectionSpaceRecoveryData).recoveredField_minimizer_eq system P
     calc
       blockEnergyAverage U a ((R.toMuCorrectionSpaceRecoveryData).recoveredField system P)

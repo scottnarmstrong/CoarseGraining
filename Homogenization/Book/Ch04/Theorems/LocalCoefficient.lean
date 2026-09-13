@@ -55,12 +55,12 @@ theorem localTestObservable_toFun_eq_sum_entryTestR {d : ℕ}
           unfold localTestObservable
           exact integral_congr_ae (Filter.Eventually.of_forall hpt)
     _ = ∑ i, ∫ x, ∑ j, (e' i * e j) * (a x i j * φ x) ∂volume := by
-          rw [MeasureTheory.integral_finset_sum]
+          rw [MeasureTheory.integral_finsetSum]
           intro i _
-          exact integrable_finset_sum _ (fun j _ => hintegrable i j)
+          exact integrable_finsetSum _ (fun j _ => hintegrable i j)
     _ = ∑ i, ∑ j, ∫ x, (e' i * e j) * (a x i j * φ x) ∂volume := by
           refine Finset.sum_congr rfl (fun i _ => ?_)
-          rw [MeasureTheory.integral_finset_sum]
+          rw [MeasureTheory.integral_finsetSum]
           intro j _
           exact hintegrable i j
     _ = ∑ i, ∑ j, (e' i * e j) * entryTestR i j φ a := by
@@ -92,7 +92,7 @@ noncomputable def localTest {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U)
     show @Measurable (RegCoeffField d) ℝ (RestrictionSigmaR U hU) _
       (fun a => localTestObservable e e' φ a.toFun)
     rw [hrw]
-    letI : MeasurableSpace (RegCoeffField d) := LocalSigmaR U
+    let : MeasurableSpace (RegCoeffField d) := LocalSigmaR U
     have hlocal :
         Measurable
           (fun a : RegCoeffField d => ∑ i, ∑ j, (e' i * e j) * entryTestR i j φ a) := by

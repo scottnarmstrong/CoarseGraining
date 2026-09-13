@@ -104,12 +104,12 @@ theorem ae_eq {d : ℕ} {U : Set (Vec d)} (hU : IsOpen U)
         MeasureTheory.Integrable (fun x => gi x * φ x)
           (MeasureTheory.volume.restrict U) := by
       simpa [MeasureTheory.IntegrableOn] using
-        hgiφ_K.of_forall_diff_eq_zero hU.measurableSet hgiφ_zero
+        hgiφ_K.of_forall_sdiff_eq_zero hU.measurableSet hgiφ_zero
     have hhi_int :
         MeasureTheory.Integrable (fun x => hi x * φ x)
           (MeasureTheory.volume.restrict U) := by
       simpa [MeasureTheory.IntegrableOn] using
-        hhiφ_K.of_forall_diff_eq_zero hU.measurableSet hhiφ_zero
+        hhiφ_K.of_forall_sdiff_eq_zero hU.measurableSet hhiφ_zero
     have hset_eq :
         ∫ x in U, gi x * φ x ∂MeasureTheory.volume =
           ∫ x in U, hi x * φ x ∂MeasureTheory.volume := by

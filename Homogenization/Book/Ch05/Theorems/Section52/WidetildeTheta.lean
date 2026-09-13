@@ -68,7 +68,7 @@ theorem widetildeThetaAtScale_le_thetaAtScale_zero_add_positiveExcess_products_o
             hP hStruct *
           lambdaInvPositiveExcessMomentAtScale P (m : ℤ) hP4.sLower hP4.xi
             hP hStruct := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hBarSigma0_nonneg : 0 ≤ hP.barSigmaAtScale hStruct 0 := by
     rw [hP.barSigmaAtScale_eq_barBAtScale hStruct (0 : ℤ)]
     simpa [Ch04.RestrictionLawCarrier.barBAtScale] using

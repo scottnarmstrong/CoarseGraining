@@ -73,7 +73,7 @@ theorem centeredCubeExactOverlapEuclideanRootMeanENorm_le_normalizedEuclideanLpE
     simpa only [μ, centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure] using
         F.euclideanMemL2
-  letI : IsProbabilityMeasure μ := ⟨by simp [μ]⟩
+  let : IsProbabilityMeasure μ := ⟨by simp [μ]⟩
   have hintegrable : Integrable (fun x => HilbertVec.ofVec (F x)) μ :=
     (hmem.mono_exponent (show (1 : ℝ≥0∞) ≤ 2 by norm_num)).integrable (by norm_num)
   have hmean :
@@ -89,7 +89,7 @@ theorem centeredCubeExactOverlapEuclideanRootMeanENorm_le_normalizedEuclideanLpE
         F.exactOverlapEuclideanIntegrable =
         ‖∫ x, HilbertVec.ofVec (F x) ∂μ‖ₑ := by
       rw [exactOverlapEuclideanRootMeanENorm_eq_ofReal_euclideanNorm, hmean,
-        euclideanNorm_eq_norm_ofVec, HilbertVec.ofVec_toVec, ofReal_norm_eq_enorm]
+        euclideanNorm_eq_norm_ofVec, HilbertVec.ofVec_toVec, ofReal_norm]
     _ ≤ ∫⁻ x, ‖HilbertVec.ofVec (F x)‖ₑ ∂μ :=
       enorm_integral_le_lintegral_enorm _
     _ = eLpNorm (fun x => HilbertVec.ofVec (F x)) 1 μ := by
@@ -166,9 +166,9 @@ theorem centeredCubeExactOverlapEuclideanNormTwo_le_mul_centeredCubeEuclideanHsF
   have hmean :=
     centeredCubeExactOverlapEuclideanRootMeanENorm_le_normalizedEuclideanLpENorm F
   have hKleC : K ≤ C := by
-    exact le_add_of_nonneg_left (zero_le (1 : ℝ≥0∞))
+    exact le_add_of_nonneg_left (zero_le : (0 : ℝ≥0∞) ≤ 1)
   have honeleC : 1 ≤ C := by
-    exact le_add_of_nonneg_right (zero_le K)
+    exact le_add_of_nonneg_right (zero_le : (0 : ℝ≥0∞) ≤ K)
   rw [centeredCubeExactOverlapEuclideanNormTwo_eq, exactOverlapEuclideanNormTwo_eq,
     centeredCubeEuclideanHsFullENorm_eq]
   change centeredCubeExactOverlapEuclideanSeminormTwo s F +

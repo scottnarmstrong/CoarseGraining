@@ -551,7 +551,7 @@ theorem
         (Acirc1 ρ₁ ρ₂) (AcircS ρ₁ ρ₂)
         (coarseCaccioppoliQuantitativeCutoffHessianBound Q ρ₁ ρ₂) C := by
     simpa [ηρ, coarseCaccioppoliCanonicalQuantitativeCutoff,
-      QuantitativeCubeCutoff.canonical] using
+      QuantitativeCubeCutoff.canonical] using!
       (CoarseCaccioppoliScalarCutoffControls.of_quantitativeCubeCutoff
         (Q := Q) (s := s)
         (u := fun x => (w ρ₁ ρ₂).toH1 x) (g := g ρ₁ ρ₂)
@@ -585,7 +585,7 @@ theorem
         (scalarCutoffGradientField (QuantitativeCubeCutoff.canonicalFun Q ρ₁ ρ₂)) ≤
           coarseCaccioppoliQuantitativeCutoffGradientBound Q ρ₁ ρ₂ := by
     simpa [ηρ, coarseCaccioppoliCanonicalQuantitativeCutoff,
-      QuantitativeCubeCutoff.canonical] using
+      QuantitativeCubeCutoff.canonical] using!
       quantitativeCubeCutoff_cubeLpNorm_infty_gradientField_le Q ηρ
   exact
     ⟨htest, henergyAvg hρ₁ hlt hρ₂, hfluxMem hρ₁ hlt hρ₂,

@@ -176,7 +176,7 @@ theorem symmetricNeumannEnergyValue_eq_of_isConstantFluxNeumannSolution
               hfU.sub hfRes
             have hfZ_smul :
                 MeasureTheory.IntegrableOn ((1 / 2 : ℝ) • fZ) Uset := by
-              simpa [Pi.smul_apply, smul_eq_mul] using
+              simpa [Pi.smul_apply, smul_eq_mul] using!
                 (hfZ.const_mul (1 / 2 : ℝ))
             change
               volumeAverage Uset ((fU - fRes) - ((1 / 2 : ℝ) • fZ)) =
@@ -250,7 +250,7 @@ theorem symmetricNeumannEnergyValue_eq_half_variationEnergy_of_isConstantFluxNeu
         volumeAverage Uset fQ - volumeAverage Uset ((1 / 2 : ℝ) • fE) := by
           have hfE_smul :
               MeasureTheory.IntegrableOn ((1 / 2 : ℝ) • fE) Uset := by
-            simpa [Pi.smul_apply, smul_eq_mul] using
+            simpa [Pi.smul_apply, smul_eq_mul] using!
               (hfE.const_mul (1 / 2 : ℝ))
           change
             volumeAverage Uset (fQ - ((1 / 2 : ℝ) • fE)) =

@@ -72,7 +72,7 @@ theorem blockEnergyDensity_ge_vecDot_of_isEllipticFieldOn {d : ℕ}
     (hEll : IsEllipticFieldOn lam Lam U a) (X : BlockState d) {x : Vec d} (hx : x ∈ U) :
     vecDot (X.potential x) (X.flux x) ≤ blockEnergyDensity a X x := by
   unfold blockEnergyDensity
-  simpa [BlockState.eval] using
+  simpa [BlockState.eval] using!
     blockMatrixOfCoeff_half_quadratic_ge_vecDot_of_isEllipticMatrix
       (hEll.2 x hx) (X.potential x) (X.flux x)
 
@@ -81,7 +81,7 @@ theorem blockEnergyDensity_matTranspose_flipFlux {d : ℕ}
     blockEnergyDensity (fun y => matTranspose (a y)) X.flipFlux x =
       blockEnergyDensity a X x := by
   unfold blockEnergyDensity blockCoeffField
-  simpa [BlockState.eval_flipFlux] using
+  simpa [BlockState.eval_flipFlux] using!
     congrArg (fun t => (1 / 2 : ℝ) * t)
       (blockMatrixOfCoeff_quadratic_matTranspose_flipFlux
         (A := a x) (p := X.potential x) (q := X.flux x))
@@ -92,7 +92,7 @@ theorem blockEnergyDensity_mapMatrix_conj_of_transpose_eq_self_of_mul_self_eq_on
     blockEnergyDensity (fun y => R * a y * R) (X.mapMatrix R) x =
       blockEnergyDensity a X x := by
   unfold blockEnergyDensity blockCoeffField
-  simpa [BlockState.eval_mapMatrix, blockVecConj] using
+  simpa [BlockState.eval_mapMatrix, blockVecConj] using!
     congrArg (fun t => (1 / 2 : ℝ) * t)
       (blockVecDot_blockMatVecMul_blockMatrixOfCoeff_conj_of_transpose_eq_self_of_mul_self_eq_one
         (R := R) (A := a x) hR hR2 (X := X.eval x))

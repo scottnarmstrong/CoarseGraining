@@ -105,7 +105,7 @@ private theorem cubeProjection_memLp_on_normalizedCubeMeasure {d : ℕ}
     MeasureTheory.MemLp (cubeProjection Q j f) p (normalizedCubeMeasure R) := by
   classical
   unfold cubeProjection
-  refine MeasureTheory.memLp_finset_sum
+  refine MeasureTheory.memLp_finsetSum
     (s := descendantsAtDepth Q j)
     (f := fun S : Cube d => fun x : Vec d =>
       if x ∈ cubeSet S then cubeAverage S f else 0) ?_
@@ -115,7 +115,7 @@ private theorem cubeProjection_memLp_on_normalizedCubeMeasure {d : ℕ}
       MeasureTheory.measure_mono (Set.subset_univ (cubeSet S))
     have hUniv_lt : normalizedCubeMeasure R Set.univ < ∞ := by simp
     exact ne_of_lt (lt_of_le_of_lt hS_le hUniv_lt)
-  simpa [Set.indicator] using
+  simpa [Set.indicator] using!
     (MeasureTheory.memLp_indicator_const (μ := normalizedCubeMeasure R)
       (p := p) (s := cubeSet S) (hs := measurableSet_cubeSet S)
       (c := cubeAverage S f) (Or.inr hS_ne_top))
@@ -132,7 +132,7 @@ private theorem cubeProjection_dualLocalMemLpGlobal_two {d : ℕ}
       MeasureTheory.MemLp (fun _ : Vec d => cubeAverage R (cubeProjection Q j f))
         (2 : ℝ≥0∞) (normalizedCubeMeasure R) :=
     MeasureTheory.memLp_const _
-  simpa [cubeBesovConjExponent_two_eq, cubeFluctuation, sub_eq_add_neg] using
+  simpa [cubeBesovConjExponent_two_eq, cubeFluctuation, sub_eq_add_neg] using!
     hproj.sub hconst
 
 private theorem cubeBesovOscillation_two_le_two_mul_cubeLpNorm_two {d : ℕ}

@@ -600,7 +600,7 @@ private theorem centeredOriginMomentRoot_le_factorSum_of_probe_abs_le
     section54_centeredOrigin_momentRoot_le_factor_sum_of_abs_le
       hP hStruct hP4 hC (X := X) hX_meas
       (by simpa [X, unitScaleEllipticityFactorSum] using hbound)
-  simpa [X, Ch04.restrictionCenteredOriginObservable] using hbridge
+  simpa [X, Ch04.restrictionCenteredOriginObservable] using! hbridge
 
 /-- Centered origin moment input for normalized coordinate probes. -/
 theorem coordinateProbe_centeredOrigin_momentRoot_le_factorSum

@@ -78,10 +78,10 @@ theorem exists_globalStoppingFamily
     Tendsto (fun r => goodLambdaCombinedEnergy f g eps x r) (𝓝[>] 0)
       (𝓝 (Real.sqrt (‖f x‖ ^ 2 + (eps⁻¹) ^ (2 : ℕ) * ‖g x‖ ^ 2)))}
   have hDae : ∀ᵐ x ∂volume, x ∈ D := by
-    simpa only [D, Set.mem_setOf_eq] using
+    simpa only [D, Set.mem_ofPred_eq] using
       (ae_tendsto_goodLambdaCombinedEnergy_nhdsGT f g eps hf_int hg_int)
   have hDnull : volume Dᶜ = 0 := by
-    simpa only [D, Set.mem_setOf_eq, Set.compl_setOf] using (ae_iff.mp hDae)
+    simpa only [D, Set.mem_ofPred_eq, Set.compl_ofPred] using (ae_iff.mp hDae)
   have hpoint : ∀ x ∈ target ∩ D,
       level < Real.sqrt (‖f x‖ ^ 2 + (eps⁻¹) ^ (2 : ℕ) * ‖g x‖ ^ 2) := by
     intro x hx

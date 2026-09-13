@@ -68,7 +68,7 @@ noncomputable def coeffGradientBilin (hEll : IsEllipticFieldOn lam Lam U a) :
       inner ℝ
         (hilbertCoeffOperator hEll (gradient (U := U) z))
         (gradient (U := U) w) := by
-  simp [coeffGradientBilin, coeffGradientCLM, ContinuousLinearMap.bilinearComp_apply, gradient]
+  simp [coeffGradientBilin, coeffGradientCLM, gradient, gradientCLM]; rfl
 
 theorem coeffGradientBilin_apply_toH1CoerciveHilbertSpace
     (hEll : IsEllipticFieldOn lam Lam U a)

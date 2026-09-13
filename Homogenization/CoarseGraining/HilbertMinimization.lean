@@ -26,8 +26,8 @@ section Abstract
 
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [CompleteSpace V]
 
-instance closedSubmodule_completeSpace (K : ClosedSubmodule ℝ V) : CompleteSpace K.toSubmodule := by
-  simpa using K.isClosed.completeSpace_coe
+instance closedSubmodule_completeSpace (K : ClosedSubmodule ℝ V) : CompleteSpace K.toSubmodule :=
+  K.isClosed.completeSpace_coe
 
 /-- The quadratic energy attached to a continuous bilinear form. -/
 def quadraticEnergy (B : V →L[ℝ] V →L[ℝ] ℝ) (u : V) : ℝ :=
@@ -60,7 +60,8 @@ theorem quadraticEnergy_continuous (B : V →L[ℝ] V →L[ℝ] ℝ) :
     Continuous (quadraticEnergy B) := by
   have h_apply : Continuous fun u : V => B u u :=
     Continuous.clm_apply B.continuous continuous_id
-  simpa [quadraticEnergy] using continuous_const.mul h_apply
+  unfold quadraticEnergy
+  exact continuous_const.mul h_apply
 
 /-- The concave quadratic response `ℓ(u) - 1 / 2 B(u,u)` attached to a
 continuous linear functional and a coercive bilinear form. -/

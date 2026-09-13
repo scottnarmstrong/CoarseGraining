@@ -45,18 +45,21 @@ theorem muCandidate_le_blockEnergyAverage_affineField
   have hY :
       blockVecToHilbertBlockL2Const (U := U) P + Y - H.constantField P ∈
         H.correctionSpace.correctionSpace := by
-    change
-      blockVecToHilbertBlockL2Const (U := U) P + (Y : HilbertBlockL2 U) -
-          blockVecToHilbertBlockL2Const (U := U) P ∈
-        H.correctionSpace.correctionSpace
-    convert Y.property using 1
-    simp [sub_eq_add_neg, add_assoc, add_comm]
+    have hY' : (Y : HilbertBlockL2 U) ∈ H.correctionSpace.correctionSpace := Y.property
+    have hconst : H.constantField P = blockVecToHilbertBlockL2Const (U := U) P := rfl
+    have hsum :
+        blockVecToHilbertBlockL2Const (U := U) P + (Y : HilbertBlockL2 U) - H.constantField P =
+          (Y : HilbertBlockL2 U) := by
+      rw [hconst]
+      abel
+    rw [hsum]
+    exact hY'
   have hMin :
       H.muCandidate P ≤
         quadraticEnergy
           (energyBilinOfOperator system.toMuOperatorRealization.operator)
           (blockVecToHilbertBlockL2Const (U := U) P + Y) := by
-    simpa [H] using H.muCandidate_le_quadraticEnergy P
+    simpa [H] using! H.muCandidate_le_quadraticEnergy P
       (blockVecToHilbertBlockL2Const (U := U) P + Y) hY
   calc
     H.muCandidate P ≤
@@ -132,7 +135,7 @@ theorem continuous_blockEnergyAverage_affineField
   have hf : Continuous f := by
     apply (quadraticEnergy_continuous
       (energyBilinOfOperator system.toMuOperatorRealization.operator)).comp
-    simpa [f] using (continuous_const.add continuous_subtype_val)
+    simpa [f] using! (continuous_const.add continuous_subtype_val)
   convert hf using 1
   funext Y
   exact (R.quadraticEnergy_const_add_eq_blockEnergyAverage_affineField system P Y).symm
@@ -174,7 +177,7 @@ theorem muCandidate_eq_sInf_blockEnergyAverage_affineField_denseSeq
       exact ⟨TopologicalSpace.denseSeq ↥R.correctionSpace n, ⟨n, rfl⟩, rfl⟩
   have ht_subset_closure : t ⊆ closure s := by
     rw [← h_image_eq]
-    simpa [f, t] using
+    simpa [f, t] using!
       (R.continuous_blockEnergyAverage_affineField system P).range_subset_closure_image_dense h_dense
   have ht_nonempty : t.Nonempty := by
     refine ⟨f (R.correctionPart system P), ?_⟩

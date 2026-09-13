@@ -621,7 +621,7 @@ theorem cubeBesovPositiveVectorPartialSeminormTwo_scalar_smul_le_note_poincare_c
   have hpos_eq :
       cubeBesovPositiveScalarPartialSeminormTwo Q s N u =
         cubeBesovPositiveScalarPartialSeminormTwo Q s N (cubeFluctuation Q u) := by
-    simpa [cubeFluctuation] using
+    simpa [cubeFluctuation] using!
       (cubeBesovPositiveScalarPartialSeminormTwo_sub_const
         Q s N u (cubeAverage Q u) hmem).symm
   have hfluct :

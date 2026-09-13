@@ -155,7 +155,7 @@ theorem abs_cubeAverage_vecDot_le_sum_note_constant_mul_of_overlap_uniform_compo
         MeasureTheory.MemLp (fun x => g x i) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
       simpa [cubeBesovConjExponent_two_eq_overlapBridge] using
         (hmem i).memLp
-    simpa [Pi.mul_apply, mul_comm] using (hu i).integrable_mul hgi_mem
+    simpa [Pi.mul_apply, mul_comm] using! (hu i).integrable_mul hgi_mem
   calc
     |cubeAverage Q (fun x => vecDot (u x) (g x))|
         ≤ ∑ i, |cubeBesovPairing Q (fun x => u x i) (fun x => g x i)| := by
@@ -217,7 +217,7 @@ theorem abs_cubeAverage_vecDot_le_sum_note_rhs_mul_of_overlap_uniform_component_
         MeasureTheory.MemLp (fun x => g x i) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
       simpa [cubeBesovConjExponent_two_eq_overlapBridge] using
         (hmem i).memLp
-    simpa [Pi.mul_apply, mul_comm] using (hu i).integrable_mul hgi_mem
+    simpa [Pi.mul_apply, mul_comm] using! (hu i).integrable_mul hgi_mem
   calc
     |cubeAverage Q (fun x => vecDot (u x) (g x))|
         ≤ ∑ i, |cubeBesovPairing Q (fun x => u x i) (fun x => g x i)| := by

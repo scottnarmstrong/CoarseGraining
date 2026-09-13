@@ -144,7 +144,7 @@ theorem tendsto_descendantsAverage_sq_positiveBesovPartialSeminormTwo_atTop {d :
   unfold descendantsAverage
   exact
     Filter.Tendsto.const_mul ((descendantsAtDepth Q j).card : ℝ)⁻¹
-      (tendsto_finset_sum (descendantsAtDepth Q j)
+      (tendsto_finsetSum (descendantsAtDepth Q j)
         (fun R hR =>
           tendsto_sq_positiveBesovPartialSeminormTwo_atTop
             R s u (hLocalBdd R hR)))

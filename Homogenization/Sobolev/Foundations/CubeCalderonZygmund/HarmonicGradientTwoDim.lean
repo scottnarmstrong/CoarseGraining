@@ -179,7 +179,7 @@ private theorem openCubeSet_eq_axisCube (Q : TriadicCube 2) :
     intro j
     ring
   ext x
-  simp only [openCubeSet, axisCube, Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ,
+  simp only [openCubeSet, axisCube, Set.mem_ofPred_eq, Set.mem_pi, Set.mem_univ,
     forall_true_left, Set.mem_Ioo]
   simp_rw [hupper]
 
@@ -231,7 +231,7 @@ private theorem highExponent_embedding_input (p : FiniteLpExponent)
       exact hrlt)
   refine ⟨C, hCpos, ?_⟩
   intro Q
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) := by
     simpa [volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   let z : Vec 2 := fun j => ((Q.index j : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q
@@ -250,10 +250,10 @@ private theorem highExponent_embedding_input (p : FiniteLpExponent)
                 (finiteSobolevSourceExponent p hp).exponent (volumeMeasureOn U))
   have haxisP : P (axisCube z (cubeScaleFactor Q)) := by
     intro v H i
-    letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (axisCube z (cubeScaleFactor Q))) :=
+    let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (axisCube z (cubeScaleFactor Q))) :=
       haxis ▸ inferInstance
     simpa [P, HasWeakHessianOn.gradCoordH1Function_apply,
-      HasWeakHessianOn.gradCoordH1Function_grad_apply] using
+      HasWeakHessianOn.gradCoordH1Function_grad_apply] using!
       (hC p (finiteSobolevSourceExponent_relation p hp) z (cubeScaleFactor Q) hscale
         ((H.gradCoordH1Function i).toW1pOfExponentLETwo
           (finiteSobolevSourceExponent p hp) (finiteSobolevSourceExponent_le_two p hp)))

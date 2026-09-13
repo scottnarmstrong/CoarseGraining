@@ -422,7 +422,7 @@ theorem overlapCentersAtDepth_lintegral_sum_indicator_normalizedCubeMeasure_le
                 ∫⁻ x in cubeSet Q,
                   (overlapCubeSet S).indicator (f S) x
                   ∂MeasureTheory.volume) := by
-            rw [MeasureTheory.lintegral_finset_sum' D]
+            rw [MeasureTheory.lintegral_finsetSum' D]
             intro S hS
             exact hfQ S (by simpa [D] using hS)
       _ = D.sum I := by
@@ -480,7 +480,7 @@ theorem overlapCentersAtDepth_lintegral_sum_indicator_normalizedCubeMeasure_le
             calc
               parentCoeff * I S
                   ≤ (K * (((D.card : ℝ≥0∞)⁻¹ * childCoeff S))) * I S := by
-                    exact mul_le_mul_of_nonneg_right hcoeff (zero_le (I S))
+                    exact mul_le_mul_of_nonneg_right hcoeff zero_le
               _ = K * (((D.card : ℝ≥0∞)⁻¹ * childCoeff S) * I S) := by
                     rw [mul_assoc]
       _ = D.sum
@@ -651,7 +651,7 @@ theorem overlapCentersAtDepth_sum_setLIntegral_le_mul_setLIntegral_cubeSet {d : 
       _ = ∫⁻ x, ∑ S ∈ D, (overlapCubeSet S).indicator f x
             ∂MeasureTheory.volume := by
             symm
-            refine MeasureTheory.lintegral_finset_sum' D ?_
+            refine MeasureTheory.lintegral_finsetSum' D ?_
             intro S hS
             exact (aemeasurable_indicator_iff (measurableSet_overlapCubeSet S)).2
               (hfS S (by simpa [D] using hS))

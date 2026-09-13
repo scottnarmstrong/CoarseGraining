@@ -62,11 +62,11 @@ theorem fixed_phase_variance_uniform [NeZero d] (hd : 3 ≤ d) :
     have hmeasA1 : Measurable (fun x => fun i j => if x ∈ cubeSet (originCube d m)
         then p.1 x i j else 0) := by
       refine measurable_pi_iff.2 fun i => measurable_pi_iff.2 fun j => ?_
-      simpa only [Set.indicator] using (p.1.entry_measurable i j).indicator hU
+      simpa only [Set.indicator] using! (p.1.entry_measurable i j).indicator hU
     have hmeasA2 : Measurable (fun x => fun i j => if x ∈ cubeSet (originCube d m)
         then p.2 x i j else 0) := by
       refine measurable_pi_iff.2 fun i => measurable_pi_iff.2 fun j => ?_
-      simpa only [Set.indicator] using (p.2.entry_measurable i j).indicator hU
+      simpa only [Set.indicator] using! (p.2.entry_measurable i j).indicator hU
     obtain ⟨ā1, hEll1, hā1ae, _, _⟩ :=
       exists_ellipticFieldOn_ae_eq hU hΘ hmeasA1 (ae_restrict_of_ae hp1)
     obtain ⟨ā2, hEll2, hā2ae, _, _⟩ :=
@@ -101,7 +101,7 @@ theorem fixed_phase_variance_uniform [NeZero d] (hd : 3 ≤ d) :
     have hpatch := aestronglyMeasurable_phaseObservable_patchCore hℓ0 hΘ P hLaw K hK k
     have hsub := hpatch.sub hAESM_diag
     rw [hgdef]
-    simpa only [pow_two] using hsub.mul hsub
+    simpa only [pow_two] using! hsub.mul hsub
   have hg_int : ∀ k : {k // k ∈ K}, Integrable (g k) (L.prod L) := by
     intro k
     refine (integrable_const Bterm).mono' (hAESM_g k) ?_
@@ -113,11 +113,11 @@ theorem fixed_phase_variance_uniform [NeZero d] (hd : 3 ≤ d) :
     linarith [hle, hp]
   have hexchange : (∑ k : {k // k ∈ K}, ∫ p, g k p ∂(L.prod L))
       = ∫ p, ∑ k : {k // k ∈ K}, g k p ∂(L.prod L) :=
-    (integral_finset_sum Finset.univ (fun k _ => hg_int k)).symm
+    (integral_finsetSum Finset.univ (fun k _ => hg_int k)).symm
   have hint_le : (∫ p, ∑ k : {k // k ∈ K}, g k p ∂(L.prod L)) ≤ Bterm := by
     calc (∫ p, ∑ k : {k // k ∈ K}, g k p ∂(L.prod L))
         ≤ ∫ _p, Bterm ∂(L.prod L) :=
-          integral_mono_ae (integrable_finset_sum _ (fun k _ => hg_int k))
+          integral_mono_ae (integrable_finsetSum _ (fun k _ => hg_int k))
             (integrable_const _) haeBound
       _ = Bterm := by rw [integral_const]; simp
   have hRHS_eq : (∑ k : {k // k ∈ K},

@@ -58,7 +58,7 @@ theorem cutoffProductTermOnCube_eq_neg_half_cubeAverage_fluxDefect_potentialDefe
   have hconst_mem : MemVectorL2 U (fun _ : Vec d => q0) :=
     MeasureTheory.memLp_const (μ := volumeMeasureOn U) (p := (2 : ENNReal)) q0
   have hfluxDef_mem : MemVectorL2 U fluxDef := by
-    simpa [fluxDef] using hflux_mem.sub hconst_mem
+    simpa [fluxDef] using! hflux_mem.sub hconst_mem
   have hpair_vec_mem :
       MemVectorL2 U (fun x => u x • scalarCutoffGradientField φ x) := by
     simpa [MemVectorL2, volumeMeasureOn, Pi.smul_apply, smul_eq_mul, mul_comm] using
@@ -157,7 +157,7 @@ theorem cutoffProductTermOnCube_eq_neg_half_cubeAverage_fluxDefect_potentialDefe
                 fun x => ∑ i, fluxDef x i * uφ.grad x i by
                   funext x
                   simp [vecDot]]
-            rw [MeasureTheory.integral_finset_sum]
+            rw [MeasureTheory.integral_finsetSum]
             intro i hi
             exact hcoord_int_uφ i
       _ = ∑ i, ∫ x in U,
@@ -175,7 +175,7 @@ theorem cutoffProductTermOnCube_eq_neg_half_cubeAverage_fluxDefect_potentialDefe
                 fun x => ∑ i, fluxDef x i * ψ.toH1Function.grad x i by
                   funext x
                   simp [vecDot]]
-            rw [MeasureTheory.integral_finset_sum]
+            rw [MeasureTheory.integral_finsetSum]
             intro i hi
             exact hcoord_int_ψ i
       _ = 0 := hsol_ψ
@@ -208,7 +208,7 @@ theorem cutoffProductTermOnCube_eq_neg_half_cubeAverage_fluxDefect_potentialDefe
     have hdiff_int :
         MeasureTheory.IntegrableOn
           (fun x => vecDot (fluxDef x) (uφ.grad x) - bridge x) U := by
-      simpa [MeasureTheory.IntegrableOn] using
+      simpa [MeasureTheory.IntegrableOn] using!
         hprod_int.integrable.sub hpair_int.integrable
     have hfirst_eq :
         first = fun x => vecDot (fluxDef x) (uφ.grad x) - bridge x := by
@@ -419,15 +419,15 @@ theorem cutoffProductTermOnCube_eq_neg_half_cubeAverage_fluxDefect_centeredPoten
   have hprod_fluct :
       MemLp (fun x => (u x - c) • ξ x) (2 : ℝ≥0∞)
         (normalizedCubeMeasure Q) := by
-    letI : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
-    simpa [ξ] using hcutoffGradient.smul
+    let : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
+    simpa [ξ] using! hcutoffGradient.smul
       (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hfluct
   have hprod_const :
       MemLp (fun x => c • ξ x) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    letI : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
+    let : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
     have hc : MemLp (fun _ : Vec d => c) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) :=
       MeasureTheory.memLp_const c
-    simpa [ξ] using hcutoffGradient.smul
+    simpa [ξ] using! hcutoffGradient.smul
       (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hc
   have hdot_fluct :
       Integrable
@@ -437,7 +437,7 @@ theorem cutoffProductTermOnCube_eq_neg_half_cubeAverage_fluxDefect_centeredPoten
         fun x => ∑ i : Fin d, flux x i * ((u x - c) • ξ x) i by
           funext x
           simp [vecDot]]
-    exact MeasureTheory.integrable_finset_sum _ fun i _ =>
+    exact MeasureTheory.integrable_finsetSum _ fun i _ =>
       (memLp_component_of_memLp flux i hflux_mem).integrable_mul
         (memLp_component_of_memLp (fun x => (u x - c) • ξ x) i hprod_fluct)
   have hdot_const :
@@ -448,7 +448,7 @@ theorem cutoffProductTermOnCube_eq_neg_half_cubeAverage_fluxDefect_centeredPoten
         fun x => ∑ i : Fin d, flux x i * (c • ξ x) i by
           funext x
           simp [vecDot]]
-    exact MeasureTheory.integrable_finset_sum _ fun i _ =>
+    exact MeasureTheory.integrable_finsetSum _ fun i _ =>
       (memLp_component_of_memLp flux i hflux_mem).integrable_mul
         (memLp_component_of_memLp (fun x => c • ξ x) i hprod_const)
   have havg :

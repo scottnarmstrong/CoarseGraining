@@ -196,7 +196,7 @@ theorem specialCoordinateBlockJTraceBudget_weightedBlockAverage
     specialCoordinateBlockJTraceBudget σ (Pcell.weightedBlockAverage F) =
       Pcell.weightedAverage (fun c => specialCoordinateBlockJTraceBudget σ (F c)) := by
   classical
-  letI : Fintype Pcell.Cell := Pcell.instFintype
+  let : Fintype Pcell.Cell := Pcell.instFintype
   unfold specialCoordinateBlockJTraceBudget DomainPartition.weightedBlockAverage
     DomainPartition.weightedMatAverage DomainPartition.weightedAverage
   simp only
@@ -277,7 +277,7 @@ theorem isSymmetricBlockMat_weightedBlockAverage
     (hF : ∀ c : Pcell.Cell, IsSymmetricBlockMat (F c)) :
     IsSymmetricBlockMat (Pcell.weightedBlockAverage F) := by
   classical
-  letI : Fintype Pcell.Cell := Pcell.instFintype
+  let : Fintype Pcell.Cell := Pcell.instFintype
   intro α β
   cases α with
   | inl i =>
@@ -345,7 +345,7 @@ theorem weightedBlockAverage_wrapAround_normalizedTrace_le_specialCoordinateDoub
           Matrix.diagonal r) ≤
       2 * J := by
   classical
-  letI : Fintype Pcell.Cell := Pcell.instFintype
+  let : Fintype Pcell.Cell := Pcell.instFintype
   intro A B J
   have hAB : BlockMatLoewnerLE A B := by
     dsimp [A, B]

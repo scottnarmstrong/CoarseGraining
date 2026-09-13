@@ -262,9 +262,13 @@ theorem volumeAverage_sq_scaled_comp_smul_of_pos {d : ℕ} {r : ℝ}
       ring
     _ = r ^ (2 : ℕ) *
         volumeAverage U (fun x => u (r • x) ^ (2 : ℕ)) := by
-      simpa [smul_eq_mul] using
-        volumeAverage_smul U (r ^ (2 : ℕ))
-          (fun x => u (r • x) ^ (2 : ℕ))
+      have h : (fun x => r ^ (2 : ℕ) * u (r • x) ^ (2 : ℕ)) =
+          r ^ (2 : ℕ) • (fun x => u (r • x) ^ (2 : ℕ)) := by
+        funext x
+        simp [Pi.smul_apply, smul_eq_mul]
+      rw [h]
+      exact volumeAverage_smul U (r ^ (2 : ℕ))
+        (fun x => u (r • x) ^ (2 : ℕ))
     _ = r ^ (2 : ℕ) *
         volumeAverage (r • U) (fun y => u y ^ (2 : ℕ)) := by
       rw [← volumeAverage_sq_comp_smul_of_pos (d := d) hr U u]
@@ -283,9 +287,13 @@ theorem volumeAverage_vecNormSq_scaled_comp_smul_of_pos {d : ℕ} {r : ℝ}
       rw [vecNormSq_smul]
     _ = r ^ (2 : ℕ) *
         volumeAverage U (fun x => vecNormSq (G (r • x))) := by
-      simpa [smul_eq_mul] using
-        volumeAverage_smul U (r ^ (2 : ℕ))
-          (fun x => vecNormSq (G (r • x)))
+      have h : (fun x => r ^ (2 : ℕ) * vecNormSq (G (r • x))) =
+          r ^ (2 : ℕ) • (fun x => vecNormSq (G (r • x))) := by
+        funext x
+        simp [Pi.smul_apply, smul_eq_mul]
+      rw [h]
+      exact volumeAverage_smul U (r ^ (2 : ℕ))
+        (fun x => vecNormSq (G (r • x)))
     _ = r ^ (2 : ℕ) *
         volumeAverage (r • U) (fun y => vecNormSq (G y)) := by
       rw [← volumeAverage_vecNormSq_comp_smul_of_pos (d := d) hr U G]

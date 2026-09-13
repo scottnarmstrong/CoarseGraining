@@ -54,7 +54,7 @@ theorem integral_jUpperWeakNormManuscriptPointwiseRHSAtScale_le_manuscriptExpect
       ≤
         jUpperWeakNormManuscriptExpectedRHSAtScale P m k s t
           C Cosc scaleSep BφS BφT Cprod p q p0 q0 := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d m
   let j : ℕ := Int.toNat (m - k)
   let childAverage : RegCoeffField d → ℝ :=
@@ -92,7 +92,7 @@ theorem integral_jUpperWeakNormManuscriptPointwiseRHSAtScale_le_manuscriptExpect
     intro R hR
     exact hDesc R (by
       simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm]
-        using hR)
+        using! hR)
   have hChildInt : Integrable childAverage P := by
     simpa [childAverage, Q, j] using
       Ch04.integrable_descendantsAverage_restrictionResponseJObservableCubeSet hDescDepth
@@ -303,7 +303,7 @@ theorem integrable_jUpperWeakNormManuscriptPointwiseRHSAtScale
     Integrable
       (jUpperWeakNormManuscriptPointwiseRHSAtScale m k s t
         C Cosc scaleSep BφS BφT Cprod p q p0 q0) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d m
   let j : ℕ := Int.toNat (m - k)
   let childAverage : RegCoeffField d → ℝ :=
@@ -341,7 +341,7 @@ theorem integrable_jUpperWeakNormManuscriptPointwiseRHSAtScale
     intro R hR
     exact hDesc R (by
       simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm]
-        using hR)
+        using! hR)
   have hChildInt : Integrable childAverage P := by
     simpa [childAverage, Q, j] using
       Ch04.integrable_descendantsAverage_restrictionResponseJObservableCubeSet hDescDepth

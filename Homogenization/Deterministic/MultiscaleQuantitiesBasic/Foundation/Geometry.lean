@@ -7,7 +7,7 @@ noncomputable section
 theorem isFiniteMeasureVolumeMeasureOnCubeSet {d : ℕ} (Q : TriadicCube d) :
     MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) := by
   let U : Set (Vec d) := cubeSet Q
-  letI : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_cubeSet_lt_top Q⟩
+  let : Fact (MeasureTheory.volume U < ⊤) := ⟨volume_cubeSet_lt_top Q⟩
   change MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict U)
   infer_instance
 

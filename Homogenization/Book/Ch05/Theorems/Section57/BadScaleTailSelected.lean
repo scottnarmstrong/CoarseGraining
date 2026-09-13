@@ -96,7 +96,7 @@ theorem measureReal_shiftedBadScaleEvent_quenchedProbeEnvelope_le_interpolated_t
   dsimp only
   intro ht htb hα_nonneg hαt hαb hαharm hαa _hBtail hlead_one hq_large hpref
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -312,7 +312,7 @@ theorem measureReal_shiftedBadScaleEvent_quenchedProbeEnvelope_le_interpolated_t
   dsimp only
   intro ht htb hα_nonneg hαt hαb hαharm hαa _hBtail hlead_one hq_large hpref
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P

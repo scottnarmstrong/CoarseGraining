@@ -23,7 +23,7 @@ private theorem measurableSet_coord_openStrip {d : ℕ} (i : Fin d) (a b : ℝ) 
 theorem measurableSet_cubeSet {d : ℕ} (Q : TriadicCube d) :
     MeasurableSet (cubeSet Q) := by
   classical
-  simpa [cubeSet, Set.iInter_setOf] using
+  simpa [cubeSet, Set.iInter_ofPred] using
     (MeasurableSet.iInter fun i : Fin d =>
       measurableSet_coord_halfOpenStrip i
         ((((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q))
@@ -32,7 +32,7 @@ theorem measurableSet_cubeSet {d : ℕ} (Q : TriadicCube d) :
 theorem measurableSet_openCubeSet {d : ℕ} (Q : TriadicCube d) :
     MeasurableSet (openCubeSet Q) := by
   classical
-  simpa [openCubeSet, Set.iInter_setOf] using
+  simpa [openCubeSet, Set.iInter_ofPred] using
     (MeasurableSet.iInter fun i : Fin d =>
       measurableSet_coord_openStrip i
         ((((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q))
@@ -45,7 +45,7 @@ theorem measurableSet_cubeBoundary {d : ℕ} (Q : TriadicCube d) :
 theorem measurableSet_cubeShrunkSet {d : ℕ} (Q : TriadicCube d) (t : ℝ) :
     MeasurableSet (cubeShrunkSet Q t) := by
   classical
-  simpa [cubeShrunkSet, Set.iInter_setOf] using
+  simpa [cubeShrunkSet, Set.iInter_ofPred] using
     (MeasurableSet.iInter fun i : Fin d =>
       measurableSet_coord_halfOpenStrip i
         ((((Q.index i : ℝ) - (1 / 2 : ℝ)) + t) * cubeScaleFactor Q)
@@ -275,7 +275,7 @@ theorem volume_cubeBoundaryLayer_toReal_of_nonneg_le_half {d : ℕ}
       MeasureTheory.volume (cubeBoundaryLayer Q t) =
         MeasureTheory.volume (cubeSet Q) - MeasureTheory.volume (cubeShrunkSet Q t) := by
     simpa [cubeBoundaryLayer] using
-      MeasureTheory.measure_diff hsub hmeas hfinite
+      MeasureTheory.measure_sdiff hsub hmeas hfinite
   have hle :
       MeasureTheory.volume (cubeShrunkSet Q t) ≤ MeasureTheory.volume (cubeSet Q) :=
     MeasureTheory.measure_mono hsub

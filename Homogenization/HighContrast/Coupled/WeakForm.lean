@@ -43,7 +43,7 @@ def CoupledWeakForm (a : CoeffField d) (U : Set (Vec d)) (q : Vec d)
 /-- The restricted Lebesgue measure on a centered open triadic cube is finite. -/
 theorem isFiniteMeasure_openCubeSet_originCube (m : ℤ) :
     MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet (originCube d m))) := by
-  letI : Fact (MeasureTheory.volume (openCubeSet (originCube d m)) < ⊤) :=
+  let : Fact (MeasureTheory.volume (openCubeSet (originCube d m)) < ⊤) :=
     ⟨volume_openCubeSet_originCube_lt_top (d := d) m⟩
   change MeasureTheory.IsFiniteMeasure
     (MeasureTheory.volume.restrict (openCubeSet (originCube d m)))

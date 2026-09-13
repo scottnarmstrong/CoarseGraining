@@ -97,7 +97,7 @@ private theorem tendsto_eLpNorm_downgrade_of_two
       Filter.atTop (nhds 0) := by
     simpa only [zero_mul] using hscaled
   exact tendsto_of_tendsto_of_tendsto_of_le_of_le
-    tendsto_const_nhds hscaled_zero (fun _ => zero_le') hbound
+    tendsto_const_nhds hscaled_zero (fun _ => zero_le) hbound
 
 /-- Regard an `H¹₀` witness on a finite-measure domain as a zero-trace
 `W^{1,p}` witness whenever `p ≤ 2`.  The value, weak-gradient, and smooth
@@ -164,7 +164,7 @@ theorem eLpNorm_normalizedCubeMeasure_downgrade_le {d : ℕ} (Q : TriadicCube d)
     (hf : MeasureTheory.AEStronglyMeasurable f (normalizedCubeMeasure Q)) :
     MeasureTheory.eLpNorm f p.exponent (normalizedCubeMeasure Q) ≤
       MeasureTheory.eLpNorm f 2 (normalizedCubeMeasure Q) := by
-  letI : MeasureTheory.IsProbabilityMeasure (normalizedCubeMeasure Q) :=
+  let : MeasureTheory.IsProbabilityMeasure (normalizedCubeMeasure Q) :=
     ⟨normalizedCubeMeasure_apply_univ Q⟩
   exact MeasureTheory.eLpNorm_le_eLpNorm_of_exponent_le hp hf
 

@@ -27,7 +27,7 @@ private theorem gammaSigmaIndependentSumConst_pos {σ : ℝ} (hσ : 0 < σ) :
     0 < gammaSigmaIndependentSumConst σ := by
   dsimp [gammaSigmaIndependentSumConst]
   by_cases hσ_lt : σ < 1
-  · simpa [hσ_lt, gammaSigmaHeavyTailEndpointConst] using
+  · simpa [hσ_lt, gammaSigmaHeavyTailEndpointConst] using!
       (mul_pos
         (Real.rpow_pos_of_pos (by norm_num : 0 < (2 : ℝ)) _)
         (IndependentSums.gammaSigmaHeavyTailConst_pos hσ))

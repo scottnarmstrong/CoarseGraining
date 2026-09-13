@@ -326,7 +326,7 @@ private theorem cubeLpNorm_add_le {d : ℕ} {E : Type*} [NormedAddCommGroup E]
       MeasureTheory.eLpNorm (fun x => f x + g x) p (normalizedCubeMeasure Q) ≤
         MeasureTheory.eLpNorm f p (normalizedCubeMeasure Q) +
           MeasureTheory.eLpNorm g p (normalizedCubeMeasure Q) := by
-    simpa using MeasureTheory.eLpNorm_add_le hf.1 hg.1 hp
+    simpa using! MeasureTheory.eLpNorm_add_le hf.1 hg.1 hp
   have hsum_top :
       MeasureTheory.eLpNorm f p (normalizedCubeMeasure Q) +
         MeasureTheory.eLpNorm g p (normalizedCubeMeasure Q) ≠ ∞ :=
@@ -352,7 +352,7 @@ private theorem cubeLpNorm_two_le_cubeBesovOscillation_add_norm_cubeAverage {d :
         cubeFluctuation Q u := by
       funext x
       simp [cubeFluctuation, sub_eq_add_neg]
-    simpa [hfun] using hsum
+    simpa [hfun] using! hsum
   have hconst :
       MeasureTheory.MemLp (fun _ : Vec d => cubeAverage Q u)
         (2 : ℝ≥0∞) (normalizedCubeMeasure Q) :=
@@ -698,7 +698,7 @@ theorem tendsto_descendantsAverage_sq_scaled_positiveBesovPartialNormTwo_succ_at
   unfold descendantsAverage
   exact
     Filter.Tendsto.const_mul ((descendantsAtDepth Q j).card : ℝ)⁻¹
-      (tendsto_finset_sum (descendantsAtDepth Q j)
+      (tendsto_finsetSum (descendantsAtDepth Q j)
         (fun R hR =>
           ((tendsto_positiveBesovPartialNormTwo_succ_atTop
             R s u (hLocalBdd R hR)).const_mul c).pow 2))

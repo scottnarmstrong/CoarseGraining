@@ -170,7 +170,7 @@ theorem basic_cg_identities_average_pairing_eq_vecDot_average_gradient_sub_avera
       _ = ∑ i, q i * volumeAverage U (fun x => w.toH1.grad x i) := by
             refine Finset.sum_congr rfl ?_
             intro i hi
-            simpa using (volumeAverage_smul U (q i) (fun x => w.toH1.grad x i))
+            simpa using! (volumeAverage_smul U (q i) (fun x => w.toH1.grad x i))
       _ = vecDot q (fun i => volumeAverage U (fun x => w.toH1.grad x i)) := by
             simp [vecDot]
   have hflux :
@@ -198,7 +198,7 @@ theorem basic_cg_identities_average_pairing_eq_vecDot_average_gradient_sub_avera
       _ = ∑ i, p i * volumeAverage U (fun x => matVecMul (a x) (w.toH1.grad x) i) := by
             refine Finset.sum_congr rfl ?_
             intro i hi
-            simpa using
+            simpa using!
               (volumeAverage_smul U (p i) (fun x => matVecMul (a x) (w.toH1.grad x) i))
       _ = vecDot p (fun i => volumeAverage U (fun x => matVecMul (a x) (w.toH1.grad x) i)) := by
             simp [vecDot]

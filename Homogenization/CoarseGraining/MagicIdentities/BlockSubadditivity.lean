@@ -78,10 +78,10 @@ private theorem coarseBlockMatrix_cubeSet_eq_openCubeSet_of_triadicCube {d : ℕ
   let z : Vec d := fun i => (Q.index i : ℝ) * cubeScaleFactor Q
   have hcube :
       cubeSet Q = translateSet z (cubeSet (originCube d Q.scale)) := by
-    simpa [z] using cubeSet_eq_translateSet_originCube_of_triadicCube Q
+    simpa [z] using! cubeSet_eq_translateSet_originCube_of_triadicCube Q
   have hopen :
       openCubeSet Q = translateSet z (openCubeSet (originCube d Q.scale)) := by
-    simpa [z] using openCubeSet_eq_translateSet_originCube_of_triadicCube Q
+    simpa [z] using! openCubeSet_eq_translateSet_originCube_of_triadicCube Q
   calc
     coarseBlockMatrix (cubeSet Q) a
         = coarseBlockMatrix (translateSet z (cubeSet (originCube d Q.scale))) a := by
@@ -590,10 +590,10 @@ theorem ResponseJ_cubeSet_eq_openCubeSet_of_triadicCube {d : ℕ} [NeZero d]
   let z : Vec d := fun i => (Q.index i : ℝ) * cubeScaleFactor Q
   have hcube :
       cubeSet Q = translateSet z (cubeSet (originCube d Q.scale)) := by
-    simpa [z] using cubeSet_eq_translateSet_originCube_of_triadicCube Q
+    simpa [z] using! cubeSet_eq_translateSet_originCube_of_triadicCube Q
   have hopen :
       openCubeSet Q = translateSet z (openCubeSet (originCube d Q.scale)) := by
-    simpa [z] using openCubeSet_eq_translateSet_originCube_of_triadicCube Q
+    simpa [z] using! openCubeSet_eq_translateSet_originCube_of_triadicCube Q
   calc
     ResponseJ (cubeSet Q) p q a
         = ResponseJ (translateSet z (cubeSet (originCube d Q.scale))) p q a := by

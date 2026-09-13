@@ -500,7 +500,7 @@ theorem tendsto_faceCutoffInnerRadius_one :
     simpa [div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc] using
       (tendsto_const_nhds.mul hinv : Filter.Tendsto
         (fun n : ℕ => (2 : ℝ) * ((n : ℝ) + 5)⁻¹) Filter.atTop (nhds (2 * 0)))
-  simpa [faceCutoffInnerRadius] using tendsto_const_nhds.sub hfrac
+  simpa [faceCutoffInnerRadius] using! tendsto_const_nhds.sub hfrac
 
 /-- The canonical face-cutoff sequence used to trim smooth functions away from
 the cube boundary while letting the inner cube fill the whole cube. -/
@@ -700,7 +700,7 @@ theorem tendsto_eLpNorm_euclideanCoordDeriv_faceCutoff_mul_of_face_zero
             euclideanCoordDeriv i (faceCutoff Q n : Vec d → ℝ) x * ψ x)
           2 (volumeMeasureOn (openCubeSet Q)))
       Filter.atTop (nhds 0) := by
-  simpa [faceCutoff, euclideanCoordDeriv] using
+  simpa [faceCutoff, euclideanCoordDeriv] using!
     tendsto_eLpNorm_canonicalFun_coordDeriv_mul_of_face_zero_faceCutoffRadii
       Q i ψ hL hψ hbound hlower_zero hupper_zero
 
@@ -767,7 +767,7 @@ noncomputable def ofContDiffFaceZeroOnOpenCubeSet
   · intro n
     exact (faceCutoff Q n).smooth.mul hψ
   · intro n
-    simpa using ((faceCutoff Q n).hasCompactSupport.mul_right :
+    simpa using! ((faceCutoff Q n).hasCompactSupport.mul_right :
       HasCompactSupport (fun x : Vec d => faceCutoff Q n x * ψ x))
   · intro n
     exact (tsupport_mul_subset_left
@@ -853,7 +853,7 @@ noncomputable def ofContDiffFaceZeroOnOpenCubeSetNoCompact
   have hψc : ContDiff ℝ (⊤ : ℕ∞) ψc := by
     simpa [ψc, χ] using (faceCompactifyingCutoff Q).smooth.mul hψ
   have hψc_compact : HasCompactSupport ψc := by
-    simpa [ψc, χ] using
+    simpa [ψc, χ] using!
       ((faceCompactifyingCutoff Q).hasCompactSupport.mul_right :
         HasCompactSupport (fun x : Vec d => faceCompactifyingCutoff Q x * ψ x))
   have hlower_zero_c : ∀ i : Fin d, ∀ x : Vec d,

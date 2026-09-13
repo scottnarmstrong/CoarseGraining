@@ -211,7 +211,7 @@ theorem levelEnergy_identity {U : Set (Vec d)} (hU : IsOpenBoundedConvexDomain U
     intro u y z; rw [sub_eq_add_neg, vecDot_add_right, vecDot_neg_right, ← sub_eq_add_neg]
   have vsubl : ∀ (y z u : Vec d), vecDot (y - z) u = vecDot y u - vecDot z u := by
     intro y z u; rw [sub_eq_add_neg, vecDot_add_left, vecDot_neg_left, ← sub_eq_add_neg]
-  haveI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
+  have : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
     hU.isBoundedDomain.isFiniteMeasure_restrict_volume
   have hUmeas : MeasurableSet U := hU.isOpen.measurableSet
   set A₁ : Set (Vec d) := {x | x ∈ U ∧ m₀ + k < w₁.toFun x} with hA1_def
@@ -377,7 +377,7 @@ theorem levelEnergy_sq_bound {U : Set (Vec d)} (hU : IsOpenBoundedConvexDomain U
           * ((volume {x | x ∈ U ∧ m₀ + k < w₁.toFun x}).toReal
             + (volume {x | x ∈ U ∧ m₀ + k < w₂.toFun x}).toReal) := by
   classical
-  haveI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
+  have : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
     hU.isBoundedDomain.isFiniteMeasure_restrict_volume
   have hUmeas : MeasurableSet U := hU.isOpen.measurableSet
   have hUtop : volume U ≠ ⊤ := by
@@ -535,7 +535,7 @@ theorem sumCoordNorm_le {U : Set (Vec d)}
     have hsum : (∑ i : Fin d,
           ((eLpNorm (A.indicator (fun x => w.grad x i)) 2 (volumeMeasureOn U)).toReal) ^ 2)
         = ∫ x in A, vecNormSq (w.grad x) ∂volume := by
-      rw [Finset.sum_congr rfl (fun i _ => hsq i), ← MeasureTheory.integral_finset_sum]
+      rw [Finset.sum_congr rfl (fun i _ => hsq i), ← MeasureTheory.integral_finsetSum]
       · refine MeasureTheory.setIntegral_congr_fun hAm ?_
         intro x hx
         simp only [vecNormSq, vecDot, pow_two]
@@ -614,7 +614,7 @@ theorem coupled_levelEnergy {U : Set (Vec d)} (hU : IsOpenBoundedConvexDomain U)
               ((volume {x | x ∈ U ∧ m₀ + k < w₁.toFun x}).toReal
                 + (volume {x | x ∈ U ∧ m₀ + k < w₂.toFun x}).toReal) := by
   classical
-  haveI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
+  have : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) :=
     hU.isBoundedDomain.isFiniteMeasure_restrict_volume
   have hUm : MeasurableSet U := hU.isOpen.measurableSet
   obtain ⟨w₁, hw1meas, hw1ae, hw1grad⟩ :=

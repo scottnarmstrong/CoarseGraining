@@ -259,10 +259,25 @@ theorem sum_setLIntegral_eq_lintegral_count (Q : TriadicCube d) (j : ℕ)
           (ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S).indicator
             (fun _ => (1 : ℝ≥0∞)) z) * F z ∂(volume.prod volume) := by
   classical
-  rw [Finset.sum_congr rfl fun S _hS =>
-      (lintegral_indicator_one_mul (measurableSet_overlap_prod S) F).symm,
-    ← lintegral_finset_sum _ fun S _hS =>
-      (measurable_const.indicator (measurableSet_overlap_prod S)).mul hF]
+  have hstep1 :
+      (∑ S ∈ ScalarOverlap.centersAtDepth Q j,
+          ∫⁻ z in ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S, F z
+            ∂(volume.prod volume)) =
+        ∑ S ∈ ScalarOverlap.centersAtDepth Q j,
+          ∫⁻ z, (ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S).indicator
+              (fun _ => (1 : ℝ≥0∞)) z * F z ∂(volume.prod volume) :=
+    Finset.sum_congr rfl fun S _hS =>
+      (lintegral_indicator_one_mul (measurableSet_overlap_prod S) F).symm
+  have hstep2 :
+      (∑ S ∈ ScalarOverlap.centersAtDepth Q j,
+          ∫⁻ z, (ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S).indicator
+              (fun _ => (1 : ℝ≥0∞)) z * F z ∂(volume.prod volume)) =
+        ∫⁻ z, ∑ S ∈ ScalarOverlap.centersAtDepth Q j,
+            (ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S).indicator
+                (fun _ => (1 : ℝ≥0∞)) z * F z ∂(volume.prod volume) :=
+    (lintegral_finsetSum (ScalarOverlap.centersAtDepth Q j) fun S _hS =>
+      (measurable_const.indicator (measurableSet_overlap_prod S)).mul hF).symm
+  rw [hstep1, hstep2]
   exact lintegral_congr fun z => (Finset.sum_mul _ _ _).symm
 
 /-- Backwards geometric tail: over depths whose enlarged side dominates a fixed
@@ -383,7 +398,7 @@ theorem pointwise_pair_sum_le (Q : TriadicCube d) {a pr : ℝ} (ha : 1 ≤ a)
           (ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S).indicator
             (fun _ => (1 : ℝ≥0∞)) z) = 0
       · rw [hcnt, zero_mul, mul_zero]
-        exact zero_le _
+        exact zero_le
       · -- a nonzero count produces a capturing center
         obtain ⟨S, hS, hSne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hcnt
         have hzS : z ∈ ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S := by
@@ -523,10 +538,10 @@ theorem ofReal_partialSeminorm_rpow_le_gagliardo [NeZero d]
                     (fun _ => (1 : ℝ≥0∞)) z) *
                 ‖u z.1 - u z.2‖ₑ ^ p.toReal) ∂(volume.prod volume) := by
         congr 1
-        rw [lintegral_finset_sum _ fun j _hj =>
+        exact (lintegral_finsetSum (Finset.range (N + 1)) fun j _hj =>
           measurable_const.mul
             ((Finset.measurable_sum _ fun S _hS =>
-              measurable_const.indicator (measurableSet_overlap_prod S)).mul hF)]
+              measurable_const.indicator (measurableSet_overlap_prod S)).mul hF)).symm
     _ ≤ ENNReal.ofReal ((cubeVolume Q)⁻¹) *
           ∫⁻ z, 2 * 3 ^ d *
             ((Homogenization.cubeSet Q ×ˢ Homogenization.cubeSet Q).indicator

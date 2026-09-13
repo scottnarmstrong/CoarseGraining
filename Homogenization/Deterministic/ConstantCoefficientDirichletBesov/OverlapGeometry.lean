@@ -73,7 +73,7 @@ theorem measurableSet_coord_overlapOpenStrip {d : ℕ}
 theorem measurableSet_overlapCubeSet {d : ℕ} (S : TriadicCube d) :
     MeasurableSet (overlapCubeSet S) := by
   classical
-  simpa [overlapCubeSet, Set.iInter_setOf] using
+  simpa [overlapCubeSet, Set.iInter_ofPred] using
     (MeasurableSet.iInter fun i : Fin d =>
       measurableSet_coord_overlapHalfOpenStrip i
         ((((S.index i : ℝ) - (3 / 2 : ℝ)) * cubeScaleFactor S))
@@ -82,7 +82,7 @@ theorem measurableSet_overlapCubeSet {d : ℕ} (S : TriadicCube d) :
 theorem measurableSet_openOverlapCubeSet {d : ℕ} (S : TriadicCube d) :
     MeasurableSet (openOverlapCubeSet S) := by
   classical
-  simpa [openOverlapCubeSet, Set.iInter_setOf] using
+  simpa [openOverlapCubeSet, Set.iInter_ofPred] using
     (MeasurableSet.iInter fun i : Fin d =>
       measurableSet_coord_overlapOpenStrip i
         ((((S.index i : ℝ) - (3 / 2 : ℝ)) * cubeScaleFactor S))
@@ -418,7 +418,7 @@ theorem disjoint_overlapCubeSet_of_scale_eq_of_cubeColor_eq_of_ne {d : ℕ}
   intro x hxR hxS
   have hindex_ne : ∃ i, R.index i ≠ S.index i := by
     by_contra h
-    push_neg at h
+    push Not at h
     apply hneq
     cases R with
     | mk scaleR indexR =>
@@ -540,7 +540,7 @@ theorem volume_openOverlapCubeSet_lt_top {d : ℕ} (S : TriadicCube d) :
 instance openOverlapCubeSet.instIsFiniteMeasure {d : ℕ} (S : TriadicCube d) :
     MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openOverlapCubeSet S)) := by
   let U : Set (Vec d) := openOverlapCubeSet S
-  letI : Fact (MeasureTheory.volume U < ⊤) :=
+  let : Fact (MeasureTheory.volume U < ⊤) :=
     ⟨by simpa [U] using volume_openOverlapCubeSet_lt_top S⟩
   infer_instance
 

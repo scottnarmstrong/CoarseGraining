@@ -197,7 +197,7 @@ theorem integrable_fluctuation_probe_sq [NeZero d] {L : RestrictionCoeffLaw d} {
       (fun a : RegCoeffField d => (fullBlockQuadratic
         (fullBlockNormalizedFluctuationMatrix hP hStruct m (cubeSet (originCube d m)) a) q)
           ^ 2) L := by
-  haveI : IsProbabilityMeasure L := hP.isProbability
+  have : IsProbabilityMeasure L := hP.isProbability
   have hΘ0 : (0 : ℝ) ≤ Θ := le_trans (by norm_num) hΘ
   set w : BlockVec d := ofFullBlockVec (Matrix.mulVec (Matrix.diagonal
     (scalarFullBlockInvSqrtDiag (hP.barSigmaAtScale hStruct m)

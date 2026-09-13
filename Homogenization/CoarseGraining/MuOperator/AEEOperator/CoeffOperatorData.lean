@@ -274,8 +274,11 @@ noncomputable def ofIsAEEllipticFieldOn {lam Lam : ℝ}
     have hmeas : Measurable (fun x : Vec d =>
         fullEntriesToHilbertOperator d (toFullBlockMat (blockMatrixOfCoeff (A x)))) := by
       exact measurable_fullEntriesToHilbertOperator hfull
-    simpa [op0, fullEntriesToHilbertOperator_toFullBlockMat] using
-      measurable_const.smul hmeas
+    have hsmul : Measurable (fun x : Vec d =>
+        (MeasureTheory.volume U).toReal⁻¹ •
+          fullEntriesToHilbertOperator d (toFullBlockMat (blockMatrixOfCoeff (A x)))) :=
+      hmeas.const_smul ((MeasureTheory.volume U).toReal⁻¹)
+    simpa [op0, fullEntriesToHilbertOperator_toFullBlockMat] using hsmul
   have hop0_eq_raw : op0 =ᵐ[volumeMeasureOn U] normalizedBlockCoeffOperator U a := by
     filter_upwards [hA_eq] with x hx
     apply ContinuousLinearMap.ext
@@ -513,7 +516,10 @@ theorem muCandidate_eq_sInf_quadraticEnergy_denseRange
       exact ⟨g Y, ⟨Y, rfl⟩, rfl⟩
   have hf : Continuous f := by
     apply (quadraticEnergy_continuous H.energyBilin).comp
-    simpa [f] using (continuous_const.add continuous_subtype_val)
+    have h : Continuous (fun Y : H.correctionSpace.correctionSpace.toSubmodule =>
+        H.constantField P + (Y : HilbertBlockL2 U)) :=
+      continuous_const.add continuous_subtype_val
+    simpa [f] using h
   have ht_subset_closure : t ⊆ closure s := by
     rw [← h_image_eq]
     simpa [f, t] using hf.range_subset_closure_image_dense h_dense
@@ -623,8 +629,10 @@ theorem denseRange_canonicalMuCorrectionGeneratorEmbedding (U : Set (Vec d)) :
     fun X => M.submoduleClosureToMuCorrectionSpace X
   have hincl : DenseRange incl := by
     rw [denseRange_inclusion_iff]
-    intro x hx
-    exact hx
+    all_goals
+      first
+        | (intro x hx; exact hx)
+        | (intro x hx; exact subset_closure hx)
   have hpost : DenseRange post := by
     have hsurj : Function.Surjective post := by
       intro Y
@@ -635,7 +643,11 @@ theorem denseRange_canonicalMuCorrectionGeneratorEmbedding (U : Set (Vec d)) :
   have hpost_cont : Continuous post := by
     exact M.continuous_submoduleClosureToMuCorrectionSpace
   have hcomp : DenseRange (post ∘ incl) := DenseRange.comp hpost hincl hpost_cont
-  convert hcomp using 1
+  have hfun : (post ∘ incl) = fun Y => canonicalMuCorrectionGeneratorEmbedding U Y := by
+    funext Y
+    rfl
+  rw [hfun] at hcomp
+  exact hcomp
 
 /-- A pointwise representative for one predicate-generated canonical block
 correction.  This is intentionally weaker than full recovery data: it only
@@ -810,8 +822,8 @@ theorem continuous_canonicalMuCorrectionGeneratorEmbedding (U : Set (Vec d)) :
 
 instance canonicalMuBlockCorrectionGeneratorSubmodule_separable (U : Set (Vec d)) :
     TopologicalSpace.SeparableSpace (canonicalMuBlockCorrectionGeneratorSubmodule U) := by
-  letI : Fact ((1 : ENNReal) ≤ (2 : ENNReal)) := ⟨by norm_num⟩
-  letI : Fact ((2 : ENNReal) ≠ ⊤) := ⟨by norm_num⟩
+  let : Fact ((1 : ENNReal) ≤ (2 : ENNReal)) := ⟨by norm_num⟩
+  let : Fact ((2 : ENNReal) ≠ ⊤) := ⟨by norm_num⟩
   infer_instance
 
 end CanonicalClosureGenerator

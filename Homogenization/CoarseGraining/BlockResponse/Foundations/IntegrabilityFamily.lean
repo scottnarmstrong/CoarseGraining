@@ -27,9 +27,9 @@ theorem BlockResponseIntegrabilityData.smul {d : ℕ}
     (hInt : BlockResponseIntegrabilityData U a X) (c : ℝ) :
     BlockResponseIntegrabilityData U a (c • X) := by
   refine ⟨?_, ?_⟩
-  · simpa [Pi.smul_apply] using hInt.flux_memL2.const_smul c
+  · simpa [Pi.smul_apply] using! hInt.flux_memL2.const_smul c
   · rw [blockEnergyDensity_smul_state]
-    simpa [MeasureTheory.IntegrableOn, smul_eq_mul] using
+    simpa [MeasureTheory.IntegrableOn, smul_eq_mul] using!
       hInt.energyIntegrable.integrable.smul (c ^ 2)
 
 theorem blockResponseIntegrabilityData_zero {d : ℕ} (U : Set (Vec d)) (a : CoeffField d) :
@@ -50,7 +50,7 @@ theorem blockResponseIntegrabilityData_of_flux_memL2_of_mem_responseSpace_of_isE
     (hFlux : MemVectorL2 U X.flux) (hEll : IsEllipticFieldOn lam Lam U a) :
     BlockResponseIntegrabilityData U a X := by
   have hBlock : MemBlockL2 U X.eval := by
-    simpa [BlockState.eval, blockField] using
+    simpa [BlockState.eval, blockField] using!
       memBlockL2_blockField
         (blockResponse_potential_memL2_of_mem_responseSpace hX)
         hFlux
@@ -73,7 +73,7 @@ theorem blockResponse_lowerImage_memVectorL2_of_flux_memVectorL2_of_mem_response
   have hShift :
       MemVectorL2 U
         (fun x => X.flux x - matVecMul (skewPart (a x)) (X.potential x)) := by
-    simpa [sub_eq_add_neg] using hFlux.sub hSkewPot
+    simpa [sub_eq_add_neg] using! hFlux.sub hSkewPot
   have hInv :
       MemVectorL2 U
         (fun x =>
@@ -126,7 +126,7 @@ theorem blockResponse_flux_memL2_of_lowerImage_memVectorL2_of_mem_responseSpace_
           matVecMul (symmPart (a x))
             ((blockMatVecMul (blockCoeffField a x) (X.eval x)).2) +
               matVecMul (skewPart (a x)) (X.potential x)) := by
-    simpa [Pi.add_apply] using hSymmLower.add hSkewPot
+    simpa [Pi.add_apply] using! hSymmLower.add hSkewPot
   have hFluxMeas :
       MeasureTheory.AEStronglyMeasurable (fun x => X.flux x) (volumeMeasureOn U) :=
     hFlux'.1.congr hrepr.symm
@@ -230,14 +230,14 @@ theorem blockResponseIntegrand_integrableOn_of_mem_responseSpace_of_integrabilit
     blockResponse_memBlockL2_of_mem_responseSpace_of_integrabilityData hX hInt
   let YP : BlockState d := { potential := fun _ => P.1, flux := fun _ => P.2 }
   have hYPL2 : MemBlockL2 U YP.eval := by
-    simpa [YP, BlockState.eval, blockField] using
+    simpa [YP, BlockState.eval, blockField] using!
       memBlockL2_blockField
         (MeasureTheory.memLp_const (μ := volumeMeasureOn U) (c := P.1))
         (MeasureTheory.memLp_const (μ := volumeMeasureOn U) (c := P.2))
   have hPInt :
       MeasureTheory.IntegrableOn
         (fun x => blockVecDot P (blockMatVecMul (blockCoeffField a x) (X.eval x))) U := by
-    simpa [YP, blockPairingIntegrand, BlockState.eval] using
+    simpa [YP, blockPairingIntegrand, BlockState.eval] using!
       blockPairingIntegrand_integrableOn_of_memBlockL2_of_isEllipticFieldOn
         (U := U) (a := a) (X := YP) (Y := X) hYPL2 hBlock hEll
   have hQPotInt :
@@ -250,14 +250,14 @@ theorem blockResponseIntegrand_integrableOn_of_mem_responseSpace_of_integrabilit
       (U := U) Q.2 hInt.flux_memL2
   have hQInt :
       MeasureTheory.IntegrableOn (fun x => blockVecDot Q (X.eval x)) U := by
-    simpa [MeasureTheory.IntegrableOn, BlockState.eval, blockVecDot] using
+    simpa [MeasureTheory.IntegrableOn, BlockState.eval, blockVecDot] using!
       hQPotInt.integrable.add hQFluxInt.integrable
   have hsum12 :
       MeasureTheory.IntegrableOn
         (fun x =>
           -blockEnergyDensity a X x -
             blockVecDot P (blockMatVecMul (blockCoeffField a x) (X.eval x))) U := by
-    simpa [sub_eq_add_neg, MeasureTheory.IntegrableOn] using
+    simpa [sub_eq_add_neg, MeasureTheory.IntegrableOn] using!
       hInt.energyIntegrable.integrable.neg.add hPInt.integrable.neg
   have hsum123 :
       MeasureTheory.IntegrableOn
@@ -265,7 +265,7 @@ theorem blockResponseIntegrand_integrableOn_of_mem_responseSpace_of_integrabilit
           (-blockEnergyDensity a X x -
             blockVecDot P (blockMatVecMul (blockCoeffField a x) (X.eval x))) +
               blockVecDot Q (X.eval x)) U := by
-    simpa [MeasureTheory.IntegrableOn] using hsum12.integrable.add hQInt.integrable
+    simpa [MeasureTheory.IntegrableOn] using! hsum12.integrable.add hQInt.integrable
   have hrewrite :
       (fun x =>
         (-blockEnergyDensity a X x -

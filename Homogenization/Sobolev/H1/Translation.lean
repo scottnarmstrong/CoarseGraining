@@ -31,7 +31,7 @@ noncomputable def translate {d : ℕ} {U : Set (Vec d)} (u : H1Function U) (z : 
   intro i φ hφ hφ_supp hφ_sub
   let ψ : Vec d → ℝ := fun x => φ (x + z)
   have hψ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-    simpa [ψ] using hφ.comp (contDiff_id.add contDiff_const)
+    simpa [ψ, Function.comp_def] using hφ.comp (contDiff_id.add contDiff_const)
   have hψ_supp : HasCompactSupport ψ := by
     show HasCompactSupport (φ ∘ Homeomorph.addRight z)
     simpa [ψ, Function.comp] using hφ_supp.comp_homeomorph (Homeomorph.addRight z)
@@ -110,7 +110,7 @@ noncomputable def untranslate {d : ℕ} {U : Set (Vec d)}
   intro i φ hφ hφ_supp hφ_sub
   let ψ : Vec d → ℝ := fun x => φ (x - z)
   have hψ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-    simpa [ψ] using hφ.comp (contDiff_id.sub contDiff_const)
+    simpa [ψ, Function.comp_def] using hφ.comp (contDiff_id.sub contDiff_const)
   have hψ_supp : HasCompactSupport ψ := by
     show HasCompactSupport (φ ∘ Homeomorph.subRight z)
     simpa [ψ, Function.comp] using hφ_supp.comp_homeomorph (Homeomorph.subRight z)
@@ -183,7 +183,8 @@ noncomputable def translate {d : ℕ} {U : Set (Vec d)} (u : H10Function U) (z :
       approx := fun m x => u.approx m (T x)
       approx_smooth := by
         intro m
-        simpa [T, sub_eq_add_neg] using (u.approx_smooth m).comp (contDiff_id.sub contDiff_const)
+        simpa [T, sub_eq_add_neg, Function.comp_def] using
+          (u.approx_smooth m).comp (contDiff_id.sub contDiff_const)
       approx_hasCompactSupport := by
         intro m
         show HasCompactSupport (u.approx m ∘ Homeomorph.subRight z)
@@ -281,7 +282,8 @@ noncomputable def untranslate {d : ℕ} {U : Set (Vec d)}
       approx := fun m x => u.approx m (T x)
       approx_smooth := by
         intro m
-        simpa [T] using (u.approx_smooth m).comp (contDiff_id.add contDiff_const)
+        simpa [T, Function.comp_def] using
+          (u.approx_smooth m).comp (contDiff_id.add contDiff_const)
       approx_hasCompactSupport := by
         intro m
         show HasCompactSupport (u.approx m ∘ Homeomorph.addRight z)

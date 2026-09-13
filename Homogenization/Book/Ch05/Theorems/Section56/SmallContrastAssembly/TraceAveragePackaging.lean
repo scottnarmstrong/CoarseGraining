@@ -70,7 +70,7 @@ theorem integral_blockJTraceAverageWithNormalizers_eq_sum_originCube_of_stationa
           (fullBlockMatrixProbe S α).1 (fullBlockMatrixProbe T α).2
           (fullBlockMatrixProbe S α).2 (fullBlockMatrixProbe T α).1 := by
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (parent : ℤ)
   let j : ℕ := parent - child
   have hscale_le : (child : ℤ) ≤ (parent : ℤ) := by
@@ -125,7 +125,7 @@ theorem integral_blockJTraceAverageWithNormalizers_eq_sum_originCube_of_stationa
             (fun R =>
               blockJObservableCubeSetBlockVec R
                 (fullBlockMatrixProbe S α) (fullBlockMatrixProbe T α) a) ∂P := by
-          rw [MeasureTheory.integral_finset_sum]
+          rw [MeasureTheory.integral_finsetSum]
           intro α _hα
           exact hdesc_int α
     _ =

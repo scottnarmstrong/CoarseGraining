@@ -36,7 +36,7 @@ theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_factor_observables
         (fun a : RegCoeffField d =>
           ((lambdaSqCoeffField Q sLower (.finite 1) a)⁻¹) ^ ξ) P) :
     Integrable (coarseFullBlockMatrixAtCube Q) P := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hUpperEntryAbsInt :
       ∀ i j : Fin d,
         Integrable
@@ -98,9 +98,9 @@ theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_factor_observables
           (fun a : RegCoeffField d =>
             ∑ i : Fin d, ∑ j : Fin d,
               |(coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft i j|) P := by
-      refine integrable_finset_sum Finset.univ ?_
+      refine integrable_finsetSum Finset.univ ?_
       intro i _hi
-      refine integrable_finset_sum Finset.univ ?_
+      refine integrable_finsetSum Finset.univ ?_
       intro j _hj
       exact hUpperEntryAbsInt i j
     have hBMeas :
@@ -147,9 +147,9 @@ theorem integrable_coarseFullBlockMatrixAtCube_of_integrable_factor_observables
           (fun a : RegCoeffField d =>
             ∑ i : Fin d, ∑ j : Fin d,
               |(coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight i j|) P := by
-      refine integrable_finset_sum Finset.univ ?_
+      refine integrable_finsetSum Finset.univ ?_
       intro i _hi
-      refine integrable_finset_sum Finset.univ ?_
+      refine integrable_finsetSum Finset.univ ?_
       intro j _hj
       exact hLowerEntryAbsInt i j
     have hStarMeas :
@@ -247,7 +247,7 @@ private theorem annealedPrimitiveMomentFactorBounds_of_integrable_factor_observa
     AnnealedPrimitiveMomentFactorBounds (d := d) P sUpper sLower ξ where
   upper := by
     intro primitive n
-    letI : IsProbabilityMeasure P := hP.isProbability
+    let : IsProbabilityMeasure P := hP.isProbability
     let Q : TriadicCube d := originCube d (n : ℤ)
     let X : RegCoeffField d → ℝ :=
       fun a => (coarseBlockMatrix (cubeSet Q) a.toFun).upperLeft 0 0
@@ -286,7 +286,7 @@ private theorem annealedPrimitiveMomentFactorBounds_of_integrable_factor_observa
       _ ≤ LambdaMomentAtScale P (n : ℤ) sUpper ξ := hYMeanLeRoot
   lower := by
     intro primitive n
-    letI : IsProbabilityMeasure P := hP.isProbability
+    let : IsProbabilityMeasure P := hP.isProbability
     let Q : TriadicCube d := originCube d (n : ℤ)
     let X : RegCoeffField d → ℝ :=
       fun a => (coarseBlockMatrix (cubeSet Q) a.toFun).lowerRight 0 0

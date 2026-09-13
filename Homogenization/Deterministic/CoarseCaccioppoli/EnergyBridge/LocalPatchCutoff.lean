@@ -130,7 +130,7 @@ theorem coarseCaccioppoliLocalCanonicalFun_smooth {d : ℕ}
       (coarseCaccioppoliLocalReferenceCube Q) hinner hinnerOuter
   have hshift : ContDiff ℝ (⊤ : ℕ∞) (fun x : Vec d => x - center) :=
     contDiff_id.sub contDiff_const
-  simpa [coarseCaccioppoliLocalCanonicalFun] using hcanonical.comp hshift
+  simpa [coarseCaccioppoliLocalCanonicalFun] using! hcanonical.comp hshift
 
 theorem coarseCaccioppoliLocalCanonicalFun_nonneg {d : ℕ}
     (Q : TriadicCube d) (center : Vec d) (rhoInner rhoOuter : ℝ)
@@ -373,7 +373,7 @@ theorem coarseCaccioppoliLocalCanonicalFun_gradient_bound {d : ℕ}
       fderiv ℝ (coarseCaccioppoliLocalCanonicalFun Q center rhoInner rhoOuter) x =
         fderiv ℝ (QuantitativeCubeCutoff.canonicalFun Qloc rhoInner rhoOuter)
           (x - center) := by
-    simpa [coarseCaccioppoliLocalCanonicalFun, Qloc] using
+    simpa [coarseCaccioppoliLocalCanonicalFun, Qloc] using!
       (fderiv_comp_sub (𝕜 := ℝ)
         (f := QuantitativeCubeCutoff.canonicalFun Qloc rhoInner rhoOuter)
         (x := x) center)
@@ -403,7 +403,7 @@ theorem coarseCaccioppoliLocalCanonicalFun_hessian_bound {d : ℕ}
         iteratedFDeriv ℝ 2
           (QuantitativeCubeCutoff.canonicalFun Qloc rhoInner rhoOuter)
           (x - center) := by
-    simpa [coarseCaccioppoliLocalCanonicalFun, Qloc] using
+    simpa [coarseCaccioppoliLocalCanonicalFun, Qloc] using!
       (iteratedFDeriv_comp_sub (𝕜 := ℝ)
         (f := QuantitativeCubeCutoff.canonicalFun Qloc rhoInner rhoOuter)
         2 center x)

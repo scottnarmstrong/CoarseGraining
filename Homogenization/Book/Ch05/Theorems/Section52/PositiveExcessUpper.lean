@@ -232,7 +232,7 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow
                   0))‖ ^ hP4.xi) P := by
   classical
   intro parents hparents
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hn_nonneg : 0 ≤ n := section52LargeScaleSet_mem_nonneg hn
   have hn_le_m : n ≤ (m : ℤ) := section52LargeScaleSet_mem_le_m hn
   have hparent_scale : ∀ Q ∈ parents, (0 : ℤ) ≤ Q.scale := by
@@ -315,7 +315,7 @@ theorem upperLargeScalePositiveExcess_integrable_abs_pow_source
                   0))‖ ^ ξ) P := by
   classical
   intro parents hparents
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hn_nonneg : 0 ≤ n := section52LargeScaleSet_mem_nonneg hn
   have hparent_scale : ∀ Q ∈ parents, (0 : ℤ) ≤ Q.scale := by
     intro Q hQ
@@ -551,7 +551,7 @@ theorem upperLargeScalePositiveExcessRoot_le_largeScaleRootCoeff_source
           Ch04.LambdaMomentAtScale P 0 sSource ξ := by
   classical
   intro parents hparents
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let initial : ℝ := Ch04.LambdaMomentAtScale P 0 sSource ξ
   let K : ℝ := 2 * initial
   let B : ℝ := parents.sup' hparents

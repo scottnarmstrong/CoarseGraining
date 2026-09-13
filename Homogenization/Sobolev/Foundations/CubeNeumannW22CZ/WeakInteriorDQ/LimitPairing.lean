@@ -37,7 +37,7 @@ private theorem hasCompactSupport_h1WeakTest_deriv
 private theorem contDiff_h1WeakTest_deriv
     {U : Set (Vec d)} (φ : H1WeakTestFunction U) (j : Fin d) :
     ContDiff ℝ (⊤ : ℕ∞) (fun x => φ.deriv j x) := by
-  simpa [H1WeakTestFunction.deriv, euclideanCoordDeriv] using
+  simpa [H1WeakTestFunction.deriv, euclideanCoordDeriv] using!
     contDiff_euclideanCoordDeriv φ.smooth j
 
 private theorem tsupport_h1WeakTest_deriv_subset
@@ -47,7 +47,7 @@ private theorem tsupport_h1WeakTest_deriv_subset
       tsupport (euclideanCoordDeriv j (φ : Vec d → ℝ)) ⊆
         tsupport (φ : Vec d → ℝ) :=
     tsupport_euclideanCoordDeriv_subset_tsupport j (φ : Vec d → ℝ)
-  simpa [H1WeakTestFunction.deriv, euclideanCoordDeriv] using
+  simpa [H1WeakTestFunction.deriv, euclideanCoordDeriv] using!
     hsub.trans φ.support_subset
 
 private theorem support_fderiv_h1WeakTest_deriv_apply_subset
@@ -88,7 +88,7 @@ private theorem integrable_mul_h1Function_h1WeakTest_deriv_of_subset
       MeasureTheory.IntegrableOn (fun x => u.toFun x * φ.deriv j x) U
         MeasureTheory.volume := by
     simpa [MeasureTheory.IntegrableOn, MemL2On, MemScalarL2, volumeMeasureOn]
-      using u.memL2.integrable_mul hderiv_memU
+      using! u.memL2.integrable_mul hderiv_memU
   have hprod_support :
       Function.support (fun x => u.toFun x * φ.deriv j x) ⊆ U :=
     (Function.support_mul_subset_right u.toFun (fun x => φ.deriv j x)).trans
@@ -125,7 +125,7 @@ private theorem integrable_shifted_h1Function_mul_h1WeakTest_deriv
         (fun x => u.toFun (euclideanCoordShift step i x) * φ.deriv j x) S
         MeasureTheory.volume := by
     simpa [MeasureTheory.IntegrableOn, MemScalarL2, volumeMeasureOn]
-      using hshift_memS.integrable_mul hderiv_memS
+      using! hshift_memS.integrable_mul hderiv_memS
   have hprod_support :
       Function.support
         (fun x => u.toFun (euclideanCoordShift step i x) * φ.deriv j x) ⊆ S :=
@@ -191,7 +191,7 @@ private theorem integrable_mul_h1Function_h1WeakTest_deriv_comp_coordShift_neg
         (fun x => u.toFun x * φ.deriv j (euclideanCoordShift (-step) i x)) U
         MeasureTheory.volume := by
     simpa [MeasureTheory.IntegrableOn, MemL2On, MemScalarL2, volumeMeasureOn]
-      using u.memL2.integrable_mul hderiv_shift_memU
+      using! u.memL2.integrable_mul hderiv_shift_memU
   have hprod_support :
       Function.support
         (fun x => u.toFun x * φ.deriv j (euclideanCoordShift (-step) i x))

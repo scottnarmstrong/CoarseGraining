@@ -108,7 +108,7 @@ private theorem aemeasurable_overlapCubeHilbertResidualIndicator_of_memLp
       (fun y : Vec d =>
         ‖HilbertVec.ofVec (h y - ScalarOverlap.cubeAverageVec S h)‖ₑ ^
           p.exponent.toReal) μS := by
-    simpa only [map_sub] using hmap.comp_aemeasurable hh_vol
+    simpa only [map_sub] using! hmap.comp_aemeasurable hh_vol
   have hsubset : ScalarOverlap.cubeSet S ⊆ cubeSet Q :=
     ScalarOverlap.cubeSet_subset_cubeSet_of_mem_centersAtDepth hS
   refine (aemeasurable_indicator_iff (ScalarOverlap.measurableSet_cubeSet S)).2 ?_
@@ -143,7 +143,7 @@ private theorem hilbertMat_norm_sq_eq_sum_sq {d : ℕ} (A : HilbertMat d) :
 private theorem enorm_rpow_eq_ofReal_norm_sq_rpow {E : Type*}
     [NormedAddCommGroup E] (v : E) {q : ℝ} :
     ‖v‖ₑ ^ q = (ENNReal.ofReal (‖v‖ ^ 2)) ^ (q / 2) := by
-  rw [← ofReal_norm_eq_enorm, ENNReal.ofReal_pow (norm_nonneg _),
+  rw [← ofReal_norm, ENNReal.ofReal_pow (norm_nonneg _),
     ← ENNReal.rpow_natCast,
     ← ENNReal.rpow_mul]
   congr 1
@@ -183,7 +183,7 @@ private theorem enorm_rpow_euclideanCoordDeriv_averagingField_coord_le
   have hsq : ENNReal.ofReal
       ((euclideanCoordDeriv k (fun y : Vec d => P.averagingField h y i) x) ^ 2) ≤
       K * D.sum a := by
-    simpa [K, D, a] using
+    simpa [K, D, a] using!
       P.ofReal_euclideanCoordDeriv_averagingField_coord_sq_le h hx i k
   have hpower := ENNReal.rpow_le_rpow hsq hr_pos.le
   have hactive_sum : D.sum a = A.sum a := by
@@ -260,7 +260,7 @@ private theorem enorm_rpow_euclideanCoordDeriv_averagingField_coord_le
             p.exponent.toReal :=
           ENNReal.rpow_le_rpow
             (by
-              rw [Real.enorm_eq_ofReal_abs, ← ofReal_norm_eq_enorm]
+              rw [Real.enorm_eq_ofReal_abs, ← ofReal_norm]
               exact ENNReal.ofReal_le_ofReal (by
                 simpa [Pi.sub_apply, euclideanNorm_eq_norm_ofVec] using
                   (abs_coordinate_le_euclideanNorm
@@ -439,7 +439,7 @@ private theorem enorm_rpow_sub_averagingField_le_sum_overlap_indicator
   have hvec : h x - P.averagingField h x =
       D.sum (fun S => w S • (h x - ScalarOverlap.cubeAverageVec S h)) := by
     funext i
-    simpa [D, w, Pi.smul_apply, Finset.sum_apply] using
+    simpa [D, w, Pi.smul_apply, Finset.sum_apply] using!
       P.sub_averagingField_apply_eq_sum_weighted_overlap_fluctuation h hx i
   have hres : HilbertVec.ofVec (h x - P.averagingField h x) =
       D.sum (fun S => w S • F S) := by
@@ -448,9 +448,9 @@ private theorem enorm_rpow_sub_averagingField_le_sum_overlap_indicator
     simp only [map_smul, HilbertVec.ofVecL_apply, F]
   have hw_nonneg : ∀ S ∈ D, 0 ≤ w S := by
     intro S hS
-    exact P.nonneg (by simpa [D] using hS) hx
+    exact P.nonneg (by simpa [D] using! hS) hx
   have hw_sum : ∑ S ∈ D, w S = 1 := by
-    simpa [D, w] using P.sum_eq_one hx
+    simpa [D, w] using! P.sum_eq_one hx
   have hp_one : 1 ≤ p.exponent.toReal := by
     rw [← ENNReal.toReal_one]
     exact ENNReal.toReal_mono p.lt_top.ne p.one_lt.le
@@ -486,11 +486,11 @@ private theorem enorm_rpow_sub_averagingField_le_sum_overlap_indicator
       rw [ENNReal.ofReal_mul (hw_nonneg S hS)]
       change ENNReal.ofReal (w S) * ENNReal.ofReal (‖F S‖ ^ p.exponent.toReal) ≤
         ‖F S‖ₑ ^ p.exponent.toReal
-      rw [← ofReal_norm_eq_enorm (F S),
+      rw [← ofReal_norm (F S),
         ← ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) hp_nonneg]
       have hw : ENNReal.ofReal (w S) ≤ 1 := by
         simpa [w] using ENNReal.ofReal_le_ofReal
-          (P.weight_le_one_of_mem_openCubeSet (by simpa [D] using hS) hx)
+          (P.weight_le_one_of_mem_openCubeSet (by simpa [D] using! hS) hx)
       calc
         ENNReal.ofReal (w S) * ENNReal.ofReal ‖F S‖ ^ p.exponent.toReal ≤
             1 * ENNReal.ofReal ‖F S‖ ^ p.exponent.toReal :=
@@ -500,7 +500,7 @@ private theorem enorm_rpow_sub_averagingField_le_sum_overlap_indicator
         apply Classical.byContradiction
         intro hne
         have hmem : x ∈ openOverlapCubeSet S :=
-          P.support_subset (by simpa [D] using hS) hx hne
+          P.support_subset (by simpa [D] using! hS) hx hne
         exact hxS (openOverlapCubeSet_subset_overlapCubeSet S hmem)
       simp [hw_zero, hxS]
   have hleft :
@@ -508,7 +508,7 @@ private theorem enorm_rpow_sub_averagingField_le_sum_overlap_indicator
           (‖HilbertVec.ofVec (h x - P.averagingField h x)‖ ^
             p.exponent.toReal) =
         ‖HilbertVec.ofVec (h x - P.averagingField h x)‖ₑ ^ p.exponent.toReal := by
-    rw [← ofReal_norm_eq_enorm,
+    rw [← ofReal_norm,
       ← ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) hp_nonneg]
   rw [← hleft]
   exact hweighted.trans (Finset.sum_le_sum fun S hS => hterm_le S hS)
@@ -575,7 +575,7 @@ theorem lintegral_enorm_rpow_sub_averagingField_le_overlapDepthENorm_rpow
             ∫⁻ x,
               ‖HilbertVec.ofVec (h x - ScalarOverlap.cubeAverageVec S h)‖ₑ ^
                 p.exponent.toReal ∂ ScalarOverlap.normalizedCubeMeasure S)) := by
-    simpa [Fsum] using
+    simpa [Fsum] using!
       overlapCentersAtDepth_lintegral_sum_indicator_normalizedCubeMeasure_le
         (Q := Q) (j := j)
         (f := fun S x =>
@@ -614,7 +614,7 @@ theorem lintegral_enorm_rpow_sub_averagingField_le_overlapDepthENorm_rpow
                     p.exponent.toReal ∂ ScalarOverlap.normalizedCubeMeasure S.1) := by
               apply Finset.sum_congr rfl
               intro S _hS
-              rw [eLpNorm_eq_lintegral_rpow_enorm
+              rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
                 (zero_lt_one.trans p.one_lt).ne' p.lt_top.ne,
                 ← ENNReal.rpow_mul]
               have hp : p.exponent.toReal ≠ 0 :=
@@ -692,7 +692,7 @@ theorem enorm_rpow_averagingCompetitorW1p_jacobian_le {d : ℕ}
         (ScalarOverlap.cubeSet S).indicator (fun y : Vec d =>
           ‖HilbertVec.ofVec (h y - ScalarOverlap.cubeAverageVec S h)‖ₑ ^
             p.exponent.toReal) x) := by
-  simpa only [averagingCompetitorW1p_jacobian_apply] using
+  simpa only [averagingCompetitorW1p_jacobian_apply] using!
     enorm_rpow_averagingField_jacobian_le P h p hx
 
 /-- Powered normalized finite-`p` Jacobian estimate for the overlap-average
@@ -746,7 +746,7 @@ theorem lintegral_enorm_rpow_averagingCompetitorW1p_jacobian_le_depthENorm
                 ∫⁻ x,
                   ‖HilbertVec.ofVec (h x - ScalarOverlap.cubeAverageVec S h)‖ₑ ^
                     p.exponent.toReal ∂ ScalarOverlap.normalizedCubeMeasure S)) := by
-            simpa [F] using
+            simpa [F] using!
               overlapCentersAtDepth_lintegral_sum_indicator_normalizedCubeMeasure_le
                 (Q := Q) (j := j)
                 (f := fun S x =>
@@ -774,7 +774,7 @@ theorem lintegral_enorm_rpow_averagingCompetitorW1p_jacobian_le_depthENorm
                           p.exponent.toReal ∂ ScalarOverlap.normalizedCubeMeasure S.1) := by
                     apply Finset.sum_congr rfl
                     intro S _hS
-                    rw [eLpNorm_eq_lintegral_rpow_enorm
+                    rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
                       (zero_lt_one.trans p.one_lt).ne' p.lt_top.ne,
                       ← ENNReal.rpow_mul]
                     have hp : p.exponent.toReal ≠ 0 :=

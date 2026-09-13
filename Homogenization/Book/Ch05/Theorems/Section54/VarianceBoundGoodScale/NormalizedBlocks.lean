@@ -312,7 +312,8 @@ theorem annealedBlockMatrixAtScale_eq_scalarAnnealedBlockMatrixAtScale
     Ch04.annealedBlockMatrixAtScale P n =
       Ch04.scalarAnnealedBlockMatrixAtScale hP hStruct n := by
   rw [Ch04.scalarAnnealedBlockMatrixAtScale, Ch04.annealedBlockMatrixAtScale,
-    Ch04.annealedBlockMatrix, Ch02.blockDiag, BlockMat.mk.injEq]
+    Ch04.annealedBlockMatrix, Ch02.blockDiag]
+  refine Eq.mpr (BlockMat.mk.injEq _ _ _ _ _ _ _ _) ?_
   constructor
   · change Ch04.annealedBAtScale P n = hP.barSigmaAtScale hStruct n • 1
     rw [hP.annealedBAtScale_eq_barBAtScale hStruct n,
@@ -594,7 +595,7 @@ theorem fullBlockNormalizedQuadraticObservable_nonneg_ae
       fullBlockNormalizedQuadraticObservable hP hStruct center q (cubeSet Q) a.toFun =
         blockVecDot X (blockMatVecMul (coarseBlockMatrix (cubeSet Q) a.toFun) X) := by
     dsimp [fullBlockNormalizedQuadraticObservable, fullBlockQuadratic, b, c, D, X]
-    simpa [D] using
+    simpa [D] using!
       fullBlockQuadratic_diagonal_toFullBlockMat_eq_blockVecDot
         (Ch04.scalarFullBlockInvSqrtDiag (d := d) b c)
         (coarseBlockMatrix (cubeSet Q) a.toFun) q

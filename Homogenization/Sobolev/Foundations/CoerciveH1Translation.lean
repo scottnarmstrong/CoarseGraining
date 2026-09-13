@@ -68,7 +68,7 @@ theorem valueL2Norm_untranslate_eq (z : Vec d)
   rw [MeasureTheory.Lp.norm_toLp, MeasureTheory.Lp.norm_toLp]
   exact congrArg ENNReal.toReal (by
     simpa [H1MeanZeroFunction.untranslate, H1Function.untranslate, V, T, Function.comp,
-      volumeMeasureOn] using
+      volumeMeasureOn] using!
       (MeasureTheory.eLpNorm_comp_measurePreserving
         (g := u.toH1Function.toFun) (p := (2 : ℝ≥0∞))
         u.toH1Function.memL2.aestronglyMeasurable hμ))
@@ -85,7 +85,7 @@ theorem gradientL2Norm_untranslate_eq (z : Vec d)
   rw [MeasureTheory.Lp.norm_toLp, MeasureTheory.Lp.norm_toLp]
   exact congrArg ENNReal.toReal (by
     simpa [H1MeanZeroFunction.untranslate, H1Function.untranslate, V, T, Function.comp,
-      volumeMeasureOn] using
+      volumeMeasureOn] using!
       (MeasureTheory.eLpNorm_comp_measurePreserving
         (g := u.toH1Function.grad) (p := (2 : ℝ≥0∞))
         u.toH1Function.grad_memVectorL2.aestronglyMeasurable hμ))

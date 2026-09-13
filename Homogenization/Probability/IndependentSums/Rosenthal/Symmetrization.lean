@@ -28,7 +28,7 @@ theorem integral_abs_centeredFinsetSum_pow_le_integral_abs_symmetrizedFinsetSum_
   let F : Ω → Ω → ℝ := fun x y => symmetrizedFinsetSum X s (x, y)
   have hconv :
       ConvexOn ℝ Set.univ (fun t : ℝ => ‖t‖ ^ p) := by
-    simpa using
+    simpa using!
       (convexOn_univ_norm : ConvexOn ℝ Set.univ (norm : ℝ → ℝ)).pow
         (fun _ _ => norm_nonneg _) p
   have hcont :
@@ -36,19 +36,19 @@ theorem integral_abs_centeredFinsetSum_pow_le_integral_abs_symmetrizedFinsetSum_
     (continuous_norm.pow p).continuousOn
   have hF_int : Integrable (Function.uncurry F) (μ.prod μ) := by
     change Integrable (symmetrizedFinsetSum X s) (μ.prod μ)
-    refine integrable_finset_sum s ?_
+    refine integrable_finsetSum s ?_
     intro i hi
     exact ((hX_int i hi).comp_fst μ).sub ((hX_int i hi).comp_snd μ)
   have hF_int_right : ∀ x, Integrable (fun y => F x y) μ := by
     intro x
-    refine integrable_finset_sum s ?_
+    refine integrable_finsetSum s ?_
     intro i hi
     exact (integrable_const (X i x)).sub (hX_int i hi)
   have hF_integral :
       ∀ x, ∫ y, F x y ∂μ = centeredFinsetSum X μ s x := by
     intro x
     change ∫ y, ∑ i ∈ s, (X i x - X i y) ∂μ = centeredFinsetSum X μ s x
-    rw [centeredFinsetSum, integral_finset_sum]
+    rw [centeredFinsetSum, integral_finsetSum]
     · refine Finset.sum_congr rfl ?_
       intro i hi
       rw [integral_sub (integrable_const _) (hX_int i hi), integral_const]
@@ -66,14 +66,14 @@ theorem integral_abs_centeredFinsetSum_pow_le_integral_abs_symmetrizedFinsetSum_
         isClosed_univ
         hmem
         (hF_int_right x)
-        (by simpa [F, symmetrizedFinsetSum, Real.norm_eq_abs] using hx)
+        (by simpa [F, symmetrizedFinsetSum, Real.norm_eq_abs] using! hx)
     simpa [Real.norm_eq_abs] using hpoint
   have hright_int :
       Integrable (fun x => ∫ y, |F x y| ^ p ∂μ) μ := by
     simpa [Function.uncurry, F, symmetrizedFinsetSum] using hsymm_int.integral_prod_left
   have hleft_ae :
       AEStronglyMeasurable (fun x => |∫ y, F x y ∂μ| ^ p) μ := by
-    simpa [Function.uncurry, F, Real.norm_eq_abs] using
+    simpa [Function.uncurry, F, Real.norm_eq_abs] using!
       (hF_int.integral_prod_left.aestronglyMeasurable.norm.pow p)
   have hleft_int :
       Integrable (fun x => |∫ y, F x y ∂μ| ^ p) μ := by
@@ -90,7 +90,7 @@ theorem integral_abs_centeredFinsetSum_pow_le_integral_abs_symmetrizedFinsetSum_
     _ = ∫ ω : Ω × Ω, |symmetrizedFinsetSum X s ω| ^ p ∂(μ.prod μ) := by
           have hpowF_int :
               Integrable (Function.uncurry (fun x y => |F x y| ^ p)) (μ.prod μ) := by
-            simpa [Function.uncurry, F, symmetrizedFinsetSum] using hsymm_int
+            simpa [Function.uncurry, F, symmetrizedFinsetSum] using! hsymm_int
           simpa [Function.uncurry, F, symmetrizedFinsetSum] using
             (integral_integral (f := fun x y => |F x y| ^ p) hpowF_int)
 
@@ -263,7 +263,7 @@ theorem integral_abs_centeredFinsetSum_rpow_le_integral_abs_symmetrizedFinsetSum
   have hconv :
       ConvexOn ℝ Set.univ (fun t : ℝ => |t| ^ p) := by
     have hnorm : ConvexOn ℝ Set.univ (fun t : ℝ => |t|) := by
-      simpa [Real.norm_eq_abs] using
+      simpa [Real.norm_eq_abs] using!
         (convexOn_univ_norm : ConvexOn ℝ Set.univ (norm : ℝ → ℝ))
     have hrpow : ConvexOn ℝ (Set.Ici 0) (fun t : ℝ => t ^ p) := convexOn_rpow hp
     have hmono : MonotoneOn (fun t : ℝ => t ^ p) (Set.Ici 0) := by
@@ -289,19 +289,19 @@ theorem integral_abs_centeredFinsetSum_rpow_le_integral_abs_symmetrizedFinsetSum
     exact (continuous_abs.rpow_const fun _ => Or.inr hp_nonneg).continuousOn
   have hF_int : Integrable (Function.uncurry F) (μ.prod μ) := by
     change Integrable (symmetrizedFinsetSum X s) (μ.prod μ)
-    refine integrable_finset_sum s ?_
+    refine integrable_finsetSum s ?_
     intro i hi
     exact ((hX_int i hi).comp_fst μ).sub ((hX_int i hi).comp_snd μ)
   have hF_int_right : ∀ x, Integrable (fun y => F x y) μ := by
     intro x
-    refine integrable_finset_sum s ?_
+    refine integrable_finsetSum s ?_
     intro i hi
     exact (integrable_const (X i x)).sub (hX_int i hi)
   have hF_integral :
       ∀ x, ∫ y, F x y ∂μ = centeredFinsetSum X μ s x := by
     intro x
     change ∫ y, ∑ i ∈ s, (X i x - X i y) ∂μ = centeredFinsetSum X μ s x
-    rw [centeredFinsetSum, integral_finset_sum]
+    rw [centeredFinsetSum, integral_finsetSum]
     · refine Finset.sum_congr rfl ?_
       intro i hi
       rw [integral_sub (integrable_const _) (hX_int i hi), integral_const]
@@ -313,7 +313,7 @@ theorem integral_abs_centeredFinsetSum_rpow_le_integral_abs_symmetrizedFinsetSum
     filter_upwards [hsymm_int.prod_right_ae] with x hx
     have hmem : ∀ᵐ y ∂μ, F x y ∈ (Set.univ : Set ℝ) := by
       exact Filter.Eventually.of_forall (fun _ => Set.mem_univ _)
-    exact hconv.map_integral_le hcont isClosed_univ hmem (hF_int_right x) (by simpa [F] using hx)
+    exact hconv.map_integral_le hcont isClosed_univ hmem (hF_int_right x) (by simpa [F] using! hx)
   have hright_int :
       Integrable (fun x => ∫ y, |F x y| ^ p ∂μ) μ := by
     simpa [Function.uncurry, F, symmetrizedFinsetSum] using hsymm_int.integral_prod_left
@@ -340,7 +340,7 @@ theorem integral_abs_centeredFinsetSum_rpow_le_integral_abs_symmetrizedFinsetSum
     _ = ∫ ω : Ω × Ω, |symmetrizedFinsetSum X s ω| ^ p ∂(μ.prod μ) := by
           have hpowF_int :
               Integrable (Function.uncurry (fun x y => |F x y| ^ p)) (μ.prod μ) := by
-            simpa [Function.uncurry, F, symmetrizedFinsetSum] using hsymm_int
+            simpa [Function.uncurry, F, symmetrizedFinsetSum] using! hsymm_int
           simpa [Function.uncurry, F, symmetrizedFinsetSum] using
             (integral_integral (f := fun x y => |F x y| ^ p) hpowF_int)
 

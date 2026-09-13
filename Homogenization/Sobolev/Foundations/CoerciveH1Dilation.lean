@@ -44,7 +44,7 @@ theorem map_smul_volume_restrict {d : ℕ} {a : ℝ} (ha : 0 < a)
     have hpow_inv_nonneg : 0 ≤ (a ^ d)⁻¹ := by
       positivity
     rw [hdet] at hmapf
-    simpa [f, abs_of_nonneg hpow_inv_nonneg] using hmapf
+    simpa [f, abs_of_nonneg hpow_inv_nonneg] using! hmapf
   rw [hrestrict, hmap, MeasureTheory.Measure.restrict_smul]
 
 namespace H1Function
@@ -85,7 +85,7 @@ noncomputable def dilate {a : ℝ} (ha : 0 < a)
   · intro i φ hφ hφ_supp hφ_sub
     let ψ : Vec d → ℝ := fun y => φ (a • y)
     have hψ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-      simpa [ψ] using hφ.comp (contDiff_const_smul a)
+      simpa [ψ] using! hφ.comp (contDiff_const_smul a)
     have hψ_supp : HasCompactSupport ψ := by
       show HasCompactSupport (φ ∘ Homeomorph.smulOfNeZero a ha_ne)
       simpa [ψ, Function.comp] using
@@ -217,7 +217,7 @@ noncomputable def dilateSet {V : Set (Vec d)} {a : ℝ} (ha : 0 < a)
   · intro i φ hφ hφ_supp hφ_sub
     let ψ : Vec d → ℝ := fun y => φ (a • y)
     have hψ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-      simpa [ψ] using hφ.comp (contDiff_const_smul a)
+      simpa [ψ] using! hφ.comp (contDiff_const_smul a)
     have hψ_supp : HasCompactSupport ψ := by
       show HasCompactSupport (φ ∘ Homeomorph.smulOfNeZero a ha_ne)
       simpa [ψ, Function.comp] using
@@ -359,7 +359,7 @@ noncomputable def unscale {a : ℝ} (ha : 0 < a)
   · intro i φ hφ hφ_supp hφ_sub
     let ψ : Vec d → ℝ := fun y => φ (a⁻¹ • y)
     have hψ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-      simpa [ψ] using hφ.comp (contDiff_const_smul a⁻¹)
+      simpa [ψ] using! hφ.comp (contDiff_const_smul a⁻¹)
     have hψ_supp : HasCompactSupport ψ := by
       show HasCompactSupport (φ ∘ Homeomorph.smulOfNeZero a⁻¹ (inv_ne_zero ha_ne))
       simpa [ψ, Function.comp] using
@@ -505,7 +505,7 @@ noncomputable def unscale {a : ℝ} (ha : 0 < a)
       tendsto_approx := ?_
       tendsto_approx_grad := ?_ }
   · intro m
-    simpa [T] using (u.approx_smooth m).comp (contDiff_const_smul a)
+    simpa [T] using! (u.approx_smooth m).comp (contDiff_const_smul a)
   · intro m
     show HasCompactSupport (u.approx m ∘ Homeomorph.smulOfNeZero a ha_ne)
     simpa [T, Function.comp] using

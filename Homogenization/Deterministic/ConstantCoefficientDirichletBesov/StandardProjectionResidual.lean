@@ -87,7 +87,7 @@ theorem overlapCubeLpNorm_overlapCubeFluctuationVec_cubeProjectionVec_zero_eq_ze
                   Q u (overlapCubeSet_subset_cubeSet_of_mem_overlapCentersAtDepth hS hx)
               simp [overlapCubeFluctuationVec, havg, hpoint])
     _ = 0 := by
-          simpa using
+          simpa using!
             (overlapCubeLpNorm_const (S := S) (p := (2 : ℝ≥0∞))
               (c := (0 : Vec d)) (by norm_num))
 
@@ -153,7 +153,7 @@ theorem overlapCubeLpNorm_overlapCubeFluctuationVec_cubeIncrementVec_eq_zero_of_
                 hc x (hsub hx)
               simp [overlapCubeFluctuationVec, havg, hpoint])
     _ = 0 := by
-          simpa using
+          simpa using!
             (overlapCubeLpNorm_const (S := S) (p := (2 : ℝ≥0∞))
               (c := (0 : Vec d)) (by norm_num))
 
@@ -194,7 +194,7 @@ theorem overlapCubeLpNorm_overlapCubeFluctuationVec_finset_sum_le
   | empty =>
       have hzero :
           overlapCubeLpNorm S (2 : ℝ≥0∞) (0 : Vec d → Vec d) = 0 := by
-        simpa using
+        simpa using!
           (overlapCubeLpNorm_const (S := S) (p := (2 : ℝ≥0∞))
             (c := (0 : Vec d)) (by norm_num))
       have hfun :
@@ -215,7 +215,7 @@ theorem overlapCubeLpNorm_overlapCubeFluctuationVec_finset_sum_le
       have hsum :
           MeasureTheory.MemLp (fun x => ∑ i ∈ I, u i x)
             (2 : ℝ≥0∞) (normalizedOverlapCubeMeasure S) := by
-        exact MeasureTheory.memLp_finset_sum
+        exact MeasureTheory.memLp_finsetSum
           (μ := normalizedOverlapCubeMeasure S) (p := (2 : ℝ≥0∞))
           (s := I) (f := fun i => u i) huI
       have hfluct :

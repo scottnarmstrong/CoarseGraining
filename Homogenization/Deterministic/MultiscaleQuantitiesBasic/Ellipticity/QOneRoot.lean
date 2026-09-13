@@ -404,7 +404,7 @@ theorem coarseBBlockNorm_pos_of_isEllipticFieldOn_of_openCubeData
     (hData : OpenCubeDeterministicCoarseData Q a) :
     0 < coarseBBlockNorm Q a := by
   rcases hData with ⟨sigma, sigmaStar, kappa, hA, hS, hK, hSigma, hdet⟩
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) :=
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet Q)) :=
     (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   have hvol : (MeasureTheory.volume (openCubeSet Q)).toReal ≠ 0 := by
     rw [volume_openCubeSet_toReal]

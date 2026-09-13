@@ -164,7 +164,7 @@ theorem deriv_zero_of_one_le {t : ℝ} (ht : 1 ≤ t) :
 theorem contDiff_deriv : ContDiff ℝ (⊤ : ℕ∞) (deriv smoothTransitionProfile) := by
   simpa using
     (ContDiff.iterate_deriv (𝕜 := ℝ) (F := ℝ) 1
-      (f₂ := smoothTransitionProfile) smooth)
+      (f := smoothTransitionProfile) smooth)
 
 theorem continuous_secondDeriv : Continuous (deriv (deriv smoothTransitionProfile)) := by
   have h : ContDiff ℝ (1 : ℕ∞) (deriv smoothTransitionProfile) :=
@@ -182,7 +182,7 @@ private theorem exists_deriv_bound :
   · by_cases ht1 : 1 < t
     · rw [deriv_zero_of_one_lt ht1, norm_zero]
       exact norm_nonneg _
-    · push_neg at ht0 ht1
+    · push Not at ht0 ht1
       exact Filter.eventually_principal.mp hM_max t (Set.mem_Icc.2 ⟨ht0, ht1⟩)
 
 private theorem exists_secondDeriv_bound :
@@ -197,7 +197,7 @@ private theorem exists_secondDeriv_bound :
   · by_cases ht1 : 1 < t
     · rw [secondDeriv_zero_of_one_lt ht1, norm_zero]
       exact norm_nonneg _
-    · push_neg at ht0 ht1
+    · push Not at ht0 ht1
       exact Filter.eventually_principal.mp hM_max t (Set.mem_Icc.2 ⟨ht0, ht1⟩)
 
 /-- Noncomputable global first-derivative bound for `smoothTransitionProfile`.

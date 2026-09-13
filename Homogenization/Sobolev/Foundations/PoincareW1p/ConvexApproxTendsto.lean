@@ -235,14 +235,16 @@ private theorem tendsto_setIntegral_of_tendsto_eLpNorm_sub_of_one_lt
       simpa [zero_mul] using hscaled
     exact tendsto_of_tendsto_of_tendsto_of_le_of_le
       tendsto_const_nhds hscaled0
-      (fun _ => zero_le')
+      (fun _ => zero_le)
       hL1_bound
   simpa [μ, volumeMeasureOn, Pi.sub_apply] using
     (MeasureTheory.tendsto_integral_of_L1'
       (μ := μ)
       (f := f)
-      hf_int
-      (by simpa [μ] using hF_int)
+      hf_int.aestronglyMeasurable
+      (by
+        filter_upwards [hF_int] with n hn
+        exact hn)
       hL1)
 
 private theorem tendsto_integralAverage_of_tendsto_eLpNorm_sub_of_one_lt
@@ -282,14 +284,14 @@ private theorem tendsto_toReal_eLpNorm_of_tendsto_eLpNorm_sub
         Filter.atTop (nhds 0)) :
     Filter.Tendsto (fun n => ENNReal.toReal (MeasureTheory.eLpNorm (F n) p μ))
       Filter.atTop (nhds (ENNReal.toReal (MeasureTheory.eLpNorm f p μ))) := by
-  letI : Fact (1 ≤ p) := ⟨hp1⟩
+  let : Fact (1 ≤ p) := ⟨hp1⟩
   have hLpSpace :
       Filter.Tendsto (fun n => (hF_mem n).toLp (F n))
         Filter.atTop (nhds (hf_mem.toLp f)) := by
     exact
       (MeasureTheory.Lp.tendsto_Lp_iff_tendsto_eLpNorm''
         (μ := μ) (p := p) F hF_mem f hf_mem).2
-        (by simpa [Pi.sub_apply] using hLp)
+        (by simpa [Pi.sub_apply] using! hLp)
   have hnorm :
       Filter.Tendsto (fun n => ‖(hF_mem n).toLp (F n)‖)
         Filter.atTop (nhds ‖hf_mem.toLp f‖) :=
@@ -332,7 +334,7 @@ theorem tendsto_convexApproxSmoothW1p_gradientCoordLpSeminormSum
     exact tendsto_convexApproxSmoothW1p_gradCoordLpSeminorm
       (U := U) hU hp1 hp u hball hr i
   simpa [W1pFunction.gradientCoordLpSeminormSum] using
-    tendsto_finset_sum Finset.univ (fun i _ => hgrad i)
+    tendsto_finsetSum Finset.univ (fun i _ => hgrad i)
 
 private theorem tendsto_convexApproxSmoothW1p_integralAverage_ofReal
     (hU : IsOpenBoundedConvexDomain U) {q : ℝ} (hq : 1 < q)
@@ -343,7 +345,7 @@ private theorem tendsto_convexApproxSmoothW1p_integralAverage_ofReal
         (convexApproxSmoothW1p (U := U) hU
           (by rw [ENNReal.one_le_ofReal]; exact hq.le) u x0 hr n).toFun)
       Filter.atTop (nhds (integralAverage U u.toFun)) := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   let pE : ENNReal := ENNReal.ofReal q
   let hp1 : 1 ≤ pE := by
@@ -382,7 +384,7 @@ theorem tendsto_convexApproxSmoothW1p_subAverageLpSeminorm_ofReal
         (convexApproxSmoothW1p (U := U) hU
           (by rw [ENNReal.one_le_ofReal]; exact hq.le) u x0 hr n).subAverageLpSeminorm)
       Filter.atTop (nhds u.subAverageLpSeminorm) := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   let μ : MeasureTheory.Measure (Vec d) := volumeMeasureOn U
   let pE : ENNReal := ENNReal.ofReal q
@@ -521,7 +523,7 @@ theorem tendsto_convexApproxSmoothW1p_subAverageLpSeminorm_ofReal
       simpa [zero_add] using hvalue.add hconst_tendsto
     exact tendsto_of_tendsto_of_tendsto_of_le_of_le
       tendsto_const_nhds hsum
-      (fun _ => zero_le')
+      (fun _ => zero_le)
       hsubavg_bound
   have hF_mem :
       ∀ n, MeasureTheory.MemLp

@@ -41,6 +41,17 @@ private instance instCompletedGraphNormedSpace {d : ℕ} (Q : TriadicCube d)
   unfold CubeEuclideanWspCompletedDualGraph completedGraphSubmodule
   infer_instance
 
+private instance instCompletedGraphIsBoundedSMul {d : ℕ} (Q : TriadicCube d)
+    (s : FractionalOrder) (p : FiniteLpExponent) :
+    IsBoundedSMul ℝ (CubeEuclideanWspCompletedDualGraph Q s p) :=
+  NormedSpace.toIsBoundedSMul
+
+private instance instCompletedGraphDualNormedAddCommGroup {d : ℕ} (Q : TriadicCube d)
+    (s : FractionalOrder) (p : FiniteLpExponent) :
+    NormedAddCommGroup (CubeEuclideanWspCompletedDualGraph Q s p →L[ℝ] ℝ) := by
+  unfold CubeEuclideanWspCompletedDualGraph completedGraphSubmodule
+  infer_instance
+
 /-- The normalized smooth pairing, bundled as a real linear functional. -/
 noncomputable def pairingLinearMap {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent}
@@ -262,7 +273,7 @@ theorem completedPairingExtension_unique {d : ℕ} {Q : TriadicCube d}
     (cubeEuclideanNegativeWspSmoothDualENorm Q s p F).toReal
     (pairing_norm_bound_of_dual_finite F hD) G
   ext h
-  simpa only [LinearMap.comp_apply] using hG h
+  simpa only [LinearMap.comp_apply] using! hG h
 
 private theorem enorm_graphToCompleted_eq_fullENorm {d : ℕ}
     {Q : TriadicCube d} {s : FractionalOrder} {p : FiniteLpExponent}
@@ -287,7 +298,7 @@ theorem enorm_completedPairingExtension_eq_negativeWspSmoothDualENorm {d : ℕ}
       (denseRange_graphToCompleted (Q := Q) (s := s) (p := p.conjugate))
       ENNReal.toReal_nonneg (pairing_norm_bound_of_dual_finite F hD)
   have hupper : ‖E‖ₑ ≤ D := by
-    rw [← ofReal_norm_eq_enorm]
+    rw [← ofReal_norm]
     exact (ENNReal.ofReal_le_iff_le_toReal hD.ne).mpr hupperReal
   have hlower : D ≤ ‖E‖ₑ := by
     rw [show D = cubeEuclideanNegativeWspSmoothDualENorm Q s p F by rfl,
@@ -301,7 +312,7 @@ theorem enorm_completedPairingExtension_eq_negativeWspSmoothDualENorm {d : ℕ}
           completedPairingExtension_apply_graphToCompleted F hD h]
         exact (Real.enorm_eq_ofReal_abs _).symm
       _ ≤ ‖E‖ₑ * ‖graphToCompleted (Q := Q) (s := s) (p := p.conjugate) h‖ₑ :=
-        E.le_opNorm_enorm _
+        E.le_opENorm _
       _ ≤ ‖E‖ₑ * 1 := by
         calc
           ‖E‖ₑ * ‖graphToCompleted (Q := Q) (s := s) (p := p.conjugate) h‖ₑ =

@@ -184,7 +184,7 @@ theorem responseSymmetricDirichletNeumannTheory_of_isEllipticFieldOn
       h1AverageGradient U uD = h1AverageGradient U uD0 :=
         h1AverageGradient_eq_of_grad_ae U hAE
       _ = p := by
-        simpa [h1AverageGradient, averageVec] using
+        simpa [h1AverageGradient, averageVec] using!
           huD0.averageGradient_eq (hvol.ne')
   · intro p uD huD
     rcases exists_isAffineDirichletSolution_of_isEllipticFieldOn U a hEll p with
@@ -199,7 +199,7 @@ theorem responseSymmetricDirichletNeumannTheory_of_isEllipticFieldOn
       h1AverageFlux U a uD = h1AverageFlux U a uD0 :=
         h1AverageFlux_eq_of_grad_ae U a hAE
       _ = matVecMul (sigmaCoarse U a) p := by
-        simpa [h1AverageFlux, averageVec, book_sigmaCoarse_eq_sigmaCoarse U a] using hOld
+        simpa [h1AverageFlux, averageVec, book_sigmaCoarse_eq_sigmaCoarse U a] using! hOld
   · intro q uN huN
     rcases exists_isConstantFluxNeumannSolution_of_isEllipticFieldOn U a hEll q with
       ⟨uN0, huN0⟩
@@ -212,7 +212,7 @@ theorem responseSymmetricDirichletNeumannTheory_of_isEllipticFieldOn
       h1AverageFlux U a uN = h1AverageFlux U a uN0.toH1Function :=
         h1AverageFlux_eq_of_grad_ae U a hAE
       _ = q := by
-        simpa [h1AverageFlux, averageVec] using hOld
+        simpa [h1AverageFlux, averageVec] using! hOld
   · intro q uN huN
     rcases exists_isConstantFluxNeumannSolution_of_isEllipticFieldOn U a hEll q with
       ⟨uN0, huN0⟩
@@ -227,7 +227,7 @@ theorem responseSymmetricDirichletNeumannTheory_of_isEllipticFieldOn
         h1AverageGradient_eq_of_grad_ae U hAE
       _ = matVecMul (sigmaStarInvCoarse U a) q := by
         simpa [h1AverageGradient, averageVec,
-          book_sigmaStarInvCoarse_eq_sigmaStarInvCoarse U a] using hOld
+          book_sigmaStarInvCoarse_eq_sigmaStarInvCoarse U a] using! hOld
   · intro p q
     have hOld :=
       responseJ_completedSquare_of_isSymmetricCoeffField_of_isEllipticFieldOn_of_isOpenBoundedConvexDomain
@@ -273,7 +273,7 @@ theorem responseSymmetricDirichletNeumannTheory_of_isEllipticFieldOn
         sigmaCoarse_le_volumeAverageMat_of_isSymmetricCoeffField_of_isEllipticFieldOn_of_isOpenBoundedConvexDomain
           (U := Uset) (a := a.toCoeffField) R U.isDomain ha hEll hvol compat
           hA hS hK hSigma
-      simpa [book_sigmaCoarse_eq_sigmaCoarse U a, averageMat] using h
+      simpa [book_sigmaCoarse_eq_sigmaCoarse U a, averageMat] using! h
 
 theorem responseSymmetricDirichletNeumannTheory_of_neZero
     {d : ℕ} [NeZero d] (U : Domain d) (a : CoeffOn U)
@@ -298,7 +298,7 @@ theorem responseSymmetricDirichletNeumannTheory
   by_cases hd : d = 0
   · subst d
     exact responseSymmetricDirichletNeumannTheory_zero_dim U a hsym
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     exact responseSymmetricDirichletNeumannTheory_of_neZero U a hsym
 
 

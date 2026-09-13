@@ -391,7 +391,7 @@ private theorem firstVariation_recoveredField {d : ℕ}
       system P hY.1.1 hY.2.1 hpot hY.2.2 hvol
   simpa [Rc, doubledFieldOfBlockState, blockStateOfDoubled,
     book_doubledBlockPairingIntegrand_eq_blockPairingIntegrand U a Y
-      (doubledFieldOfBlockState (Rc.recoveredField system P))] using hOld
+      (doubledFieldOfBlockState (Rc.recoveredField system P))] using! hOld
 
 private theorem doubledMuTheory_zero_dim (U : Domain 0) (a : CoeffOn U) :
     DoubledMuTheory U a := by
@@ -669,7 +669,7 @@ private theorem doubledMuMinimizer_neg_left_extracts_canonicalMaximizerFlux_of_i
         matVecMul (a.toCoeffField x)
           (X.potential x +
             (blockMatVecMul (blockCoeffField a.toCoeffField x) (X.eval x)).2) := by
-          simpa [blockStateOfDoubled] using hAlg
+          simpa [blockStateOfDoubled] using! hAlg
     _ =
         matVecMul (a.toCoeffField x)
           ((canonicalMaximizer (responseExistenceTheory U a) p q).toSolution.toH1.grad x) := by
@@ -680,7 +680,7 @@ theorem doubledMuTheory {d : ℕ} (U : Domain d) (a : CoeffOn U) :
   by_cases hd : d = 0
   · subst d
     exact doubledMuTheory_zero_dim U a
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     let b : CoeffOn U := pointwiseCoeffOn U a
     have hb : DoubledMuTheory U b :=
       doubledMuTheory_of_isEllipticFieldOn U b
@@ -702,7 +702,7 @@ theorem doubledMuMinimizer_neg_left_extracts_canonicalMaximizerGradient
   by_cases hd : d = 0
   · subst d
     exact Filter.Eventually.of_forall fun x => Subsingleton.elim _ _
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     let b : CoeffOn U := pointwiseCoeffOn U a
     have hba : CoeffOn.AEEq b a := by
       simpa [b] using pointwiseCoeffOn_ae_eq U a
@@ -747,7 +747,7 @@ theorem doubledMuMinimizer_neg_left_extracts_canonicalMaximizerFlux
   by_cases hd : d = 0
   · subst d
     exact Filter.Eventually.of_forall fun x => Subsingleton.elim _ _
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     let b : CoeffOn U := pointwiseCoeffOn U a
     have hba : CoeffOn.AEEq b a := by
       simpa [b] using pointwiseCoeffOn_ae_eq U a

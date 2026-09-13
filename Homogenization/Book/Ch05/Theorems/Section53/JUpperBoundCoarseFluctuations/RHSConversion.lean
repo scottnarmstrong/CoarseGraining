@@ -154,7 +154,7 @@ theorem one_le_coarseFluctuationScalarWeightAtScale
       b0, c0]
     field_simp [hσ.ne', hc0.ne']
   have hAM : 2 * Real.sqrt θ0 ≤ x + y :=
-    two_mul_le_add_of_sq_eq_mul hx hy (by
+    two_mul_le_add_of_sq_le_mul hx hy (by
       rw [Real.sq_sqrt hθ0_nonneg, hxy])
   have hsqrt_one : 1 ≤ Real.sqrt θ0 := by
     simpa [θ0] using (Real.one_le_sqrt.mpr hθ0_one)
@@ -467,7 +467,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
       have hnat :=
         Section52.integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_originCube_from_P4
           hP hStruct hP4 (m : ℤ) (Int.toNat n)
-      simpa [Int.toNat_of_nonneg hn_nonneg] using hnat
+      simpa [Int.toNat_of_nonneg hn_nonneg] using! hnat
     have hdesc :
         Integrable
           (fun a : RegCoeffField d =>
@@ -481,7 +481,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
       intro R hR
       have hRscale : R ∈ descendantsAtScale (originCube d (m : ℤ)) n := by
         simpa [descendantsAtScale_eq_descendantsAtDepth
-          (originCube d (m : ℤ)) hnm] using hR
+          (originCube d (m : ℤ)) hnm] using! hR
       exact
         (hP.integrable_fullBlockNormalizedFluctuationOperatorNormSqAtScale_of_mem_descendantsAtScale_originCube
           hstat hStruct (m : ℤ) hn_nonneg hnm hRscale hOrigin).const_mul (2 * θ)
@@ -497,7 +497,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
                   2 * θ *
             fullBlockNormalizedFluctuationOperatorNormSqAtScale
                       hP hStruct (m : ℤ) R a)) P :=
-      MeasureTheory.integrable_finset_sum S hTermInt
+      MeasureTheory.integrable_finsetSum S hTermInt
     simpa [Y] using hsum.const_mul (∑ n ∈ S, w n)
   have hGradAvgAE :
       AEMeasurable
@@ -564,7 +564,7 @@ theorem integral_paired_highScaleAverageTerms_special_le_fullBlockSumAtScale
               (hP.aemeasurable_canonicalScalarResponseFluxAverage_cubeSet
                 R R p_e q_e) q0_e)).sqrt)
   have hXAE : AEMeasurable X P := by
-    simpa [X, pow_two] using
+    simpa [X, pow_two] using!
       (aemeasurable_const.mul (hGradAvgAE.mul hGradAvgAE)).add
         (aemeasurable_const.mul (hFluxAvgAE.mul hFluxAvgAE))
   have hX_int : Integrable X P := by

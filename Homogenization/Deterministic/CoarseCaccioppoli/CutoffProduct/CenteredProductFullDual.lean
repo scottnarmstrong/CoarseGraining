@@ -79,7 +79,7 @@ theorem
           cubeL2ScalarPartialSeminormTwo Q (s - 1) N (cubeFluctuation Q u) +
         cubeLpNorm Q ∞ ξ *
           cubeBesovPositiveScalarPartialSeminormTwo Q s N (cubeFluctuation Q u)) := by
-            simpa [cubeFluctuation] using hpartial
+            simpa [cubeFluctuation] using! hpartial
     _ ≤
       2 * (cubeScaleFactor Q * B *
           (Real.sqrt ((1 - Real.rpow (3 : ℝ) (2 * (s - 1)))⁻¹) *
@@ -204,8 +204,8 @@ theorem
     exact hu.sub (MeasureTheory.memLp_const (cubeAverage Q u))
   have hprodMem :
       MeasureTheory.MemLp prod (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    letI : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
-    simpa [prod] using hξLp.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hv
+    let : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
+    simpa [prod] using! hξLp.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hv
   have hconj :
       cubeBesovConjExponent (1 : ℝ≥0∞) = ∞ := by
     simpa [cubeBesovConjExponent] using
@@ -337,7 +337,7 @@ theorem
     have hprodDepthEq :
         cubeBesovPositiveVectorDepthSeminorm Q s (cubeFluctuationVec Q prod) j =
           cubeBesovPositiveVectorDepthSeminorm Q s prod j := by
-      simpa [cubeFluctuationVec] using
+      simpa [cubeFluctuationVec] using!
         cubeBesovPositiveVectorDepthSeminorm_sub_const
           Q s prod (cubeAverageVec Q prod) j
           (by

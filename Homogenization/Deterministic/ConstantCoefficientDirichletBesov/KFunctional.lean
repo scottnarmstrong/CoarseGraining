@@ -50,7 +50,7 @@ theorem sqrt_cubeBesovOverlappingPositiveVectorDepthAverage_le_mul_cubeVectorKFu
     G.memLp_toField_normalizedCubeMeasure
   have hRparent :
       MeasureTheory.MemLp R (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    simpa [R] using hF.sub hGparent
+    simpa [R] using! hF.sub hGparent
   have hRloc :
       ∀ S ∈ overlapCentersAtDepth Q j,
         MeasureTheory.MemLp R (2 : ℝ≥0∞) (normalizedOverlapCubeMeasure S) := by

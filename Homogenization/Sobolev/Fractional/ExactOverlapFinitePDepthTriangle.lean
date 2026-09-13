@@ -108,7 +108,7 @@ private theorem scalarOverlap_residual_memLp {d : ℕ}
       (ScalarOverlap.cubeAverageVec S F)) p.exponent
       (ScalarOverlap.normalizedCubeMeasure S) :=
     memLp_const _
-  simpa only [map_sub] using hF.sub hconst
+  simpa only [map_sub] using! hF.sub hconst
 
 /-- The finite-`p` two-term constant after raising the Minkowski inequality to
 the `p`-th power. -/
@@ -229,7 +229,7 @@ theorem cubeEuclideanPositiveBesovOverlapDepthENorm_sub_add_rpow_le {d : ℕ}
           (cubeEuclideanPositiveBesovOverlapDepthENorm Q p G j) ^ p.exponent.toReal) := by
   have hsub : MemLp (fun x => HilbertVec.ofVec ((F x - G x))) p.exponent
       (normalizedCubeMeasure Q) := by
-    simpa only [map_sub] using hF.sub hG
+    simpa only [map_sub] using! hF.sub hG
   have hadd := cubeEuclideanPositiveBesovOverlapDepthENorm_add_rpow_le Q p
     (fun x => F x - G x) G j hsub hG
   simpa only [sub_add_cancel] using hadd

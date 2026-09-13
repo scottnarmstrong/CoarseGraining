@@ -109,7 +109,7 @@ theorem isBigO_limitWeightedUnitEllipticityObservableOnCube_of_scale_zero
       (limitWeightedUnitEllipticityObservableOnCube hP hStruct U
         hΓ.params.sUpper hΓ.params.sLower)
       (thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   have hmap :=
     map_limitWeightedUnitEllipticityObservableOnCube_eq_origin_of_scale_zero
       hP hStruct hUscale hΓ.sUpper_pos hΓ.sLower_pos
@@ -261,14 +261,14 @@ theorem scaleZero_ellipticity_sup_bounds_of_localizedLimitWeightedUnitEllipticit
   have hupperScaled :
       L⁻¹ * D.sup' hD (fun U => Ch02.LambdaSq U t (.finite 1) F) ≤
         D.sup' hD Obs := by
-    rw [Finset.mul₀_sup' hL_inv_pos
+    rw [Finset.mul₀_sup' hL_inv_pos.le
       (fun U => Ch02.LambdaSq U t (.finite 1) F) D hD]
     exact Finset.sup'_le hD _ fun U hU =>
       (hupperPoint U hU).trans (Finset.le_sup' (f := Obs) hU)
   have hlowerScaled :
       L * D.sup' hD (fun U => (Ch02.lambdaSq U t (.finite 1) F)⁻¹) ≤
         D.sup' hD Obs := by
-    rw [Finset.mul₀_sup' hL_pos
+    rw [Finset.mul₀_sup' hL_pos.le
       (fun U => (Ch02.lambdaSq U t (.finite 1) F)⁻¹) D hD]
     exact Finset.sup'_le hD _ fun U hU =>
       (hlowerPoint U hU).trans (Finset.le_sup' (f := Obs) hU)
@@ -288,7 +288,7 @@ theorem measureReal_localizedLimitWeightedUnitEllipticitySup_tail_le_card_mul_ex
       (D.card : ℝ) * Real.exp (-(lam ^ hΓ.sigma)) := by
   classical
   intro Q D
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let A : ℝ := thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat
   let X : TriadicCube d → RegCoeffField d → ℝ :=
     fun U =>

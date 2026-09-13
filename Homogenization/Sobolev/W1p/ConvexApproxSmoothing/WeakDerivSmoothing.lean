@@ -49,9 +49,9 @@ theorem HasWeakPartialDerivOn.convexApproxSmoothing
     closure_minimal hdφ_support_sub (isClosed_tsupport (f := φ))
   have hdφ_sub : tsupport dφ ⊆ U := hdφ_subφ.trans hφ_sub
   have hφε_cont : Continuous φε := by
-    simpa [φε] using continuous_const.mul hφ_smooth.continuous
+    simpa [φε] using! continuous_const.mul hφ_smooth.continuous
   have hφε_compact : HasCompactSupport φε := by
-    simpa [φε] using (HasCompactSupport.mul_left (f := fun _ : Vec d => 1 - ε) hφ_compact)
+    simpa [φε] using! (HasCompactSupport.mul_left (f := fun _ : Vec d => 1 - ε) hφ_compact)
   have hφε_subφ : tsupport φε ⊆ tsupport φ := by
     let hsub :=
       tsupport_mul_subset_right (f := fun _ : Vec d => 1 - ε) (g := φ)
@@ -95,7 +95,7 @@ theorem HasWeakPartialDerivOn.convexApproxSmoothing
         ∫ x in tsupport dφ, Homogenization.convexApproxSmoothing ρ u x0 r ε x * dφ x
           ∂MeasureTheory.volume := by
     exact
-      MeasureTheory.setIntegral_eq_of_subset_of_forall_diff_eq_zero
+      MeasureTheory.setIntegral_eq_of_subset_of_forall_sdiff_eq_zero
         hU.1.measurableSet hdφ_sub (fun x hx => by
           simp [dφ, image_eq_zero_of_notMem_tsupport hx.2])
   have hright_restrict :
@@ -104,7 +104,7 @@ theorem HasWeakPartialDerivOn.convexApproxSmoothing
         ∫ x in tsupport φε, Homogenization.convexApproxSmoothing ρ gi x0 r ε x * φε x
           ∂MeasureTheory.volume := by
     exact
-      MeasureTheory.setIntegral_eq_of_subset_of_forall_diff_eq_zero
+      MeasureTheory.setIntegral_eq_of_subset_of_forall_sdiff_eq_zero
         hU.1.measurableSet hφε_sub (fun x hx => by
           simp [φε, image_eq_zero_of_notMem_tsupport hx.2])
   have hinner_left_eq :
@@ -194,7 +194,7 @@ theorem HasWeakPartialDerivOn.convexApproxSmoothing
             = ∫ x in U, F x z ∂MeasureTheory.volume := by
                 symm
                 exact
-                  MeasureTheory.setIntegral_eq_of_subset_of_forall_diff_eq_zero
+                  MeasureTheory.setIntegral_eq_of_subset_of_forall_sdiff_eq_zero
                     hU.1.measurableSet hdφ_sub (fun x hx => by
                       simp [F, dφ, image_eq_zero_of_notMem_tsupport hx.2])
         _ = ∫ x in U, ρ z * (u (convexApproxSample x0 z r ε x) * dφ x)
@@ -219,7 +219,7 @@ theorem HasWeakPartialDerivOn.convexApproxSmoothing
             = ∫ x in U, G x z ∂MeasureTheory.volume := by
                 symm
                 exact
-                  MeasureTheory.setIntegral_eq_of_subset_of_forall_diff_eq_zero
+                  MeasureTheory.setIntegral_eq_of_subset_of_forall_sdiff_eq_zero
                     hU.1.measurableSet hφε_sub (fun x hx => by
                       simp [G, φε, image_eq_zero_of_notMem_tsupport hx.2])
         _ = ∫ x in U,

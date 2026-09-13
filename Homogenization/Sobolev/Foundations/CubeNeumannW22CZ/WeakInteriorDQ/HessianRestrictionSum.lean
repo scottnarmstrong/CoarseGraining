@@ -75,7 +75,7 @@ theorem descendants_sum_restrict_gradCoordH1Function_gradToVectorL2_norm_sq_le
   let row : Vec d → Vec d := fun x => fun k : Fin d => H.hess i k x
   let energy : Vec d → ℝ := fun x => ‖row x‖ ^ 2
   have hrow_mem : MemVectorL2 (openCubeSet Q) row := by
-    simpa [row] using (H.gradCoordH1Function i).grad_memVectorL2
+    simpa [row] using! (H.gradCoordH1Function i).grad_memVectorL2
   have henergy_int_Q :
       MeasureTheory.IntegrableOn energy (openCubeSet Q) MeasureTheory.volume := by
     have hint :

@@ -126,7 +126,7 @@ theorem integrable_coarseBlockQuadratic_of_ae_isEllipticFieldOn
       (fun a =>
         blockVecDot P
           (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d n)) a.toFun) P)) L := by
-  haveI : IsProbabilityMeasure L := hP.isProbability
+  have : IsProbabilityMeasure L := hP.isProbability
   set C : ℝ := 2 * (Θ * vecNormSq P.1 + vecNormSq P.2) with hC
   refine (integrable_const C).mono'
     (aestronglyMeasurable_coarseBlockQuadratic_cubeSet hP n P) ?_

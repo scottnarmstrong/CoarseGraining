@@ -140,7 +140,7 @@ theorem integral_descendantsAverage_blockJObservableCubeSet_eq_expectedDescendan
     _ =
       (D.card : ℝ)⁻¹ *
         (∑ R ∈ D, ∫ a, blockJObservableCubeSet R p pStar q qStar a ∂P) := by
-          rw [MeasureTheory.integral_finset_sum D
+          rw [MeasureTheory.integral_finsetSum D
             (fun R hR => hB R (by simpa [D] using hR))]
     _ = expectedDescendantsAverageBlockJCubeSet P Q j p pStar q qStar := by
           simp [expectedDescendantsAverageBlockJCubeSet, expectedBlockJCubeSet,
@@ -246,6 +246,7 @@ theorem aemeasurable_blockJObservableCubeSet
   refine ((hJ.const_mul (1 / 2 : ℝ)).add (hJAdj.const_mul (1 / 2 : ℝ))).congr ?_
   filter_upwards with a
   simp only [blockJObservableCubeSet_apply]
+  rfl
 
 /-- The Ch4 block response observable is a.e.-strongly-measurable under a law
 carrier and adjoint-invariant law. -/
@@ -284,7 +285,7 @@ theorem expectedBlockJCubeSet_eq_originCube_of_stationary
             (X := fun U a => blockJHalfResponseAdjointSumSet U p pStar q qStar a)
             (U := cubeSet (originCube d R.scale))
             (by
-              simpa [blockJObservableCubeSet, blockJHalfResponseAdjointSumCubeSet] using
+              simpa [blockJObservableCubeSet, blockJHalfResponseAdjointSumCubeSet] using!
                 hP.aestronglyMeasurable_blockJObservableCubeSet hAdj
                   (originCube d R.scale) p pStar q qStar)
             (blockJHalfResponseAdjointSumSet_translation_covariant p pStar q qStar)
@@ -322,7 +323,7 @@ theorem expectedBlockJCubeSet_eq_originCube_of_mem_descendantsAtScale_originCube
             (X := fun U a => blockJHalfResponseAdjointSumSet U p pStar q qStar a)
             (U := cubeSet (originCube d n))
             (by
-                simpa [blockJObservableCubeSet, blockJHalfResponseAdjointSumCubeSet] using
+                simpa [blockJObservableCubeSet, blockJHalfResponseAdjointSumCubeSet] using!
                   hP.aestronglyMeasurable_blockJObservableCubeSet hAdj
                     (originCube d n) p pStar q qStar)
               (blockJHalfResponseAdjointSumSet_translation_covariant p pStar q qStar)
@@ -386,7 +387,7 @@ theorem integral_descendantsAverage_blockJObservableCubeSet_eq_originCube_of_sta
         Integrable (blockJObservableCubeSet R p pStar q qStar) P := by
     intro R hR
     exact hB R (by
-      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using hR)
+      simpa [descendantsAtScale_eq_descendantsAtDepth (originCube d m) hnm] using! hR)
   calc
     ∫ a,
         descendantsAverage (originCube d m) (Int.toNat (m - n))

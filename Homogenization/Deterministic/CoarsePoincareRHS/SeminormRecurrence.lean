@@ -17,11 +17,11 @@ theorem cubeAverageVec_sub
   have hui :
       MeasureTheory.MemLp (fun x => u x i) (2 : ENNReal)
         (volumeMeasureOn (cubeSet Q)) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
   have hvi :
       MeasureTheory.MemLp (fun x => v x i) (2 : ENNReal)
         (volumeMeasureOn (cubeSet Q)) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hv
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hv
   have hui_int :
       MeasureTheory.Integrable (fun x => u x i) (volumeMeasureOn (cubeSet Q)) :=
     hui.integrable (by norm_num : (1 : ENNReal) ≤ (2 : ENNReal))
@@ -46,11 +46,11 @@ theorem cubeAverageVec_add
   have hui :
       MeasureTheory.MemLp (fun x => u x i) (2 : ENNReal)
         (volumeMeasureOn (cubeSet Q)) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
   have hvi :
       MeasureTheory.MemLp (fun x => v x i) (2 : ENNReal)
         (volumeMeasureOn (cubeSet Q)) := by
-    simpa using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hv
+    simpa using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hv
   have hui_int :
       MeasureTheory.Integrable (fun x => u x i) (volumeMeasureOn (cubeSet Q)) :=
     hui.integrable (by norm_num : (1 : ENNReal) ≤ (2 : ENNReal))
@@ -791,11 +791,11 @@ theorem sq_le_inv_one_sub_mul_add_of_sq_le_add_bilinear_term
   have hU :
       D * U * G ≤ η * U ^ 2 + η⁻¹ * (((D / 2) * G) ^ 2) := by
     convert (two_mul_le_add_mul_sq (a := U) (b := (D / 2) * G) (ε := η) hη) using 1
-    ring
+    all_goals (first | rfl | ring)
   have hW :
       D * W * G ≤ η * W ^ 2 + η⁻¹ * (((D / 2) * G) ^ 2) := by
     convert (two_mul_le_add_mul_sq (a := W) (b := (D / 2) * G) (ε := η) hη) using 1
-    ring
+    all_goals (first | rfl | ring)
   have hstep :
       (1 - η) * W ^ 2 ≤ A + η * U ^ 2 + 2 * η⁻¹ * (((D / 2) * G) ^ 2) := by
     linarith
@@ -813,11 +813,11 @@ theorem add_bilinear_term_le_add_eta_sq_add_invEta_sq
   have hU :
       D * U * G ≤ η * U ^ 2 + η⁻¹ * (((D / 2) * G) ^ 2) := by
     convert (two_mul_le_add_mul_sq (a := U) (b := (D / 2) * G) (ε := η) hη) using 1
-    ring
+    all_goals (first | rfl | ring)
   have hW :
       D * W * G ≤ η * W ^ 2 + η⁻¹ * (((D / 2) * G) ^ 2) := by
     convert (two_mul_le_add_mul_sq (a := W) (b := (D / 2) * G) (ε := η) hη) using 1
-    ring
+    all_goals (first | rfl | ring)
   have hsplit : D * (U + W) * G = D * U * G + D * W * G := by
     ring
   rw [hsplit]

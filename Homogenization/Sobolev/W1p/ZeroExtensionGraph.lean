@@ -99,7 +99,7 @@ private theorem fderiv_approx_apply_eq_zero_of_not_mem {d : ℕ} {U : Set (Vec d
     (isClosed_tsupport (f := u.approx n)).isOpen_compl.eventually_mem hx_support |>.mono
       (fun y hy => image_eq_zero_of_notMem_tsupport hy)
   rw [hzero.fderiv_eq]
-  simp only [fderiv_zero, Pi.zero_apply, ContinuousLinearMap.zero_apply]
+  simp only [fderiv_zero, Pi.zero_apply, zero_apply]
 
 private theorem approx_sub_zeroExtension_eq_indicator_sub {d : ℕ} {U : Set (Vec d)}
     (u : H10Function U) (n : ℕ) :
@@ -128,9 +128,9 @@ theorem hasWeakGradientOn_univ_zeroExtension {d : ℕ} {U : Set (Vec d)}
     (u : H10Function U) (hU : MeasurableSet U) :
     HasWeakGradientOn Set.univ u.zeroExtension u.zeroExtensionGrad := by
   apply HasWeakGradientOn.of_tendsto_eLpNorm_finiteLp FiniteLpExponent.two
-  · simpa only [Measure.restrict_univ] using
+  · simpa only [Measure.restrict_univ] using!
       u.memLp_zeroExtension hU u.toH1Function.memL2
-  · simpa only [Measure.restrict_univ] using
+  · simpa only [Measure.restrict_univ] using!
       u.gradMemLp_zeroExtensionGrad hU u.toH1Function.gradMemL2
   · intro n
     exact ((u.approx_smooth n).continuous.memLp_of_hasCompactSupport
@@ -150,7 +150,7 @@ theorem hasWeakGradientOn_univ_zeroExtension {d : ℕ} {U : Set (Vec d)}
       refine u.tendsto_approx.congr (fun n => ?_)
       rw [u.approx_sub_zeroExtension_eq_indicator_sub n,
         MeasureTheory.eLpNorm_indicator_eq_eLpNorm_restrict hU]
-    simpa only [Measure.restrict_univ] using htend
+    simpa only [Measure.restrict_univ] using! htend
   · intro i
     have htend : Tendsto
         (fun n => eLpNorm
@@ -159,7 +159,7 @@ theorem hasWeakGradientOn_univ_zeroExtension {d : ℕ} {U : Set (Vec d)}
       refine (u.tendsto_approx_grad i).congr (fun n => ?_)
       rw [u.fderiv_approx_sub_zeroExtensionGrad_eq_indicator_sub n i,
         MeasureTheory.eLpNorm_indicator_eq_eLpNorm_restrict hU]
-    simpa only [Measure.restrict_univ] using htend
+    simpa only [Measure.restrict_univ] using! htend
 
 /-- An `H¹₀` function on a measurable set is canonically transported to every
 open superset by its literal zero extension. -/

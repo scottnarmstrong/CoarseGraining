@@ -37,7 +37,7 @@ private theorem isBigO_gammaSigma_iff_of_map_eq_map
     have hfg :
         P.real (absTailEvent f (A * t)) = P.real (absTailEvent g (A * t)) := by
       simpa [s, absTailEvent, Measure.map_apply hf hs, Measure.map_apply hg hs]
-        using hmass_real
+        using! hmass_real
     rw [← hfg]
     exact h ht
   · intro h t ht
@@ -50,7 +50,7 @@ private theorem isBigO_gammaSigma_iff_of_map_eq_map
     have hgf :
         P.real (absTailEvent g (A * t)) = P.real (absTailEvent f (A * t)) := by
       simpa [s, absTailEvent, Measure.map_apply hf hs, Measure.map_apply hg hs]
-        using hmass_real.symm
+        using! hmass_real.symm
     rw [← hgf]
     exact h ht
 
@@ -72,7 +72,7 @@ private theorem isBigO_psiSigma_iff_of_map_eq_map
     have hfg :
         P.real (absTailEvent f (A * t)) = P.real (absTailEvent g (A * t)) := by
       simpa [s, absTailEvent, Measure.map_apply hf hs, Measure.map_apply hg hs]
-        using hmass_real
+        using! hmass_real
     rw [← hfg]
     exact h ht
   · intro h t ht
@@ -85,7 +85,7 @@ private theorem isBigO_psiSigma_iff_of_map_eq_map
     have hgf :
         P.real (absTailEvent g (A * t)) = P.real (absTailEvent f (A * t)) := by
       simpa [s, absTailEvent, Measure.map_apply hf hs, Measure.map_apply hg hs]
-        using hmass_real.symm
+        using! hmass_real.symm
     rw [← hgf]
     exact h ht
 
@@ -105,7 +105,7 @@ private theorem centered_descendant_map_eq_origin {d : ℕ} {n m : ℤ}
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_meas : Measurable (Y (cubeSet (originCube d n))) := by
-    simpa [Y] using hX0_meas.sub measurable_const
+    simpa [Y] using! hX0_meas.sub measurable_const
   have hshift :=
     cubeSet_eq_translateSet_originCube_of_mem_descendantsAtScale_originCube
       (d := d) hn hnm hR
@@ -170,7 +170,7 @@ theorem integral_restrictionDescendantAverage_eq_integral_originCube_of_stationa
     _ = (s.card : ℝ)⁻¹ * ∫ a, ∑ R ∈ s, X (cubeSet R) a ∂P := by
             rw [integral_const_mul]
     _ = (s.card : ℝ)⁻¹ * ∑ R ∈ s, ∫ a, X (cubeSet R) a ∂P := by
-          rw [integral_finset_sum s]
+          rw [integral_finsetSum s]
           intro R hR
           exact hX_desc_int R (by simpa [s] using hR)
     _ = (s.card : ℝ)⁻¹ * ∑ _R ∈ s, μ0 := by
@@ -206,7 +206,7 @@ theorem integral_restrictionCenteredDescendantAverage_eq_zero_of_stationary
       (P := P) hn hnm hPstat X hX0_meas hX_desc_int hX_cov
   have hsum_int :
       Integrable (fun a => ∑ R ∈ s, X (cubeSet R) a) P := by
-    refine integrable_finset_sum _ ?_
+    refine integrable_finsetSum _ ?_
     intro R hR
     exact hX_desc_int R (by simpa [s] using hR)
   have hdesc_int : Integrable (restrictionDescendantAverage n m X) P := by
@@ -270,7 +270,7 @@ theorem isBigO_gammaSigma_restrictionCenteredDescendantAverage_of_restrictionUni
   have hZ_meas :
       ∀ R ∈ descendantsAtScale (originCube d m) n, Measurable (Z R) := by
     intro R hR
-    simpa [Z] using (hX_desc_meas R hR).sub measurable_const
+    simpa [Z] using! (hX_desc_meas R hR).sub measurable_const
   have hZ_tail :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
         IsBigO P (gammaSigma σ) (Z R) K := by
@@ -284,7 +284,7 @@ theorem isBigO_gammaSigma_restrictionCenteredDescendantAverage_of_restrictionUni
       hX0_meas.sub measurable_const
     have horigin :
         IsBigO P (gammaSigma σ) (fun a => X (cubeSet (originCube d n)) a - μ0) K := by
-      simpa [restrictionCenteredOriginObservable, μ0] using hX0
+      simpa [restrictionCenteredOriginObservable, μ0] using! hX0
     have htail :=
       (isBigO_gammaSigma_iff_of_map_eq_map
         (P := P) (σ := σ) (A := K) hZR_meas hZ0_meas (by simpa [Z] using hmap)).2
@@ -292,12 +292,12 @@ theorem isBigO_gammaSigma_restrictionCenteredDescendantAverage_of_restrictionUni
     simpa [Z] using htail
   have hZ0_int : Integrable (Z (originCube d n)) P := by
     have hZ0_meas : Measurable (Z (originCube d n)) := by
-      simpa [Z] using hX0_meas.sub measurable_const
+      simpa [Z] using! hX0_meas.sub measurable_const
     have hZ0_mom :=
       hasGammaMomentGrowthWith_of_isBigO_gammaSigma
         (μ := P) (X := Z (originCube d n)) (K := K) (σ := σ)
         hσ₀ hK hZ0_meas.aemeasurable (by
-          simpa [Z, restrictionCenteredOriginObservable, μ0] using hX0)
+          simpa [Z, restrictionCenteredOriginObservable, μ0] using! hX0)
     have hZ0_abs_int : Integrable (fun a => |Z (originCube d n) a|) P := by
       simpa using
         (IndependentSums.gammaMomentGrowth_natCast_bound
@@ -333,7 +333,7 @@ theorem isBigO_gammaSigma_restrictionCenteredDescendantAverage_of_restrictionUni
       intro U z a
       simpa using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
     have hZ0_meas' : Measurable ((fun U a => X U a - μ0) (cubeSet (originCube d n))) := by
-      simpa using hX0_meas.sub measurable_const
+      simpa using! hX0_meas.sub measurable_const
     have hint :
         ∫ a, Z R a ∂P = ∫ a, Z (originCube d n) a ∂P := by
       calc
@@ -402,11 +402,11 @@ theorem isBigO_psiSigma_restrictionCenteredDescendantAverage_of_restrictionUnitR
   have hZ_meas :
       ∀ R ∈ descendantsAtScale (originCube d m) n, Measurable (Z R) := by
     intro R hR
-    simpa [Z] using (hX_desc_meas R hR).sub measurable_const
+    simpa [Z] using! (hX_desc_meas R hR).sub measurable_const
   have hZ_int :
       ∀ R ∈ descendantsAtScale (originCube d m) n, Integrable (Z R) P := by
     intro R hR
-    simpa [Z] using (hX_desc_int R hR).sub (integrable_const μ0)
+    simpa [Z] using! (hX_desc_int R hR).sub (integrable_const μ0)
   have hZ_tail :
       ∀ R ∈ descendantsAtScale (originCube d m) n,
         IsBigO P (psiSigma σ) (Z R) K := by
@@ -420,7 +420,7 @@ theorem isBigO_psiSigma_restrictionCenteredDescendantAverage_of_restrictionUnitR
       hX0_meas.sub measurable_const
     have horigin :
         IsBigO P (psiSigma σ) (fun a => X (cubeSet (originCube d n)) a - μ0) K := by
-      simpa [restrictionCenteredOriginObservable, μ0] using hX0
+      simpa [restrictionCenteredOriginObservable, μ0] using! hX0
     have htail :=
       (isBigO_psiSigma_iff_of_map_eq_map
         (P := P) (σ := σ) (A := K) hZR_meas hZ0_meas (by simpa [Z] using hmap)).2
@@ -445,7 +445,7 @@ theorem isBigO_psiSigma_restrictionCenteredDescendantAverage_of_restrictionUnitR
       intro U z a
       simpa using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
     have hZ0_meas' : Measurable ((fun U a => X U a - μ0) (cubeSet (originCube d n))) := by
-      simpa using hX0_meas.sub measurable_const
+      simpa using! hX0_meas.sub measurable_const
     have hint :
         ∫ a, Z R a ∂P = ∫ a, Z (originCube d n) a ∂P := by
       calc

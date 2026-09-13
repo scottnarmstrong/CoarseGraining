@@ -64,7 +64,7 @@ private theorem gammaSigmaIndependentSumConst_pos {σ : ℝ} (hσ : 0 < σ) :
     0 < gammaSigmaIndependentSumConst σ := by
   dsimp [gammaSigmaIndependentSumConst]
   by_cases hσ_lt : σ < 1
-  · simpa [hσ_lt, gammaSigmaHeavyTailEndpointConst] using
+  · simpa [hσ_lt, gammaSigmaHeavyTailEndpointConst] using!
       (mul_pos
         (Real.rpow_pos_of_pos (by norm_num : 0 < (2 : ℝ)) _)
         (IndependentSums.gammaSigmaHeavyTailConst_pos hσ))
@@ -73,7 +73,7 @@ private theorem gammaSigmaIndependentSumConst_pos {σ : ℝ} (hσ : 0 < σ) :
     by_cases hσ_eq : σ = 1
     · subst σ
       simpa [hσ_lt, gammaSigmaExpRegimeEndpointConst,
-        IndependentSums.gammaSigmaExpRegimeEndpointConst] using
+        IndependentSums.gammaSigmaExpRegimeEndpointConst] using!
         (mul_pos (by norm_num : 0 < (2 : ℝ))
           IndependentSums.gammaOneExpRegimeConst_pos)
     · have hExpConst_pos : 0 < IndependentSums.gammaSigmaExpRegimeConst σ := by
@@ -82,7 +82,7 @@ private theorem gammaSigmaIndependentSumConst_pos {σ : ℝ} (hσ : 0 < σ) :
           (mul_pos (by positivity) (IndependentSums.gammaMomentConst_pos hσ))
           (le_max_left _ _)
       simpa [hσ_lt, hσ_eq, gammaSigmaExpRegimeEndpointConst,
-        IndependentSums.gammaSigmaExpRegimeEndpointConst] using
+        IndependentSums.gammaSigmaExpRegimeEndpointConst] using!
         (mul_pos (by norm_num : 0 < (2 : ℝ)) hExpConst_pos)
 
 private theorem inv_mul_const_sum_sqrt_scale_le

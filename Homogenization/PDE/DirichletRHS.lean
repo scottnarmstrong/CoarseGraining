@@ -39,7 +39,7 @@ theorem integral_vecDot_const_zeroTraceGrad_eq_zero
         = ∫ x in U, ∑ i, c i * u.toH1Function.grad x i ∂MeasureTheory.volume := by
             simp [vecDot]
     _ = ∑ i, ∫ x in U, c i * u.toH1Function.grad x i ∂MeasureTheory.volume := by
-          rw [MeasureTheory.integral_finset_sum]
+          rw [MeasureTheory.integral_finsetSum]
           intro i hi
           have hbase :
               MeasureTheory.Integrable
@@ -363,7 +363,7 @@ theorem gradToVectorL2_eq_of_isEllipticFieldOn
     have hgradSub :
         (u - v).toH1Function.gradToVectorL2 =
           u.toH1Function.gradToVectorL2 - v.toH1Function.gradToVectorL2 := by
-      simpa using hgradSubH1
+      simpa using! hgradSubH1
     calc
       u.toH1Function.gradToVectorL2 - v.toH1Function.gradToVectorL2
           = (u - v).toH1Function.gradToVectorL2 := by
@@ -409,7 +409,7 @@ theorem toScalarL2_eq_of_isOpenBoundedConvexDomain
     have hgradSub :
         (u - v).toH1Function.gradToVectorL2 =
           u.toH1Function.gradToVectorL2 - v.toH1Function.gradToVectorL2 := by
-      simpa using hgradSubH1
+      simpa using! hgradSubH1
     calc
       w.toH1Function.gradToVectorL2
           = u.toH1Function.gradToVectorL2 - v.toH1Function.gradToVectorL2 := by
@@ -442,7 +442,7 @@ theorem toScalarL2_eq_of_isOpenBoundedConvexDomain
     have hvalueSub :
         (u - v).toH1Function.toScalarL2 =
           u.toH1Function.toScalarL2 - v.toH1Function.toScalarL2 := by
-      simpa using hvalueSubH1
+      simpa using! hvalueSubH1
     calc
       u.toH1Function.toScalarL2 - v.toH1Function.toScalarL2
           = (u - v).toH1Function.toScalarL2 := by
@@ -488,7 +488,7 @@ noncomputable instance instInnerProductSpace (M : PotentialSolenoidalL2Data U) :
 
 noncomputable instance instCompleteSpace (M : PotentialSolenoidalL2Data U) :
     CompleteSpace (Space M) := by
-  simpa [Space, submodule, closedSubmodule] using
+  simpa [Space, submodule, closedSubmodule] using!
     (closedSubmodule (M := M)).isClosed.completeSpace_coe
 
 /-- The ambient Hilbert-vector `L²` field represented by a point of
@@ -542,7 +542,7 @@ noncomputable def ofH10Function (M : PotentialSolenoidalL2Data U) (u : H10Functi
   change
     ((continuousLinearEquivVectorL2 (U := U)).symm u.toH1Function.gradToHilbertVectorL2) ∈
       M.potentialZeroTrace
-  simpa [H1Function.gradToHilbertVectorL2, H1Function.gradToVectorL2] using
+  simpa [H1Function.gradToHilbertVectorL2, H1Function.gradToVectorL2] using!
     M.mem_potentialZeroTrace u.toH1Function.grad_memVectorL2 u.isPotentialZeroTraceOn
 
 omit [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)] in

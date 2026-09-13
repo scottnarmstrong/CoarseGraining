@@ -385,7 +385,7 @@ theorem responseBasicVariationalIdentitiesTheory
   by_cases hd : d = 0
   · subst d
     exact responseBasicVariationalIdentitiesTheory_zero_dim U a
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     exact responseBasicVariationalIdentitiesTheory_of_neZero U a
 
 end BookCh02

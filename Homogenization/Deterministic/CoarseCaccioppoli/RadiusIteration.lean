@@ -161,9 +161,17 @@ private theorem coarseCaccioppoli_radius_iteration_term_summable
   have hmajor :
       Summable (fun n : ℕ =>
         (2 : ℝ) ^ k * ((((n + 2 : ℕ) : ℝ) ^ (2 * k)) * (1 / 2 : ℝ) ^ n)) := by
-    convert hshift.mul_left ((2 : ℝ) ^ (k + 2)) using 1 with n
-    rw [pow_add, pow_two]
-    ring_nf
+    have hfun :
+        (fun n : ℕ =>
+          (2 : ℝ) ^ (k + 2) *
+            ((((n + 2 : ℕ) : ℝ) ^ (2 * k)) * (1 / 2 : ℝ) ^ (n + 2))) =
+        (fun n : ℕ =>
+          (2 : ℝ) ^ k * ((((n + 2 : ℕ) : ℝ) ^ (2 * k)) * (1 / 2 : ℝ) ^ n)) := by
+      funext n
+      rw [pow_add, pow_two]
+      ring_nf
+    rw [← hfun]
+    exact hshift.mul_left ((2 : ℝ) ^ (k + 2))
   exact hmajor.of_nonneg_of_le
     (fun n => coarseCaccioppoliRadiusIterationTerm_nonneg β n)
     (fun n => coarseCaccioppoli_radius_iteration_term_le_majorant β hβ n)
@@ -201,9 +209,17 @@ theorem coarseCaccioppoliRadiusIterationConst_le_majorant_tsum
   have hmajor :
       Summable (fun n : ℕ =>
         (2 : ℝ) ^ k * ((((n + 2 : ℕ) : ℝ) ^ (2 * k)) * (1 / 2 : ℝ) ^ n)) := by
-    convert hshift.mul_left ((2 : ℝ) ^ (k + 2)) using 1 with n
-    rw [pow_add, pow_two]
-    ring_nf
+    have hfun :
+        (fun n : ℕ =>
+          (2 : ℝ) ^ (k + 2) *
+            ((((n + 2 : ℕ) : ℝ) ^ (2 * k)) * (1 / 2 : ℝ) ^ (n + 2))) =
+        (fun n : ℕ =>
+          (2 : ℝ) ^ k * ((((n + 2 : ℕ) : ℝ) ^ (2 * k)) * (1 / 2 : ℝ) ^ n)) := by
+      funext n
+      rw [pow_add, pow_two]
+      ring_nf
+    rw [← hfun]
+    exact hshift.mul_left ((2 : ℝ) ^ (k + 2))
   unfold coarseCaccioppoliRadiusIterationConst
   simpa [k] using
     (coarseCaccioppoli_radius_iteration_term_summable β hβ).tsum_le_tsum

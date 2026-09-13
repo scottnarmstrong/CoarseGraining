@@ -44,8 +44,8 @@ theorem IsPotentialZeroTraceOn.integral_eq_zero
           (by simp)
           (by simpa [D] using hD_integrable m)
           (by simpa using happrox_integrable)
-          (differentiable_const (c := (1 : ℝ)))
-          ((u.approx_smooth m).differentiable (by simp))
+          (fun x _ => (differentiable_const (1 : ℝ)).differentiableAt)
+          (fun x _ => (u.approx_smooth m).differentiable (by simp) x)
       simpa [D] using h
     have hzero_off : ∀ x, x ∉ U → D m x = 0 := by
       intro x hx
@@ -107,7 +107,7 @@ theorem IsPotentialZeroTraceOn.integral_eq_zero
       simpa [zero_mul] using hscaled
     exact tendsto_of_tendsto_of_tendsto_of_le_of_le
       tendsto_const_nhds hscaled0
-      (fun _ => zero_le')
+      (fun _ => zero_le)
       hL1_bound
   have hconv :
       Filter.Tendsto
@@ -117,7 +117,7 @@ theorem IsPotentialZeroTraceOn.integral_eq_zero
     MeasureTheory.tendsto_integral_of_L1'
       (μ := μ)
       (f := fun x => u.toH1Function.grad x i)
-      hfi
+      hfi.aestronglyMeasurable
       hD_integrable_restrict
       hL1
   have hEq : (fun m => ∫ x, D m x ∂μ) = fun _ => (0 : ℝ) := by
@@ -242,9 +242,9 @@ theorem cubeAverage_eq_neg_cubeAverage_grad_mul_centeredCoord_of_h10OnCube
     cubeAverage Q (fun x => u.toH1Function.toFun x) =
       - cubeAverage Q (fun x =>
           u.toH1Function.grad x i * (x i - cubeCenter Q i)) := by
-  letI : Fact (MeasureTheory.volume (cubeSet Q) < ⊤) :=
+  let : Fact (MeasureTheory.volume (cubeSet Q) < ⊤) :=
     ⟨volume_cubeSet_lt_top Q⟩
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) := by
     change MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict (cubeSet Q))
     infer_instance
   let φ : Vec d → ℝ := fun x => x i - cubeCenter Q i
@@ -338,7 +338,7 @@ theorem IsSolenoidalZeroNormalTraceOn.integral_eq_zero
     {d : ℕ} {U : Set (Vec d)} (hU : IsSobolevRegularDomain U)
     {g : Vec d → Vec d} (hg : IsSolenoidalZeroNormalTraceOn U g) :
     (fun i => ∫ x in U, g x i ∂MeasureTheory.volume) = 0 := by
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   ext i
   have htest :
@@ -349,9 +349,9 @@ theorem IsSolenoidalZeroNormalTraceOn.integral_eq_zero
 theorem cubeAverageVec_grad_eq_zero_of_h10OnCube {d : ℕ}
     (Q : TriadicCube d) (u : H10Function (cubeSet Q)) :
     cubeAverageVec Q (fun x => u.toH1Function.grad x) = 0 := by
-  letI : Fact (MeasureTheory.volume (cubeSet Q) < ⊤) :=
+  let : Fact (MeasureTheory.volume (cubeSet Q) < ⊤) :=
     ⟨volume_cubeSet_lt_top Q⟩
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) := by
     change MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict (cubeSet Q))
     infer_instance
   funext i

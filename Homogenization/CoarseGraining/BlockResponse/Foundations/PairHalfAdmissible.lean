@@ -262,7 +262,7 @@ theorem blockResponse_pair_half_averagePotential_eq_zero_of_scalarCanonicalMaxim
             (u : AHarmonicFunction a U)
             (v : AHarmonicFunction (Homogenization.adjointCoeffField a) U)).potential x i)) = 0 := by
   classical
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hConv.isFiniteMeasure_restrict_volume
   have hne : Set.Nonempty U := by
     by_contra hne
@@ -309,7 +309,7 @@ theorem
                 (u : AHarmonicFunction a U)
                 (v : AHarmonicFunction (Homogenization.adjointCoeffField a) U)).potential x i)) = 0 := by
   classical
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hConv.isFiniteMeasure_restrict_volume
   have hne : Set.Nonempty U := by
     by_contra hne
@@ -354,7 +354,7 @@ theorem blockResponse_pair_half_averageFlux_eq_of_scalarCanonicalMaximizers_zero
             (u : AHarmonicFunction a U)
             (v : AHarmonicFunction (Homogenization.adjointCoeffField a) U)).flux x i)) = q := by
   classical
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hConv.isFiniteMeasure_restrict_volume
   have hne : Set.Nonempty U := by
     by_contra hne
@@ -403,7 +403,7 @@ theorem
                 (u : AHarmonicFunction a U)
                 (v : AHarmonicFunction (Homogenization.adjointCoeffField a) U)).flux x i)) = q := by
   classical
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [volumeMeasureOn] using hConv.isFiniteMeasure_restrict_volume
   have hne : Set.Nonempty U := by
     by_contra hne
@@ -435,7 +435,7 @@ theorem blockResponseIntegrand_integrableOn_pair_half_of_isEllipticFieldOn
   exact
     blockResponseIntegrand_integrableOn_of_mem_responseSpace_of_integrabilityData_of_isEllipticFieldOn
       (hX := by
-        simpa [blockResponsePairHalfState] using
+        simpa [blockResponsePairHalfState] using!
           (blockResponse_pair_half_mem_responseSpace_of_isEllipticFieldOn (a := a) hEll u v))
       (hInt := blockResponseIntegrabilityData_pair_half_of_isEllipticFieldOn hEll u v)
       hEll P Q

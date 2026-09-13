@@ -50,11 +50,11 @@ private theorem hess_swap_ae {d : ℕ} {U : Set (Vec d)} {u : H1Function U}
         (hφ.continuous.memLp_of_hasCompactSupport hφs).restrict U
     have hij_int : MeasureTheory.Integrable (fun x => H.hess i j x * φ x)
         (MeasureTheory.volume.restrict U) := by
-      simpa [MemScalarL2, volumeMeasureOn, Pi.mul_apply] using
+      simpa [MemScalarL2, volumeMeasureOn, Pi.mul_apply] using!
         (H.hess_memL2 i j).integrable_mul hφ_memL2
     have hji_int : MeasureTheory.Integrable (fun x => H.hess j i x * φ x)
         (MeasureTheory.volume.restrict U) := by
-      simpa [MemScalarL2, volumeMeasureOn, Pi.mul_apply] using
+      simpa [MemScalarL2, volumeMeasureOn, Pi.mul_apply] using!
         (H.hess_memL2 j i).integrable_mul hφ_memL2
     have hij_zero_out : ∀ x, x ∉ U → H.hess i j x * φ x = 0 := by
       intro x hx
@@ -151,14 +151,14 @@ theorem gradCoordH1Function_harmonic {d : ℕ} {U : Set (Vec d)}
       MeasureTheory.Integrable (fun x => H.hess i k x * euclideanCoordDeriv k φ x)
         (MeasureTheory.volume.restrict U) := by
     intro k
-    simpa [MemScalarL2, volumeMeasureOn, Pi.mul_apply] using
+    simpa [MemScalarL2, volumeMeasureOn, Pi.mul_apply] using!
       (H.hess_memL2 i k).integrable_mul (hderiv_memL2 k)
   have hgrad_int : ∀ k : Fin d,
       MeasureTheory.Integrable
         (fun x => u.grad x k * euclideanCoordSecondDeriv i k φ x)
         (MeasureTheory.volume.restrict U) := by
     intro k
-    simpa [MemScalarL2, volumeMeasureOn, Pi.mul_apply] using
+    simpa [MemScalarL2, volumeMeasureOn, Pi.mul_apply] using!
       (u.grad_memL2 k).integrable_mul (hsecond_memL2 k)
   have htest := h.test (euclideanCoordDeriv i φ)
     (contDiff_euclideanCoordDeriv hφ i)
@@ -190,7 +190,7 @@ theorem gradCoordH1Function_harmonic {d : ℕ} {U : Set (Vec d)}
               _ = ∑ k : Fin d,
                   ∫ x in U, u.grad x k * euclideanCoordSecondDeriv i k φ x
                     ∂MeasureTheory.volume := by
-                    rw [MeasureTheory.integral_finset_sum]
+                    rw [MeasureTheory.integral_finsetSum]
                     intro k _
                     exact hgrad_int k
       _ = 0 := by
@@ -255,7 +255,7 @@ theorem gradCoordH1Function_harmonic {d : ℕ} {U : Set (Vec d)}
             _ = ∑ k : Fin d,
                 ∫ x in U, H.hess i k x * euclideanCoordDeriv k φ x
                   ∂MeasureTheory.volume := by
-                rw [MeasureTheory.integral_finset_sum]
+                rw [MeasureTheory.integral_finsetSum]
                 intro k _
                 exact hhess_int k
     _ = ∑ k : Fin d,

@@ -401,7 +401,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_weighted
   intro t αbad P hP hStruct hΓ hσ_eq hparams q r j
   dsimp only
   intro ht_pos hαt hαb hαharm hA_one
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -698,7 +698,7 @@ theorem measureReal_shiftedHighBottomBadScaleEvent_quenchedProbeEnvelope_le_weig
   intro t αbad P hP hStruct hΓ hσ_eq hparams q
   dsimp only
   intro ht_pos hαt hαb hαharm hA_one
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P

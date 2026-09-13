@@ -71,7 +71,7 @@ theorem measureReal_shiftedHigh_badPairEvent_quenchedProbeEnvelope_le_card_mul_c
   dsimp only
   intro helln hnm hqm hlam
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let x : ℝ :=
     αbad * ((m - q : ℕ) : ℝ) - t * ((m - n : ℕ) : ℝ)
@@ -228,7 +228,7 @@ theorem measureReal_shiftedHigh_badPairEvent_quenchedProbeEnvelope_le_card_mul_c
   dsimp only
   intro helln hnm hqm hlam
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let x : ℝ :=
     αbad * ((m - q : ℕ) : ℝ) - t * ((m - n : ℕ) : ℝ)
@@ -369,7 +369,7 @@ theorem measureReal_shiftedCrude_badPairEvent_quenchedProbeEnvelope_le_card_mul_
   dsimp only
   intro hnm hqm hlam
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let Hshift : ℕ → ℕ → RegCoeffField d → ℝ :=
     fun M N aω =>

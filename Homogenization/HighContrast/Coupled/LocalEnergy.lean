@@ -32,7 +32,7 @@ omit [NeZero d] in
 theorem integrableOn_sqCutoff {η : Vec d → ℝ} (hη : ContDiff ℝ (⊤ : ℕ∞) η)
     (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1) :
     IntegrableOn (sqCutoff η) U := by
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   exact (sqCutoff_memLpTop (m := m) hη hIcc).integrable le_top
 
 omit [NeZero d] in
@@ -40,13 +40,13 @@ omit [NeZero d] in
 theorem integrableOn_gradEtaSq {η : Vec d → ℝ} {Gη : ℝ} (hη : ContDiff ℝ (⊤ : ℕ∞) η)
     (hGη : ∀ x i, |fderiv ℝ η x (basisVec i)| ≤ Gη) :
     IntegrableOn (fun x => vecNormSq (fun i => fderiv ℝ η x (basisVec i))) U := by
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   have hcont : Continuous (fun x => vecNormSq (fun i => fderiv ℝ η x (basisVec i))) := by
     have hfd : Continuous (fun x => fderiv ℝ η x) := hη.continuous_fderiv (by simp)
     have hco : Continuous (fun x => (fun i => fderiv ℝ η x (basisVec i))) :=
       continuous_pi (fun i => hfd.clm_apply continuous_const)
     unfold vecNormSq vecDot
-    exact continuous_finset_sum _ (fun i _ =>
+    exact continuous_finsetSum _ (fun i _ =>
       ((continuous_apply i).comp hco).mul ((continuous_apply i).comp hco))
   have hmem : MemLp (fun x => vecNormSq (fun i => fderiv ℝ η x (basisVec i))) (⊤ : ENNReal)
       (volumeMeasureOn (openCubeSet (originCube d m))) := by
@@ -70,7 +70,7 @@ omit [NeZero d] in
 theorem setIntegral_sqCutoff_le {η : Vec d → ℝ} (hη : ContDiff ℝ (⊤ : ℕ∞) η)
     (hIcc : ∀ x, η x ∈ Set.Icc (0 : ℝ) 1) :
     (∫ x in U, sqCutoff η x) ≤ (volume (Function.support η ∩ U)).toReal := by
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   have hsuppOpen : IsOpen (Function.support η) := by
     have hpre : Function.support η = η ⁻¹' {0}ᶜ := by
       ext x; simp [Function.mem_support]
@@ -328,7 +328,7 @@ theorem local_block_energy {a : CoeffField d} {Θ : ℝ}
         ≤ Cd * ((Θ * vecNormSq P.1 + vecNormSq P.2)
               * (volume (Function.support η ∩ U)).toReal
             + Θ * Kinf ^ 2 * (∫ x in U, ∑ i, (fderiv ℝ η x (basisVec i)) ^ 2)) := by
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   have hUfin : volume (openCubeSet (originCube d m)) ≠ (⊤ : ENNReal) :=
     (volume_openCubeSet_originCube_lt_top m).ne
   have hCfin : volume C ≠ (⊤ : ENNReal) :=
@@ -407,7 +407,7 @@ theorem local_block_energy {a : CoeffField d} {Θ : ℝ}
     integrableOn_energyIntegrand hEllO hη hIcc
   have hcedle : (∫ x in C, ced x) ≤ ∫ x in U, energyIntegrand a v vstar P η x := by
     rw [hcedC]
-    exact setIntegral_mono_set hie hEnonneg (HasSubset.Subset.eventuallyLE hCU)
+    exact setIntegral_mono_set hie hEnonneg (LE.le.eventuallyLE hCU)
   -- T1 bound on `𝓔`
   obtain ⟨Cd1, hCd1, hT1⟩ :=
     centered_local_block_energy (m := m) (c := c) hEllO hWeak hTrace hKv hKvs hη hIcc hGη
@@ -552,7 +552,7 @@ theorem local_block_energy_uniform {a : CoeffField d} {Θ : ℝ}
       ≤ 514 * ((Θ * vecNormSq P.1 + vecNormSq P.2)
             * (volume (Function.support η ∩ U)).toReal
           + Θ * Kinf ^ 2 * (∫ x in U, ∑ i, (fderiv ℝ η x (basisVec i)) ^ 2)) := by
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   have hUfin : volume (openCubeSet (originCube d m)) ≠ (⊤ : ENNReal) :=
     (volume_openCubeSet_originCube_lt_top m).ne
   have hCfin : volume C ≠ (⊤ : ENNReal) :=
@@ -625,7 +625,7 @@ theorem local_block_energy_uniform {a : CoeffField d} {Θ : ℝ}
     integrableOn_energyIntegrand hEllO hη hIcc
   have hcedle : (∫ x in C, ced x) ≤ ∫ x in U, energyIntegrand a v vstar P η x := by
     rw [hcedC]
-    exact setIntegral_mono_set hie hEnonneg (HasSubset.Subset.eventuallyLE hCU)
+    exact setIntegral_mono_set hie hEnonneg (LE.le.eventuallyLE hCU)
   have hT1 :=
     centered_local_block_energy_num (m := m) (c := c) hEllO hWeak hTrace hKv hKvs hη hIcc hGη
   have hEeq : (∫ x in U, (η x) ^ 2

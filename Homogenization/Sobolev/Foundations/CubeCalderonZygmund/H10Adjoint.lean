@@ -39,7 +39,7 @@ private theorem isEllipticFieldOn_scalarCoeffField {d : ℕ}
             (fun _ : Vec d => scalarMatrix (d := d) sigma0 i j)
             (fun _ => 0)) :=
       measurable_const.piecewise hU measurable_const
-    simpa [Set.piecewise, scalarCoeffField] using hpiece
+    simpa [Set.piecewise, scalarCoeffField] using! hpiece
   · intro x hx
     simpa [scalarCoeffField] using
       (isEllipticMatrix_scalarMatrix (d := d) hsigma0)
@@ -73,10 +73,10 @@ theorem exists_axisCubeScalarDivergenceSolution
   let g : Vec d → Vec d := fun x => -G x
   have hUgeom : IsOpenBoundedConvexDomain U := by
     simpa [U] using isOpenBoundedConvexDomain_axisCube z L
-  letI : IsFiniteMeasure (volumeMeasureOn U) :=
+  let : IsFiniteMeasure (volumeMeasureOn U) :=
     hUgeom.isFiniteMeasure_restrict_volume
   have hg : MemVectorL2 U g := by
-    simpa [U, g] using hG.neg
+    simpa [U, g] using! hG.neg
   have hRealize :
       PotentialSolenoidalL2Data.HasPotentialZeroTraceClosureRealization U :=
     PotentialSolenoidalL2Data.hasPotentialZeroTraceClosureRealization_of_isOpenBoundedConvexDomain

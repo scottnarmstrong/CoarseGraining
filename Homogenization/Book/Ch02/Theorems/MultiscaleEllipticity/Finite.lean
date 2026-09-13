@@ -1,1 +1,0 @@
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.SmallTail

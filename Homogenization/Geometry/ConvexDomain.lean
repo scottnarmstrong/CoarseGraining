@@ -27,7 +27,7 @@ theorem Bornology.IsBounded.isBoundedDomain {d : ℕ} {U : Set (Vec d)}
     subst hd
     intro x hx i
     exact Fin.elim0 i
-  · haveI : NeZero d := ⟨hd⟩
+  · have : NeZero d := ⟨hd⟩
     have hcoord :
         ∀ i : Fin d, Bornology.IsBounded (Function.eval i '' U) := fun i => hU.image_eval i
     have hcoord_bound :
@@ -42,14 +42,14 @@ theorem Bornology.IsBounded.isBoundedDomain {d : ℕ} {U : Set (Vec d)}
     have hRmax_pos : 0 < Rmax := by
       let i0 : Fin d := 0
       have hi0 : i0 ∈ (Finset.univ : Finset (Fin d)) := by simp
-      have hle : R i0 ≤ Rmax := by
-        simpa [Rmax] using (Finset.le_sup' (s := Finset.univ) (f := R) hi0)
+      have hle : R i0 ≤ Rmax :=
+        Finset.le_sup' (s := Finset.univ) (f := R) hi0
       exact lt_of_lt_of_le (hRpos i0) hle
     refine ⟨Rmax, hRmax_pos, ?_⟩
     intro x hx i
     have hxi : ‖x i‖ ≤ R i := hR i (x i) ⟨x, hx, rfl⟩
-    have hRi : R i ≤ Rmax := by
-      simpa [Rmax] using (Finset.le_sup' (s := Finset.univ) (f := R) (by simp : i ∈ Finset.univ))
+    have hRi : R i ≤ Rmax :=
+      Finset.le_sup' (s := Finset.univ) (f := R) (by simp : i ∈ Finset.univ)
     exact by simpa [Real.norm_eq_abs] using hxi.trans hRi
 
 theorem IsBoundedDomain.isBounded {d : ℕ} {U : Set (Vec d)} (hU : IsBoundedDomain U) :
@@ -68,7 +68,7 @@ theorem IsBoundedDomain.volume_lt_top {d : ℕ} {U : Set (Vec d)} (hU : IsBounde
 theorem IsBoundedDomain.isFiniteMeasure_restrict_volume
     {d : ℕ} {U : Set (Vec d)} (hU : IsBoundedDomain U) :
     MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict U) := by
-  letI : Fact (MeasureTheory.volume U < ⊤) := ⟨hU.volume_lt_top⟩
+  let : Fact (MeasureTheory.volume U < ⊤) := ⟨hU.volume_lt_top⟩
   infer_instance
 
 theorem IsBoundedDomain.norm_le_choose

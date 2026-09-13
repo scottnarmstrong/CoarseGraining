@@ -45,6 +45,18 @@ instance instBorelSpaceFullBlockMat (d : ℕ) : BorelSpace (FullBlockMat d) := b
   change BorelSpace (BlockCoord d → BlockCoord d → ℝ)
   infer_instance
 
+/-- `Matrix.instTopologicalSpace` (the ambient, always-active topology on `Matrix m n R`,
+coming from the coordinatewise Pi topology) and the elementwise-norm-derived topology from
+`open scoped Matrix.Norms.Elementwise` are only defeq once `Matrix` is unfolded to its
+underlying Pi type, which instance search will not do on its own. This head-class cache
+resolves the resulting `ContinuousENorm` synthesis gap for every `Matrix m n ℝ`-valued
+`Measurable`/`Integrable` statement in this file (and its `Mat d`/`FullBlockMat d`
+specializations). -/
+private instance instContinuousENormMatrix {m n : Type*} [Fintype m] [Fintype n] :
+    ContinuousENorm (Matrix m n ℝ) := by
+  show ContinuousENorm (m → n → ℝ)
+  infer_instance
+
 /-- Strong ambient measurability of the variational quantity `Mu U P a` for
 every deterministic block loading `P`. -/
 def HasMeasurableMuFamily {d : ℕ} (U : Set (Vec d)) : Prop :=
@@ -218,10 +230,8 @@ noncomputable def coarseSigmaStarInvKappaMeanObservable {d : ℕ} (U : Set (Vec 
 
 theorem measurable_fullBlockMatUpperLeft {d : ℕ} :
     Measurable (fullBlockMatUpperLeft (d := d)) := by
-  rw [measurable_pi_iff]
-  intro i
-  rw [measurable_pi_iff]
-  intro j
+  refine measurable_pi_iff.2 fun i => ?_
+  refine measurable_pi_iff.2 fun j => ?_
   change Measurable fun M : FullBlockMat d => M (Sum.inl i) (Sum.inl j)
   have hRow : Measurable fun M : FullBlockMat d => M (Sum.inl i) :=
     measurable_pi_apply (Sum.inl i)
@@ -229,10 +239,8 @@ theorem measurable_fullBlockMatUpperLeft {d : ℕ} :
 
 theorem measurable_fullBlockMatUpperRight {d : ℕ} :
     Measurable (fullBlockMatUpperRight (d := d)) := by
-  rw [measurable_pi_iff]
-  intro i
-  rw [measurable_pi_iff]
-  intro j
+  refine measurable_pi_iff.2 fun i => ?_
+  refine measurable_pi_iff.2 fun j => ?_
   change Measurable fun M : FullBlockMat d => M (Sum.inl i) (Sum.inr j)
   have hRow : Measurable fun M : FullBlockMat d => M (Sum.inl i) :=
     measurable_pi_apply (Sum.inl i)
@@ -240,10 +248,8 @@ theorem measurable_fullBlockMatUpperRight {d : ℕ} :
 
 theorem measurable_fullBlockMatLowerLeft {d : ℕ} :
     Measurable (fullBlockMatLowerLeft (d := d)) := by
-  rw [measurable_pi_iff]
-  intro i
-  rw [measurable_pi_iff]
-  intro j
+  refine measurable_pi_iff.2 fun i => ?_
+  refine measurable_pi_iff.2 fun j => ?_
   change Measurable fun M : FullBlockMat d => M (Sum.inr i) (Sum.inl j)
   have hRow : Measurable fun M : FullBlockMat d => M (Sum.inr i) :=
     measurable_pi_apply (Sum.inr i)
@@ -251,10 +257,8 @@ theorem measurable_fullBlockMatLowerLeft {d : ℕ} :
 
 theorem measurable_fullBlockMatLowerRight {d : ℕ} :
     Measurable (fullBlockMatLowerRight (d := d)) := by
-  rw [measurable_pi_iff]
-  intro i
-  rw [measurable_pi_iff]
-  intro j
+  refine measurable_pi_iff.2 fun i => ?_
+  refine measurable_pi_iff.2 fun j => ?_
   change Measurable fun M : FullBlockMat d => M (Sum.inr i) (Sum.inr j)
   have hRow : Measurable fun M : FullBlockMat d => M (Sum.inr i) :=
     measurable_pi_apply (Sum.inr i)
@@ -262,10 +266,8 @@ theorem measurable_fullBlockMatLowerRight {d : ℕ} :
 
 theorem measurable_fullBlockMatNegLowerLeft {d : ℕ} :
     Measurable (fullBlockMatNegLowerLeft (d := d)) := by
-  rw [measurable_pi_iff]
-  intro i
-  rw [measurable_pi_iff]
-  intro j
+  refine measurable_pi_iff.2 fun i => ?_
+  refine measurable_pi_iff.2 fun j => ?_
   change Measurable fun M : FullBlockMat d => -M (Sum.inr i) (Sum.inl j)
   have hRow : Measurable fun M : FullBlockMat d => M (Sum.inr i) :=
     measurable_pi_apply (Sum.inr i)
@@ -280,7 +282,7 @@ theorem integral_matrix_apply {α m n : Type*} [MeasurableSpace α]
     fun i => MeasureTheory.Integrable.eval hf i
   calc
     (∫ x, f x ∂μ) i j = (∫ x, f x i ∂μ) j := by
-      simpa using congrArg (fun g => g j)
+      simpa using! congrArg (fun g => g j)
         (MeasureTheory.eval_integral (μ := μ) (f := f) hRow i)
     _ = ∫ x, f x i j ∂μ := by
       simpa using MeasureTheory.eval_integral (μ := μ) (f := fun x => f x i)
@@ -321,7 +323,7 @@ theorem integrable_coarseSigmaStarInvKappaMeanObservable_of_integrable_coarseFul
   simpa [coarseSigmaStarInvKappaMeanObservable, coarseFullBlockMatrixObservable,
     fullBlockMatNegLowerLeft] using
       (MeasureTheory.Integrable.eval
-        (MeasureTheory.Integrable.eval hInt (Sum.inr i)) (Sum.inl j)).neg'
+        (MeasureTheory.Integrable.eval hInt (Sum.inr i)) (Sum.inl j)).fun_neg
 
 theorem isLocalObservable_Mu {d : ℕ} {U : Set (Vec d)} (hU : MeasurableSet U)
     (P : BlockVec d) :
@@ -497,18 +499,16 @@ theorem measurable_coarseLowerLeftEntryObservable_of_hasMeasurableMuFamily
 theorem measurable_coarseFullBlockMatrixObservable_of_hasMeasurableMuFamily
     {d : ℕ} {U : Set (Vec d)} (hMu : HasMeasurableMuFamily U) :
     Measurable (coarseFullBlockMatrixObservable U) := by
-  rw [measurable_pi_iff]
-  intro α
-  rw [measurable_pi_iff]
-  intro β
+  refine measurable_pi_iff.2 fun α => ?_
+  refine measurable_pi_iff.2 fun β => ?_
   cases α <;> cases β
-  · simpa [coarseFullBlockMatrixObservable, toFullBlockMat] using
+  · simpa [coarseFullBlockMatrixObservable, toFullBlockMat] using!
       measurable_coarseBEntryObservable_of_hasMeasurableMuFamily (U := U) hMu _ _
-  · simpa [coarseFullBlockMatrixObservable, toFullBlockMat, coarseUpperRightEntryObservable] using
-      measurable_coarseUpperRightEntryObservable_of_hasMeasurableMuFamily (U := U) hMu _ _
-  · simpa [coarseFullBlockMatrixObservable, toFullBlockMat, coarseLowerLeftEntryObservable] using
-      measurable_coarseLowerLeftEntryObservable_of_hasMeasurableMuFamily (U := U) hMu _ _
-  · simpa [coarseFullBlockMatrixObservable, toFullBlockMat] using
+  · simpa [coarseFullBlockMatrixObservable, toFullBlockMat, coarseUpperRightEntryObservable]
+      using! measurable_coarseUpperRightEntryObservable_of_hasMeasurableMuFamily (U := U) hMu _ _
+  · simpa [coarseFullBlockMatrixObservable, toFullBlockMat, coarseLowerLeftEntryObservable]
+      using! measurable_coarseLowerLeftEntryObservable_of_hasMeasurableMuFamily (U := U) hMu _ _
+  · simpa [coarseFullBlockMatrixObservable, toFullBlockMat] using!
       measurable_coarseSigmaStarInvEntryObservable_of_hasMeasurableMuFamily (U := U) hMu _ _
 
 theorem measurable_coarseSigmaStarInvObservable_of_hasMeasurableMuFamily

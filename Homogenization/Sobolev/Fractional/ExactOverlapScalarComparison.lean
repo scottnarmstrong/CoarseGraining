@@ -52,7 +52,7 @@ private theorem exactOverlapDepthWeight_eq_ofReal_scalarComparison {d : ℕ}
       ((Q.scale - (j : ℤ) : ℤ) : ℝ) * -s
     ring
 
-private def exactOverlapScalarTwoIntegrableOfMemLp {d : ℕ} (Q : TriadicCube d)
+private theorem exactOverlapScalarTwoIntegrableOfMemLp {d : ℕ} (Q : TriadicCube d)
     {u : Vec d → ℝ}
     (hmem : MemLp u (2 : ℝ≥0∞) (normalizedCubeMeasure Q)) :
     ExactOverlapIntegrable Q u where

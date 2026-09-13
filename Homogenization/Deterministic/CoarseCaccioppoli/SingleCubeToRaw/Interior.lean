@@ -193,7 +193,6 @@ theorem coarseCaccioppoli_interior_explicitHeightPreRecurrence_of_radiusEnergyBr
   have hraw :
       CoarseCaccioppoliBoundaryNoteRawEstimate Q a s t C uL2Sq
         (coarseCaccioppoliBoundaryLocalizedExplicitHeightOfScaleChoice Q a s t C k) F := by
-    unfold CoarseCaccioppoliInteriorNoteRawEstimate at *
     exact
       coarseCaccioppoli_interior_noteRawEstimate_of_radiusEnergyBridgeInputs_of_multiscaleEllipticity_of_radiusAgreement_of_localizedExplicitHeightOfScaleChoice
         Q a s t C uL2Sq k flux u g ξ energy Acirc1 AcircS B

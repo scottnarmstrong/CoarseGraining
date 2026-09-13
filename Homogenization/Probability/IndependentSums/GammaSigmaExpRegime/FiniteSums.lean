@@ -426,7 +426,6 @@ theorem isBigOWith_gammaSigma_finset_sum_of_iIndepFun_of_isBigO_of_integral_eq_z
     apply (Real.exp_le_exp).2
     have hbase_nonneg : 0 ≤ t / Real.sqrt R := by positivity
     have hbase_gt_two : 2 < t / Real.sqrt R := by
-      dsimp
       exact (lt_div_iff₀ hsqrtR_pos).2 (lt_of_not_ge hsmall)
     have hbase_one : 1 ≤ t / Real.sqrt R := by
       linarith
@@ -591,11 +590,11 @@ theorem isBigO_gammaSigma_finset_sum_of_iIndepFun_of_isBigO_of_integral_eq_zero_
         (A := A) (σ := σ)).1 hone htwo_t
   let Xneg : ι → Ω → ℝ := fun i ω => -X i ω
   have h_indep_neg : iIndepFun Xneg μ := by
-    simpa [Xneg, Function.comp] using
+    simpa [Xneg, Function.comp] using!
       h_indep.comp (fun _ => fun x : ℝ => -x) (fun _ => measurable_neg)
   have h_meas_neg : ∀ i, Measurable (Xneg i) := by
     intro i
-    simpa [Xneg] using (h_meas i).neg
+    simpa [Xneg] using h_meas i
   have hX_neg : ∀ i ∈ s, IsBigO μ (gammaSigma σ) (Xneg i) K := by
     intro i hi
     simpa [Xneg] using (hX i hi).neg
@@ -874,11 +873,11 @@ theorem isBigO_gammaOne_finset_sum_of_iIndepFun_of_isBigO_of_integral_eq_zero
       (X := fun ω => ∑ i ∈ s, X i ω) (A := A) (σ := 1)).1 hone htwo_t
   let Xneg : ι → Ω → ℝ := fun i ω => -X i ω
   have h_indep_neg : iIndepFun Xneg μ := by
-    simpa [Xneg, Function.comp] using
+    simpa [Xneg, Function.comp] using!
       h_indep.comp (fun _ => fun x : ℝ => -x) (fun _ => measurable_neg)
   have h_meas_neg : ∀ i, Measurable (Xneg i) := by
     intro i
-    simpa [Xneg] using (h_meas i).neg
+    simpa [Xneg] using h_meas i
   have hX_neg : ∀ i ∈ s, IsBigO μ (gammaSigma 1) (Xneg i) K := by
     intro i hi
     simpa [Xneg] using (hX i hi).neg

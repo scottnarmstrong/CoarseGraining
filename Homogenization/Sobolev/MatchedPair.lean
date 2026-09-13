@@ -50,7 +50,7 @@ theorem matchedPair_sobolev (hd : 3 ≤ d) :
                   (eLpNorm (fun x => f.grad x i) 2 (volumeMeasureOn (axisCube z L))).toReal)
                 + ∑ i : Fin d,
                   (eLpNorm (fun x => g.grad x i) 2 (volumeMeasureOn (axisCube z L))).toReal) := by
-  haveI : NeZero d := ⟨by omega⟩
+  have : NeZero d := ⟨by omega⟩
   obtain ⟨CE, hCEpos, hE⟩ := cube_sobolev_embedding hd
   have hmpp_nn : 0 ≤ matchedPairPoincareConst d := matchedPairPoincareConst_nonneg d
   refine ⟨(CE : ℝ) * (1 + matchedPairPoincareConst d), by positivity, ?_⟩

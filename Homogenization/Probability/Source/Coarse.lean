@@ -32,6 +32,7 @@ noncomputable def bilinearTest {d : ℕ} (e e' : Vec d)
     (φ : Vec d → ℝ) (a : Carrier d) : ℝ :=
   ∫ x, vecDot e' (matVecMul (a x) e) * φ x ∂volume
 
+set_option warn.classDefReducibility false in
 def localSigma {d : ℕ} (U : Set (Vec d)) (_hU : MeasurableSet U) :
     MeasurableSpace (Carrier d) :=
   MeasurableSpace.generateFrom
@@ -39,6 +40,7 @@ def localSigma {d : ℕ} (U : Set (Vec d)) (_hU : MeasurableSet U) :
       SmoothCompactProbe φ ∧ tsupport φ ⊆ U ∧
       ∃ t : Set ℝ, MeasurableSet t ∧ s = bilinearTest e e' φ ⁻¹' t}
 
+set_option warn.classDefReducibility false in
 def globalSigma (d : ℕ) : MeasurableSpace (Carrier d) :=
   localSigma Set.univ MeasurableSet.univ
 
@@ -256,7 +258,7 @@ private theorem smoothCompactProbe_rotate {d : ℕ} {R : Mat d}
     SmoothCompactProbe (fun y => φ (matVecMul (matTranspose R) y)) := by
   constructor
   · simpa [Function.comp_def] using hφ.smooth.comp (contDiff_matVecMul (matTranspose R))
-  · simpa [Function.comp_def] using
+  · simpa [Function.comp_def] using!
       hφ.compact.comp_homeomorph (signedPermutationHomeomorph (matTranspose R) hR.transpose)
 
 private theorem bilinearTest_translate {d : ℕ} (z : Fin d → ℤ)
@@ -349,7 +351,7 @@ theorem measurable_translate_localSigma {d : ℕ} (z : Fin d → ℤ)
         rw [← preimage_subRight_eq_translateSet]
         exact hU.preimage (Homeomorph.subRight _).continuous.measurable))
       (localSigma U hU) (Carrier.translate z) := by
-  letI : MeasurableSpace (Carrier d) :=
+  let : MeasurableSpace (Carrier d) :=
     localSigma (translateSet (intVecToRealVec z) U) (by
       rw [← preimage_subRight_eq_translateSet]
       exact hU.preimage (Homeomorph.subRight _).continuous.measurable)

@@ -19,7 +19,7 @@ theorem cubeAverage_vecDot_eq_sum_cubeBesovPairing {d : ℕ} (Q : TriadicCube d)
     _ = ∫ x, ∑ i, u x i * g x i ∂ normalizedCubeMeasure Q := by
           simp [vecDot]
     _ = ∑ i, ∫ x, u x i * g x i ∂ normalizedCubeMeasure Q := by
-          rw [MeasureTheory.integral_finset_sum]
+          rw [MeasureTheory.integral_finsetSum]
           intro i hi
           exact hInt i
     _ = ∑ i, cubeBesovPairing Q (fun x => u x i) (fun x => g x i) := by
@@ -68,11 +68,11 @@ theorem abs_cubeAverage_vecDot_le_sum_note_rhs_mul_of_uniform_component_bounds_t
         simpa [hpConj, Pi.smul_apply, smul_eq_mul] using hgfull.memLp
       have hconst : MeasureTheory.MemLp (fun x => B i * ((B i)⁻¹ * g x i)) (2 : ℝ≥0∞)
           (normalizedCubeMeasure Q) := by
-            simpa [Pi.smul_apply, smul_eq_mul] using hscaled_mem.const_smul (B i)
+            simpa [Pi.smul_apply, smul_eq_mul] using! hscaled_mem.const_smul (B i)
       convert hconst using 1
       funext x
       field_simp [hB i |>.ne']
-    simpa [Pi.mul_apply, mul_comm] using (hu i).integrable_mul hgi_mem
+    simpa [Pi.mul_apply, mul_comm] using! (hu i).integrable_mul hgi_mem
   calc
     |cubeAverage Q (fun x => vecDot (u x) (g x))|
         ≤ ∑ i, |cubeBesovPairing Q (fun x => u x i) (fun x => g x i)| := by
@@ -128,11 +128,11 @@ theorem abs_cubeAverage_vecDot_le_sum_note_rhs_mul_of_uniform_component_bounds_t
       have hconst :
           MeasureTheory.MemLp (fun x => (B i + 1) * ((B i + 1)⁻¹ * g x i))
             (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-        simpa [Pi.smul_apply, smul_eq_mul] using hscaled_mem.const_smul (B i + 1)
+        simpa [Pi.smul_apply, smul_eq_mul] using! hscaled_mem.const_smul (B i + 1)
       convert hconst using 1
       funext x
       field_simp [hBi_pos.ne']
-    simpa [Pi.mul_apply, mul_comm] using (hu i).integrable_mul hgi_mem
+    simpa [Pi.mul_apply, mul_comm] using! (hu i).integrable_mul hgi_mem
   calc
     |cubeAverage Q (fun x => vecDot (u x) (g x))|
         ≤ ∑ i, |cubeBesovPairing Q (fun x => u x i) (fun x => g x i)| := by
@@ -189,11 +189,11 @@ theorem abs_cubeAverage_vecDot_le_sum_note_constant_mul_of_uniform_component_bou
       have hconst :
           MeasureTheory.MemLp (fun x => (B i + 1) * ((B i + 1)⁻¹ * g x i))
             (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-        simpa [Pi.smul_apply, smul_eq_mul] using hscaled_mem.const_smul (B i + 1)
+        simpa [Pi.smul_apply, smul_eq_mul] using! hscaled_mem.const_smul (B i + 1)
       convert hconst using 1
       funext x
       field_simp [hBi_pos.ne']
-    simpa [Pi.mul_apply, mul_comm] using (hu i).integrable_mul hgi_mem
+    simpa [Pi.mul_apply, mul_comm] using! (hu i).integrable_mul hgi_mem
   calc
     |cubeAverage Q (fun x => vecDot (u x) (g x))|
         ≤ ∑ i, |cubeBesovPairing Q (fun x => u x i) (fun x => g x i)| := by
@@ -254,11 +254,11 @@ theorem abs_cubeAverage_vecDot_le_sum_dualFullNorm_mul_of_uniform_component_boun
         simpa [hpConj, Pi.smul_apply, smul_eq_mul] using hgfull.memLp
       have hconst : MeasureTheory.MemLp (fun x => B i * ((B i)⁻¹ * g x i)) (2 : ℝ≥0∞)
           (normalizedCubeMeasure Q) := by
-            simpa [Pi.smul_apply, smul_eq_mul] using hscaled_mem.const_smul (B i)
+            simpa [Pi.smul_apply, smul_eq_mul] using! hscaled_mem.const_smul (B i)
       convert hconst using 1
       funext x
       field_simp [hB i |>.ne']
-    simpa [Pi.mul_apply, mul_comm] using (hu i).integrable_mul hgi_mem
+    simpa [Pi.mul_apply, mul_comm] using! (hu i).integrable_mul hgi_mem
   calc
     |cubeAverage Q (fun x => vecDot (u x) (g x))|
         ≤ ∑ i, |cubeBesovPairing Q (fun x => u x i) (fun x => g x i)| := by
@@ -379,11 +379,11 @@ theorem abs_cubeAverage_vecDot_le_sum_note_rhs_mul_of_uniform_component_bounds_t
             simpa [hpConj, Pi.smul_apply, smul_eq_mul] using hgfull.memLp
       have hconst : MeasureTheory.MemLp (fun x => B i * ((B i)⁻¹ * g x i)) (2 : ℝ≥0∞)
           (normalizedCubeMeasure Q) := by
-            simpa [Pi.smul_apply, smul_eq_mul] using hscaled_mem.const_smul (B i)
+            simpa [Pi.smul_apply, smul_eq_mul] using! hscaled_mem.const_smul (B i)
       convert hconst using 1
       funext x
       field_simp [hB i |>.ne']
-    simpa [Pi.mul_apply, mul_comm] using (hu i).integrable_mul hgi_mem
+    simpa [Pi.mul_apply, mul_comm] using! (hu i).integrable_mul hgi_mem
   calc
     |cubeAverage Q (fun x => vecDot (u x) (g x))|
         ≤ ∑ i, |cubeBesovPairing Q (fun x => u x i) (fun x => g x i)| := by
@@ -439,11 +439,11 @@ theorem abs_cubeAverage_vecDot_le_sum_note_rhs_mul_of_uniform_component_bounds_t
       have hconst :
           MeasureTheory.MemLp (fun x => (B i + 1) * ((B i + 1)⁻¹ * g x i))
             (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-        simpa [Pi.smul_apply, smul_eq_mul] using hscaled_mem.const_smul (B i + 1)
+        simpa [Pi.smul_apply, smul_eq_mul] using! hscaled_mem.const_smul (B i + 1)
       convert hconst using 1
       funext x
       field_simp [hBi_pos.ne']
-    simpa [Pi.mul_apply, mul_comm] using (hu i).integrable_mul hgi_mem
+    simpa [Pi.mul_apply, mul_comm] using! (hu i).integrable_mul hgi_mem
   calc
     |cubeAverage Q (fun x => vecDot (u x) (g x))|
         ≤ ∑ i, |cubeBesovPairing Q (fun x => u x i) (fun x => g x i)| := by

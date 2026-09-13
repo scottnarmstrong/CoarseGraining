@@ -97,7 +97,7 @@ theorem mgf_upperTruncation_le_one_add_half_mul_sq_mul_integral_abs_sq_add_integ
               (μ := μ) (X := X) (l := l) (L := L) hXm hXsq hl hL)
             hc_nonneg)
           1
-      simpa [Y, W, add_assoc] using hscaled
+      simpa [Y, W, add_assoc] using! hscaled
 
 /-- Exponential form of the one-variable truncated mgf bound. This is the
 direct input used by the generic Chernoff reduction for sums of truncated
@@ -347,7 +347,7 @@ theorem measureReal_upperTailEvent_finset_sum_upperTruncation_le_exp_of_iIndepFu
       Real.exp (-l * a + ∑ i ∈ s, v i) := by
   let Y : ι → Ω → ℝ := fun i => upperTruncation (X i) L
   have h_indepY : iIndepFun Y μ := by
-    simpa [Y] using iIndepFun_upperTruncation (μ := μ) (X := X) (L := L) h_indep
+    simpa [Y] using! iIndepFun_upperTruncation (μ := μ) (X := X) (L := L) h_indep
   have h_measY : ∀ i, Measurable (Y i) := by
     intro i
     simpa [Y] using upperTruncation_measurable (X := X i) (L := L) (h_meas i)

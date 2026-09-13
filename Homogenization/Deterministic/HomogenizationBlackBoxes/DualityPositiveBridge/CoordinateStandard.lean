@@ -71,7 +71,7 @@ theorem sq_cubeLpNorm_two_coordinateVectorField {d : ℕ}
   congr 1
   apply MeasureTheory.lintegral_congr
   intro x
-  rw [← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm,
+  rw [← ofReal_norm, ← ofReal_norm,
     norm_coordinateVectorField_apply]
 
 theorem cubeBesovPositiveVectorDepthAverage_coordinateVectorField {d : ℕ}

@@ -101,8 +101,8 @@ private theorem integrable_vecDot_matVecMul_of_integrable_entries
     (hM : ∀ i j, Integrable (fun a => M a i j) P) (x y : Vec d) :
     Integrable (fun a => vecDot x (matVecMul (M a) y)) P := by
   simp [vecDot, matVecMul]
-  exact MeasureTheory.integrable_finset_sum Finset.univ fun i _ =>
-    (MeasureTheory.integrable_finset_sum Finset.univ fun j _ =>
+  exact MeasureTheory.integrable_finsetSum Finset.univ fun i _ =>
+    (MeasureTheory.integrable_finsetSum Finset.univ fun j _ =>
       (hM i j).mul_const (y j)).const_mul (x i)
 
 /-- Finite-dimensional matrix quadratic forms commute with entrywise
@@ -113,16 +113,16 @@ private theorem integral_vecDot_matVecMul_eq_of_integrable_entries
     ∫ a, vecDot x (matVecMul (M a) y) ∂P =
       vecDot x (matVecMul (fun i j => ∫ a, M a i j ∂P) y) := by
   simp [vecDot, matVecMul]
-  rw [MeasureTheory.integral_finset_sum Finset.univ]
+  rw [MeasureTheory.integral_finsetSum Finset.univ]
   · congr 1
     ext i
     rw [MeasureTheory.integral_const_mul]
-    rw [MeasureTheory.integral_finset_sum Finset.univ]
+    rw [MeasureTheory.integral_finsetSum Finset.univ]
     · simp_rw [MeasureTheory.integral_mul_const]
     · intro j _hj
       exact (hM i j).mul_const (y j)
   · intro i _hi
-    exact (MeasureTheory.integrable_finset_sum Finset.univ fun j _hj =>
+    exact (MeasureTheory.integrable_finsetSum Finset.univ fun j _hj =>
       (hM i j).mul_const (y j)).const_mul (x i)
 
 /-- Finite-dimensional block quadratic forms are integrable when all block
@@ -150,7 +150,7 @@ theorem integrable_blockVecDot_blockMatVecMul_of_integrable_entries
   have h2 := integrable_vecDot_matVecMul_of_integrable_entries hUR p s
   have h3 := integrable_vecDot_matVecMul_of_integrable_entries hLL q r
   have h4 := integrable_vecDot_matVecMul_of_integrable_entries hLR q s
-  simpa [blockVecDot, blockMatVecMul, vecDot_add_right, add_assoc] using
+  simpa [blockVecDot, blockMatVecMul, vecDot_add_right, add_assoc] using!
     (h1.add h2).add (h3.add h4)
 
 /-- Finite-dimensional block quadratic forms commute with entrywise expectation
@@ -275,10 +275,10 @@ theorem restrictionResponseJObservableCubeSet_le_descendantsAverage_of_aelocally
       ∀ i : Pcell.Cell, Ch02.CoeffOn.RestrictsTo (F.coeffOn Q) (F.coeffOn i.1) := by
     intro i
     have hiScale : i.1 ∈ descendantsAtScale Q n := by
-      rw [descendantsAtScale_eq_descendantsAtDepth Q (by simpa [Q] using hnm)]
+      rw [descendantsAtScale_eq_descendantsAtDepth Q (by simpa [Q] using! hnm)]
       change i.1 ∈ descendantsAtDepth Q j
       exact i.2
-    exact F.restrictsTo_descendant (by simpa [Q] using hnm) hiScale
+    exact F.restrictsTo_descendant (by simpa [Q] using! hnm) hiScale
   have hsub :=
     (Ch02.responseSubadditivityAndScalingTheory (Ch02.cubeDomain Q)
       (F.coeffOn Q)).responseJ_subadditive
@@ -499,7 +499,7 @@ theorem coarseBlockMatrix_le_descendantsAverageBlockMat_of_aelocallyUniformlyEll
       (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun)
       (descendantsAverageBlockMat (originCube d m) (Int.toNat (m - n))
         (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) := by
-  simpa using
+  simpa using!
     coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_of_aelocallyUniformlyEllipticField
       ha (originCube d m) hnm
 

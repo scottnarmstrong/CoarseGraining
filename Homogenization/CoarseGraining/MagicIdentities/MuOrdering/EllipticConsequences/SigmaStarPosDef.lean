@@ -23,7 +23,7 @@ private theorem volumeAverage_le_volumeAverage_of_le_on_local
   have hsub :
       volumeAverage U (fun x => g x - f x) =
         volumeAverage U g - volumeAverage U f := by
-    simpa using (volumeAverage_sub hg hf : volumeAverage U (g - f) = _)
+    simpa using! (volumeAverage_sub hg hf : volumeAverage U (g - f) = _)
   linarith
 
 private theorem vecNormSq_volumeAverage_le_volumeAverage_vecNormSq_local
@@ -44,7 +44,7 @@ private theorem vecNormSq_volumeAverage_le_volumeAverage_vecNormSq_local
     simpa [vecNormSq] using integrableOn_vecDot_of_memVectorL2 hf hf
   have hhalfInt :
       MeasureTheory.IntegrableOn ((1 / 2 : ℝ) • fun x => vecNormSq (f x)) U := by
-    simpa [smul_eq_mul] using hsqInt.integrable.smul (1 / 2 : ℝ)
+    simpa [smul_eq_mul] using! hsqInt.integrable.smul (1 / 2 : ℝ)
   have hconstInt :
       MeasureTheory.IntegrableOn (fun _ : Vec d => (1 / 2 : ℝ) * vecNormSq avg) U := by
     exact MeasureTheory.integrable_const _
@@ -230,7 +230,7 @@ theorem sigmaStarInvCoarse_posDef_of_isEllipticFieldOn_of_hodgeConverseCriterion
       have hcoer' :
           (lam / (1 + 2 * Lam ^ 2)) * blockVecDot (Xq.eval x) (Xq.eval x) ≤
             2 * blockEnergyDensity a Xq x := by
-        simpa [blockEnergyDensity, Xq] using hcoer
+        simpa [blockEnergyDensity, Xq] using! hcoer
       have hchain :
           (lam / (1 + 2 * Lam ^ 2)) * vecNormSq (Xq.flux x) ≤
             2 * blockEnergyDensity a Xq x := le_trans hflux_scaled hcoer'
@@ -254,7 +254,7 @@ theorem sigmaStarInvCoarse_posDef_of_isEllipticFieldOn_of_hodgeConverseCriterion
           volumeAverage U
             (fun x => (lam / (2 * (1 + 2 * Lam ^ 2))) * vecNormSq (Xq.flux x)) := by
               symm
-              simpa [smul_eq_mul] using
+              simpa [smul_eq_mul] using!
                 (volumeAverage_smul U (lam / (2 * (1 + 2 * Lam ^ 2)))
                   (fun x => vecNormSq (Xq.flux x)))
         _ ≤ volumeAverage U (blockEnergyDensity a Xq) := by
@@ -262,7 +262,7 @@ theorem sigmaStarInvCoarse_posDef_of_isEllipticFieldOn_of_hodgeConverseCriterion
                 (U := U)
                 (hU := measurableSet_of_isEllipticFieldOn hEll)
                 (hf := by
-                  simpa [smul_eq_mul] using
+                  simpa [smul_eq_mul] using!
                     hFluxSqInt.smul (lam / (2 * (1 + 2 * Lam ^ 2))))
                 (hg := hEnergyInt)
                 hpoint

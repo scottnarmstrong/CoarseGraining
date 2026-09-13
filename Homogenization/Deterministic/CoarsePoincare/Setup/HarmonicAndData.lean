@@ -19,10 +19,10 @@ theorem cubeAverageFlux_le_coarseBBlockNorm_mul_energyAverage_of_isEllipticField
     (w : AHarmonicFunction a (cubeSet R)) :
     vecNormSq (cubeAverageVec R (fun x => matVecMul (a x) (w.toH1.grad x))) ≤
       coarseBBlockNorm R a * cubeAverage R (scalarVariationEnergyIntegrand a w) := by
-  letI : Fact (MeasureTheory.volume (cubeSet R) < ⊤) := by
+  let : Fact (MeasureTheory.volume (cubeSet R) < ⊤) := by
     refine ⟨?_⟩
     simpa using volume_cubeSet_lt_top R
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet R)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet R)) := by
     change MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict (cubeSet R))
     infer_instance
   have hne : Set.Nonempty (cubeSet R) := by
@@ -44,7 +44,7 @@ theorem cubeAverageFlux_le_coarseBBlockNorm_mul_energyAverage_of_isEllipticField
         (Q := R) hS hK hSigma hdet
   let hOpenR : IsOpenBoundedConvexDomain (openCubeSet R) :=
     isOpenBoundedConvexDomain_openCubeSet R
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet R)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet R)) := by
     simpa [volumeMeasureOn] using hOpenR.isFiniteMeasure_restrict_volume
   have hEllOpen :
       IsEllipticFieldOn lam Lam (openCubeSet R) a :=
@@ -153,10 +153,10 @@ theorem cubeAverageFlux_le_matrixNorm_bCoarse_mul_energyAverage_of_isEllipticFie
           (bCoarse (sigmaCoarse (cubeSet R) a) (sigmaStarCoarse (cubeSet R) a)
             (kappaCoarse (cubeSet R) a)) *
         cubeAverage R (scalarVariationEnergyIntegrand a w) := by
-  letI : Fact (MeasureTheory.volume (cubeSet R) < ⊤) := by
+  let : Fact (MeasureTheory.volume (cubeSet R) < ⊤) := by
     refine ⟨?_⟩
     simpa using volume_cubeSet_lt_top R
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet R)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet R)) := by
     change MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict (cubeSet R))
     infer_instance
   have hne : Set.Nonempty (cubeSet R) := by
@@ -178,7 +178,7 @@ theorem cubeAverageFlux_le_matrixNorm_bCoarse_mul_energyAverage_of_isEllipticFie
         (Q := R) hS hK hSigma hdet
   let hOpenR : IsOpenBoundedConvexDomain (openCubeSet R) :=
     isOpenBoundedConvexDomain_openCubeSet R
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet R)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (openCubeSet R)) := by
     simpa [volumeMeasureOn] using hOpenR.isFiniteMeasure_restrict_volume
   have hEllOpen :
       IsEllipticFieldOn lam Lam (openCubeSet R) a :=
@@ -658,7 +658,7 @@ theorem cubeAverageGradientEnergyControl_of_aHarmonicFunction {d : ℕ} [NeZero 
     intro x hx
     simp [w, scalarVariationEnergyIntegrand]
   rw [henergy_eq] at hlocal
-  simpa [w] using hlocal
+  simpa [w] using! hlocal
 
 theorem cubeAverageGradientEnergyControl_of_aHarmonicFunction_of_openCubeDescendantEllipticRecoveryFamily
     {d : ℕ} [NeZero d]

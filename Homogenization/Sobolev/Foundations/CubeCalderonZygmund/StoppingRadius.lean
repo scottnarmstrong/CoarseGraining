@@ -78,7 +78,7 @@ theorem continuousOn_setIntegral_closedBall {d : ℕ} [NeZero d]
     (𝓝[Ioi 0] r) (𝓝 (∫ y in Metric.closedBall x r, f y ∂volume))
   have hsphere_ae : ∀ᵐ y ∂volume, y ∉ Metric.sphere x r := by
     rw [ae_iff]
-    simpa using (volume_sphere_eq_zero (d := d) x r)
+    simpa using! (volume_sphere_eq_zero (d := d) x r)
   have hlim : ∀ᵐ y ∂volume,
       Tendsto (fun s => (Metric.closedBall x s).indicator f y) (𝓝[Ioi 0] r)
         (𝓝 ((Metric.closedBall x r).indicator f y)) := by
@@ -137,7 +137,7 @@ theorem continuousOn_closedBallAverage {d : ℕ} [NeZero d]
     apply ((continuous_const.mul continuous_id).continuousOn.pow d).inv₀
     intro r hr
     exact pow_ne_zero d (mul_ne_zero (by norm_num) (ne_of_gt hr))
-  simpa only [closedBallAverage] using
+  simpa only [closedBallAverage] using!
     hdenom.mul (continuousOn_setIntegral_closedBall f hf x)
 
 /-- The normalized local squared energy over a sup-metric closed ball. -/

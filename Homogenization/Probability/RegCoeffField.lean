@@ -106,9 +106,10 @@ instance : SMul ℝ (RegCoeffField d) where
   smul c a :=
     { toFun := fun x => c • a x
       entry_measurable := fun i j => by
-        simpa using (a.entry_measurable i j).const_smul c
+        simpa using! (a.entry_measurable i j).const_smul c
       entry_locInt := fun i j => by
-        simpa using (a.entry_locInt i j).smul c }
+        show LocallyIntegrable (fun x => c • a.toFun x i j) volume
+        exact (a.entry_locInt i j).smul c }
 
 @[simp] theorem smul_toFun (c : ℝ) (a : RegCoeffField d) :
     (c • a).toFun = fun x => c • a x := rfl

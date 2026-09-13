@@ -94,20 +94,20 @@ theorem tendsto_eLpNorm_two_of_tendsto_ae_of_dominated
       have h0 : Tendsto (fun n => f n x - g x) atTop (𝓝 0) := by
         have := hx.sub (tendsto_const_nhds (x := g x))
         rwa [sub_self] at this
-      simpa using (continuous_enorm.tendsto 0).comp h0
+      simpa using! (continuous_enorm.tendsto 0).comp h0
     have := (ENNReal.continuous_rpow_const (y := (2:ℝ))).tendsto 0 |>.comp hen
-    simpa [hF] using this
+    simpa [hF] using! this
   have hlim0 : Tendsto (fun n => ∫⁻ x, F n x ∂μ) atTop (𝓝 (∫⁻ x, (0 : ℝ≥0∞) ∂μ)) :=
     tendsto_lintegral_of_dominated_convergence' B hFmeas hBound hBfin hFlim
   rw [lintegral_zero] at hlim0
   have hrw : ∀ n, eLpNorm (fun x => f n x - g x) 2 μ = (∫⁻ x, F n x ∂μ) ^ (1 / (2:ℝ)) := by
     intro n
-    rw [eLpNorm_eq_lintegral_rpow_enorm h2z h2t, h2r]
+    rw [eLpNorm_eq_lintegral_rpow_enorm_toReal h2z h2t, h2r]
   simp_rw [hrw]
   have hc : Tendsto (fun y : ℝ≥0∞ => y ^ (1 / (2:ℝ))) (𝓝 0) (𝓝 0) := by
     have := (ENNReal.continuous_rpow_const (y := 1 / (2:ℝ))).tendsto 0
     simpa using this
-  simpa using hc.comp hlim0
+  simpa using! hc.comp hlim0
 
 /-- **Weak partial derivative closed under L² limits.**  If `uₙ → u` and
 `gₙ → gᵢ` in `L²(U)`, all in `L²(U)`, and each `uₙ` has weak `i`-partial
@@ -202,7 +202,7 @@ theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_two
     Filter.Tendsto (fun n => ∫ x in U, f n x * h x ∂volume)
       Filter.atTop (nhds (∫ x in U, g x * h x ∂volume)) := by
   set μ : Measure (Vec d) := volume.restrict U with hμ
-  haveI hht : ENNReal.HolderTriple 2 2 1 :=
+  have hht : ENNReal.HolderTriple 2 2 1 :=
     ⟨by rw [inv_one]; exact ENNReal.inv_two_add_inv_two⟩
   -- integrability of the products
   have hfh_int : ∀ n, Integrable (fun x => f n x * h x) μ := by
@@ -228,7 +228,7 @@ theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_two
         (Or.inr (by simp))
     rw [zero_mul] at hprod
     have := (ENNReal.tendsto_toReal (by simp : (0 : ℝ≥0∞) ≠ ⊤)).comp hprod
-    simpa using this
+    simpa using! this
   -- squeeze the norm of the difference
   refine squeeze_zero_norm ?_ hBtend
   intro n
@@ -241,13 +241,13 @@ theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_two
     have := eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm
       (μ := μ) (p := (2 : ℝ≥0∞)) (q := (2 : ℝ≥0∞)) (r := (1 : ℝ≥0∞))
       ((hf n).sub hg).1 hh.1 (fun a b => a * b) 1 hae
-    simpa [hB] using this
+    simpa [hB] using! this
   calc ‖∫ x, (f n x - g x) * h x ∂μ‖
       ≤ (∫⁻ x, ENNReal.ofReal ‖(f n x - g x) * h x‖ ∂μ).toReal :=
         norm_integral_le_lintegral_norm _
     _ = (eLpNorm (fun x => (f n x - g x) * h x) 1 μ).toReal := by
         rw [eLpNorm_one_eq_lintegral_enorm]
-        simp_rw [ofReal_norm_eq_enorm]
+        simp_rw [ofReal_norm]
     _ ≤ (B n).toReal := by
         apply ENNReal.toReal_mono _ hHolder
         exact ENNReal.mul_ne_top ((hf n).sub hg).2.ne hh.2.ne

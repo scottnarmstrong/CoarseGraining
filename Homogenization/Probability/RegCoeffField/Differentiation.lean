@@ -246,8 +246,8 @@ theorem aeRestrict_isEllipticMatrix_of_forall_ratBall {U : Set (Vec d)}
     intro i j
     have hb := hx_diff i j (l := atTop) w δ hδtend hxmem
     simpa [avgMat_entry_eq_setAverage, hB, hw, hδ] using hb
-  have htend : Tendsto (fun n => avgMat (B n) a) atTop (𝓝 (a x)) := by
-    rw [tendsto_pi_nhds]; intro i; rw [tendsto_pi_nhds]; intro j; exact hentry i j
+  have htend : Tendsto (fun n => avgMat (B n) a) atTop (𝓝 (a x)) :=
+    tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => hentry i j
   refine (isClosed_isEllipticMatrix (lam := lam) (Lam := Lam)).mem_of_tendsto htend
     (Filter.Eventually.of_forall (fun n => ?_))
   exact H (qf n) (rf n) (hpos n) (hsub n)

@@ -245,9 +245,9 @@ theorem coreLocalEnergy_eq_corridorPiece_add_sum {ℓ : ℝ} {σ : Vec d} {Θ : 
     (measurableSet_coreBox ℓ σ k).inter (measurableSet_cubeSet (originCube d m))
   have hcorrM : MeasurableSet (corridorSet ℓ σ) := measurableSet_corridorSet ℓ σ
   have hTmeas : MeasurableSet T := hWmeas.diff hcorrM
-  haveI : IsFiniteMeasure (volumeMeasureOn W) :=
+  have : IsFiniteMeasure (volumeMeasureOn W) :=
     isFiniteMeasure_volumeMeasureOn_corePiece ℓ σ k m
-  haveI : IsFiniteMeasure (volumeMeasureOn V) :=
+  have : IsFiniteMeasure (volumeMeasureOn V) :=
     isFiniteMeasure_volumeMeasureOn_coreWindow ℓ σ k m
   -- L² membership on the core piece and the window
   have hXW : MemBlockL2 W X.eval :=
@@ -276,7 +276,7 @@ theorem coreLocalEnergy_eq_corridorPiece_add_sum {ℓ : ℝ} {σ : Vec d} {Θ : 
         = (∫ x in W ∩ corridorSet ℓ σ,
               blockEnergyDensity (glueField ℓ σ Θ b.toFun) X x ∂volume)
           + ∫ x in T, blockEnergyDensity (glueField ℓ σ Θ b.toFun) X x ∂volume :=
-    (MeasureTheory.integral_inter_add_diff hcorrM hIntOn).symm
+    (MeasureTheory.integral_inter_add_sdiff hcorrM hIntOn).symm
   -- corridor piece: the glued field is the identity there
   have hcorrEq :
       (∫ x in W ∩ corridorSet ℓ σ,
@@ -289,7 +289,7 @@ theorem coreLocalEnergy_eq_corridorPiece_add_sum {ℓ : ℝ} {σ : Vec d} {Θ : 
     simp only [blockEnergyDensity, blockCoeffField, hval]
   -- off the corridor the truncation is a.e. invisible
   have hbT : ∀ᵐ x ∂(volume.restrict T), IsEllipticMatrix 1 Θ (b x) :=
-    ae_restrict_of_ae_restrict_of_subset Set.diff_subset hbW
+    ae_restrict_of_ae_restrict_of_subset Set.sdiff_subset hbW
   have hTglue :
       (∫ x in T, blockEnergyDensity (glueField ℓ σ Θ b.toFun) X x ∂volume)
         = ∫ x in T, blockEnergyDensity b.toFun X x ∂volume := by
@@ -348,9 +348,9 @@ theorem coreLocalEnergy_eq_corridorPiece_add_sum {ℓ : ℝ} {σ : Vec d} {Θ : 
         = ∑ α, ∑ β,
             ∫ x in V, Set.indicator T (blockEnergyEntryWeight X α β) x
               * toFullBlockMat (blockCoeffField b.toFun x) α β ∂volume := by
-    rw [integral_finset_sum _ (fun α _ => integrable_finset_sum _ (fun β _ => hInt_αβ α β))]
+    rw [integral_finsetSum _ (fun α _ => integrable_finsetSum _ (fun β _ => hInt_αβ α β))]
     exact Finset.sum_congr rfl
-      (fun α _ => integral_finset_sum _ (fun β _ => hInt_αβ α β))
+      (fun α _ => integral_finsetSum _ (fun β _ => hInt_αβ α β))
   -- assemble
   unfold coreLocalEnergy
   rw [hsplit, hcorrEq, hTglue, hTwindow, hpoint, hsum]
@@ -373,7 +373,7 @@ theorem measurable_coreLocalEnergyR {ℓ : ℝ} {σ : Vec d} {Θ : ℝ} (hΘ : 1
   have hTmeas : MeasurableSet T :=
     ((measurableSet_coreBox ℓ σ k).inter
       (measurableSet_cubeSet (originCube d m))).diff (measurableSet_corridorSet ℓ σ)
-  haveI : IsFiniteMeasure (volumeMeasureOn V) :=
+  have : IsFiniteMeasure (volumeMeasureOn V) :=
     isFiniteMeasure_volumeMeasureOn_coreWindow ℓ σ k m
   have hXV : MemBlockL2 V X.eval :=
     hX.mono_measure (Measure.restrict_mono coreWindow_subset_cubeSet le_rfl)

@@ -219,7 +219,7 @@ theorem vecNorm_matVecMul_le_matrixOperatorNorm_mul_vecNorm
     (Matrix.toEuclideanCLM (n := Fin d) (𝕜 := ℝ) A).le_opNorm
       (WithLp.toLp 2 x : EuclideanSpace ℝ (Fin d))
   simpa [matrixOperatorNorm, vecNorm, matVecMul, Matrix.toEuclideanCLM_toLp,
-    Matrix.mulVec] using h
+    Matrix.mulVec] using! h
 
 theorem vecNormSq_matVecMul_le_matrixOperatorNorm_sq_mul_vecNormSq
     {d : ℕ} (A : Mat d) (x : Vec d) :
@@ -557,7 +557,7 @@ theorem matrixOperatorNorm_le_of_matLoewnerLE_of_posSemidef
     exact (sq_le_sq₀ (vecNorm_nonneg (matVecMul A ξ))
       (mul_nonneg (matrixOperatorNorm_nonneg B) (vecNorm_nonneg ξ))).mp hsq'
   simpa [matrixOperatorNorm, vecNorm, ξ, Matrix.toEuclideanCLM_toLp,
-    matVecMul, Matrix.mulVec] using hvec
+    matVecMul, Matrix.mulVec] using! hvec
 
 theorem matrixOperatorNorm_pos_of_posDef {d : ℕ} [NeZero d] {A : Mat d}
     (hA : A.PosDef) :

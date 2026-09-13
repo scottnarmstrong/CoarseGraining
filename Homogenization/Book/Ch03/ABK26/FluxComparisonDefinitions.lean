@@ -50,7 +50,7 @@ private theorem memVectorL2_matVecMul_pointwiseCoeffOn {d : ℕ}
       (fun x => matVecMul (b.toCoeffField x) (u.grad x)) :=
     memVectorL2_matVecMul_of_isEllipticFieldOn hEll u.grad_memVectorL2
   have hba : b.toCoeffField =ᵐ[volumeMeasureOn (openCubeSet Q)] a.toCoeffField := by
-    simpa only [b, Book.Ch02.cubeDomain_coe] using
+    simpa only [b, Book.Ch02.cubeDomain_coe] using!
       Internal.Ch02.BookCh02.pointwiseCoeffOn_ae_eq (Book.Ch02.cubeDomain Q) a
   apply (memLp_congr_ae ?_).mp hB
   filter_upwards [hba] with x hx
@@ -76,7 +76,7 @@ private theorem memVectorL2_localFluxDefect {d : ℕ}
     uR.grad_memVectorL2.const_smul sigma0
   have hsub := hflux.sub hscalar
   simpa only [aR, uR, Book.Ch02.CoeffOn.restrictToSubcube_toCoeffField,
-    H1Function.restrict, sub_matVecMul, matVecMul_scalarMatrix] using hsub
+    H1Function.restrict, sub_matVecMul, matVecMul_scalarMatrix] using! hsub
 
 /-- Function-level zero-trace difference on the centered cube. -/
 def HasCenteredCubeH10Difference {d : ℕ} (m : ℤ)
@@ -108,7 +108,7 @@ noncomputable def centeredCubeGradientDifferenceL2Field {d : ℕ}
   euclideanMemLp := by
     rw [memLp_piLp_iff]
     intro i
-    simpa only [HilbertVec.ofVec, PiLp.toLp_apply, Pi.sub_apply] using
+    simpa only [HilbertVec.ofVec, PiLp.toLp_apply, Pi.sub_apply] using!
       (u.grad_memL2_normalizedCubeMeasure i).sub
         (v.grad_memL2_normalizedCubeMeasure i)
 

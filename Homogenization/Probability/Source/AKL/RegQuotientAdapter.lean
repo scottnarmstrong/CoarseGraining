@@ -25,11 +25,13 @@ required by the AKL quotient carrier. -/
 def RegularAKLCarrier (d : ℕ) (Θ : ℝ) : Type _ :=
   {a : RegCoeffField d // ∀ᵐ x ∂volume, IsEllipticMatrix 1 Θ (a x)}
 
+set_option warn.classDefReducibility false in
 /-- The regular local sigma algebra pulled back to the fixed-contrast subtype. -/
 def regularLocalSigma {d : ℕ} {Θ : ℝ} (U : BorelRegion d) :
     MeasurableSpace (RegularAKLCarrier d Θ) :=
   MeasurableSpace.comap Subtype.val (LocalSigmaR U.1)
 
+set_option warn.classDefReducibility false in
 /-- The regular global sigma algebra pulled back to the fixed-contrast subtype. -/
 def regularGlobalSigma (d : ℕ) (Θ : ℝ) : MeasurableSpace (RegularAKLCarrier d Θ) :=
   regularLocalSigma (Θ := Θ) (⟨Set.univ, MeasurableSet.univ⟩ : BorelRegion d)
@@ -105,17 +107,17 @@ private theorem rawGenerator_eq_sum_entryTestR_indicator {d : ℕ}
       fun x => ∑ i, ∑ j, (e' i * e j) * (a x i j * U.1.indicator φ x) by
         funext x
         exact hpoint x]
-  rw [integral_finset_sum]
+  rw [integral_finsetSum]
   · apply Finset.sum_congr rfl
     intro i _
-    rw [integral_finset_sum]
+    rw [integral_finsetSum]
     · apply Finset.sum_congr rfl
       intro j _
       rw [integral_const_mul]
     · intro j _
       exact (integrable_entry_mul_probe i j hprobe a).const_mul (e' i * e j)
   · intro i _
-    apply integrable_finset_sum
+    apply integrable_finsetSum
     intro j _
     exact (integrable_entry_mul_probe i j hprobe a).const_mul (e' i * e j)
 
@@ -151,7 +153,7 @@ private theorem measurable_sum_entryTestR_indicator_localSigmaR {d : ℕ}
     (hφ : ContDiff ℝ (⊤ : ℕ∞) φ) (hφcompact : HasCompactSupport φ) :
     @Measurable (RegCoeffField d) ℝ (LocalSigmaR U.1) _
       (fun a => ∑ i, ∑ j, (e' i * e j) * entryTestR i j (U.1.indicator φ) a) := by
-  letI : MeasurableSpace (RegCoeffField d) := LocalSigmaR U.1
+  let : MeasurableSpace (RegCoeffField d) := LocalSigmaR U.1
   have hprobe : IsProbeR (U.1.indicator φ) :=
     (IsProbeR.of_smooth hφ hφcompact).indicator U.2
   have hsupport : Function.support (U.1.indicator φ) ⊆ U.1 :=
@@ -180,7 +182,7 @@ theorem regularToAKL_measurable_local {d : ℕ} {Θ : ℝ}
       {s | ∃ (e e' : Vec d) (φ : Vec d → ℝ),
         ContDiff ℝ (⊤ : ℕ∞) φ ∧ HasCompactSupport φ ∧
         ∃ t : Set ℝ, MeasurableSet t ∧ s = generator U e e' φ ⁻¹' t}) regularToAKL
-  letI : MeasurableSpace (RegularAKLCarrier d Θ) := regularLocalSigma U
+  let : MeasurableSpace (RegularAKLCarrier d Θ) := regularLocalSigma U
   apply measurable_generateFrom
   rintro s ⟨e, e', φ, hφ, hφcompact, t, ht, rfl⟩
   have hfun : (fun a : RegularAKLCarrier d Θ =>
@@ -210,7 +212,7 @@ sigma algebra from the corresponding regular global local sigma algebra. -/
 theorem regularToAKL_measurable_global {d : ℕ} {Θ : ℝ} :
     @Measurable (RegularAKLCarrier d Θ) (Carrier d Θ)
       (regularGlobalSigma d Θ) (globalSigma d Θ) regularToAKL := by
-  simpa [regularGlobalSigma, globalSigma] using
+  simpa [regularGlobalSigma, globalSigma] using!
     (regularToAKL_measurable_local
       (d := d) (Θ := Θ) (⟨Set.univ, MeasurableSet.univ⟩ : BorelRegion d))
 

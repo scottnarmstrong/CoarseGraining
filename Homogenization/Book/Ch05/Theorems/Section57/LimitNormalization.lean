@@ -232,7 +232,7 @@ theorem limitWeightedUnitEllipticityObservable_isBigO
       (limitWeightedUnitEllipticityObservable hP hStruct
         hΓ.params.sUpper hΓ.params.sLower)
       (thetaAtScale hP hStruct (0 : ℤ) * hΓ.thetaHat) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let hP4 := hΓ.toQuantitativeCoarseGrainedEllipticity
   let θ := thetaAtScale hP hStruct (0 : ℤ)
   let X : RegCoeffField d → ℝ :=

@@ -159,7 +159,7 @@ theorem euclideanBackwardDifferenceQuotient_sq_mul_forwardDifferenceQuotient {d 
 theorem contDiff_comp_euclideanCoordShift {d : ℕ} {u : Vec d → ℝ}
     (hu : ContDiff ℝ (⊤ : ℕ∞) u) (h : ℝ) (i : Fin d) :
     ContDiff ℝ (⊤ : ℕ∞) (fun x => u (euclideanCoordShift h i x)) := by
-  simpa [euclideanCoordShift] using
+  simpa [euclideanCoordShift] using!
     hu.comp (contDiff_id.add contDiff_const)
 
 /-- Compact support is preserved by precomposition with a coordinate shift. -/
@@ -403,7 +403,10 @@ theorem sq_intervalIntegral_abs_le_intervalIntegral_sq_abs_of_continuous
     · simp [Real.volume_Ioc]
     · exact Filter.Eventually.of_forall fun t => abs_nonneg (g t)
     · exact hg.abs.integrableOn_Ioc
-    · simpa [Function.comp_def] using (hg.abs.pow 2).integrableOn_Ioc
+    · simpa [Function.comp_def, Pi.pow_def] using!
+        ((hg.abs.pow 2).integrableOn_Ioc :
+          MeasureTheory.IntegrableOn (fun t : ℝ => |g t| ^ 2)
+            (Set.Ioc (0 : ℝ) 1) MeasureTheory.volume)
   have hleft :
       (⨍ t in Set.Ioc (0 : ℝ) 1, |g t|) =
         ∫ t in (0 : ℝ)..1, |g t| := by
@@ -434,7 +437,7 @@ theorem sq_euclideanBackwardDifferenceQuotient_le_integral_sq_coordDeriv_along_s
     euclideanCoordDeriv i u (segmentBlend x t y)
   have hderiv_cont : Continuous (euclideanCoordDeriv i u) := by
     have h1 : ContDiff ℝ 1 u := hu.of_le (by norm_num)
-    simpa [euclideanCoordDeriv] using
+    simpa [euclideanCoordDeriv] using!
       (h1.continuous_fderiv (by norm_num)).clm_apply continuous_const
   have hsegment_cont :
       Continuous (fun t : ℝ => segmentBlend x t y) := by
@@ -556,7 +559,7 @@ theorem integrable_sq_coordDeriv_comp_segmentBlend_euclideanCoordShift_neg_prod
         Continuous
           (fun p : ℝ × Vec d =>
             euclideanCoordShift ((p.1 - 1) * h) i p.2) := by
-      simpa [euclideanCoordShift] using
+      simpa [euclideanCoordShift] using!
         continuous_snd.add
           (((continuous_fst.sub continuous_const).mul continuous_const).smul
             (continuous_const : Continuous fun _ : ℝ × Vec d => basisVec i))
@@ -570,7 +573,7 @@ theorem integrable_sq_coordDeriv_comp_segmentBlend_euclideanCoordShift_neg_prod
     rw [hEq]
     exact hraw
   have hF_cont : Continuous F := by
-    simpa [F] using (hderiv_cont.comp hseg_cont).pow 2
+    simpa [F] using! (hderiv_cont.comp hseg_cont).pow 2
   have hF_aesm :
       MeasureTheory.AEStronglyMeasurable F
         ((MeasureTheory.volume.restrict (Set.uIoc (0 : ℝ) 1)).prod
@@ -580,7 +583,7 @@ theorem integrable_sq_coordDeriv_comp_segmentBlend_euclideanCoordShift_neg_prod
     ((contDiff_euclideanCoordDeriv hu i).continuous).pow 2
   have hbase_comp : HasCompactSupport
       (fun x : Vec d => (euclideanCoordDeriv i u x) ^ 2) := by
-    simpa [pow_two] using
+    simpa [pow_two] using!
       (hasCompactSupport_euclideanCoordDeriv hus i).mul_right
   have hsection_int :
       ∀ t : ℝ, MeasureTheory.Integrable (fun x : Vec d => F (t, x))
@@ -588,7 +591,7 @@ theorem integrable_sq_coordDeriv_comp_segmentBlend_euclideanCoordShift_neg_prod
     intro t
     have hshift_cont :
         Continuous (fun x : Vec d => euclideanCoordShift ((t - 1) * h) i x) := by
-      simpa [euclideanCoordShift] using
+      simpa [euclideanCoordShift] using!
         continuous_id.add (continuous_const : Continuous fun _ : Vec d =>
           ((t - 1) * h) • basisVec i)
     have hshift_comp :
@@ -634,7 +637,7 @@ theorem integrable_sq_coordDeriv_comp_segmentBlend_euclideanCoordShift_neg_prod
       _ = ∫ x, (euclideanCoordDeriv i u x) ^ 2 ∂MeasureTheory.volume :=
             integral_sq_coordDeriv_comp_segmentBlend_euclideanCoordShift_neg_eq_integral
               h i t u
-  letI : MeasureTheory.IsFiniteMeasure
+  let : MeasureTheory.IsFiniteMeasure
       (MeasureTheory.volume.restrict (Set.uIoc (0 : ℝ) 1)) :=
     ⟨by simp⟩
   refine

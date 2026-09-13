@@ -174,14 +174,12 @@ theorem openCubeAtScale_eq_translateSet_sub {d : ℕ}
     have hcoord :
         (y - z) i - (center - z) i = y i - center i := by
       simp [sub_eq_add_neg]
-      ring
     rw [hcoord]
     exact hy i
   · intro hy i
     have hcoord :
         (y - z) i - (center - z) i = y i - center i := by
       simp [sub_eq_add_neg]
-      ring
     rw [← hcoord]
     exact hy i
 

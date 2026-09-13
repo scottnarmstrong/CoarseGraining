@@ -61,8 +61,10 @@ theorem HasWeakPartialDerivOn.comp_convexApproxSample
     simp
   have hψ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψ := by
     have hinner : ContDiff ℝ (⊤ : ℕ∞) (fun y : Vec d => a⁻¹ • (y - b)) := by
-      simpa [a, b] using
-        (contDiff_const.smul (contDiff_id.sub contDiff_const))
+      have h1 : ContDiff ℝ (⊤ : ℕ∞) (fun _ : Vec d => a⁻¹) := contDiff_const
+      have h2 : ContDiff ℝ (⊤ : ℕ∞) (fun y : Vec d => y - b) :=
+        contDiff_id.sub contDiff_const
+      exact h1.smul h2
     simpa [ψ, hψ_eq] using contDiff_const.mul (hφ_smooth.comp hinner)
   have hψ_compact : HasCompactSupport ψ := by
     let e : Homeomorph (Vec d) (Vec d) :=
@@ -73,7 +75,7 @@ theorem HasWeakPartialDerivOn.comp_convexApproxSample
     have hmul :
         HasCompactSupport
           (fun y : Vec d => (fun _ : Vec d => c) y * (fun y : Vec d => φ (a⁻¹ • (y - b))) y) := by
-      simpa using (HasCompactSupport.mul_left (f := fun _ : Vec d => c) hbase)
+      simpa using! (HasCompactSupport.mul_left (f := fun _ : Vec d => c) hbase)
     simpa [ψ, hψ_eq] using hmul
   have hψ_subV : tsupport ψ ⊆ V := by
     intro y hy
@@ -117,8 +119,10 @@ theorem HasWeakPartialDerivOn.comp_convexApproxSample
     have hbase_smooth :
         ContDiff ℝ 1 (fun t : Vec d => φ (a⁻¹ • (t - b))) := by
       have hinner : ContDiff ℝ 1 (fun t : Vec d => a⁻¹ • (t - b)) := by
-        simpa [sub_eq_add_neg] using
-          (contDiff_const.smul (contDiff_id.sub contDiff_const))
+        have h1 : ContDiff ℝ 1 (fun _ : Vec d => a⁻¹) := contDiff_const
+        have h2 : ContDiff ℝ 1 (fun t : Vec d => t - b) :=
+          contDiff_id.sub contDiff_const
+        exact h1.smul h2
       exact (hφ_smooth.of_le (by simp)).comp hinner
     have hbase_diff : DifferentiableAt ℝ (fun t : Vec d => φ (a⁻¹ • (t - b))) y :=
       (hbase_smooth.contDiffAt).differentiableAt (by simp)
@@ -148,7 +152,7 @@ theorem HasWeakPartialDerivOn.comp_convexApproxSample
       change (fderiv ℝ ψ y) (basisVec i) = c * (a⁻¹ * dφ (a⁻¹ • (y - b)))
       rw [hderiv]
       rw [hderiv_base]
-      simp [dφ, ContinuousLinearMap.smul_apply, mul_assoc, smul_smul]
+      simp [dφ, mul_assoc, smul_smul]
     let g : ℝ := dφ (a⁻¹ • (y - b))
     calc
       dψ y = c * ((a⁻¹) * g) := hcoord
@@ -178,13 +182,13 @@ theorem HasWeakPartialDerivOn.comp_convexApproxSample
       ∫ y in U, u y * dψ y ∂MeasureTheory.volume =
         ∫ y in V, u y * dψ y ∂MeasureTheory.volume := by
     exact
-      MeasureTheory.setIntegral_eq_of_subset_of_forall_diff_eq_zero
+      MeasureTheory.setIntegral_eq_of_subset_of_forall_sdiff_eq_zero
         hU.1.measurableSet hV_sub (fun y hy => by simp [hdψ_zero y hy])
   have hright_restrict :
       ∫ y in U, gi y * ψ y ∂MeasureTheory.volume =
         ∫ y in V, gi y * ψ y ∂MeasureTheory.volume := by
     exact
-      MeasureTheory.setIntegral_eq_of_subset_of_forall_diff_eq_zero
+      MeasureTheory.setIntegral_eq_of_subset_of_forall_sdiff_eq_zero
         hU.1.measurableSet hV_sub (fun y hy => by simp [hψ_value_zero y hy])
   have hleft_change :
       ∫ y in V, u y * dψ y ∂MeasureTheory.volume =
@@ -338,7 +342,7 @@ theorem quasiMeasurePreserving_convexApproxSample
       MeasureTheory.MeasurePreserving (fun x : Vec d => x + b)
         MeasureTheory.volume MeasureTheory.volume :=
     MeasureTheory.measurePreserving_add_right MeasureTheory.volume b
-  simpa [convexApproxSample, a, b, Function.comp] using
+  simpa [convexApproxSample, a, b, Function.comp] using!
     hadd.quasiMeasurePreserving.comp hsmul
 
 theorem quasiMeasurePreserving_convexApproxSample_prod
@@ -350,10 +354,16 @@ theorem quasiMeasurePreserving_convexApproxSample_prod
       ((MeasureTheory.volume.restrict U).prod (MeasureTheory.volume.restrict (tsupport ρ)))
       MeasureTheory.volume := by
   refine MeasureTheory.QuasiMeasurePreserving.prod_of_left ?_ ?_
-  · simpa [convexApproxSample] using
-      ((measurable_const.smul measurable_fst).add
-        (measurable_const.smul
-          ((measurable_const.sub (measurable_const.smul measurable_snd)))))
+  · have h1 : Measurable (fun p : Vec d × Vec d => (1 - ε) • p.1) :=
+      (measurable_const : Measurable (fun _ : Vec d × Vec d => (1 - ε))).smul measurable_fst
+    have h2 : Measurable (fun p : Vec d × Vec d => r • p.2) :=
+      (measurable_const : Measurable (fun _ : Vec d × Vec d => r)).smul measurable_snd
+    have h3 : Measurable (fun p : Vec d × Vec d => x0 - r • p.2) :=
+      (measurable_const : Measurable (fun _ : Vec d × Vec d => x0)).sub h2
+    have h4 : Measurable (fun p : Vec d × Vec d => ε • (x0 - r • p.2)) :=
+      (measurable_const : Measurable (fun _ : Vec d × Vec d => ε)).smul h3
+    show Measurable (fun p : Vec d × Vec d => convexApproxSample x0 p.2 r ε p.1)
+    exact h1.add h4
   · refine Filter.Eventually.of_forall ?_
     intro z
     exact
@@ -427,7 +437,7 @@ theorem aestronglyMeasurable_kernel_mul_indicator_comp_convexApproxSample_prod_m
   have hψ_meas :
       MeasureTheory.AEStronglyMeasurable (fun p : Vec d × Vec d => ψ p.1) (μψ.prod μρ) :=
     (hψ.comp continuous_fst).aestronglyMeasurable
-  simpa [mul_assoc] using hρ_meas.mul (hcomp.mul hψ_meas)
+  simpa [mul_assoc] using! hρ_meas.mul (hcomp.mul hψ_meas)
 
 theorem integrable_kernel_mul_indicator_comp_convexApproxSample_prod_mul_of_integrableOn
     {d : ℕ} {U : Set (Vec d)} (hU : IsOpenBoundedConvexDomain U)
@@ -483,9 +493,9 @@ theorem integrable_kernel_mul_indicator_comp_convexApproxSample_prod_mul_of_inte
       have hbound_volume :
           MeasureTheory.Integrable (fun z => bound z) MeasureTheory.volume := by
         have hcont : Continuous (fun z => bound z) := by
-          simpa [bound] using hρ.continuous.mul continuous_const
+          simpa [bound] using! hρ.continuous.mul continuous_const
         have hcomp : HasCompactSupport (fun z => bound z) := by
-          simpa [bound] using
+          simpa [bound] using!
             (hρ.compactSupport.mul_right :
               HasCompactSupport (fun z => ρ z * (Cψ * ((a ^ d)⁻¹ * Cu)))
             )
@@ -636,10 +646,16 @@ theorem integrable_kernel_mul_indicator_comp_convexApproxSample_prod_mul_of_loca
   have hK_compact : IsCompact K := by
     exact hψ_compact.isCompact.prod hρ.compactSupport.isCompact
   have hcont_sample_prod : Continuous (fun p : Vec d × Vec d => convexApproxSample x0 p.2 r ε p.1) := by
-    simpa [convexApproxSample] using
-      (continuous_const.smul continuous_fst).add
-        (continuous_const.smul
-          (continuous_const.sub (continuous_const.smul continuous_snd)))
+    have h1 : Continuous (fun p : Vec d × Vec d => (1 - ε) • p.1) :=
+      (continuous_const : Continuous (fun _ : Vec d × Vec d => (1 - ε))).smul continuous_fst
+    have h2 : Continuous (fun p : Vec d × Vec d => r • p.2) :=
+      (continuous_const : Continuous (fun _ : Vec d × Vec d => r)).smul continuous_snd
+    have h3 : Continuous (fun p : Vec d × Vec d => x0 - r • p.2) :=
+      (continuous_const : Continuous (fun _ : Vec d × Vec d => x0)).sub h2
+    have h4 : Continuous (fun p : Vec d × Vec d => ε • (x0 - r • p.2)) :=
+      (continuous_const : Continuous (fun _ : Vec d × Vec d => ε)).smul h3
+    show Continuous (fun p : Vec d × Vec d => convexApproxSample x0 p.2 r ε p.1)
+    exact h1.add h4
   have hW_compact : IsCompact W := by
     exact hK_compact.image hcont_sample_prod
   have hW_sub : W ⊆ U := by

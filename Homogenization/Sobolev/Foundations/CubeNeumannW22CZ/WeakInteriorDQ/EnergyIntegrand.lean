@@ -126,7 +126,7 @@ theorem integral_half_main_le_rhs_add_error_of_add_energy_identity
     linarith
   have hneg_int : MeasureTheory.IntegrableOn (fun x => -c x) V := hc.neg
   have hhalf_int : MeasureTheory.IntegrableOn (fun x => m x / 2) V := by
-    simpa [div_eq_mul_inv, mul_comm] using hm.const_mul ((2 : ℝ)⁻¹)
+    simpa [div_eq_mul_inv, mul_comm] using! hm.const_mul ((2 : ℝ)⁻¹)
   have hbound_int : MeasureTheory.IntegrableOn (fun x => m x / 2 + e x) V :=
     hhalf_int.add he
   have hmono := MeasureTheory.integral_mono_ae hneg_int hbound_int hpoint
@@ -181,7 +181,7 @@ theorem integral_half_main_le_scalar_rhs_add_error_of_add_energy_identity
     linarith
   have hneg_int : MeasureTheory.IntegrableOn (fun x => -c x) V := hc.neg
   have hhalf_int : MeasureTheory.IntegrableOn (fun x => m x / 2) V := by
-    simpa [div_eq_mul_inv, mul_comm] using hm.const_mul ((2 : ℝ)⁻¹)
+    simpa [div_eq_mul_inv, mul_comm] using! hm.const_mul ((2 : ℝ)⁻¹)
   have hbound_int : MeasureTheory.IntegrableOn (fun x => m x / 2 + e x) V :=
     hhalf_int.add he
   have hmono := MeasureTheory.integral_mono_ae hneg_int hbound_int hpoint
@@ -220,15 +220,15 @@ theorem neg_integral_mul_le_half_integral_sq_add_half_integral_sq_of_memScalarL2
   have hneg : MeasureTheory.IntegrableOn (fun x => -(F x * G x)) U :=
     hFG.neg
   have hFsq : MeasureTheory.IntegrableOn (fun x => F x ^ 2) U := by
-    simpa [pow_two, MeasureTheory.IntegrableOn, volumeMeasureOn] using
+    simpa [pow_two, MeasureTheory.IntegrableOn, volumeMeasureOn] using!
       hF.integrable_mul hF
   have hGsq : MeasureTheory.IntegrableOn (fun x => G x ^ 2) U := by
-    simpa [pow_two, MeasureTheory.IntegrableOn, volumeMeasureOn] using
+    simpa [pow_two, MeasureTheory.IntegrableOn, volumeMeasureOn] using!
       hG.integrable_mul hG
   have hFhalf : MeasureTheory.IntegrableOn (fun x => F x ^ 2 / 2) U := by
-    simpa [div_eq_mul_inv, mul_comm] using hFsq.const_mul ((2 : ℝ)⁻¹)
+    simpa [div_eq_mul_inv, mul_comm] using! hFsq.const_mul ((2 : ℝ)⁻¹)
   have hGhalf : MeasureTheory.IntegrableOn (fun x => G x ^ 2 / 2) U := by
-    simpa [div_eq_mul_inv, mul_comm] using hGsq.const_mul ((2 : ℝ)⁻¹)
+    simpa [div_eq_mul_inv, mul_comm] using! hGsq.const_mul ((2 : ℝ)⁻¹)
   have hright :
       MeasureTheory.IntegrableOn (fun x => F x ^ 2 / 2 + G x ^ 2 / 2) U :=
     hFhalf.add hGhalf
@@ -285,10 +285,10 @@ theorem neg_integral_mul_le_two_integral_sq_add_eighth_integral_sq_of_memScalarL
   have hneg : MeasureTheory.IntegrableOn (fun x => -(F x * G x)) U :=
     hFG.neg
   have hFsq : MeasureTheory.IntegrableOn (fun x => F x ^ 2) U := by
-    simpa [pow_two, MeasureTheory.IntegrableOn, volumeMeasureOn] using
+    simpa [pow_two, MeasureTheory.IntegrableOn, volumeMeasureOn] using!
       hF.integrable_mul hF
   have hGsq : MeasureTheory.IntegrableOn (fun x => G x ^ 2) U := by
-    simpa [pow_two, MeasureTheory.IntegrableOn, volumeMeasureOn] using
+    simpa [pow_two, MeasureTheory.IntegrableOn, volumeMeasureOn] using!
       hG.integrable_mul hG
   have hFtwo : MeasureTheory.IntegrableOn (fun x => (2 : ℝ) * F x ^ 2) U :=
     hFsq.const_mul (2 : ℝ)
@@ -338,7 +338,7 @@ theorem integrableOn_mul_left_of_continuous_hasCompactSupport
   have hF_int :
       MeasureTheory.Integrable F (volumeMeasureOn V) := by
     simpa [MeasureTheory.IntegrableOn, volumeMeasureOn] using hF
-  simpa [MeasureTheory.IntegrableOn, volumeMeasureOn, Pi.mul_apply] using
+  simpa [MeasureTheory.IntegrableOn, volumeMeasureOn, Pi.mul_apply] using!
     hF_int.mul_of_top_right hφ_top
 
 /-- Move an `L²` function from an interior set to a larger ambient restricted
@@ -408,7 +408,7 @@ theorem eLpNorm_comp_euclideanCoordShift_of_aestronglyMeasurable
       (μ := MeasureTheory.volume) (ν := MeasureTheory.volume)
       (p := p)
       (g := F) (f := fun x : Vec d => x + z) hF hmp
-  simpa [Function.comp, euclideanCoordShift, z] using hcomp
+  simpa [Function.comp, euclideanCoordShift, z] using! hcomp
 
 /-- Backward coordinate difference quotients are continuous on global `L²`.
 
@@ -437,7 +437,7 @@ theorem eLpNorm_backwardDifferenceQuotient_sub_le
         MeasureTheory.MeasurePreserving (fun x : Vec d => x + z)
           MeasureTheory.volume MeasureTheory.volume :=
       MeasureTheory.measurePreserving_add_right MeasureTheory.volume z
-    simpa [Δ, Function.comp, euclideanCoordShift, z] using
+    simpa [Δ, Function.comp, euclideanCoordShift, z] using!
       hΔ.comp_measurePreserving hmp
   have hshift_norm :
       MeasureTheory.eLpNorm (fun x => Δ (euclideanCoordShift (-step) i x))
@@ -465,7 +465,7 @@ theorem eLpNorm_backwardDifferenceQuotient_sub_le
         MeasureTheory.eLpNorm Δ 2 MeasureTheory.volume +
           MeasureTheory.eLpNorm (fun x => Δ (euclideanCoordShift (-step) i x))
             2 MeasureTheory.volume := by
-    simpa [sub_eq_add_neg] using
+    simpa [sub_eq_add_neg] using!
       MeasureTheory.eLpNorm_add_le
         (μ := MeasureTheory.volume) (p := (2 : ℝ≥0∞))
         hΔ hshift_meas.neg (by norm_num : (1 : ℝ≥0∞) ≤ 2)
@@ -516,7 +516,7 @@ theorem aestronglyMeasurable_backwardDifferenceQuotient_sub_of_aestronglyMeasura
         MeasureTheory.MeasurePreserving (fun x : Vec d => x + z)
           MeasureTheory.volume MeasureTheory.volume :=
       MeasureTheory.measurePreserving_add_right MeasureTheory.volume z
-    simpa [Δ, Function.comp, euclideanCoordShift, z] using
+    simpa [Δ, Function.comp, euclideanCoordShift, z] using!
       hΔ.comp_measurePreserving hmp
   have hpoint :
       (fun x =>
@@ -574,7 +574,7 @@ theorem tendsto_eLpNorm_backwardDifferenceQuotient_sub_zero
         Filter.atTop (nhds 0) := by
     simpa using ENNReal.Tendsto.const_mul hsum (Or.inr hconst_ne_top)
   exact tendsto_of_tendsto_of_tendsto_of_le_of_le
-    tendsto_const_nhds hscaled (fun n => zero_le _) hupper
+    tendsto_const_nhds hscaled (fun n => zero_le) hupper
 
 /-- If a function is supported in `U`, then its global `L²` norm is the same
 as its `L²` norm over `U`.  This is just mathlib's support-restriction lemma

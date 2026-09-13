@@ -54,7 +54,7 @@ private theorem tendsto_eLpNorm_two_of_tendsto_eLpNorm_finiteMeasure
     simpa only [zero_mul] using
       ENNReal.Tendsto.mul_const hTendsto (Or.inr hfactor_ne_top)
   exact tendsto_of_tendsto_of_tendsto_of_le_of_le
-    tendsto_const_nhds hscaled (fun _ => zero_le _) hbound
+    tendsto_const_nhds hscaled (fun _ => zero_le) hbound
 
 private theorem integral_vecDot_eq_sum_integral_coord
     {d : ℕ} {U : Set (Vec d)} {F G : Vec d → Vec d}
@@ -67,7 +67,7 @@ private theorem integral_vecDot_eq_sum_integral_coord
         ∫ x in U, ∑ i : Fin d, F x i * G x i ∂volume := by
           simp only [vecDot]
     _ = ∑ i : Fin d, ∫ x in U, F x i * G x i ∂volume := by
-      rw [integral_finset_sum]
+      rw [integral_finsetSum]
       intro i _
       exact (hF i).integrable_mul (hG i)
 
@@ -141,7 +141,7 @@ theorem weak_divergence_identity_of_w10p
   have hw_pair_vec : Tendsto
       (fun n => ∫ x in U, vecDot (w.grad x) (Dvn n x) ∂volume)
       atTop (nhds (∫ x in U, vecDot (w.grad x) (Dv x) ∂volume)) := by
-    have hsum := tendsto_finset_sum Finset.univ (fun i _ => hw_pair i)
+    have hsum := tendsto_finsetSum Finset.univ (fun i _ => hw_pair i)
     rw [show
       (fun n => ∫ x in U, vecDot (w.grad x) (Dvn n x) ∂volume) =
         fun n => ∑ i : Fin d, ∫ x in U, w.grad x i * Dvn n x i ∂volume by
@@ -156,7 +156,7 @@ theorem weak_divergence_identity_of_w10p
   have hh_pair_vec : Tendsto
       (fun n => ∫ x in U, vecDot (h x) (Dvn n x) ∂volume)
       atTop (nhds (∫ x in U, vecDot (h x) (Dv x) ∂volume)) := by
-    have hsum := tendsto_finset_sum Finset.univ (fun i _ => hh_pair i)
+    have hsum := tendsto_finsetSum Finset.univ (fun i _ => hh_pair i)
     rw [show
       (fun n => ∫ x in U, vecDot (h x) (Dvn n x) ∂volume) =
         fun n => ∑ i : Fin d, ∫ x in U, h x i * Dvn n x i ∂volume by

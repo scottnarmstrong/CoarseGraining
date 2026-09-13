@@ -87,7 +87,7 @@ theorem measureReal_upperTailEvent_finset_sum_le_exp_card_mul_add_card_mul_invPs
         (s.card : ℝ) * (psiSigma σ L)⁻¹ := by
   let Y : ι → Ω → ℝ := fun i ω => K⁻¹ * X i ω
   have h_indep_Y : iIndepFun Y μ := by
-    simpa [Y, Function.comp] using
+    simpa [Y, Function.comp] using!
       h_indep.comp (fun _ => fun x : ℝ => K⁻¹ * x)
         (fun _ => measurable_const.mul measurable_id)
   have h_meas_Y : ∀ i, Measurable (Y i) := by
@@ -191,11 +191,11 @@ theorem measureReal_absTailEvent_finset_sum_le_two_mul_exp_add_two_mul_card_mul_
         hl hl1 hL hM hconstraint
   let Xneg : ι → Ω → ℝ := fun i ω => -X i ω
   have h_indep_neg : iIndepFun Xneg μ := by
-    simpa [Xneg, Function.comp] using
+    simpa [Xneg, Function.comp] using!
       h_indep.comp (fun _ => fun x : ℝ => -x) (fun _ => measurable_neg)
   have h_meas_neg : ∀ i, Measurable (Xneg i) := by
     intro i
-    simpa [Xneg] using (h_meas i).neg
+    simpa [Xneg] using h_meas i
   have h_int_neg : ∀ i ∈ s, Integrable (Xneg i) μ := by
     intro i hi
     dsimp [Xneg]

@@ -157,12 +157,12 @@ theorem oneStepScalarWeight_mul_tauSum_le_delta_theta
     oneStepScalarWeightAtScale_nonneg hP hStruct hP4 m
   have hscalar_le :
       oneStepScalarWeightAtScale hP hStruct m ≤ 3 * sqrtθ0 := by
-    simpa [sqrtθ0] using
+    simpa [sqrtθ0] using!
       goodScale_oneStepScalarWeight_le hP hStruct hP4 hdelta_pos hdelta_le
         hgood_upper hgood_lower e he
   have htau_le :
       oneStepTauSumAtScale hP hStruct hP4 m e ≤ B * (delta * sqrtθ0) := by
-    simpa [B, sqrtθ0] using
+    simpa [B, sqrtθ0] using!
       oneStepTauSumAtScale_le hP hStruct hP4 hdelta_pos hdelta_le
         hgood_upper hgood_lower e he
   have hB_nonneg : 0 ≤ B := by

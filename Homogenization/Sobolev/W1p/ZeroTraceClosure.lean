@@ -116,7 +116,7 @@ noncomputable def ofTendstoELpNorm
       approx_support_subset := fun n => (u_n n).approx_support_subset (k n)
       tendsto_approx := by
         refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hfun_bound
-          (fun n => zero_le _) (fun n => ?_)
+          (fun n => zero_le) (fun n => ?_)
         have hsm_ψ : AEStronglyMeasurable (ψ n) μ :=
           ((u_n n).approx_smooth (k n)).continuous.aestronglyMeasurable
         have hsm_un : AEStronglyMeasurable (u_n n).toFun μ :=
@@ -137,7 +137,7 @@ noncomputable def ofTendstoELpNorm
       tendsto_approx_grad := by
         intro i
         refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds
-          (hgrad_bound i) (fun n => zero_le _) (fun n => ?_)
+          (hgrad_bound i) (fun n => zero_le) (fun n => ?_)
         have hsm_dψ : AEStronglyMeasurable
             (fun x => (fderiv ℝ (ψ n) x) (basisVec i)) μ := by
           have hcont : ContDiff ℝ (⊤ : ℕ∞)

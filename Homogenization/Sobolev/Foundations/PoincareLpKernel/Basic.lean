@@ -303,7 +303,7 @@ theorem integrableOn_prod_rieszKernel_of_isSobolevRegularDomain
       (fun z : Vec d × Vec d => rieszKernel z.1 z.2)
       (U ×ˢ U) (MeasureTheory.volume.prod MeasureTheory.volume) := by
   let μU : MeasureTheory.Measure (Vec d) := MeasureTheory.volume.restrict U
-  letI : MeasureTheory.IsFiniteMeasure μU := hU.isBoundedDomain.isFiniteMeasure_restrict_volume
+  let : MeasureTheory.IsFiniteMeasure μU := hU.isBoundedDomain.isFiniteMeasure_restrict_volume
   set M : ℝ :=
     (d : ℝ) * (MeasureTheory.volume (Metric.ball (0 : Vec d) 1)).toReal *
       (4 * Classical.choose hU.isBoundedDomain)

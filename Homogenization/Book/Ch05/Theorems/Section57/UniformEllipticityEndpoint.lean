@@ -318,7 +318,7 @@ theorem unitEllipticityObservable_isBigO
       (gammaSigmaUnitEllipticityObservable hP hStruct
         hInf.params.sUpper hInf.params.sLower)
       hInf.thetaHat := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   change IsBigOWith P (gammaSigma σ)
     (fun a : RegCoeffField d =>
       |gammaSigmaUnitEllipticityObservable hP hStruct

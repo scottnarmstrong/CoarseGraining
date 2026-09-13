@@ -58,7 +58,7 @@ theorem integral_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_aemeas : AEMeasurable (Y (cubeSet (originCube d n))) P := by
-    simpa [Y] using hX0_aemeas.sub measurable_const.aemeasurable
+    simpa [Y] using! hX0_aemeas.sub measurable_const.aemeasurable
   have hY0Lp_int :
       Integrable (fun a => |Y (cubeSet (originCube d n)) a| ^ p) P := by
     simpa [Y, μ0, restrictionCenteredOriginObservable] using hX0Lp_int
@@ -99,7 +99,7 @@ theorem integral_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_
   have hZ_aemeas :
       ∀ R ∈ descendantsAtScale Q n, AEMeasurable (Z R) P := by
     intro R hR
-    simpa [Z] using (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
+    simpa [Z] using! (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
   have hZ_int :
       ∀ R ∈ descendantsAtScale Q n,
         Integrable (fun a => |Z R a| ^ p) P := by
@@ -127,7 +127,7 @@ theorem integral_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_
               (cubeSet (originCube d n)) := by
               simp [hscaleR]
     have hYR_aemeas : AEMeasurable (Y (cubeSet R)) P := by
-      simpa [Y] using (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
+      simpa [Y] using! (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
     have hmap :
         Measure.map (Y (cubeSet R)) P =
           Measure.map (Y (cubeSet (originCube d n))) P := by
@@ -213,7 +213,7 @@ theorem integral_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_
               (cubeSet (originCube d n)) := by
               simp [hscaleR]
     have hYR_aemeas : AEMeasurable (Y (cubeSet R)) P := by
-      simpa [Y] using (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
+      simpa [Y] using! (hX_desc_aemeas R hR).sub measurable_const.aemeasurable
     have hmap :
         Measure.map (Y (cubeSet R)) P =
           Measure.map (Y (cubeSet (originCube d n))) P := by
@@ -250,7 +250,7 @@ theorem integral_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_
     simp [S]
   have hS_memLp : MemLp S (p : ENNReal) P := by
     dsimp [S]
-    refine memLp_finset_sum _ ?_
+    refine memLp_finsetSum _ ?_
     intro R hR
     refine (integrable_norm_rpow_iff
       (hZ_aemeas R hR).aestronglyMeasurable
@@ -366,7 +366,7 @@ theorem integral_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_aemeas : AEMeasurable (Y (cubeSet (originCube d n))) P := by
-    simpa [Y] using hX0_aemeas.sub measurable_const.aemeasurable
+    simpa [Y] using! hX0_aemeas.sub measurable_const.aemeasurable
   have hY0Lp_int :
       Integrable (fun a => |Y (cubeSet (originCube d n)) a| ^ p) P := by
     simpa [Y, μ0, restrictionCenteredOriginObservable] using hX0Lp_int
@@ -447,7 +447,7 @@ theorem integral_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_
               (cubeSet (originCube d n)) := by
               simp [hscaleR]
     have hYR_aemeas : AEMeasurable (Y (cubeSet R)) P := by
-      simpa [Y] using
+      simpa [Y] using!
         (hX_desc_aemeas R (by simpa [D] using hR)).sub measurable_const.aemeasurable
     have hmap :
         Measure.map (Y (cubeSet R)) P =
@@ -534,7 +534,7 @@ theorem integral_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_
               (cubeSet (originCube d n)) := by
               simp [hscaleR]
     have hYR_aemeas : AEMeasurable (Y (cubeSet R)) P := by
-      simpa [Y] using
+      simpa [Y] using!
         (hX_desc_aemeas R (by simpa [D] using hR)).sub measurable_const.aemeasurable
     have hmap :
         Measure.map (Y (cubeSet R)) P =
@@ -608,7 +608,7 @@ theorem integral_abs_restrictionCenteredDescendantAverageOnCube_pow_rpow_inv_le_
     simp [S]
   have hS_memLp : MemLp S (p : ENNReal) P := by
     dsimp [S]
-    refine memLp_finset_sum _ ?_
+    refine memLp_finsetSum _ ?_
     intro R hR
     refine (integrable_norm_rpow_iff
       (hZ_aemeas R hR).aestronglyMeasurable

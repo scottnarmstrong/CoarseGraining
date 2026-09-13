@@ -227,7 +227,7 @@ theorem measureReal_shiftedHighTopBadScaleEvent_quenchedProbeEnvelope_le_interpo
   dsimp only
   intro ht htb hαt hαb hαharm hDen hDen_high hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -319,7 +319,7 @@ theorem measureReal_shiftedHighTopBadScaleEvent_quenchedProbeEnvelope_le_interpo
         hσ_pos params hCfluct hCentry ha hpair
         (t := t) (αbad := αbad)
         hP hStruct hΓ hσ_eq hparams (q := q)
-    simpa [K, N0, Hshift, S, b, L, c, τ, Aold, ρ, w] using
+    simpa [K, N0, Hshift, S, b, L, c, τ, Aold, ρ, w] using!
       htop ht hαt hαb hαharm hAold_one
   have hw_pos : 0 < w := by
     dsimp [w]
@@ -435,7 +435,7 @@ theorem measureReal_shiftedCrudeBottomBadScaleEvent_quenchedProbeEnvelope_le_int
   dsimp only
   intro ha ht hαt hDen hDen_crude hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P

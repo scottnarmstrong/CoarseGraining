@@ -373,7 +373,7 @@ theorem isBigOWith_gammaSigma_finset_sum_of_iIndepFun_of_isBigO_of_integral_eq_z
       (gammaSigmaHeavyTailConst σ * Real.sqrt (s.card : ℝ) * K) := by
   let Y : ι → Ω → ℝ := fun i ω => K⁻¹ * X i ω
   have h_indep_Y : iIndepFun Y μ := by
-    simpa [Y, Function.comp] using
+    simpa [Y, Function.comp] using!
       h_indep.comp (fun _ => fun x : ℝ => K⁻¹ * x)
         (fun _ => measurable_const.mul measurable_id)
   have h_meas_Y : ∀ i, Measurable (Y i) := by
@@ -475,11 +475,11 @@ theorem isBigO_gammaSigma_finset_sum_of_iIndepFun_of_isBigO_of_integral_eq_zero_
         (A := A) (σ := σ)).1 hone hCt
   let Xneg : ι → Ω → ℝ := fun i ω => -X i ω
   have h_indep_neg : iIndepFun Xneg μ := by
-    simpa [Xneg, Function.comp] using
+    simpa [Xneg, Function.comp] using!
       h_indep.comp (fun _ => fun x : ℝ => -x) (fun _ => measurable_neg)
   have h_meas_neg : ∀ i, Measurable (Xneg i) := by
     intro i
-    simpa [Xneg] using (h_meas i).neg
+    simpa [Xneg] using h_meas i
   have hX_neg : ∀ i ∈ s, IsBigO μ (gammaSigma σ) (Xneg i) K := by
     intro i hi
     simpa [Xneg] using (hX i hi).neg

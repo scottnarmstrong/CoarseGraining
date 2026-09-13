@@ -610,7 +610,7 @@ theorem ScalarSolutionComparisonGenuineDualityEstimateSharpLoss.to_halfExponentS
     simpa [Gc, constantCoeffField] using
       memVectorL2_matVecMul_of_isEllipticFieldOn hEll hwMem
   have hGfMem : MemVectorL2 (cubeSet Q) Gf := by
-    simpa [Gf, Gc] using hGcMem.add hF
+    simpa [Gf, Gc] using! hGcMem.add hF
   have hGc_embed :
       cubeBesovNegativeVectorSeminormTwo Q s Gc ≤
         besovExponentLossGap s t *
@@ -744,7 +744,7 @@ theorem ScalarSolutionComparisonGenuineDualityEstimateSharpLoss.to_exponentLoss
     simpa [Gc, constantCoeffField] using
       memVectorL2_matVecMul_of_isEllipticFieldOn hEll hwMem
   have hGfMem : MemVectorL2 (cubeSet Q) Gf := by
-    simpa [Gf, Gc] using hGcMem.add hF
+    simpa [Gf, Gc] using! hGcMem.add hF
   have hGc_embed :
       cubeBesovNegativeVectorSeminormTwo Q s Gc ≤
         besovExponentLossGap s t *

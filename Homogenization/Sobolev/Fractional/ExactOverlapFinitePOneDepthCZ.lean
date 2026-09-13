@@ -90,7 +90,7 @@ private theorem eLpNorm_rpow_eq_lintegral_enorm {α E : Type*}
     (q : FiniteLpExponent) (μ : Measure α) (f : α → E) :
     (eLpNorm f q.exponent μ) ^ q.exponent.toReal =
       ∫⁻ x, ‖f x‖ₑ ^ q.exponent.toReal ∂μ := by
-  rw [eLpNorm_eq_lintegral_rpow_enorm
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
     (zero_lt_one.trans q.one_lt).ne' q.lt_top.ne, ← ENNReal.rpow_mul]
   have hq : q.exponent.toReal ≠ 0 :=
     ENNReal.toReal_pos (zero_lt_one.trans q.one_lt).ne' q.lt_top.ne |>.ne'
@@ -166,7 +166,7 @@ private theorem exactOverlapFiniteP_residual_rpow_le
   have hdiff : MemLp (fun x => HilbertVec.ofVec
       (w.toH1Function.grad x - v.toH1Function.grad x)) q.exponent
       (normalizedCubeMeasure (originCube d m)) := by
-    simpa only [map_sub] using hwq.sub hvq
+    simpa only [map_sub] using! hwq.sub hvq
   have hglobal := cubeEuclideanPositiveBesovOverlapDepthENorm_le_global
     (originCube d m) q (fun x => w.toH1Function.grad x - v.toH1Function.grad x) j hdiff
   have hglobal_pow := ENNReal.rpow_le_rpow hglobal
@@ -276,7 +276,7 @@ private theorem exactOverlapFiniteP_smooth_rpow_le
           (P.coordDerivConstant / ell) ^ 2)) ^ (r / 2) =
         (ENNReal.ofReal ((3 ^ d : ℝ) *
           (smoothOverlapPartitionDerivativeConstant d) ^ 2)) ^ (r / 2) := by
-    simpa only [P] using overlap_scale_rpow_cancellation
+    simpa only [P] using! overlap_scale_rpow_cancellation
       (a := (3 ^ d : ℝ)) (D := smoothOverlapPartitionDerivativeConstant d)
       (ell := ell) (r := r) (by positivity) hell ENNReal.toReal_nonneg
   calc

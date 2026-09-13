@@ -355,7 +355,7 @@ private theorem aestronglyMeasurable_hessianRow_cell
         (cubeDirichletOddReflectionHessianRowCellVectorField Q choice i R x))
       (MeasureTheory.volume.restrict
         (openCubeSet (cubeFaceReflectionCellCube Q choice))) := by
-    simpa only [cubeDirichletOddReflectionHessianRowCellVectorField] using
+    simpa only [cubeDirichletOddReflectionHessianRowCellVectorField] using!
       (HilbertVec.ofVecL d).continuous.comp_aestronglyMeasurable
         (hlinear.const_smul
           (cubeDirichletOddReflectionMixedCellSign choice i))

@@ -225,7 +225,7 @@ private theorem diagonal_gap_operatorNormSq_le_thetaSq
             match α with
             | Sum.inl _ => (Real.sqrt bm)⁻¹ * bell * (Real.sqrt bm)⁻¹
             | Sum.inr _ => Real.sqrt cm * cell⁻¹ * Real.sqrt cm) := by
-      simpa [Dm, Aell, bm, cm, bell, cell] using hell_diag
+      simpa [Dm, Aell, bm, cm, bell, cell] using! hell_diag
     rw [hAell, hAm]
     ext α β
     by_cases hαβ : α = β
@@ -580,7 +580,7 @@ theorem fullBlockNormalizedFluctuationOperatorNormSqAtScale_integral_le_geometri
           Real.rpow (3 : ℝ) (-(d : ℝ) * ((j - ell : ℕ) : ℝ)) +
         fluctuationOneScaleThetaConst d *
           (thetaAtScale hP hStruct (ell : ℤ) - 1) ^ (2 : ℕ) := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d (j : ℤ)
   let Fm : RegCoeffField d → ℝ :=
     fun a =>

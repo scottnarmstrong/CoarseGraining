@@ -107,8 +107,11 @@ private theorem ae_restrictedVolume_of_ae_normalizedVolume {d : ℕ} {m : ℤ}
     (hFG : F =ᵐ[(centeredCubeDomain d m).normalizedVolume] G) :
     F =ᵐ[(centeredCubeDomain d m).restrictedVolume] G := by
   rw [BoundedMeasurableDomain.normalizedVolume] at hFG
-  exact (Measure.ae_smul_measure_iff
-    (ENNReal.inv_ne_zero.mpr (centeredCubeDomain d m).volume_ne_top)).mp hFG
+  unfold Filter.EventuallyEq at hFG ⊢
+  rw [ae_iff] at hFG ⊢
+  rw [Measure.smul_apply, smul_eq_mul, mul_eq_zero,
+    or_iff_right (ENNReal.inv_ne_zero.mpr (centeredCubeDomain d m).volume_ne_top)] at hFG
+  exact hFG
 
 /-- The physical integrand is invariant under normalized-volume a.e.
 replacement of the field. -/
@@ -215,19 +218,19 @@ theorem map_centeredCubePairDilation_productMeasure {d : ℕ} (m : ℤ) :
         (centeredCubeEuclideanHsProductMeasure d 0) =
       ENNReal.ofReal (((centeredCubeScale m) ^ d)⁻¹) •
         centeredCubeEuclideanHsProductMeasure d m := by
-  letI : IsFiniteMeasure (cubeMeasure (originCube d 0)) :=
+  let : IsFiniteMeasure (cubeMeasure (originCube d 0)) :=
     ⟨lt_top_iff_ne_top.2 (cubeMeasure_apply_univ_ne_top (originCube d 0))⟩
-  letI : IsFiniteMeasure (cubeMeasure (originCube d m)) :=
+  let : IsFiniteMeasure (cubeMeasure (originCube d m)) :=
     ⟨lt_top_iff_ne_top.2 (cubeMeasure_apply_univ_ne_top (originCube d m))⟩
-  letI : SFinite (centeredCubeDomain d 0).normalizedVolume := by
+  let : SFinite (centeredCubeDomain d 0).normalizedVolume := by
     rw [centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
     infer_instance
-  letI : SFinite (centeredCubeDomain d 0).restrictedVolume := by
+  let : SFinite (centeredCubeDomain d 0).restrictedVolume := by
     rw [centeredCubeDomain,
       cubeBoundedMeasurableDomain_restrictedVolume_eq_cubeMeasure]
     infer_instance
-  letI : SFinite (centeredCubeDomain d m).restrictedVolume := by
+  let : SFinite (centeredCubeDomain d m).restrictedVolume := by
     rw [centeredCubeDomain,
       cubeBoundedMeasurableDomain_restrictedVolume_eq_cubeMeasure]
     infer_instance

@@ -19,9 +19,9 @@ theorem ae_eq_zero_of_isPotentialZeroTraceOn_of_isSolenoidalOn
     (hw : IsPotentialZeroTraceOn (cubeSet Q) w)
     (hsol : IsSolenoidalOn (cubeSet Q) w) :
     w =ᵐ[volumeMeasureOn (cubeSet Q)] (0 : Vec d → Vec d) := by
-  letI : Fact (MeasureTheory.volume (cubeSet Q) < ⊤) :=
+  let : Fact (MeasureTheory.volume (cubeSet Q) < ⊤) :=
     ⟨volume_cubeSet_lt_top Q⟩
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) := by
     change MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict (cubeSet Q))
     infer_instance
   rcases hw with ⟨u, hgrad⟩

@@ -662,11 +662,11 @@ theorem upperFace_reflectedWeakEquationOnUnion_of_compactSupport
         upperFaceReflectedForcingIntegrand Q i F φ x
           ∂MeasureTheory.volume := by
   let ψ : Vec d → ℝ := fun z => φ (cubeUpperFaceReflection Q i z)
-  letI : MeasureTheory.IsFiniteMeasure
+  let : MeasureTheory.IsFiniteMeasure
       (MeasureTheory.volume.restrict (openCubeSet Q)) :=
     (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   have hψ : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-    simpa [ψ, cubeUpperFaceReflection] using
+    simpa [ψ, cubeUpperFaceReflection] using!
       hφ.comp (contDiff_coordFaceReflection (cubeUpperFaceCoord Q i) i)
   have hψs : HasCompactSupport ψ := by
     simpa [ψ] using hasCompactSupport_comp_cubeUpperFaceReflection hφs Q i
@@ -717,7 +717,7 @@ theorem upperFace_reflectedWeakEquationOnUnion_of_compactSupport
       MeasureTheory.Integrable
         (fun x => F x * φ (cubeUpperFaceReflection Q i x))
         (MeasureTheory.volume.restrict (openCubeSet Q)) := by
-    simpa [ψ] using hF.integrable_mul hψL2
+    simpa [ψ] using! hF.integrable_mul hψL2
   exact
     W.upperFace_reflectedWeakEquationOnUnion
       i hφ hmean hgradMain hgradReflected hFint hFmain hFreflected
@@ -740,11 +740,11 @@ theorem lowerFace_reflectedWeakEquationOnUnion_of_compactSupport
         lowerFaceReflectedForcingIntegrand Q i F φ x
           ∂MeasureTheory.volume := by
   let ψ : Vec d → ℝ := fun z => φ (cubeLowerFaceReflection Q i z)
-  letI : MeasureTheory.IsFiniteMeasure
+  let : MeasureTheory.IsFiniteMeasure
       (MeasureTheory.volume.restrict (openCubeSet Q)) :=
     (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   have hψ : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-    simpa [ψ, cubeLowerFaceReflection] using
+    simpa [ψ, cubeLowerFaceReflection] using!
       hφ.comp (contDiff_coordFaceReflection (cubeLowerFaceCoord Q i) i)
   have hψs : HasCompactSupport ψ := by
     simpa [ψ] using hasCompactSupport_comp_cubeLowerFaceReflection hφs Q i
@@ -795,7 +795,7 @@ theorem lowerFace_reflectedWeakEquationOnUnion_of_compactSupport
       MeasureTheory.Integrable
         (fun x => F x * φ (cubeLowerFaceReflection Q i x))
         (MeasureTheory.volume.restrict (openCubeSet Q)) := by
-    simpa [ψ] using hF.integrable_mul hψL2
+    simpa [ψ] using! hF.integrable_mul hψL2
   exact
     W.lowerFace_reflectedWeakEquationOnUnion
       i hφ hmean hgradMain hgradReflected hFint hFmain hFreflected
@@ -815,7 +815,7 @@ theorem weakEquationOnCube_of_compactSupport
         vecDot (W.w.toH1Function.grad x) (euclideanGradient φ x)
         ∂MeasureTheory.volume =
       ∫ x in openCubeSet Q, F x * φ x ∂MeasureTheory.volume := by
-  letI : MeasureTheory.IsFiniteMeasure
+  let : MeasureTheory.IsFiniteMeasure
       (volumeMeasureOn (openCubeSet Q)) :=
     (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   let v : H1Function (openCubeSet Q) :=

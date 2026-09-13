@@ -20,7 +20,7 @@ while pointwise on `{u = c}` both truncation gradients vanish. -/
 theorem grad_ae_zero_on_level_set {d : ℕ} {U : Set (Vec d)}
     (hU : IsOpenBoundedConvexDomain U) (u : H1Function U) (c : ℝ) :
     ∀ᵐ x ∂(volumeMeasureOn U), u.toFun x = c → u.grad x = 0 := by
-  haveI : IsFiniteMeasure (volumeMeasureOn U) :=
+  have : IsFiniteMeasure (volumeMeasureOn U) :=
     hU.isBoundedDomain.isFiniteMeasure_restrict_volume
   obtain ⟨v₁, hv₁f, hv₁g⟩ := exists_h1_max_sub_const hU u c
   obtain ⟨v₂, hv₂f, hv₂g⟩ := exists_h1_max_sub_const hU (-u) (-c)
@@ -84,7 +84,7 @@ theorem grad_ae_zero_on_level_set {d : ℕ} {U : Set (Vec d)}
   have hv2 : v₂.grad x = 0 := by
     rw [h2x]
     refine Set.indicator_of_notMem ?_ _
-    simp only [Set.mem_setOf_eq, H1Function.neg_toFun, not_lt, hc, le_refl]
+    simp only [Set.mem_ofPred_eq, H1Function.neg_toFun, not_lt, hc, le_refl]
   have : u.grad x = 0 := by
     rw [← hw_grad x, ← hgx, hvgrad, hv1, hv2, sub_zero]
   exact this

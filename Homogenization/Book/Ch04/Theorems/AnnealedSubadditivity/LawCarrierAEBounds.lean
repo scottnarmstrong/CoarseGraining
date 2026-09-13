@@ -56,7 +56,7 @@ theorem coarseBlockMatrix_le_descendantsAverageBlockMat_ae
         (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun)
         (descendantsAverageBlockMat (originCube d m) (Int.toNat (m - n))
           (fun R => coarseBlockMatrix (cubeSet R) a.toFun)) := by
-  simpa using
+  simpa using!
     hP.coarseBlockMatrix_le_descendantsAverageBlockMat_cubeSet_ae
       (originCube d m) hnm
 

@@ -53,9 +53,13 @@ theorem hasDerivAt_bennettH {r : ℝ} (hr : r ≠ -1) :
   have hshift :
       HasDerivAt (fun t : ℝ => (1 + t) * Real.log (1 + t))
         (Real.log (1 + r) + 1) r := by
-    simpa [Function.comp, one_mul]
-      using hshift'
-  simpa [bennettH] using hshift.sub (hasDerivAt_id r)
+    have h2 := hshift'
+    simp only [mul_one] at h2
+    exact h2
+  have hsub := hshift.sub (hasDerivAt_id r)
+  have hval : Real.log (1 + r) + 1 - 1 = Real.log (1 + r) := by ring
+  rw [hval] at hsub
+  exact hsub
 
 theorem differentiableAt_bennettH {r : ℝ} (hr : r ≠ -1) :
     DifferentiableAt ℝ bennettH r :=
@@ -86,7 +90,9 @@ theorem deriv2_bennettH {r : ℝ} (hr : r ≠ -1) :
     have hlog' :
         HasDerivAt (Real.log ∘ HAdd.hAdd 1) ((1 + r)⁻¹ * 1) r := by
       exact (Real.hasDerivAt_log h1r).comp r ((hasDerivAt_id r).const_add 1)
-    simpa [Function.comp, one_mul] using hlog'.deriv
+    have h2 := hlog'.deriv
+    simp only [mul_one] at h2
+    exact h2
   filter_upwards [eventually_ne_nhds hr] with y hy
   exact deriv_bennettH hy
 
@@ -188,10 +194,11 @@ theorem one_quarter_sq_le_bennettH_of_mem_Icc {r : ℝ} (hr : r ∈ Set.Icc 0 1)
     have hk_deriv : deriv k x = Real.log (1 + x) - x / 2 := by
       have hsub :
           deriv k x = deriv bennettH x - deriv (fun t : ℝ => t ^ (2 : ℕ) / 4) x := by
-        simpa [k] using
-          (deriv_sub (f := bennettH) (g := fun t : ℝ => t ^ (2 : ℕ) / 4)
-            (x := x) (hf := differentiableAt_bennettH hxne)
-            (hg := (differentiableAt_id.pow 2).div_const (4 : ℝ)))
+        show deriv (bennettH - fun t : ℝ => t ^ (2 : ℕ) / 4) x =
+            deriv bennettH x - deriv (fun t : ℝ => t ^ (2 : ℕ) / 4) x
+        exact deriv_sub (f := bennettH) (g := fun t : ℝ => t ^ (2 : ℕ) / 4)
+          (x := x) (hf := differentiableAt_bennettH hxne)
+          (hg := (differentiableAt_id.pow 2).div_const (4 : ℝ))
       rw [hsub, deriv_bennettH hxne, hquad]
     have hlog_lower : x / 2 ≤ Real.log (1 + x) := by
       refine le_trans ?_ (Real.le_log_one_add_of_nonneg hx_nonneg)

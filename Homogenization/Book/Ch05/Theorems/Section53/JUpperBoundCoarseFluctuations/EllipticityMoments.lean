@@ -240,7 +240,7 @@ private theorem descendantsAverage_restrictionResponseJObservableCubeSet_mono_to
       ∀ R ∈ descendantsAtDepth Q j, F R ≤ descendantsAverage R l F := by
     intro R hR
     have hRscaleMem : R ∈ descendantsAtScale Q n := by
-      simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth Q hnm] using hR
+      simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth Q hnm] using! hR
     have hRscale : R.scale = n := scale_eq_of_mem_descendantsAtScale hRscaleMem
     have hkR : k ≤ R.scale := by simpa [hRscale] using hkn
     simpa [F, l, hRscale] using
@@ -439,7 +439,7 @@ theorem lowerPositiveExcess_responseJ_expectation_le_of_integrable
       memLp_of_integrable_nonneg_nat_pow hP4.xi_pos hLower_aemeas
         hLower_nonneg (by simpa [lowerExcess, rLower, β] using hLowerPowInt)
   have hJ_aemeas : AEMeasurable J P := by
-    simpa [J] using
+    simpa [J] using!
       hP.aemeasurable_restrictionResponseJObservableCubeSet
         (originCube d (k : ℤ)) p_e q_e
   have hJ_nonneg : ∀ᵐ a ∂P, 0 ≤ J a := by
@@ -529,7 +529,7 @@ theorem upperPositiveExcess_responseJ_expectation_le_of_integrable
       memLp_of_integrable_nonneg_nat_pow hP4.xi_pos hUpper_aemeas
         hUpper_nonneg (by simpa [upperExcess, rUpper, β] using hUpperPowInt)
   have hJ_aemeas : AEMeasurable J P := by
-    simpa [J] using
+    simpa [J] using!
       hP.aemeasurable_restrictionResponseJObservableCubeSet
         (originCube d (k : ℤ)) p_e q_e
   have hJ_nonneg : ∀ᵐ a ∂P, 0 ≤ J a := by

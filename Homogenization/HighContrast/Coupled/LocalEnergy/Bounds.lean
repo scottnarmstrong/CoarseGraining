@@ -214,18 +214,28 @@ theorem cutoffIntegrand_le {a : CoeffField d} {Θ : ℝ} {v vstar : H1Function U
   set gS := fun i => fderiv ℝ (sqCutoff η) x (basisVec i) with hgSdef
   -- squared-norm bounds
   have hnP2 : vecNormSq P.2 ≤ Msq := by
-    rw [hMsqdef]; nlinarith [mul_nonneg hΘ0 (vecNormSq_nonneg P.1)]
+    rw [hMsqdef]; exact le_add_of_nonneg_left (mul_nonneg hΘ0 (vecNormSq_nonneg P.1))
   have hnaV : vecNormSq (matVecMul (a x) V) ≤ 2 * Θ * EV := vecNormSq_image_le hA V
   have hnaVs : vecNormSq (matVecMul (matTranspose (a x)) Vstar) ≤ 2 * Θ * EVs :=
     vecNormSq_imageTranspose_le hA Vstar
   have hnaP1 : vecNormSq (matVecMul (a x) P.1) ≤ 2 * Θ * Msq := by
     have h1 := vecNormSq_image_le hA P.1
     have h2 := upperBound_symmPart_of_isEllipticMatrix hA P.1
-    rw [hMsqdef]; nlinarith [h1, h2, vecNormSq_nonneg P.2, mul_nonneg hΘ0 (vecNormSq_nonneg P.1)]
+    have h3 : 2 * Θ * vecDot P.1 (matVecMul (symmPart (a x)) P.1)
+        ≤ 2 * Θ * (Θ * vecNormSq P.1) :=
+      mul_le_mul_of_nonneg_left h2 (by linarith)
+    have h4 : 0 ≤ 2 * Θ * vecNormSq P.2 :=
+      mul_nonneg (by linarith) (vecNormSq_nonneg P.2)
+    rw [hMsqdef]; linarith [h1, h3, h4]
   have hnaTP1 : vecNormSq (matVecMul (matTranspose (a x)) P.1) ≤ 2 * Θ * Msq := by
     have h1 := vecNormSq_imageTranspose_le hA P.1
     have h2 := upperBound_symmPart_of_isEllipticMatrix hA P.1
-    rw [hMsqdef]; nlinarith [h1, h2, vecNormSq_nonneg P.2, mul_nonneg hΘ0 (vecNormSq_nonneg P.1)]
+    have h3 : 2 * Θ * vecDot P.1 (matVecMul (symmPart (a x)) P.1)
+        ≤ 2 * Θ * (Θ * vecNormSq P.1) :=
+      mul_le_mul_of_nonneg_left h2 (by linarith)
+    have h4 : 0 ≤ 2 * Θ * vecNormSq P.2 :=
+      mul_nonneg (by linarith) (vecNormSq_nonneg P.2)
+    rw [hMsqdef]; linarith [h1, h3, h4]
   -- nonnegativity of the AM–GM operands
   have hfac : 0 ≤ 4 * Kinf ^ 2 * (η x) ^ 2 * N :=
     mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) (sq_nonneg _)) (sq_nonneg _)) hN0

@@ -67,7 +67,7 @@ theorem aemeasurable_canonicalAverageGradientCubeSet
     hP.aemeasurable_coarseBlockMatrix_lowerLeft_cubeSet Q
   have hRight := aemeasurable_matVecMul_const hLowerRight q
   have hLeft := aemeasurable_matVecMul_const hLowerLeft p
-  simpa [canonicalAverageGradientCubeSet] using
+  simpa [canonicalAverageGradientCubeSet] using!
     ((aemeasurable_const.add hRight).sub hLeft)
 
 /-- The whole-cube canonical averaged flux is a.e.-measurable under the single
@@ -86,7 +86,7 @@ theorem aemeasurable_canonicalAverageFluxCubeSet
     hP.aemeasurable_coarseB_cubeSet Q
   have hRight := aemeasurable_matVecMul_const hUpperRight q
   have hLeft := aemeasurable_matVecMul_const hUpperLeft p
-  simpa [canonicalAverageFluxCubeSet] using
+  simpa [canonicalAverageFluxCubeSet] using!
     ((aemeasurable_const.add hRight).sub hLeft)
 
 /-- Finite descendant averages of canonical averaged-gradient components are

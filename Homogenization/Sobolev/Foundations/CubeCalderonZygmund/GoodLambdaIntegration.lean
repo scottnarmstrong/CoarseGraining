@@ -77,7 +77,7 @@ private theorem untruncated_weighted_layercake
   have hpow : p - 2 - 1 = p - 3 := by ring
   have hthreshold (t : Real) : {x | t < u x / a} = {x | a * t < u x} := by
     ext x
-    simp only [Set.mem_setOf_eq]
+    simp only [Set.mem_ofPred_eq]
     rw [lt_div_iff₀ ha]
     ring_nf
   rw [hpow] at hlayer
@@ -121,7 +121,7 @@ lemma low_weighted_layercake_le
         filter_upwards [self_mem_ae_restrict measurableSet_Ioo] with t ht
         have hset : {x : alpha | t < lambda0} = Set.univ := by
           ext x
-          simp only [Set.mem_setOf_eq, Set.mem_univ, iff_true]
+          simp only [Set.mem_ofPred_eq, Set.mem_univ, iff_true]
           exact ht.2
         rw [hset]
       _ <= ∫⁻ t in Set.Ioi (0 : Real),
@@ -169,7 +169,7 @@ private theorem setLIntegral_comp_mul_left
       rw [setLIntegral_map measurableSet_Ioo hH (measurable_const_mul c)]
     _ = ENNReal.ofReal c *
         ∫⁻ s in Set.Ioo (0 : Real) (R / c), H (c * s) := by
-      rw [Set.preimage_const_mul_Ioo (0 : Real) R hc, zero_div]
+      rw [Set.preimage_const_mul_Ioo₀ (0 : Real) R hc, zero_div]
 
 /-- With `t = 2 M s`, the finite self-tail integral scales by `(2 M)^(p - 2)` and
 acquires the smaller cutoff `R / (2 M)`. -/
@@ -198,17 +198,19 @@ private theorem cutoff_self_tail_eq
           ∫⁻ s in Set.Ioo (0 : Real) (R / k),
             nu {x | M * s < u x} * w s := by
     rw [← lintegral_const_mul'' _
-      (((Antitone.measurable (show Antitone
-        (fun s : Real => nu {x : alpha | M * s < u x}) from by
-          intro s t hst
-          exact measure_mono fun x hx =>
-            lt_of_le_of_lt (mul_le_mul_of_nonneg_left hst hM.le) hx)).aemeasurable).mul
-        hw.aemeasurable).restrict]
+      (show AEMeasurable (fun s => nu {x : alpha | M * s < u x} * w s)
+          (volume.restrict (Set.Ioo (0 : Real) (R / k))) from
+        (((Antitone.measurable (show Antitone
+          (fun s : Real => nu {x : alpha | M * s < u x}) from by
+            intro s t hst
+            exact measure_mono fun x hx =>
+              lt_of_le_of_lt (mul_le_mul_of_nonneg_left hst hM.le) hx)).aemeasurable).mul
+          hw.aemeasurable).restrict)]
     apply lintegral_congr_ae
     filter_upwards [self_mem_ae_restrict measurableSet_Ioo] with s hs
     have hset : {x : alpha | k * s / 2 < u x} = {x | M * s < u x} := by
       ext x
-      simp only [k, Set.mem_setOf_eq]
+      simp only [k, Set.mem_ofPred_eq]
       ring_nf
     have hrpow : (k * s) ^ (p - 3) = k ^ (p - 3) * s ^ (p - 3) :=
       Real.mul_rpow hk.le hs.1.le

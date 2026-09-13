@@ -98,11 +98,11 @@ noncomputable def hasWeakHessianOn_ofContDiff {d : ℕ} {U : Set (Vec d)}
     have hweak :
         HasWeakPartialDerivOn U j (euclideanCoordDeriv i f)
           (euclideanCoordSecondDeriv i j f) := by
-      simpa [euclideanCoordSecondDeriv] using
+      simpa [euclideanCoordSecondDeriv] using!
         (HasWeakPartialDerivOn.of_contDiff
           (U := U) (i := j) (f := euclideanCoordDeriv i f)
           ((contDiff_euclideanCoordDeriv hf i).of_le (by simp)))
-    simpa [H1Function.ofContDiff, euclideanCoordDeriv] using hweak
+    simpa [H1Function.ofContDiff, euclideanCoordDeriv] using! hweak
 
 namespace WeakPoissonEquationOn
 
@@ -162,7 +162,7 @@ theorem translate (h : WeakPoissonEquationOn U u f) (z : Vec d) :
   intro φ hφ hφs hφ_sub
   let ψ : Vec d → ℝ := fun x => φ (x + z)
   have hψ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-    simpa [ψ] using hφ.comp (contDiff_id.add contDiff_const)
+    simpa [ψ] using! hφ.comp (contDiff_id.add contDiff_const)
   have hψ_supp : HasCompactSupport ψ := by
     show HasCompactSupport (φ ∘ Homeomorph.addRight z)
     simpa [ψ, Function.comp] using hφs.comp_homeomorph (Homeomorph.addRight z)

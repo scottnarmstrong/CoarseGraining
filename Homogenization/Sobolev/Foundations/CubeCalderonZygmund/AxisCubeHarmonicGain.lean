@@ -80,7 +80,7 @@ theorem axisCube_harmonicEuclideanGradientGain
   have hparent_mem := harmonicPullback_grad_hilbert_memLp_two z hL u
   have hparent_transport := eLpNorm_axisCubeAffine_originCube_neg_nat_of_memLp
     z hL.ne' 0 2 (fun x => HilbertVec.ofVec (u.grad x)) (by
-      simpa only [axisCubeHarmonicPullback_grad] using hparent_mem)
+      simpa only [axisCubeHarmonicPullback_grad] using! hparent_mem)
   have hparent_transport' :
       eLpNorm (fun x => HilbertVec.ofVec (v.grad x)) 2
         (normalizedCubeMeasure (originCube d 0)) =

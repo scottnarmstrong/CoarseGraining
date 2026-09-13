@@ -57,8 +57,8 @@ private theorem faceReflect_line_integral_diag {v : Vec (n + 1) → ℝ}
     (∫ t, faceReflect v a j (j.insertNth t z)
           * (fderiv ℝ φ (j.insertNth t z)) (basisVec j))
       = -(∫ t, faceGrad v a j (j.insertNth t z) j * φ (j.insertNth t z)) := by
-  have hvd : Differentiable ℝ v := hv.differentiable le_rfl
-  have hvf : Continuous (fderiv ℝ v) := hv.continuous_fderiv le_rfl
+  have hvd : Differentiable ℝ v := hv.differentiable (by simp)
+  have hvf : Continuous (fderiv ℝ v) := hv.continuous_fderiv (by simp)
   have hφd : Differentiable ℝ φ := hφ.differentiable (by simp)
   have hφf : Continuous (fderiv ℝ φ) := hφ.continuous_fderiv (by simp)
   have hlineDir : Continuous (fun t : ℝ => (j.insertNth t z : Vec (n + 1))) :=
@@ -133,8 +133,8 @@ private theorem faceReflect_line_integral_offdiag {v : Vec (n + 1) → ℝ}
     (∫ t, faceReflect v a i (j.insertNth t z)
           * (fderiv ℝ φ (j.insertNth t z)) (basisVec j))
       = -(∫ t, faceGrad v a i (j.insertNth t z) j * φ (j.insertNth t z)) := by
-  have hvd : Differentiable ℝ v := hv.differentiable le_rfl
-  have hvf : Continuous (fderiv ℝ v) := hv.continuous_fderiv le_rfl
+  have hvd : Differentiable ℝ v := hv.differentiable (by simp)
+  have hvf : Continuous (fderiv ℝ v) := hv.continuous_fderiv (by simp)
   have hφd : Differentiable ℝ φ := hφ.differentiable (by simp)
   have hφf : Continuous (fderiv ℝ φ) := hφ.continuous_fderiv (by simp)
   have hlineDir : Continuous (fun t : ℝ => (j.insertNth t z : Vec (n + 1))) :=
@@ -208,8 +208,8 @@ theorem hasWeakPartialDerivOn_univ_faceReflect {v : Vec (n + 1) → ℝ}
     HasWeakPartialDerivOn Set.univ j (faceReflect v a i)
       (fun x => faceGrad v a i x j) := by
   intro φ hφ hφc _hφsub
-  have hvd : Differentiable ℝ v := hv.differentiable le_rfl
-  have hvf : Continuous (fderiv ℝ v) := hv.continuous_fderiv le_rfl
+  have hvd : Differentiable ℝ v := hv.differentiable (by simp)
+  have hvf : Continuous (fderiv ℝ v) := hv.continuous_fderiv (by simp)
   have hφf : Continuous (fderiv ℝ φ) := hφ.continuous_fderiv (by simp)
   -- integrand data
   have hEv_cont : Continuous (faceReflect v a i) := continuous_faceReflect hv.continuous a i

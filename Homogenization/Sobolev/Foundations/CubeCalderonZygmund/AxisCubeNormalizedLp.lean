@@ -34,7 +34,7 @@ theorem axisCube_eLpNorm_rpow_exponent_eq_lintegral_enorm
     (z : Vec d) (L : ℝ) (p : FiniteLpExponent) (F : Vec d → E) :
     (eLpNorm F p.exponent (axisCubeNormalizedMeasure z L)) ^ p.exponent.toReal =
       ∫⁻ x, ‖F x‖ₑ ^ p.exponent.toReal ∂axisCubeNormalizedMeasure z L := by
-  rw [eLpNorm_eq_lintegral_rpow_enorm (finiteLpExponent_exponent_ne_zero p)
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal (finiteLpExponent_exponent_ne_zero p)
     p.lt_top.ne]
   rw [← ENNReal.rpow_mul]
   have hp : p.exponent.toReal ≠ 0 :=
@@ -52,7 +52,7 @@ theorem axisCube_lintegral_enorm_rpow_eq_lintegral_ofReal_norm_rpow
   intro x
   calc
     ‖F x‖ₑ ^ p.exponent.toReal = (ENNReal.ofReal ‖F x‖) ^ p.exponent.toReal := by
-      rw [ofReal_norm_eq_enorm]
+      rw [ofReal_norm]
     _ = ENNReal.ofReal (‖F x‖ ^ p.exponent.toReal) :=
       ENNReal.ofReal_rpow_of_nonneg (norm_nonneg (F x)) ENNReal.toReal_nonneg
 

@@ -43,7 +43,7 @@ theorem map_law_eq {A : RandomCoeffField Ω d} (μ : MeasureTheory.Measure Ω)
     {β : Type*} [MeasurableSpace β] (f : CoeffField d → β) (hf : Measurable f) :
     MeasureTheory.Measure.map f (A.law μ) =
       MeasureTheory.Measure.map (fun ω => f (A ω)) μ := by
-  simpa [RandomCoeffField.law, Function.comp] using
+  simpa [RandomCoeffField.law, Function.comp] using!
     (MeasureTheory.Measure.map_map hf A.measurable (μ := μ))
 
 /-- Apply a measurable coefficient-field transform pointwise to a random
@@ -87,7 +87,7 @@ noncomputable def skewPart (A : RandomCoeffField Ω d) : RandomCoeffField Ω d :
 theorem law_map (A : RandomCoeffField Ω d) (μ : MeasureTheory.Measure Ω)
     (f : CoeffField d → CoeffField d) (hf : Measurable f) :
     (A.map f hf).law μ = MeasureTheory.Measure.map f (A.law μ) := by
-  simpa [RandomCoeffField.map] using
+  simpa [RandomCoeffField.map] using!
     (A.map_law_eq μ f hf).symm
 
 theorem law_restrictSet (A : RandomCoeffField Ω d) (μ : MeasureTheory.Measure Ω)
@@ -99,18 +99,18 @@ theorem law_restrictSet (A : RandomCoeffField Ω d) (μ : MeasureTheory.Measure 
 theorem law_translateByInt (A : RandomCoeffField Ω d) (μ : MeasureTheory.Measure Ω)
     (z : Fin d → ℤ) :
     (A.translateByInt z).law μ = MeasureTheory.Measure.map (Homogenization.translateByInt z) (A.law μ) := by
-  simpa [RandomCoeffField.translateByInt] using
+  simpa [RandomCoeffField.translateByInt] using!
     (A.map_law_eq μ (Homogenization.translateByInt z) (measurable_translateByInt z)).symm
 
 theorem law_rotate (A : RandomCoeffField Ω d) (μ : MeasureTheory.Measure Ω) (R : Mat d)
     (hR : IsSignedPermutationMatrix R) :
     (A.rotate R hR).law μ = MeasureTheory.Measure.map (rotateCoeffField R) (A.law μ) := by
-  simpa [RandomCoeffField.rotate] using
+  simpa [RandomCoeffField.rotate] using!
     (A.map_law_eq μ (rotateCoeffField R) (measurable_rotateCoeffField R hR)).symm
 
 theorem law_adjoint (A : RandomCoeffField Ω d) (μ : MeasureTheory.Measure Ω) :
     (A.adjoint).law μ = MeasureTheory.Measure.map adjointCoeffField (A.law μ) := by
-  simpa [RandomCoeffField.adjoint] using
+  simpa [RandomCoeffField.adjoint] using!
     (A.map_law_eq μ adjointCoeffField measurable_adjointCoeffField).symm
 
 theorem law_symmPart (A : RandomCoeffField Ω d) (μ : MeasureTheory.Measure Ω) :
@@ -123,6 +123,7 @@ theorem law_skewPart (A : RandomCoeffField Ω d) (μ : MeasureTheory.Measure Ω)
   simpa [RandomCoeffField.skewPart] using
     A.law_map μ skewCoeffField measurable_skewCoeffField
 
+set_option warn.classDefReducibility false in
 /-- The pointwise-local sigma-algebra on the sample space induced by a random
 coefficient field and the deterministic region `U`.  This belongs to the
 retained restriction engineering lane. -/
@@ -133,11 +134,13 @@ def pointwiseLocalSigma (A : RandomCoeffField Ω d) (U : Set (Vec d)) : Measurab
 abbrev localSigma (A : RandomCoeffField Ω d) (U : Set (Vec d)) : MeasurableSpace Ω :=
   A.pointwiseLocalSigma U
 
+set_option warn.classDefReducibility false in
 /-- The restriction sigma-algebra on the sample space induced by a random
 coefficient field and the deterministic region `U`. This is the pullback of
 `RestrictionSigma U`, hence the sigma-algebra naturally matched to pointwise
 local observables. -/
-def restrictionSigma (A : RandomCoeffField Ω d) (U : Set (Vec d)) : MeasurableSpace Ω :=
+noncomputable def restrictionSigma (A : RandomCoeffField Ω d) (U : Set (Vec d)) :
+    MeasurableSpace Ω :=
   (RestrictionSigma U).comap A
 
 theorem measurable_pointwiseLocalSigma (A : RandomCoeffField Ω d) (U : Set (Vec d)) :

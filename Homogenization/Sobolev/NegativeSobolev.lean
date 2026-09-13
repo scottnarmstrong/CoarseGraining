@@ -63,7 +63,7 @@ private theorem smoothTest_memLp_normalized (p : ENNReal) (φ : SmoothTestFuncti
     MeasureTheory.MemLp (φ : Vec d → ℝ) p (domain hU hne).normalizedVolume := by
   refine ((domain hU hne).memLp_normalizedVolume_iff p _).mpr ?_
   change MeasureTheory.MemLp (φ : Vec d → ℝ) p (MeasureTheory.volume.restrict U)
-  simpa only [SmoothCompactSupportFunction.toW1pFunction_toFun] using
+  simpa only [SmoothCompactSupportFunction.toW1pFunction_toFun] using!
     (φ.toW1pFunction hU.toOpens p).memLp
 
 omit [NeZero d] in
@@ -80,7 +80,7 @@ private theorem pairing_integrable (p : ENNReal) (hp_one : 1 < p)
     (hf : MeasureTheory.MemLp f (ENNReal.conjExponent p) (domain hU hne).normalizedVolume)
     (g : Vec d → ℝ) (hg : MeasureTheory.MemLp g p (domain hU hne).normalizedVolume) :
     MeasureTheory.Integrable (fun x => f x * g x) (domain hU hne).normalizedVolume := by
-  letI : Fact (1 ≤ p) := ⟨le_of_lt hp_one⟩
+  let : Fact (1 ≤ p) := ⟨le_of_lt hp_one⟩
   exact hf.integrable_mul hg
 
 /-- The normalized pairing `fint_U f g`.  Product integrability is derived
@@ -183,7 +183,7 @@ private noncomputable def negW1pFunction {p : ENNReal} (u : W1pFunction U p) :
     memLp := by simpa using u.memLp.neg
     gradMemLp := by
       intro i
-      simpa only [Pi.neg_apply] using (u.gradMemLp i).neg
+      simpa only [Pi.neg_apply] using! (u.gradMemLp i).neg
     hasWeakGradient := by
       intro i φ hφ_smooth hφ_compact hφ_sub
       calc
@@ -221,7 +221,10 @@ private theorem normalizedW1pSeminorm_negW1pFunction {p : ENNReal}
         fun x => euclideanNorm (u.grad x) := by
     funext x
     simp [negW1pFunction, euclideanNorm_neg]
-  simp only [hgrad]
+  exact (domain hU hne).normalizedLpNorm_congr_ae p
+    ((negW1pFunction u).gradEuclideanMemLp (domain hU hne) p)
+    (u.gradEuclideanMemLp (domain hU hne) p)
+    (Filter.Eventually.of_forall (congrFun hgrad))
 
 private theorem smoothTestSeminorm_neg (p : ENNReal) (hp_one : 1 < p) (hp_top : p ≠ ∞)
     (φ : SmoothTestFunction hU) :

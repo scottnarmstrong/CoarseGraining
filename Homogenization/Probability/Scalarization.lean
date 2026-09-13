@@ -93,7 +93,7 @@ theorem isScalarMatrix_inv {d : ℕ} {A : Mat d} (hA : IsScalarMatrix A) :
     simp [hc, hc0]
   · refine ⟨c⁻¹, ?_⟩
     rw [hc]
-    letI : Invertible c := invertibleOfNonzero hc0
+    let : Invertible c := invertibleOfNonzero hc0
     have hInv :
         (c • (1 : Mat d))⁻¹ = ⅟c • ((1 : Mat d)⁻¹) :=
       Matrix.inv_smul (A := (1 : Mat d)) c (by simp)

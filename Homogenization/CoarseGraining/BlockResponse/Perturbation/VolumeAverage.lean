@@ -26,7 +26,7 @@ theorem volumeAverage_blockResponseIntegrand_pair_half_eq_scalarResponse_sum_of_
           volumeAverage U
             (scalarResponseIntegrand U (Homogenization.adjointCoeffField a)
               (pStar + p) (qStar + q) v) := by
-  simpa [blockResponsePairHalfState] using
+  simpa [blockResponsePairHalfState] using!
     volumeAverage_blockResponseIntegrand_pair_half_eq_scalarResponse_sum_of_isEllipticFieldOn
       (a := a) hU hEll p pStar q qStar u v
 

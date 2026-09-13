@@ -5,7 +5,7 @@ import Homogenization.Sobolev.PotentialSolenoidal
 import Homogenization.Geometry.ConvexDomain
 import Mathlib.Analysis.InnerProductSpace.Dual
 import Mathlib.Topology.Algebra.Module.ClosedSubmodule
-import Mathlib.Topology.Algebra.Module.LinearMapPiProd
+import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.PiProd
 
 namespace Homogenization
 
@@ -38,12 +38,12 @@ theorem memBlockL2_blockField {d : ℕ} {U : Set (Vec d)} {f g : Vec d → Vec d
   have hf' :
       MemBlockL2 U
         (fun x => (ContinuousLinearMap.inl ℝ (Vec d) (Vec d)) (f x)) := by
-    simpa using
+    simpa using!
       (ContinuousLinearMap.inl ℝ (Vec d) (Vec d)).comp_memLp' hf
   have hg' :
       MemBlockL2 U
         (fun x => (ContinuousLinearMap.inr ℝ (Vec d) (Vec d)) (g x)) := by
-    simpa using
+    simpa using!
       (ContinuousLinearMap.inr ℝ (Vec d) (Vec d)).comp_memLp' hg
   convert hf'.add hg' using 1
   funext x
@@ -73,7 +73,7 @@ theorem memHilbertBlockL2_blockField {d : ℕ} {U : Set (Vec d)} {f g : Vec d �
     MemHilbertBlockL2 U (hilbertBlockField f g) := by
   let T : BlockVec d →L[ℝ] HilbertBlockVec d :=
     ((HilbertBlockVec.continuousLinearEquivBlockVec d).symm).toContinuousLinearMap
-  simpa [hilbertBlockField, hilbertifyBlockField] using
+  simpa [hilbertBlockField, hilbertifyBlockField] using!
     T.comp_memLp' (memBlockL2_blockField hf hg)
 
 /-- Promote a pair of vector `L²` witnesses to the Hilbert block-valued ambient
@@ -92,7 +92,7 @@ theorem memScalarL2_coord_of_memVectorL2 {d : ℕ} {U : Set (Vec d)}
     {f : Vec d → Vec d} (hf : MemVectorL2 U f) (i : Fin d) :
     MemScalarL2 U (fun x => f x i) := by
   let pi : Vec d →L[ℝ] ℝ := ContinuousLinearMap.proj i
-  simpa [MemScalarL2, MemVectorL2, volumeMeasureOn] using pi.comp_memLp' hf
+  simpa [MemScalarL2, MemVectorL2, volumeMeasureOn] using! pi.comp_memLp' hf
 
 theorem integrableOn_vecDot_of_memVectorL2 {d : ℕ} {U : Set (Vec d)}
     {f g : Vec d → Vec d} (hf : MemVectorL2 U f) (hg : MemVectorL2 U g) :
@@ -100,7 +100,7 @@ theorem integrableOn_vecDot_of_memVectorL2 {d : ℕ} {U : Set (Vec d)}
   have hsum :
       MeasureTheory.IntegrableOn (fun x => ∑ i, f x i * g x i) U := by
     simpa [MeasureTheory.IntegrableOn, volumeMeasureOn] using
-      (MeasureTheory.integrable_finset_sum
+      (MeasureTheory.integrable_finsetSum
         (μ := volumeMeasureOn U)
         Finset.univ
         (fun i _ =>
@@ -157,7 +157,7 @@ theorem const_isSolenoidalOn_of_isSobolevRegularDomain
         ∫ x in U, ∑ i, q i * φ.toH1Function.grad x i ∂MeasureTheory.volume := by
           simp [vecDot]
     _ = ∑ i, ∫ x in U, q i * φ.toH1Function.grad x i ∂MeasureTheory.volume := by
-          rw [MeasureTheory.integral_finset_sum]
+          rw [MeasureTheory.integral_finsetSum]
           intro i hi
           have hbase :
               MeasureTheory.Integrable
@@ -744,7 +744,7 @@ theorem integral_vecDot_eq_zero_of_mem_potentialZeroTrace_ofSubmoduleClosures
   let ℓ : VectorL2 U →L[ℝ] ℝ := vectorPairingCLM (U := U) hg
   have hKClosed : IsClosed ((LinearMap.ker ℓ.toLinearMap : Submodule ℝ (VectorL2 U)) :
       Set (VectorL2 U)) := by
-    simpa [LinearMap.mem_ker] using
+    simpa [LinearMap.mem_ker] using!
       isClosed_singleton.preimage (ContinuousLinearMap.continuous ℓ)
   let K : ClosedSubmodule ℝ (VectorL2 U) := ⟨LinearMap.ker ℓ.toLinearMap, hKClosed⟩
   have hsub : potentialZeroTraceSubmodule U ≤ LinearMap.ker ℓ.toLinearMap := by
@@ -794,7 +794,7 @@ private theorem coordIntegralCLM_apply_eq_integral
           exact scalarIntegralCLMLocal_apply (U := U) ((π.compLpL 2 (volumeMeasureOn U)) F)
     _ = ∫ x in U, F x i ∂MeasureTheory.volume := by
           refine MeasureTheory.integral_congr_ae ?_
-          simpa using
+          simpa using!
             (ContinuousLinearMap.coeFn_compLpL
               (p := 2)
               (μ := volumeMeasureOn U)
@@ -811,7 +811,7 @@ theorem integral_coord_eq_zero_of_mem_potentialZeroTrace_ofSubmoduleClosures
   let ℓ : VectorL2 U →L[ℝ] ℝ := coordIntegralCLM (U := U) i
   have hKClosed : IsClosed ((LinearMap.ker ℓ.toLinearMap : Submodule ℝ (VectorL2 U)) :
       Set (VectorL2 U)) := by
-    simpa [LinearMap.mem_ker] using
+    simpa [LinearMap.mem_ker] using!
       isClosed_singleton.preimage (ContinuousLinearMap.continuous ℓ)
   let K : ClosedSubmodule ℝ (VectorL2 U) := ⟨LinearMap.ker ℓ.toLinearMap, hKClosed⟩
   have hsub : potentialZeroTraceSubmodule U ≤ LinearMap.ker ℓ.toLinearMap := by
@@ -848,7 +848,7 @@ theorem hilbertBlockL2ToBlockL2_toHilbertBlockL2OfComponents
     {f g : Vec d → Vec d} (hf : MemVectorL2 U f) (hg : MemVectorL2 U g) :
     hilbertBlockL2ToBlockL2 (U := U) (toHilbertBlockL2OfComponents hf hg) =
       toBlockL2OfComponents hf hg := by
-  simpa [toBlockL2OfComponents, toHilbertBlockL2OfComponents] using
+  simpa [toBlockL2OfComponents, toHilbertBlockL2OfComponents] using!
     (Homogenization.hilbertBlockL2ToBlockL2_toHilbertBlockL2OfBlockField
       (U := U)
       (F := blockField f g)

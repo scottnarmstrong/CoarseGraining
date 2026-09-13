@@ -98,7 +98,7 @@ theorem centeredCubeRootFluxDefectL2Field_negativeWspSmoothDual_localize
     (originCube d m) j s p (centeredCubeRootFluxDefectL2Field m a sigma0 u)
   rw [hj, hlocal] at hmain
   rw [ENNReal.ofReal_rpow_of_pos (by norm_num : (0 : ℝ) < 3)] at hmain
-  simpa only [mul_comm] using hmain
+  simpa only [mul_comm] using! hmain
 
 end
 

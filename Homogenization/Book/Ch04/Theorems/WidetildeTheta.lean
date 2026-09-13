@@ -114,7 +114,7 @@ private theorem coarseBlockMatrix_translateCube_descendant_eq_translateByInt
     _ = coarseBlockMatrix (translateSet (intVecToRealVec z) (cubeSet R)) a.toFun := by
           rw [hset]
     _ = coarseBlockMatrix (cubeSet R) (translateReg (intVecToRealVec z) a).toFun := by
-          simpa [translateByInt] using
+          simpa [translateByInt] using!
             coarseBlockMatrix_translateSet_eq_translateCoeffField
               (intVecToRealVec z) (cubeSet R) a.toFun
     _ = Ch02.coarseBlockMatrix (Ch02.cubeDomain R)
@@ -427,8 +427,7 @@ theorem summable_weighted_maxDescendantBMatrixNormCoeffFieldAtScale
       Ch02.summable_B_series_pointwiseCoeffField Q
         (triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha) hs
         (by norm_num : (0 : ℝ) < 1)
-  · simpa [maxDescendantBMatrixNormCoeffFieldAtScale, ha] using
-      (summable_zero : Summable (fun _n : ℕ => (0 : ℝ)))
+  · simp [maxDescendantBMatrixNormCoeffFieldAtScale, ha]
 
 theorem summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
     {d : ℕ} [NeZero d] (Q : TriadicCube d) (a : RegCoeffField d)
@@ -445,8 +444,7 @@ theorem summable_weighted_maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale
       Ch02.summable_sigmaStarInv_series_pointwiseCoeffField Q
         (triadicCoeffFamilyOfAELocallyUniformlyEllipticField a ha) hs
         (by norm_num : (0 : ℝ) < 1)
-  · simpa [maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale, ha] using
-      (summable_zero : Summable (fun _n : ℕ => (0 : ℝ)))
+  · simp [maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale, ha]
 
 private theorem aemeasurable_tsum_weighted_maxDescendantBMatrixNormCoeffFieldAtScale
     {d : ℕ} [NeZero d] {P : RestrictionCoeffLaw d} (hP : RestrictionLawCarrier P)
@@ -589,8 +587,8 @@ theorem lambdaSqCoeffField_finite_one_eq_tsum_sq_inv
           (by norm_num : (0 : ℝ) ≤ 1) (by simpa using hs.le)
     have hneg : Real.rpow S (-(2 : ℝ)) = (Real.rpow S (2 : ℝ))⁻¹ :=
       Real.rpow_neg hS_nonneg 2
-    simpa [lambdaSqCoeffField, Ch02.lambdaSqFinite,
-      maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale, ha, S] using hneg
+    simp [lambdaSqCoeffField, Ch02.lambdaSqFinite,
+      maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale, ha]
   · simp [lambdaSqCoeffField, maxDescendantSigmaStarInvMatrixNormCoeffFieldAtScale, ha]
 
 /-- The upper all-scale coefficient observable at a deterministic triadic cube
@@ -843,7 +841,7 @@ theorem annealedMomentRoot_le_const_add_of_nonneg_le
       eLpNorm (fun a : RegCoeffField d => A + E a) (ξ : ENNReal) P ≤
         eLpNorm (fun _ : RegCoeffField d => A) (ξ : ENNReal) P +
           eLpNorm E (ξ : ENNReal) P := by
-    simpa [Pi.add_apply] using
+    simpa [Pi.add_apply] using!
       (MeasureTheory.eLpNorm_add_le
         (aestronglyMeasurable_const (μ := P) (b := A))
         hE_meas.aestronglyMeasurable hξ_enn)

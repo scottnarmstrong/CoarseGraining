@@ -199,7 +199,7 @@ theorem hodgeConverseCriterion_of_h1CoerciveEstimate
       gradMemL2 := by
         intro i
         let π : Vec d →L[ℝ] ℝ := ContinuousLinearMap.proj i
-        simpa [MemL2On, MemVectorL2, volumeMeasureOn] using π.comp_memLp' hf
+        simpa [MemL2On, MemVectorL2, volumeMeasureOn] using! π.comp_memLp' hf
       hasWeakGradient := by
         intro i ψ hψ_smooth hψ_compact hψ_sub
         have hweak := u.toH1Function.hasWeakGradient i ψ hψ_smooth hψ_compact hψ_sub

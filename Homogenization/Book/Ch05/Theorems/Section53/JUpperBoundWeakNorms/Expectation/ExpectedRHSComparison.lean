@@ -62,7 +62,7 @@ theorem integral_jUpperWeakNormPointwiseRHSAtScale_le_expectedRHS
         jUpperWeakNormExpectedRHSAtScale P m k s t cutoffGradient
           C Cosc scaleSep BφS BφT cutoffCircOne poincareConst cutoffConstant
           centeredCutoffConstant p q p0 q0 := by
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let Q : TriadicCube d := originCube d m
   let j : ℕ := Int.toNat (m - k)
   let childAverage : RegCoeffField d → ℝ :=
@@ -103,7 +103,7 @@ theorem integral_jUpperWeakNormPointwiseRHSAtScale_le_expectedRHS
     intro R hR
     exact hDesc R (by
       simpa [Q, j, descendantsAtScale_eq_descendantsAtDepth (originCube d m) hkm]
-        using hR)
+        using! hR)
   have hChildInt : Integrable childAverage P := by
     simpa [childAverage, Q, j] using
       Ch04.integrable_descendantsAverage_restrictionResponseJObservableCubeSet hDescDepth

@@ -62,7 +62,7 @@ theorem meanSquareDeviationVecOn_eq_volumeAverage_vecNormSq_sub
   unfold meanSquareDeviationVecOn meanSquareDeviationOn volumeAverage vecNormSq vecDot
   rw [← Finset.mul_sum]
   congr 1
-  rw [MeasureTheory.integral_finset_sum]
+  rw [MeasureTheory.integral_finsetSum]
   · refine Finset.sum_congr rfl ?_
     intro k _hk
     apply MeasureTheory.integral_congr_ae
@@ -87,7 +87,7 @@ theorem integrableOn_coord_sub_const_sq_of_memVectorL2
   have hccomp : MemScalarL2 V (fun _ : Vec d => c k) :=
     memScalarL2_coord_of_memVectorL2 hcvec k
   have hdiff : MemScalarL2 V (fun x => h x k - c k) := hhcomp.sub hccomp
-  simpa [pow_two, MemScalarL2, volumeMeasureOn, MeasureTheory.IntegrableOn] using
+  simpa [pow_two, MemScalarL2, volumeMeasureOn, MeasureTheory.IntegrableOn] using!
     hdiff.integrable_mul hdiff
 
 /--

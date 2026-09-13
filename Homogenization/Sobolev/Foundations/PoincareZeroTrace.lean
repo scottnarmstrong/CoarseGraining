@@ -77,7 +77,7 @@ private theorem integral_eq_neg_integral_fderiv_mul_coord
     exact (hf_cont.mul hcoord_cont).integrable_of_hasCompactSupport hf_supp.mul_right
   have h := integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable
     (μ := MeasureTheory.volume) (f := f) (g := coord) (v := v)
-    h1 h2 h3 hf_diff hcoord_diff
+    h1 h2 h3 (fun x _ => hf_diff x) (fun x _ => hcoord_diff x)
   simpa [coord, v, fderiv_coord_apply_basisVec_self] using h
 
 private theorem support_fderiv_apply_basisVec_subset_of_tsupport_subset
@@ -123,7 +123,7 @@ private theorem abs_setIntegral_le_bound_mul_integral_abs_fderiv_coord
   let μ : MeasureTheory.Measure (Vec d) := volumeMeasureOn U
   let dg : Vec d → ℝ := fun x => (fderiv ℝ f x) (basisVec i)
   let R : ℝ := Classical.choose hU.isBoundedDomain
-  letI : MeasureTheory.IsFiniteMeasure μ := by
+  let : MeasureTheory.IsFiniteMeasure μ := by
     simpa [μ, volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   have hR_nonneg : 0 ≤ R := le_of_lt (Classical.choose_spec hU.isBoundedDomain).1
   have hgrad_int : MeasureTheory.Integrable (fun x => |dg x|) μ := by
@@ -179,7 +179,7 @@ private theorem integral_abs_fderiv_coord_le_eLpNorm_mul_measure
   let μ : MeasureTheory.Measure (Vec d) := volumeMeasureOn U
   let dg : Vec d → ℝ := fun x => (fderiv ℝ f x) (basisVec i)
   let pE : ENNReal := ENNReal.ofReal q
-  letI : MeasureTheory.IsFiniteMeasure μ := by
+  let : MeasureTheory.IsFiniteMeasure μ := by
     simpa [μ, volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   have hq_pos : 0 < q := lt_trans zero_lt_one hq
   have hpE_one : (1 : ENNReal) ≤ pE := by
@@ -333,7 +333,7 @@ private theorem valueLpSeminorm_le_subAverage_add_constLpSeminorm_ofContDiff
   let μ : MeasureTheory.Measure (Vec d) := volumeMeasureOn U
   let pE : ENNReal := ENNReal.ofReal q
   let avg : ℝ := integralAverage U f
-  letI : MeasureTheory.IsFiniteMeasure μ := by
+  let : MeasureTheory.IsFiniteMeasure μ := by
     simpa [μ, volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   have hp1 : (1 : ENNReal) ≤ pE := by
     dsimp [pE]
@@ -345,7 +345,7 @@ private theorem valueLpSeminorm_le_subAverage_add_constLpSeminorm_ofContDiff
     have hf_mem : MeasureTheory.MemLp f pE μ := by
       simpa [u, pE, μ, W1pFunction.ofContDiffOnIsOpenBoundedConvexDomain,
         W1pFunction.ofContDiffOnIsSobolevRegularDomain] using u.memLp
-    simpa [Pi.sub_apply] using hf_mem.sub hconst_mem
+    simpa [Pi.sub_apply] using! hf_mem.sub hconst_mem
   have htri :
       MeasureTheory.eLpNorm f pE μ ≤
         MeasureTheory.eLpNorm (fun x => f x - avg) pE μ +
@@ -463,14 +463,14 @@ private theorem tendsto_toReal_eLpNorm_of_tendsto_eLpNorm_sub
         Filter.atTop (nhds 0)) :
     Filter.Tendsto (fun n => ENNReal.toReal (MeasureTheory.eLpNorm (F n) p μ))
       Filter.atTop (nhds (ENNReal.toReal (MeasureTheory.eLpNorm f p μ))) := by
-  letI : Fact (1 ≤ p) := ⟨hp1⟩
+  let : Fact (1 ≤ p) := ⟨hp1⟩
   have hLpSpace :
       Filter.Tendsto (fun n => (hF_mem n).toLp (F n))
         Filter.atTop (nhds (hf_mem.toLp f)) := by
     exact
       (MeasureTheory.Lp.tendsto_Lp_iff_tendsto_eLpNorm''
         (μ := μ) (p := p) F hF_mem f hf_mem).2
-        (by simpa [Pi.sub_apply] using hLp)
+        (by simpa [Pi.sub_apply] using! hLp)
   have hnorm :
       Filter.Tendsto (fun n => ‖(hF_mem n).toLp (F n)‖)
         Filter.atTop (nhds ‖hf_mem.toLp f‖) :=
@@ -504,7 +504,7 @@ theorem exists_poincare_constant_of_isOpenBoundedConvexDomain
   rw [← hp_eq]
   let pE : ENNReal := ENNReal.ofReal q
   let μ : MeasureTheory.Measure (Vec d) := volumeMeasureOn U
-  letI : MeasureTheory.IsFiniteMeasure μ := by
+  let : MeasureTheory.IsFiniteMeasure μ := by
     simpa [μ, volumeMeasureOn] using hU.isFiniteMeasure_restrict_volume
   by_cases hvol0 : (MeasureTheory.volume U).toReal = 0
   · refine ⟨0, le_rfl, ?_⟩
@@ -570,7 +570,7 @@ theorem exists_poincare_constant_of_isOpenBoundedConvexDomain
         Filter.Tendsto (fun n => (ψ n).gradientCoordLpSeminormSum) Filter.atTop
           (nhds u.toW1pFunction.gradientCoordLpSeminormSum) := by
       simpa [W1pFunction.gradientCoordLpSeminormSum] using
-        tendsto_finset_sum Finset.univ (fun i _ => hgrad i)
+        tendsto_finsetSum Finset.univ (fun i _ => hgrad i)
     have hright :
         Filter.Tendsto (fun n => C * (ψ n).gradientCoordLpSeminormSum) Filter.atTop
           (nhds (C * u.toW1pFunction.gradientCoordLpSeminormSum)) :=

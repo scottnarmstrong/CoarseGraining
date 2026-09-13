@@ -120,8 +120,8 @@ theorem measurableSet_cubeFaceReflectionBlockSet {d : ℕ}
               x i < cubeUpperFaceCoord Q i + cubeScaleFactor Q} := by
       exact (isOpen_lt continuous_const (continuous_apply i)).measurableSet.inter
         (isOpen_lt (continuous_apply i) continuous_const).measurableSet
-    simpa [Set.setOf_or] using hLower.union (hMiddle.union hUpper)
-  simpa [cubeFaceReflectionBlockSet, Set.iInter_setOf] using
+    simpa [Set.ofPred_or] using hLower.union (hMiddle.union hUpper)
+  simpa [cubeFaceReflectionBlockSet, Set.iInter_ofPred] using
     (MeasurableSet.iInter hcoord)
 
 /-- Every reflection-block cell is contained in the full all-coordinate
@@ -493,7 +493,7 @@ theorem cubeCoordinateFold_eq_cubeLowerFaceReflection_of_mem_neighbor {d : ℕ}
         cubeLowerFaceCoord Q j < x j ∧ x j < cubeUpperFaceCoord Q j := by
       have hxj := hx j
       simpa [openCubeSet, cubeLowerFaceNeighbor, coordIndexShift,
-        translateCube, cubeLowerFaceCoord, cubeUpperFaceCoord, hji] using hxj
+        translateCube, cubeLowerFaceCoord, cubeUpperFaceCoord, hji] using! hxj
     have hnotLower : ¬ x j < cubeLowerFaceCoord Q j :=
       not_lt.mpr hxjQ.1.le
     simp [cubeCoordinateFold, cubeLowerFaceReflection, hji, hnotLower,
@@ -547,7 +547,7 @@ theorem cubeCoordinateFold_eq_cubeUpperFaceReflection_of_mem_neighbor {d : ℕ}
         cubeLowerFaceCoord Q j < x j ∧ x j < cubeUpperFaceCoord Q j := by
       have hxj := hx j
       simpa [openCubeSet, cubeUpperFaceNeighbor, coordIndexShift,
-        translateCube, cubeLowerFaceCoord, cubeUpperFaceCoord, hji] using hxj
+        translateCube, cubeLowerFaceCoord, cubeUpperFaceCoord, hji] using! hxj
     have hnotLower : ¬ x j < cubeLowerFaceCoord Q j :=
       not_lt.mpr hxjQ.1.le
     simp [cubeCoordinateFold, cubeUpperFaceReflection, hji, hnotLower,
@@ -590,7 +590,7 @@ theorem cubeCoordinateFoldSign_of_mem_cubeLowerFaceNeighbor {d : ℕ}
         cubeLowerFaceCoord Q j < x j ∧ x j < cubeUpperFaceCoord Q j := by
       have hxj := hx j
       simpa [openCubeSet, cubeLowerFaceNeighbor, coordIndexShift,
-        translateCube, cubeLowerFaceCoord, cubeUpperFaceCoord, hji] using hxj
+        translateCube, cubeLowerFaceCoord, cubeUpperFaceCoord, hji] using! hxj
     have hnotLower : ¬ x j < cubeLowerFaceCoord Q j :=
       not_lt.mpr hxjQ.1.le
     simp [cubeCoordinateFoldSign, hji, hnotLower, hxjQ.2]
@@ -642,7 +642,7 @@ theorem cubeCoordinateFoldSign_of_mem_cubeUpperFaceNeighbor {d : ℕ}
         cubeLowerFaceCoord Q j < x j ∧ x j < cubeUpperFaceCoord Q j := by
       have hxj := hx j
       simpa [openCubeSet, cubeUpperFaceNeighbor, coordIndexShift,
-        translateCube, cubeLowerFaceCoord, cubeUpperFaceCoord, hji] using hxj
+        translateCube, cubeLowerFaceCoord, cubeUpperFaceCoord, hji] using! hxj
     have hnotLower : ¬ x j < cubeLowerFaceCoord Q j :=
       not_lt.mpr hxjQ.1.le
     simp [cubeCoordinateFoldSign, hji, hnotLower, hxjQ.2]

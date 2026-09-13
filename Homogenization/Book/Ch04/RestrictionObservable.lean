@@ -85,8 +85,8 @@ theorem mat_of_entries {d m : ℕ} {U : Set (Vec d)} {hU : MeasurableSet U}
     (hX : ∀ i j : Fin m, IsRestrictionLocalRandomVariable U hU (fun a => X a i j)) :
     IsRestrictionLocalRandomVariable U hU X := by
   change @Measurable (RegCoeffField d) (Mat m) (RestrictionSigmaR U hU) _ X
-  rw [@measurable_pi_iff (RegCoeffField d) (Fin m) (fun _ => Fin m → ℝ)
-    (RestrictionSigmaR U hU) (fun _ => inferInstance) X]
+  refine (@measurable_pi_iff (RegCoeffField d) (Fin m) (fun _ => Fin m → ℝ)
+    (RestrictionSigmaR U hU) (fun _ => inferInstance) X).2 ?_
   intro i
   rw [@measurable_pi_iff (RegCoeffField d) (Fin m) (fun _ => ℝ)
     (RestrictionSigmaR U hU) (fun _ => inferInstance) (fun a => X a i)]

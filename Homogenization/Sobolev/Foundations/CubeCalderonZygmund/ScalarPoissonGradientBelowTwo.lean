@@ -356,7 +356,7 @@ private theorem abs_integral_mul_le_eLpNorm_toReal_mul
       (enorm_integral_le_lintegral_enorm (μ := μ) f).trans_eq
         eLpNorm_one_eq_lintegral_enorm.symm
   have hholder : eLpNorm f 1 μ ≤ eLpNorm F p μ * eLpNorm G r μ := by
-    simpa only [f, Pi.smul_apply, smul_eq_mul] using
+    simpa only [f, Pi.smul_apply, smul_eq_mul] using!
       eLpNorm_smul_le_mul_eLpNorm hG.aestronglyMeasurable hF.aestronglyMeasurable
   have hfirst := (ENNReal.toReal_le_toReal ENNReal.ofReal_ne_top
     hfLp.eLpNorm_ne_top).mpr hnorm
@@ -381,7 +381,7 @@ private noncomputable def radialTruncationL2LpField
     (isOpenBoundedConvexDomain_openCubeSet (originCube d m)).isFiniteMeasure_restrict_volume
   have hFraw : AEStronglyMeasurable (fun x => HilbertVec.ofVec (F x))
       (volumeMeasureOn U) := by
-    simpa only [F, hilbertifyVecField] using
+    simpa only [F, hilbertifyVecField] using!
       (memHilbertVectorL2_hilbertifyVecField
         u.toH1Function.grad_memVectorL2).aestronglyMeasurable
   have hqone : 1 < q.exponent.toReal := by
@@ -411,11 +411,11 @@ private theorem radialTruncation_memVectorL2
       (radialTruncationL2LpField m q u n).toField := by
   let U : Set (Vec d) := openCubeSet (originCube d m)
   let F : Vec d → Vec d := u.toH1Function.grad
-  letI : IsFiniteMeasure (volumeMeasureOn U) :=
+  let : IsFiniteMeasure (volumeMeasureOn U) :=
     (isOpenBoundedConvexDomain_openCubeSet (originCube d m)).isFiniteMeasure_restrict_volume
   have hFraw : AEStronglyMeasurable (fun x => HilbertVec.ofVec (F x))
       (volumeMeasureOn U) := by
-    simpa only [F, hilbertifyVecField] using
+    simpa only [F, hilbertifyVecField] using!
       (memHilbertVectorL2_hilbertifyVecField
         u.toH1Function.grad_memVectorL2).aestronglyMeasurable
   have hqone : 1 < q.exponent.toReal := by
@@ -477,7 +477,7 @@ private theorem ofReal_vecDot_radialTruncation_eq_truncatedMoment
       simpa only [euclideanNorm_eq_norm_ofVec] using hx
     have hxmem : x ∈ {y | ‖HilbertVec.ofVec (F y)‖ ≤ (n : ℝ)} := hx'
     rw [if_pos hx, INTERNAL.truncatedMoment, Set.indicator_of_mem hxmem]
-    rw [← ofReal_norm_eq_enorm (HilbertVec.ofVec (F x))]
+    rw [← ofReal_norm (HilbertVec.ofVec (F x))]
     simpa only [euclideanNorm_eq_norm_ofVec] using
       (ENNReal.ofReal_rpow_of_nonneg
         (norm_nonneg (HilbertVec.ofVec (F x))) (by linarith : 0 ≤ q)).symm
@@ -493,7 +493,7 @@ private theorem eLpNorm_radialTruncation_rpow_conjugate_eq_truncatedMoment
     (eLpNorm (INTERNAL.hilbertRadialTruncation q.exponent.toReal n F)
       q.conjugate.exponent μ) ^ q.conjugate.exponent.toReal =
       ∫⁻ x, INTERNAL.truncatedMoment q.exponent.toReal n F x ∂μ := by
-  rw [eLpNorm_eq_lintegral_rpow_enorm
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
     (ne_of_gt (zero_lt_one.trans q.conjugate.one_lt)) q.conjugate.lt_top.ne,
     ← ENNReal.rpow_mul]
   have hqzero : q.conjugate.exponent.toReal ≠ 0 :=
@@ -502,13 +502,13 @@ private theorem eLpNorm_radialTruncation_rpow_conjugate_eq_truncatedMoment
   rw [one_div, inv_mul_cancel₀ hqzero, ENNReal.rpow_one]
   apply lintegral_congr
   intro x
-  rw [← ofReal_norm_eq_enorm,
+  rw [← ofReal_norm,
     ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) ENNReal.toReal_nonneg,
     INTERNAL.norm_hilbertRadialTruncation_rpow_conjugate]
   by_cases hx : ‖F x‖ ≤ (n : ℝ)
   · have hxmem : x ∈ {y | ‖F y‖ ≤ (n : ℝ)} := hx
     rw [if_pos hx, INTERNAL.truncatedMoment, Set.indicator_of_mem hxmem,
-      ← ofReal_norm_eq_enorm,
+      ← ofReal_norm,
       ENNReal.ofReal_rpow_of_nonneg (norm_nonneg _) ENNReal.toReal_nonneg]
   · have hxmem : x ∉ {y | ‖F y‖ ≤ (n : ℝ)} := hx
     rw [if_neg hx, INTERNAL.truncatedMoment, Set.indicator_of_notMem hxmem]
@@ -547,7 +547,7 @@ private theorem eLpNorm_le_of_truncated_cross_bound
         rw [← ENNReal.rpow_mul, inv_mul_cancel₀ (by linarith : q ≠ 0),
           ENNReal.rpow_one]
       _ ≤ B ^ q := ENNReal.rpow_le_rpow hroot (by linarith)
-  rw [eLpNorm_eq_lintegral_rpow_enorm
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
     (ENNReal.ofReal_pos.mpr (by linarith : 0 < q)).ne' ENNReal.ofReal_ne_top,
     ENNReal.toReal_ofReal (by linarith : 0 ≤ q)]
   have hmoment : (∫⁻ x, ‖F x‖ₑ ^ q ∂μ) ≤ A ^ q := by
@@ -598,7 +598,7 @@ theorem centeredCubeH10ScalarPoisson_gradient_cz_of_lt_two
   intro m sigma0 F u hF2 hFq hsigma0 hu
   let μ : Measure (Vec d) := (centeredCubeDomain d m).normalizedVolume
   let Ugrad : Vec d → HilbertVec d := hilbertifyVecField u.toH1Function.grad
-  letI : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
+  let : ENNReal.HolderConjugate q.exponent q.conjugate.exponent := q.holderConjugate
   have hqreal : 1 < q.exponent.toReal := by
     rw [← ENNReal.toReal_one]
     exact (ENNReal.toReal_lt_toReal (by norm_num) q.lt_top.ne).mpr q.one_lt
@@ -634,7 +634,7 @@ theorem centeredCubeH10ScalarPoisson_gradient_cz_of_lt_two
         (vecDot (u.toH1Function.grad x) (G x)) =
           INTERNAL.truncatedMoment q.exponent.toReal n Ugrad x := by
       filter_upwards with x
-      simpa only [Ugrad, G, Gfield] using
+      simpa only [Ugrad, G, Gfield] using!
         ScalarPoissonGradientBelowTwo.ofReal_vecDot_radialTruncation_eq_truncatedMoment
           hqreal n u.toH1Function.grad x
     have hJ : (∫⁻ x, INTERNAL.truncatedMoment q.exponent.toReal n Ugrad x ∂μ) =
@@ -646,14 +646,14 @@ theorem centeredCubeH10ScalarPoisson_gradient_cz_of_lt_two
     have hvsolution : IsCenteredCubeH10ScalarDivergenceSolution m sigma0 v
         Gfield.toLpTwo := by
       intro phi
-      simpa only [v, G, Gfield] using
+      simpa only [v, G, Gfield] using!
         INTERNAL.openCubeSetScalarDivergenceSolution_normalized_weak
           m hsigma0 G hGtwo phi
     have hvCZ := hCcz m sigma0 Gfield v hsigma0 hvsolution
     have hGq : MemLp (hilbertifyVecField G) q.conjugate.exponent μ := by
       simpa only [μ, G, Gfield, centeredCubeDomain,
         cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-        hilbertifyVecField] using Gfield.euclideanMemLp
+        hilbertifyVecField] using! Gfield.euclideanMemLp
     have hVtwo : MemLp (hilbertifyVecField v.toH1Function.grad) 2 μ := by
       simpa only [v, μ] using
         ScalarPoissonGradientBelowTwo.centeredCube_memLp_gradient_two v
@@ -662,7 +662,7 @@ theorem centeredCubeH10ScalarPoisson_gradient_cz_of_lt_two
           eLpNorm (hilbertifyVecField G) q.conjugate.exponent μ := by
       simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
         BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-        eLpNorm_norm, μ, v, G, Gfield, hilbertifyVecField] using hvCZ
+        eLpNorm_norm, μ, v, G, Gfield, hilbertifyVecField] using! hvCZ
     have hVq : MemLp (hilbertifyVecField v.toH1Function.grad)
         q.conjugate.exponent μ := by
       refine ⟨hVtwo.aestronglyMeasurable, ?_⟩
@@ -698,7 +698,7 @@ theorem centeredCubeH10ScalarPoisson_gradient_cz_of_lt_two
     have hGmoment : (eLpNorm (hilbertifyVecField G) q.conjugate.exponent μ) ^
         q.conjugate.exponent.toReal =
           ∫⁻ x, INTERNAL.truncatedMoment q.exponent.toReal n Ugrad x ∂μ := by
-      simpa only [μ, Ugrad, G, Gfield, hilbertifyVecField] using
+      simpa only [μ, Ugrad, G, Gfield, hilbertifyVecField] using!
         ScalarPoissonGradientBelowTwo.eLpNorm_radialTruncation_rpow_conjugate_eq_truncatedMoment
           q n Ugrad
     have hreal : q.exponent.toReal.HolderConjugate
@@ -752,7 +752,7 @@ theorem centeredCubeH10ScalarPoisson_gradient_cz_of_lt_two
         ac_rfl
   simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
     BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-    eLpNorm_norm, Ugrad, μ, A] using hmain
+    eLpNorm_norm, Ugrad, μ, A] using! hmain
 
 end CubeCalderonZygmund
 

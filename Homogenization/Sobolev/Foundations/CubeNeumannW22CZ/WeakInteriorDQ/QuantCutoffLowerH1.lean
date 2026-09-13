@@ -240,9 +240,9 @@ theorem integral_sq_mul_vecNormSq_euclideanGradient_quantitativeCubeCutoff_le
         (V := V) (w := w) (η := (η : Vec d → ℝ))
         hw η.smooth η.hasCompactSupport
     have hhalf := htwo.const_mul (1 / 2 : ℝ)
-    simpa [mul_assoc, mul_left_comm, mul_comm] using hhalf
+    simpa [mul_assoc, mul_left_comm, mul_comm] using! hhalf
   have hsq_int : MeasureTheory.IntegrableOn (fun x => w x ^ 2) V := by
-    simpa [volumeMeasureOn] using hw.integrable_sq
+    simpa [volumeMeasureOn] using! hw.integrable_sq
   have hright_int :
       MeasureTheory.IntegrableOn (fun x => K * w x ^ 2) V :=
     hsq_int.const_mul K
@@ -663,7 +663,7 @@ theorem integral_product_rule_grad_sq_le_two_integral_cutoff_grad_sq_add_two_int
       (u.gradMemL2 i).mul' hφ_top
   have hdφ_top : MeasureTheory.MemLp
       (fun x => (fderiv ℝ φ x) (basisVec i)) ⊤ (volumeMeasureOn U) := by
-    simpa [euclideanCoordDeriv, volumeMeasureOn] using
+    simpa [euclideanCoordDeriv, volumeMeasureOn] using!
       (contDiff_euclideanCoordDeriv hφ i).continuous.memLp_top_of_hasCompactSupport
         (hasCompactSupport_euclideanCoordDeriv hφ_compact i) (volumeMeasureOn U)
   have hudφ : MeasureTheory.MemLp

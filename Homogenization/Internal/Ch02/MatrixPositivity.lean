@@ -41,7 +41,7 @@ theorem sigmaStarInvCoarse_posDef {d : ℕ} (U : Domain d) (a : CoeffOn U) :
   by_cases hd : d = 0
   · subst d
     exact sigmaStarInvCoarse_posDef_zero_dim U a
-  · letI : NeZero d := ⟨hd⟩
+  · let : NeZero d := ⟨hd⟩
     let b : CoeffOn U := pointwiseCoeffOn U a
     have hb :
         (Book.Ch02.sigmaStarInvCoarse U b).PosDef :=

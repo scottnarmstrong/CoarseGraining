@@ -40,13 +40,13 @@ private theorem hasCompactSupport_finset_sum
   revert hf
   refine Finset.induction_on s ?_ ?_
   · intro _hf
-    simpa using (HasCompactSupport.zero :
+    simpa using! (HasCompactSupport.zero :
       HasCompactSupport (fun _ : alpha ↦ (0 : beta)))
   · intro a s has hs hf
     have ha : HasCompactSupport (f a) := hf a (by simp [has])
     have hs' : HasCompactSupport (fun x ↦ ∑ i ∈ s, f i x) :=
       hs (fun i hi ↦ hf i (Finset.mem_insert_of_mem hi))
-    simpa [Finset.sum_insert has] using ha.add hs'
+    simpa [Finset.sum_insert has] using! ha.add hs'
 
 /-- The unsigned folded parent test is smooth. -/
 theorem contDiff_neumannEvenFoldedParentScalarTest {d : ℕ}
@@ -85,7 +85,7 @@ theorem euclideanCoordDeriv_neumannEvenFoldedParentScalarTest {d : ℕ}
   classical
   unfold neumannEvenFoldedParentScalarTest euclideanCoordDeriv
   rw [fderiv_fun_sum]
-  · simp only [ContinuousLinearMap.sum_apply]
+  · simp only [sum_apply]
     apply Finset.sum_congr rfl
     intro choice _hchoice
     exact euclideanCoordDeriv_comp_cubeFaceReflectionCellFoldMap

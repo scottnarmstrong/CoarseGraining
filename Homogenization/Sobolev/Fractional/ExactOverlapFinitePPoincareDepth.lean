@@ -24,7 +24,7 @@ private theorem eLpNorm_rpow_eq_lintegral_enorm {α E : Type*}
     (q : FiniteLpExponent) (μ : Measure α) (f : α → E) :
     (eLpNorm f q.exponent μ) ^ q.exponent.toReal =
       ∫⁻ x, ‖f x‖ₑ ^ q.exponent.toReal ∂μ := by
-  rw [eLpNorm_eq_lintegral_rpow_enorm (finiteLpExponent_ne_zero q) q.lt_top.ne,
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal (finiteLpExponent_ne_zero q) q.lt_top.ne,
     ← ENNReal.rpow_mul]
   have hq : q.exponent.toReal ≠ 0 :=
     ENNReal.toReal_pos (finiteLpExponent_ne_zero q) q.lt_top.ne |>.ne'
@@ -116,7 +116,7 @@ theorem exists_cubeEuclideanPositiveBesovOverlapDepthENorm_rpow_le
       ((D.card : ℝ≥0∞)⁻¹) *
         D.sum (fun S => ∫⁻ x, g x ∂ScalarOverlap.normalizedCubeMeasure S) ≤
       (3 ^ d : ℝ≥0∞) * ∫⁻ x, g x ∂normalizedCubeMeasure Q := by
-    simpa [D, g] using
+    simpa [D, g] using!
       overlapCentersAtDepth_average_lintegral_normalizedOverlapCubeMeasure_le Q j
         (aemeasurable_jacobian_enorm_rpow_parent q V)
         (fun S hS => aemeasurable_jacobian_enorm_rpow_overlap q hS V)

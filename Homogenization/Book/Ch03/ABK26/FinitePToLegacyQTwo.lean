@@ -35,7 +35,7 @@ private theorem memCubeEuclideanFullWsp_neg {d : ℕ}
     {g : Vec d → Vec d} (hg : MemCubeEuclideanFullWsp Q s p g) :
     MemCubeEuclideanFullWsp Q s p (fun x => -g x) := by
   constructor
-  · simpa only [map_neg] using hg.1.neg
+  · simpa only [map_neg] using! hg.1.neg
   · unfold MemCubeEuclideanWsp
     rw [cubeEuclideanWspKernel_neg]
     exact hg.2.neg

@@ -29,7 +29,7 @@ theorem cubeFaceReflectionParent_reflectedGradient_isPotentialOn_originCube_of_o
     IsPotentialOn (openCubeSet (originCube d (m + 1)))
       (cubeCoordinateFoldReflectedVectorField (originCube d m)
         (fun y => W.w.toH1Function.grad y)) := by
-  letI : MeasureTheory.IsFiniteMeasure
+  let : MeasureTheory.IsFiniteMeasure
       (volumeMeasureOn (openCubeSet (originCube d (m + 1)))) :=
     (isOpenBoundedConvexDomain_openCubeSet
       (originCube d (m + 1))).isFiniteMeasure_restrict_volume

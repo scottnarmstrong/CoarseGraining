@@ -154,16 +154,8 @@ private theorem sigmaHatAtScale_pos_of_P4
 private theorem sq_sum_four_le_const_sum_sq (a b c d : ℝ) :
     (a + b + c + d) ^ 2 ≤
       4 * (a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2) := by
-  have h :=
-    sq_sum_le_card_mul_sum_sq
-      (s := Finset.univ) (f := fun i : Fin 4 =>
-        match i with
-        | ⟨0, _⟩ => a
-        | ⟨1, _⟩ => b
-        | ⟨2, _⟩ => c
-        | _ => d)
-  norm_num at h ⊢
-  simpa [Fin.sum_univ_four, add_assoc, add_comm, add_left_comm] using h
+  nlinarith [sq_nonneg (a - b), sq_nonneg (a - c), sq_nonneg (a - d),
+    sq_nonneg (b - c), sq_nonneg (b - d), sq_nonneg (c - d)]
 
 private theorem paired_rhsSquares_le_componentSquares
     {σ K AG MG LG CG AF MF LF CF : ℝ} (hσ : 0 ≤ σ) :
@@ -202,7 +194,7 @@ private theorem integrable_specialWeakNormComponentSquareSum
     {k m : ℕ} (hkm : k < m) (e : Vec d) (he : vecNormSq e = 1) :
     Integrable (Internal.specialWeakNormComponentSquareSum hP hStruct hP4 k m e) P := by
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let β := section53CoarseFluctuationBeta hP4
   let s := hP4.sLower + 2 * β
   let s' := hP4.sLower + β
@@ -304,7 +296,7 @@ private theorem aemeasurable_specialPairedWeakNormSquares
   unfold Internal.specialPairedWeakNormSquare
   unfold Internal.specialGradientWeakNormSquare
   unfold Internal.specialFluxWeakNormSquare
-  simpa [gradWeak, fluxWeak, β, s, t, Q, p_e, q_e, p0_e, q0_e, σ, pow_two] using
+  simpa [gradWeak, fluxWeak, β, s, t, Q, p_e, q_e, p0_e, q0_e, σ, pow_two] using!
     ((hg.mul hg).const_mul σ).add
       ((hf.mul hf).const_mul σ⁻¹)
 
@@ -531,7 +523,7 @@ theorem integrable_specialGradientWeakNormSquare_from_weakNormMaximizer
     have hg :=
       hP.aemeasurable_canonicalScalarResponseGradientWeakNorm_cubeSet Q s p_e q_e p0_e
     unfold Internal.specialGradientWeakNormSquare
-    simpa [β, s, Q, p_e, q_e, p0_e, gradWeak, pow_two] using hg.mul hg
+    simpa [β, s, Q, p_e, q_e, p0_e, gradWeak, pow_two] using! hg.mul hg
   refine Integrable.mono' (hWInt.const_mul σ⁻¹) hAE.aestronglyMeasurable ?_
   filter_upwards with a
   have hle :
@@ -602,7 +594,7 @@ theorem integrable_specialFluxWeakNormSquare_from_weakNormMaximizer
     have hf :=
       hP.aemeasurable_canonicalScalarResponseFluxWeakNorm_cubeSet Q t p_e q_e q0_e
     unfold Internal.specialFluxWeakNormSquare
-    simpa [β, t, Q, p_e, q_e, q0_e, fluxWeak, pow_two] using hf.mul hf
+    simpa [β, t, Q, p_e, q_e, q0_e, fluxWeak, pow_two] using! hf.mul hf
   refine Integrable.mono' (hWInt.const_mul σ) hAE.aestronglyMeasurable ?_
   filter_upwards with a
   have hgrad_nonneg : 0 ≤ σ * (gradWeak a) ^ 2 :=

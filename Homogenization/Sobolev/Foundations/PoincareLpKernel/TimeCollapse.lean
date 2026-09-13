@@ -396,7 +396,7 @@ private theorem measurable_timeCollapseKernel
   have hg : Measurable (fun p : Vec d × ℝ =>
       ((1 - p.2) ^ (d + 1 : ℕ))⁻¹ * ‖x - p.1‖) := by
     fun_prop
-  simpa [s, Set.indicator, Pi.zero_apply] using hg.indicator hs
+  simpa [s, Set.indicator, Pi.zero_apply] using! hg.indicator hs
 
 private theorem integrable_timeCollapseKernel_withDensity
     {U : Set (Vec d)} {x : Vec d} {R : ℝ} (hR : 0 < R)

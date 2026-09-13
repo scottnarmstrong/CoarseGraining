@@ -2,7 +2,7 @@ import Homogenization.Book.Ch04.Theorems.PartitionAverageFluctuationsAEMeasurabl
 import Homogenization.Book.Ch04.Theorems.BlockExpectations
 import Homogenization.Book.Ch04.Theorems.AnnealedSubadditivity.BlockLoewner
 import Homogenization.Book.Ch02.Theorems.WrapAround
-import Mathlib.Data.Matrix.Bilinear
+import Mathlib.LinearAlgebra.Matrix.Bilinear
 
 namespace Homogenization
 namespace Book
@@ -27,7 +27,7 @@ theorem IsAEEllipticFieldOn.adjointCoeffField {d : ℕ} {lam Lam : ℝ}
           Homogenization.matTranspose, hx]
       · simp [restrictCoeffField, hx])
   · exact h.ae_isEllipticMatrix.mono fun x hx => by
-      simpa [adjointCoeffField] using isEllipticMatrix_transpose hx
+      simpa [adjointCoeffField] using! isEllipticMatrix_transpose hx
 
 /-- The underlying field of the carrier adjoint is the raw field adjoint. -/
 theorem adjointReg_toFun {d : ℕ} (a : RegCoeffField d) :
@@ -54,12 +54,12 @@ private theorem isRestrictionLocalRandomVariable_fullBlockMat_of_entries
         IsRestrictionLocalRandomVariable U hU (fun a => X a α β)) :
     IsRestrictionLocalRandomVariable U hU X := by
   change @Measurable (RegCoeffField d) (FullBlockMat d) (RestrictionSigmaR U hU) _ X
-  rw [@measurable_pi_iff (RegCoeffField d) (BlockCoord d)
-    (fun _ => BlockCoord d → ℝ) (RestrictionSigmaR U hU) (fun _ => inferInstance) X]
-  intro α
-  rw [@measurable_pi_iff (RegCoeffField d) (BlockCoord d)
-    (fun _ => ℝ) (RestrictionSigmaR U hU) (fun _ => inferInstance) (fun a => X a α)]
-  intro β
+  refine (@measurable_pi_iff (RegCoeffField d) (BlockCoord d)
+    (fun _ => BlockCoord d → ℝ) (RestrictionSigmaR U hU) (fun _ => inferInstance) X).2
+    fun α => ?_
+  refine (@measurable_pi_iff (RegCoeffField d) (BlockCoord d)
+    (fun _ => ℝ) (RestrictionSigmaR U hU) (fun _ => inferInstance) (fun a => X a α)).2
+    fun β => ?_
   exact hX α β
 
 theorem exists_isRestrictionLocalRandomVariable_ae_eq_coarseBlockMatrix_upperRight_apply_cubeSet
@@ -344,12 +344,8 @@ theorem fullBlockQuadraticCh04_toFullBlockMat {d : ℕ} (A : BlockMat d)
 
 private theorem measurable_fullBlockReflect {d : ℕ} :
     Measurable (fullBlockReflect (d := d)) := by
-  rw [@measurable_pi_iff (FullBlockMat d) (BlockCoord d)
-    (fun _ => BlockCoord d → ℝ) _ (fun _ => inferInstance) (fullBlockReflect (d := d))]
-  intro α
-  rw [@measurable_pi_iff (FullBlockMat d) (BlockCoord d)
-    (fun _ => ℝ) _ (fun _ => inferInstance) (fun M => fullBlockReflect M α)]
-  intro β
+  refine measurable_pi_iff.2 fun α => ?_
+  refine measurable_pi_iff.2 fun β => ?_
   cases α <;> cases β
   all_goals
     simp [fullBlockReflect, toFullBlockMat, ofFullBlockMat, blockReflect]
@@ -456,7 +452,7 @@ theorem blockJSetObservableBlockVec_cubeSet {d : ℕ}
 theorem blockJSetObservableBlockVec_translation_covariant {d : ℕ}
     (P Qv : BlockVec d) :
     IsTranslationCovariant (blockJSetObservableBlockVec P Qv) := by
-  simpa [blockJSetObservableBlockVec] using
+  simpa [blockJSetObservableBlockVec] using!
     blockJHalfResponseAdjointSumSet_translation_covariant
       (d := d) P.1 Qv.2 P.2 Qv.1
 
@@ -661,7 +657,7 @@ theorem isBigO_gammaSigma_centeredOrigin_blockJSetObservableBlockVec_of_scaleZer
       (c := ∫ a, Xn a ∂Pμ) (X := Xn)
       hσ hrawK_pos hM_pos hraw hXn_aemeas hmean_bound
   simpa [restrictionCenteredOriginObservable, Xn, rawK,
-    mul_assoc, mul_left_comm, mul_comm] using hcenter
+    mul_assoc, mul_left_comm, mul_comm] using! hcenter
 
 theorem isBigOWith_gammaSigma_blockJObservableCubeSetBlockVec_originCube_sub_integral
     {d : ℕ} [NeZero d] {Pμ : RestrictionCoeffLaw d} [IsProbabilityMeasure Pμ]
@@ -692,7 +688,7 @@ theorem isBigOWith_gammaSigma_blockJObservableCubeSetBlockVec_originCube_sub_int
         gammaMomentConst σ * (gammaTriangleConst σ * θ))
   have hnm_le : n ≤ m := le_of_lt hnm
   have hnQ : n ≤ Q.scale := by
-    simpa [Q] using hnm_le
+    simpa [Q] using! hnm_le
   have hrawK_pos : 0 < gammaTriangleConst σ * θ :=
     mul_pos gammaTriangleConst_pos' hθ
   have hMomentConst_pos : 0 < gammaMomentConst σ := by
@@ -798,8 +794,9 @@ private theorem scaleColorPeriod_natCast_eq_zero_ch04 (n : ℕ) :
       Nat.ceil ((3 : ℝ) ^ (-(n : ℤ))) = 1 := by
     rw [Nat.ceil_eq_iff (by norm_num : (1 : ℕ) ≠ 0)]
     constructor
-    · convert hpos using 1
-      norm_num
+    · have h1 : ((1 : ℕ) - 1 : ℕ) = 0 := by norm_num
+      simp only [h1, Nat.cast_zero]
+      exact hpos
     · simpa using hle_one
   unfold scaleColorPeriod
   rw [hceil]

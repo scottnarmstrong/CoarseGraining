@@ -89,7 +89,7 @@ theorem exists_exactOverlapFiniteP_pdeSplitting
       (normalizedCubeMeasure (originCube d m)) := by
     rw [MeasureTheory.memLp_piLp_iff]
     intro i
-    simpa only [HilbertVec.ofVec, PiLp.toLp_apply] using
+    simpa only [HilbertVec.ofVec, PiLp.toLp_apply] using!
       H1Function.memL2_normalizedCubeMeasure (G2.coord i)
   have hGq_q : MemLp (fun x => HilbertVec.ofVec (Gq.toField x)) q.exponent
       (normalizedCubeMeasure (originCube d m)) :=

@@ -115,7 +115,7 @@ theorem memH10_of_tendsto_H1 {d : ℕ} {U : Set (Vec d)}
             tendsto_approx_grad := ?_ }, rfl⟩
   · -- `ψₙ → f` in `L²`.
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hfun_bound
-      (fun n => zero_le _) (fun n => ?_)
+      (fun n => zero_le) (fun n => ?_)
     have hsm_ψ : AEStronglyMeasurable (ψ n) μU :=
       ((W n).approx_smooth (k n)).continuous.aestronglyMeasurable
     have hsm_Wtf : AEStronglyMeasurable (W n).toH1Function.toFun μU :=
@@ -131,7 +131,7 @@ theorem memH10_of_tendsto_H1 {d : ℕ} {U : Set (Vec d)}
   · -- `∇ψₙ → ∇f` in `L²`, coordinatewise.
     intro i
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds (hgrad_bound i)
-      (fun n => zero_le _) (fun n => ?_)
+      (fun n => zero_le) (fun n => ?_)
     have hsm_dψ : AEStronglyMeasurable
         (fun x => (fderiv ℝ (ψ n) x) (basisVec i)) μU := by
       have : ContDiff ℝ (⊤ : ℕ∞) (fun x => (fderiv ℝ (ψ n) x) (basisVec i)) :=

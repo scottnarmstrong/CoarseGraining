@@ -547,7 +547,7 @@ theorem limitNormalizedBlockJObservable_le_probeSum_ae
           fullBlockQuadratic (K a) (fullBlockCoordinateProbe α) := by
     rw [Filter.eventually_all_finset]
     intro α _hα
-    simpa [K] using
+    simpa [K] using!
       limitNormalizedBlockJObservable_ae_eq_limitNormalizedBlockJMatrix_quadratic
         hP hStruct hΓ Q (fullBlockCoordinateProbe α)
   have hEq_plus :
@@ -560,7 +560,7 @@ theorem limitNormalizedBlockJObservable_le_probeSum_ae
     intro α _hα
     rw [Filter.eventually_all_finset]
     intro β _hβ
-    simpa [K] using
+    simpa [K] using!
       limitNormalizedBlockJObservable_ae_eq_limitNormalizedBlockJMatrix_quadratic
         hP hStruct hΓ Q (fullBlockPlusProbe α β)
   have hEq_minus :
@@ -573,7 +573,7 @@ theorem limitNormalizedBlockJObservable_le_probeSum_ae
     intro α _hα
     rw [Filter.eventually_all_finset]
     intro β _hβ
-    simpa [K] using
+    simpa [K] using!
       limitNormalizedBlockJObservable_ae_eq_limitNormalizedBlockJMatrix_quadratic
         hP hStruct hΓ Q (fullBlockMinusProbe α β)
   filter_upwards

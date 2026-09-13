@@ -32,7 +32,7 @@ private theorem blockResponse_upper_add_flux_eq_matVecMul_potential_add_lowerIma
       (blockMatVecMul (blockCoeffField a x) (X.eval x)).1 =
         matVecMul (symmPart (a x)) (X.potential x) +
           matVecMul (skewPart (a x)) lower := by
-    simpa [lower, hsnd] using
+    simpa [lower, hsnd] using!
       blockMatVecMul_blockMatrixOfCoeff_fst
         (A := a x) (p := X.potential x) (q := X.flux x)
   have hflux :
@@ -84,7 +84,7 @@ private theorem blockResponse_upper_sub_flux_eq_matVecMul_adjoint_potential_sub_
       (blockMatVecMul (blockCoeffField a x) (X.eval x)).1 =
         matVecMul (symmPart (a x)) (X.potential x) +
           matVecMul (skewPart (a x)) lower := by
-    simpa [lower, hsnd] using
+    simpa [lower, hsnd] using!
       blockMatVecMul_blockMatrixOfCoeff_fst
         (A := a x) (p := X.potential x) (q := X.flux x)
   have hflux :
@@ -144,13 +144,13 @@ theorem exists_blockResponsePairHalfState_ae_eq_of_mem_responseSpace_of_lowerIma
   have hφL2 : MemVectorL2 U φ.grad := φ.grad_memVectorL2
   have hψL2 : MemVectorL2 U ψ.grad := ψ.grad_memVectorL2
   have hξL2 : MemVectorL2 U ξ := by
-    simpa [ξ] using hφL2.add hψL2
+    simpa [ξ] using! hφL2.add hψL2
   have hηL2 : MemVectorL2 U η := by
-    simpa [η, sub_eq_add_neg] using hφL2.sub hψL2
+    simpa [η, sub_eq_add_neg] using! hφL2.sub hψL2
   have hξPot : IsPotentialOn U ξ := by
-    simpa [ξ, hφ, hψ] using isPotentialOn_add hX.1 hLowerPot
+    simpa [ξ, hφ, hψ] using! isPotentialOn_add hX.1 hLowerPot
   have hηPot : IsPotentialOn U η := by
-    simpa [η, sub_eq_add_neg, hφ, hψ] using
+    simpa [η, sub_eq_add_neg, hφ, hψ] using!
       isPotentialOn_add hX.1 (isPotentialOn_smul hLowerPot (-1 : ℝ))
   have hFluxL2 : MemVectorL2 U X.flux :=
     blockResponse_flux_memL2_of_lowerImage_isPotential_of_mem_responseSpace_of_isEllipticFieldOn
@@ -172,7 +172,7 @@ theorem exists_blockResponsePairHalfState_ae_eq_of_mem_responseSpace_of_lowerIma
         (X := X) hEll hx
   have hUpperL2 : MemVectorL2 U upper := by
     have hUpper' : MemVectorL2 U (fun x => matVecMul (a x) (ξ x) - X.flux x) := by
-      simpa [sub_eq_add_neg] using hAξL2.sub hFluxL2
+      simpa [sub_eq_add_neg] using! hAξL2.sub hFluxL2
     have hUpperMeas :
         MeasureTheory.AEStronglyMeasurable upper (volumeMeasureOn U) :=
       hUpper'.1.congr hUpperEq.symm
@@ -254,7 +254,7 @@ theorem exists_blockResponsePairHalfState_ae_eq_of_mem_responseSpace_of_lowerIma
   let u : AHarmonicFunction a U :=
     { toH1 := φ + ψ
       isHarmonic := by
-        simpa [ξ] using And.intro hξPot hξSol }
+        simpa [ξ] using! And.intro hξPot hξSol }
   let v : AHarmonicFunction (Homogenization.adjointCoeffField a) U :=
     { toH1 := φ + (-1 : ℝ) • ψ
       isHarmonic := by
@@ -422,13 +422,13 @@ theorem volumeAverage_blockResponseIntegrand_eq_scalarResponse_sum_of_mem_respon
   have hφL2 : MemVectorL2 U φ.grad := φ.grad_memVectorL2
   have hψL2 : MemVectorL2 U ψ.grad := ψ.grad_memVectorL2
   have hξL2 : MemVectorL2 U ξ := by
-    simpa [ξ] using hφL2.add hψL2
+    simpa [ξ] using! hφL2.add hψL2
   have hηL2 : MemVectorL2 U η := by
-    simpa [η, sub_eq_add_neg] using hφL2.sub hψL2
+    simpa [η, sub_eq_add_neg] using! hφL2.sub hψL2
   have hξPot : IsPotentialOn U ξ := by
-    simpa [ξ, hφ, hψ] using isPotentialOn_add hX.1 hLowerPot
+    simpa [ξ, hφ, hψ] using! isPotentialOn_add hX.1 hLowerPot
   have hηPot : IsPotentialOn U η := by
-    simpa [η, sub_eq_add_neg, hφ, hψ] using
+    simpa [η, sub_eq_add_neg, hφ, hψ] using!
       isPotentialOn_add hX.1 (isPotentialOn_smul hLowerPot (-1 : ℝ))
   have hFluxL2 : MemVectorL2 U X.flux :=
     blockResponse_flux_memL2_of_lowerImage_isPotential_of_mem_responseSpace_of_isEllipticFieldOn
@@ -450,7 +450,7 @@ theorem volumeAverage_blockResponseIntegrand_eq_scalarResponse_sum_of_mem_respon
         (X := X) hEll hx
   have hUpperL2 : MemVectorL2 U upper := by
     have hUpper' : MemVectorL2 U (fun x => matVecMul (a x) (ξ x) - X.flux x) := by
-      simpa [sub_eq_add_neg] using hAξL2.sub hFluxL2
+      simpa [sub_eq_add_neg] using! hAξL2.sub hFluxL2
     have hUpperMeas :
         MeasureTheory.AEStronglyMeasurable upper (volumeMeasureOn U) :=
       hUpper'.1.congr hUpperEq.symm
@@ -532,7 +532,7 @@ theorem volumeAverage_blockResponseIntegrand_eq_scalarResponse_sum_of_mem_respon
   let u : AHarmonicFunction a U :=
     { toH1 := φ + ψ
       isHarmonic := by
-        simpa [ξ] using And.intro hξPot hξSol }
+        simpa [ξ] using! And.intro hξPot hξSol }
   let v : AHarmonicFunction (Homogenization.adjointCoeffField a) U :=
     { toH1 := φ + (-1 : ℝ) • ψ
       isHarmonic := by

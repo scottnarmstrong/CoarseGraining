@@ -9,7 +9,7 @@ Coordinate formula for the action of a sign-flip matrix on a vector.
 theorem matVecMul_signFlipMatrix_apply {d : ℕ} (i j : Fin d) (x : Vec d) :
     matVecMul (signFlipMatrix i) x j =
       (if j = i then (-1 : ℝ) else 1) * x j := by
-  simpa [signFlipMatrix, matVecMul] using
+  simpa [signFlipMatrix, matVecMul] using!
     (Matrix.mulVec_diagonal (fun k => if k = i then (-1 : ℝ) else 1) x j)
 
 /--
@@ -17,7 +17,7 @@ Coordinate formula for the action of a swap matrix on a vector.
 -/
 theorem matVecMul_swap_eq_comp {d : ℕ} (i j : Fin d) (x : Vec d) :
     matVecMul (Matrix.swap ℝ i j) x = x ∘ Equiv.swap i j := by
-  simpa [matVecMul] using (Matrix.swap_mulVec (R := ℝ) i j x)
+  simpa [matVecMul] using! (Matrix.swap_mulVec (R := ℝ) i j x)
 
 /--
 The centered open cube `(-3^m/2, 3^m/2)^d` is invariant under coordinate sign flips.

@@ -74,7 +74,7 @@ theorem exists_local_harmonic_replacement_axisCube
           -∫ x in U, vecDot (h x) (euclideanGradient φ x)
               ∂MeasureTheory.volume := by
       simpa [ψ, H10Function.ofContDiff, H1Function.ofContDiff,
-        euclideanGradient, euclideanCoordDeriv] using hw_divergence ψ
+        euclideanGradient, euclideanCoordDeriv] using! hw_divergence ψ
     have heq :
         ∫ x in U, vecDot (u.grad x) (euclideanGradient φ x)
               ∂MeasureTheory.volume =

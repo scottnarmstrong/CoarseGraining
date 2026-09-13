@@ -1,2 +1,0 @@
-import Homogenization.HighContrast.EntryScale.BadEventResponse.P1
-import Homogenization.HighContrast.EntryScale.BadEventResponse.P2

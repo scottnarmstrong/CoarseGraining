@@ -873,9 +873,9 @@ theorem lintegral_enorm_rpow_two_le_lintegral_enorm_rpow_rpow_of_two_le
     have hmono :=
       eLpNorm_two_le_eLpNorm_of_two_le_real_exponent
         (μ := μ) (X := X) hQ hX
-    rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm
+    rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
         (p := (2 : ENNReal)) htwo_ne_zero htwo_ne_top,
-      MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm
+      MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
         (p := ENNReal.ofReal Q) hQenn_ne_zero hQenn_ne_top] at hmono
     simpa [ENNReal.toReal_ofReal hQ_nonneg] using hmono
   have hpow := ENNReal.rpow_le_rpow hnorm (by norm_num : 0 ≤ (2 : ℝ))

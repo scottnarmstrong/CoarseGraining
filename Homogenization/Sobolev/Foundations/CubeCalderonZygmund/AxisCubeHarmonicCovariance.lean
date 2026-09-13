@@ -73,7 +73,7 @@ theorem openCubeSet_originCube_zero_eq_centered_axisCube {d : ℕ} :
     openCubeSet (originCube d 0) =
       axisCube (fun _ => (-(1 / 2 : ℝ))) 1 := by
   ext x
-  simp only [openCubeSet, originCube, cubeScaleFactor, axisCube, Set.mem_setOf_eq,
+  simp only [openCubeSet, originCube, cubeScaleFactor, axisCube, Set.mem_ofPred_eq,
     Set.mem_pi, Set.mem_univ, forall_true_left, Set.mem_Ioo, zpow_zero]
   constructor <;> intro hx <;> intro i
   · have hxi := hx i
@@ -105,9 +105,9 @@ theorem axisCube_eq_translateSet_smul_openCubeSet_originCube_zero {d : ℕ}
     norm_num at hlo hhi ⊢
     constructor
     · convert hlo using 1
-      all_goals ring
+      all_goals first | rfl | ring
     · convert hhi using 1
-      all_goals ring
+      all_goals first | rfl | ring
   · have hxi := hx i
     norm_num at hxi ⊢
     have hlo : (-(1 / 2 : ℝ)) < (x i - (z i + L / 2)) / L := by
@@ -178,7 +178,7 @@ theorem openCubeSet_eq_axisCube_triadicCube {d : ℕ} (Q : TriadicCube d) :
     simp only [triadicCubeAxisCorner]
     ring
   ext x
-  simp only [openCubeSet, axisCube, triadicCubeAxisCorner, Set.mem_setOf_eq,
+  simp only [openCubeSet, axisCube, triadicCubeAxisCorner, Set.mem_ofPred_eq,
     Set.mem_pi, Set.mem_univ, forall_true_left, Set.mem_Ioo]
   constructor <;> intro hx <;> intro i
   · rw [show ((Q.index i : ℝ) - 1 / 2) * cubeScaleFactor Q +
@@ -277,7 +277,7 @@ theorem WeakPoissonEquationOn.undilateSet_zero {d : ℕ} {U V : Set (Vec d)}
   let ψ : Vec d → ℝ := fun y => φ (a⁻¹ • y)
   have ha_ne : a ≠ 0 := ha.ne'
   have hψ_smooth : ContDiff ℝ (⊤ : ℕ∞) ψ := by
-    simpa [ψ] using hφ.comp (contDiff_const_smul a⁻¹)
+    simpa [ψ] using! hφ.comp (contDiff_const_smul a⁻¹)
   have hψ_supp : HasCompactSupport ψ := by
     show HasCompactSupport (φ ∘ Homeomorph.smulOfNeZero a⁻¹ (inv_ne_zero ha_ne))
     simpa [ψ, Function.comp] using
@@ -337,7 +337,7 @@ theorem WeakPoissonEquationOn.undilateSet_zero {d : ℕ} {U V : Set (Vec d)}
         (a ^ d)⁻¹ * ∫ y in a • U,
           vecDot (u.grad y) (euclideanGradient φ (a⁻¹ • y)) ∂MeasureTheory.volume := by
     simpa only [H1Function.undilateSet_grad, smul_smul, inv_mul_cancel₀ ha_ne,
-      one_smul, Module.finrank_fin_fun] using
+      one_smul, Module.finrank_fin_fun] using!
       (MeasureTheory.Measure.setIntegral_comp_smul_of_pos
         (μ := MeasureTheory.volume)
         (f := fun y : Vec d =>
@@ -356,7 +356,7 @@ theorem WeakPoissonEquationOn.untranslate_zero {d : ℕ} {U : Set (Vec d)}
   have htranslated :
       WeakPoissonEquationOn (translateSet (-z) (translateSet z U))
         (u.translate (-z)) 0 := by
-    simpa using h.translate (-z)
+    simpa using! h.translate (-z)
   have hcast : WeakPoissonEquationOn U (hdomain ▸ u.translate (-z)) 0 :=
     WeakPoissonEquationOn.castDomain hdomain htranslated
   have hu : hdomain ▸ u.translate (-z) = u.untranslate z := by
@@ -561,7 +561,7 @@ theorem measurePreserving_axisCubeAffineInv {d : ℕ} (z : Vec d) {L : ℝ}
       (axisCubeNormalizedMeasure z L)
       (MeasureTheory.volume.restrict (openCubeSet (originCube d 0))) := by
   simpa only [axisCubeAffineMeasurableEquiv_apply,
-    axisCubeAffineMeasurableEquiv_symm_apply] using
+    axisCubeAffineMeasurableEquiv_symm_apply] using!
     (measurePreserving_axisCubeAffine z L).symm
       (axisCubeAffineMeasurableEquiv z hL)
 
@@ -583,7 +583,7 @@ theorem aestronglyMeasurable_axisCubeAffine_iff {d : ℕ} (z : Vec d) {L : ℝ}
     rw [hfun] at hcomp
     exact hcomp
   · intro hf
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_apply] using!
       hf.comp_measurePreserving (measurePreserving_axisCubeAffine z L)
 
 /-- `MemLp` is equivalent on the source and target of every nondegenerate
@@ -606,7 +606,7 @@ theorem memLp_axisCubeAffine_iff {d : ℕ} (z : Vec d) {L : ℝ}
     rw [hfun] at hcomp
     exact hcomp
   · intro hf
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_apply] using!
       hf.comp_measurePreserving (measurePreserving_axisCubeAffine z L)
 
 /-- The fixed centered depth-`n` source measure pushes forward to the exact
@@ -644,7 +644,7 @@ theorem measurePreserving_axisCubeAffineInv_originCube_neg_nat {d : ℕ}
         (axisCubeConcentricDepthSide L n))
       (normalizedCubeMeasure (originCube d (-(n : ℤ)))) := by
   simpa only [axisCubeAffineMeasurableEquiv_apply,
-    axisCubeAffineMeasurableEquiv_symm_apply] using
+    axisCubeAffineMeasurableEquiv_symm_apply] using!
     (measurePreserving_axisCubeAffine_originCube_neg_nat z L n).symm
       (axisCubeAffineMeasurableEquiv z hL)
 
@@ -668,7 +668,7 @@ theorem aestronglyMeasurable_axisCubeAffine_originCube_neg_nat_iff {d : ℕ}
     rw [hfun] at hcomp
     exact hcomp
   · intro hf
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_apply] using!
       hf.comp_measurePreserving (measurePreserving_axisCubeAffine_originCube_neg_nat z L n)
 
 /-- Bidirectional `MemLp` transport on the fixed centered depth-`n` source and
@@ -692,7 +692,7 @@ theorem memLp_axisCubeAffine_originCube_neg_nat_iff {d : ℕ}
     rw [hfun] at hcomp
     exact hcomp
   · intro hf
-    simpa only [Function.comp_apply] using
+    simpa only [Function.comp_apply] using!
       hf.comp_measurePreserving (measurePreserving_axisCubeAffine_originCube_neg_nat z L n)
 
 /-- The affine parametrization preserves every extended `Lᵖ` norm when the
@@ -739,7 +739,7 @@ theorem eLpNorm_axisCubeAffine_originCube_neg_nat {d : ℕ}
           (axisCubeConcentricDepthSide L n)) := by
   have hftarget :=
     (aestronglyMeasurable_axisCubeAffine_originCube_neg_nat_iff z hL n f).1 hf
-  simpa only [Function.comp_apply] using
+  simpa only [Function.comp_apply] using!
     MeasureTheory.eLpNorm_comp_measurePreserving hftarget
       (measurePreserving_axisCubeAffine_originCube_neg_nat z L n)
 

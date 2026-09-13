@@ -134,8 +134,8 @@ theorem memVectorL2_openCubeSet_cubeFaceReflectionFoldedParentVectorField
     MemVectorL2 (openCubeSet (originCube d m))
       (cubeFaceReflectionFoldedParentVectorField (originCube d m) g) := by
   classical
-  simpa [cubeFaceReflectionFoldedParentVectorField] using
-    MeasureTheory.memLp_finset_sum
+  simpa [cubeFaceReflectionFoldedParentVectorField] using!
+    MeasureTheory.memLp_finsetSum
       (s := (Finset.univ : Finset (Fin d → Fin 3)))
       (f := fun choice : Fin d → Fin 3 => fun y : Vec d =>
         cubeFaceReflectionCellFoldLinear choice
@@ -268,7 +268,7 @@ theorem setIntegral_cubeFaceReflectionBlockSet_vecDot_field_reflectedVectorField
               (cubeFaceReflectionCellFoldLinear choice
                 (g (cubeFaceReflectionCellFoldMap Q choice y)))
               (G y) ∂MeasureTheory.volume := by
-            rw [MeasureTheory.integral_finset_sum]
+            rw [MeasureTheory.integral_finsetSum]
             intro choice _hchoice
             exact
               integrable_openCubeSet_vecDot_cellFoldLinear_comp_cellFoldMap

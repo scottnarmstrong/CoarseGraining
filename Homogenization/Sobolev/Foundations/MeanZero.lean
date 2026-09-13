@@ -27,7 +27,7 @@ noncomputable def const {d : ℕ} {U : Set (Vec d)}
         (MeasureTheory.memLp_const (μ := volumeMeasureOn U) (p := (2 : ENNReal))
           (c := (0 : ℝ)))
     hasWeakGradient := by
-      simpa using
+      simpa using!
         (HasWeakGradientOn.of_contDiff
           (U := U)
           (f := fun _ : Vec d => c)
@@ -105,7 +105,7 @@ theorem meanZeroOn_subAverage {d : ℕ} {U : Set (Vec d)}
       rcases (ENNReal.toReal_eq_zero_iff (MeasureTheory.volume U)).mp hvol with hzero | htop
       · exact hzero
       · exact (hfinite.ne htop).elim
-    simpa using
+    simpa using!
       (MeasureTheory.setIntegral_measure_zero
         (f := fun x =>
           (u + const (-((MeasureTheory.volume U).toReal⁻¹ *
@@ -123,7 +123,7 @@ theorem meanZeroOn_subAverage {d : ℕ} {U : Set (Vec d)}
         (fun x => (u + const (-((MeasureTheory.volume U).toReal⁻¹ * I))).toFun x) =
           (fun x => u x + -((MeasureTheory.volume U).toReal⁻¹ * I)) := by
       rfl
-    simpa [I] using
+    simpa [I] using!
       (calc
         ∫ x in U, (u + const (-((MeasureTheory.volume U).toReal⁻¹ * I))).toFun x
             ∂MeasureTheory.volume
@@ -178,7 +178,7 @@ noncomputable def coordOnIsBoundedDomain {d : ℕ} {U : Set (Vec d)}
     let π : Vec d →L[ℝ] ℝ := ContinuousLinearMap.proj i
     have hproj :
         HasFDerivAt (fun y : Vec d => y i) π x := by
-      simpa [π] using π.hasFDerivAt (x := x)
+      simpa [π] using! π.hasFDerivAt (x := x)
     have hlin : fderiv ℝ (fun y : Vec d => y i) x = π := hproj.fderiv
     simpa [π, basisVec_apply, eq_comm] using
       (congrArg (fun L : Vec d →L[ℝ] ℝ => L (basisVec j)) hlin).symm

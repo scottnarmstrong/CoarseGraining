@@ -30,7 +30,7 @@ theorem integrableOn_vecDot_harmonicFlux_harmonicFunction_scalarCutoffGradientFi
           (w.toH1 x • scalarCutoffGradientField η x))
       (cubeSet Q) MeasureTheory.volume := by
   let U : Set (Vec d) := openCubeSet Q
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [U, volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   have hflux_mem :
@@ -73,7 +73,7 @@ theorem
         vecDot (matVecMul (a x) (w.toH1.grad x))
           (w.toH1 x • scalarCutoffGradientField η x) ∂MeasureTheory.volume := by
   let U : Set (Vec d) := openCubeSet Q
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U) := by
     simpa [U, volumeMeasureOn] using
       (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume
   let wη : H1Function U := w.toH1.mulContDiffHasCompactSupport hη hη_compact
@@ -166,7 +166,7 @@ theorem
                 fun x => ∑ i, (matVecMul (a x) (w.toH1.grad x)) i * wη.grad x i by
                   funext x
                   simp [vecDot]]
-            rw [MeasureTheory.integral_finset_sum]
+            rw [MeasureTheory.integral_finsetSum]
             intro i hi
             exact hcoord_int_wη i
       _ = ∑ i, ∫ x in U,
@@ -186,7 +186,7 @@ theorem
                 fun x => ∑ i, (matVecMul (a x) (w.toH1.grad x)) i * φ.toH1Function.grad x i by
                   funext x
                   simp [vecDot]]
-            rw [MeasureTheory.integral_finset_sum]
+            rw [MeasureTheory.integral_finsetSum]
             intro i hi
             exact hcoord_int_φ i
       _ = 0 := w.isHarmonic.2 φ
@@ -244,7 +244,7 @@ theorem
               vecDot (matVecMul (a x) (w.toH1.grad x))
                 (w.toH1 x • scalarCutoffGradientField η x))
           U := by
-      simpa [MeasureTheory.IntegrableOn] using hprod_int.integrable.sub hpair_int.integrable
+      simpa [MeasureTheory.IntegrableOn] using! hprod_int.integrable.sub hpair_int.integrable
     simpa [hweighted_eq] using hdiff_int
   have hsum_zero :
       ∫ x in U,

@@ -42,7 +42,7 @@ private theorem aestronglyMeasurable_hilbertVec_single
 private theorem norm_hilbertVec_single_eq
     {d : ℕ} (i : Fin d) (t : ℝ) :
     ‖HilbertVec.ofVec (Pi.single i t)‖ = ‖t‖ := by
-  exact PiLp.norm_toLp_single 2 (fun _ : Fin d ↦ ℝ) i t
+  exact PiLp.norm_single 2 (fun _ : Fin d ↦ ℝ) i t
 
 private theorem
     norm_hilbertVec_cubeDirichletOddReflectionVectorField_single_eq_scalar
@@ -74,14 +74,14 @@ private theorem
 private theorem openCubeSet_originCube_zero_eq_univ (m : ℤ) :
     openCubeSet (originCube 0 m) = Set.univ := by
   ext x
-  simp only [openCubeSet, Set.mem_setOf_eq, Set.mem_univ, iff_true]
+  simp only [openCubeSet, Set.mem_ofPred_eq, Set.mem_univ, iff_true]
   exact fun i ↦ Fin.elim0 i
 
 private theorem scaledOpenCubeSet_originCube_zero_eq_univ
     (m : ℤ) (r : ℝ) :
     scaledOpenCubeSet (originCube 0 m) r = Set.univ := by
   ext x
-  simp only [scaledOpenCubeSet, Set.mem_setOf_eq, Set.mem_univ, iff_true]
+  simp only [scaledOpenCubeSet, Set.mem_ofPred_eq, Set.mem_univ, iff_true]
   exact fun i ↦ Fin.elim0 i
 
 private theorem cubeDirichletOddReflectionScalar_originCube_zero
@@ -152,12 +152,12 @@ theorem
     have hsourceTail :
         {x | a < ‖Vsource x‖} = {x | a < ‖F x‖} := by
       ext x
-      simp only [Set.mem_setOf_eq]
+      simp only [Set.mem_ofPred_eq]
       rw [hsourceNorm x]
     have hreflectedTail :
         {x | a < ‖Vref x‖} = {x | a < ‖Sref x‖} := by
       ext x
-      simp only [Set.mem_setOf_eq]
+      simp only [Set.mem_ofPred_eq]
       rw [hreflectedNorm x]
     have hvector :=
       sqWeightedMeasure_openCubeSet_succ_originCube_cubeDirichletOddReflectionVectorField_tail

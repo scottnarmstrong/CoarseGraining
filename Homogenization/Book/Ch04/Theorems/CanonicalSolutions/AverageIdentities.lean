@@ -318,7 +318,7 @@ theorem canonicalScalarResponseGradientAverageCubeSet_eq_cubeAverageVec_canonica
       canonicalMuHilbertMinimizerCubeSet Q (-p, q) a =
           ((canonicalAEEMuOperatorSystemData Q k aSlice).toMuHilbertRealization).minimizerMap
             (-p, q) := by
-            simp [canonicalMuHilbertMinimizerCubeSet, hSlice, k, aSlice]
+            simp only [canonicalMuHilbertMinimizerCubeSet, dif_pos hSlice, k, aSlice]
       _ = toHilbertBlockL2OfBlockField (U := cubeSet Q) hAdm.memBlockL2_eval :=
             hHilbert.symm
   have hPotentialAE :
@@ -385,7 +385,7 @@ theorem canonicalScalarResponseGradientAverageCubeSet_eq_cubeAverageVec_canonica
         (Ch02.canonicalMaximizer
           (Ch02.responseExistenceTheory (Ch02.cubeDomain Q) aQ)
           p q).toSolution.toH1.grad x := by
-    simpa [Xold, haQ, Ch02.cubeDomain_coe] using
+    simpa only [Xold, haQ, Ch02.cubeDomain_coe] using!
       Ch02.doubledMuMinimizer_neg_left_extracts_canonicalMaximizerGradient
         (Ch02.cubeDomain Q) aQ p q hX
   have hExtractR :
@@ -546,7 +546,7 @@ theorem canonicalScalarResponseFluxAverageCubeSet_eq_cubeAverageVec_canonicalMax
       canonicalMuHilbertMinimizerCubeSet Q (-p, q) a =
           ((canonicalAEEMuOperatorSystemData Q k aSlice).toMuHilbertRealization).minimizerMap
             (-p, q) := by
-            simp [canonicalMuHilbertMinimizerCubeSet, hSlice, k, aSlice]
+            simp only [canonicalMuHilbertMinimizerCubeSet, dif_pos hSlice, k, aSlice]
       _ = toHilbertBlockL2OfBlockField (U := cubeSet Q) hAdm.memBlockL2_eval :=
             hHilbert.symm
   have hFluxAE :
@@ -617,7 +617,7 @@ theorem canonicalScalarResponseFluxAverageCubeSet_eq_cubeAverageVec_canonicalMax
           ((Ch02.canonicalMaximizer
             (Ch02.responseExistenceTheory (Ch02.cubeDomain Q) aQ)
             p q).toSolution.toH1.grad x) := by
-    simpa [Xold, haQ, Ch02.cubeDomain_coe] using
+    simpa only [Xold, haQ, Ch02.cubeDomain_coe] using!
       Ch02.doubledMuMinimizer_neg_left_extracts_canonicalMaximizerFlux
         (Ch02.cubeDomain Q) aQ p q hX
   have hExtractR :

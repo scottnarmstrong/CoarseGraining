@@ -26,7 +26,7 @@ theorem integral_sq_exp_weight (l s : ℝ) :
     have hexp : HasDerivAt (fun u : ℝ => Real.exp (l * u)) (l * Real.exp (l * t)) t := by
       simpa [mul_comm] using ((hasDerivAt_id t).const_mul l).exp
     convert hpow.mul hexp using 1
-    ring
+    all_goals first | rfl | ring
   have hint :
       IntervalIntegrable
         (fun t : ℝ => ((2 * t + l * t ^ (2 : ℕ)) * Real.exp (l * t)))
@@ -218,7 +218,7 @@ theorem integral_upperTruncation_posPart_sq_mul_exp_eq_integral_Ioc_tail
   have hrestrict :
       ∫ t in Set.Ioi 0, g t * μ.real {ω | t ≤ Yp ω} ∂volume =
         ∫ t in Set.Ioc 0 L, g t * μ.real {ω | t ≤ Yp ω} ∂volume := by
-    rw [setIntegral_eq_of_subset_of_forall_diff_eq_zero
+    rw [setIntegral_eq_of_subset_of_forall_sdiff_eq_zero
       measurableSet_Ioi Set.Ioc_subset_Ioi_self]
     intro t ht
     have ht0 : 0 < t := ht.1
@@ -376,7 +376,7 @@ theorem integrable_upperTruncation_sq_mul_exp_max_of_integrable_abs_sq
         (X := X) (l := l) (L := L) (ω := ω) hL
   have hnonneg : 0 ≤ W ω := by
     positivity
-  simpa [Real.norm_of_nonneg hnonneg] using hbound
+  simpa [Real.norm_of_nonneg hnonneg] using! hbound
 
 
 end

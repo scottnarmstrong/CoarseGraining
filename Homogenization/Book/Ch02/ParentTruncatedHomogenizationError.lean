@@ -201,7 +201,7 @@ private theorem normalizedBlockResponseESetOnCube_le_upperBound {d : ℕ}
       _ = BlockJ (U : Set (Vec d)) P Q' apw.toCoeffField := by
         exact
           Internal.Ch02.BookCh02.book_doubledResponseJ_eq_BlockJ_of_isEllipticFieldOn
-            U apw (by simpa [apw, U] using hEll) P Q'
+            U apw (by simpa [apw, U] using! hEll) P Q'
       _ = BlockJ (openCubeSet Q) P Q' A := by rfl
   have hvol : (MeasureTheory.volume (openCubeSet Q)).toReal ≠ 0 := by
     rw [volume_openCubeSet_toReal]
@@ -235,7 +235,7 @@ private theorem normalizedBlockResponseESetOnCube_le_upperBound {d : ℕ}
     exact fullBlockVecNormSq_mulVec_le_rowAbsSqBound_of_eq_one _ he
   have hreal : doubledResponseJ U a P Q' ≤ B := by
     rw [hJ]
-    letI : MeasureTheory.IsFiniteMeasure
+    let : MeasureTheory.IsFiniteMeasure
         (volumeMeasureOn (openCubeSet Q)) := by
       simpa [volumeMeasureOn] using
         (isOpenBoundedConvexDomain_openCubeSet Q).isFiniteMeasure_restrict_volume

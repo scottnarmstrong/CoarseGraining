@@ -66,7 +66,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_soft_hig
   let hΓ2 := hInf.toGammaSigma 2 (by norm_num : (0 : ℝ) < 2)
   have hΓ2_params : hΓ2.params = params := by
     simpa [hΓ2, GammaInfinityCoarseGrainedEllipticity.toGammaSigma] using hparams
-  simpa [hΓ2, GammaInfinityCoarseGrainedEllipticity.toGammaSigma] using
+  simpa [hΓ2, GammaInfinityCoarseGrainedEllipticity.toGammaSigma] using!
     hhigh (t := t) (αbad := αbad) hP hStruct hΓ2 rfl hΓ2_params
       (q := q) (m := m) (n := n) hnm hqm ht hαt
 
@@ -106,7 +106,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_eq_zero_of_
   dsimp only
   intro hnm hqm hnq hαt hcrudeA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -431,7 +431,7 @@ theorem measureReal_shiftedHighBottomPairEvent_quenchedProbeEnvelope_le_weighted
   dsimp only
   intro ht hαt htb hDen hDen_dom
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
@@ -635,7 +635,7 @@ theorem measureReal_shiftedHighBottomBadScaleEvent_quenchedProbeEnvelope_le_weig
   dsimp only
   intro ht hαt htb hDen hDen_dom hA_one
   classical
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let K : ℝ := quenchedProbeEnvelopeConst d
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P

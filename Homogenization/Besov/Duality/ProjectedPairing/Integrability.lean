@@ -29,7 +29,7 @@ theorem integrableOn_mul_projectionResidual_projection_succ_of_mem_descendantsAt
       (fun x => cubeProjection Q (j + 1) g x * cubeProjectionResidual Q j f x)
       (cubeSet R) MeasureTheory.volume := by
   let q : ℝ≥0∞ := cubeBesovConjExponent p
-  letI : ENNReal.HolderConjugate p q :=
+  let : ENNReal.HolderConjugate p q :=
     by simpa [q, cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hp
   have hres :
       MeasureTheory.MemLp (cubeProjectionResidual Q j f) p (normalizedCubeMeasure R) :=
@@ -39,7 +39,7 @@ theorem integrableOn_mul_projectionResidual_projection_succ_of_mem_descendantsAt
       MeasureTheory.Integrable
         (fun x => cubeProjection Q (j + 1) g x * cubeProjectionResidual Q j f x)
         (normalizedCubeMeasure R) := by
-    simpa [q] using hg.integrable_mul hres
+    simpa [q] using! hg.integrable_mul hres
   exact integrableOn_of_integrable_normalizedCubeMeasure (Q := R) hint
 
 theorem integrableOn_mul_projection_of_mem_descendantsAtDepth
@@ -51,7 +51,7 @@ theorem integrableOn_mul_projection_of_mem_descendantsAtDepth
       (fun x => f x * cubeProjection Q j g x)
       (cubeSet R) MeasureTheory.volume := by
   let q : ℝ≥0∞ := cubeBesovConjExponent p
-  letI : ENNReal.HolderConjugate p q :=
+  let : ENNReal.HolderConjugate p q :=
     by simpa [q, cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hp
   have hres :
       MeasureTheory.MemLp (cubeProjectionResidual Q j f) p (normalizedCubeMeasure R) :=
@@ -69,12 +69,12 @@ theorem integrableOn_mul_projection_of_mem_descendantsAtDepth
       MeasureTheory.Integrable
         (fun x => cubeProjection Q j f x * cubeProjection Q j g x)
         (normalizedCubeMeasure R) := by
-    simpa [q, mul_comm] using hprojg.integrable_mul hprojf
+    simpa [q, mul_comm] using! hprojg.integrable_mul hprojf
   have hsecond_int_raw :
       MeasureTheory.Integrable
         (fun x => cubeProjection Q j g x * cubeProjectionResidual Q j f x)
         (normalizedCubeMeasure R) := by
-    simpa [q] using hprojg.integrable_mul hres
+    simpa [q] using! hprojg.integrable_mul hres
   have hsecond_int :
       MeasureTheory.Integrable
         (fun x => cubeProjectionResidual Q j f x * cubeProjection Q j g x)
@@ -115,7 +115,7 @@ theorem integrableOn_mul_projection_succ_of_mem_descendantsAtDepth
       (fun x => f x * cubeProjection Q (j + 1) g x)
       (cubeSet R) MeasureTheory.volume := by
   let q : ℝ≥0∞ := cubeBesovConjExponent p
-  letI : ENNReal.HolderConjugate p q :=
+  let : ENNReal.HolderConjugate p q :=
     by simpa [q, cubeBesovConjExponent] using ENNReal.HolderConjugate.conjExponent hp
   have hres :
       MeasureTheory.MemLp (cubeProjectionResidual Q j f) p (normalizedCubeMeasure R) :=
@@ -129,12 +129,12 @@ theorem integrableOn_mul_projection_succ_of_mem_descendantsAtDepth
       MeasureTheory.Integrable
         (fun x => cubeProjection Q j f x * cubeProjection Q (j + 1) g x)
         (normalizedCubeMeasure R) := by
-    simpa [q, mul_comm] using hg.integrable_mul hprojf
+    simpa [q, mul_comm] using! hg.integrable_mul hprojf
   have hsecond_int_raw :
       MeasureTheory.Integrable
         (fun x => cubeProjection Q (j + 1) g x * cubeProjectionResidual Q j f x)
         (normalizedCubeMeasure R) := by
-    simpa [q] using hg.integrable_mul hres
+    simpa [q] using! hg.integrable_mul hres
   have hsecond_int :
       MeasureTheory.Integrable
         (fun x => cubeProjectionResidual Q j f x * cubeProjection Q (j + 1) g x)

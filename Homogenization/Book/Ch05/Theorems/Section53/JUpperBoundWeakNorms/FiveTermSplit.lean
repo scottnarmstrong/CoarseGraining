@@ -129,7 +129,7 @@ theorem centeredResponseJOnCube_eq_cutoffProduct_add_cutoffOscillation_add_meanD
       · simpa [Gden] using hGradLinear_int
       · simpa [Hden] using hFluxLinear_int
     · simpa [Pden] using hProduct_int
-    · simpa [Gden, Hden] using hGradLinear_int.add hFluxLinear_int
+    · simpa [Gden, Hden] using! hGradLinear_int.add hFluxLinear_int
   have hRemAvg :
       cubeAverage Q (fun x => (1 - φ x) * F x) =
         cutoffOscillationTermOnCubeAtDepth Q a j φ p q +

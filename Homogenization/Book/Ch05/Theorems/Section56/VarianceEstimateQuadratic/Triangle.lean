@@ -136,7 +136,7 @@ theorem aemeasurable_fullBlockNormalizedFluctuationMatrix_cubeSet
           toFullBlockMat (coarseBlockMatrix (cubeSet Q) a.toFun)) P :=
     hP.aemeasurable_coarseFullBlockMatrix_cubeSet Q
   simpa [Section54.VarianceBoundGoodScale.fullBlockNormalizedFluctuationMatrix,
-    b, c, D, Abar, g] using hg.comp_aemeasurable hM
+    b, c, D, Abar, g] using! hg.comp_aemeasurable hM
 
 theorem aemeasurable_descendantsAverageNormalizedFluctuationMatrix
     {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}
@@ -188,7 +188,7 @@ theorem aemeasurable_descendantsAverageNormalizedFluctuationOperatorNormSq
           (Matrix.toEuclideanCLM (n := BlockCoord d) (𝕜 := ℝ)
             |>.toAlgEquiv |>.toLinearEquiv)).continuous_of_finiteDimensional)).pow 2)
     exact hcont.measurable
-  simpa [descendantsAverageNormalizedFluctuationOperatorNormSq, g] using
+  simpa [descendantsAverageNormalizedFluctuationOperatorNormSq, g] using!
     hg.comp_aemeasurable
       (aemeasurable_descendantsAverageNormalizedFluctuationMatrix
         hP hStruct center Q j)

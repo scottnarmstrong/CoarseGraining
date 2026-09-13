@@ -429,7 +429,7 @@ theorem matLoewnerLE_sub_posSemidef_of_posSemidef {d : ℕ}
   have hAB' :
       (1 / 2 : ℝ) * dotProduct x (Matrix.mulVec A x) ≤
         (1 / 2 : ℝ) * dotProduct x (Matrix.mulVec B x) := by
-    simpa [vecDot, matVecMul] using hAB x
+    simpa [vecDot, matVecMul] using! hAB x
   nlinarith
 
 theorem matNormSq_le_of_matLoewnerLE_of_posSemidef {d : ℕ}

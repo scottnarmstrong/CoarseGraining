@@ -321,7 +321,7 @@ private theorem negativeLocalization_finite_holder_average {ι : Type*}
       ENNReal.toReal_lt_toReal ENNReal.one_ne_top p.lt_top.ne]
     exact p.one_lt
   have hpq : p.exponent.toReal.HolderConjugate p.conjugate.exponent.toReal := by
-    letI : ENNReal.HolderConjugate p.exponent p.conjugate.exponent := p.holderConjugate
+    let : ENNReal.HolderConjugate p.exponent p.conjugate.exponent := p.holderConjugate
     exact ENNReal.HolderConjugate.toReal hp
   let c : ℝ≥0∞ := (D.card : ℝ≥0∞)⁻¹
   have hc0 : c ≠ 0 := by

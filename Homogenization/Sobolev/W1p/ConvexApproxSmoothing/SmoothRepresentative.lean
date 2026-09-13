@@ -52,9 +52,9 @@ theorem contDiff_convexApproxSmoothRepresentative
   have haff :
       ContDiff ℝ (⊤ : ℕ∞) (fun x : Vec d => (1 - ε) • x + ε • x0) := by
     exact
-      (contDiff_const.smul
-        (contDiff_id : ContDiff ℝ (⊤ : ℕ∞) (fun x : Vec d => x))).add contDiff_const
-  simpa [convexApproxSmoothRepresentative] using hconv.comp haff
+      ((contDiff_id : ContDiff ℝ (⊤ : ℕ∞) (fun x : Vec d => x)).const_smul
+        (1 - ε)).add contDiff_const
+  simpa [convexApproxSmoothRepresentative] using! hconv.comp haff
 
 theorem convexApproxSmoothRepresentative_eq_convexApproxSmoothing_of_mem
     {d : ℕ} {U : Set (Vec d)} {ρ u : Vec d → ℝ}
@@ -131,12 +131,12 @@ theorem map_restrict_convexApproxSample
           (ι := Fin d) (f := f) hf
       have hpow_inv_nonneg : 0 ≤ (a ^ d)⁻¹ := by positivity
       rw [hdet] at hmapf
-      simpa [f, abs_of_nonneg hpow_inv_nonneg] using hmapf
+      simpa [f, abs_of_nonneg hpow_inv_nonneg] using! hmapf
     calc
       MeasureTheory.Measure.map (convexApproxSample x0 z r ε) MeasureTheory.volume
           = (MeasureTheory.Measure.map (fun x : Vec d => a • x) MeasureTheory.volume).map
               (fun y : Vec d => y + b) := by
-              simpa [Function.comp, a, b, convexApproxSample] using
+              simpa [Function.comp, a, b, convexApproxSample] using!
                 (MeasureTheory.Measure.map_map
                   (μ := MeasureTheory.volume)
                   (g := fun y : Vec d => y + b)
@@ -544,7 +544,9 @@ theorem integrableOn_comp_convexApproxSample_of_locallyIntegrableOn
         refine ⟨x, hx, ?_⟩
         simp [hyw]
     rw [← h_image]
-    exact hK_compact.image ((continuous_const.smul continuous_id).add continuous_const)
+    exact hK_compact.image
+      (((continuous_const : Continuous fun _ : Vec d => a).smul continuous_id).add
+        (continuous_const : Continuous fun _ : Vec d => b))
   have huV : MeasureTheory.IntegrableOn u V MeasureTheory.volume :=
     hu.integrableOn_compact_subset hV_subU hV_compact
   simpa [convexApproxSample, a, b, V] using

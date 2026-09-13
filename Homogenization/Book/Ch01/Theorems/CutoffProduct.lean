@@ -44,7 +44,7 @@ theorem cutoffProductPositiveBesov_partial {d : ℕ}
           cubeL2ScalarPartialSeminormTwo Q (s - 1) N (cubeFluctuation Q u) +
         normalizedLpNorm Q ∞ ξ *
           cubeBesovPositiveScalarPartialSeminormTwo Q s N (cubeFluctuation Q u)) := by
-  simpa [normalizedAverage, normalizedLpNorm] using
+  simpa [normalizedAverage, normalizedLpNorm] using!
     Homogenization.cubeBesovPositiveVectorPartialSeminormTwo_centered_scalar_smul_le_cutoff_terms_of_contDiff_component_bound
       Q s N u ξ hB hu hξLp hξ hderiv
 
@@ -209,8 +209,8 @@ theorem cutoffProduct_component_partialNormTop_le_gradient_rhs
   have hv : MeasureTheory.MemLp v (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
     exact hu.sub (MeasureTheory.memLp_const (cubeAverage Q (fun x => u x)))
   have hF : MeasureTheory.MemLp F (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
-    letI : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
-    simpa [F, v] using hξLp.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hv
+    let : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
+    simpa [F, v] using! hξLp.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hv
   have hP :
       cubeBesovPartialNormTop Q s (2 : ℝ≥0∞) M v ≤ P := by
     simpa [P, v] using

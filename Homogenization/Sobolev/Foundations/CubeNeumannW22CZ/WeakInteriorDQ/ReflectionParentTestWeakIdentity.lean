@@ -84,7 +84,7 @@ theorem H1Function.integral_mul_deriv_foldedParentScalarTest_eq_neg_integral_mul
     simpa [ψn] using (faceCutoff Q n).smooth.mul hψ_smooth
   have hψn_compact : ∀ n, HasCompactSupport (ψn n) := by
     intro n
-    simpa [ψn] using ((faceCutoff Q n).hasCompactSupport.mul_right :
+    simpa [ψn] using! ((faceCutoff Q n).hasCompactSupport.mul_right :
       HasCompactSupport (fun x : Vec d => faceCutoff Q n x * ψ x))
   have hψn_sub : ∀ n, tsupport (ψn n) ⊆ openCubeSet Q := by
     intro n

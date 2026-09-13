@@ -101,7 +101,7 @@ private theorem volume_exceptionalPoints : volume exceptionalPoints = 0 := by
 private theorem a0_ae_eq_a1 : (a0 : CoeffField 1) =ᵐ[volume] (a1 : CoeffField 1) := by
   have houtside : ∀ᵐ x ∂volume, x ∉ exceptionalPoints := by
     refine (ae_iff).2 ?_
-    simpa only [not_not] using volume_exceptionalPoints
+    simpa only [not_not] using! volume_exceptionalPoints
   filter_upwards [houtside] with x hx
   simp [a0, a1, hx]
 
@@ -129,9 +129,20 @@ private theorem coarse_global_event_a0_mem_iff_a1_mem (s : Set (Source.Coarse.Ca
     simp only [Set.mem_preimage]
     rw [bilinearTest_a0_eq_a1]
   have hsGlobal : @MeasurableSet (Source.Coarse.Carrier 1) (Source.Coarse.globalSigma 1) s := hs
+  have hCeq : ({u : Set (Source.Coarse.Carrier 1) | ∃ (e e' : Vec 1) (φ : Vec 1 → ℝ),
+      Source.Coarse.SmoothCompactProbe φ ∧ tsupport φ ⊆ (Set.univ : Set (Vec 1)) ∧
+      ∃ t : Set ℝ, MeasurableSet t ∧
+        u = Source.Coarse.bilinearTest e e' φ ⁻¹' t} : Set (Set (Source.Coarse.Carrier 1))) = C := by
+    ext u
+    constructor
+    · rintro ⟨e, e', φ, hφ, -, t, ht, rfl⟩
+      exact ⟨e, e', φ, hφ, t, ht, rfl⟩
+    · rintro ⟨e, e', φ, hφ, t, ht, rfl⟩
+      exact ⟨e, e', φ, hφ, Set.subset_univ _, t, ht, rfl⟩
   have hsC : @MeasurableSet (Source.Coarse.Carrier 1)
       (MeasurableSpace.generateFrom C) s := by
-    simpa [Source.Coarse.globalSigma, Source.Coarse.localSigma, C] using hsGlobal
+    rw [← hCeq]
+    exact hsGlobal
   exact (MeasurableSpace.forall_generateFrom_mem_iff_mem_iff (S := C) (x := a0) (y := a1)).2
     hC s hsC
 
@@ -197,11 +208,15 @@ private theorem pointEntryEvent_measurable (x : Vec 1) :
     (pointEntryEvent x) (pointEntryEvent_measurable_restriction x)
 
 private theorem regularA0_mem_pointEntryEvent (x : Vec 1) : regularA0 ∈ pointEntryEvent x := by
-  norm_num [regularA0, pointEntryEvent, a0, scalarOne]
+  show Source.Coarse.coarseToRegular a0 x 0 0 = 1
+  rw [Source.Coarse.coarseToRegular_apply]
+  norm_num [a0, scalarOne]
 
 private theorem regularA1_not_mem_pointEntryEvent_of_mem_exceptionalPoints {x : Vec 1}
     (hx : x ∈ exceptionalPoints) : regularA1 ∉ pointEntryEvent x := by
-  norm_num [regularA1, pointEntryEvent, a1, scalarTwo, hx]
+  show ¬ Source.Coarse.coarseToRegular a1 x 0 0 = 1
+  rw [Source.Coarse.coarseToRegular_apply]
+  norm_num [a1, scalarTwo, hx]
 
 private theorem regularTwoAtomLaw_pointZero_measure :
     regularTwoAtomLaw (pointEntryEvent pointZero) = 1 / 2 := by

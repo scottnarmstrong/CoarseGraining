@@ -236,7 +236,9 @@ theorem ch02_responseIntegrand_integrableOn {d : ℕ}
               vecDot q (v.toH1.grad x))
         (U : Set (Vec d)) volume :=
     (hEnergy.neg.sub hFluxPair).add hGradPair
-  convert hAll using 1
+  refine hAll.congr_fun ?_ U.measurableSet
+  intro x _hx
+  simp only [Ch02.responseIntegrand, Ch02.variationEnergyIntegrand]
 
 /-- The parent half-energy density is integrable on the half-open cube. -/
 theorem topHalfEnergyDensityOnCube_integrableOn_cubeSet {d : ℕ}
@@ -349,7 +351,7 @@ theorem centeredProductDensityOnCube_integrableOn_cubeSet
         fun x => ∑ i : Fin d, gradDef x i * fluxDef x i by
           funext x
           simp [vecDot]]
-    exact MeasureTheory.integrable_finset_sum _ fun i _ =>
+    exact MeasureTheory.integrable_finsetSum _ fun i _ =>
       (memLp_component_of_memLp gradDef i hgrad).integrable_mul
         (memLp_component_of_memLp fluxDef i hflux)
   have hprod :
@@ -381,7 +383,7 @@ theorem centeredGradientLinearDensityOnCube_integrableOn_cubeSet
         fun x => ∑ i : Fin d, q0 i * gradDef x i by
           funext x
           simp [vecDot]]
-    exact MeasureTheory.integrable_finset_sum _ fun i _ =>
+    exact MeasureTheory.integrable_finsetSum _ fun i _ =>
       ((memLp_component_of_memLp gradDef i hgrad).integrable
         (by norm_num : (1 : ℝ≥0∞) ≤ 2)).const_mul (q0 i)
   have hlin :
@@ -412,7 +414,7 @@ theorem centeredFluxLinearDensityOnCube_integrableOn_cubeSet
         fun x => ∑ i : Fin d, p0 i * fluxDef x i by
           funext x
           simp [vecDot]]
-    exact MeasureTheory.integrable_finset_sum _ fun i _ =>
+    exact MeasureTheory.integrable_finsetSum _ fun i _ =>
       ((memLp_component_of_memLp fluxDef i hflux).integrable
         (by norm_num : (1 : ℝ≥0∞) ≤ 2)).const_mul (p0 i)
   have hlin :

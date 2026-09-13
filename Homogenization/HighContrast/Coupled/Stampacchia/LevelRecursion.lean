@@ -39,7 +39,7 @@ theorem real_chebyshev_level {α : Type*} {m0 : MeasurableSpace α} {μ : Measur
     intro x hx
     have hεx : ε ≤ h x := hSsub x hx
     have henorm : ‖h x‖ₑ = ENNReal.ofReal (h x) := Real.enorm_eq_ofReal (le_trans hε hεx)
-    rw [Set.mem_setOf_eq, henorm]
+    rw [Set.mem_ofPred_eq, henorm]
     exact ENNReal.ofReal_le_ofReal hεx
   have hcombined :
       (ENNReal.ofReal ε) ^ q * μ S ≤ eLpNorm h p μ ^ q := by

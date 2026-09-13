@@ -182,7 +182,7 @@ private theorem integrableOn_mul_of_memLp_two_normalizedCubeMeasure {d : ℕ}
   have hint : MeasureTheory.Integrable (f * g) (normalizedCubeMeasure Q) := by
     exact hf.integrable_mul hg
   exact Homogenization.integrableOn_of_integrable_normalizedCubeMeasure Q
-    (by simpa using hint)
+    (by simpa using! hint)
 
 private theorem descendantsAverage_mul_le_sqrt_mul_sqrt {d : ℕ}
     (Q : Cube d) (j : ℕ) (A B : Cube d → ℝ)

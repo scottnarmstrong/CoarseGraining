@@ -85,7 +85,7 @@ theorem cubeLpNorm_two_vec_le_sum_components {d : ℕ}
       ∀ i : Fin d,
         MeasureTheory.MemLp (fun x => u x i) (2 : ℝ≥0∞) μ := by
     intro i
-    simpa [μ] using (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
+    simpa [μ] using! (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp' hu
   have hcoord_norm_mem :
       ∀ i : Fin d,
         MeasureTheory.MemLp (fun x => ‖u x i‖) (2 : ℝ≥0∞) μ := by
@@ -93,7 +93,7 @@ theorem cubeLpNorm_two_vec_le_sum_components {d : ℕ}
     simpa using (hcoord_mem i).norm
   have hD_mem : MeasureTheory.MemLp D (2 : ℝ≥0∞) μ := by
     have hsum :=
-      MeasureTheory.memLp_finset_sum (μ := μ) (p := (2 : ℝ≥0∞))
+      MeasureTheory.memLp_finsetSum (μ := μ) (p := (2 : ℝ≥0∞))
         (s := Finset.univ)
         (f := fun i : Fin d => fun x : Vec d => ‖u x i‖)
         (fun i _hi => hcoord_norm_mem i)
@@ -489,7 +489,7 @@ theorem homogenizationComparisonNegativeSobolevLHS_le_const_mul_negativeBesovLHS
     constantCoeffMatrix_isEllipticFieldOn_constantCoeffField a0
       (measurableSet_cubeSet Q)
   have hGc_mem : MemVectorL2 (cubeSet Q) Gc := by
-    simpa [Gc, homogenizationComparisonConstantGradientField, constantCoeffField] using
+    simpa [Gc, homogenizationComparisonConstantGradientField, constantCoeffField] using!
       memVectorL2_matVecMul_of_isEllipticFieldOn hEll0 hgradDiff
   let GfInternal : Vec d → Vec d :=
     fluxComparison (publicCoeffField Q a) a0.matrix u.grad v.grad

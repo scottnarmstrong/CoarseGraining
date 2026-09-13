@@ -46,7 +46,7 @@ private theorem smoothCompactSupport_gradient_memLp
     apply hx
     ext i
     simpa only [SmoothCompactSupportFunction.gradient, HilbertVec.ofVecL_apply,
-      HilbertVec.ofVec, PiLp.toLp_apply, ContinuousLinearMap.zero_apply] using
+      HilbertVec.ofVec, PiLp.toLp_apply, zero_apply] using!
       congrArg (fun L : Vec d →L[ℝ] ℝ => L (basisVec i)) hzero
   exact ((HilbertVec.ofVecL d).continuous.comp hgradient_cont).memLp_of_hasCompactSupport
     hgradient_support
@@ -62,12 +62,12 @@ private theorem tendsto_integral_vecDot_of_tendsto_eLpNorm_finiteLp
       p.exponent mu) atTop (nhds 0)) :
     Tendsto (fun n => ∫ x, vecDot (F n x) (H x) ∂mu)
       atTop (nhds (∫ x, vecDot (G x) (H x) ∂mu)) := by
-  letI : ENNReal.HolderConjugate p.exponent p.conjugate.exponent :=
+  let : ENNReal.HolderConjugate p.exponent p.conjugate.exponent :=
     p.holderConjugate
   have hdiff : ∀ n,
       MemLp (fun x => HilbertVec.ofVec (F n x - G x)) p.exponent mu := by
     intro n
-    simpa only [HilbertVec.ofVecL_apply] using (hF n).sub hG
+    simpa only [HilbertVec.ofVecL_apply] using! (hF n).sub hG
   have hpair_mem : ∀ n,
       MemLp (fun x => vecDot (F n x) (H x)) 1 mu := by
     intro n
@@ -106,7 +106,7 @@ private theorem tendsto_integral_vecDot_of_tendsto_eLpNorm_finiteLp
       (fun x => vecDot (F n x) (H x) - vecDot (G x) (H x)) 1 mu)
       atTop (nhds 0) := by
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hproduct
-      (fun _ => zero_le _) (fun n => ?_)
+      (fun _ => zero_le) (fun n => ?_)
     have heq : (fun x => vecDot (F n x) (H x) - vecDot (G x) (H x)) =
         fun x => vecDot (F n x - G x) (H x) := by
       funext x
@@ -114,7 +114,7 @@ private theorem tendsto_integral_vecDot_of_tendsto_eLpNorm_finiteLp
     rw [heq]
     exact hholder n
   exact tendsto_integral_of_L1' (fun x => vecDot (G x) (H x))
-    (memLp_one_iff_integrable.mp hlimit_pair_mem)
+    (memLp_one_iff_integrable.mp hlimit_pair_mem).aestronglyMeasurable
     (Eventually.of_forall fun n => memLp_one_iff_integrable.mp (hpair_mem n)) hL1
 
 private theorem tendsto_normalized_gradient_difference
@@ -250,7 +250,7 @@ theorem finiteLpGradientLimit_normalized_weak
     have hbase' : Tendsto (fun N => eLpNorm (fun x => HilbertVec.ofVec
         (h.toField x - (finiteLpDataApproximation h (r N)).toField x)) q.exponent
         (normalizedCubeMeasure (originCube d m))) atTop (nhds 0) := by
-      simpa only [Function.comp_apply, r] using hbase
+      simpa only [Function.comp_apply, r] using! hbase
     have hneg : Tendsto (fun N => eLpNorm (fun x => HilbertVec.ofVec
         ((finiteLpDataApproximation h (r N)).toField x - h.toField x)) q.exponent
         (normalizedCubeMeasure (originCube d m))) atTop (nhds 0) := by
@@ -286,7 +286,7 @@ theorem finiteLpGradientLimit_normalized_weak
           (phi.gradient x) ∂mu := by
     intro N
     simpa only [psi, H10Function.ofContDiff, H1Function.ofContDiff,
-      SmoothCompactSupportFunction.gradient, U, mu, r] using
+      SmoothCompactSupportFunction.gradient, U, mu, r] using!
       finiteLpSolutionApproximation_normalized_weak m hsigma0 h (r N) psi
   have hleft : Tendsto (fun N => sigma0 * ∫ x,
       vecDot ((finiteLpSolutionApproximation m hsigma0 h (r N)).toH1Function.grad x)

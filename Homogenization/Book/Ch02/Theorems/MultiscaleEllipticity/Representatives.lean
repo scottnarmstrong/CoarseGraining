@@ -158,7 +158,7 @@ theorem coarseBMatrixNorm_le_coarseBBlockNorm_of_mem_descendantsAtScale
             (Homogenization.sigmaCoarse (openCubeSet R) A)
             (Homogenization.sigmaStarCoarse (openCubeSet R) A)
             (Homogenization.kappaCoarse (openCubeSet R) A)) := by
-          simpa [bCoarse, aRpw, A] using
+          simpa [bCoarse, aRpw, A] using!
             congrArg matrixNorm
               (Internal.Ch02.book_coarseMatrices_b_eq_bCoarse_of_isSigmaStarCoarse
                 (cubeDomain R) aRpw hSCanon)
@@ -210,7 +210,7 @@ theorem coarseSigmaStarInvMatrixNorm_le_coarseSigmaStarInvBlockNorm_of_mem_desce
     _ = matrixNorm (sigmaStarInvCoarse (cubeDomain R) aRpw) := by
           rw [sigmaStarInvCoarse_eq_ofAEEq haeeq]
     _ = matrixNorm (Homogenization.sigmaStarInvCoarse (openCubeSet R) A) := by
-          simpa [aRpw, A] using
+          simpa [aRpw, A] using!
             congrArg matrixNorm
               (Internal.Ch02.book_sigmaStarInvCoarse_eq_sigmaStarInvCoarse
                 (cubeDomain R) aRpw)
@@ -280,7 +280,7 @@ theorem coarseBMatrixNorm_eq_matrixNorm_bCoarse_pointwiseCoeffField_of_mem_desce
             (Homogenization.sigmaCoarse (openCubeSet R) A)
             (Homogenization.sigmaStarCoarse (openCubeSet R) A)
             (Homogenization.kappaCoarse (openCubeSet R) A)) := by
-          simpa [bCoarse, aRpw, A] using
+          simpa [bCoarse, aRpw, A] using!
             congrArg matrixNorm
               (Internal.Ch02.book_coarseMatrices_b_eq_bCoarse_of_isSigmaStarCoarse
                 (cubeDomain R) aRpw hSCanon)
@@ -327,7 +327,7 @@ theorem coarseSigmaStarInvMatrixNorm_eq_matrixNorm_sigmaStarInv_pointwiseCoeffFi
     _ = matrixNorm (sigmaStarInvCoarse (cubeDomain R) aRpw) := by
           rw [sigmaStarInvCoarse_eq_ofAEEq haeeq]
     _ = matrixNorm (Homogenization.sigmaStarInvCoarse (openCubeSet R) A) := by
-          simpa [aRpw, A] using
+          simpa [aRpw, A] using!
             congrArg matrixNorm
               (Internal.Ch02.book_sigmaStarInvCoarse_eq_sigmaStarInvCoarse
                 (cubeDomain R) aRpw)

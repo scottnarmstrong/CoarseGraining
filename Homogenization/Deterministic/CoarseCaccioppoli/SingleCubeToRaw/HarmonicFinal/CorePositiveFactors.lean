@@ -1,4 +1,5 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.Setup
+import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.Setup.CoefficientBounds
+import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.Setup.SolutionInputs
 import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.DescendantSummation
 
 namespace Homogenization
@@ -363,7 +364,7 @@ theorem
         (scalarCutoffGradientField (QuantitativeCubeCutoff.canonicalFun Q ρ₁ ρ₂)) ≤
           coarseCaccioppoliQuantitativeCutoffGradientBound Q ρ₁ ρ₂ := by
     simpa [ηρ, coarseCaccioppoliCanonicalQuantitativeCutoff,
-      QuantitativeCubeCutoff.canonical] using
+      QuantitativeCubeCutoff.canonical] using!
       quantitativeCubeCutoff_cubeLpNorm_infty_gradientField_le Q ηρ
   have hrawcoeff' :
       CoarseCaccioppoliBoundaryRadiusEnergyBridgeCanonicalRawCoefficientBounds

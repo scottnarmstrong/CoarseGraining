@@ -313,7 +313,7 @@ theorem cubeBesovNegativeVectorSeminormTwo_fluxDefect_le_coarseFluxResponseQOneB
     cubeBesovNegativeVectorSeminormTwo_le_of_qone_partialBound
       Q s (fluxDefect a a0 u.toH1.grad) ?_
   intro N
-  simpa [fluxDefect, coarseFluxResponseQOneBound] using
+  simpa [fluxDefect, coarseFluxResponseQOneBound] using!
     coarseFluxResponse_qone_partialSeminorm_le_of_aHarmonicFunction
       (Q := Q) (a := a) (a0 := a0) (s := s)
       hs hEll ha0 ha0symm u hsum N
@@ -539,7 +539,7 @@ theorem cubeBesovNegativeVectorSeminormTwo_fluxDefect_le_coarseFluxResponseRHSSp
     exact
       (cubeBesovNegativeVectorPartialSeminormTwo_le_partialSeminorm
         Q s N (fluxDefect a a0 w.toH1.grad)).trans <| by
-        simpa [fluxDefect, coarseFluxResponseQOneBound] using
+        simpa [fluxDefect, coarseFluxResponseQOneBound] using!
           coarseFluxResponse_qone_partialSeminorm_le_of_aHarmonicFunction
             (Q := Q) (a := a) (a0 := a0) (s := s)
             hs hEll ha0 ha0symm w hsum N

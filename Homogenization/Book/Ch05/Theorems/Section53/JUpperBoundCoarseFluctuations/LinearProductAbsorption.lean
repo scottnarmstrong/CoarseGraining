@@ -529,7 +529,7 @@ theorem linearProductTerms_special_le_centering_add_pairedWeakNormSquares
     linarith [sq_nonneg Kgrad, sq_nonneg Kflux, le_max_right KprodDim (0 : ℝ)]
   refine ⟨C, hC_nonneg, ?_⟩
   intro P hP hStruct hP4 k m _hkm e he ε hε hε_le hGradSq hFluxSq
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let β := section53CoarseFluctuationBeta hP4
   let s := hP4.sLower + 2 * β
   let t := hP4.sUpper + 2 * β

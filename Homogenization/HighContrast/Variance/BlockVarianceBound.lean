@@ -52,9 +52,9 @@ theorem integrable_fullBlockProbeSqBudget {P : RestrictionCoeffLaw d} [IsProbabi
       Integrable (fun a => (fullBlockQuadratic (M a) q) ^ 2) P) :
     Integrable (fun a => fullBlockProbeSqBudget (M a)) P := by
   unfold fullBlockProbeSqBudget
-  refine (MeasureTheory.integrable_finset_sum _ ?_).const_mul _
+  refine (MeasureTheory.integrable_finsetSum _ ?_).const_mul _
   intro α _hα
-  refine (MeasureTheory.integrable_finset_sum _ ?_).const_mul _
+  refine (MeasureTheory.integrable_finsetSum _ ?_).const_mul _
   intro β _hβ
   exact (((hint _).add (hint _)).add (hint _)).const_mul 3
 
@@ -81,13 +81,13 @@ theorem integral_fullBlockProbeSqBudget_eq {P : RestrictionCoeffLaw d} [IsProbab
   unfold fullBlockProbeSqBudget
   rw [integral_const_mul]
   congr 1
-  rw [integral_finset_sum _ (fun α _ => (MeasureTheory.integrable_finset_sum _
+  rw [integral_finsetSum _ (fun α _ => (MeasureTheory.integrable_finsetSum _
     (fun β _ => hterm_int α β)).const_mul _)]
   congr 1
   ext α
   rw [integral_const_mul]
   congr 1
-  rw [integral_finset_sum _ (fun β _ => hterm_int α β)]
+  rw [integral_finsetSum _ (fun β _ => hterm_int α β)]
   congr 1
   ext β
   rw [integral_const_mul]

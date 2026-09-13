@@ -97,7 +97,7 @@ theorem blockJTraceAverageWithNormalizers_eq_traceBudget_descendantsAverageBlock
             ∑ α : BlockCoord d,
               Ch02.doubledResponseJ (Ch02.cubeDomain R) (F.coeffOn R)
                 (fullBlockMatrixProbe S α) (fullBlockMatrixProbe T α)) := by
-            simpa [Pcell] using
+            simpa [Pcell] using!
               Ch02.descendantsDomainPartition_weightedAverage Q j
                 (fun R : TriadicCube d =>
                   ∑ α : BlockCoord d,
@@ -134,7 +134,15 @@ theorem blockJTraceAverageWithNormalizers_eq_traceBudget_descendantsAverageBlock
                 Pcell.weight i *
                   fullBlockJTraceBudgetWithNormalizers S T
                     (Ch02.coarseBlockMatrix (Pcell.cell i) (F.coeffOn i.1))
-            rw [sum_doubledResponseJ_fullBlockNormalizers_eq_traceBudget]
+            have hbudget :
+                (∑ α : BlockCoord d,
+                    Ch02.doubledResponseJ (Pcell.cell i) (F.coeffOn i.1)
+                      (fullBlockMatrixProbe S α) (fullBlockMatrixProbe T α)) =
+                  fullBlockJTraceBudgetWithNormalizers S T
+                    (Ch02.coarseBlockMatrix (Pcell.cell i) (F.coeffOn i.1)) :=
+              sum_doubledResponseJ_fullBlockNormalizers_eq_traceBudget
+                (Pcell.cell i) (F.coeffOn i.1) S T
+            rw [hbudget]
     _ =
         fullBlockJTraceBudgetWithNormalizers S T
           (Pcell.weightedBlockAverage

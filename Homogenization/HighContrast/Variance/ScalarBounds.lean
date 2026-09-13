@@ -54,7 +54,7 @@ theorem ae_coarseBlockQuadratic_lower_of_thetaEllipticLaw [NeZero d] {L : Restri
       Measurable (fun x => fun i j =>
         if x ∈ cubeSet (originCube d m) then a x i j else 0) := by
     refine measurable_pi_iff.2 fun i => measurable_pi_iff.2 fun j => ?_
-    simpa only [Set.indicator] using (a.entry_measurable i j).indicator hU
+    simpa only [Set.indicator] using! (a.entry_measurable i j).indicator hU
   have haeU : ∀ᵐ x ∂(volume.restrict (cubeSet (originCube d m))),
       IsEllipticMatrix 1 Θ (a x) := ae_restrict_of_ae haeEll
   obtain ⟨a', hEll', _, hcoarse, _⟩ := exists_ellipticFieldOn_ae_eq hU hΘ hmeasA haeU
@@ -72,7 +72,7 @@ theorem integrable_coarseBlockQuadratic_of_thetaEllipticLaw [NeZero d] {L : Rest
     Integrable
       (fun a => blockVecDot P
         (blockMatVecMul (coarseBlockMatrix (cubeSet (originCube d m)) a.toFun) P)) L := by
-  haveI : IsProbabilityMeasure L := hP.isProbability
+  have : IsProbabilityMeasure L := hP.isProbability
   refine (integrable_const (2 * (Θ * vecNormSq P.1 + vecNormSq P.2))).mono'
     (aestronglyMeasurable_coarseBlockQuadratic_cubeSet hP m P) ?_
   filter_upwards [ae_coarseBlockQuadratic_bounds_of_thetaEllipticLaw hΘ hLaw m P] with a ha
@@ -93,7 +93,7 @@ theorem half_le_barSigmaAtScale [NeZero d] {L : RestrictionCoeffLaw d} {Θ : ℝ
     (hΘ : 1 ≤ Θ) (hP : RestrictionLawCarrier L) (hStruct : RestrictionStructuralLaw L)
     (hLaw : ThetaEllipticLaw Θ L) (m : ℤ) :
     (1 / 2 : ℝ) ≤ hP.barSigmaAtScale hStruct m := by
-  haveI : IsProbabilityMeasure L := hP.isProbability
+  have : IsProbabilityMeasure L := hP.isProbability
   have i0 : Fin d := ⟨0, NeZero.pos d⟩
   set P0 : BlockVec d := blockBasis (Sum.inl i0) with hP0
   have hmean := mean_zero_coarse_blockQuadratic hΘ hP hLaw m P0
@@ -127,7 +127,7 @@ private theorem barSigmaStarInv_mem [NeZero d] {L : RestrictionCoeffLaw d} {Θ :
     (hLaw : ThetaEllipticLaw Θ L) (m : ℤ) :
     (2 * Θ)⁻¹ ≤ (hP.barSigmaStarAtScale hStruct m)⁻¹ ∧
       (hP.barSigmaStarAtScale hStruct m)⁻¹ ≤ 2 := by
-  haveI : IsProbabilityMeasure L := hP.isProbability
+  have : IsProbabilityMeasure L := hP.isProbability
   have i0 : Fin d := ⟨0, NeZero.pos d⟩
   set P1 : BlockVec d := blockBasis (Sum.inr i0) with hP1
   have hmean := mean_zero_coarse_blockQuadratic hΘ hP hLaw m P1

@@ -185,7 +185,7 @@ theorem exists_quantitative_threshold_absoluteBadTail_quenchedProbeEnvelope_le_i
         positivity)
   refine ⟨Rshift, Rsmall, Runion, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
@@ -546,7 +546,7 @@ theorem exists_quantitative_threshold_absoluteBadTail_quenchedProbeEnvelope_le_i
         positivity)
   refine ⟨Rshift, Rsmall, Runion, ?_⟩
   intro P hP hStruct hΓ hσ_eq hparams
-  letI : IsProbabilityMeasure P := hP.isProbability
+  let : IsProbabilityMeasure P := hP.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale P
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry

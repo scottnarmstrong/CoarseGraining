@@ -223,9 +223,9 @@ theorem openCubeDeterministicCoarseData_of_triadicCube_of_hasOpenCubeEllipticRec
   let z : Vec d := fun i => (Q.index i : ℝ) * cubeScaleFactor Q
   let U0 : Set (Vec d) := openCubeSet (originCube d Q.scale)
   let a0 : CoeffField d := translateCoeffField z a
-  letI : Fact (MeasureTheory.volume U0 < ⊤) :=
+  let : Fact (MeasureTheory.volume U0 < ⊤) :=
     ⟨volume_openCubeSet_originCube_lt_top (d := d) Q.scale⟩
-  letI : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U0) := by
+  let : MeasureTheory.IsFiniteMeasure (volumeMeasureOn U0) := by
     simpa [volumeMeasureOn, U0] using
       (isOpenBoundedConvexDomain_openCubeSet (originCube d Q.scale)).isFiniteMeasure_restrict_volume
   have hEll : IsEllipticFieldOn lam Lam U0 a0 := Classical.choose hRec
@@ -367,7 +367,7 @@ theorem openCubeDeterministicCoarseData_of_triadicCube_of_hasOpenCubeEllipticRec
         have hcoer' :
             (lam / (1 + 2 * Lam ^ 2)) * blockVecDot (Xq.eval x) (Xq.eval x) ≤
               2 * blockEnergyDensity a0 Xq x := by
-          simpa [blockEnergyDensity, Xq] using hcoer
+          simpa [blockEnergyDensity, Xq] using! hcoer
         have hchain :
             (lam / (1 + 2 * Lam ^ 2)) * vecNormSq (Xq.flux x) ≤
               2 * blockEnergyDensity a0 Xq x := le_trans hflux_scaled hcoer'
@@ -393,7 +393,7 @@ theorem openCubeDeterministicCoarseData_of_triadicCube_of_hasOpenCubeEllipticRec
             volumeAverage U0 (fun x =>
               (lam / (2 * (1 + 2 * Lam ^ 2))) * vecNormSq (Xq.flux x)) := by
                 symm
-                simpa [smul_eq_mul] using
+                simpa [smul_eq_mul] using!
                   (volumeAverage_smul U0 (lam / (2 * (1 + 2 * Lam ^ 2)))
                     (fun x => vecNormSq (Xq.flux x)))
           _ ≤ volumeAverage U0 (blockEnergyDensity a0 Xq) := by
@@ -401,7 +401,7 @@ theorem openCubeDeterministicCoarseData_of_triadicCube_of_hasOpenCubeEllipticRec
               (U := U0)
               (hU := measurableSet_openCubeSet (originCube d Q.scale))
               (hf := by
-                simpa [smul_eq_mul] using
+                simpa [smul_eq_mul] using!
                   hFluxSqInt.smul (lam / (2 * (1 + 2 * Lam ^ 2))))
               (hg := hEnergyInt)
               hpoint
@@ -546,18 +546,18 @@ theorem openCubeDeterministicCoarseData_of_triadicCube_of_hasOpenCubeEllipticRec
       IsSigmaStarCoarse (openCubeSet Q) a (sigmaStarCoarse U0 a0) := by
     have htrans :=
       (isSigmaStarCoarse_translateSet_iff z U0 a (sigmaStarCoarse U0 a0)).2 hS0
-    simpa [z, U0, a0, openCubeSet_eq_translateSet_originCube_of_triadicCube Q] using htrans
+    simpa [z, U0, a0, openCubeSet_eq_translateSet_originCube_of_triadicCube Q] using! htrans
   have hKQ :
       IsKappaCoarse (openCubeSet Q) a (sigmaStarCoarse U0 a0) (kappaCoarse U0 a0) := by
     have htrans :=
       (isKappaCoarse_translateSet_iff z U0 a (sigmaStarCoarse U0 a0) (kappaCoarse U0 a0)).2 hK0
-    simpa [z, U0, a0, openCubeSet_eq_translateSet_originCube_of_triadicCube Q] using htrans
+    simpa [z, U0, a0, openCubeSet_eq_translateSet_originCube_of_triadicCube Q] using! htrans
   have hSigmaQ :
       IsSigmaCoarse (openCubeSet Q) a sigma0 (sigmaStarCoarse U0 a0) (kappaCoarse U0 a0) := by
     have htrans :=
       (isSigmaCoarse_translateSet_iff z U0 a sigma0
         (sigmaStarCoarse U0 a0) (kappaCoarse U0 a0)).2 hSigma0
-    simpa [z, U0, a0, openCubeSet_eq_translateSet_originCube_of_triadicCube Q] using htrans
+    simpa [z, U0, a0, openCubeSet_eq_translateSet_originCube_of_triadicCube Q] using! htrans
   have hAblockQ :
       IsCoarseBlockMatrix (openCubeSet Q) a
         (blockMatrixOfDeterministicData sigma0 (sigmaStarCoarse U0 a0) (kappaCoarse U0 a0)) := by
@@ -565,7 +565,7 @@ theorem openCubeDeterministicCoarseData_of_triadicCube_of_hasOpenCubeEllipticRec
       (isCoarseBlockMatrix_translateSet_iff z U0 a
         (blockMatrixOfDeterministicData sigma0 (sigmaStarCoarse U0 a0) (kappaCoarse U0 a0))).2
         hAblock0
-    simpa [z, U0, a0, openCubeSet_eq_translateSet_originCube_of_triadicCube Q] using htrans
+    simpa [z, U0, a0, openCubeSet_eq_translateSet_originCube_of_triadicCube Q] using! htrans
   have hAQ :
       IsCoarseBlockMatrix (openCubeSet Q) a
         (deterministicCoarseBlockMatrix (openCubeSet Q) a) := by

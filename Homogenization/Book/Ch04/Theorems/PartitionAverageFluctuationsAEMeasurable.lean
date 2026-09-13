@@ -53,7 +53,7 @@ theorem isBigO_gammaSigma_restrictionCenteredDescendantAverageOnCube_of_restrict
     intro U z a
     simpa [Y] using congrArg (fun x : ℝ => x - μ0) (hX_cov U z a)
   have hY0_aemeas : AEMeasurable (Y (cubeSet (originCube d n))) P := by
-    simpa [Y] using hX0_aemeas.sub measurable_const.aemeasurable
+    simpa [Y] using! hX0_aemeas.sub measurable_const.aemeasurable
   have hYrep_local :
       ∀ R ∈ D, IsRestrictionLocalRandomVariable (cubeSet R) (measurableSet_cubeSet R) (Yrep R) := by
     intro R hR
@@ -105,7 +105,7 @@ theorem isBigO_gammaSigma_restrictionCenteredDescendantAverageOnCube_of_restrict
               (cubeSet (originCube d n)) := by
               simp [hscaleR]
     have hYR_aemeas : AEMeasurable (Y (cubeSet R)) P := by
-      simpa [Y] using
+      simpa [Y] using!
         (hX_desc_aemeas R (by simpa [D] using hR)).sub measurable_const.aemeasurable
     have hmap :
         Measure.map (Y (cubeSet R)) P =
@@ -125,7 +125,7 @@ theorem isBigO_gammaSigma_restrictionCenteredDescendantAverageOnCube_of_restrict
         IsBigO P (gammaSigma σ) (Zraw R) K := by
       have horigin :
           IsBigO P (gammaSigma σ) (Y (cubeSet (originCube d n))) K := by
-        simpa [Y, μ0, restrictionCenteredOriginObservable] using hX0
+        simpa [Y, μ0, restrictionCenteredOriginObservable] using! hX0
       have htail :=
         (isBigO_gammaSigma_iff_of_map_eq_map_aemeasurable
           (μ := P) (σ := σ) (A := K)
@@ -136,7 +136,7 @@ theorem isBigO_gammaSigma_restrictionCenteredDescendantAverageOnCube_of_restrict
   have hY0_int : Integrable (Y (cubeSet (originCube d n))) P := by
     have hY0_tail :
         IsBigO P (gammaSigma σ) (Y (cubeSet (originCube d n))) K := by
-      simpa [Y, μ0, restrictionCenteredOriginObservable] using hX0
+      simpa [Y, μ0, restrictionCenteredOriginObservable] using! hX0
     have hY0_mom :=
       hasGammaMomentGrowthWith_of_isBigO_gammaSigma
         (μ := P) (X := Y (cubeSet (originCube d n))) (K := K) (σ := σ)

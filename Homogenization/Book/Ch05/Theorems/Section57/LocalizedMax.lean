@@ -142,7 +142,7 @@ theorem isBigOWith_limitNormalizedBlockJObservable_sub_const_of_mem_descendantsA
   let Qvec : BlockVec d := scalarLimitSqrtBlockVec hP hStruct e
   let X : Set (Vec d) → RegCoeffField d → ℝ :=
     fun U a => Ch04.blockJSetObservableBlockVec Pvec Qvec U a.toFun - c
-  letI : IsProbabilityMeasure Pμ := hP.isProbability
+  let : IsProbabilityMeasure Pμ := hP.isProbability
   have hshift :
       cubeSet R =
         translateSet (intVecToRealVec (Ch04.scaleTranslationShift n R))
@@ -193,7 +193,7 @@ theorem isBigO_limitNormalizedBlockJObservable_of_mem_descendantsAtScale
         (limitNormalizedBlockJObservable hP hStruct (originCube d n) e) A) :
     IsBigO Pμ (gammaSigma σ)
       (limitNormalizedBlockJObservable hP hStruct R e) A := by
-  letI : IsProbabilityMeasure Pμ := hP.isProbability
+  let : IsProbabilityMeasure Pμ := hP.isProbability
   have hmap :=
     map_limitNormalizedBlockJObservable_eq_origin_of_mem_descendantsAtScale
       hP hStruct hstat hn hnm hR e
@@ -236,7 +236,7 @@ theorem isBigO_limitNormalizedBlockJObservable_originCube_of_scaleZero
     exact lt_of_lt_of_le zero_lt_one (le_max_left 1 G)
   refine ⟨C, hC_pos, ?_⟩
   intro Pμ hPμ hStruct hΓ hσ_eq hparams e he n
-  letI : IsProbabilityMeasure Pμ := hPμ.isProbability
+  let : IsProbabilityMeasure Pμ := hPμ.isProbability
   let Pvec : BlockVec d := scalarLimitInvSqrtBlockVec hPμ hStruct e
   let Qvec : BlockVec d := scalarLimitSqrtBlockVec hPμ hStruct e
   let θ : ℝ :=
@@ -421,7 +421,7 @@ theorem isBigO_localizedLimitNormalizedJMax
   refine ⟨C, hC_pos, ?_⟩
   intro Pμ hPμ hStruct hΓ hσ_eq hparams e he_norm m n hnm
   classical
-  letI : IsProbabilityMeasure Pμ := hPμ.isProbability
+  let : IsProbabilityMeasure Pμ := hPμ.isProbability
   let D : Finset (TriadicCube d) :=
     descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ)
   have hD : D.Nonempty :=
@@ -500,7 +500,7 @@ theorem isBigOWith_localizedLimitNormalizedJMax_sub_const
         ((descendantsAtScale
           (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ)).card : ℝ)) ^ σ⁻¹) * A) := by
   classical
-  letI : IsProbabilityMeasure Pμ := hP.isProbability
+  let : IsProbabilityMeasure Pμ := hP.isProbability
   let D : Finset (TriadicCube d) :=
     descendantsAtScale (originCube d ((m : ℕ) : ℤ)) ((n : ℕ) : ℤ)
   have hD : D.Nonempty :=
@@ -575,7 +575,7 @@ theorem localizedFirstQuenchedEstimate_limitNormalized
     firstQuenchedEstimate_limitNormalized (d := d) hσ_pos params
   refine ⟨Cfluct, Centry, α, hCfluct, hCentry, hα, ?_⟩
   intro Pμ hPμ hStruct hΓ hσ_eq hparams e he_norm ℓ n m hℓn hnm
-  letI : IsProbabilityMeasure Pμ := hPμ.isProbability
+  let : IsProbabilityMeasure Pμ := hPμ.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale Pμ
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry
@@ -652,7 +652,7 @@ theorem localizedFirstQuenchedEstimate_limitNormalized_uniformAnnealedExponent
   obtain ⟨Cfluct, hCfluct, hfirst⟩ := hfirstBase hσ_pos
   refine ⟨Cfluct, hCfluct, ?_⟩
   intro Pμ hPμ hStruct hΓ hσ_eq hparams e he_norm ℓ n m hℓn hnm
-  letI : IsProbabilityMeasure Pμ := hPμ.isProbability
+  let : IsProbabilityMeasure Pμ := hPμ.isProbability
   let N0 : ℕ :=
     annealedAlgebraicEntryScale Pμ
       hΓ.toQuantitativeCoarseGrainedEllipticity Centry

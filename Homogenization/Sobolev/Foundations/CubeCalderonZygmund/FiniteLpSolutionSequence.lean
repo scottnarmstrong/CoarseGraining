@@ -115,22 +115,22 @@ private theorem tendsto_eLpNorm_sub_finiteLpDataApproximation_pair
         q.exponent (normalizedCubeMeasure Q)) atTop (nhds 0) := by
     simpa using htend_fst.add htend_snd
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hsum
-    (fun _ => zero_le _) (fun nk => ?_)
+    (fun _ => zero_le) (fun nk => ?_)
   let hn := finiteLpDataApproximation h nk.1
   let hk := finiteLpDataApproximation h nk.2
   have hhn : MemLp (fun x => HilbertVec.ofVec (h.toField x - hn.toField x))
       q.exponent (normalizedCubeMeasure Q) := by
-    simpa only [HilbertVec.ofVecL_apply] using h.euclideanMemLp.sub hn.euclideanMemLp
+    simpa only [HilbertVec.ofVecL_apply] using! h.euclideanMemLp.sub hn.euclideanMemLp
   have hhk : MemLp (fun x => HilbertVec.ofVec (h.toField x - hk.toField x))
       q.exponent (normalizedCubeMeasure Q) := by
-    simpa only [HilbertVec.ofVecL_apply] using h.euclideanMemLp.sub hk.euclideanMemLp
+    simpa only [HilbertVec.ofVecL_apply] using! h.euclideanMemLp.sub hk.euclideanMemLp
   have heq : (fun x => HilbertVec.ofVec (hn.toField x - hk.toField x)) =
       (fun x => -HilbertVec.ofVec (h.toField x - hn.toField x)) +
         fun x => HilbertVec.ofVec (h.toField x - hk.toField x) := by
     funext x
     rw [show hn.toField x - hk.toField x =
       -(h.toField x - hn.toField x) + (h.toField x - hk.toField x) by abel]
-    simpa only [Pi.add_apply, Pi.neg_apply] using
+    simpa only [Pi.add_apply, Pi.neg_apply] using!
       (HilbertVec.ofVecL d).map_add
         (-(h.toField x - hn.toField x)) (h.toField x - hk.toField x)
   rw [heq]
@@ -176,7 +176,7 @@ theorem exists_tendsto_normalizedEuclideanLpENorm_finiteLpSolutionApproximation_
       ENNReal.Tendsto.const_mul (a := C * (ENNReal.ofReal sigma0)⁻¹)
         hdata (Or.inr hfactor_ne_top)
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hright
-    (fun _ => zero_le _) (fun nk => ?_)
+    (fun _ => zero_le) (fun nk => ?_)
   exact hC m sigma0 (finiteLpDataApproximation h nk.1) (finiteLpDataApproximation h nk.2)
     (finiteLpSolutionApproximation m hsigma0 h nk.1)
     (finiteLpSolutionApproximation m hsigma0 h nk.2) hsigma0

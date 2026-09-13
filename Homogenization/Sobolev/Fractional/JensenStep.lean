@@ -36,7 +36,7 @@ theorem eLpNorm_sub_average_rpow_le_double_lintegral {d : ℕ}
         ∂(ScalarOverlap.normalizedCubeMeasure S) := by
   set μ : Measure (Vec d) := ScalarOverlap.normalizedCubeMeasure S with hμ
   -- The normalized cube measure is a probability measure.
-  haveI hprob : IsProbabilityMeasure μ :=
+  have hprob : IsProbabilityMeasure μ :=
     ⟨ScalarOverlap.normalizedCubeMeasure_apply_univ S⟩
   -- Exponent bookkeeping.
   have hp0 : p ≠ 0 := (zero_lt_one.trans_le hp).ne'
@@ -71,7 +71,7 @@ theorem eLpNorm_sub_average_rpow_le_double_lintegral {d : ℕ}
           eLpNorm (fun y => u x - u y) p μ :=
         eLpNorm_le_eLpNorm_of_exponent_le hp hmeas
       rwa [eLpNorm_one_eq_lintegral_enorm,
-        eLpNorm_eq_lintegral_rpow_enorm hp0 hpt] at hle
+        eLpNorm_eq_lintegral_rpow_enorm_toReal hp0 hpt] at hle
     calc ‖u x - ScalarOverlap.cubeAverage S u‖ₑ ^ p.toReal
         ≤ ((∫⁻ y, ‖u x - u y‖ₑ ^ p.toReal ∂μ) ^ (1 / p.toReal)) ^ p.toReal :=
           ENNReal.rpow_le_rpow (h1.trans h2) hpr.le
@@ -81,7 +81,7 @@ theorem eLpNorm_sub_average_rpow_le_double_lintegral {d : ℕ}
   have hLHS : (eLpNorm (fun x => u x - ScalarOverlap.cubeAverage S u) p μ)
       ^ p.toReal =
       ∫⁻ x, ‖u x - ScalarOverlap.cubeAverage S u‖ₑ ^ p.toReal ∂μ := by
-    rw [eLpNorm_eq_lintegral_rpow_enorm hp0 hpt, ← ENNReal.rpow_mul,
+    rw [eLpNorm_eq_lintegral_rpow_enorm_toReal hp0 hpt, ← ENNReal.rpow_mul,
       one_div_mul_cancel hpr.ne', ENNReal.rpow_one]
   calc (eLpNorm (fun x => u x - ScalarOverlap.cubeAverage S u) p μ) ^ p.toReal
       = ∫⁻ x, ‖u x - ScalarOverlap.cubeAverage S u‖ₑ ^ p.toReal ∂μ := hLHS

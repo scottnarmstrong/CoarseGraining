@@ -37,7 +37,7 @@ omit [NeZero d] in
 @[simp] theorem centeredPotential_toFun (v : H1Function (openCubeSet (originCube d m)))
     (p : Vec d) (c : ℝ) (x : Vec d) :
     (centeredPotential m v p c).toFun x = v.toFun x - (1 / 2 : ℝ) * vecDot p x - c := by
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   show (v + (-(1 / 2 : ℝ)) • affineH1 m p + H1Function.const (-c)).toFun x = _
   simp only [Homogenization.H1Function.add_toFun, Homogenization.H1Function.smul_toFun,
     affineH1_toFun, H1Function.const_apply]
@@ -48,7 +48,7 @@ omit [NeZero d] in
 @[simp] theorem centeredPotential_grad (v : H1Function (openCubeSet (originCube d m)))
     (p : Vec d) (c : ℝ) (x : Vec d) :
     (centeredPotential m v p c).grad x = v.grad x - (1 / 2 : ℝ) • p := by
-  letI := isFiniteMeasure_openCubeSet_originCube (d := d) m
+  let := isFiniteMeasure_openCubeSet_originCube (d := d) m
   show (v + (-(1 / 2 : ℝ)) • affineH1 m p + H1Function.const (-c)).grad x = _
   simp only [Homogenization.H1Function.add_grad, Homogenization.H1Function.smul_grad,
     affineH1_grad, H1Function.grad_const, add_zero]

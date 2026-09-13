@@ -101,7 +101,7 @@ theorem cubeSet_subset_closedBall {d : ℕ} (Q : TriadicCube d) :
 theorem cubeSet_ae_eq_closedBall {d : ℕ} (Q : TriadicCube d) :
     cubeSet Q =ᵐ[MeasureTheory.volume] Metric.closedBall (cubeCenter Q) (cubeRadius Q) := by
   rw [cubeSet_eq_pi_Ico, closedBall_cubeCenter_eq_pi_Icc]
-  simpa [cubeCenter_sub_cubeRadius, cubeCenter_add_cubeRadius] using
+  simpa [cubeCenter_sub_cubeRadius, cubeCenter_add_cubeRadius] using!
     (MeasureTheory.Measure.univ_pi_Ico_ae_eq_Icc
       (μ := fun _ : Fin d => (MeasureTheory.volume : MeasureTheory.Measure ℝ))
       (f := fun i : Fin d => (((Q.index i : ℝ) - (1 / 2 : ℝ)) * cubeScaleFactor Q))

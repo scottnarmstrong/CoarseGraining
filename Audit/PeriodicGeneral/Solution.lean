@@ -268,7 +268,7 @@ private theorem locallyL2_toRepo {d : ℕ} (Q : TriadicCube d) (u : Vec d → �
       refine (mem_descendants_toRepo Q (ofRepoTriadicCube R) j).1 ?_
       simpa [toRepo_ofRepoTriadicCube] using hR
     have := h j (ofRepoTriadicCube R) hR'
-    simpa [toRepo_ofRepoTriadicCube] using this
+    simpa [toRepo_ofRepoTriadicCube] using! this
 
 private theorem isDualTest_toRepo {d : ℕ} (Q : TriadicCube d) (u : Vec d → ℝ) :
     _root_.Homogenization.CubeBesovDualFullTest (toRepoTriadicCube Q)
@@ -495,7 +495,7 @@ private def regEquiv (d : ℕ) :
 private theorem dirac_eq_map_ofRepoReg {d : ℕ} (a₀ : CoefficientField d) :
     (Measure.dirac a₀ : Measure (CoefficientField d)) =
       Measure.map (ofRepoReg (d := d)) (Measure.dirac (toRepoReg a₀)) := by
-  rw [Measure.map_dirac measurable_ofRepoReg, ofRepoReg_toRepoReg]
+  rw [Measure.map_dirac' measurable_ofRepoReg, ofRepoReg_toRepoReg]
 
 private theorem ae_dirac_iff_repo {d : ℕ} (a₀ : CoefficientField d)
     {p : CoefficientField d → Prop} :
@@ -745,8 +745,10 @@ private theorem comparisonDefect_toRepo {d : ℕ} [NeZero d]
   unfold
     _root_.Homogenization.Book.Ch03.Legacy.homogenizationComparisonNegativeSobolevLHS
     comparisonDefect
-  rw [hgrad, hflux, ← toRepo_originCube (d := d) m,
-    scaledNegativeVectorNorm_toRepo, scaledNegativeVectorNorm_toRepo]
+  rw [← hgrad, hflux]
+  exact congrArg₂ (· + ·)
+    (scaledNegativeVectorNorm_toRepo (originCube d m) _)
+    (scaledNegativeVectorNorm_toRepo (originCube d m) _)
 
 private theorem comparisonData_toRepo {d : ℕ} [NeZero d]
     {sigmaBar : ℝ} {a : CoefficientField d}
@@ -808,7 +810,7 @@ theorem periodicGeneral_comparison
     simpa [_root_.Homogenization.translateByInt,
       _root_.Homogenization.translateCoeffField,
       _root_.Homogenization.intVecToRealVec,
-      translateCoeffField, intVecToRealVec] using S.periodic z
+      translateCoeffField, intVecToRealVec] using! S.periodic z
   have hisoRepo :
       _root_.Homogenization.Examples.Periodic.IsIsotropicCoeffField
         (toRepoReg S.a₀).toFun := by
@@ -826,7 +828,7 @@ theorem periodicGeneral_comparison
       _root_.Homogenization.Examples.Periodic.IsAdjointInvariantCoeffField
         (toRepoReg S.a₀).toFun := by
     simpa [_root_.Homogenization.adjointCoeffField,
-      _root_.Homogenization.matTranspose, adjointCoeffField] using S.adjointInvariant
+      _root_.Homogenization.matTranspose, adjointCoeffField] using! S.adjointInvariant
   have hellRepo :
       ∀ Q : _root_.Homogenization.TriadicCube d,
         _root_.Homogenization.Book.Ch04.AEEllipticOn S.lam S.Lam

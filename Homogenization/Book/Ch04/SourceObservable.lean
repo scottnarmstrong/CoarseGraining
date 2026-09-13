@@ -82,12 +82,10 @@ theorem mat_of_entries {d m : ℕ} {U : Set (Vec d)} {hU : MeasurableSet U}
     (hX : ∀ i j : Fin m, IsSourceLocalRandomVariable U hU (fun a => X a i j)) :
     IsSourceLocalRandomVariable U hU X := by
   change @Measurable (Source.Coarse.Carrier d) (Mat m) (Source.Coarse.localSigma U hU) _ X
-  rw [@measurable_pi_iff (Source.Coarse.Carrier d) (Fin m) (fun _ => Fin m → ℝ)
-    (Source.Coarse.localSigma U hU) (fun _ => inferInstance) X]
-  intro i
-  rw [@measurable_pi_iff (Source.Coarse.Carrier d) (Fin m) (fun _ => ℝ)
-    (Source.Coarse.localSigma U hU) (fun _ => inferInstance) (fun a => X a i)]
-  intro j
+  refine (@measurable_pi_iff (Source.Coarse.Carrier d) (Fin m) (fun _ => Fin m → ℝ)
+    (Source.Coarse.localSigma U hU) (fun _ => inferInstance) X).2 fun i => ?_
+  refine (@measurable_pi_iff (Source.Coarse.Carrier d) (Fin m) (fun _ => ℝ)
+    (Source.Coarse.localSigma U hU) (fun _ => inferInstance) (fun a => X a i)).2 fun j => ?_
   exact hX i j
 
 /-- Entries of a source-local matrix-valued random variable are source-local. -/

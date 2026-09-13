@@ -516,7 +516,7 @@ theorem indepFun_finsetSum_of_isRestrictionUnitRangeDependent
     (S T : Finset ι) (hST : Disjoint S T) :
     ProbabilityTheory.IndepFun
       (finsetSum (d := d) (s := S) X) (finsetSum (d := d) (s := T) X) P := by
-  simpa [finsetSum] using
+  simpa [finsetSum] using!
     (indepFun_finset_of_isRestrictionUnitRangeDependent (d := d) hP hsep X S T hST).comp
       (measurable_subtypeFinsetSum S) (measurable_subtypeFinsetSum T)
 
@@ -530,7 +530,7 @@ theorem indepFun_finsetAverage_of_isRestrictionUnitRangeDependent
     (S T : Finset ι) (hST : Disjoint S T) :
     ProbabilityTheory.IndepFun
       (finsetAverage (d := d) (s := S) X) (finsetAverage (d := d) (s := T) X) P := by
-  simpa [finsetAverage] using
+  simpa [finsetAverage] using!
     (indepFun_finsetSum_of_isRestrictionUnitRangeDependent (d := d) hP hsep X S T hST).comp
       (measurable_const_smul ((S.card : ℝ)⁻¹)) (measurable_const_smul ((T.card : ℝ)⁻¹))
 
@@ -853,7 +853,7 @@ theorem indepFun_comp_finsetSum_of_iIndep_restrictionSigma
     ProbabilityTheory.IndepFun
       (fun ω => MeasurableLocalObservable.finsetSum (d := d) (s := S) (V := U) X (A ω))
       (fun ω => MeasurableLocalObservable.finsetSum (d := d) (s := T) (V := U) X (A ω)) μ := by
-  simpa [MeasurableLocalObservable.finsetSum] using
+  simpa [MeasurableLocalObservable.finsetSum] using!
     (indepFun_comp_finset_of_iIndep_restrictionSigma (A := A) hμ X S T hST).comp
       (MeasurableLocalObservable.measurable_subtypeFinsetSum S)
       (MeasurableLocalObservable.measurable_subtypeFinsetSum T)
@@ -868,7 +868,7 @@ theorem indepFun_comp_finsetAverage_of_iIndep_restrictionSigma
     ProbabilityTheory.IndepFun
       (fun ω => MeasurableLocalObservable.finsetAverage (d := d) (s := S) (V := U) X (A ω))
       (fun ω => MeasurableLocalObservable.finsetAverage (d := d) (s := T) (V := U) X (A ω)) μ := by
-  simpa [MeasurableLocalObservable.finsetAverage] using
+  simpa [MeasurableLocalObservable.finsetAverage] using!
     (indepFun_comp_finsetSum_of_iIndep_restrictionSigma (A := A) hμ X S T hST).comp
       (measurable_const_smul ((S.card : ℝ)⁻¹)) (measurable_const_smul ((T.card : ℝ)⁻¹))
 

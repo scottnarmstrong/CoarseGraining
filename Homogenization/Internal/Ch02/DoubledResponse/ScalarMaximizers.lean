@@ -94,7 +94,7 @@ theorem doubledResponseValue_scalarMaximizers_eq_scalar_responseJ_of_isEllipticF
   have hvStarOld :
       Homogenization.IsResponseMaximizer (U : Set (Vec d)) (pStar + p) (qStar + q)
         (Homogenization.adjointCoeffField a.toCoeffField) vStar := by
-    simpa [Homogenization.adjointCoeffField] using
+    simpa [Homogenization.adjointCoeffField] using!
       old_isResponseMaximizer_of_public U a.transpose (pStar + p) (qStar + q) vStar hvStar
   calc
     doubledResponseValue U a (p, q) (qStar, pStar)
@@ -251,7 +251,7 @@ theorem doubledFieldOfScalarMaximizers_mem_responseField_of_isEllipticFieldOn {d
         (a := a.toCoeffField) hEll v vStar
   simpa [doubledFieldOfScalarMaximizers, doubledFieldOfSolutions,
     doubledFieldOfBlockState, blockResponsePairHalfState, blockResponsePairState,
-    Homogenization.adjointCoeffField] using
+    Homogenization.adjointCoeffField] using!
     isDoubledResponseField_of_blockResponseSpace U a hOld hInt.flux_memL2
 
 theorem scalar_maximizers_give_doubled_maximizer_of_isEllipticFieldOn {d : ℕ}
@@ -323,7 +323,7 @@ theorem maximizer_exists_of_isEllipticFieldOn {d : ℕ}
   have hEllAdj :
       IsEllipticFieldOn a.transpose.lam a.transpose.Lam (U : Set (Vec d))
         a.transpose.toCoeffField := by
-    simpa [Homogenization.adjointCoeffField] using
+    simpa [Homogenization.adjointCoeffField] using!
       isEllipticFieldOn_adjointCoeffField hEll
   rcases responseMaximizerExists_of_isEllipticFieldOn U a.transpose hEllAdj
       (pStar + p) (qStar + q) with
@@ -360,7 +360,7 @@ theorem doubled_maximizer_sameAE_scalar_maximizers_of_isEllipticFieldOn {d : ℕ
       (a := a.toCoeffField) U.isDomain hOld hLowerL2 hEll with
     ⟨v, vStarOld, hhalf⟩
   let vStar : Solution U a.transpose := by
-    simpa [Homogenization.adjointCoeffField] using vStarOld
+    simpa [Homogenization.adjointCoeffField] using! vStarOld
   have hEq :
       doubledFieldOfScalarMaximizers a v vStar =
         doubledFieldOfBlockState
@@ -456,7 +456,7 @@ theorem doubled_maximizer_sameAE_scalar_maximizers_of_isEllipticFieldOn {d : ℕ
   · exact public_isResponseMaximizer_of_old U a (p - pStar) (qStar - q) v hvOld
   · exact
       public_isResponseMaximizer_of_old U a.transpose (pStar + p) (qStar + q) vStar
-        (by simpa [Homogenization.adjointCoeffField] using hvStarOld)
+        (by simpa [Homogenization.adjointCoeffField] using! hvStarOld)
 
 end BookCh02
 

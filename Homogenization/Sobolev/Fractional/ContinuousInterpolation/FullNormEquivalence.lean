@@ -91,7 +91,7 @@ theorem euclideanHsFullENorm_le_mul_continuousKFullENorm {d : ℕ}
         (le_max_right (continuousKToEuclideanHsSeminormConstant s d)
           (euclideanHsToContinuousKSeminormConstant s d)) _
     _ ≤ (1 + C) * (L + K) :=
-      add_mul_le_one_add_mul_of_le (le_add_of_nonneg_right (zero_le K))
+      add_mul_le_one_add_mul_of_le (le_add_of_nonneg_right zero_le)
     _ = continuousKEuclideanHsFullENormConstant s d * continuousKFullENorm s F := by
       rfl
 
@@ -117,9 +117,9 @@ theorem continuousKFullENorm_le_mul_euclideanHsFullENorm {d : ℕ}
           (euclideanHsToContinuousKSeminormConstant s d)) _
     _ ≤ L + C * (L + H) := by
       apply add_le_add_right
-      exact mul_le_mul_right (le_add_of_nonneg_left (zero_le L)) _
+      exact mul_le_mul_right (le_add_of_nonneg_left zero_le) _
     _ ≤ (1 + C) * (L + H) :=
-      add_mul_le_one_add_mul_of_le (le_add_of_nonneg_right (zero_le H))
+      add_mul_le_one_add_mul_of_le (le_add_of_nonneg_right zero_le)
     _ = continuousKEuclideanHsFullENormConstant s d * euclideanHsFullENorm s F := by
       rfl
 

@@ -56,7 +56,7 @@ theorem linearPotentialCLM_apply_basisVec {d : ℕ}
     (p0 : Vec d) (i : Fin d) :
     linearPotentialCLM p0 (basisVec i) = p0 i := by
   rw [linearPotentialCLM]
-  simp only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply,
+  simp only [_root_.sum_apply, _root_.smul_apply,
     ContinuousLinearMap.proj_apply]
   rw [Finset.sum_eq_single i]
   · simp [basisVec]
@@ -145,8 +145,10 @@ noncomputable def canonicalMaximizerPotentialDefectH1OnCube {d : ℕ}
     (canonicalMaximizerPotentialDefectH1OnCube Q a p q p0).toFun =
       canonicalMaximizerPotentialDefectOnCube Q a p q p0 := by
   funext x
-  simp [canonicalMaximizerPotentialDefectH1OnCube,
-    canonicalMaximizerPotentialDefectOnCube]
+  show ((canonicalMaximizerSolutionOnCube Q a p q).toH1 - linearPotentialH1OnCube Q p0) x =
+    canonicalMaximizerPotentialDefectOnCube Q a p q p0 x
+  rw [congrFun (H1Function.sub_toFun _ _) x]
+  simp [canonicalMaximizerPotentialDefectOnCube]
 
 @[simp] theorem canonicalMaximizerPotentialDefectH1OnCube_grad {d : ℕ}
     (Q : TriadicCube d) (a : Ch02.CoeffOn (Ch02.cubeDomain Q))
@@ -154,8 +156,10 @@ noncomputable def canonicalMaximizerPotentialDefectH1OnCube {d : ℕ}
     (canonicalMaximizerPotentialDefectH1OnCube Q a p q p0).grad =
       fun x => canonicalMaximizerGradientOnCube Q a p q x - p0 := by
   funext x i
-  simp [canonicalMaximizerPotentialDefectH1OnCube,
-    canonicalMaximizerGradientOnCube]
+  show ((canonicalMaximizerSolutionOnCube Q a p q).toH1 - linearPotentialH1OnCube Q p0).grad x i =
+    canonicalMaximizerGradientOnCube Q a p q x i - p0 i
+  rw [congrFun (congrFun (H1Function.sub_grad _ _) x) i]
+  simp [canonicalMaximizerGradientOnCube]
 
 /-- The raw canonical maximizer potential defect is `L²` on the normalized
 cube.  This is deterministic `H¹` membership plus the smooth affine comparison,
@@ -178,8 +182,8 @@ theorem canonicalMaximizerPotentialDefectOnCube_memLp {d : ℕ}
       (isOpenBoundedConvexDomain_openCubeSet Q) (by
           unfold linearPotential vecDot
           fun_prop)
-    simpa [u] using u.memL2_normalizedCubeMeasure
-  simpa [canonicalMaximizerPotentialDefectOnCube] using hv.sub hlin
+    simpa [u] using! u.memL2_normalizedCubeMeasure
+  simpa [canonicalMaximizerPotentialDefectOnCube] using! hv.sub hlin
 
 /-- The raw canonical maximizer gradient defect is `L²` on the normalized cube. -/
 theorem canonicalMaximizerGradientDefectOnCube_memLp {d : ℕ}
@@ -190,7 +194,7 @@ theorem canonicalMaximizerGradientDefectOnCube_memLp {d : ℕ}
   have hgradOpen :
       MemVectorL2 (openCubeSet Q) (canonicalMaximizerGradientOnCube Q a p q) := by
     simpa [canonicalMaximizerGradientOnCube, canonicalMaximizerSolutionOnCube,
-      Ch02.cubeDomain_coe] using
+      Ch02.cubeDomain_coe] using!
       (canonicalMaximizerSolutionOnCube Q a p q).toH1.grad_memVectorL2
   have hgrad :
       MemLp (canonicalMaximizerGradientOnCube Q a p q)
@@ -201,7 +205,7 @@ theorem canonicalMaximizerGradientDefectOnCube_memLp {d : ℕ}
     simpa using
       (MeasureTheory.memLp_const
         (μ := normalizedCubeMeasure Q) (p := (2 : ℝ≥0∞)) (c := p0))
-  simpa [canonicalMaximizerGradientDefectOnCube] using hgrad.sub hconst
+  simpa [canonicalMaximizerGradientDefectOnCube] using! hgrad.sub hconst
 
 /-- The raw canonical maximizer flux defect is `L²` on the normalized cube.
 
@@ -217,7 +221,7 @@ theorem canonicalMaximizerFluxDefectOnCube_memLp {d : ℕ}
       MemVectorL2 (openCubeSet Q)
         (fun x => matVecMul (a.toCoeffField x)
           ((canonicalMaximizerSolutionOnCube Q a p q).toH1.grad x)) := by
-    simpa [Ch02.cubeDomain_coe] using
+    simpa [Ch02.cubeDomain_coe] using!
       Ch02.Solution.flux_memVectorL2 (canonicalMaximizerSolutionOnCube Q a p q)
   have hflux :
       MemLp
@@ -230,7 +234,7 @@ theorem canonicalMaximizerFluxDefectOnCube_memLp {d : ℕ}
     simpa using
       (MeasureTheory.memLp_const
         (μ := normalizedCubeMeasure Q) (p := (2 : ℝ≥0∞)) (c := q0))
-  simpa [canonicalMaximizerFluxDefectOnCube] using hflux.sub hconst
+  simpa [canonicalMaximizerFluxDefectOnCube] using! hflux.sub hconst
 
 theorem canonicalMaximizerGradientOnCube_memLp_descendant {d : ℕ}
     (Q R : TriadicCube d) (a : Ch02.CoeffOn (Ch02.cubeDomain Q))
@@ -241,7 +245,7 @@ theorem canonicalMaximizerGradientOnCube_memLp_descendant {d : ℕ}
       MemVectorL2 (openCubeSet Q)
         (canonicalMaximizerGradientOnCube Q a p q) := by
     simpa [canonicalMaximizerGradientOnCube, canonicalMaximizerSolutionOnCube,
-      Ch02.cubeDomain_coe] using
+      Ch02.cubeDomain_coe] using!
       (canonicalMaximizerSolutionOnCube Q a p q).toH1.grad_memVectorL2
   have hgradOpenR :
       MemVectorL2 (openCubeSet R)
@@ -272,7 +276,7 @@ theorem cubeAverageVec_canonicalMaximizerGradientDefectOnDependentFamily_eq_ch04
       Ch04.canonicalScalarResponseGradientAverageCubeSet Q R p q a.toFun =
         cubeAverageVec R (canonicalMaximizerGradientOnCube Q aQ p q) := by
     simpa [F, aQ, canonicalMaximizerGradientOnCube, canonicalMaximizerSolutionOnCube]
-      using
+      using!
       Ch04.canonicalScalarResponseGradientAverageCubeSet_eq_cubeAverageVec_canonicalMaximizer
         a ha hR p q
   calc
@@ -354,7 +358,7 @@ theorem canonicalMaximizerFluxOnCube_memLp_descendant {d : ℕ}
       MemVectorL2 (openCubeSet Q)
         (canonicalMaximizerFluxOnCube Q a p q) := by
     simpa [canonicalMaximizerFluxOnCube, canonicalMaximizerGradientOnCube,
-      canonicalMaximizerSolutionOnCube, Ch02.cubeDomain_coe] using
+      canonicalMaximizerSolutionOnCube, Ch02.cubeDomain_coe] using!
       Ch02.Solution.flux_memVectorL2 (canonicalMaximizerSolutionOnCube Q a p q)
   have hfluxOpenR :
       MemVectorL2 (openCubeSet R)
@@ -385,7 +389,7 @@ theorem cubeAverageVec_canonicalMaximizerFluxDefectOnDependentFamily_eq_ch04
       Ch04.canonicalScalarResponseFluxAverageCubeSet Q R p q a.toFun =
         cubeAverageVec R (canonicalMaximizerFluxOnCube Q aQ p q) := by
     simpa [F, aQ, canonicalMaximizerFluxOnCube, canonicalMaximizerGradientOnCube,
-      canonicalMaximizerSolutionOnCube] using
+      canonicalMaximizerSolutionOnCube] using!
       Ch04.canonicalScalarResponseFluxAverageCubeSet_eq_cubeAverageVec_canonicalMaximizerFlux
         a ha hR p q
   calc

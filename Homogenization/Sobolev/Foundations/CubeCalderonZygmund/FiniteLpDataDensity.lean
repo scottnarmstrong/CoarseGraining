@@ -44,7 +44,7 @@ private theorem boundedApproximation_memLp_two
     {d : ℕ} {Q : TriadicCube d} {q : FiniteLpExponent}
     (h : CubeEuclideanLpField Q q) (n : ℕ) :
     MemLp (boundedApproximation h n) 2 (normalizedCubeMeasure Q) := by
-  letI : IsProbabilityMeasure (normalizedCubeMeasure Q) :=
+  let : IsProbabilityMeasure (normalizedCubeMeasure Q) :=
     ⟨normalizedCubeMeasure_apply_univ Q⟩
   rcases (boundedApproximation h n).bounded with ⟨C, hC⟩
   have hbound : ∀ x : Vec d,

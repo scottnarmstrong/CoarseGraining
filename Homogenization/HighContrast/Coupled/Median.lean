@@ -63,11 +63,11 @@ theorem exists_two_function_median [IsFiniteMeasure μ]
       measure_add_measure_compl₀ (hNMg t)
     have hsubf : {x | f x < t} ⊆ {x | t < f x}ᶜ := by
       intro x hx
-      simp only [Set.mem_compl_iff, Set.mem_setOf_eq, not_lt]
+      simp only [Set.mem_compl_iff, Set.mem_ofPred_eq, not_lt]
       exact hx.le
     have hsubg : {x | g x < t} ⊆ {x | t < g x}ᶜ := by
       intro x hx
-      simp only [Set.mem_compl_iff, Set.mem_setOf_eq, not_lt]
+      simp only [Set.mem_compl_iff, Set.mem_ofPred_eq, not_lt]
       exact hx.le
     have hUt_ne : μ {x | t < f x} + μ {x | t < g x} ≠ ⊤ :=
       ENNReal.add_ne_top.mpr ⟨measure_ne_top μ _, measure_ne_top μ _⟩
@@ -113,12 +113,12 @@ theorem exists_two_function_median [IsFiniteMeasure μ]
       exact absurd (hx n) (not_lt.mpr hn.le)
     have hAntiF : Antitone (fun n : ℕ => {x | (n : ℝ) < f x}) := by
       intro a b hab x hx
-      simp only [Set.mem_setOf_eq] at hx ⊢
+      simp only [Set.mem_ofPred_eq] at hx ⊢
       have : (a : ℝ) ≤ b := by exact_mod_cast hab
       linarith
     have hAntiG : Antitone (fun n : ℕ => {x | (n : ℝ) < g x}) := by
       intro a b hab x hx
-      simp only [Set.mem_setOf_eq] at hx ⊢
+      simp only [Set.mem_ofPred_eq] at hx ⊢
       have : (a : ℝ) ≤ b := by exact_mod_cast hab
       linarith
     have htf : Tendsto (fun n : ℕ => μ {x | (n : ℝ) < f x}) atTop (𝓝 0) := by
@@ -143,23 +143,23 @@ theorem exists_two_function_median [IsFiniteMeasure μ]
       intro x
       rw [Set.mem_iUnion]
       obtain ⟨n, hn⟩ := exists_nat_gt (-(f x))
-      exact ⟨n, by simp only [Set.mem_setOf_eq]; linarith⟩
+      exact ⟨n, by simp only [Set.mem_ofPred_eq]; linarith⟩
     have hUnionUnivG : ⋃ n : ℕ, {x | -(n : ℝ) < g x} = Set.univ := by
       rw [Set.eq_univ_iff_forall]
       intro x
       rw [Set.mem_iUnion]
       obtain ⟨n, hn⟩ := exists_nat_gt (-(g x))
-      exact ⟨n, by simp only [Set.mem_setOf_eq]; linarith⟩
+      exact ⟨n, by simp only [Set.mem_ofPred_eq]; linarith⟩
     have hmonoF : Monotone (fun n : ℕ => {x | -(n : ℝ) < f x}) := by
       intro a b hab x hx
-      simp only [Set.mem_setOf_eq] at hx ⊢
+      simp only [Set.mem_ofPred_eq] at hx ⊢
       have : -(b : ℝ) ≤ -(a : ℝ) := by
         have : (a : ℝ) ≤ b := by exact_mod_cast hab
         linarith
       linarith
     have hmonoG : Monotone (fun n : ℕ => {x | -(n : ℝ) < g x}) := by
       intro a b hab x hx
-      simp only [Set.mem_setOf_eq] at hx ⊢
+      simp only [Set.mem_ofPred_eq] at hx ⊢
       have : -(b : ℝ) ≤ -(a : ℝ) := by
         have : (a : ℝ) ≤ b := by exact_mod_cast hab
         linarith
@@ -177,7 +177,7 @@ theorem exists_two_function_median [IsFiniteMeasure μ]
     refine ⟨-(n : ℝ), ?_⟩
     intro t ht
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     rw [hmemS] at ht
     have hcmp := hUanti hcon.le
     exact absurd (lt_of_lt_of_le hn (le_trans hcmp ht)) (lt_irrefl _)
@@ -203,7 +203,7 @@ theorem exists_two_function_median [IsFiniteMeasure μ]
       (⋃ k : ℕ, {x | m + 1 / ((k : ℝ) + 1) < h x}) = {x | m < h x} := by
     intro h
     ext x
-    simp only [Set.mem_iUnion, Set.mem_setOf_eq]
+    simp only [Set.mem_iUnion, Set.mem_ofPred_eq]
     constructor
     · rintro ⟨k, hk⟩
       have hpk : (0 : ℝ) < 1 / ((k : ℝ) + 1) := by positivity
@@ -214,7 +214,7 @@ theorem exists_two_function_median [IsFiniteMeasure μ]
   have hMonoUpper : ∀ h : α → ℝ,
       Monotone (fun k : ℕ => {x | m + 1 / ((k : ℝ) + 1) < h x}) := by
     intro h a b hab x hx
-    simp only [Set.mem_setOf_eq] at hx ⊢
+    simp only [Set.mem_ofPred_eq] at hx ⊢
     have hle : 1 / ((b : ℝ) + 1) ≤ 1 / ((a : ℝ) + 1) := by
       apply one_div_le_one_div_of_le
       · positivity
@@ -225,7 +225,7 @@ theorem exists_two_function_median [IsFiniteMeasure μ]
       (⋃ k : ℕ, {x | h x < m - 1 / ((k : ℝ) + 1)}) = {x | h x < m} := by
     intro h
     ext x
-    simp only [Set.mem_iUnion, Set.mem_setOf_eq]
+    simp only [Set.mem_iUnion, Set.mem_ofPred_eq]
     constructor
     · rintro ⟨k, hk⟩
       have hpk : (0 : ℝ) < 1 / ((k : ℝ) + 1) := by positivity
@@ -236,7 +236,7 @@ theorem exists_two_function_median [IsFiniteMeasure μ]
   have hMonoLower : ∀ h : α → ℝ,
       Monotone (fun k : ℕ => {x | h x < m - 1 / ((k : ℝ) + 1)}) := by
     intro h a b hab x hx
-    simp only [Set.mem_setOf_eq] at hx ⊢
+    simp only [Set.mem_ofPred_eq] at hx ⊢
     have hle : 1 / ((b : ℝ) + 1) ≤ 1 / ((a : ℝ) + 1) := by
       apply one_div_le_one_div_of_le
       · positivity
