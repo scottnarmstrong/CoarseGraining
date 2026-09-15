@@ -205,15 +205,6 @@ def interior {d : ℕ} (Q : TriadicCube d) : Set (Vec d) :=
     (((Q.index i : ℝ) - (1 / 2 : ℝ)) * Q.side < x i) ∧
     (x i < ((Q.index i : ℝ) + (1 / 2 : ℝ)) * Q.side)}
 
-def children {d : ℕ} (Q : TriadicCube d) : Finset (TriadicCube d) :=
-  Finset.univ.image fun digits : Fin d → Fin 3 =>
-    { scale := Q.scale - 1
-      index := fun i => 3 * Q.index i + (digits i : ℤ) - 1 }
-
-def descendants {d : ℕ} (Q : TriadicCube d) : ℕ → Finset (TriadicCube d)
-  | 0 => {Q}
-  | n + 1 => (Q.descendants n).biUnion children
-
 noncomputable def volume {d : ℕ} (Q : TriadicCube d) : ℝ :=
   Q.side ^ d
 
@@ -228,18 +219,9 @@ noncomputable def average {d : ℕ} (Q : TriadicCube d)
     (f : Vec d → ℝ) : ℝ :=
   Q.volume⁻¹ * ∫ x in Q.set, f x ∂MeasureTheory.volume
 
-noncomputable def fluctuation {d : ℕ} (Q : TriadicCube d)
-    (f : Vec d → ℝ) : Vec d → ℝ :=
-  fun x => f x - Q.average f
-
 noncomputable def l2Norm {d : ℕ} (Q : TriadicCube d)
     (f : Vec d → ℝ) : ℝ :=
   (eLpNorm f (2 : ℝ≥0∞) Q.normalizedMeasure).toReal
-
-noncomputable def descendantAverage {d : ℕ} (Q : TriadicCube d) (j : ℕ)
-    (F : TriadicCube d → ℝ) : ℝ := by
-  let D := Q.descendants j
-  exact (D.card : ℝ)⁻¹ * D.sum F
 
 end TriadicCube
 
@@ -407,35 +389,47 @@ noncomputable abbrev comparisonS : ℝ := 3 / 4
 
 namespace Sobolev34
 
-/-! ### The negative norm, represented as the dual of `B^{3/4}_{2,2}` -/
+/-! ### The classical negative norm
 
-noncomputable def depthAverage {d : ℕ} (Q : TriadicCube d)
-    (φ : Vec d → ℝ) (j : ℕ) : ℝ :=
-  Q.descendantAverage j fun R => (R.l2Norm (R.fluctuation φ)) ^ (2 : ℝ)
+Tests lie in the full fractional Sobolev space on the cube, with Euclidean
+Gagliardo seminorm plus the scale-weighted normalized L² norm. No boundary
+condition or mean-zero restriction is imposed. The negative vector quantity
+below is the sum of the scalar component dual norms. -/
 
-noncomputable def depthSeminorm {d : ℕ} (Q : TriadicCube d)
-    (φ : Vec d → ℝ) (j : ℕ) : ℝ :=
-  (Q.side / (3 : ℝ) ^ j) ^ (-comparisonS) *
-    (depthAverage Q φ j) ^ (1 / (2 : ℝ))
+noncomputable def euclideanDistance {d : ℕ} (x y : Vec d) : ℝ :=
+  Real.sqrt (∑ i, (x i - y i) ^ 2)
 
-noncomputable def partialTestNorm {d : ℕ} (Q : TriadicCube d)
-    (N : ℕ) (φ : Vec d → ℝ) : ℝ :=
-  (Finset.sum (Finset.range (N + 1))
-      (fun j => (depthSeminorm Q φ j) ^ (2 : ℝ))) ^ (1 / (2 : ℝ)) +
-    Q.side ^ (-comparisonS) * ‖Q.average φ‖
+noncomputable def classicalKernel {d : ℕ} (φ : Vec d → ℝ) :
+    Vec d × Vec d → ℝ :=
+  fun z => euclideanDistance z.1 z.2 ^ (-(comparisonS + (d : ℝ) / 2)) *
+    (φ z.1 - φ z.2)
 
-def LocallyL2OnDescendants {d : ℕ} (Q : TriadicCube d)
-    (φ : Vec d → ℝ) : Prop :=
-  ∀ j : ℕ, ∀ R ∈ Q.descendants j,
-    MemLp (R.fluctuation φ) (2 : ℝ≥0∞) R.normalizedMeasure
+/-- One normalized measure factor preserves the usual length scaling. -/
+noncomputable def productMeasure {d : ℕ} (Q : TriadicCube d) :
+    Measure (Vec d × Vec d) :=
+  Q.normalizedMeasure.prod Q.measure
+
+def MemClassicalH34 {d : ℕ} (Q : TriadicCube d) (φ : Vec d → ℝ) : Prop :=
+  MemLp φ (2 : ℝ≥0∞) Q.normalizedMeasure ∧
+    MemLp (classicalKernel φ) (2 : ℝ≥0∞) (productMeasure Q)
+
+noncomputable def classicalSeminorm {d : ℕ} (Q : TriadicCube d)
+    (φ : Vec d → ℝ) : ℝ :=
+  (eLpNorm (classicalKernel φ) (2 : ℝ≥0∞) (productMeasure Q)).toReal
+
+noncomputable def classicalTestNorm {d : ℕ} (Q : TriadicCube d)
+    (φ : Vec d → ℝ) : ℝ :=
+  classicalSeminorm Q φ + Q.side ^ (-comparisonS) * Q.l2Norm φ
 
 def IsDualTest {d : ℕ} (Q : TriadicCube d) (φ : Vec d → ℝ) : Prop :=
-  (∀ N : ℕ, partialTestNorm Q N φ ≤ 1) ∧ LocallyL2OnDescendants Q φ
+  MemClassicalH34 Q φ ∧ classicalTestNorm Q φ ≤ 1
 
 noncomputable def pairing {d : ℕ} (Q : TriadicCube d)
     (f φ : Vec d → ℝ) : ℝ :=
   Q.average fun x => f x * φ x
 
+/-- On L² fields the pairing set is nonempty and bounded; this is the regime
+used by the comparison theorem below. -/
 noncomputable def negativeNorm {d : ℕ} (Q : TriadicCube d)
     (f : Vec d → ℝ) : ℝ :=
   sSup {r | ∃ φ : Vec d → ℝ, IsDualTest Q φ ∧ r = |pairing Q f φ|}
@@ -447,7 +441,10 @@ noncomputable def scaledNegativeVectorNorm {d : ℕ} (Q : TriadicCube d)
     (F : Vec d → Vec d) : ℝ :=
   negativeScaleFactor Q * ∑ i : Fin d, negativeNorm Q (fun x => F x i)
 
-/-! ### The positive `H^{3/4}` seminorm of the force -/
+/-! ### The positive `H^{3/4}` seminorm of the force
+
+The force seminorm uses the ambient sup distance on `Fin d → ℝ`, an equivalent
+Gagliardo normalization of the classical fractional Sobolev space. -/
 
 def kernelExponent (d : ℕ) : ℝ :=
   comparisonS + (d : ℝ) / 2
@@ -455,10 +452,6 @@ def kernelExponent (d : ℕ) : ℝ :=
 noncomputable def kernel {d : ℕ} (u : Vec d → ℝ) :
     Vec d × Vec d → ℝ :=
   fun z => dist z.1 z.2 ^ (-kernelExponent d) * (u z.1 - u z.2)
-
-noncomputable def productMeasure {d : ℕ} (Q : TriadicCube d) :
-    Measure (Vec d × Vec d) :=
-  Q.normalizedMeasure.prod Q.measure
 
 /-- Membership in the fixed fractional Sobolev space on `Q`. -/
 def MemH34 {d : ℕ} (Q : TriadicCube d) (u : Vec d → ℝ) : Prop :=

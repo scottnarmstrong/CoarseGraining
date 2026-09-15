@@ -156,6 +156,7 @@ import Homogenization.Internal
 import Homogenization.Internal.Ch02
 import Homogenization.Sobolev.Fractional.AssemblyPieces
 import Homogenization.Sobolev.Fractional.BesovLeGagliardo
+import Homogenization.Sobolev.Fractional.ClassicalDualComparison
 import Homogenization.Sobolev.Fractional.CongruenceAE
 import Homogenization.Sobolev.Fractional.Constants
 import Homogenization.Sobolev.Fractional.Definitions

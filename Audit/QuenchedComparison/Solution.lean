@@ -1,5 +1,6 @@
 import Mathlib
 import Homogenization.Book.MainResults
+import Homogenization.Sobolev.Fractional.ClassicalDualComparison
 import Audit.QuenchedComparison.SolutionBasic
 
 attribute [-instance] Homogenization.instMeasurableSpaceVec
@@ -48,7 +49,7 @@ repository's objects.  The bridges are grouped by the equivalence obligations th
 * **F** — witness-free comparison pairs (`toRepoComparisonPair`);
 * **G** — the single weak-equation predicate (discharged definitionally inside
   `toRepoComparisonPair`);
-* **H** — the fixed-exponent Sobolev identifications (`Sobolev34` section);
+* **H** — the fixed-exponent Sobolev comparisons (`Sobolev34` section);
 * **I** — the minimal-scale tail (discharged inside the final proof).
 
 The main source correspondences are:
@@ -75,9 +76,8 @@ noncomputable section
 /-! ## Triadic cubes
 
 The audit `TriadicCube` and the repository `Homogenization.TriadicCube` are
-distinct inductive types with the same fields, so the identification is a
-bijection rather than a definitional equality; the descendant `Finset`s have to
-be transported by induction on the depth. -/
+distinct inductive types with the same fields. The conversion preserves their
+geometric and measure-theoretic definitions. -/
 
 private def toRepoCube {d : ℕ} (Q : TriadicCube d) :
     _root_.Homogenization.TriadicCube d :=
@@ -89,113 +89,10 @@ private def ofRepoCube {d : ℕ} (Q : _root_.Homogenization.TriadicCube d) :
   { scale := Q.scale
     index := Q.index }
 
-private theorem toRepoCube_injective {d : ℕ} :
-    Function.Injective (toRepoCube (d := d)) := by
-  intro Q R h
-  cases Q
-  cases R
-  simpa [toRepoCube] using h
-
-private def toRepoCubeEmbedding (d : ℕ) :
-    TriadicCube d ↪ _root_.Homogenization.TriadicCube d where
-  toFun := toRepoCube
-  inj' := toRepoCube_injective
-
-private theorem toRepo_ofRepoCube {d : ℕ}
-    (Q : _root_.Homogenization.TriadicCube d) :
-    toRepoCube (ofRepoCube Q) = Q := by
-  cases Q
-  rfl
-
 private theorem interior_ofRepoCube {d : ℕ}
     (Q : _root_.Homogenization.TriadicCube d) :
     (ofRepoCube Q).interior = _root_.Homogenization.openCubeSet Q :=
   rfl
-
-private theorem children_toRepo {d : ℕ} (Q : TriadicCube d) :
-    Q.children.map (toRepoCubeEmbedding d) =
-      _root_.Homogenization.childCubes (toRepoCube Q) := by
-  ext R
-  constructor
-  · intro h
-    rcases Finset.mem_map.mp h with ⟨R', hR', rfl⟩
-    rcases Finset.mem_image.mp hR' with ⟨digits, _hdigits, rfl⟩
-    exact Finset.mem_image.mpr ⟨digits, Finset.mem_univ digits, rfl⟩
-  · intro h
-    rcases Finset.mem_image.mp h with ⟨digits, _hdigits, hR⟩
-    refine Finset.mem_map.mpr ?_
-    let R' : TriadicCube d :=
-      { scale := Q.scale - 1
-        index := fun i => 3 * Q.index i + (digits i : ℤ) - 1 }
-    refine ⟨R', ?_, ?_⟩
-    · exact Finset.mem_image.mpr ⟨digits, Finset.mem_univ digits, rfl⟩
-    · simpa [R', toRepoCubeEmbedding, toRepoCube] using hR
-
-private theorem descendants_toRepo {d : ℕ} (Q : TriadicCube d) (n : ℕ) :
-    (Q.descendants n).map (toRepoCubeEmbedding d) =
-      _root_.Homogenization.descendantsAtDepth (toRepoCube Q) n := by
-  induction n with
-  | zero =>
-      simp [TriadicCube.descendants, _root_.Homogenization.descendantsAtDepth,
-        toRepoCubeEmbedding]
-  | succ n ih =>
-      ext R
-      constructor
-      · intro h
-        rcases Finset.mem_map.mp h with ⟨R', hR', rfl⟩
-        rcases Finset.mem_biUnion.mp hR' with ⟨S, hS, hchild⟩
-        have hSrepo : toRepoCube S ∈
-            _root_.Homogenization.descendantsAtDepth (toRepoCube Q) n := by
-          rw [← ih]
-          exact Finset.mem_map.mpr ⟨S, hS, rfl⟩
-        have hchildRepo : toRepoCube R' ∈
-            _root_.Homogenization.childCubes (toRepoCube S) := by
-          rw [← children_toRepo]
-          exact Finset.mem_map.mpr ⟨R', hchild, rfl⟩
-        exact Finset.mem_biUnion.mpr ⟨toRepoCube S, hSrepo, hchildRepo⟩
-      · intro h
-        rcases Finset.mem_biUnion.mp h with ⟨Srepo, hSrepo, hchildRepo⟩
-        let S : TriadicCube d := ofRepoCube Srepo
-        have hS : S ∈ Q.descendants n := by
-          have hmap : toRepoCube S ∈
-              _root_.Homogenization.descendantsAtDepth (toRepoCube Q) n := by
-            simpa [S, toRepo_ofRepoCube] using hSrepo
-          rw [← ih] at hmap
-          rcases Finset.mem_map.mp hmap with ⟨S', hS', hS'eq⟩
-          have hSS' : S' = S := toRepoCube_injective hS'eq
-          simpa [hSS'] using hS'
-        have hchild : ofRepoCube R ∈ S.children := by
-          have hmap : toRepoCube (ofRepoCube R) ∈
-              _root_.Homogenization.childCubes (toRepoCube S) := by
-            simpa [S, toRepo_ofRepoCube] using hchildRepo
-          rw [← children_toRepo] at hmap
-          rcases Finset.mem_map.mp hmap with ⟨R', hR', hR'eq⟩
-          have hRR' : R' = ofRepoCube R := toRepoCube_injective hR'eq
-          simpa [hRR'] using hR'
-        refine Finset.mem_map.mpr ⟨ofRepoCube R, ?_, ?_⟩
-        · exact Finset.mem_biUnion.mpr ⟨S, hS, hchild⟩
-        · exact toRepo_ofRepoCube R
-
-private theorem mem_descendants_toRepo {d : ℕ} (Q R : TriadicCube d) (j : ℕ) :
-    toRepoCube R ∈
-        _root_.Homogenization.descendantsAtDepth (toRepoCube Q) j ↔
-      R ∈ Q.descendants j := by
-  rw [← descendants_toRepo Q j]
-  constructor
-  · intro h
-    rcases Finset.mem_map.mp h with ⟨R', hR', hR'eq⟩
-    have hRR' : R' = R := toRepoCube_injective hR'eq
-    simpa [hRR'] using hR'
-  · intro h
-    exact Finset.mem_map.mpr ⟨R, h, rfl⟩
-
-private theorem descendantsAverage_toRepo {d : ℕ} (Q : TriadicCube d) (j : ℕ)
-    (F : _root_.Homogenization.TriadicCube d → ℝ) :
-    _root_.Homogenization.descendantsAverage (toRepoCube Q) j F =
-      Q.descendantAverage j (fun R => F (toRepoCube R)) := by
-  unfold _root_.Homogenization.descendantsAverage TriadicCube.descendantAverage
-  rw [← descendants_toRepo Q j]
-  simp [Finset.sum_map, toRepoCubeEmbedding]
 
 /-! ### Definitional cube dictionaries
 
@@ -215,13 +112,6 @@ private theorem normalizedMeasure_toRepo {d : ℕ} (Q : TriadicCube d) :
 private theorem average_toRepo {d : ℕ} (Q : TriadicCube d) (f : Vec d → ℝ) :
     _root_.Homogenization.cubeAverage (toRepoCube Q) f = Q.average f := rfl
 
-private theorem fluctuation_toRepo {d : ℕ} (Q : TriadicCube d) (f : Vec d → ℝ) :
-    _root_.Homogenization.cubeFluctuation (toRepoCube Q) f = Q.fluctuation f := rfl
-
-private theorem oscillation_toRepo {d : ℕ} (Q : TriadicCube d) (f : Vec d → ℝ) :
-    _root_.Homogenization.cubeBesovOscillation (toRepoCube Q) (2 : ℝ≥0∞) f =
-      Q.l2Norm (Q.fluctuation f) := rfl
-
 private theorem toRepo_originCube {d : ℕ} [NeZero d] (m : ℕ) :
     toRepoCube (originCube d m) =
       _root_.Homogenization.Book.MainResults.originCube d m := rfl
@@ -230,121 +120,6 @@ private theorem toRepo_originCube {d : ℕ} [NeZero d] (m : ℕ) :
 
 private theorem toReal_two : ((2 : ℝ≥0∞)).toReal = (2 : ℝ) := by
   norm_num
-
-private theorem conjExponent_two : ENNReal.conjExponent (2 : ℝ≥0∞) = 2 := by
-  rw [ENNReal.conjExponent]
-  have h : (2 : ℝ≥0∞) - 1 = 1 := by
-    rw [show (2 : ℝ≥0∞) = 1 + 1 from by norm_num]
-    exact ENNReal.add_sub_cancel_right ENNReal.one_ne_top
-  rw [h, inv_one]
-  norm_num
-
-private theorem cubeBesovConjExponent_two :
-    _root_.Homogenization.cubeBesovConjExponent (2 : ℝ≥0∞) = 2 := by
-  rw [_root_.Homogenization.cubeBesovConjExponent, conjExponent_two]
-
-private theorem cubeBesovConjExponent_two_ne_top :
-    _root_.Homogenization.cubeBesovConjExponent (2 : ℝ≥0∞) ≠ ∞ := by
-  rw [cubeBesovConjExponent_two]
-  norm_num
-
-private theorem depthAverage_toRepo {d : ℕ} (Q : TriadicCube d)
-    (φ : Vec d → ℝ) (j : ℕ) :
-    _root_.Homogenization.cubeBesovDepthAverage (toRepoCube Q) (2 : ℝ≥0∞) φ j =
-      Sobolev34.depthAverage Q φ j := by
-  rw [_root_.Homogenization.cubeBesovDepthAverage, descendantsAverage_toRepo]
-  simp only [toReal_two, oscillation_toRepo]
-  rfl
-
-private theorem depthSeminorm_toRepo {d : ℕ} (Q : TriadicCube d)
-    (φ : Vec d → ℝ) (j : ℕ) :
-    _root_.Homogenization.cubeBesovDepthSeminorm (toRepoCube Q) comparisonS
-        (2 : ℝ≥0∞) φ j = Sobolev34.depthSeminorm Q φ j := by
-  rw [_root_.Homogenization.cubeBesovDepthSeminorm, depthAverage_toRepo,
-    _root_.Homogenization.cubeBesovDepthWeight]
-  simp only [toReal_two, side_toRepo]
-  rfl
-
-private theorem partialTestNorm_toRepo {d : ℕ} (Q : TriadicCube d)
-    (N : ℕ) (φ : Vec d → ℝ) :
-    _root_.Homogenization.cubeBesovPartialNorm (toRepoCube Q) comparisonS
-        (2 : ℝ≥0∞) (2 : ℝ≥0∞) N φ = Sobolev34.partialTestNorm Q N φ := by
-  rw [_root_.Homogenization.cubeBesovPartialNorm,
-    _root_.Homogenization.cubeBesovPartialSeminorm,
-    _root_.Homogenization.cubeBesovScaleWeight]
-  simp only [toReal_two, depthSeminorm_toRepo, side_toRepo, average_toRepo]
-  rfl
-
-private theorem dualTestNorm_toRepo {d : ℕ} (Q : TriadicCube d)
-    (N : ℕ) (φ : Vec d → ℝ) :
-    _root_.Homogenization.cubeBesovDualTestNorm (toRepoCube Q) comparisonS
-        (2 : ℝ≥0∞) (2 : ℝ≥0∞) N φ = Sobolev34.partialTestNorm Q N φ := by
-  rw [_root_.Homogenization.cubeBesovDualTestNorm_of_conjExponent_ne_top _ _ _ _ _ _
-      cubeBesovConjExponent_two_ne_top, cubeBesovConjExponent_two,
-    partialTestNorm_toRepo]
-
-private theorem locallyL2_toRepo {d : ℕ} (Q : TriadicCube d) (φ : Vec d → ℝ) :
-    _root_.Homogenization.CubeBesovDualLocalMemLpGlobal (toRepoCube Q)
-        (2 : ℝ≥0∞) φ ↔ Sobolev34.LocallyL2OnDescendants Q φ := by
-  rw [_root_.Homogenization.CubeBesovDualLocalMemLpGlobal,
-    Sobolev34.LocallyL2OnDescendants]
-  constructor
-  · intro h j R hR
-    have hrepo := h j (toRepoCube R) ((mem_descendants_toRepo Q R j).2 hR)
-    rw [cubeBesovConjExponent_two] at hrepo
-    exact hrepo
-  · intro h j R hR
-    have hR' : ofRepoCube R ∈ Q.descendants j := by
-      refine (mem_descendants_toRepo Q (ofRepoCube R) j).1 ?_
-      rw [toRepo_ofRepoCube]
-      exact hR
-    have haud := h j (ofRepoCube R) hR'
-    rw [cubeBesovConjExponent_two]
-    exact haud
-
-private theorem isDualTest_toRepo {d : ℕ} (Q : TriadicCube d) (φ : Vec d → ℝ) :
-    _root_.Homogenization.CubeBesovDualFullTest (toRepoCube Q) comparisonS
-        (2 : ℝ≥0∞) (2 : ℝ≥0∞) φ ↔ Sobolev34.IsDualTest Q φ := by
-  rw [_root_.Homogenization.CubeBesovDualFullTest, Sobolev34.IsDualTest]
-  constructor
-  · intro h
-    exact ⟨fun N => (dualTestNorm_toRepo Q N φ) ▸ h.1 N,
-      (locallyL2_toRepo Q φ).1 h.2⟩
-  · intro h
-    exact ⟨fun N => (dualTestNorm_toRepo Q N φ).symm ▸ h.1 N,
-      (locallyL2_toRepo Q φ).2 h.2⟩
-
-private theorem negativeNormValueSet_toRepo {d : ℕ} (Q : TriadicCube d)
-    (f : Vec d → ℝ) :
-    _root_.Homogenization.cubeBesovDualFullNormValueSet (toRepoCube Q)
-        comparisonS (2 : ℝ≥0∞) (2 : ℝ≥0∞) f =
-      {r | ∃ φ : Vec d → ℝ, Sobolev34.IsDualTest Q φ ∧
-        r = |Sobolev34.pairing Q f φ|} := by
-  ext r
-  constructor
-  · rintro ⟨φ, hφ, hr⟩
-    exact ⟨φ, (isDualTest_toRepo Q φ).1 hφ, hr⟩
-  · rintro ⟨φ, hφ, hr⟩
-    exact ⟨φ, (isDualTest_toRepo Q φ).2 hφ, hr⟩
-
-private theorem negativeNorm_toRepo {d : ℕ} (Q : TriadicCube d)
-    (f : Vec d → ℝ) :
-    _root_.Homogenization.cubeBesovDualFullNorm (toRepoCube Q) comparisonS
-        (2 : ℝ≥0∞) (2 : ℝ≥0∞) f = Sobolev34.negativeNorm Q f := by
-  rw [_root_.Homogenization.cubeBesovDualFullNorm, negativeNormValueSet_toRepo]
-  rfl
-
-private theorem scaledNegativeVectorNorm_toRepo {d : ℕ} (Q : TriadicCube d)
-    (F : Vec d → Vec d) :
-    _root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedNegativeSobolevVectorNormTwo
-        (toRepoCube Q) comparisonS F =
-      Sobolev34.scaledNegativeVectorNorm Q F := by
-  rw [_root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedNegativeSobolevVectorNormTwo,
-    _root_.Homogenization.Book.Ch03.scaleNormalizedDualNegativeBesovVectorNormTwo,
-    Sobolev34.scaledNegativeVectorNorm, Sobolev34.negativeScaleFactor]
-  refine congrArg (fun r => Real.rpow 3 (-comparisonS * ((Q.scale : ℤ) : ℝ)) * r) ?_
-  exact Finset.sum_congr rfl fun i _hi =>
-    negativeNorm_toRepo Q (fun x => F x i)
 
 private theorem kernel_toRepo {d : ℕ} (u : Vec d → ℝ) :
     _root_.Homogenization.Gagliardo.gagliardoKernel (d := d) comparisonS
@@ -392,14 +167,6 @@ spelling of the cube and the fixed exponent.  Both are the general lemma above
 at `Q = originCube d m`; only the presentation of the two definitionally equal
 arguments differs, which is what makes them usable by `rw` in the final proof
 (rewriting the cube itself is blocked by the cube-indexed `H1Function`). -/
-
-private theorem scaledNegativeVectorNorm_toRepo_origin {d : ℕ} [NeZero d] (m : ℕ)
-    (F : Vec d → Vec d) :
-    _root_.Homogenization.Book.Ch03.Legacy.scaleNormalizedNegativeSobolevVectorNormTwo
-        (_root_.Homogenization.Book.MainResults.originCube d m)
-        _root_.Homogenization.Book.MainResults.fixedComparisonS F =
-      Sobolev34.scaledNegativeVectorNorm (originCube d m) F :=
-  scaledNegativeVectorNorm_toRepo (originCube d m) F
 
 private theorem scaledForceH34Seminorm_toRepo_origin {d : ℕ} [NeZero d] (m : ℕ)
     (g : Vec d → Vec d) :
@@ -843,6 +610,87 @@ private theorem energyNorm_toRepo {d : ℕ} [NeZero d]
         (toRepoH1 u) =
       energyNorm (originCube d m) a.toFun u := rfl
 
+/-! ### Integrability of the two comparison fields
+
+The dual comparison is used only on L² fields. Weak H¹ membership and the
+existing ellipticity bounds supply this regularity, including the transfer
+across the cube's null boundary. -/
+
+open Book.Ch03 in
+private theorem comparisonFields_memL2 {d : ℕ} [NeZero d]
+    (Q : _root_.Homogenization.TriadicCube d) (a : CoeffFamily d)
+    (a0 : ConstantCoeffMatrix d)
+    (u v : H1Function (Book.Ch02.cubeDomain Q : Set (Vec d))) :
+    MemVectorL2 (cubeSet Q) (homogenizationComparisonConstantGradientField a0 u v) ∧
+      MemVectorL2 (cubeSet Q) (homogenizationComparisonFluxField Q a a0 u v) := by
+  have huGrad : MemVectorL2 (cubeSet Q) u.grad := by
+    simpa using (publicH1ToCubeSet u).grad_memVectorL2
+  have hvGrad : MemVectorL2 (cubeSet Q) v.grad := by
+    simpa using (publicH1ToCubeSet v).grad_memVectorL2
+  have hEll0 : IsEllipticFieldOn a0.lam a0.Lam (cubeSet Q)
+      (constantCoeffField a0.matrix) :=
+    constantCoeffMatrix_isEllipticFieldOn_constantCoeffField a0 (measurableSet_cubeSet Q)
+  constructor
+  · simpa [homogenizationComparisonConstantGradientField, constantCoeffField] using!
+      memVectorL2_matVecMul_of_isEllipticFieldOn hEll0 (huGrad.sub hvGrad)
+  · have hfluxA : MemVectorL2 (cubeSet Q)
+        (fun x => _root_.Homogenization.matVecMul (publicCoeffField Q a x) (u.grad x)) :=
+      memVectorL2_matVecMul_of_isEllipticFieldOn
+        (publicCoeffField_isEllipticFieldOn_cubeSet Q a) huGrad
+    have hflux0 : MemVectorL2 (cubeSet Q)
+        (fun x => _root_.Homogenization.matVecMul a0.matrix (v.grad x)) := by
+      simpa [constantCoeffField] using
+        memVectorL2_matVecMul_of_isEllipticFieldOn hEll0 hvGrad
+    exact MeasureTheory.MemLp.ae_eq
+      (homogenizationComparisonFluxField_ae_eq_fluxComparison_publicCoeffField_cubeSet
+        (Q := Q) (a := a) (a0 := a0) u v).symm (hfluxA.sub hflux0)
+
+private theorem classicalKernel_toRepo {d : ℕ} (φ : Vec d → ℝ) :
+    ClassicalSobolev34.kernel φ = Sobolev34.classicalKernel φ := by
+  funext z
+  simp only [ClassicalSobolev34.kernel, Sobolev34.classicalKernel,
+    Sobolev34.euclideanDistance, euclideanDist, euclideanNorm, _root_.Homogenization.vecNormSq,
+    _root_.Homogenization.vecDot, Pi.sub_apply, pow_two, comparisonS]
+
+private theorem classicalNegativeNorm_toRepo {d : ℕ} (Q : TriadicCube d)
+    (f : Vec d → ℝ) :
+    ClassicalSobolev34.negativeNorm (toRepoCube Q) f = Sobolev34.negativeNorm Q f := by
+  simp only [ClassicalSobolev34.negativeNorm, ClassicalSobolev34.valueSet,
+    ClassicalSobolev34.isDualTest, ClassicalSobolev34.memH34,
+    ClassicalSobolev34.testNorm, ClassicalSobolev34.seminorm,
+    classicalKernel_toRepo, Sobolev34.negativeNorm, Sobolev34.IsDualTest,
+    Sobolev34.MemClassicalH34, Sobolev34.classicalTestNorm, Sobolev34.classicalSeminorm]
+  rfl
+
+private theorem scaledNegativeVectorNorm_le_toRepo {d : ℕ} [NeZero d]
+    (Q : TriadicCube d) (F : Vec d → Vec d) (hd : 2 ≤ d)
+    (hF : MemVectorL2 (cubeSet (toRepoCube Q)) F) :
+    Sobolev34.scaledNegativeVectorNorm Q F ≤
+      ClassicalSobolev34.comparisonConstant d *
+        Book.Ch03.Legacy.scaleNormalizedNegativeSobolevVectorNormTwo
+          (toRepoCube Q) comparisonS F := by
+  have hi (i : Fin d) : Sobolev34.negativeNorm Q (fun x => F x i) ≤
+      ClassicalSobolev34.comparisonConstant d *
+        cubeBesovDualFullNorm (toRepoCube Q) comparisonS 2 2 (fun x => F x i) := by
+    rw [← classicalNegativeNorm_toRepo]
+    apply ClassicalSobolev34.negativeNorm_le_mul_dualFullNorm _ _ hd
+    exact (ContinuousLinearMap.proj (R := ℝ) i).comp_memLp'
+      (memLp_normalizedCubeMeasure_of_memVectorL2_cubeSet (toRepoCube Q) hF)
+  unfold Sobolev34.scaledNegativeVectorNorm Sobolev34.negativeScaleFactor
+    Book.Ch03.Legacy.scaleNormalizedNegativeSobolevVectorNormTwo
+    Book.Ch03.scaleNormalizedDualNegativeBesovVectorNormTwo
+  calc
+    _ ≤ Real.rpow 3 (-comparisonS * (Q.scale : ℝ)) *
+        ∑ i, ClassicalSobolev34.comparisonConstant d *
+          cubeBesovDualFullNorm (toRepoCube Q) comparisonS 2 2 (fun x => F x i) :=
+      mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i _ => hi i)
+        (Real.rpow_nonneg (by norm_num) _)
+    _ = _ := by
+      rw [← Finset.mul_sum]
+      change _ = ClassicalSobolev34.comparisonConstant d *
+        (Real.rpow 3 (-comparisonS * (Q.scale : ℝ)) * _)
+      ring
+
 /-! ## The audited theorem -/
 
 /-- Fixed-exponent quenched homogenization comparison in the uniformly elliptic
@@ -866,7 +714,8 @@ theorem homogenizationComparison_uniformEllipticity
   obtain ⟨C, alpha, Cscale, hC, halpha, hCscale, hmain⟩ :=
     _root_.Homogenization.Book.MainResults.homogenizationComparison_uniformEllipticity
       (d := d)
-  refine ⟨C, alpha, Cscale, hC, halpha, hCscale, ?_⟩
+  refine ⟨ClassicalSobolev34.comparisonConstant d * C, alpha, Cscale,
+    mul_pos ClassicalSobolev34.comparisonConstant_pos hC, halpha, hCscale, ?_⟩
   intro S
   let Srepo : _root_.Homogenization.Book.MainResults.Setup d := toRepoSetup S
   let sigmaBar : ℝ :=
@@ -894,16 +743,20 @@ theorem homogenizationComparison_uniformEllipticity
           _root_.Homogenization.Book.MainResults.fixedComparisonS g :=
       forceInH34_toRepo (originCube d m) g hg
     have hstep := hmain_a haRepo (toRepoComparisonPair hsigma haRepo pair) hXm hgRepo
-    have hdefect :
-        Srepo.comparisonDefect
-            _root_.Homogenization.Book.MainResults.fixedComparisonS
-            (toRepoComparisonPair hsigma haRepo pair) =
-          comparisonDefect pair := by
-      rw [_root_.Homogenization.Book.MainResults.Setup.comparisonDefect,
-        _root_.Homogenization.Book.Ch03.Legacy.homogenizationComparisonNegativeSobolevLHS,
-        scaledNegativeVectorNorm_toRepo_origin,
-        scaledNegativeVectorNorm_toRepo_origin]
-      rfl
+    let pairRepo := toRepoComparisonPair hsigma haRepo pair
+    have hfields := comparisonFields_memL2
+      (_root_.Homogenization.Book.MainResults.originCube d m)
+      (Book.Ch05.Section57.assemblyCoeffFamily (toRepoField a) haRepo)
+      (Book.Ch05.Section57.scalarConstantCoeffMatrix sigmaBar hsigma)
+      pairRepo.u pairRepo.v
+    have hdefect : comparisonDefect pair ≤
+        ClassicalSobolev34.comparisonConstant d *
+          Srepo.comparisonDefect Book.MainResults.fixedComparisonS pairRepo := by
+      have hgrad := scaledNegativeVectorNorm_le_toRepo (originCube d m)
+        (constantGradientMismatch sigmaBar pair.u pair.v) S.two_le_dim hfields.1
+      have hflux := scaledNegativeVectorNorm_le_toRepo (originCube d m)
+        (fluxMismatch a.toFun sigmaBar pair.u pair.v) S.two_le_dim hfields.2
+      exact (add_le_add hgrad hflux).trans_eq (mul_add _ _ _).symm
     have hdata :
         Srepo.comparisonData
             _root_.Homogenization.Book.MainResults.fixedComparisonS
@@ -912,8 +765,13 @@ theorem homogenizationComparison_uniformEllipticity
       rw [_root_.Homogenization.Book.MainResults.Setup.comparisonData,
         scaledForceH34Seminorm_toRepo_origin]
       rfl
-    rw [hdefect, hdata] at hstep
-    exact hstep
+    rw [hdata] at hstep
+    calc
+      comparisonDefect pair ≤ _ := hdefect
+      _ ≤ ClassicalSobolev34.comparisonConstant d *
+          (C * ((3 : ℝ) ^ m / X (toRepoField a)) ^ (-alpha) * comparisonData pair) :=
+        mul_le_mul_of_nonneg_left hstep ClassicalSobolev34.comparisonConstant_pos.le
+      _ = _ := by ring
 
 end
 

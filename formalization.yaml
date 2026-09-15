@@ -148,10 +148,13 @@ fidelity:
     deterministic domains taken bounded-open-convex rather than Lipschitz; integer
     moment exponent xi>2d; one Chapter-5 statement with extra hypothesis alpha<t
     and conclusion at exponent alpha/8. The public MainResults file
-    additionally specializes to uniform ellipticity and states the comparison in
-    Sobolev (H^s = B^s_{2,2}) form; the comparator corollary fixes the public
-    exponents t=1/8, s=3/4 and exposes the homogenized coefficient as an
-    existential positive scalar. Relative to the published paper (the journal
+    additionally specializes to uniform ellipticity using an internal
+    dual-Besov quantity. The general quenched comparator proves the consequence
+    for the classical H^{3/4} dual, with Euclidean Gagliardo plus scaled L2 test
+    norm and componentwise vector dual norms. Its force uses the equivalent
+    sup-distance Gagliardo seminorm. The comparator fixes the public exponents
+    t=1/8, s=3/4 and exposes the homogenized coefficient as an existential
+    positive scalar. Relative to the published paper (the journal
     article among the sources above), the formalization additionally assumes the
     coefficient law is isotropic, which that paper does not require.
 

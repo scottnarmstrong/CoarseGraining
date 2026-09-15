@@ -89,8 +89,13 @@ solutions agree at an algebraic rate in (cube sidelength `3 ^ m`) / (minimal
 scale `X a`).  An auxiliary exponent `t = 1 / 8` (`4 t < s < 1`) is used
 internally and appears in no statement.
 
-The five comparison-estimate comparators differ only in the law and in how the
-solution pair is presented:
+The general `QuenchedComparison` uses the classical fractional dual norm:
+its scalar tests have Euclidean Gagliardo seminorm plus the scale-weighted
+normalized L² norm, with no boundary or mean-zero restriction. The vector
+quantity sums the scalar component duals. Its solution proves domination by
+the internal partition dual with a dimensional constant. The four specialized
+comparators retain that internal dual-Besov quantity. Their laws and solution
+data are:
 
 | Comparator | Coefficient law | Solution data |
 | --- | --- | --- |
@@ -138,7 +143,8 @@ definitions needed to state the theorem surfaces.
 | coefficient laws and law hypotheses | `Homogenization/Book/Ch04/*` |
 | weak solution pairs and comparison quantities | `Homogenization/Book/MainResults.lean` and `Homogenization/Book/Ch05/Theorems/Section57/*` |
 | positive Sobolev force regularity | `Homogenization/Book/Ch03/Theorems/SobolevPublic.lean` |
-| negative Sobolev/dual norm representative | `Homogenization/Besov/Negative.lean` and `Homogenization/Book/Ch03/Theorems/SobolevPublic.lean` |
+| classical fractional dual in `QuenchedComparison` | `Homogenization/Sobolev/Fractional/ClassicalDualComparison.lean` |
+| internal dual-Besov quantity in the specialized comparators | `Homogenization/Besov/Negative.lean` and `Homogenization/Book/Ch03/Theorems/SobolevPublic.lean` |
 | block formalism and the variational quantity `Mu` | `Homogenization/Ambient/{Basic,BlockMatrix}.lean`, `Homogenization/CoarseGraining/BlockFormalism/{Structures,Properties}.lean`, and `Homogenization/CoarseGraining/Definitions.lean` |
 | annealed coarse matrices and the scalar contrast | `Homogenization/Book/Ch04/AnnealedDefinitions.lean` and `Homogenization/Book/Ch05/Definitions.lean` |
 | periodic Dirac bridge and examples | `Homogenization/Examples/Periodic/*` |

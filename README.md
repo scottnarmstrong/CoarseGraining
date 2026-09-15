@@ -66,15 +66,20 @@ bound `Λ⁻¹|ξ|² ≤ ξ·a⁻¹ξ` (equivalently, `|aη|² ≤ Λ·(η·aη)
 depending only on the dimension `d`, and a random minimal scale `𝒳 ≥ 1` — with
 stretched-exponential (`Γ_d`) tails of size `exp(C·log²(2+θ̂))`, where `θ̂` is the
 coarse-grained ellipticity constant of the law (see the next paragraph) — such that, almost
-surely, on every triadic cube `□ₘ` with `𝒳 ≤ 3ᵐ`, the heterogeneous solution `u` of
+surely, on every origin cube `□ₘ` of side `3ᵐ` with `𝒳 ≤ 3ᵐ`, the heterogeneous solution `u` of
 `−∇·a∇u = ∇·g` and the homogenized solution `v` of `−∇·ā∇v = ∇·g` (same force `∇·g`,
 shared boundary data, `u − v ∈ H¹₀`) satisfy, for every force `g ∈ H^{3/4}`,
 
 > `3^(−(3/4)m)·( ‖ā(∇u−∇v)‖_{H^{−3/4}} + ‖a∇u−ā∇v‖_{H^{−3/4}} )`
 > `  ≤  C·(3ᵐ/𝒳)^(−α)·( √σ̄·‖σ^{1/2}∇u‖_{L²} + 3^{(3/4)m}·[g]_{H^{3/4}} )`.
 
-(Here `Hˢ = B^s_{2,2}` is the fractional Sobolev space, and the positive seminorm
-`[g]_{H^{3/4}}` is taken componentwise.)
+Here the general Comparator uses the classical fractional Sobolev dual:
+scalar tests have norm `[φ]_{H^{3/4}} + L^(−3/4)·‖φ‖_{L²}`, with normalized
+L² measure and the Euclidean Gagliardo seminorm on a cube of side `L`.
+The negative vector norm is the sum of the scalar component dual norms.
+The force seminorm is also componentwise, using the equivalent sup-distance
+Gagliardo normalization. The solution proves the comparison with the internal
+dual-Besov quantity and absorbs its dimensional constant into `C`.
 
 This specializes the general theorems
 `homogenization_quenched_minimal_scale` and
