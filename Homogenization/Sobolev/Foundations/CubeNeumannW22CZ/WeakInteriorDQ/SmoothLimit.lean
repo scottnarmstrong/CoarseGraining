@@ -99,7 +99,8 @@ theorem tendsto_eLpNorm_zero_of_ae_norm_le_mul_norm
     {stepSeq : ℕ → ℝ} {C : ℝ}
     (hUfinite : (volumeMeasureOn U) Set.univ ≠ ⊤)
     (hstep : Filter.Tendsto stepSeq Filter.atTop (nhds 0))
-    (hbound : ∀ n, ∀ᵐ x ∂volumeMeasureOn U, ‖F n x‖ ≤ C * ‖stepSeq n‖) :
+    (hbound : ∀ n, ∀ᵐ x ∂volumeMeasureOn U, ‖F n x‖ ≤ C * ‖stepSeq n‖)
+    (hF_meas : ∀ n, MeasureTheory.AEStronglyMeasurable (F n) (volumeMeasureOn U)) :
     Filter.Tendsto
       (fun n => MeasureTheory.eLpNorm (F n) 2 (volumeMeasureOn U))
       Filter.atTop (nhds 0) := by
@@ -124,7 +125,7 @@ theorem tendsto_eLpNorm_zero_of_ae_norm_le_mul_norm
   · exact bot_le
   · dsimp [A]
     exact MeasureTheory.eLpNorm_le_of_ae_bound (μ := volumeMeasureOn U)
-      (p := (2 : ℝ≥0∞)) (hbound n)
+      (p := (2 : ℝ≥0∞)) (hF_meas n) (hbound n)
 
 namespace WeakPoissonEquationOn
 
@@ -425,6 +426,11 @@ theorem openCubeInnerHessianPairingTendsto_of_backwardDifferenceQuotient_deriv_p
         euclideanBackwardDifferenceQuotient (stepSeq n) i (fun y => φ.deriv j y) x -
           (fderiv ℝ (fun y => φ.deriv j y) x) (basisVec i))
       (stepSeq := stepSeq) hfinite hstep hC
+      (fun n =>
+        (memScalarL2_euclideanBackwardDifferenceQuotient_h1WeakTest_deriv
+          (U := openCubeSet Q) (step := stepSeq n) φ i j).aestronglyMeasurable.sub
+        (memScalarL2_fderiv_h1WeakTest_deriv_apply
+          (U := openCubeSet Q) φ i j).aestronglyMeasurable)
 
 end WeakPoissonEquationOn
 

@@ -351,8 +351,13 @@ private theorem tendsto_eLpNorm_diagonalConvexApproxAverage_sub_zero_of_boundedC
           (unitConvexApproxKernel (d := d)) G x0 r
             (unitConvexApproxScale n) xy - G xy‖ₑ ^ q ∂μ) ^ (1 / q) by
       funext n
+      have hsub_meas : AEStronglyMeasurable (fun xy => diagonalConvexApproxAverage
+          (unitConvexApproxKernel (d := d)) G x0 r
+            (unitConvexApproxScale n) xy - G xy) μ :=
+        (aestronglyMeasurable_diagonalConvexApproxAverage_of_boundedContinuous
+          Q G x0 r (unitConvexApproxScale n)).sub G.continuous.aestronglyMeasurable
       rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
-        (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne]]
+        (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne hsub_meas]]
   have hrpow : Filter.Tendsto
       (fun n : ℕ => (∫⁻ xy, ‖diagonalConvexApproxAverage
         (unitConvexApproxKernel (d := d)) G x0 r
@@ -590,26 +595,10 @@ private theorem tendsto_eLpNorm_diagonalConvexApproxAverage_sub_zero_of_memLp
   let B : Vec d × Vec d → E := fun xy =>
     (diagonalConvexApproxAverage (unitConvexApproxKernel (d := d)) G x0 r
       (unitConvexApproxScale n) xy - G xy) + (G xy - K xy)
-  have hAmeas : AEStronglyMeasurable A μ := by
-    dsimp only [A]
-    exact (aestronglyMeasurable_diagonalConvexApproxAverage_of_memLp Q p K hK
-      (by linarith) hball hr hεpos.le (by linarith)).sub
-        (aestronglyMeasurable_diagonalConvexApproxAverage_of_boundedContinuous Q G x0 r
-          (unitConvexApproxScale n))
-  have hBmeas : AEStronglyMeasurable B μ := by
-    dsimp only [B]
-    exact
-      ((aestronglyMeasurable_diagonalConvexApproxAverage_of_boundedContinuous Q G x0 r
-        (unitConvexApproxScale n)).sub G.continuous.aestronglyMeasurable).add
-        (hG.aestronglyMeasurable.sub hK.aestronglyMeasurable)
   have hBnorm : eLpNorm B p.exponent μ < η₁ :=
-    hη₂ _ _
-      ((aestronglyMeasurable_diagonalConvexApproxAverage_of_boundedContinuous Q G x0 r
-        (unitConvexApproxScale n)).sub G.continuous.aestronglyMeasurable)
-      (hG.aestronglyMeasurable.sub hK.aestronglyMeasurable)
-      hmiddle hthird
+    hη₂ _ _ hmiddle hthird
   have hsum : eLpNorm (A + B) p.exponent μ < η :=
-    hη₁ _ _ hAmeas hBmeas hfirst hBnorm.le
+    hη₁ _ _ hfirst hBnorm.le
   calc
     eLpNorm (fun xy => diagonalConvexApproxAverage
         (unitConvexApproxKernel (d := d)) K x0 r
@@ -880,15 +869,7 @@ private theorem tendsto_cubeEuclideanWspESeminorm_convexApproxSmoothField_sub_ze
         positivity
       have hkernel := ae_cubeEuclideanWspKernel_convexApproxSmoothField_eq_scaled_average
         Q s p F x0 r (unitConvexApproxScale n) hball hr hεpos hε
-      have hfirstmeas : AEStronglyMeasurable (fun xy => c n •
-          (diagonalConvexApproxAverage (unitConvexApproxKernel (d := d)) K x0 r
-            (unitConvexApproxScale n) xy - K xy)) μ := by
-        exact (aestronglyMeasurable_diagonalConvexApproxAverage_of_memLp Q p K
-          F.euclideanMemWsp hε hball hr.le hεpos.le hε.le).sub
-            F.euclideanMemWsp.aestronglyMeasurable |>.const_smul (c n)
-      have hsecondmeas : AEStronglyMeasurable (fun xy => (c n - 1) • K xy) μ :=
-        by simpa only [μ, K] using! F.euclideanMemWsp.aestronglyMeasurable.const_smul (c n - 1)
-      simp only [T', if_pos hε]
+      simp only [T', ite_eq_left hε]
       change T n ≤ _
       rw [show T n = eLpNorm (cubeEuclideanWspKernel s p (fun x =>
         cubeEuclideanWspConvexApproxSmoothField F x0 r
@@ -938,7 +919,7 @@ private theorem tendsto_cubeEuclideanWspESeminorm_convexApproxSmoothField_sub_ze
                   simpa only [K, c, Pi.smul_apply] using hxy
                 rw [hlinear, hxy']
                 module
-        _ ≤ _ := eLpNorm_add_le hfirstmeas hsecondmeas p.one_lt.le
+        _ ≤ _ := eLpNorm_add_le p.one_lt.le
     · simp [T', hε]
   apply Filter.Tendsto.congr' ?_ hT'
   filter_upwards [hevent_lt] with n hn
@@ -995,7 +976,8 @@ private theorem tendsto_eLpNorm_component_convexApproxSmoothField_sub_zero
     dsimp only [c]
     exact ENNReal.rpow_ne_top_of_nonneg ENNReal.toReal_nonneg ENNReal.ofReal_ne_top
   apply Filter.Tendsto.congr' (Filter.Eventually.of_forall fun n => by
-    rw [hmeasure, eLpNorm_smul_measure_of_ne_top p.lt_top.ne])
+    rw [hmeasure, eLpNorm_smul_measure_of_ne_zero_of_ne_top
+      (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne])
   simpa using ENNReal.Tendsto.const_mul hrep (Or.inr hctop)
 
 private theorem tendsto_normalizedEuclideanLpENorm_convexApproxSmoothField_sub_zero
@@ -1043,10 +1025,22 @@ private theorem tendsto_normalizedEuclideanLpENorm_convexApproxSmoothField_sub_z
       (fun _ => bot_le) ?_
     intro n
     exact euclidean_eLpNorm_le_dimension_mul_sum_coordinates μ p (V n) (hmeas n)
+  have hVmeas : ∀ n : ℕ, AEStronglyMeasurable (fun x => HilbertVec.ofVec (V n x)) μ := by
+    intro n
+    have hpos : 0 < unitConvexApproxScale n := by
+      dsimp [unitConvexApproxScale]
+      positivity
+    exact ((HilbertVec.ofVecL d).continuous.comp
+      (contDiff_cubeEuclideanWspConvexApproxSmoothField F x0 hr hpos).continuous
+      ).aestronglyMeasurable.sub F.euclideanMemLp.aestronglyMeasurable
+  have hvec' : Filter.Tendsto
+      (fun n : ℕ => eLpNorm (fun x => ‖HilbertVec.ofVec (V n x)‖) p.exponent μ)
+      Filter.atTop (nhds 0) :=
+    hvec.congr fun n => (eLpNorm_norm _ (hVmeas n)).symm
   simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
     BoundedMeasurableDomain.normalizedLpENorm,
     cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-    euclideanNorm_eq_norm_ofVec, eLpNorm_norm] using hvec
+    euclideanNorm_eq_norm_ofVec] using hvec'
 
 private theorem tendsto_cubeEuclideanWspFullENorm_convexApproxSmoothField_sub_zero
     {d : ℕ} (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent)
@@ -1164,7 +1158,8 @@ private theorem tendsto_eLpNorm_component_convexApproxSmoothField_sub_zero_of_me
     dsimp only [c]
     exact ENNReal.rpow_ne_top_of_nonneg ENNReal.toReal_nonneg ENNReal.ofReal_ne_top
   apply Filter.Tendsto.congr' (Filter.Eventually.of_forall fun n => by
-    rw [hmeasure, eLpNorm_smul_measure_of_ne_top p.lt_top.ne])
+    rw [hmeasure, eLpNorm_smul_measure_of_ne_zero_of_ne_top
+      (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne])
   simpa using ENNReal.Tendsto.const_mul hrep (Or.inr hctop)
 
 private theorem tendsto_eLpNorm_two_convexApproxSmoothField_sub_zero

@@ -44,6 +44,17 @@ private theorem weak_divergence_identity_of_h10
     weak_divergence_identity_of_w10p FiniteLpExponent.two le_rfl w h hh sigma0
       hweak (v.toW10pOfExponentLETwo FiniteLpExponent.two le_rfl)
 
+private theorem centeredCube_normalizedEuclideanLpENorm_eq_eLpNorm_hilbertifyVecField
+    {d : ℕ} (m : ℤ) (p : ℝ≥0∞) {f : Vec d → Vec d}
+    (hf : AEStronglyMeasurable (hilbertifyVecField f)
+      (normalizedCubeMeasure (originCube d m))) :
+    (centeredCubeDomain d m).normalizedEuclideanLpENorm p f =
+      eLpNorm (hilbertifyVecField f) p (normalizedCubeMeasure (originCube d m)) := by
+  simp only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
+    BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec, centeredCubeDomain,
+    cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
+  exact eLpNorm_norm _ hf
+
 private theorem parent_adjoint_gradient_cz
     (d : ℕ) [NeZero d] (p : FiniteLpExponent)
     (hp : 2 < p.exponent.toReal) :
@@ -78,23 +89,17 @@ private theorem parent_adjoint_gradient_cz
           hP.toField := hbound
     _ = C * eLpNorm (hilbertifyVecField hP.toField) p.exponent
         (normalizedCubeMeasure (originCube d (m + 1))) := by
-      simp only [ENNReal.ofReal_one, inv_one, mul_one,
-        BoundedMeasurableDomain.normalizedEuclideanLpENorm,
-        BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-        MeasureTheory.eLpNorm_norm, centeredCubeDomain,
-        cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
-      rfl
+      rw [ENNReal.ofReal_one, inv_one, mul_one,
+        centeredCube_normalizedEuclideanLpENorm_eq_eLpNorm_hilbertifyVecField (m + 1) _
+          (f := hP.toField) hP.euclideanMemLp.aestronglyMeasurable]
     _ ≤ C * eLpNorm (hilbertifyVecField h.toField) p.exponent
         (normalizedCubeMeasure (originCube d m)) := by
       gcongr
       exact eLpNorm_sourceParentFiniteLpExtension_le m p h
     _ = C * (centeredCubeDomain d m).normalizedEuclideanLpENorm p.exponent
         h.toField := by
-      simp only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
-        BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-        MeasureTheory.eLpNorm_norm, centeredCubeDomain,
-        cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
-      rfl
+      rw [centeredCube_normalizedEuclideanLpENorm_eq_eLpNorm_hilbertifyVecField m _
+        (f := h.toField) h.euclideanMemLp.aestronglyMeasurable]
 
 /-- The adjoint parent solution has the high-exponent gradient estimate and,
 by Poincaré, the value estimate needed by the lower-order cutoff terms. -/
@@ -133,21 +138,24 @@ private theorem exists_parent_adjoint_value_bound
   let v := openCubeSetScalarDivergenceSolution (originCube d (m + 1))
     (by norm_num : (0 : ℝ) < 1) hP.toField
     (memVectorL2_sourceParentFiniteLpExtension m p h)
-  have hgradBound : eLpNorm (hilbertifyVecField v.toH1Function.grad) p.exponent
-      (normalizedCubeMeasure (originCube d (m + 1))) ≤
-      Ccz * eLpNorm (hilbertifyVecField h.toField) p.exponent
-        (normalizedCubeMeasure (originCube d m)) := by
-    simpa only [hP, v, BoundedMeasurableDomain.normalizedEuclideanLpENorm,
-      BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-      eLpNorm_norm, centeredCubeDomain,
-      cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure] using!
-      hCcz m h
   have hvgrad2 : MemLp (hilbertifyVecField v.toH1Function.grad) 2
       (normalizedCubeMeasure (originCube d (m + 1))) := by
     rw [normalizedCubeMeasure, cubeMeasure,
       volume_restrict_cubeSet_eq_volume_restrict_openCubeSet]
     exact (memHilbertVectorL2_hilbertifyVecField
       v.toH1Function.grad_memVectorL2).smul_measure ENNReal.ofReal_ne_top
+  have hgradBound : eLpNorm (hilbertifyVecField v.toH1Function.grad) p.exponent
+      (normalizedCubeMeasure (originCube d (m + 1))) ≤
+      Ccz * eLpNorm (hilbertifyVecField h.toField) p.exponent
+        (normalizedCubeMeasure (originCube d m)) := by
+    have hC : (centeredCubeDomain d (m + 1)).normalizedEuclideanLpENorm p.exponent
+        v.toH1Function.grad ≤
+        Ccz * (centeredCubeDomain d m).normalizedEuclideanLpENorm p.exponent h.toField :=
+      hCcz m h
+    rwa [centeredCube_normalizedEuclideanLpENorm_eq_eLpNorm_hilbertifyVecField (m + 1) _
+        (f := v.toH1Function.grad) hvgrad2.aestronglyMeasurable,
+      centeredCube_normalizedEuclideanLpENorm_eq_eLpNorm_hilbertifyVecField m _
+        (f := h.toField) h.euclideanMemLp.aestronglyMeasurable] at hC
   have hsourceTop : eLpNorm (hilbertifyVecField h.toField) p.exponent
       (normalizedCubeMeasure (originCube d m)) < ∞ :=
     h.toCubeEuclideanLpField.euclideanMemLp.eLpNorm_lt_top
@@ -156,7 +164,7 @@ private theorem exists_parent_adjoint_value_bound
     lt_of_le_of_lt hgradBound (ENNReal.mul_lt_top hCczTop hsourceTop)
   have hvgrad : MemLp (hilbertifyVecField v.toH1Function.grad) p.exponent
       (normalizedCubeMeasure (originCube d (m + 1))) :=
-    ⟨hvgrad2.aestronglyMeasurable, hgradTop⟩
+    hgradTop
   have hvalueBound :=
     ScalarPoissonGradientBelowTwo.centeredCubeH10_value_eLpNorm_le_scale_mul_grad
       p Cp hCp hPoincare (m + 1) v (by
@@ -192,12 +200,7 @@ private theorem exists_parent_adjoint_value_bound
     lt_of_le_of_lt hvalue <| ENNReal.mul_lt_top
       (ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.ofReal_lt_top)
         hCczTop) hsourceTop
-  have hvfun2 : MemLp v.toH1Function.toFun 2
-      (normalizedCubeMeasure (originCube d (m + 1))) := by
-    rw [normalizedCubeMeasure, cubeMeasure,
-      volume_restrict_cubeSet_eq_volume_restrict_openCubeSet]
-    exact v.toH1Function.memL2.smul_measure ENNReal.ofReal_ne_top
-  exact ⟨hvalue, hgradBound, hvgrad, ⟨hvfun2.aestronglyMeasurable, hvalueTop⟩⟩
+  exact ⟨hvalue, hgradBound, hvgrad, hvalueTop⟩
 
 private theorem norm_basisVec {d : ℕ} (i : Fin d) : ‖basisVec i‖ = (1 : ℝ) := by
   apply le_antisymm
@@ -248,9 +251,9 @@ private theorem quantitativeCubeCutoff_euclideanCoordLaplacian_bound
 private theorem vector_multiplier_eLpNorm
     {α E : Type*} [MeasurableSpace α] [NormedAddCommGroup E]
     {μ : Measure α} (p : ℝ≥0∞) {f : α → E} {g : α → ℝ} {C : ℝ}
-    (hC : 0 ≤ C) (h : ∀ x, ‖f x‖ ≤ C * |g x|) :
+    (hC : 0 ≤ C) (hf : AEStronglyMeasurable f μ) (h : ∀ x, ‖f x‖ ≤ C * |g x|) :
     eLpNorm f p μ ≤ C.toNNReal • eLpNorm g p μ := by
-  apply eLpNorm_le_nnreal_smul_eLpNorm_of_ae_le_mul'
+  apply eLpNorm_le_nnreal_smul_eLpNorm_of_ae_le_mul' hf
   filter_upwards with x
   rw [enorm_eq_nnnorm, enorm_eq_nnnorm]
   apply ENNReal.coe_le_coe.mpr
@@ -261,9 +264,9 @@ private theorem vector_multiplier_eLpNorm
 private theorem scalar_multiplier_eLpNorm
     {α : Type*} [MeasurableSpace α] {μ : Measure α}
     (p : ℝ≥0∞) {f g : α → ℝ} {C : ℝ}
-    (hC : 0 ≤ C) (h : ∀ x, |f x| ≤ C * |g x|) :
+    (hC : 0 ≤ C) (hf : AEStronglyMeasurable f μ) (h : ∀ x, |f x| ≤ C * |g x|) :
     eLpNorm f p μ ≤ C.toNNReal • eLpNorm g p μ := by
-  apply eLpNorm_le_nnreal_smul_eLpNorm_of_ae_le_mul'
+  apply eLpNorm_le_nnreal_smul_eLpNorm_of_ae_le_mul' hf
   filter_upwards with x
   rw [enorm_eq_nnnorm, enorm_eq_nnnorm]
   apply ENNReal.coe_le_coe.mpr
@@ -274,9 +277,10 @@ private theorem scalar_multiplier_eLpNorm
 private theorem scalar_mul_bounded_vector_eLpNorm
     {d : ℕ} {μ : Measure (Vec d)} (p : ℝ≥0∞)
     {v : Vec d → ℝ} {G : Vec d → HilbertVec d} {C : ℝ}
-    (hC : 0 ≤ C) (hG : ∀ x, ‖G x‖ ≤ C) :
+    (hC : 0 ≤ C) (hvG : AEStronglyMeasurable (fun x => v x • G x) μ)
+    (hG : ∀ x, ‖G x‖ ≤ C) :
     eLpNorm (fun x => v x • G x) p μ ≤ C.toNNReal • eLpNorm v p μ := by
-  apply vector_multiplier_eLpNorm p hC
+  apply vector_multiplier_eLpNorm p hC hvG
   intro x
   rw [norm_smul]
   simpa [Real.norm_eq_abs, mul_comm] using
@@ -285,9 +289,10 @@ private theorem scalar_mul_bounded_vector_eLpNorm
 private theorem scalar_mul_bounded_scalar_eLpNorm
     {d : ℕ} {μ : Measure (Vec d)} (p : ℝ≥0∞)
     {w L : Vec d → ℝ} {C : ℝ}
-    (hC : 0 ≤ C) (hL : ∀ x, |L x| ≤ C) :
+    (hC : 0 ≤ C) (hwL : AEStronglyMeasurable (fun x => w x * L x) μ)
+    (hL : ∀ x, |L x| ≤ C) :
     eLpNorm (fun x => w x * L x) p μ ≤ C.toNNReal • eLpNorm w p μ := by
-  apply scalar_multiplier_eLpNorm p hC
+  apply scalar_multiplier_eLpNorm p hC hwL
   intro x
   simpa [abs_mul, mul_comm] using
     (mul_le_mul_of_nonneg_left (hL x) (abs_nonneg (w x)))
@@ -493,38 +498,39 @@ private theorem exists_reflected_source_row_setup
   have hFRq : MemLp FR q.exponent (normalizedCubeMeasure (originCube d (m + 1))) := by
     simpa only [FR] using
       memLp_normalizedCubeMeasure_succ_originCube_cubeDirichletOddReflectionScalar q hFq
+  have hbmeas : AEStronglyMeasurable (hilbertifyVecField b)
+      (normalizedCubeMeasure (originCube d (m + 1))) := by
+    let L : ℝ →L[ℝ] HilbertVec d :=
+      (HilbertVec.ofVecL d).comp (ContinuousLinearMap.single ℝ (fun _ : Fin d ↦ ℝ) i)
+    have hL := L.continuous.comp_aestronglyMeasurable hFRq.aestronglyMeasurable
+    have hbfield : hilbertifyVecField b =
+        fun x ↦ HilbertVec.ofVec (Pi.single i (FR x)) := by
+      funext x
+      change HilbertVec.ofVec (b x) = HilbertVec.ofVec (Pi.single i (FR x))
+      congr 1
+      funext j
+      by_cases hji : j = i
+      · subst j; simp [b]
+      · simp [b, hji]
+    rw [hbfield]
+    simpa only [L, ContinuousLinearMap.comp_apply, ContinuousLinearMap.single_apply,
+      HilbertVec.ofVecL_apply] using hL
   have hbq : MemLp (hilbertifyVecField b) q.exponent
       (normalizedCubeMeasure (originCube d (m + 1))) := by
-    refine ⟨?_, ?_⟩
-    · let L : ℝ →L[ℝ] HilbertVec d :=
-        (HilbertVec.ofVecL d).comp (ContinuousLinearMap.single ℝ (fun _ : Fin d ↦ ℝ) i)
-      have hL := L.continuous.comp_aestronglyMeasurable hFRq.aestronglyMeasurable
-      have hbfield : hilbertifyVecField b =
-          fun x ↦ HilbertVec.ofVec (Pi.single i (FR x)) := by
-        funext x
-        change HilbertVec.ofVec (b x) = HilbertVec.ofVec (Pi.single i (FR x))
-        congr 1
-        funext j
-        by_cases hji : j = i
-        · subst j; simp [b]
-        · simp [b, hji]
-      rw [hbfield]
-      simpa only [L, ContinuousLinearMap.comp_apply, ContinuousLinearMap.single_apply,
-        HilbertVec.ofVecL_apply] using hL
-    · have hnorm : eLpNorm (hilbertifyVecField b) q.exponent
-          (normalizedCubeMeasure (originCube d (m + 1))) =
-        eLpNorm FR q.exponent (normalizedCubeMeasure (originCube d (m + 1))) := by
-          apply eLpNorm_congr_norm_ae
-          apply ae_of_all; intro x
-          change ‖HilbertVec.ofVec (fun j ↦ if j = i then FR x else 0)‖ = ‖FR x‖
-          have hs : (fun j ↦ if j = i then FR x else 0) = Pi.single i (FR x) := by
-            funext j; by_cases hji : j = i
-            · subst j; simp
-            · simp [hji]
-          rw [hs]
-          exact PiLp.norm_single (2 : ℝ≥0∞) (fun _ : Fin d ↦ ℝ) i (FR x)
-      rw [hnorm]
-      exact hFRq.eLpNorm_lt_top
+    have hnorm : eLpNorm (hilbertifyVecField b) q.exponent
+        (normalizedCubeMeasure (originCube d (m + 1))) =
+      eLpNorm FR q.exponent (normalizedCubeMeasure (originCube d (m + 1))) := by
+        apply eLpNorm_congr_norm_ae hbmeas hFRq.aestronglyMeasurable
+        apply ae_of_all; intro x
+        change ‖HilbertVec.ofVec (fun j ↦ if j = i then FR x else 0)‖ = ‖FR x‖
+        have hs : (fun j ↦ if j = i then FR x else 0) = Pi.single i (FR x) := by
+          funext j; by_cases hji : j = i
+          · subst j; simp
+          · simp [hji]
+        rw [hs]
+        exact PiLp.norm_single (2 : ℝ≥0∞) (fun _ : Fin d ↦ ℝ) i (FR x)
+    rw [memLp_iff, hnorm]
+    exact hFRq.eLpNorm_lt_top
   have hbnorm : eLpNorm (hilbertifyVecField b) q.exponent
       (normalizedCubeMeasure (originCube d (m + 1))) =
       eLpNorm F q.exponent (normalizedCubeMeasure (originCube d m)) := by
@@ -532,7 +538,7 @@ private theorem exists_reflected_source_row_setup
       eLpNorm (hilbertifyVecField b) q.exponent
           (normalizedCubeMeasure (originCube d (m + 1))) =
         eLpNorm FR q.exponent (normalizedCubeMeasure (originCube d (m + 1))) := by
-          apply eLpNorm_congr_norm_ae
+          apply eLpNorm_congr_norm_ae hbmeas hFRq.aestronglyMeasurable
           apply ae_of_all; intro x
           change ‖HilbertVec.ofVec (fun j ↦ if j = i then FR x else 0)‖ = ‖FR x‖
           have hs : (fun j ↦ if j = i then FR x else 0) = Pi.single i (FR x) := by
@@ -544,17 +550,9 @@ private theorem exists_reflected_source_row_setup
       _ = eLpNorm F q.exponent (normalizedCubeMeasure (originCube d m)) := by
         simpa only [FR] using
           eLpNorm_normalizedCubeMeasure_succ_originCube_cubeDirichletOddReflectionScalar F q
-  have hrmeas : AEStronglyMeasurable r.toFun
-      ((normalizedCubeMeasure (originCube d (m + 1))).restrict U) := by
-    have hr2 : MemLp r.toFun 2 ((normalizedCubeMeasure (originCube d (m + 1))).restrict U) := by
-      rw [normalizedCubeMeasure, cubeMeasure,
-        volume_restrict_cubeSet_eq_volume_restrict_openCubeSet,
-        Measure.restrict_smul, Measure.restrict_restrict_of_subset hUP]
-      exact r.memL2.smul_measure ENNReal.ofReal_ne_top
-    exact hr2.aestronglyMeasurable
   have hrq : MemLp r.toFun q.exponent
       ((normalizedCubeMeasure (originCube d (m + 1))).restrict U) :=
-    ⟨hrmeas, lt_of_le_of_lt hrnorm hBtop⟩
+    lt_of_le_of_lt hrnorm hBtop
   refine ⟨r, b, hrow, hb, hrowid, ?_, hbq, hbnorm, hrq, hrnorm⟩
   rfl
 
@@ -610,11 +608,39 @@ private theorem reflected_datum_parent_transport
     eLpNorm (hilbertifyVecField (fun x j ↦ if j = i then FR x else 0))
         q.exponent (normalizedCubeMeasure (originCube d (m + 1))) =
       eLpNorm FR q.exponent (normalizedCubeMeasure (originCube d (m + 1))) := by
-        apply MeasureTheory.eLpNorm_congr_norm_ae
-        exact MeasureTheory.ae_of_all _ fun x ↦ by
-          change ‖HilbertVec.ofVec (fun j ↦ if j = i then FR x else 0)‖ = ‖FR x‖
-          rw [hsingle x]
-          exact PiLp.norm_single (2 : ℝ≥0∞) (fun _ : Fin d ↦ ℝ) i (FR x)
+        by_cases hFR : AEStronglyMeasurable FR (normalizedCubeMeasure (originCube d (m + 1)))
+        · have hmeas : AEStronglyMeasurable
+              (hilbertifyVecField (fun x j ↦ if j = i then FR x else 0))
+              (normalizedCubeMeasure (originCube d (m + 1))) := by
+            let L : ℝ →L[ℝ] HilbertVec d :=
+              (HilbertVec.ofVecL d).comp (ContinuousLinearMap.single ℝ (fun _ : Fin d ↦ ℝ) i)
+            have hL := L.continuous.comp_aestronglyMeasurable hFR
+            have hbfield : hilbertifyVecField (fun x j ↦ if j = i then FR x else 0) =
+                fun x ↦ HilbertVec.ofVec (Pi.single i (FR x)) := by
+              funext x
+              change HilbertVec.ofVec (fun j ↦ if j = i then FR x else 0) =
+                HilbertVec.ofVec (Pi.single i (FR x))
+              rw [hsingle x]
+            rw [hbfield]
+            simpa only [L, ContinuousLinearMap.comp_apply, ContinuousLinearMap.single_apply,
+              HilbertVec.ofVecL_apply] using hL
+          apply MeasureTheory.eLpNorm_congr_norm_ae hmeas hFR
+          exact MeasureTheory.ae_of_all _ fun x ↦ by
+            change ‖HilbertVec.ofVec (fun j ↦ if j = i then FR x else 0)‖ = ‖FR x‖
+            rw [hsingle x]
+            exact PiLp.norm_single (2 : ℝ≥0∞) (fun _ : Fin d ↦ ℝ) i (FR x)
+        · have hmeas : ¬ AEStronglyMeasurable
+              (hilbertifyVecField (fun x j ↦ if j = i then FR x else 0))
+              (normalizedCubeMeasure (originCube d (m + 1))) := by
+            intro hmeas
+            apply hFR
+            have hc : Continuous fun w : HilbertVec d ↦
+                (HilbertVec.continuousLinearEquivVec d w) i :=
+              (continuous_apply i).comp (HilbertVec.continuousLinearEquivVec d).continuous
+            refine (hc.comp_aestronglyMeasurable hmeas).congr (ae_of_all _ fun x ↦ ?_)
+            simp [hilbertifyVecField]
+          rw [eLpNorm_of_not_aestronglyMeasurable hmeas,
+            eLpNorm_of_not_aestronglyMeasurable hFR]
     _ = eLpNorm F q.exponent (normalizedCubeMeasure (originCube d m)) := by
       simpa only [FR] using
         eLpNorm_normalizedCubeMeasure_succ_originCube_cubeDirichletOddReflectionScalar F q
@@ -651,16 +677,22 @@ private theorem source_gradient_below_two_bound
       normalizedCubeMeasure, cubeMeasure,
       volume_restrict_cubeSet_eq_volume_restrict_openCubeSet,
       MeasureTheory.integral_smul_measure] using hs
-  simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
-    BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-    MeasureTheory.eLpNorm_norm, centeredCubeDomain,
-    cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-    ENNReal.ofReal_one, inv_one, mul_one] using!
-    hC m 1 F u (by simpa only [centeredCubeDomain,
+  have hgrad2 : MemLp (hilbertifyVecField u.toH1Function.grad) 2
+      (normalizedCubeMeasure (originCube d m)) := by
+    rw [normalizedCubeMeasure, cubeMeasure,
+      volume_restrict_cubeSet_eq_volume_restrict_openCubeSet]
+    exact (memHilbertVectorL2_hilbertifyVecField
+      u.toH1Function.grad_memVectorL2).smul_measure ENNReal.ofReal_ne_top
+  have hmain := hC m 1 F u (by simpa only [centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure] using hF2)
-      (by simpa only [centeredCubeDomain,
-        cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure] using hFq)
-      (by norm_num) hweak'
+    (by simpa only [centeredCubeDomain,
+      cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure] using hFq)
+    (by norm_num) hweak'
+  rw [centeredCube_normalizedEuclideanLpENorm_eq_eLpNorm_hilbertifyVecField m _
+    (f := u.toH1Function.grad) hgrad2.aestronglyMeasurable] at hmain
+  simpa only [centeredCubeDomain,
+    cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
+    ENNReal.ofReal_one, inv_one, mul_one] using hmain
 
 private theorem source_hessian_row_radial_pairing_moment
     {d : ℕ} {m : ℤ} (q : FiniteLpExponent)
@@ -736,6 +768,7 @@ private theorem source_hessian_row_radial_norm_eq_moment_rpow
   have hmoment := INTERNAL.eLpNorm_hilbertRadialTruncation_rpow_conjugate_eq_truncatedMoment
     (μ := normalizedCubeMeasure (originCube d m)) q n
     (fun x => HilbertVec.ofVec (fun j => H.hess i j x))
+    (H.hessianHilbertRow_memLp_two_normalizedCubeMeasure _ i).aestronglyMeasurable
   have hqreal : 1 < q.exponent.toReal := by
     rw [← ENNReal.toReal_one]
     exact (ENNReal.toReal_lt_toReal (by norm_num) q.lt_top.ne).mpr q.one_lt
@@ -1163,7 +1196,7 @@ private theorem restricted_raw_holder_vec
   have hGind_norm : eLpNorm (fun x => HilbertVec.ofVec (Set.indicator U G x))
       q.conjugate.exponent μ ≤
       eLpNorm (fun x => HilbertVec.ofVec (G x)) q.conjugate.exponent μ := by
-    apply eLpNorm_mono_ae
+    apply eLpNorm_mono_ae hGind.aestronglyMeasurable
     filter_upwards with x
     by_cases hx : x ∈ U <;> simp [hx]
   have hμ : μ = ENNReal.ofReal ((cubeVolume Q)⁻¹) • volume.restrict (openCubeSet Q) := by
@@ -1222,7 +1255,7 @@ private theorem scalar_indicator_mul_bounded_memLp_and_norm
   constructor
   · rw [memLp_indicator_iff_restrict hU]; exact hlocal
   · rw [eLpNorm_indicator_eq_eLpNorm_restrict hU]
-    apply eLpNorm_le_nnreal_smul_eLpNorm_of_ae_le_mul'
+    apply eLpNorm_le_nnreal_smul_eLpNorm_of_ae_le_mul' hlocal.aestronglyMeasurable
     filter_upwards with x
     rw [enorm_eq_nnnorm, enorm_eq_nnnorm]
     apply ENNReal.coe_le_coe.mpr
@@ -1245,10 +1278,10 @@ private theorem scalar_single_hilbert_memLp_and_norm
     exact L.continuous.comp_aestronglyMeasurable hf.aestronglyMeasurable
   have henorm : eLpNorm (fun x ↦ HilbertVec.ofVec (Pi.single i (f x))) p μ =
       eLpNorm f p μ := by
-    apply eLpNorm_congr_norm_ae
+    apply eLpNorm_congr_norm_ae hmeas hf.aestronglyMeasurable
     apply ae_of_all; intro x
     exact PiLp.norm_single (2 : ℝ≥0∞) (fun _ : Fin d ↦ ℝ) i (f x)
-  exact ⟨⟨hmeas, henorm.symm ▸ hf.eLpNorm_lt_top⟩, henorm⟩
+  exact ⟨by rw [memLp_iff, henorm]; exact hf.eLpNorm_lt_top, henorm⟩
 
 private theorem localized_Hterm_raw_bound
     {d : ℕ} (Q : TriadicCube d) (q : FiniteLpExponent) (i : Fin d)
@@ -1386,7 +1419,7 @@ private theorem localized_Aterm_raw_bound
     exact ENNReal.mul_ne_top ENNReal.coe_ne_top hV.eLpNorm_ne_top
   have hdotnorm : eLpNorm dot q.conjugate.exponent μ ≤ C.toNNReal •
       eLpNorm (fun x ↦ HilbertVec.ofVec (V x)) q.conjugate.exponent μ := by
-    apply eLpNorm_le_nnreal_smul_eLpNorm_of_ae_le_mul'
+    apply eLpNorm_le_nnreal_smul_eLpNorm_of_ae_le_mul' hdotmeas
     filter_upwards with x
     rw [enorm_eq_nnnorm, enorm_eq_nnnorm]
     apply ENNReal.coe_le_coe.mpr
@@ -1476,7 +1509,7 @@ private theorem localized_Eterm_raw_bound
     exact ENNReal.mul_ne_top ENNReal.coe_ne_top hb.eLpNorm_ne_top
   have hdotnorm : eLpNorm dot q.exponent μ ≤ C.toNNReal •
       eLpNorm (fun x ↦ HilbertVec.ofVec (b x)) q.exponent μ := by
-    apply eLpNorm_le_nnreal_smul_eLpNorm_of_ae_le_mul'
+    apply eLpNorm_le_nnreal_smul_eLpNorm_of_ae_le_mul' hdotmeas
     filter_upwards with x
     rw [enorm_eq_nnnorm, enorm_eq_nnnorm]
     apply ENNReal.coe_le_coe.mpr
@@ -1628,7 +1661,7 @@ private theorem localized_Dterm_raw_bound
     exact mul_le_of_le_one_left (norm_nonneg _) (hηbound x).2
   have hBnorm : eLpNorm (fun x ↦ HilbertVec.ofVec (B x)) q.exponent μ ≤
       eLpNorm (fun x ↦ HilbertVec.ofVec (b x)) q.exponent μ := by
-    apply eLpNorm_mono_ae
+    apply eLpNorm_mono_ae hBmeas
     filter_upwards with x
     change ‖(HilbertVec.ofVecL d) (η x • b x)‖ ≤ ‖(HilbertVec.ofVecL d) (b x)‖
     rw [(HilbertVec.ofVecL d).map_smul, norm_smul, Real.norm_eq_abs,
@@ -2415,7 +2448,7 @@ private theorem row_eLpNorm_of_raw_term_bounds
     rw [← ENNReal.ofReal_toReal q.lt_top.ne]
     apply INTERNAL.eLpNorm_le_of_truncated_cross_bound hqreal hRtwo.aestronglyMeasurable
     exact source_hessian_row_htrunc_of_raw_term_bounds q Hsrc i hKtop hterms
-  refine ⟨⟨hRtwo.aestronglyMeasurable, lt_of_le_of_lt hbound hKtop.lt_top⟩, ?_⟩
+  refine ⟨lt_of_le_of_lt hbound hKtop.lt_top, ?_⟩
   simpa only [R] using hbound
 
 private theorem source_hessian_row_raw_term_package

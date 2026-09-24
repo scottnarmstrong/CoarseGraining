@@ -251,7 +251,7 @@ private theorem dualTestNorm_toRepo {d : ℕ} (Q : TriadicCube d)
         comparisonS (2 : ℝ≥0∞) (2 : ℝ≥0∞) N u =
       Sobolev34.partialTestNorm Q N u := by
   unfold _root_.Homogenization.cubeBesovDualTestNorm
-  rw [if_neg cubeBesovConjExponent_two_ne_top, cubeBesovConjExponent_two]
+  rw [ite_eq_right cubeBesovConjExponent_two_ne_top, cubeBesovConjExponent_two]
   exact partialTestNorm_toRepo Q N u
 
 private theorem locallyL2_toRepo {d : ℕ} (Q : TriadicCube d) (u : Vec d → ℝ) :

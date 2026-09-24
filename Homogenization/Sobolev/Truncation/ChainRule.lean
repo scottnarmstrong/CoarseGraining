@@ -40,7 +40,9 @@ theorem fderiv_comp_basisVec {d : ℕ} {G : ℝ → ℝ} {w : Vec d → ℝ} {x 
 
 /-- `L²` control of a Lipschitz composition: `‖G∘f − G∘g‖_{L²} ≤ M‖f − g‖_{L²}`. -/
 theorem eLpNorm_comp_sub_le_of_lipschitz {d : ℕ} {U : Set (Vec d)} {G : ℝ → ℝ}
-    {M : ℝ} (hM : 0 ≤ M) (hLip : LipschitzWith M.toNNReal G) (f g : Vec d → ℝ) :
+    {M : ℝ} (hM : 0 ≤ M) (hLip : LipschitzWith M.toNNReal G) (f g : Vec d → ℝ)
+    (hf : AEStronglyMeasurable f (volumeMeasureOn U))
+    (hg : AEStronglyMeasurable g (volumeMeasureOn U)) :
     eLpNorm (fun x => G (f x) - G (g x)) 2 (volumeMeasureOn U)
       ≤ ENNReal.ofReal M * eLpNorm (fun x => f x - g x) 2 (volumeMeasureOn U) := by
   have hpt : ∀ x, ‖G (f x) - G (g x)‖ ≤ ‖M • (f x - g x)‖ := by
@@ -50,7 +52,9 @@ theorem eLpNorm_comp_sub_le_of_lipschitz {d : ℕ} {U : Set (Vec d)} {G : ℝ �
     simp only [Real.norm_eq_abs, abs_of_nonneg hM]
     simpa [Real.dist_eq, Real.coe_toNNReal M hM] using hd
   calc eLpNorm (fun x => G (f x) - G (g x)) 2 (volumeMeasureOn U)
-      ≤ eLpNorm (fun x => M • (f x - g x)) 2 (volumeMeasureOn U) := eLpNorm_mono hpt
+      ≤ eLpNorm (fun x => M • (f x - g x)) 2 (volumeMeasureOn U) :=
+        eLpNorm_mono ((hLip.continuous.comp_aestronglyMeasurable hf).sub
+          (hLip.continuous.comp_aestronglyMeasurable hg)) hpt
     _ = ENNReal.ofReal M * eLpNorm (fun x => f x - g x) 2 (volumeMeasureOn U) := by
         rw [show (fun x => M • (f x - g x)) = (M • fun x => f x - g x) from rfl,
           eLpNorm_const_smul]

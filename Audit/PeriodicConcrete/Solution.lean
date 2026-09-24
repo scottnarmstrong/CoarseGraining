@@ -203,7 +203,7 @@ private theorem partialTestNorm_toRepo {d : ℕ} (Q : TriadicCube d) (N : ℕ)
     _root_.Homogenization.cubeBesovDualTestNorm (toRepoCube Q) comparisonS
         (2 : ℝ≥0∞) (2 : ℝ≥0∞) N φ = Sobolev34.partialTestNorm Q N φ := by
   rw [_root_.Homogenization.cubeBesovDualTestNorm,
-    _root_.Homogenization.cubeBesovConjExponent, conj_two, if_neg (by simp)]
+    _root_.Homogenization.cubeBesovConjExponent, conj_two, ite_eq_right (by simp)]
   simp only [_root_.Homogenization.cubeBesovPartialNorm,
     _root_.Homogenization.cubeBesovPartialSeminorm,
     _root_.Homogenization.cubeBesovScaleWeight,

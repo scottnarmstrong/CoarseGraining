@@ -160,7 +160,8 @@ private theorem setLIntegral_prodCube_le_tsum_shell {Q : TriadicCube d}
 /-- Step 1: the `p`-th power of the Gagliardo seminorm as a normalized kernel
 integral over the product cube. -/
 private theorem gagliardo_rpow_eq_lintegral {Q : TriadicCube d} {s : ℝ}
-    {p : ℝ≥0∞} (hp : 1 ≤ p) (hpt : p ≠ ∞) (u : Vec d → ℝ) :
+    {p : ℝ≥0∞} (hp : 1 ≤ p) (hpt : p ≠ ∞) (u : Vec d → ℝ)
+    (hu : AEStronglyMeasurable (gagliardoKernel s p u) (gagliardoCubeMeasure Q)) :
     cubeGagliardoESeminorm Q s p u ^ p.toReal =
       ENNReal.ofReal (cubeVolume Q)⁻¹ *
         ∫⁻ z in Homogenization.cubeSet Q ×ˢ Homogenization.cubeSet Q,
@@ -169,7 +170,7 @@ private theorem gagliardo_rpow_eq_lintegral {Q : TriadicCube d} {s : ℝ}
           ∂(MeasureTheory.volume.prod MeasureTheory.volume) := by
   have hp0 : p ≠ 0 := (zero_lt_one.trans_le hp).ne'
   have hpr : 0 < p.toReal := ENNReal.toReal_pos hp0 hpt
-  rw [Internal.cubeGagliardoESeminorm_eq_lintegral hp0 hpt,
+  rw [Internal.cubeGagliardoESeminorm_eq_lintegral hp0 hpt hu,
     ← ENNReal.rpow_mul, one_div_mul_cancel hpr.ne', ENNReal.rpow_one]
   rw [lintegral_gagliardoCubeMeasure_eq]
   congr 1
@@ -388,7 +389,10 @@ private theorem lintegral_enorm_sub_average_eq {S : TriadicCube d} {p : ℝ≥0�
   have hLp : (eLpNorm (fun x => u x - ScalarOverlap.cubeAverage S u) p
       (ScalarOverlap.normalizedCubeMeasure S)) ^ p.toReal =
       ∫⁻ x, g x ∂(ScalarOverlap.normalizedCubeMeasure S) := by
-    rw [eLpNorm_eq_lintegral_rpow_enorm_toReal hp0 hpt, ← ENNReal.rpow_mul,
+    have hsub : AEStronglyMeasurable (fun x => u x - ScalarOverlap.cubeAverage S u)
+        (ScalarOverlap.normalizedCubeMeasure S) :=
+      hu.aestronglyMeasurable.sub aestronglyMeasurable_const
+    rw [eLpNorm_eq_lintegral_rpow_enorm_toReal hp0 hpt hsub, ← ENNReal.rpow_mul,
       one_div_mul_cancel hpr.ne', ENNReal.rpow_one]
   calc (∫⁻ x in ScalarOverlap.cubeSet S, g x ∂MeasureTheory.volume)
       = 1 * ∫⁻ x in ScalarOverlap.cubeSet S, g x ∂MeasureTheory.volume :=
@@ -888,6 +892,9 @@ theorem gagliardo_rpow_le_iSup_partialSeminorm {d : ℕ} [NeZero d]
               ‖u z.1 - u z.2‖ₑ ^ p.toReal
             ∂(MeasureTheory.volume.prod MeasureTheory.volume) :=
         gagliardo_rpow_eq_lintegral hp hpt u
+          ((measurable_dist.pow measurable_const).smul
+            ((humeas.comp measurable_fst).sub
+              (humeas.comp measurable_snd))).aestronglyMeasurable
     _ ≤ ENNReal.ofReal (cubeVolume Q)⁻¹ *
           ∑' n : ℕ,
             ∫⁻ z in (Homogenization.cubeSet Q ×ˢ Homogenization.cubeSet Q) ∩

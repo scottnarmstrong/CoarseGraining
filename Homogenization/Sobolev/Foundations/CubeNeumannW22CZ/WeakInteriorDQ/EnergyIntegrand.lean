@@ -380,6 +380,19 @@ theorem integral_subset_of_support_subset
   rw [MeasureTheory.setIntegral_eq_integral_of_forall_compl_eq_zero hzeroU,
     MeasureTheory.setIntegral_eq_integral_of_forall_compl_eq_zero hzeroV]
 
+/-- A function supported in a set `W` that is a.e.-strongly-measurable for the
+restricted volume is a.e.-strongly-measurable for the whole volume. -/
+private theorem aestronglyMeasurable_volume_of_restrict_of_support_subset
+    {E : Type*} [NormedAddCommGroup E] {F : Vec d → E} {W : Set (Vec d)}
+    (hF_support : Function.support F ⊆ W)
+    (hF : MeasureTheory.AEStronglyMeasurable F (MeasureTheory.volume.restrict W)) :
+    MeasureTheory.AEStronglyMeasurable F MeasureTheory.volume := by
+  rw [← MeasureTheory.Measure.restrict_toMeasurable_of_sFinite] at hF
+  have hind := (aestronglyMeasurable_indicator_iff
+    (MeasureTheory.measurableSet_toMeasurable MeasureTheory.volume W)).2 hF
+  rwa [Set.indicator_eq_self.2
+    (hF_support.trans (MeasureTheory.subset_toMeasurable _ _))] at hind
+
 /-- If a function is supported in an interior set `V ⊆ U`, its `eLpNorm` on
 the ambient restricted measure agrees with its `eLpNorm` on `V`. -/
 theorem eLpNorm_restrict_eq_restrict_of_support_subset
@@ -388,8 +401,13 @@ theorem eLpNorm_restrict_eq_restrict_of_support_subset
     MeasureTheory.eLpNorm F p (MeasureTheory.volume.restrict U) =
       MeasureTheory.eLpNorm F p (MeasureTheory.volume.restrict V) := by
   have hsupportU : Function.support F ⊆ U := hF_support.trans hVU
-  rw [MeasureTheory.eLpNorm_restrict_eq_of_support_subset hsupportU]
-  rw [← MeasureTheory.eLpNorm_restrict_eq_of_support_subset hF_support]
+  by_cases hF : MeasureTheory.AEStronglyMeasurable F MeasureTheory.volume
+  · rw [MeasureTheory.eLpNorm_restrict_eq_of_support_subset hF hsupportU]
+    rw [← MeasureTheory.eLpNorm_restrict_eq_of_support_subset hF hF_support]
+  · rw [MeasureTheory.eLpNorm_of_not_aestronglyMeasurable
+        (fun h => hF (aestronglyMeasurable_volume_of_restrict_of_support_subset hsupportU h)),
+      MeasureTheory.eLpNorm_of_not_aestronglyMeasurable
+        (fun h => hF (aestronglyMeasurable_volume_of_restrict_of_support_subset hF_support h))]
 
 /-- Translation invariance of global `eLpNorm` for a coordinate shift. -/
 theorem eLpNorm_comp_euclideanCoordShift_of_aestronglyMeasurable
@@ -429,16 +447,6 @@ theorem eLpNorm_backwardDifferenceQuotient_sub_le
         (MeasureTheory.eLpNorm (fun x => F x - G x) 2 MeasureTheory.volume +
           MeasureTheory.eLpNorm (fun x => F x - G x) 2 MeasureTheory.volume) := by
   let Δ : Vec d → ℝ := fun x => F x - G x
-  have hshift_meas :
-      MeasureTheory.AEStronglyMeasurable
-        (fun x => Δ (euclideanCoordShift (-step) i x)) MeasureTheory.volume := by
-    let z : Vec d := (-step) • basisVec i
-    have hmp :
-        MeasureTheory.MeasurePreserving (fun x : Vec d => x + z)
-          MeasureTheory.volume MeasureTheory.volume :=
-      MeasureTheory.measurePreserving_add_right MeasureTheory.volume z
-    simpa [Δ, Function.comp, euclideanCoordShift, z] using!
-      hΔ.comp_measurePreserving hmp
   have hshift_norm :
       MeasureTheory.eLpNorm (fun x => Δ (euclideanCoordShift (-step) i x))
           2 MeasureTheory.volume =
@@ -468,7 +476,8 @@ theorem eLpNorm_backwardDifferenceQuotient_sub_le
     simpa [sub_eq_add_neg] using!
       MeasureTheory.eLpNorm_add_le
         (μ := MeasureTheory.volume) (p := (2 : ℝ≥0∞))
-        hΔ hshift_meas.neg (by norm_num : (1 : ℝ≥0∞) ≤ 2)
+        (f := Δ) (g := -fun x => Δ (euclideanCoordShift (-step) i x))
+        (by norm_num : (1 : ℝ≥0∞) ≤ 2)
   calc
     MeasureTheory.eLpNorm
         (fun x =>
@@ -582,8 +591,9 @@ with the equality oriented for H¹₀ approximation limits. -/
 theorem eLpNorm_eq_restrict_of_support_subset
     {F : Vec d → ℝ} (hF_support : Function.support F ⊆ U) :
     MeasureTheory.eLpNorm F 2 MeasureTheory.volume =
-      MeasureTheory.eLpNorm F 2 (MeasureTheory.volume.restrict U) :=
-  (MeasureTheory.eLpNorm_restrict_eq_of_support_subset hF_support).symm
+      MeasureTheory.eLpNorm F 2 (MeasureTheory.volume.restrict U) := by
+  simpa using
+    eLpNorm_restrict_eq_restrict_of_support_subset (p := 2) (Set.subset_univ U) hF_support
 
 /-- A restricted a.e.-strongly-measurable scalar function with genuine support
 in `U` is globally a.e.-strongly-measurable after extension by zero. -/

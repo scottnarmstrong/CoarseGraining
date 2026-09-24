@@ -324,7 +324,8 @@ theorem eLpNorm_comp_smul_eq {a : ℝ} (ha : 0 < a) (hp_top : p ≠ ∞)
   change MeasureTheory.eLpNorm (fun x => f (T x)) p
       (MeasureTheory.volume.restrict U) = _
   rw [← hmap_eLp, hmap, MeasureTheory.eLpNorm_smul_measure_of_ne_top hp_top]
-  simp only [smul_eq_mul, volumeMeasureOn]
+  · simp only [smul_eq_mul, volumeMeasureOn]
+  · exact hf
 
 /-- The `eLpNorm` of a value representative after pulling it back by dilation. -/
 theorem eLpNorm_unscale_toFun {a : ℝ} (ha : 0 < a) (hp_top : p ≠ ∞)
@@ -493,7 +494,8 @@ theorem eLpNorm_comp_dilate_eq {a : ℝ} (ha : 0 < a) (hp_top : p ≠ ∞)
       (MeasureTheory.volume.restrict V) = _
   rw [← hmap_eLp, hmap, hpre,
     MeasureTheory.eLpNorm_smul_measure_of_ne_top hp_top]
-  simp only [smul_eq_mul, volumeMeasureOn]
+  · simp only [smul_eq_mul, volumeMeasureOn]
+  · exact hf
 
 /-- The `eLpNorm` of the value representative after a positive dilation. -/
 theorem eLpNorm_dilate_toFun {a : ℝ} (ha : 0 < a) (hp_top : p ≠ ∞)
@@ -548,7 +550,8 @@ theorem eLpNorm_dilate_gradCoord {a : ℝ} (ha : 0 < a) (hp_top : p ≠ ∞)
   rw [hfun, MeasureTheory.eLpNorm_const_smul,
     Real.enorm_eq_ofReal (inv_nonneg.mpr ha.le), ← hmap_eLp, hmap, hpre,
     MeasureTheory.eLpNorm_smul_measure_of_ne_top hp_top]
-  simp only [smul_eq_mul, volumeMeasureOn]
+  · simp only [smul_eq_mul, volumeMeasureOn]
+  · exact (u.gradMemLp i).aestronglyMeasurable
 
 /-- The coordinate gradient `L^p` seminorm under positive dilation. -/
 theorem gradCoordLpSeminorm_dilate_eq {a : ℝ} (ha : 0 < a) (hp_top : p ≠ ∞)

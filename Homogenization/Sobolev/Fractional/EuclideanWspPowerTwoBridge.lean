@@ -68,6 +68,36 @@ private theorem cubeEuclideanWspKernel_two_enorm_rpow_eq_centeredCubeEuclideanHs
     congr 1
     exact mul_comm _ _
 
+private theorem aestronglyMeasurable_cubeEuclideanWspKernel_two
+    {d : ℕ} {m : ℤ} (s : FractionalOrder)
+    (F : CenteredCubeEuclideanL2Field d m) :
+    AEStronglyMeasurable (cubeEuclideanWspKernel s FiniteLpExponent.two F)
+      (Gagliardo.gagliardoCubeMeasure (originCube d m)) := by
+  let Q := originCube d m
+  have : SFinite (cubeMeasure Q) := by
+    unfold cubeMeasure
+    infer_instance
+  have hmem : MemLp (fun x => HilbertVec.ofVec (F x)) 2 (normalizedCubeMeasure Q) := by
+    simpa only [Q, centeredCubeDomain,
+      cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure] using
+      F.euclideanMemL2
+  have hcube : AEStronglyMeasurable (fun x => HilbertVec.ofVec (F x)) (cubeMeasure Q) := by
+    refine hmem.aestronglyMeasurable.mono_ac ?_
+    rw [normalizedCubeMeasure]
+    exact Measure.AbsolutelyContinuous.rfl.smul_right
+      (ENNReal.ofReal_ne_zero_iff.mpr (inv_pos.mpr (cubeVolume_pos Q)))
+  have hfst := hmem.aestronglyMeasurable.comp_quasiMeasurePreserving
+    (Measure.quasiMeasurePreserving_fst (ν := cubeMeasure Q))
+  have hsnd := hcube.comp_quasiMeasurePreserving
+    (Measure.quasiMeasurePreserving_snd (μ := normalizedCubeMeasure Q))
+  have hdist : Continuous (fun z : Vec d × Vec d => euclideanDist z.1 z.2) := by
+    have hh : Continuous (fun z : Vec d × Vec d => HilbertVec.ofVec (z.1 - z.2)) :=
+      (HilbertVec.ofVecL d).continuous.comp (continuous_fst.sub continuous_snd)
+    simpa only [euclideanDist, euclideanNorm_eq_norm_ofVec] using hh.norm
+  have hw := hdist.measurable.pow_const
+    (-(s.1 + (d : ℝ) / FiniteLpExponent.two.exponent.toReal))
+  exact hw.aestronglyMeasurable.smul (hfst.sub hsnd)
+
 /-- At `p = 2`, the Euclidean `W^{s,p}` seminorm on an origin cube is exactly
 the physical centered-cube Euclidean `H^s` seminorm. -/
 theorem cubeEuclideanWspESeminorm_originCube_two_eq_centeredCubeEuclideanHsESeminorm
@@ -75,7 +105,8 @@ theorem cubeEuclideanWspESeminorm_originCube_two_eq_centeredCubeEuclideanHsESemi
     (F : CenteredCubeEuclideanL2Field d m) :
     cubeEuclideanWspESeminorm (originCube d m) s FiniteLpExponent.two F =
       centeredCubeEuclideanHsESeminorm s F := by
-  rw [cubeEuclideanWspESeminorm_eq_lintegral]
+  rw [cubeEuclideanWspESeminorm_eq_lintegral _ _ _ _
+    (aestronglyMeasurable_cubeEuclideanWspKernel_two s F)]
   norm_num only [FiniteLpExponent.two_exponent, ENNReal.toReal_ofNat]
   change (∫⁻ z, ‖cubeEuclideanWspKernel s FiniteLpExponent.two F z‖ₑ ^ (2 : ℝ)
       ∂Gagliardo.gagliardoCubeMeasure (originCube d m)) ^ (1 / (2 : ℝ)) =

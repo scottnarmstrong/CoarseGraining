@@ -121,7 +121,8 @@ theorem eLpNorm_sourceParentFiniteLpExtension
     eLpNorm_indicator_eq_eLpNorm_restrict
       (isOpen_openCubeSet _).measurableSet,
     normalizedCubeMeasure_parent_restrict_source,
-    eLpNorm_smul_measure_of_ne_top q.lt_top.ne]
+    eLpNorm_smul_measure_of_ne_top q.lt_top.ne (hilbertifyVecField h.toField) _
+      h.euclideanMemLp.aestronglyMeasurable]
   rw [smul_eq_mul, one_div, ENNReal.toReal_inv]
 
 /-- The source-supported parent extension cannot increase the normalized
@@ -154,7 +155,8 @@ theorem eLpNorm_two_sourceParentFiniteLpExtension
     eLpNorm_indicator_eq_eLpNorm_restrict
       (isOpen_openCubeSet _).measurableSet,
     normalizedCubeMeasure_parent_restrict_source,
-    eLpNorm_smul_measure_of_ne_top (by norm_num : (2 : ℝ≥0∞) ≠ ∞)]
+    eLpNorm_smul_measure_of_ne_top (by norm_num : (2 : ℝ≥0∞) ≠ ∞)
+      (hilbertifyVecField h.toField) _ h.euclideanMemL2.aestronglyMeasurable]
   rfl
 
 /-- The source-supported parent extension cannot increase its normalized

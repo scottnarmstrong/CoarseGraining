@@ -307,7 +307,7 @@ noncomputable def ofIsAEEllipticFieldOn {lam Lam : ℝ}
     have hfield_x : field x = op0 x := by
       change (if ‖op0 x‖ ≤ K then op0 x
         else (0 : HilbertBlockVec d →L[ℝ] HilbertBlockVec d)) = op0 x
-      exact if_pos hop0_bound
+      exact ite_eq_left hop0_bound
     rw [hfield_x, hop0_eq]
   have hvol_ne_zero : MeasureTheory.volume U ≠ 0 := by
     intro hzero
@@ -338,14 +338,14 @@ noncomputable def ofIsAEEllipticFieldOn {lam Lam : ℝ}
         · have hfield_x : field x = op0 x := by
             change (if ‖op0 x‖ ≤ K then op0 x
               else (0 : HilbertBlockVec d →L[ℝ] HilbertBlockVec d)) = op0 x
-            exact if_pos hx
+            exact ite_eq_left hx
           rw [hfield_x]
           exact hx
         · have hfield_x : field x = 0 := by
             change (if ‖op0 x‖ ≤ K then op0 x
               else (0 : HilbertBlockVec d →L[ℝ] HilbertBlockVec d)) =
                 (0 : HilbertBlockVec d →L[ℝ] HilbertBlockVec d)
-            exact if_neg hx
+            exact ite_eq_right hx
           rw [hfield_x]
           rw [norm_zero]
           exact hK_nonneg

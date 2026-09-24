@@ -157,7 +157,7 @@ theorem descendantOpenCubeSetNormalizedW1pSeminormTwo_eq_of_mem
           (Book.Ch02.openCubeSet_nonempty R))
         (2 : ℝ≥0∞) (by norm_num) (by norm_num)
         (u.restrictToOpenSubcube hR) := by
-  simp only [descendantOpenCubeSetNormalizedW1pSeminormTwo, dif_pos hR]
+  simp only [descendantOpenCubeSetNormalizedW1pSeminormTwo, dite_eq_left hR]
 
 /-- The exact source-facing normalized Sobolev energy partitions over the
 open descendants of a triadic cube. -/

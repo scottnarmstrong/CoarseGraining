@@ -57,11 +57,13 @@ theorem coordinateGagliardoEnergy_zero_dim (s : FractionalOrder)
   simp [coordinateGagliardoEnergy]
 
 private theorem sq_scalar_cubeGagliardoESeminorm_eq_lintegral {d : ℕ}
-    (s : FractionalOrder) (f : Vec d → ℝ) :
+    (s : FractionalOrder) (f : Vec d → ℝ)
+    (hf : AEStronglyMeasurable (Gagliardo.gagliardoKernel s.1 (2 : ℝ≥0∞) f)
+      (Gagliardo.gagliardoCubeMeasure (originCube d 0))) :
     (Gagliardo.cubeGagliardoESeminorm (originCube d 0) s.1 (2 : ℝ≥0∞) f) ^ (2 : ℝ) =
       ∫⁻ z, ‖Gagliardo.gagliardoKernel s.1 (2 : ℝ≥0∞) f z‖ₑ ^ (2 : ℝ)
         ∂Gagliardo.gagliardoCubeMeasure (originCube d 0) := by
-  rw [Gagliardo.Internal.cubeGagliardoESeminorm_eq_lintegral (by norm_num) (by norm_num)]
+  rw [Gagliardo.Internal.cubeGagliardoESeminorm_eq_lintegral (by norm_num) (by norm_num) hf]
   rw [← ENNReal.rpow_mul]
   norm_num
 
@@ -97,7 +99,8 @@ theorem coordinateGagliardoEnergy_eq_lintegral_sum {d : ℕ}
           ∂Gagliardo.gagliardoCubeMeasure (originCube d 0) := by
   unfold coordinateGagliardoEnergy
   rw [Finset.sum_congr rfl fun i _ =>
-    sq_scalar_cubeGagliardoESeminorm_eq_lintegral s (fun x => F x i)]
+    sq_scalar_cubeGagliardoESeminorm_eq_lintegral s (fun x => F x i)
+      (measurable_scalar_gagliardoKernel s F hF i).aestronglyMeasurable]
   rw [← lintegral_finsetSum' Finset.univ]
   intro i _
   exact (measurable_scalar_gagliardoKernel_enorm_sq s F hF i).aemeasurable

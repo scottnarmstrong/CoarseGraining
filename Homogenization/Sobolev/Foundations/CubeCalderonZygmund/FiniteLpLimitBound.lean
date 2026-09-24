@@ -32,16 +32,14 @@ private theorem centeredCube_normalizedVolume_eq_smul_openCubeVolume
 private theorem tendsto_eLpNorm_of_tendsto_sub
     {α E : Type*} [MeasurableSpace α] [NormedAddCommGroup E]
     {μ : Measure α} {p : ℝ≥0∞} (hp : 1 ≤ p)
-    {f : ℕ → α → E} {g : α → E}
-    (hf : ∀ n, AEStronglyMeasurable (f n) μ)
-    (hg : AEStronglyMeasurable g μ) (hg_top : eLpNorm g p μ ≠ ∞)
+    {f : ℕ → α → E} {g : α → E} (hg_top : eLpNorm g p μ ≠ ∞)
     (hfg : Tendsto (fun n => eLpNorm (fun x => f n x - g x) p μ)
       atTop (nhds 0)) :
     Tendsto (fun n => eLpNorm (f n) p μ) atTop (nhds (eLpNorm g p μ)) := by
   have hupper : ∀ n, eLpNorm (f n) p μ ≤
       eLpNorm g p μ + eLpNorm (fun x => f n x - g x) p μ := by
     intro n
-    refine (le_of_eq ?_).trans (eLpNorm_add_le hg ((hf n).sub hg) hp)
+    refine (le_of_eq ?_).trans (eLpNorm_add_le hp)
     congr 1
     funext x
     simp only [Pi.add_apply]
@@ -65,7 +63,7 @@ private theorem tendsto_eLpNorm_of_tendsto_sub
         funext x
         abel
       _ ≤ eLpNorm (f n) p μ + eLpNorm (fun x => g x - f n x) p μ :=
-        eLpNorm_add_le (hf n) (hg.sub (hf n)) hp
+        eLpNorm_add_le hp
       _ = eLpNorm (f n) p μ + eLpNorm (fun x => f n x - g x) p μ := by
         rw [hreverse]
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le
@@ -109,6 +107,25 @@ private theorem finiteLpGradientLimit_memLp_normalized
   rw [centeredCube_normalizedVolume_eq_smul_openCubeVolume]
   exact hraw.smul_measure ENNReal.ofReal_ne_top
 
+private theorem eLpNorm_norm_finiteLpSolutionApproximation_grad_sub_limit
+    {d : ℕ} [NeZero d] (q : FiniteLpExponent) (m : ℤ) {sigma0 : ℝ}
+    (hsigma0 : 0 < sigma0) (h : CubeEuclideanLpField (originCube d m) q) (n : ℕ) :
+    eLpNorm (fun x => ‖HilbertVec.ofVec
+        ((finiteLpSolutionApproximation m hsigma0 h n).toH1Function.grad x -
+          finiteLpGradientLimit q m hsigma0 h x)‖)
+        q.exponent (centeredCubeDomain d m).normalizedVolume =
+      eLpNorm (fun x => HilbertVec.ofVec
+        ((finiteLpSolutionApproximation m hsigma0 h n).toH1Function.grad x -
+          finiteLpGradientLimit q m hsigma0 h x))
+        q.exponent (centeredCubeDomain d m).normalizedVolume := by
+  have hmeas : AEStronglyMeasurable (fun x => HilbertVec.ofVec
+      ((finiteLpSolutionApproximation m hsigma0 h n).toH1Function.grad x -
+        finiteLpGradientLimit q m hsigma0 h x))
+      (centeredCubeDomain d m).normalizedVolume :=
+    ((finiteLpSolutionApproximation_grad_memLp_normalized m hsigma0 h n).sub
+      (finiteLpGradientLimit_memLp_normalized q m hsigma0 h)).aestronglyMeasurable
+  exact eLpNorm_norm _ hmeas
+
 private theorem tendsto_normalizedEuclideanLpENorm_finiteLpSolutionApproximation_grad_sub_limit
     {d : ℕ} [NeZero d] (q : FiniteLpExponent) (m : ℤ) {sigma0 : ℝ}
     (hsigma0 : 0 < sigma0) (h : CubeEuclideanLpField (originCube d m) q) :
@@ -134,9 +151,10 @@ private theorem tendsto_normalizedEuclideanLpENorm_finiteLpSolutionApproximation
         (volume.restrict (openCubeSet (originCube d m)))) atTop (nhds 0) := by
     simpa only [mul_zero] using ENNReal.Tendsto.const_mul
       (a := c ^ (1 / q.exponent).toReal) hraw (Or.inr hfactor_top)
-  simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
+  simp only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
     BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-    eLpNorm_norm, centeredCube_normalizedVolume_eq_smul_openCubeVolume,
+    eLpNorm_norm_finiteLpSolutionApproximation_grad_sub_limit]
+  simpa only [centeredCube_normalizedVolume_eq_smul_openCubeVolume,
     eLpNorm_smul_measure_of_ne_zero hc, c] using! hscaled
 
 private theorem tendsto_normalizedEuclideanLpENorm_finiteLpSolutionApproximation_grad
@@ -155,19 +173,18 @@ private theorem tendsto_normalizedEuclideanLpENorm_finiteLpSolutionApproximation
       (nhds (eLpNorm (fun x => HilbertVec.ofVec (finiteLpGradientLimit q m hsigma0 h x))
         q.exponent (centeredCubeDomain d m).normalizedVolume)) := by
     apply tendsto_eLpNorm_of_tendsto_sub q.one_lt.le
-    · intro N
-      exact (finiteLpSolutionApproximation_grad_memLp_normalized m hsigma0 h
-        (finiteLpGradientLimitSubsequence q m hsigma0 h N)).aestronglyMeasurable
-    · exact (finiteLpGradientLimit_memLp_normalized q m hsigma0 h).aestronglyMeasurable
     · exact (finiteLpGradientLimit_memLp_normalized q m hsigma0 h).eLpNorm_lt_top.ne
     · simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
         BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-        eLpNorm_norm] using!
+        eLpNorm_norm_finiteLpSolutionApproximation_grad_sub_limit] using!
         tendsto_normalizedEuclideanLpENorm_finiteLpSolutionApproximation_grad_sub_limit
           q m hsigma0 h
   simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
     BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-    eLpNorm_norm] using htend
+    fun N => eLpNorm_norm (p := q.exponent) _
+      (finiteLpSolutionApproximation_grad_memLp_normalized m hsigma0 h N).aestronglyMeasurable,
+    eLpNorm_norm _ (finiteLpGradientLimit_memLp_normalized q m hsigma0 h).aestronglyMeasurable]
+    using htend
 
 private theorem tendsto_normalizedEuclideanLpENorm_finiteLpDataApproximation
     {d : ℕ} {q : FiniteLpExponent} (m : ℤ)
@@ -182,9 +199,6 @@ private theorem tendsto_normalizedEuclideanLpENorm_finiteLpDataApproximation
       (nhds (eLpNorm (fun x => HilbertVec.ofVec (h.toField x)) q.exponent
         (normalizedCubeMeasure (originCube d m)))) := by
     apply tendsto_eLpNorm_of_tendsto_sub q.one_lt.le
-    · intro n
-      exact (finiteLpDataApproximation h n).euclideanMemLp.aestronglyMeasurable
-    · exact h.euclideanMemLp.aestronglyMeasurable
     · exact h.euclideanMemLp.eLpNorm_lt_top.ne
     · have hsub := tendsto_eLpNorm_sub_finiteLpDataApproximation h
       have hneg : Tendsto (fun n => eLpNorm
@@ -205,7 +219,9 @@ private theorem tendsto_normalizedEuclideanLpENorm_finiteLpDataApproximation
       exact hneg
   simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
     BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-    eLpNorm_norm, centeredCubeDomain,
+    fun n => eLpNorm_norm (p := q.exponent) _
+      (finiteLpDataApproximation h n).euclideanMemLp.aestronglyMeasurable,
+    eLpNorm_norm _ h.euclideanMemLp.aestronglyMeasurable, centeredCubeDomain,
     cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure] using htend
 
 /-- The canonical limiting gradient for arbitrary finite-`L^p` cube data

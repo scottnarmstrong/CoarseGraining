@@ -85,10 +85,10 @@ private noncomputable def a1 : Source.Coarse.Carrier 1 :=
           change IsEllipticMatrix (1 / 2 : ℝ) (1 / 2 : ℝ)⁻¹
             (if x ∈ exceptionalPoints then scalarTwo else scalarOne)
           by_cases hx : x ∈ exceptionalPoints
-          · rw [if_pos hx]
+          · rw [ite_eq_left hx]
             convert isElliptic_scalarTwo using 1
             all_goals norm_num
-          · rw [if_neg hx]
+          · rw [ite_eq_right hx]
             convert isElliptic_scalarOne using 1
             all_goals norm_num⟩ }
 

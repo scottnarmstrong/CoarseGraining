@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Module.BigOperators
 import Mathlib.Algebra.Module.NatInt
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 
 namespace Homogenization
 

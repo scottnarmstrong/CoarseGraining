@@ -220,18 +220,17 @@ theorem section54_annealedMomentRoot_abs_sub_integral_le_two_mul
     simp [IsProbabilityMeasure.measure_univ, Real.norm_eq_abs]
   have hconst_ne_top :
       eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P ≠ ⊤ :=
-    hconst_mem.2.ne
+    hconst_mem.eLpNorm_lt_top.ne
   have hsum_ne_top :
       eLpNorm X (ξ : ENNReal) P +
           eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P ≠ ⊤ :=
-    ENNReal.add_ne_top.mpr ⟨hmem_p.2.ne, hconst_ne_top⟩
+    ENNReal.add_ne_top.mpr ⟨hmem_p.eLpNorm_lt_top.ne, hconst_ne_top⟩
   have hsub_le :
       eLpNorm (fun a => X a - c) (ξ : ENNReal) P ≤
         eLpNorm X (ξ : ENNReal) P +
           eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P := by
     simpa only [c, Pi.sub_def, Pi.sub_apply] using
-      eLpNorm_sub_le hX_meas.aestronglyMeasurable
-        (aestronglyMeasurable_const (μ := P) (b := c))
+      eLpNorm_sub_le (f := X) (g := fun _ : RegCoeffField d => c) (μ := P)
         (by exact_mod_cast hξ)
   calc
     Ch04.annealedMomentRoot P ξ (fun a => |X a - ∫ b, X b ∂P|)
@@ -242,7 +241,7 @@ theorem section54_annealedMomentRoot_abs_sub_integral_le_two_mul
             eLpNorm (fun _ : RegCoeffField d => c) (ξ : ENNReal) P) :=
           ENNReal.toReal_mono hsum_ne_top hsub_le
     _ = Ch04.annealedMomentRoot P ξ (fun a => |X a|) + |c| := by
-          rw [ENNReal.toReal_add hmem_p.2.ne hconst_ne_top,
+          rw [ENNReal.toReal_add hmem_p.eLpNorm_lt_top.ne hconst_ne_top,
             hX_toReal, hconst_toReal]
     _ ≤ Ch04.annealedMomentRoot P ξ (fun a => |X a|) +
           Ch04.annealedMomentRoot P ξ (fun a => |X a|) := by
@@ -320,13 +319,12 @@ theorem section54_annealedMomentRoot_add_le
               simp [Real.norm_eq_abs, abs_of_nonneg (hY_nonneg a)])
   have hsum_ne_top :
       eLpNorm X (ξ : ENNReal) P + eLpNorm Y (ξ : ENNReal) P ≠ ⊤ :=
-    ENNReal.add_ne_top.mpr ⟨hX_mem.2.ne, hY_mem.2.ne⟩
+    ENNReal.add_ne_top.mpr ⟨hX_mem.eLpNorm_lt_top.ne, hY_mem.eLpNorm_lt_top.ne⟩
   have hadd :
       eLpNorm (fun a => X a + Y a) (ξ : ENNReal) P ≤
         eLpNorm X (ξ : ENNReal) P + eLpNorm Y (ξ : ENNReal) P := by
     simpa only [Pi.add_def, Pi.add_apply] using
-      (MeasureTheory.eLpNorm_add_le
-        hX_meas.aestronglyMeasurable hY_meas.aestronglyMeasurable
+      (MeasureTheory.eLpNorm_add_le (f := X) (g := Y) (μ := P)
         (by exact_mod_cast hξ))
   calc
     Ch04.annealedMomentRoot P ξ (fun a => X a + Y a)
@@ -335,7 +333,7 @@ theorem section54_annealedMomentRoot_add_le
     _ ≤ ENNReal.toReal (eLpNorm X (ξ : ENNReal) P + eLpNorm Y (ξ : ENNReal) P) :=
           ENNReal.toReal_mono hsum_ne_top hadd
     _ = Ch04.annealedMomentRoot P ξ X + Ch04.annealedMomentRoot P ξ Y := by
-          rw [ENNReal.toReal_add hX_mem.2.ne hY_mem.2.ne, hX_toReal, hY_toReal]
+          rw [ENNReal.toReal_add hX_mem.eLpNorm_lt_top.ne hY_mem.eLpNorm_lt_top.ne, hX_toReal, hY_toReal]
 
 theorem section54_centeredOrigin_momentRoot_le_factor_sum_of_abs_le
     {d : ℕ} [NeZero d] {P : Ch04.RestrictionCoeffLaw d}

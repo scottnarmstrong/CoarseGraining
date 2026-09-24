@@ -346,13 +346,18 @@ theorem eLpNorm_canonicalFun_coordDeriv_mul_le_of_face_zero {d : ℕ}
   have hzero_support :
       Function.support (0 : Vec d → ℝ) ⊆ cubeCoordInnerCollar Q ρ₁ i := by
     simp
+  have hF_cont : Continuous F :=
+    (((QuantitativeCubeCutoff.canonicalFun_smooth Q hρ₁ hρ₁₂).continuous_fderiv
+      (by simp)).clm_apply continuous_const).mul hψ.continuous
   have hmain :=
     MeasureTheory.eLpNorm_sub_le_of_dist_bdd
       (μ := volumeMeasureOn U) (p := (2 : ENNReal))
       (s := cubeCoordInnerCollar Q ρ₁ i)
       (by norm_num : (2 : ENNReal) ≠ ∞)
-      (measurableSet_cubeCoordInnerCollar Q ρ₁ i)
-      hC_nonneg hdist hsupport hzero_support
+      (measurableSet_cubeCoordInnerCollar Q ρ₁ i).nullMeasurableSet
+      hC_nonneg
+      (hF_cont.aestronglyMeasurable.sub MeasureTheory.aestronglyMeasurable_const)
+      hdist hsupport hzero_support
   have hsub : F - (fun _ : Vec d => (0 : ℝ)) = F := by
     funext x
     simp

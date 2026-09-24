@@ -326,14 +326,14 @@ private theorem cubeLpNorm_add_le {d : ℕ} {E : Type*} [NormedAddCommGroup E]
       MeasureTheory.eLpNorm (fun x => f x + g x) p (normalizedCubeMeasure Q) ≤
         MeasureTheory.eLpNorm f p (normalizedCubeMeasure Q) +
           MeasureTheory.eLpNorm g p (normalizedCubeMeasure Q) := by
-    simpa using! MeasureTheory.eLpNorm_add_le hf.1 hg.1 hp
+    simpa using! MeasureTheory.eLpNorm_add_le hp
   have hsum_top :
       MeasureTheory.eLpNorm f p (normalizedCubeMeasure Q) +
         MeasureTheory.eLpNorm g p (normalizedCubeMeasure Q) ≠ ∞ :=
-    ENNReal.add_ne_top.2 ⟨ne_of_lt hf.2, ne_of_lt hg.2⟩
+    ENNReal.add_ne_top.2 ⟨ne_of_lt hf.eLpNorm_lt_top, ne_of_lt hg.eLpNorm_lt_top⟩
   have htoReal := ENNReal.toReal_mono hsum_top hsum
-  rw [ENNReal.toReal_add (ne_of_lt hf.2) (ne_of_lt hg.2)] at htoReal
-  simpa [cubeLpNorm, ne_of_lt hf.2, ne_of_lt hg.2] using htoReal
+  rw [ENNReal.toReal_add (ne_of_lt hf.eLpNorm_lt_top) (ne_of_lt hg.eLpNorm_lt_top)] at htoReal
+  simpa [cubeLpNorm, ne_of_lt hf.eLpNorm_lt_top, ne_of_lt hg.eLpNorm_lt_top] using htoReal
 
 private theorem cubeLpNorm_two_le_cubeBesovOscillation_add_norm_cubeAverage {d : ℕ}
     (Q : Cube d) (u : Vec d → ℝ)

@@ -22,34 +22,42 @@ noncomputable section
 private theorem tendsto_eLpNorm_mul_of_norm_le_one
     {α : Type*} [MeasurableSpace α] {μ : Measure α} {p : ℝ≥0∞}
     {χ : α → ℝ} {F : ℕ → α → ℝ} {f : α → ℝ} (hχ : ∀ x, ‖χ x‖ ≤ 1)
+    (hχm : AEStronglyMeasurable χ μ)
     (htend : Filter.Tendsto (fun n => eLpNorm (fun x => F n x - f x) p μ)
       Filter.atTop (nhds 0)) :
     Filter.Tendsto (fun n => eLpNorm (fun x => χ x * F n x - χ x * f x) p μ)
       Filter.atTop (nhds 0) := by
-  have hbound : ∀ n, eLpNorm (fun x => χ x * F n x - χ x * f x) p μ
+  have hbound : ∀ᶠ n in Filter.atTop, eLpNorm (fun x => χ x * F n x - χ x * f x) p μ
       ≤ eLpNorm (fun x => F n x - f x) p μ := by
-    intro n
-    refine eLpNorm_mono_ae (Filter.Eventually.of_forall fun x => ?_)
+    filter_upwards [htend.eventually (gt_mem_nhds ENNReal.zero_lt_top)] with n hn
+    have hd : AEStronglyMeasurable (fun x => F n x - f x) μ :=
+      aestronglyMeasurable_of_eLpNorm_ne_top hn.ne
+    refine eLpNorm_mono_ae ((hχm.mul hd).congr
+      (Filter.Eventually.of_forall fun x => mul_sub _ _ _)) (Filter.Eventually.of_forall fun x => ?_)
     rw [show χ x * F n x - χ x * f x = χ x * (F n x - f x) by ring, norm_mul]
     simpa [mul_comm] using
       (mul_le_of_le_one_right (norm_nonneg (F n x - f x)) (hχ x))
-  exact tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds htend
-    (fun n => zero_le) hbound
+  exact tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds htend
+    (Filter.Eventually.of_forall fun n => zero_le) hbound
 
 private theorem tendsto_eLpNorm_mul_of_norm_le
     {α : Type*} [MeasurableSpace α] {μ : Measure α} {p : ℝ≥0∞}
     {χ : α → ℝ} {F : ℕ → α → ℝ} {f : α → ℝ} {C : ℝ}
-    (hC : 0 ≤ C) (hχ : ∀ x, ‖χ x‖ ≤ C)
+    (hC : 0 ≤ C) (hχ : ∀ x, ‖χ x‖ ≤ C) (hχm : AEStronglyMeasurable χ μ)
     (htend : Filter.Tendsto (fun n => eLpNorm (fun x => F n x - f x) p μ)
       Filter.atTop (nhds 0)) :
     Filter.Tendsto (fun n => eLpNorm (fun x => χ x * F n x - χ x * f x) p μ)
       Filter.atTop (nhds 0) := by
-  have hbound : ∀ n, eLpNorm (fun x => χ x * F n x - χ x * f x) p μ
+  have hbound : ∀ᶠ n in Filter.atTop, eLpNorm (fun x => χ x * F n x - χ x * f x) p μ
       ≤ ENNReal.ofReal C * eLpNorm (fun x => F n x - f x) p μ := by
-    intro n
+    filter_upwards [htend.eventually (gt_mem_nhds ENNReal.zero_lt_top)] with n hn
+    have hd : AEStronglyMeasurable (fun x => F n x - f x) μ :=
+      aestronglyMeasurable_of_eLpNorm_ne_top hn.ne
     have hmono : eLpNorm (fun x => χ x * F n x - χ x * f x) p μ
         ≤ eLpNorm (C • fun x => F n x - f x) p μ :=
-      eLpNorm_mono_ae (Filter.Eventually.of_forall fun x => by
+      eLpNorm_mono_ae ((hχm.mul hd).congr
+        (Filter.Eventually.of_forall fun x => mul_sub _ _ _))
+        (Filter.Eventually.of_forall fun x => by
         rw [show χ x * F n x - χ x * f x = χ x * (F n x - f x) by ring, norm_mul,
           Pi.smul_apply, smul_eq_mul, norm_mul,
           Real.norm_of_nonneg hC]
@@ -65,13 +73,12 @@ private theorem tendsto_eLpNorm_mul_of_norm_le
       (fun n => ENNReal.ofReal C * eLpNorm (fun x => F n x - f x) p μ)
       Filter.atTop (nhds 0) := by
     simpa using hscaled
-  exact tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hscaled0
-    (fun n => zero_le) hbound
+  exact tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hscaled0
+    (Filter.Eventually.of_forall fun n => zero_le) hbound
 
 private theorem tendsto_eLpNorm_of_tendsto_sub_finiteLp
     {α : Type*} [MeasurableSpace α] {μ : Measure α} {r : ℝ≥0∞} (hr : 1 ≤ r)
     {F : ℕ → α → ℝ} {f : α → ℝ}
-    (hF : ∀ n, AEStronglyMeasurable (F n) μ) (hf : AEStronglyMeasurable f μ)
     (hfin : eLpNorm f r μ ≠ ⊤)
     (h : Filter.Tendsto (fun n => eLpNorm (fun x => F n x - f x) r μ)
       Filter.atTop (nhds 0)) :
@@ -79,7 +86,7 @@ private theorem tendsto_eLpNorm_of_tendsto_sub_finiteLp
   have hupper : ∀ n, eLpNorm (F n) r μ ≤
       eLpNorm f r μ + eLpNorm (fun x => F n x - f x) r μ := by
     intro n
-    refine (le_of_eq ?_).trans (eLpNorm_add_le hf ((hF n).sub hf) hr)
+    refine (le_of_eq ?_).trans (eLpNorm_add_le hr)
     congr 1
     funext x
     simp only [Pi.add_apply]
@@ -100,7 +107,7 @@ private theorem tendsto_eLpNorm_of_tendsto_sub_finiteLp
           funext x
           ring
       _ ≤ eLpNorm (F n) r μ + eLpNorm (fun x => f x - F n x) r μ :=
-        eLpNorm_add_le (hF n) (hf.sub (hF n)) hr
+        eLpNorm_add_le hr
       _ = eLpNorm (F n) r μ + eLpNorm (fun x => F n x - f x) r μ := by rw [hneg]
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le
     (g := fun n => eLpNorm f r μ - eLpNorm (fun x => F n x - f x) r μ)
@@ -151,16 +158,16 @@ theorem gns_coord_finiteLp {d : ℕ} (hd : 0 < d) (p q : FiniteLpExponent)
   calc
     eLpNorm (fderiv ℝ ψ) p.exponent (volume : Measure (Vec d))
       ≤ eLpNorm (fun x => ∑ i, ‖fderiv ℝ ψ x (basisVec i)‖) p.exponent volume :=
-        eLpNorm_mono (fun x =>
+        eLpNorm_mono hcont.aestronglyMeasurable (fun x =>
           (clm_norm_le_sum_basisVec_finiteLp (fderiv ℝ ψ x)).trans_eq
             (Real.norm_of_nonneg (Finset.sum_nonneg fun i _ => norm_nonneg _)).symm)
     _ ≤ ∑ i, eLpNorm (fun x => ‖fderiv ℝ ψ x (basisVec i)‖) p.exponent volume := by
         rw [hsum_eq]
         exact eLpNorm_sum_le
-          (fun i _ => ((hcont.clm_apply continuous_const).norm).aestronglyMeasurable)
           p.one_lt.le
     _ = ∑ i, eLpNorm (fun x => fderiv ℝ ψ x (basisVec i)) p.exponent volume :=
-        Finset.sum_congr rfl fun i _ => eLpNorm_norm _
+        Finset.sum_congr rfl fun i _ =>
+          eLpNorm_norm _ (hcont.clm_apply continuous_const).aestronglyMeasurable
 
 /-! ## The finite-exponent cube embedding -/
 
@@ -303,10 +310,10 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
     exact (Function.mem_support.1 hx) (by
       rw [Filter.EventuallyEq.fderiv_eq hzero]
       simp)
-  have hrestr : ∀ (f : Vec (m + 1) → ℝ) (a : ℝ≥0∞),
+  have hrestr : ∀ (f : Vec (m + 1) → ℝ) (a : ℝ≥0∞), AEStronglyMeasurable f volume →
       Function.support f ⊆ Box3 z hi →
       eLpNorm f a (volume.restrict (Box3 z hi)) = eLpNorm f a volume :=
-    fun f a hf => eLpNorm_restrict_eq_of_support_subset hf
+    fun _ _ hfm hf => eLpNorm_restrict_eq_of_support_subset hfm hf
   set a : ℕ → ℝ≥0∞ := fun n =>
     eLpNorm (ψ n) q.exponent (volume.restrict (Box3 z hi))
   set b : ℕ → ℝ≥0∞ := fun n => Cgns * ∑ i,
@@ -317,18 +324,20 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
     show eLpNorm (ψ n) q.exponent (volume.restrict (Box3 z hi)) ≤
       Cgns * ∑ i, eLpNorm (fun x => fderiv ℝ (ψ n) x (basisVec i)) p.exponent
         (volume.restrict (Box3 z hi))
-    rw [hrestr _ _ ((subset_tsupport _).trans (hψ_supp n))]
+    rw [hrestr _ _ (hψ_smooth n).continuous.aestronglyMeasurable
+      ((subset_tsupport _).trans (hψ_supp n))]
     refine (gns_coord_finiteLp hd' p q hp hpq
       ((hψ_smooth n).of_le (by exact_mod_cast le_top)) (hψ_cptsupp n)).trans ?_
     refine mul_le_mul_right (le_of_eq (Finset.sum_congr rfl fun i _ => ?_)) _
-    exact (hrestr _ _ (hψ_dsupp n i)).symm
+    exact (hrestr _ _ ((hψ_smooth n).continuous_fderiv (by simp)
+      |>.clm_apply continuous_const).aestronglyMeasurable (hψ_dsupp n i)).symm
   have hA_tend := W1pFunction.tendsto_convexApproxSmoothW1p_toFun_eLpNorm_sub
     hV p.one_lt.le p.lt_top.ne Eu hball hr
   have hψ_tend : Filter.Tendsto (fun n =>
       eLpNorm (fun x => ψ n x - χ x * Eu.toFun x) p.exponent
         (volume.restrict (Box3 z hi))) Filter.atTop (nhds 0) := by
     simpa [ψ, volumeMeasureOn] using
-      tendsto_eLpNorm_mul_of_norm_le_one hχ_le1 hA_tend
+      tendsto_eLpNorm_mul_of_norm_le_one hχ_le1 hχ_smooth.continuous.aestronglyMeasurable hA_tend
   have hDform : ∀ n x i, fderiv ℝ (ψ n) x (basisVec i) =
       χ x * (A n).grad x i + (A n).toFun x * fderiv ℝ χ x (basisVec i) := by
     intro n x i
@@ -338,13 +347,6 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
     simp only [add_apply, smul_apply, smul_eq_mul, hA_grad]
   set G : Fin (m + 1) → Vec (m + 1) → ℝ := fun i x =>
     χ x * Eu.grad x i + Eu.toFun x * fderiv ℝ χ x (basisVec i)
-  have hG_meas : ∀ i, AEStronglyMeasurable (G i) (volume.restrict (Box3 z hi)) := by
-    intro i
-    exact hχ_smooth.continuous.aestronglyMeasurable.mul
-      (Eu.grad_memLp i).aestronglyMeasurable |>.add
-        (Eu.memLp.aestronglyMeasurable.mul
-          (((hχ_smooth.continuous_fderiv (by simp)).clm_apply
-            continuous_const).aestronglyMeasurable))
   have hgrad_tend : ∀ i, Filter.Tendsto (fun n =>
       eLpNorm (fun x => fderiv ℝ (ψ n) x (basisVec i) - G i x) p.exponent
         (volume.restrict (Box3 z hi))) Filter.atTop (nhds 0) := by
@@ -354,7 +356,8 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
     have h1 : Filter.Tendsto (fun n => eLpNorm
         (fun x => χ x * ((A n).grad x i - Eu.grad x i)) p.exponent
           (volume.restrict (Box3 z hi))) Filter.atTop (nhds 0) := by
-      have hraw := tendsto_eLpNorm_mul_of_norm_le_one hχ_le1 hAgrad
+      have hraw := tendsto_eLpNorm_mul_of_norm_le_one hχ_le1
+        hχ_smooth.continuous.aestronglyMeasurable hAgrad
       refine hraw.congr' ?_
       filter_upwards with n
       apply eLpNorm_congr_ae
@@ -367,7 +370,9 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
       have h := tendsto_eLpNorm_mul_of_norm_le
         (C := 32 / L) (by positivity) (fun x => by
           rw [Real.norm_eq_abs]
-          exact hχ_deriv x i) hA_tend
+          exact hχ_deriv x i)
+        ((hχ_smooth.continuous_fderiv (by simp)).clm_apply
+          continuous_const).aestronglyMeasurable hA_tend
       refine h.congr' ?_
       filter_upwards with n
       apply eLpNorm_congr_ae
@@ -387,13 +392,7 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
             eLpNorm (fun x => ((A n).toFun x - Eu.toFun x) *
               fderiv ℝ χ x (basisVec i)) p.exponent (volume.restrict (Box3 z hi)) := by
         intro n
-        exact eLpNorm_add_le
-          (hχ_smooth.continuous.aestronglyMeasurable.mul
-            (((A n).grad_memLp i).aestronglyMeasurable.sub
-              (Eu.grad_memLp i).aestronglyMeasurable))
-          (((A n).memLp.aestronglyMeasurable.sub Eu.memLp.aestronglyMeasurable).mul
-            (((hχ_smooth.continuous_fderiv (by simp)).clm_apply
-              continuous_const).aestronglyMeasurable)) p.one_lt.le
+        exact eLpNorm_add_le p.one_lt.le
       exact tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds
         (by simpa using h1.add h2) (fun n => zero_le) hbound
     refine hsum.congr' ?_
@@ -409,7 +408,9 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
         (volume.restrict (Box3 z hi)) ≤
         Cd * eLpNorm (fun x => u.grad x i) p.exponent (volume.restrict (Box z hi)) := by
       change eLpNorm (fun x => χ x * Ext.Eu.grad x i) p.exponent _ ≤ _
-      refine (eLpNorm_mono_ae (Filter.Eventually.of_forall fun x => ?_)).trans
+      refine (eLpNorm_mono_ae (f := fun x => χ x * Ext.Eu.grad x i)
+          (hχ_smooth.continuous.aestronglyMeasurable.mul (Eu.grad_memLp i).aestronglyMeasurable)
+          (Filter.Eventually.of_forall fun x => ?_)).trans
         (Ext.grad_eLpNorm_le i)
       rw [norm_mul]
       exact mul_le_of_le_one_left (norm_nonneg _) (hχ_le1 x)
@@ -420,7 +421,9 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
       have hmono : eLpNorm (fun x => Eu.toFun x * fderiv ℝ χ x (basisVec i)) p.exponent
           (volume.restrict (Box3 z hi)) ≤
           eLpNorm ((32 / L : ℝ) • Eu.toFun) p.exponent (volume.restrict (Box3 z hi)) := by
-        refine eLpNorm_mono_ae (Filter.Eventually.of_forall fun x => ?_)
+        refine eLpNorm_mono_ae (Eu.memLp.aestronglyMeasurable.mul
+          (((hχ_smooth.continuous_fderiv (by simp)).clm_apply
+            continuous_const).aestronglyMeasurable)) (Filter.Eventually.of_forall fun x => ?_)
         rw [Pi.smul_apply, smul_eq_mul, norm_mul, norm_mul,
           Real.norm_of_nonneg (by positivity : (0 : ℝ) ≤ 32 / L)]
         calc ‖Eu.toFun x‖ * ‖fderiv ℝ χ x (basisVec i)‖
@@ -432,12 +435,7 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
         (le_of_eq (by congr 1; rw [Real.enorm_eq_ofReal (by positivity)])))
     change eLpNorm ((fun x => χ x * Eu.grad x i) +
       fun x => Eu.toFun x * fderiv ℝ χ x (basisVec i)) p.exponent _ < ⊤
-    refine lt_of_le_of_lt (eLpNorm_add_le
-      (hχ_smooth.continuous.aestronglyMeasurable.mul (Eu.grad_memLp i).aestronglyMeasurable)
-      ?_ p.one_lt.le) ?_
-    · exact Eu.memLp.aestronglyMeasurable.mul
-        (((hχ_smooth.continuous_fderiv (by simp)).clm_apply
-          continuous_const).aestronglyMeasurable)
+    refine lt_of_le_of_lt (eLpNorm_add_le p.one_lt.le) ?_
     · have hEu_fin : eLpNorm Eu.toFun p.exponent (volume.restrict (Box3 z hi)) < ⊤ := by
         change eLpNorm Ext.Eu.toFun p.exponent _ < ⊤
         exact lt_of_le_of_lt Ext.eLpNorm_le
@@ -456,9 +454,7 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
     refine ENNReal.Tendsto.const_mul (tendsto_finsetSum _ fun i _ => ?_)
       (Or.inr hCgns_lt.ne)
     exact tendsto_eLpNorm_of_tendsto_sub_finiteLp p.one_lt.le
-      (fun n => ((hψ_smooth n).continuous_fderiv (by simp)
-        |>.clm_apply continuous_const).aestronglyMeasurable)
-      (hG_meas i) (hG_fin i).ne (hgrad_tend i)
+      (hG_fin i).ne (hgrad_tend i)
   have hBox_sub : Box z hi ⊆ Box3 z hi := by
     rw [Box3_eq_Box]
     intro x hx
@@ -477,15 +473,14 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
   have htim : TendstoInMeasure (volume.restrict (Box3 z hi)) (fun n => ψ n)
       Filter.atTop (fun x => χ x * Eu.toFun x) :=
     tendstoInMeasure_of_tendsto_eLpNorm
-      (ne_of_gt (zero_lt_one.trans p.one_lt))
-      (fun n => (hψ_smooth n).continuous.aestronglyMeasurable)
-      (hχ_smooth.continuous.aestronglyMeasurable.mul Eu.memLp.aestronglyMeasurable) hψ_tend
+      (ne_of_gt (zero_lt_one.trans p.one_lt)) hψ_tend
   obtain ⟨σ, hσ_mono, hσ_ae⟩ := htim.exists_seq_tendsto_ae
   have hL2 : eLpNorm (fun x => χ x * Eu.toFun x) q.exponent
       (volume.restrict (Box3 z hi)) ≤ Filter.liminf (fun j => a (σ j)) Filter.atTop :=
     Lp.eLpNorm_lim_le_liminf_eLpNorm
       (fun j => (hψ_smooth (σ j)).continuous.aestronglyMeasurable)
-      _ hσ_ae
+      (fun x => χ x * Eu.toFun x)
+      (hχ_smooth.continuous.aestronglyMeasurable.mul Eu.memLp.aestronglyMeasurable) hσ_ae
   have hbσ : Filter.Tendsto (fun j => b (σ j)) Filter.atTop (nhds binf) :=
     hb_tend.comp hσ_mono.tendsto_atTop
   have hL3 : Filter.liminf (fun j => a (σ j)) Filter.atTop ≤ binf := by
@@ -502,7 +497,9 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
         (volume.restrict (Box3 z hi)) ≤
         Cd * eLpNorm (fun x => u.grad x i) p.exponent (volume.restrict (Box z hi)) := by
       change eLpNorm (fun x => χ x * Ext.Eu.grad x i) p.exponent _ ≤ _
-      refine (eLpNorm_mono_ae (Filter.Eventually.of_forall fun x => ?_)).trans
+      refine (eLpNorm_mono_ae (f := fun x => χ x * Ext.Eu.grad x i)
+          (hχ_smooth.continuous.aestronglyMeasurable.mul (Eu.grad_memLp i).aestronglyMeasurable)
+          (Filter.Eventually.of_forall fun x => ?_)).trans
         (Ext.grad_eLpNorm_le i)
       rw [norm_mul]
       exact mul_le_of_le_one_left (norm_nonneg _) (hχ_le1 x)
@@ -513,7 +510,9 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
       have hmono : eLpNorm (fun x => Eu.toFun x * fderiv ℝ χ x (basisVec i)) p.exponent
           (volume.restrict (Box3 z hi)) ≤
           eLpNorm ((32 / L : ℝ) • Eu.toFun) p.exponent (volume.restrict (Box3 z hi)) := by
-        refine eLpNorm_mono_ae (Filter.Eventually.of_forall fun x => ?_)
+        refine eLpNorm_mono_ae (Eu.memLp.aestronglyMeasurable.mul
+          (((hχ_smooth.continuous_fderiv (by simp)).clm_apply
+            continuous_const).aestronglyMeasurable)) (Filter.Eventually.of_forall fun x => ?_)
         rw [Pi.smul_apply, smul_eq_mul, norm_mul, norm_mul,
           Real.norm_of_nonneg (by positivity : (0 : ℝ) ≤ 32 / L)]
         calc ‖Eu.toFun x‖ * ‖fderiv ℝ χ x (basisVec i)‖
@@ -525,11 +524,7 @@ theorem cubeSobolevEmbedding_finiteLp {d : ℕ} (hd : 0 < d)
         (le_of_eq (by congr 1; rw [Real.enorm_eq_ofReal (by positivity)])))
     change eLpNorm ((fun x => χ x * Eu.grad x i) +
       fun x => Eu.toFun x * fderiv ℝ χ x (basisVec i)) p.exponent _ ≤ _
-    refine (eLpNorm_add_le
-      (hχ_smooth.continuous.aestronglyMeasurable.mul (Eu.grad_memLp i).aestronglyMeasurable)
-      (Eu.memLp.aestronglyMeasurable.mul
-        (((hχ_smooth.continuous_fderiv (by simp)).clm_apply
-          continuous_const).aestronglyMeasurable)) p.one_lt.le).trans (add_le_add hfirst ?_)
+    refine (eLpNorm_add_le p.one_lt.le).trans (add_le_add hfirst ?_)
     exact hsecond.trans (mul_le_mul_right Ext.eLpNorm_le _)
   have hL4 : binf ≤ C0 *
       ((∑ i, eLpNorm (fun x => u.grad x i) p.exponent (volume.restrict (Box z hi))) +

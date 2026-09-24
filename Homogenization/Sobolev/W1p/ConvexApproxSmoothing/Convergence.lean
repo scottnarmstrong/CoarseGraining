@@ -196,7 +196,10 @@ theorem tendsto_eLpNorm_fderiv_convexApproxSmoothing_apply_basisVec_sub_zero_of_
         ENNReal.ofReal δ * MeasureTheory.volume U ^ (1 / p.toReal) := by
     exact
       MeasureTheory.eLpNorm_sub_le_of_dist_bdd
-        (μ := MeasureTheory.volume) (p := p) (s := U) hp hU_meas hδpos.le
+        (μ := MeasureTheory.volume) (p := p) (s := U) hp hU_meas.nullMeasurableSet hδpos.le
+        ((((measurable_fderiv_apply_const ℝ _ _).sub
+          (measurable_fderiv_apply_const ℝ u _)).indicator hU_meas).sub
+            measurable_const).aestronglyMeasurable
         hdist hsupport_g (by simp : Function.support (fun _ : Vec d => (0 : ℝ)) ⊆ U)
   have hsub_zero : (g - fun _ : Vec d => (0 : ℝ)) = g := by
     ext x
@@ -318,7 +321,10 @@ theorem tendsto_eLpNorm_sub_zero_convexApproxSmoothing_of_continuous
         ENNReal.ofReal δ * MeasureTheory.volume U ^ (1 / p.toReal) := by
     exact
       MeasureTheory.eLpNorm_sub_le_of_dist_bdd
-        (μ := MeasureTheory.volume) (p := p) (s := U) hp hU_meas hδpos.le
+        (μ := MeasureTheory.volume) (p := p) (s := U) hp hU_meas.nullMeasurableSet hδpos.le
+        ((((continuous_convexApproxSmoothing hρ.continuous hρ.compactSupport hu x0 r
+          (ε n)).measurable.sub hu.measurable).indicator hU_meas).sub
+            measurable_const).aestronglyMeasurable
         hdist hsupport_g (by simp : Function.support (fun _ : Vec d => (0 : ℝ)) ⊆ U)
   have hsub_zero : (g - fun _ : Vec d => (0 : ℝ)) = g := by
     ext x
@@ -426,9 +432,6 @@ theorem tendsto_eLpNorm_sub_zero_convexApproxSmoothing_of_memLpOn
     simpa [μ, MemLpOn] using hu
   obtain ⟨g, happrox, hmem⟩ :=
     huMem.exists_boundedContinuous_eLpNorm_sub_le hp (ε := δ) hδ_pos.ne'
-  have hthird_mem :
-      MeasureTheory.MemLp (fun x => (g : Vec d → ℝ) x - u x) p μ := by
-    exact hmem.sub hu
   have hthird_norm :
       MeasureTheory.eLpNorm (fun x => (g : Vec d → ℝ) x - u x) p μ ≤ η₂ := by
     have hthird_eq :
@@ -474,13 +477,7 @@ theorem tendsto_eLpNorm_sub_zero_convexApproxSmoothing_of_memLpOn
               ((g : Vec d → ℝ) x - u x))
           p μ < η₁ := by
     filter_upwards [hmid_eventually] with n hmid
-    have hmid_meas :
-        MeasureTheory.AEStronglyMeasurable
-          (fun x => convexApproxSmoothing ρ (g : Vec d → ℝ) x0 r (ε n) x - g x) μ := by
-      exact
-        ((continuous_convexApproxSmoothing hρ.continuous hρ.compactSupport g.continuous
-          x0 r (ε n)).sub g.continuous).aestronglyMeasurable
-    exact hη₂ _ _ hmid_meas hthird_mem.aestronglyMeasurable hmid hthird_norm
+    exact hη₂ _ _ hmid hthird_norm
   have hfirst_eventually :
       ∀ᶠ n : ℕ in Filter.atTop,
         MeasureTheory.eLpNorm
@@ -533,22 +530,8 @@ theorem tendsto_eLpNorm_sub_zero_convexApproxSmoothing_of_memLpOn
   let G : Vec d → ℝ := fun x =>
     (convexApproxSmoothing ρ (g : Vec d → ℝ) x0 r (ε n) x - g x) +
       ((g : Vec d → ℝ) x - u x)
-  have hεn_lt_one : ε n < 1 := by linarith
-  have hF_meas : MeasureTheory.AEStronglyMeasurable F μ := by
-    dsimp [F]
-    exact
-      (aestronglyMeasurable_convexApproxSmoothing
-        hU hρ hp1 hu hball hr hεn_pos hεn_lt_one).sub
-        ((continuous_convexApproxSmoothing hρ.continuous hρ.compactSupport g.continuous
-          x0 r (ε n)).aestronglyMeasurable)
-  have hG_meas : MeasureTheory.AEStronglyMeasurable G μ := by
-    dsimp [G]
-    exact
-      (((continuous_convexApproxSmoothing hρ.continuous hρ.compactSupport g.continuous
-        x0 r (ε n)).sub g.continuous).aestronglyMeasurable).add
-        hthird_mem.aestronglyMeasurable
   have hsum : MeasureTheory.eLpNorm (F + G) p μ < η := by
-    exact hη₁ _ _ hF_meas hG_meas hfirst (le_of_lt hcombo)
+    exact hη₁ _ _ hfirst (le_of_lt hcombo)
   have hdecomp :
       MeasureTheory.eLpNorm (fun x => convexApproxSmoothing ρ u x0 r (ε n) x - u x) p μ =
         MeasureTheory.eLpNorm (F + G) p μ := by
@@ -650,18 +633,6 @@ theorem tendsto_eLpNorm_sub_zero_one_sub_mul_convexApproxSmoothing_of_memLpOn
       n hvalue hconv_bound hsmall hεn_pos hεn_half
   let F : Vec d → ℝ := fun x => convexApproxSmoothing ρ u x0 r (ε n) x - u x
   let G : Vec d → ℝ := fun x => (-ε n) * convexApproxSmoothing ρ u x0 r (ε n) x
-  have hεn_lt_one : ε n < 1 := by
-    linarith
-  have hF_meas : MeasureTheory.AEStronglyMeasurable F μ := by
-    dsimp [F]
-    exact
-      (aestronglyMeasurable_convexApproxSmoothing
-        hU hρ hp1 hu hball hr hεn_pos hεn_lt_one).sub hu.aestronglyMeasurable
-  have hG_meas : MeasureTheory.AEStronglyMeasurable G μ := by
-    dsimp [G]
-    exact
-      (aestronglyMeasurable_convexApproxSmoothing
-        hU hρ hp1 hu hball hr hεn_pos hεn_lt_one).const_mul (-ε n)
   have hG_norm :
       MeasureTheory.eLpNorm G p μ ≤ η₁ := by
     calc
@@ -682,7 +653,7 @@ theorem tendsto_eLpNorm_sub_zero_one_sub_mul_convexApproxSmoothing_of_memLpOn
             positivity
       _ ≤ η₁ := hsmall
   have hsum : MeasureTheory.eLpNorm (F + G) p μ < η := by
-    exact hη₁ _ _ hF_meas hG_meas hvalue hG_norm
+    exact hη₁ _ _ hvalue hG_norm
   have hdecomp :
       MeasureTheory.eLpNorm
           (fun x => (1 - ε n) * convexApproxSmoothing ρ u x0 r (ε n) x - u x)

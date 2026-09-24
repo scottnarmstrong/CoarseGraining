@@ -26,15 +26,14 @@ open scoped ENNReal NNReal
 `ε · (μ S)^{1/p} ≤ ‖h‖_{L^p(μ)}` in real numbers. -/
 theorem real_chebyshev_level {α : Type*} {m0 : MeasurableSpace α} {μ : Measure α}
     {p : ℝ≥0∞} (hp0 : p ≠ 0) (hptop : p ≠ ⊤)
-    {h : α → ℝ} (hmeas : AEStronglyMeasurable h μ)
-    (hfin : eLpNorm h p μ ≠ ⊤)
+    {h : α → ℝ} (hfin : eLpNorm h p μ ≠ ⊤)
     {ε : ℝ} (hε : 0 ≤ ε) {S : Set α}
     (hSsub : ∀ x ∈ S, ε ≤ h x) :
     ε * (μ S).toReal ^ (1 / p.toReal) ≤ (eLpNorm h p μ).toReal := by
   set q : ℝ := p.toReal with hq_def
   have hq : 0 < q := ENNReal.toReal_pos hp0 hptop
   -- The ENNReal Chebyshev inequality.
-  have hstep := mul_meas_ge_le_pow_eLpNorm' μ hp0 hptop hmeas (ENNReal.ofReal ε)
+  have hstep := mul_meas_ge_le_pow_eLpNorm' μ hp0 hptop (f := h) (ENNReal.ofReal ε)
   have hSsub' : S ⊆ {x | ENNReal.ofReal ε ≤ ‖h x‖ₑ} := by
     intro x hx
     have hεx : ε ≤ h x := hSsub x hx

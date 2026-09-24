@@ -256,9 +256,9 @@ theorem deGiorgi_one_sided_core {d : ℕ} (hd : 3 ≤ d) :
     have hSsub2 : ∀ x ∈ {x | x ∈ axisCube z L ∧ m₀ + l < w₂.toFun x}, (l - k) ≤ gk.toFun x := by
       intro x hx; rw [hgk_tf]; have hxlt : m₀ + l < w₂.toFun x := hx.2
       rw [le_max_iff]; left; linarith
-    have hcheb1 := real_chebyshev_level hp_ne_zero hp_ne_top hfk_meas.aestronglyMeasurable
+    have hcheb1 := real_chebyshev_level hp_ne_zero hp_ne_top
       (hfin_2star fk) hεnn hSsub1
-    have hcheb2 := real_chebyshev_level hp_ne_zero hp_ne_top hgk_meas.aestronglyMeasurable
+    have hcheb2 := real_chebyshev_level hp_ne_zero hp_ne_top
       (hfin_2star gk) hεnn hSsub2
     rw [hμvol _ (fun x hx => hx.1), ← hq_def] at hcheb1
     rw [hμvol _ (fun x hx => hx.1), ← hq_def] at hcheb2
@@ -301,7 +301,7 @@ theorem deGiorgi_one_sided_core {d : ℕ} (hd : 3 ≤ d) :
     have hf0eLp : eLpNorm f0.toFun p (volumeMeasureOn (axisCube z L)) = 0 :=
       (ENNReal.toReal_eq_zero_iff _).mp hf0z |>.resolve_right (hfin_2star f0)
     have hf0ae : f0.toFun =ᵐ[volumeMeasureOn (axisCube z L)] 0 :=
-      (eLpNorm_eq_zero_iff f0.memL2.1 hp_ne_zero).mp hf0eLp
+      (eLpNorm_eq_zero_iff hp_ne_zero).mp hf0eLp
     filter_upwards [hf0ae] with x hx
     simp only [Pi.zero_apply] at hx
     rw [hf0_tf] at hx

@@ -196,9 +196,6 @@ theorem memH10_mul_of_contDiff_hasCompactSupport {d : ℕ} {U : Set (Vec d)}
                   MeasureTheory.eLpNorm φ (⊤ : ENNReal) μU *
                     MeasureTheory.eLpNorm (fun x => ψ n x - u' x) 2 μU := by
             intro n
-            have hdiff_mem :
-                MeasureTheory.MemLp (fun x => ψ n x - u' x) 2 μU := by
-              exact (hψ_memL2 n).sub u'.memL2
             have hEq :
                 (fun x => φ x * ψ n x - uφ.toFun x) =
                   φ • (fun x => ψ n x - u' x) := by
@@ -207,7 +204,7 @@ theorem memH10_mul_of_contDiff_hasCompactSupport {d : ℕ} {U : Set (Vec d)}
               ring
             rw [hEq]
             exact MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
-              hdiff_mem.aestronglyMeasurable φ
+              hφ_memTop.aestronglyMeasurable
           refine tendsto_of_tendsto_of_tendsto_of_le_of_le
             tendsto_const_nhds ?_ (fun n => zero_le) hupper
           simpa using hconst_tendsto
@@ -271,17 +268,6 @@ theorem memH10_mul_of_contDiff_hasCompactSupport {d : ℕ} {U : Set (Vec d)}
             let A : Vec d → ℝ := fun x => φ x *
               ((fderiv ℝ (ψ n) x) (basisVec i) - u'.grad x i)
             let B : Vec d → ℝ := fun x => dφ x * (ψ n x - u' x)
-            have hbase_grad_mem :
-                MeasureTheory.MemLp
-                  (fun x => (fderiv ℝ (ψ n) x) (basisVec i) - u'.grad x i) 2 μU := by
-              exact (hψ_grad_memL2 n i).sub (u'.gradMemL2 i)
-            have hbase_mem :
-                MeasureTheory.MemLp (fun x => ψ n x - u' x) 2 μU := by
-              exact (hψ_memL2 n).sub u'.memL2
-            have hA_mem : MeasureTheory.MemLp A 2 μU := by
-              simpa [A, μU] using hbase_grad_mem.mul' hφ_memTop
-            have hB_mem : MeasureTheory.MemLp B 2 μU := by
-              simpa [B, dφ, μU] using hbase_mem.mul' hdφ_memTop
             have hEq :
                 (fun x =>
                   (fderiv ℝ (fun y => φ y * ψ n y) x) (basisVec i) - uφ.grad x i) =
@@ -295,15 +281,15 @@ theorem memH10_mul_of_contDiff_hasCompactSupport {d : ℕ} {U : Set (Vec d)}
               simp [A, B, dφ, uφ, H1Function.mulContDiffHasCompactSupport_grad, smul_eq_mul]
               ring
             rw [hEq]
-            refine (MeasureTheory.eLpNorm_add_le hA_mem.aestronglyMeasurable
-              hB_mem.aestronglyMeasurable (by norm_num)).trans ?_
+            refine (MeasureTheory.eLpNorm_add_le (by norm_num)).trans ?_
             refine add_le_add ?_ ?_
             · simpa [A, mul_comm, mul_left_comm, mul_assoc] using!
                 (MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
-                  hbase_grad_mem.aestronglyMeasurable φ)
+                  hφ_memTop.aestronglyMeasurable
+                  (f := fun x => (fderiv ℝ (ψ n) x) (basisVec i) - u'.grad x i))
             · simpa [B, dφ, mul_comm, mul_left_comm, mul_assoc] using!
                 (MeasureTheory.eLpNorm_smul_le_eLpNorm_top_mul_eLpNorm 2
-                  hbase_mem.aestronglyMeasurable dφ)
+                  hdφ_memTop.aestronglyMeasurable (f := fun x => ψ n x - u' x))
           refine tendsto_of_tendsto_of_tendsto_of_le_of_le
             tendsto_const_nhds ?_ (fun n => zero_le) hupper
           simpa [zero_add] using hsum_tendsto

@@ -93,15 +93,15 @@ theorem centeredCubeExactOverlapEuclideanRootMeanENorm_le_normalizedEuclideanLpE
     _ ≤ ∫⁻ x, ‖HilbertVec.ofVec (F x)‖ₑ ∂μ :=
       enorm_integral_le_lintegral_enorm _
     _ = eLpNorm (fun x => HilbertVec.ofVec (F x)) 1 μ := by
-      rw [eLpNorm_one_eq_lintegral_enorm]
+      rw [eLpNorm_one_eq_lintegral_enorm hmem.aestronglyMeasurable]
     _ ≤ eLpNorm (fun x => HilbertVec.ofVec (F x)) 2 μ :=
-      eLpNorm_le_eLpNorm_of_exponent_le (by norm_num) hmem.aestronglyMeasurable
+      eLpNorm_le_eLpNorm_of_exponent_le (by norm_num)
     _ = (centeredCubeDomain d m).normalizedEuclideanLpENorm 2 F := by
       simp only [μ, centeredCubeDomain,
         cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
         BoundedMeasurableDomain.normalizedEuclideanLpENorm,
         BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-        eLpNorm_norm]
+        eLpNorm_norm _ hmem.aestronglyMeasurable]
 
 /-- The root-weighted normalized Euclidean `L²` norm is controlled by the
 canonical exact-overlap full norm on every centered cube. -/
@@ -123,7 +123,7 @@ theorem centeredCubeRootWeight_mul_normalizedEuclideanLpENorm_le_exactOverlapNor
     cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
     BoundedMeasurableDomain.normalizedEuclideanLpENorm,
     BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-    eLpNorm_norm] using h
+    eLpNorm_norm _ hmem.aestronglyMeasurable] using h
 
 /-- One scale-independent constant for both directions of the exact-overlap
 and physical Euclidean fractional full-norm comparison. -/

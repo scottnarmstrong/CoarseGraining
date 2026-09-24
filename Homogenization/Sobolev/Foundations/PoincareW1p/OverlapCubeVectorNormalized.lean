@@ -66,9 +66,22 @@ private theorem scalar_overlap_coordinate_normalized_bound {d : ℕ} [NeZero d]
     (C * overlapCubeScaleFactor S) *
       ∑ k : Fin d, ENNReal.toReal (eLpNorm (fun x => w.grad x k)
         q.exponent (volumeMeasureOn (openOverlapCubeSet S))) at hraw
+  have hres_meas : AEStronglyMeasurable
+      (fun x => V.toField x i - ScalarOverlap.cubeAverageVec S V.toField i)
+      (volumeMeasureOn (openOverlapCubeSet S)) :=
+    w.memLp.aestronglyMeasurable.sub aestronglyMeasurable_const
+  have hjac_eq : ∀ k : Fin d,
+      eLpNorm (fun x => V.jacobian x i k) q.exponent
+          (ENNReal.ofReal ((overlapCubeVolume S)⁻¹) •
+            volumeMeasureOn (openOverlapCubeSet S)) =
+        ENNReal.ofReal ((overlapCubeVolume S)⁻¹) ^ (1 / q.exponent).toReal •
+          eLpNorm (fun x => V.jacobian x i k) q.exponent
+            (volumeMeasureOn (openOverlapCubeSet S)) := fun k =>
+    MeasureTheory.eLpNorm_smul_measure_of_ne_top q.lt_top.ne _ _
+      (w.gradMemLp k).aestronglyMeasurable
   rw [scalarOverlap_normalizedCubeMeasure_eq_open]
-  rw [MeasureTheory.eLpNorm_smul_measure_of_ne_top q.lt_top.ne]
-  simp_rw [MeasureTheory.eLpNorm_smul_measure_of_ne_top q.lt_top.ne]
+  rw [MeasureTheory.eLpNorm_smul_measure_of_ne_top q.lt_top.ne _ _ hres_meas]
+  simp_rw [hjac_eq]
   let A : ℝ :=
     (ENNReal.ofReal (overlapCubeVolume S)⁻¹ ^ (1 / q.exponent).toReal).toReal
   have hA : 0 ≤ A := ENNReal.toReal_nonneg
@@ -109,13 +122,18 @@ private theorem memLp_overlap_jacobian {d : ℕ} {Q S : TriadicCube d}
     PiLp.toLp_apply, V.jacobian_apply] using hentry
 
 private theorem eLpNorm_overlap_jacobian_entry_le {d : ℕ} {Q S : TriadicCube d}
-    {j : ℕ} (q : FiniteLpExponent) (_hS : S ∈ ScalarOverlap.centersAtDepth Q j)
+    {j : ℕ} (q : FiniteLpExponent) (hS : S ∈ ScalarOverlap.centersAtDepth Q j)
     (V : CubeVectorW1pFunction Q q) (i k : Fin d) :
     eLpNorm (fun x => V.jacobian x i k) q.exponent
       (ScalarOverlap.normalizedCubeMeasure S) ≤
     eLpNorm (fun x => HilbertMat.ofMat (V.jacobian x)) q.exponent
       (ScalarOverlap.normalizedCubeMeasure S) := by
-  apply eLpNorm_mono_ae
+  have hrow := V.jacobianRowMemLp i
+  rw [MeasureTheory.memLp_piLp_iff] at hrow
+  have hentry := ScalarOverlap.memLp_of_mem_centersAtDepth_of_memLp hS (hrow k)
+  apply eLpNorm_mono_ae (by
+    simpa only [Function.comp_apply, HilbertVec.ofVec, PiLp.toLp_apply] using
+      hentry.aestronglyMeasurable)
   filter_upwards [] with x
   calc
     ‖V.jacobian x i k‖ ≤

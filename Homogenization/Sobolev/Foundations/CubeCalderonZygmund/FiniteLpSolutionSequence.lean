@@ -118,12 +118,6 @@ private theorem tendsto_eLpNorm_sub_finiteLpDataApproximation_pair
     (fun _ => zero_le) (fun nk => ?_)
   let hn := finiteLpDataApproximation h nk.1
   let hk := finiteLpDataApproximation h nk.2
-  have hhn : MemLp (fun x => HilbertVec.ofVec (h.toField x - hn.toField x))
-      q.exponent (normalizedCubeMeasure Q) := by
-    simpa only [HilbertVec.ofVecL_apply] using! h.euclideanMemLp.sub hn.euclideanMemLp
-  have hhk : MemLp (fun x => HilbertVec.ofVec (h.toField x - hk.toField x))
-      q.exponent (normalizedCubeMeasure Q) := by
-    simpa only [HilbertVec.ofVecL_apply] using! h.euclideanMemLp.sub hk.euclideanMemLp
   have heq : (fun x => HilbertVec.ofVec (hn.toField x - hk.toField x)) =
       (fun x => -HilbertVec.ofVec (h.toField x - hn.toField x)) +
         fun x => HilbertVec.ofVec (h.toField x - hk.toField x) := by
@@ -134,7 +128,7 @@ private theorem tendsto_eLpNorm_sub_finiteLpDataApproximation_pair
       (HilbertVec.ofVecL d).map_add
         (-(h.toField x - hn.toField x)) (h.toField x - hk.toField x)
   rw [heq]
-  exact (eLpNorm_add_le hhn.neg.aestronglyMeasurable hhk.aestronglyMeasurable
+  exact (eLpNorm_add_le (f := -fun x => HilbertVec.ofVec (h.toField x - hn.toField x))
     q.one_lt.le).trans (by rw [eLpNorm_neg])
 
 /-- One constant depending only on the dimension and exponent controls the
@@ -153,6 +147,22 @@ theorem exists_tendsto_normalizedEuclideanLpENorm_finiteLpSolutionApproximation_
   obtain ⟨C, hCtop, hC⟩ := centeredCubeH10ScalarDivergence_solution_stability d q
   refine ⟨C, hCtop, ?_⟩
   intro m sigma0 h hsigma0
+  have hnorm : ∀ n k : ℕ, eLpNorm (fun x => ‖HilbertVec.ofVec
+        ((finiteLpDataApproximation h n).toField x -
+          (finiteLpDataApproximation h k).toField x)‖)
+        q.exponent (normalizedCubeMeasure (originCube d m)) =
+      eLpNorm (fun x => HilbertVec.ofVec
+        ((finiteLpDataApproximation h n).toField x -
+          (finiteLpDataApproximation h k).toField x))
+        q.exponent (normalizedCubeMeasure (originCube d m)) := by
+    intro n k
+    have hmeas : AEStronglyMeasurable (fun x => HilbertVec.ofVec
+        ((finiteLpDataApproximation h n).toField x -
+          (finiteLpDataApproximation h k).toField x))
+        (normalizedCubeMeasure (originCube d m)) :=
+      ((finiteLpDataApproximation h n).euclideanMemLp.sub
+        (finiteLpDataApproximation h k).euclideanMemLp).aestronglyMeasurable
+    exact eLpNorm_norm _ hmeas
   have hdata : Tendsto (fun nk : ℕ × ℕ =>
       (centeredCubeDomain d m).normalizedEuclideanLpENorm q.exponent
         (fun x =>
@@ -160,7 +170,7 @@ theorem exists_tendsto_normalizedEuclideanLpENorm_finiteLpSolutionApproximation_
             (finiteLpDataApproximation h nk.2).toField x)) atTop (nhds 0) := by
     simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
       BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-      MeasureTheory.eLpNorm_norm, centeredCubeDomain,
+      hnorm, centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure] using
       (tendsto_eLpNorm_sub_finiteLpDataApproximation_pair h)
   have hright : Tendsto (fun nk : ℕ × ℕ =>

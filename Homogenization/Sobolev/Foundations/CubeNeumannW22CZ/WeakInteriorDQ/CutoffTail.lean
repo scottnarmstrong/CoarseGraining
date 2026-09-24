@@ -45,7 +45,8 @@ theorem tendsto_eLpNorm_sub_mul_of_eventually_eq_one_on_compacts
     (hη_le_one : ∀ n x, η n x ≤ 1)
     (hη_eventually_one :
       ∀ K : Set (Vec d), IsCompact K → K ⊆ U →
-        ∀ᶠ n in Filter.atTop, ∀ x ∈ K, η n x = 1) :
+        ∀ᶠ n in Filter.atTop, ∀ x ∈ K, η n x = 1)
+    (hη_meas : ∀ n, MeasureTheory.AEStronglyMeasurable (η n) (volumeMeasureOn U)) :
     Filter.Tendsto
       (fun n =>
         MeasureTheory.eLpNorm (fun x => g x - η n x * g x) 2 (volumeMeasureOn U))
@@ -63,12 +64,11 @@ theorem tendsto_eLpNorm_sub_mul_of_eventually_eq_one_on_compacts
       positivity
     obtain ⟨δ, hδpos, hδ⟩ :=
       hg.eLpNorm_indicator_le (p := (2 : ENNReal)) (by norm_num)
-        ENNReal.ofNat_ne_top hε_real_pos
+        ENNReal.ofNat_ne_top (ENNReal.ofReal_pos.mpr hε_real_pos)
     obtain ⟨K, hKU, hK_compact, hK_closed, hμK⟩ :=
       hUopen.measurableSet.exists_isCompact_isClosed_sdiff_lt
-        (μ := MeasureTheory.volume) hUfinite
-        ((ENNReal.ofReal_pos.mpr hδpos).ne')
-    have hsmall : volumeMeasureOn U (U \ K) ≤ ENNReal.ofReal δ := by
+        (μ := MeasureTheory.volume) hUfinite hδpos.ne'
+    have hsmall : volumeMeasureOn U (U \ K) ≤ δ := by
       unfold volumeMeasureOn
       rw [MeasureTheory.Measure.restrict_apply
         (hUopen.measurableSet.diff hK_closed.measurableSet)]
@@ -84,7 +84,8 @@ theorem tendsto_eLpNorm_sub_mul_of_eventually_eq_one_on_compacts
     calc
       MeasureTheory.eLpNorm (fun x => g x - η n x * g x) 2 (volumeMeasureOn U)
           ≤ MeasureTheory.eLpNorm ((U \ K).indicator g) 2 (volumeMeasureOn U) := by
-            refine MeasureTheory.eLpNorm_mono_ae ?_
+            refine MeasureTheory.eLpNorm_mono_ae
+              (hg.aestronglyMeasurable.sub ((hη_meas n).mul hg.aestronglyMeasurable)) ?_
             have hmem : ∀ᵐ x ∂ volumeMeasureOn U, x ∈ U := by
               simpa [volumeMeasureOn] using
                 MeasureTheory.ae_restrict_mem hUopen.measurableSet
@@ -202,6 +203,7 @@ theorem tendsto_eLpNorm_sub_mul_of_tendsto_inner
       (fun n x => (η n).nonneg x)
       (fun n x => (η n).le_one x)
       (eventually_eq_one_on_compacts_of_tendsto_inner η hρ₁)
+      (fun n => (η n).smooth.continuous.aestronglyMeasurable)
 
 end QuantitativeCubeCutoff
 
@@ -299,10 +301,7 @@ theorem tendsto_eLpNorm_euclideanCoordDeriv_mul_sub_of_tendsto_inner_of_boundary
           ≤ MeasureTheory.eLpNorm (fun x => -(Dψ x - η n x * Dψ x)) 2
                 (volumeMeasureOn U) +
               MeasureTheory.eLpNorm (B n) 2 (volumeMeasureOn U) := by
-            refine MeasureTheory.eLpNorm_add_le ?_ ?_ (by norm_num : (1 : ENNReal) ≤ 2)
-            · exact (hDψ_mem.aestronglyMeasurable.sub
-                (hηDψ_mem n).aestronglyMeasurable).neg
-            · exact (hB_mem n).aestronglyMeasurable
+            exact MeasureTheory.eLpNorm_add_le (by norm_num : (1 : ENNReal) ≤ 2)
       _ = MeasureTheory.eLpNorm (fun x => Dψ x - η n x * Dψ x) 2
                 (volumeMeasureOn U) +
               MeasureTheory.eLpNorm (B n) 2 (volumeMeasureOn U) := by

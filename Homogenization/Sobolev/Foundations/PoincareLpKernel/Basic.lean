@@ -82,13 +82,13 @@ private theorem integral_norm_rpow_one_sub_dim_ball {R : ℝ} (hR : 0 < R) :
       have hy_pos : 0 < y := hy
       by_cases hlt : y < R
       · simp only [f, smul_eq_mul, Set.indicator, Set.mem_Ioo, hy_pos, hlt, true_and,
-          if_true]
+          ite_true]
         rw [← Real.rpow_natCast y (d - 1),
           Nat.cast_sub (Nat.one_le_iff_ne_zero.mpr (NeZero.ne d)),
           ← Real.rpow_add hy_pos]
         norm_num
       · simp only [f, smul_eq_mul, Set.indicator, Set.mem_Ioo, hy_pos, hlt, true_and,
-          if_false, mul_zero]
+          ite_false, mul_zero]
     rw [MeasureTheory.setIntegral_congr_fun measurableSet_Ioi hsupp]
     rw [MeasureTheory.integral_indicator measurableSet_Ioo]
     simp [Measure.restrict_restrict, Set.inter_comm, Set.inter_eq_left.mpr Set.Ioo_subset_Ioi_self,
@@ -108,7 +108,7 @@ theorem rieszKernel_integrableOn_ball {R : ℝ} (_hR : 0 < R) :
         (g ∘ (‖·‖)) := by
     filter_upwards [MeasureTheory.ae_restrict_mem measurableSet_ball] with x hx
     simp only [Function.comp_apply, g, Metric.mem_ball, dist_zero_right] at hx ⊢
-    rw [if_pos hx]
+    rw [ite_eq_left hx]
   rw [MeasureTheory.IntegrableOn, MeasureTheory.integrable_congr hag]
   suffices h : MeasureTheory.Integrable (fun x : Vec d => g ‖x‖) MeasureTheory.volume from
     h.integrableOn

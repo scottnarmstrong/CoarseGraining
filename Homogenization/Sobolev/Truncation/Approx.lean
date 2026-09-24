@@ -69,14 +69,14 @@ theorem tendsto_gStep {c : ℝ} {δ : ℕ → ℝ} (hδpos : ∀ n, 0 < δ n)
     (hδ : Tendsto δ atTop (𝓝 0)) (t : ℝ) :
     Tendsto (fun n => gStep c (δ n) t) atTop (𝓝 (if c < t then 1 else 0)) := by
   by_cases hct : c < t
-  · rw [if_pos hct]
+  · rw [ite_eq_left hct]
     have hev : ∀ᶠ n in atTop, gStep c (δ n) t = 1 := by
       have : ∀ᶠ n in atTop, δ n < (t - c) / 2 :=
         (tendsto_order.1 hδ).2 _ (by linarith)
       filter_upwards [this] with n hn
       exact gStep_eq_one (hδpos n) (by linarith)
     exact Tendsto.congr' (hev.mono fun n hn => hn.symm) tendsto_const_nhds
-  · rw [if_neg hct]
+  · rw [ite_eq_right hct]
     have hev : ∀ᶠ n in atTop, gStep c (δ n) t = 0 :=
       Filter.Eventually.of_forall fun n =>
         gStep_eq_zero (hδpos n) (by push Not at hct; linarith [(hδpos n).le])
@@ -296,7 +296,7 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
     intro n
     refine MemLp.of_le ((hDwn_memL2 n).const_mul M) ?_ ?_
     · exact (haesm_comp (w n) (hw_smooth n).continuous.aestronglyMeasurable).mul
-        (hDwn_memL2 n).1
+        (hDwn_memL2 n).aestronglyMeasurable
     · filter_upwards with x
       simp only [hgn_def, norm_mul, Real.norm_eq_abs]
       exact mul_le_mul_of_nonneg_right
@@ -305,7 +305,7 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
     hcompL2 u.toFun u.memL2
   have hg_memL2 : MemLp (fun x => deriv G (u.toFun x) * u.grad x i) 2 (volumeMeasureOn U) := by
     refine MemLp.of_le ((u.gradMemL2 i).const_mul M) ?_ ?_
-    · exact (haesm_comp u.toFun u.memL2.1).mul (u.gradMemL2 i).1
+    · exact (haesm_comp u.toFun u.memL2.aestronglyMeasurable).mul (u.gradMemL2 i).aestronglyMeasurable
     · filter_upwards with x
       simp only [norm_mul, Real.norm_eq_abs]
       exact mul_le_mul_of_nonneg_right
@@ -322,9 +322,7 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
     rw [hw_eq n x hx]
   -- a.e.-convergent subsequence.
   obtain ⟨σ, hσ_mono, hσ_ae⟩ :=
-    (tendstoInMeasure_of_tendsto_eLpNorm (by norm_num)
-      (fun n => (hw_smooth n).continuous.aestronglyMeasurable) u.memL2.1
-      hwu_L2).exists_seq_tendsto_ae
+    (tendstoInMeasure_of_tendsto_eLpNorm (by norm_num) hwu_L2).exists_seq_tendsto_ae
   -- L² convergence of the smoothing of `∂ᵢu`.
   have hsmi_conv : Tendsto
       (fun n => eLpNorm (fun x => smi n x - u.grad x i) 2 (volumeMeasureOn U)) atTop (𝓝 0) := by
@@ -350,11 +348,6 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
           (fun x => (1 - e n) * (smi n x - u.grad x i) - e n * u.grad x i) := by
         filter_upwards [hbridge n] with x hx
         rw [hx]; ring
-      have hmeasA : AEStronglyMeasurable
-          (fun x => (1 - e n) * (smi n x - u.grad x i)) (volumeMeasureOn U) :=
-        ((hsmi_memL2 n).1.sub (u.gradMemL2 i).1).const_mul _
-      have hmeasB : AEStronglyMeasurable
-          (fun x => e n * u.grad x i) (volumeMeasureOn U) := (u.gradMemL2 i).1.const_mul _
       have hA : eLpNorm (fun x => (1 - e n) * (smi n x - u.grad x i)) 2 (volumeMeasureOn U)
           = ENNReal.ofReal (1 - e n) *
               eLpNorm (fun x => smi n x - u.grad x i) 2 (volumeMeasureOn U) := by
@@ -370,7 +363,7 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
               (fun x => (1 - e n) * (smi n x - u.grad x i) - e n * u.grad x i) 2 (volumeMeasureOn U)
           ≤ eLpNorm (fun x => (1 - e n) * (smi n x - u.grad x i)) 2 (volumeMeasureOn U)
               + eLpNorm (fun x => e n * u.grad x i) 2 (volumeMeasureOn U) :=
-            eLpNorm_sub_le hmeasA hmeasB h12
+            eLpNorm_sub_le h12
         _ = _ := by rw [hA, hB]
     have hofR1 : Tendsto (fun n => ENNReal.ofReal (1 - e n)) atTop (𝓝 1) := by
       have : Tendsto (fun n => (1 : ℝ) - e n) atTop (𝓝 1) := by
@@ -397,6 +390,7 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
             eLpNorm (fun x => w (σ k) x - u.toFun x) 2 (volumeMeasureOn U) := by
       intro k
       simpa [hun_def] using eLpNorm_comp_sub_le_of_lipschitz hM hGlip (w (σ k)) u.toFun
+        (hw_smooth (σ k)).continuous.aestronglyMeasurable u.memL2.aestronglyMeasurable
     have hrhs : Tendsto
         (fun k => ENNReal.ofReal M *
           eLpNorm (fun x => w (σ k) x - u.toFun x) 2 (volumeMeasureOn U)) atTop (𝓝 0) := by
@@ -416,7 +410,8 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
         (fun k => eLpNorm (fun x => TB k x) 2 (volumeMeasureOn U)) atTop (𝓝 0) := by
       have hmeasTB : ∀ k, AEStronglyMeasurable (TB k) (volumeMeasureOn U) := fun k =>
         ((haesm_comp (w (σ k)) (hw_smooth (σ k)).continuous.aestronglyMeasurable).sub
-          (haesm_comp u.toFun u.memL2.1)).mul (u.gradMemL2 i).1
+          (haesm_comp u.toFun u.memL2.aestronglyMeasurable)).mul
+            (u.gradMemL2 i).aestronglyMeasurable
       have hdom : MemLp (fun x => ‖(2 * M) * u.grad x i‖) 2 (volumeMeasureOn U) :=
         ((u.gradMemL2 i).const_mul (2 * M)).norm
       have hbnd : ∀ k, ∀ᵐ x ∂(volumeMeasureOn U), ‖TB k x‖ ≤ ‖(2 * M) * u.grad x i‖ := by
@@ -452,7 +447,10 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
           (by rw [abs_of_nonneg hM]; exact hderiv (w (σ k) x)) (abs_nonneg _)
       calc eLpNorm (fun x => deriv G (w (σ k) x) * (Dwn (σ k) x - u.grad x i)) 2 (volumeMeasureOn U)
           ≤ eLpNorm (fun x => M • (Dwn (σ k) x - u.grad x i)) 2 (volumeMeasureOn U) :=
-            eLpNorm_mono hpt
+            eLpNorm_mono
+              ((haesm_comp (w (σ k)) (hw_smooth (σ k)).continuous.aestronglyMeasurable).fun_mul
+                ((hDwn_memL2 (σ k)).aestronglyMeasurable.fun_sub
+                  (u.gradMemL2 i).aestronglyMeasurable)) hpt
         _ = ENNReal.ofReal M *
               eLpNorm (fun x => Dwn (σ k) x - u.grad x i) 2 (volumeMeasureOn U) := by
             rw [show (fun x => M • (Dwn (σ k) x - u.grad x i))
@@ -479,11 +477,7 @@ theorem hasWeakGradientOn_comp_of_deriv_bounded
           = (fun x => deriv G (w (σ k) x) * (Dwn (σ k) x - u.grad x i) + TB k x) := by
         funext x; simp only [hgn_def, hTB_def]; ring
       rw [heq]
-      refine eLpNorm_add_le ?_ ?_ h12
-      · exact ((haesm_comp (w (σ k)) (hw_smooth (σ k)).continuous.aestronglyMeasurable).mul
-          ((hDwn_memL2 (σ k)).1.sub (u.gradMemL2 i).1))
-      · exact ((haesm_comp (w (σ k)) (hw_smooth (σ k)).continuous.aestronglyMeasurable).sub
-          (haesm_comp u.toFun u.memL2.1)).mul (u.gradMemL2 i).1
+      exact eLpNorm_add_le h12
     have hsum : Tendsto
         (fun k => eLpNorm (fun x => deriv G (w (σ k) x) * (Dwn (σ k) x - u.grad x i)) 2
             (volumeMeasureOn U)

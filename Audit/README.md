@@ -225,9 +225,9 @@ The successful local runs (2026-09-13, all five pairs, both kernels) used:
 
 | Tool | Version |
 | --- | --- |
-| Lean / Mathlib | `v4.33.0` |
-| comparator | commit `575674928e239f5bc452aab72d1dd7b0f1326494` (built on its own pinned toolchain; it is version-agnostic toward this project since it orchestrates `lake`/`lean4export` subprocesses) |
-| lean4export | tag `v4.33.0` (commit `15f6055e299ad5b89345e533cc2192f4cc00f659`) — must be built on the SAME toolchain as this repository, since it loads the project's oleans |
+| Lean / Mathlib | `v4.35.0-rc2` |
+| comparator | commit `32bd61da1d68fbaa310234964e9b820b03a0f82f` (built on its own pinned toolchain; it is version-agnostic toward this project since it orchestrates `lake`/`lean4export` subprocesses) |
+| lean4export | tag `v4.35.0-rc2` (commit `6cea97789dc088ea47fcea15692db85685aedac5`) — must be built on the SAME toolchain as this repository, since it loads the project's oleans |
 | landrun | `0.1.18` (commit `811cfff51ceaf3d9843708aa6d22e9b84ccac8b4`), built from source with `CGO_ENABLED=0 go build ./cmd/landrun` (Go >= 1.24; the release binaries require glibc 2.38) |
 | nanoda (optional; CI enables it) | `nanoda_lib` 0.4.15 (commit `6ae1f0cd962f081f6c423454c5da729d841236a7`), `cargo build --release` (recent Rust; the binary is `target/release/nanoda_bin`) |
 

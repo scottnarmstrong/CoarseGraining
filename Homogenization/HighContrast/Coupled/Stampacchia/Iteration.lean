@@ -1,5 +1,7 @@
 import Homogenization.HighContrast.Coupled.IterationLemma
-import Mathlib.MeasureTheory.Measure.MeasureSpace
+import Mathlib.MeasureTheory.Measure.Restrict
+import Mathlib.MeasureTheory.Measure.Map
+import Mathlib.MeasureTheory.Measure.Sum
 
 /-!
 # Generic De Giorgi iteration (level-volume decay)

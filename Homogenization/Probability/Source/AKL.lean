@@ -303,8 +303,6 @@ private theorem exists_smoothCompactSupport_L1_sequence {d : ℕ}
 private theorem tendsto_density_mul_of_L1 {d : ℕ} {Θ : ℝ}
     (e e' : Vec d) (a : Carrier d Θ) (f : Vec d → ℝ)
     (ψ : ℕ → Vec d → ℝ)
-    (hψ : ∀ n, ContDiff ℝ (⊤ : ℕ∞) (ψ n))
-    (hf : MemLp f 1 volume)
     (hψtend : Filter.Tendsto (fun n => eLpNorm (f - ψ n) 1 volume)
       Filter.atTop (nhds 0)) :
     Filter.Tendsto (fun n =>
@@ -320,9 +318,9 @@ private theorem tendsto_density_mul_of_L1 {d : ℕ} {Θ : ℝ}
         eLpNorm (density e e' a) ⊤ volume * eLpNorm (ψ n - f) 1 volume := by
     intro n
     simpa using MeasureTheory.eLpNorm_le_eLpNorm_top_mul_eLpNorm
-      (p := (1 : ENNReal)) (density e e' a)
-      ((hψ n).continuous.aestronglyMeasurable.sub hf.aestronglyMeasurable)
-      (fun u v : ℝ => u * v) 1
+      (f := density e e' a) (g := ψ n - f) (1 : ENNReal)
+      (fun u v : ℝ => u * v) 1 continuous_mul
+      (memLp_top_density e e' a).aestronglyMeasurable
       (Filter.Eventually.of_forall fun x => by simp)
   have hconst : eLpNorm (density e e' a) ⊤ volume ≠ ⊤ :=
     (memLp_top_density e e' a).eLpNorm_lt_top.ne
@@ -338,7 +336,7 @@ private theorem integrable_density_mul {d : ℕ} {Θ : ℝ}
     (hf : MemLp f 1 volume) :
     Integrable (fun x => density e e' a x * f x) volume := by
   rw [← memLp_one_iff_integrable]
-  simpa [Pi.mul_apply] using! hf.mul (memLp_top_density e e' a)
+  simpa [Pi.mul_apply] using! (memLp_top_density e e' a).mul (r := 1) hf
 
 private theorem integral_density_indicator_eq {d : ℕ} {Θ : ℝ}
     {U V : BorelRegion d} (hUV : U.1 ⊆ V.1)
@@ -381,7 +379,7 @@ private theorem measurable_generator_of_subset {d : ℕ} {Θ : ℝ}
     have hprod : Filter.Tendsto (fun n =>
         eLpNorm (fun x => density e e' a x * (ψ n x - f x)) 1 volume)
         Filter.atTop (nhds 0) :=
-      tendsto_density_mul_of_L1 e e' a f ψ hψsmooth hf hψtend
+      tendsto_density_mul_of_L1 e e' a f ψ hψtend
     have htarget : Integrable (fun x => density e e' a x * f x) volume :=
       integrable_density_mul e e' a f hf
     have hseqint : ∀ n, Integrable (fun x => density e e' a x * ψ n x) volume := by
@@ -400,7 +398,7 @@ private theorem measurable_generator_of_subset {d : ℕ} {Θ : ℝ}
       simp only [Pi.sub_apply]
       ring
     have hint := tendsto_setIntegral_of_L1' (fun x => density e e' a x * f x)
-      htarget.aestronglyMeasurable (Filter.Eventually.of_forall hseqint) hL1 V.1
+      (Filter.Eventually.of_forall hseqint) hL1 V.1
     have htarget_eq : (∫ x in V.1, density e e' a x * f x) =
         generator U e e' φ a := by
       simpa [f] using integral_density_indicator_eq hUV e e' φ a

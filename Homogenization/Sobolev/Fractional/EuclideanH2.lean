@@ -103,14 +103,17 @@ theorem euclideanHsIntegrand_congr_ae {d : ℕ} {s : FractionalOrder}
       euclideanHsIntegrand s G := by
   have hFG_restricted : F =ᵐ[(unitCenteredCubeDomain d).restrictedVolume] G :=
     ae_restrictedVolume_of_ae_normalizedVolume hFG
+  have : SFinite (unitCenteredCubeDomain d).restrictedVolume := by
+    unfold BoundedMeasurableDomain.restrictedVolume
+    infer_instance
   have hfst : (fun z : Vec d × Vec d => F z.1) =ᵐ[euclideanHsProductMeasure d]
       fun z => G z.1 := by
     rw [euclideanHsProductMeasure]
-    exact Measure.quasiMeasurePreserving_fst.ae_eq hFG
+    exact Measure.quasiMeasurePreserving_fst.ae_eq_comp hFG
   have hsnd : (fun z : Vec d × Vec d => F z.2) =ᵐ[euclideanHsProductMeasure d]
       fun z => G z.2 := by
     rw [euclideanHsProductMeasure]
-    exact Measure.quasiMeasurePreserving_snd.ae_eq hFG_restricted
+    exact Measure.quasiMeasurePreserving_snd.ae_eq_comp hFG_restricted
   filter_upwards [hfst, hsnd] with z hz1 hz2
   simp only [euclideanHsIntegrand, hz1, hz2]
 

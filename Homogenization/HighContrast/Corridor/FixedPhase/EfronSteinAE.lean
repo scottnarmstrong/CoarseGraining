@@ -96,8 +96,8 @@ theorem efronStein_transfer_ae_restriction
           (G (Function.update (R a) i (restrictReg (C i) (hC i) a')) - G (R a)) ^ 2 ∂P ∂P := by
   classical
   set μ : ι → Measure (RegCoeffField d) := fun i => P.map (restrictReg (C i) (hC i)) with hμ
-  have hμprob : ∀ i, IsProbabilityMeasure (μ i) := fun i =>
-    Measure.isProbabilityMeasure_map (measurable_restrictReg (C i) (hC i)).aemeasurable
+  have hμprob : ∀ i, IsProbabilityMeasure (μ i) := fun i => by
+    rw [hμ]; infer_instance
   have hRmeas : Measurable R := by
     rw [hRdef]; exact measurable_pi_iff.2 (fun i => measurable_restrictReg (C i) (hC i))
   -- Map identity `Measure.map R P = Measure.pi μ` (re-derived via the carrier bridge).

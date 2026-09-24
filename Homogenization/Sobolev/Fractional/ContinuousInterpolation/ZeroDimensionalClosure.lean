@@ -24,7 +24,7 @@ theorem normalizedEuclideanLpENorm_zero_dim (F : UnitCubeEuclideanL2Field 0) :
     funext x
     rw [show F x = 0 by exact Subsingleton.elim _ _]
     exact euclideanNorm_zero
-  rw [hzero, MeasureTheory.eLpNorm_zero']
+  rw [hzero, MeasureTheory.eLpNorm_fun_zero]
 
 private theorem continuousKResidualNorm_default_zero_dim
     (F : UnitCubeEuclideanL2Field 0) :
@@ -43,7 +43,7 @@ private theorem continuousKResidualNorm_default_zero_dim
     rw [show F x - (default : ContinuousKCompetitor 0).toField x = 0 by
       exact Subsingleton.elim _ _]
     exact euclideanNorm_zero
-  rw [hzero, MeasureTheory.eLpNorm_zero']
+  rw [hzero, MeasureTheory.eLpNorm_fun_zero]
   rfl
 
 private theorem continuousKGradientNorm_default_zero_dim :
@@ -61,7 +61,7 @@ private theorem continuousKGradientNorm_default_zero_dim :
     rw [show (default : ContinuousKCompetitor 0).gradient x = 0 by
       exact Subsingleton.elim _ _]
     exact matrixFrobeniusMagnitude_zero
-  rw [hzero, MeasureTheory.eLpNorm_zero']
+  rw [hzero, MeasureTheory.eLpNorm_fun_zero]
   rfl
 
 private theorem continuousKFunctionalCompetitorValue_default_zero_dim

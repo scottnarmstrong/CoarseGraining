@@ -31,11 +31,12 @@ private theorem finiteLpExponent_exponent_toReal_pos (p : FiniteLpExponent) :
 lintegral. -/
 theorem axisCube_eLpNorm_rpow_exponent_eq_lintegral_enorm
     {d : ℕ} {E : Type*} [NormedAddCommGroup E]
-    (z : Vec d) (L : ℝ) (p : FiniteLpExponent) (F : Vec d → E) :
+    (z : Vec d) (L : ℝ) (p : FiniteLpExponent) (F : Vec d → E)
+    (hF : AEStronglyMeasurable F (axisCubeNormalizedMeasure z L)) :
     (eLpNorm F p.exponent (axisCubeNormalizedMeasure z L)) ^ p.exponent.toReal =
       ∫⁻ x, ‖F x‖ₑ ^ p.exponent.toReal ∂axisCubeNormalizedMeasure z L := by
   rw [eLpNorm_eq_lintegral_rpow_enorm_toReal (finiteLpExponent_exponent_ne_zero p)
-    p.lt_top.ne]
+    p.lt_top.ne hF]
   rw [← ENNReal.rpow_mul]
   have hp : p.exponent.toReal ≠ 0 :=
     finiteLpExponent_exponent_toReal_pos p |>.ne'
@@ -74,12 +75,13 @@ theorem axisCube_lintegral_ofReal_norm_rpow_eq_normalized_setLIntegral
 norm-power integral. -/
 theorem axisCube_eLpNorm_rpow_exponent_eq_normalized_setLIntegral
     {d : ℕ} {E : Type*} [NormedAddCommGroup E]
-    (z : Vec d) {L : ℝ} (hL : 0 < L) (p : FiniteLpExponent) (F : Vec d → E) :
+    (z : Vec d) {L : ℝ} (hL : 0 < L) (p : FiniteLpExponent) (F : Vec d → E)
+    (hF : AEStronglyMeasurable F (axisCubeNormalizedMeasure z L)) :
     (eLpNorm F p.exponent (axisCubeNormalizedMeasure z L)) ^ p.exponent.toReal =
       ENNReal.ofReal ((L ^ d)⁻¹) *
         ∫⁻ x in axisCube z L, ENNReal.ofReal (‖F x‖ ^ p.exponent.toReal)
           ∂volume := by
-  rw [axisCube_eLpNorm_rpow_exponent_eq_lintegral_enorm,
+  rw [axisCube_eLpNorm_rpow_exponent_eq_lintegral_enorm z L p F hF,
     axisCube_lintegral_enorm_rpow_eq_lintegral_ofReal_norm_rpow,
     axisCube_lintegral_ofReal_norm_rpow_eq_normalized_setLIntegral z hL]
 
@@ -124,12 +126,13 @@ theorem axisCube_setLIntegral_eq_of_ae_eq
 positive axis cube. -/
 theorem axisCube_eLpNorm_rpow_exponent_eq_normalized_closedBallLIntegral
     {d : ℕ} [NeZero d] {E : Type*} [NormedAddCommGroup E]
-    (z : Vec d) {L : ℝ} (hL : 0 < L) (p : FiniteLpExponent) (F : Vec d → E) :
+    (z : Vec d) {L : ℝ} (hL : 0 < L) (p : FiniteLpExponent) (F : Vec d → E)
+    (hF : AEStronglyMeasurable F (axisCubeNormalizedMeasure z L)) :
     (eLpNorm F p.exponent (axisCubeNormalizedMeasure z L)) ^ p.exponent.toReal =
       ENNReal.ofReal ((L ^ d)⁻¹) *
         ∫⁻ x in Metric.closedBall (axisCubeCenter z L) (L / 2),
           ENNReal.ofReal (‖F x‖ ^ p.exponent.toReal) ∂volume := by
-  rw [axisCube_eLpNorm_rpow_exponent_eq_normalized_setLIntegral z hL]
+  rw [axisCube_eLpNorm_rpow_exponent_eq_normalized_setLIntegral z hL p F hF]
   congr 1
   exact axisCube_setLIntegral_eq_of_ae_eq z L _
     (axisCube_ae_eq_closedBall_axisCubeCenter z hL) _
@@ -138,25 +141,27 @@ theorem axisCube_eLpNorm_rpow_exponent_eq_normalized_closedBallLIntegral
 integral on a positive axis cube. -/
 theorem axisCube_eLpNorm_two_sq_eq_normalized_setLIntegral
     {d : ℕ} {E : Type*} [NormedAddCommGroup E]
-    (z : Vec d) {L : ℝ} (hL : 0 < L) (F : Vec d → E) :
+    (z : Vec d) {L : ℝ} (hL : 0 < L) (F : Vec d → E)
+    (hF : AEStronglyMeasurable F (axisCubeNormalizedMeasure z L)) :
     (eLpNorm F 2 (axisCubeNormalizedMeasure z L)) ^ (2 : ℝ) =
       ENNReal.ofReal ((L ^ d)⁻¹) *
         ∫⁻ x in axisCube z L, ENNReal.ofReal (‖F x‖ ^ (2 : ℕ)) ∂volume := by
   simpa only [FiniteLpExponent.two_exponent, ENNReal.toReal_ofNat, Real.rpow_two] using
     (axisCube_eLpNorm_rpow_exponent_eq_normalized_setLIntegral z hL
-      FiniteLpExponent.two F)
+      FiniteLpExponent.two F hF)
 
 /-- The squared normalized `L²` norm has the same closed-ball integral form. -/
 theorem axisCube_eLpNorm_two_sq_eq_normalized_closedBallLIntegral
     {d : ℕ} [NeZero d] {E : Type*} [NormedAddCommGroup E]
-    (z : Vec d) {L : ℝ} (hL : 0 < L) (F : Vec d → E) :
+    (z : Vec d) {L : ℝ} (hL : 0 < L) (F : Vec d → E)
+    (hF : AEStronglyMeasurable F (axisCubeNormalizedMeasure z L)) :
     (eLpNorm F 2 (axisCubeNormalizedMeasure z L)) ^ (2 : ℝ) =
       ENNReal.ofReal ((L ^ d)⁻¹) *
         ∫⁻ x in Metric.closedBall (axisCubeCenter z L) (L / 2),
           ENNReal.ofReal (‖F x‖ ^ (2 : ℕ)) ∂volume := by
   simpa only [FiniteLpExponent.two_exponent, ENNReal.toReal_ofNat, Real.rpow_two] using
     (axisCube_eLpNorm_rpow_exponent_eq_normalized_closedBallLIntegral z hL
-      FiniteLpExponent.two F)
+      FiniteLpExponent.two F hF)
 
 end CubeCalderonZygmund
 

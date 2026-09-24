@@ -174,6 +174,9 @@ theorem exists_unitCubeGradientNormalizedEuclideanL2EnergyRegularity
         eLpNorm (fun x => euclideanNorm (out x)) (2 : ℝ≥0∞) μ ≤
           ENNReal.ofReal (d : ℝ) * eLpNorm out (2 : ℝ≥0∞) μ := by
       apply eLpNorm_le_mul_eLpNorm_of_ae_le_mul
+      · simpa only [euclideanNorm_eq_norm_ofVec, HilbertVec.ofVecL_apply] using
+          ((HilbertVec.ofVecL d).continuous.comp_aestronglyMeasurable
+            hout_mem.aestronglyMeasurable).norm
       filter_upwards [] with x
       simpa only [Real.norm_eq_abs, abs_of_nonneg (euclideanNorm_nonneg (out x))] using
         euclideanNorm_le_dimension_mul_norm (out x)
@@ -181,6 +184,7 @@ theorem exists_unitCubeGradientNormalizedEuclideanL2EnergyRegularity
         eLpNorm h (2 : ℝ≥0∞) μ ≤
           eLpNorm (fun x => euclideanNorm (h x)) (2 : ℝ≥0∞) μ := by
       apply eLpNorm_mono
+      · exact hh_mem.aestronglyMeasurable
       intro x
       simpa only [Real.norm_eq_abs, abs_of_nonneg (euclideanNorm_nonneg (h x))] using
         norm_le_euclideanNorm (h x)

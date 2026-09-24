@@ -106,8 +106,10 @@ theorem map_gagliardoCubeMeasure_diagonalConvexApproxSample_le {d : ℕ}
       (volume.restrict U).prod (volume.restrict U) := by
     rw [Measure.prod_restrict, Measure.prod_restrict]
     exact Measure.restrict_mono_set volume (Set.prod_mono himage himage)
+  have hm := (measurableEmbedding_convexApproxSample x0 z r ε hε).measurable
   rw [gagliardoCubeMeasure_eq_openCubeProduct Q,
-    Measure.map_smul,
+    Measure.map_smul (f := diagonalConvexApproxSample x0 z r ε) _
+      (hm.prodMap hm).aemeasurable,
     map_prod_restrict_diagonalConvexApproxSample
       (isOpen_openCubeSet Q).measurableSet x0 z r ε hε]
   change c • (J •
@@ -158,7 +160,7 @@ theorem eLpNorm_comp_diagonalConvexApproxSample_le {d : ℕ} {E : Type*}
       eLpNorm_mono_measure K hmap
     _ = J ^ (1 / p.exponent).toReal *
         eLpNorm K p.exponent (Gagliardo.gagliardoCubeMeasure Q) := by
-      rw [eLpNorm_smul_measure_of_ne_top p.lt_top.ne]
+      rw [eLpNorm_smul_measure_of_ne_top p.lt_top.ne _ _ hK.aestronglyMeasurable]
       rfl
 
 /-- The joint diagonal sampling map is quasi-measure-preserving with exactly
@@ -331,10 +333,22 @@ theorem eLpNorm_diagonalConvexApproxAverage_le_of_memLp
     Q p K hK hρ hε hball hr hε0 hε1
   have hp_inv : (1 / p.exponent).toReal = 1 / p.exponent.toReal := by
     simpa only [one_div] using ENNReal.toReal_inv p.exponent
+  have havg : AEStronglyMeasurable (diagonalConvexApproxAverage ρ K x0 r ε)
+      (Gagliardo.gagliardoCubeMeasure Q) := by
+    let : IsProbabilityMeasure (convexApproxKernelMeasure ρ) :=
+      isProbabilityMeasure_convexApproxKernelMeasure hρ
+    have hKT : AEStronglyMeasurable (K ∘ diagonalConvexApproxJointSample x0 r ε)
+        ((Gagliardo.gagliardoCubeMeasure Q).prod (convexApproxKernelMeasure ρ)) :=
+      (hK.aestronglyMeasurable.mono_ac (Measure.absolutelyContinuous_of_le_smul
+        (map_diagonalConvexApproxJointSample_le Q hρ hε hball hr hε0 hε1))).comp_aemeasurable
+        (measurable_diagonalConvexApproxJointSample x0 r ε).aemeasurable
+    have hint := hKT.integral_prod_right'
+    refine hint.congr (Filter.Eventually.of_forall fun xy => ?_)
+    exact (diagonalConvexApproxAverage_eq_integral_kernelMeasure hρ K x0 r ε xy).symm
   rw [eLpNorm_eq_lintegral_rpow_enorm_toReal (finiteLpExponent_ne_zero p)
-      (finiteLpExponent_ne_top p),
+      (finiteLpExponent_ne_top p) havg,
     eLpNorm_eq_lintegral_rpow_enorm_toReal (finiteLpExponent_ne_zero p)
-      (finiteLpExponent_ne_top p)]
+      (finiteLpExponent_ne_top p) hK.aestronglyMeasurable]
   rw [← hp_inv, ← ENNReal.mul_rpow_of_nonneg _ _ (by positivity)]
   exact ENNReal.rpow_le_rpow hpow (by positivity)
 

@@ -48,11 +48,11 @@ private theorem enorm_ofVec_sq_eq_sum_enorm_sq {d : ℕ} (v : Vec d) :
     ← ENNReal.ofReal_pow (abs_nonneg (v i)), sq_abs]
 
 private theorem eLpNorm_two_sq {d : ℕ} {E : Type*} [NormedAddCommGroup E]
-    {μ : Measure (Vec d)} (f : Vec d → E) :
+    {μ : Measure (Vec d)} (f : Vec d → E) (hf : AEStronglyMeasurable f μ) :
     (eLpNorm f (2 : ℝ≥0∞) μ) ^ (2 : ℕ) =
       ∫⁻ x, ‖f x‖ₑ ^ (2 : ℕ) ∂μ := by
   rw [← ENNReal.rpow_natCast]
-  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]
+  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num) hf]
   rw [← ENNReal.rpow_mul]
   norm_num
 
@@ -65,7 +65,7 @@ private theorem eLpNorm_hilbertVec_two_eq_coordinateENorm {d : ℕ}
   have henergy :
       (eLpNorm (fun x => HilbertVec.ofVec (F x)) (2 : ℝ≥0∞) μ) ^ (2 : ℕ) =
         ∑ i : Fin d, (eLpNorm (fun x => F x i) (2 : ℝ≥0∞) μ) ^ 2 := by
-    rw [eLpNorm_two_sq (fun x => HilbertVec.ofVec (F x))]
+    rw [eLpNorm_two_sq (fun x => HilbertVec.ofVec (F x)) hF.aestronglyMeasurable]
     calc
       (∫⁻ x, ‖HilbertVec.ofVec (F x)‖ₑ ^ (2 : ℕ) ∂μ) =
           ∫⁻ x, ∑ i : Fin d, ‖F x i‖ₑ ^ (2 : ℕ) ∂μ := by
@@ -79,7 +79,8 @@ private theorem eLpNorm_hilbertVec_two_eq_coordinateENorm {d : ℕ}
       _ = ∑ i : Fin d, (eLpNorm (fun x => F x i) (2 : ℝ≥0∞) μ) ^ 2 := by
         apply Finset.sum_congr rfl
         intro i _
-        exact (eLpNorm_two_sq (fun x => F x i)).symm
+        exact (eLpNorm_two_sq (fun x => F x i)
+          (hF.eval_piLp i).aestronglyMeasurable).symm
   calc
     eLpNorm (fun x => HilbertVec.ofVec (F x)) (2 : ℝ≥0∞) μ =
         ((eLpNorm (fun x => HilbertVec.ofVec (F x)) (2 : ℝ≥0∞) μ) ^
@@ -111,7 +112,7 @@ private theorem exactOverlapDepthAverage_two_zero {d : ℕ} (Q : TriadicCube d)
           D.attach.sum (fun S => g S.1) := by
         apply Finset.sum_congr rfl
         intro S _
-        simp only [g, dif_pos S.2]
+        simp only [g, dite_eq_left S.2]
         norm_num
       _ = D.sum g := Finset.sum_attach D g
   change ((D.card : ℝ≥0∞)⁻¹) *
@@ -121,7 +122,7 @@ private theorem exactOverlapDepthAverage_two_zero {d : ℕ} (Q : TriadicCube d)
   rw [hsum]
   simp only [D, ScalarOverlap.centersAtDepth_zero, Finset.card_singleton,
     Nat.cast_one, inv_one, one_mul, Finset.sum_singleton, g,
-    dif_pos (Finset.mem_singleton_self _)]
+    dite_eq_left (Finset.mem_singleton_self _)]
 
 private theorem exactOverlapDepthTerm_two_zero {d : ℕ}
     (s : Set.Ioo (0 : ℝ) 1) (Q : TriadicCube d)
@@ -155,7 +156,8 @@ private theorem exactOverlapRootWeight_mul_localOscillation_le_finiteSeminorm
       norm_num
     _ ≤ (∑' j : ℕ, (exactOverlapDepthTerm Q s.1 2 u hu j) ^ (2 : ℝ)) ^
         ((2 : ℝ)⁻¹) := by
-      apply ENNReal.rpow_le_rpow (ENNReal.le_tsum 0)
+      apply ENNReal.rpow_le_rpow
+        (ENNReal.le_tsum (f := fun j => (exactOverlapDepthTerm Q s.1 2 u hu j) ^ (2 : ℝ)) 0)
       norm_num
 
 private theorem exactOverlapLocalOscillation_middleChildCube_two {d : ℕ}
@@ -232,21 +234,16 @@ private theorem exactOverlapRootWeight_mul_rootFluctuation_le_seminorm
     (fun x => F x i) (hI.coordinate i)
 
 private theorem eLpNorm_hilbertVec_le_residual_add_const {d : ℕ}
-    {Q : TriadicCube d} (F : Vec d → Vec d) (M : Vec d)
-    (hF : MemLp (fun x => HilbertVec.ofVec (F x)) (2 : ℝ≥0∞)
-      (normalizedCubeMeasure Q)) :
+    {Q : TriadicCube d} (F : Vec d → Vec d) (M : Vec d) :
     eLpNorm (fun x => HilbertVec.ofVec (F x)) (2 : ℝ≥0∞)
         (normalizedCubeMeasure Q) ≤
       eLpNorm (fun x => HilbertVec.ofVec (F x - M)) (2 : ℝ≥0∞)
           (normalizedCubeMeasure Q) +
         eLpNorm (fun _ : Vec d => HilbertVec.ofVec M) (2 : ℝ≥0∞)
           (normalizedCubeMeasure Q) := by
-  have hresidual : MemLp (fun x => HilbertVec.ofVec (F x - M)) (2 : ℝ≥0∞)
-      (normalizedCubeMeasure Q) := by
-    have hsub := hF.sub (memLp_const (HilbertVec.ofVec M))
-    simpa only [Pi.sub_apply, map_sub] using! hsub
-  have hadd := eLpNorm_add_le hresidual.aestronglyMeasurable
-    (aestronglyMeasurable_const (b := HilbertVec.ofVec M))
+  have hadd := eLpNorm_add_le (μ := normalizedCubeMeasure Q)
+    (f := fun x => HilbertVec.ofVec (F x - M))
+    (g := fun _ : Vec d => HilbertVec.ofVec M)
     (show (1 : ℝ≥0∞) ≤ 2 by norm_num)
   rw [show (fun x => HilbertVec.ofVec (F x)) =
       (fun x => HilbertVec.ofVec (F x - M)) +
@@ -297,7 +294,7 @@ theorem exactOverlapRootWeight_mul_eLpNorm_le_exactOverlapEuclideanNormTwo
       exactOverlapEuclideanNormTwo s Q F hI := by
   let hI := exactOverlapEuclideanIntegrable_of_euclidean_memLp Q F hF
   let M := exactOverlapRootMeanVec Q F hI
-  have htriangle := eLpNorm_hilbertVec_le_residual_add_const F M hF
+  have htriangle := eLpNorm_hilbertVec_le_residual_add_const (Q := Q) F M
   have hconstant := eLpNorm_const_rootMeanVec_eq Q F hI
   have hfluctuation :=
     exactOverlapRootWeight_mul_rootFluctuation_le_seminorm s Q F hF
@@ -346,7 +343,9 @@ theorem unitCube_normalizedEuclideanLpENorm_le_exactOverlapEuclideanNormTwo
   change eLpNorm (fun x => euclideanNorm (F x)) 2
       (unitCenteredCubeDomain d).normalizedVolume ≤ _
   rw [unitCenteredCubeDomain_normalizedVolume_eq_normalizedCubeMeasure]
-  simpa only [euclideanNorm_eq_norm_ofVec, eLpNorm_norm, exactOverlapRootWeight,
+  simp only [euclideanNorm_eq_norm_ofVec]
+  rw [eLpNorm_norm _ hmem.aestronglyMeasurable]
+  simpa only [exactOverlapRootWeight,
     originCube, Int.cast_zero, neg_zero, zero_mul, ENNReal.rpow_zero, one_mul] using h
 
 end

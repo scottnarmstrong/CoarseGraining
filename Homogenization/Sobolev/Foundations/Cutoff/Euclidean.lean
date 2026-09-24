@@ -1,7 +1,7 @@
 import Homogenization.Ambient.Euclidean
 import Homogenization.Geometry.Translation
 import Mathlib.Analysis.Calculus.ContDiff.Operations
-import Mathlib.Data.Real.Pointwise
+import Mathlib.Basic.Real.Pointwise
 import Mathlib.Topology.MetricSpace.Pseudo.Pi
 
 noncomputable section

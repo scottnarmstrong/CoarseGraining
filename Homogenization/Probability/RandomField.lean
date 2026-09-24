@@ -501,14 +501,14 @@ theorem isSignedPermutationMatrix_swap {d : ℕ} (i j : Fin d) :
     by_cases h : r = Equiv.swap i j c
     · have h' : c = Equiv.swap i j r := by
         simpa using congrArg (Equiv.swap i j) h.symm
-      rw [if_pos h]
+      rw [ite_eq_left h]
       subst h'
       simp [Matrix.swap]
     · have hSwap : (Equiv.swap i j) r ≠ c := by
         intro hrc
         apply h
         simpa using (congrArg (Equiv.swap i j) hrc.symm).symm
-      rw [if_neg h]
+      rw [ite_eq_right h]
       simp [Matrix.swap, hSwap]
 
 theorem IsIsotropicInLaw.map_rotateCoeffField_signFlipMatrix {d : ℕ}

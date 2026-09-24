@@ -19,7 +19,7 @@ namespace BoundedMeasurableDomain
 
 /-- The extended normalized `L^p` seminorm, with respect to normalized volume. -/
 noncomputable def normalizedLpENorm {d : ℕ} (U : BoundedMeasurableDomain d)
-    {E : Type*} [ENorm E] (p : ℝ≥0∞) (f : Vec d → E) : ℝ≥0∞ :=
+    {E : Type*} [ENorm E] [TopologicalSpace E] (p : ℝ≥0∞) (f : Vec d → E) : ℝ≥0∞ :=
   MeasureTheory.eLpNorm f p U.normalizedVolume
 
 /-- Membership in `L^p` is unchanged by the strictly positive finite volume normalization. -/
@@ -55,7 +55,7 @@ noncomputable def normalizedLpNorm {d : ℕ} (U : BoundedMeasurableDomain d)
 /-- The extended normalized `L^p` value depends only on the normalized-volume
 almost-everywhere representative. -/
 theorem normalizedLpENorm_congr_ae {d : ℕ} (U : BoundedMeasurableDomain d)
-    {E : Type*} [ENorm E] (p : ℝ≥0∞) {f g : Vec d → E}
+    {E : Type*} [ENorm E] [TopologicalSpace E] (p : ℝ≥0∞) {f g : Vec d → E}
     (hfg : f =ᵐ[U.normalizedVolume] g) :
     U.normalizedLpENorm p f = U.normalizedLpENorm p g :=
   MeasureTheory.eLpNorm_congr_ae hfg
@@ -122,10 +122,11 @@ theorem normalizedLpNorm_eq_normalizedLpMoment_rpow {d : ℕ}
 
 /-- At `p = ∞`, the normalized extended norm is Mathlib's essential supremum. -/
 theorem normalizedLpENorm_top_eq_essSup {d : ℕ} (U : BoundedMeasurableDomain d)
-    {E : Type*} [ENorm E] (f : Vec d → E) :
+    {E : Type*} [ENorm E] [TopologicalSpace E] (f : Vec d → E)
+    (hf : MeasureTheory.AEStronglyMeasurable f U.normalizedVolume) :
     U.normalizedLpENorm ∞ f =
       essSup (fun x => ‖f x‖ₑ) U.normalizedVolume := by
-  simp [normalizedLpENorm, MeasureTheory.eLpNorm_exponent_top,
+  simp [normalizedLpENorm, MeasureTheory.eLpNorm_exponent_top hf,
     MeasureTheory.eLpNormEssSup_eq_essSup_enorm]
 
 /-- The explicit Euclidean extended `L^p` value of a vector-valued function.
@@ -179,11 +180,13 @@ theorem normalizedEuclideanLpNorm_eq_integral_rpow {d n : ℕ}
 /-- At `p = ∞`, the Euclidean vector lane is the essential supremum of the
 explicit Euclidean magnitude. -/
 theorem normalizedEuclideanLpENorm_top_eq_essSup {d n : ℕ}
-    (U : BoundedMeasurableDomain d) (f : Vec d → Vec n) :
+    (U : BoundedMeasurableDomain d) (f : Vec d → Vec n)
+    (hf : MeasureTheory.AEStronglyMeasurable (fun x => euclideanNorm (f x))
+      U.normalizedVolume) :
     U.normalizedEuclideanLpENorm ∞ f =
       essSup (fun x => ENNReal.ofReal (euclideanNorm (f x)))
         U.normalizedVolume := by
-  rw [normalizedEuclideanLpENorm, U.normalizedLpENorm_top_eq_essSup]
+  rw [normalizedEuclideanLpENorm, U.normalizedLpENorm_top_eq_essSup _ hf]
   congr with x
   exact Real.enorm_eq_ofReal (euclideanNorm_nonneg _)
 

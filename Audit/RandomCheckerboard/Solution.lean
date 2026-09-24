@@ -239,7 +239,7 @@ private theorem dualTestNorm_toRepo {d : ℕ} (Q : TriadicCube d) (N : ℕ)
     _root_.Homogenization.cubeBesovDualTestNorm (toRepoCube Q) comparisonS
         (2 : ℝ≥0∞) (2 : ℝ≥0∞) N φ =
       Sobolev34.partialTestNorm Q N φ := by
-  rw [_root_.Homogenization.cubeBesovDualTestNorm, if_neg conjExponent_two_ne_top,
+  rw [_root_.Homogenization.cubeBesovDualTestNorm, ite_eq_right conjExponent_two_ne_top,
     conjExponent_two, partialNorm_toRepo]
 
 private theorem localMemLp_toRepo {d : ℕ} (Q : TriadicCube d) (φ : Vec d → ℝ) :
@@ -687,7 +687,7 @@ private theorem conductance_eq_scalarAt {d : ℕ} (lam Lam : ℝ) (ω : Sample d
       rw [highConductanceRegion, Set.mem_iUnion₂] at hmem
       obtain ⟨w, _, hxw⟩ := hmem
       exact hx ⟨w, hxw⟩
-    rw [conductance, if_neg hnot,
+    rw [conductance, ite_eq_right hnot,
       _root_.Homogenization.Examples.RandomCheckerboard.scalarAt_of_not_mem_any_openUnitCell
         (lam := lam) (Lam := Lam) (ω := ω) hx]
 

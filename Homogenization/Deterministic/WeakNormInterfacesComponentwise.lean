@@ -567,12 +567,12 @@ theorem cubeLpNorm_two_component_le_cubeLpNorm_two {d : ℕ} (Q : TriadicCube d)
       MeasureTheory.eLpNorm (fun x => u x i) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) ≤
         ENNReal.ofReal (1 : ℝ) *
           MeasureTheory.eLpNorm u (2 : ℝ≥0∞) (normalizedCubeMeasure Q) :=
-    MeasureTheory.eLpNorm_le_mul_eLpNorm_of_ae_le_mul hpoint (2 : ℝ≥0∞)
+    MeasureTheory.eLpNorm_le_mul_eLpNorm_of_ae_le_mul hui.aestronglyMeasurable hpoint (2 : ℝ≥0∞)
   have htop_u :
-      MeasureTheory.eLpNorm u (2 : ℝ≥0∞) (normalizedCubeMeasure Q) ≠ ∞ := ne_of_lt hu.2
+      MeasureTheory.eLpNorm u (2 : ℝ≥0∞) (normalizedCubeMeasure Q) ≠ ∞ := ne_of_lt hu.eLpNorm_lt_top
   have htop_ui :
       MeasureTheory.eLpNorm (fun x => u x i) (2 : ℝ≥0∞) (normalizedCubeMeasure Q) ≠ ∞ :=
-    ne_of_lt hui.2
+    ne_of_lt hui.eLpNorm_lt_top
   have htoReal :
       (MeasureTheory.eLpNorm (fun x => u x i) (2 : ℝ≥0∞) (normalizedCubeMeasure Q)).toReal ≤
         (MeasureTheory.eLpNorm u (2 : ℝ≥0∞) (normalizedCubeMeasure Q)).toReal := by

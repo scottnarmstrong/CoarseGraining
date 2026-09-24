@@ -103,21 +103,14 @@ theorem memHilbertVectorL2_axisCubeNormalizedMeasure
   rw [axisCubeNormalizedMeasure_eq_smul_volume_restrict z L hL]
   exact hF.smul_measure ENNReal.ofReal_ne_top
 
-/-- Minkowski's inequality in the normalized measure of a cube, with local
-`L²` witnesses supplying the measurability required by the real-variable
-argument. -/
+/-- Minkowski's inequality in the normalized measure of a cube. -/
 theorem axisCubeNormalized_eLpNorm_two_sub_le
-    {d : ℕ} (z : Vec d) {L : ℝ} (hL : 0 < L)
-    {F G : Vec d → HilbertVec d}
-    (hF : MemHilbertVectorL2 (axisCube z L) F)
-    (hG : MemHilbertVectorL2 (axisCube z L) G) :
+    {d : ℕ} (z : Vec d) {L : ℝ}
+    {F G : Vec d → HilbertVec d} :
     eLpNorm (F - G) 2 (axisCubeNormalizedMeasure z L) ≤
       eLpNorm F 2 (axisCubeNormalizedMeasure z L) +
         eLpNorm G 2 (axisCubeNormalizedMeasure z L) := by
-  exact eLpNorm_sub_le
-    (memHilbertVectorL2_axisCubeNormalizedMeasure z hL hF).aestronglyMeasurable
-    (memHilbertVectorL2_axisCubeNormalizedMeasure z hL hG).aestronglyMeasurable
-    (by norm_num)
+  exact eLpNorm_sub_le (by norm_num)
 
 end CubeCalderonZygmund
 

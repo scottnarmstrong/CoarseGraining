@@ -199,9 +199,9 @@ theorem integrable_fullBlockFluctuationOperatorNormSqWithNormalizer_originCube_f
     exact MemLp.ae_eq (Filter.Eventually.of_forall fun a => by
       simp [Matrix.mul_apply]) hsum
   have hZ_aemeas : AEMeasurable Z P := by
-    refine aemeasurable_pi_lambda Z ?_
+    refine AEMeasurable.of_eval (f := Z) ?_
     intro α
-    refine aemeasurable_pi_lambda (fun a => Z a α) ?_
+    refine AEMeasurable.of_eval (f := fun a => Z a α) ?_
     intro β
     exact (hZ_entry α β).aestronglyMeasurable.aemeasurable
   change

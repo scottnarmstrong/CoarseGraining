@@ -107,6 +107,40 @@ private theorem aestronglyMeasurable_hilbertVec_ofVec_cubeDirichletOddReflection
   simpa [cubeDirichletOddReflectionCellVectorField] using congrArg HilbertVec.ofVec
     (cubeDirichletOddReflectionVectorField_eq_cellVectorField_of_mem_cellCube Q choice G hx).symm
 
+private theorem aestronglyMeasurable_of_cell_cubeDirichletOddReflectionVectorField
+    {d : ℕ} (Q : TriadicCube d) (choice : Fin d → Fin 3) (G : Vec d → Vec d)
+    (h : MeasureTheory.AEStronglyMeasurable
+      (fun x => HilbertVec.ofVec (cubeDirichletOddReflectionVectorField Q G x))
+      (MeasureTheory.volume.restrict
+        (openCubeSet (cubeFaceReflectionCellCube Q choice)))) :
+    MeasureTheory.AEStronglyMeasurable (fun x => HilbertVec.ofVec (G x))
+      (MeasureTheory.volume.restrict (openCubeSet Q)) := by
+  have hmp : MeasureTheory.MeasurePreserving
+      (cubeFaceReflectionCellFoldMap Q choice)
+      (MeasureTheory.volume.restrict
+        (openCubeSet (cubeFaceReflectionCellCube Q choice)))
+      (MeasureTheory.volume.restrict (openCubeSet Q)) := by
+    simpa [preimage_cubeFaceReflectionCellFoldMap_openCubeSet Q choice] using
+      (measurePreserving_cubeFaceReflectionCellFoldMap Q choice).restrict_preimage_emb
+        (measurableEmbedding_cubeFaceReflectionCellFoldMap Q choice)
+        (openCubeSet Q)
+  have hcell := aestronglyMeasurable_hilbertVec_ofVec_cellLinear
+    choice (fun x => cubeDirichletOddReflectionVectorField Q G x) h
+  have hcomp : MeasureTheory.AEStronglyMeasurable
+      ((fun y => HilbertVec.ofVec (G y)) ∘ cubeFaceReflectionCellFoldMap Q choice)
+      (MeasureTheory.volume.restrict
+        (openCubeSet (cubeFaceReflectionCellCube Q choice))) := by
+    refine hcell.congr ?_
+    filter_upwards [MeasureTheory.ae_restrict_mem
+      (measurableSet_openCubeSet (cubeFaceReflectionCellCube Q choice))] with x hx
+    rw [cubeDirichletOddReflectionVectorField_eq_cellVectorField_of_mem_cellCube Q choice G hx,
+      cubeDirichletOddReflectionCellVectorField_apply, map_smul, smul_smul,
+      cubeDirichletOddReflectionCellSign_mul_self, one_smul,
+      cubeFaceReflectionCellFoldLinear_involutive]
+    rfl
+  exact (hmp.aestronglyMeasurable_comp_iff
+    (measurableEmbedding_cubeFaceReflectionCellFoldMap Q choice)).1 hcomp
+
 private theorem lintegral_cubeFaceReflectionCellCube_cubeDirichletOddReflectionVectorField
     {d : ℕ} (Q : TriadicCube d) (choice : Fin d → Fin 3) (G : Vec d → Vec d)
     (p : FiniteLpExponent) :
@@ -241,13 +275,29 @@ theorem eLpNorm_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionVectorField
       ((3 : ℝ≥0∞) ^ d) ^ (1 / p.exponent.toReal) *
         MeasureTheory.eLpNorm (fun x => HilbertVec.ofVec (G x)) p.exponent
           (MeasureTheory.volume.restrict (openCubeSet Q)) := by
-  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
-      (finiteLpExponent_ne_zero p) p.lt_top.ne,
-    MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
-      (finiteLpExponent_ne_zero p) p.lt_top.ne,
-    lintegral_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionVectorField]
-  rw [ENNReal.mul_rpow_of_nonneg _ _
-    (one_div_nonneg.mpr (finiteLpExponent_toReal_pos p).le)]
+  by_cases hG : MeasureTheory.AEStronglyMeasurable (fun x => HilbertVec.ofVec (G x))
+      (MeasureTheory.volume.restrict (openCubeSet Q))
+  · rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
+        (finiteLpExponent_ne_zero p) p.lt_top.ne
+        (aestronglyMeasurable_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionVectorField
+          Q hG),
+      MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
+        (finiteLpExponent_ne_zero p) p.lt_top.ne hG,
+      lintegral_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionVectorField]
+    rw [ENNReal.mul_rpow_of_nonneg _ _
+      (one_div_nonneg.mpr (finiteLpExponent_toReal_pos p).le)]
+  · have hR : ¬MeasureTheory.AEStronglyMeasurable
+        (fun x => HilbertVec.ofVec (cubeDirichletOddReflectionVectorField Q G x))
+        (MeasureTheory.volume.restrict (cubeFaceReflectionBlockSet Q)) := by
+      intro h
+      apply hG
+      rw [cubeFaceReflectionBlockSet_eq_iUnion_cellCube Q] at h
+      exact aestronglyMeasurable_of_cell_cubeDirichletOddReflectionVectorField Q
+        (fun _ => 1) G (h.mono_measure (MeasureTheory.Measure.restrict_mono
+          (Set.subset_iUnion (fun choice => openCubeSet (cubeFaceReflectionCellCube Q choice))
+            (fun _ => 1)) le_rfl))
+    rw [MeasureTheory.eLpNorm_of_not_aestronglyMeasurable hR,
+      MeasureTheory.eLpNorm_of_not_aestronglyMeasurable hG, ENNReal.mul_top (by simp)]
 
 /-- Finite-`p` Euclidean integrability transports from a cube to the complete
 Dirichlet odd-reflection block. -/
@@ -258,15 +308,8 @@ theorem memLp_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionVectorField
     MeasureTheory.MemLp
       (fun x => HilbertVec.ofVec (cubeDirichletOddReflectionVectorField Q G x))
       p.exponent (MeasureTheory.volume.restrict (cubeFaceReflectionBlockSet Q)) := by
-  have hae : MeasureTheory.AEStronglyMeasurable
-      (fun x => HilbertVec.ofVec (cubeDirichletOddReflectionVectorField Q G x))
-      (MeasureTheory.volume.restrict (cubeFaceReflectionBlockSet Q)) := by
-    rw [cubeFaceReflectionBlockSet_eq_iUnion_cellCube Q]
-    exact MeasureTheory.AEStronglyMeasurable.iUnion fun choice =>
-      aestronglyMeasurable_hilbertVec_ofVec_cubeDirichletOddReflectionVectorField_cell
-        Q choice G hG.aestronglyMeasurable
-  refine ⟨hae, ?_⟩
-  rw [eLpNorm_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionVectorField Q G p]
+  rw [MeasureTheory.memLp_iff,
+    eLpNorm_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionVectorField Q G p]
   refine ENNReal.mul_lt_top ?_ hG.eLpNorm_lt_top
   exact ENNReal.rpow_lt_top_of_nonneg
     (one_div_nonneg.mpr (finiteLpExponent_toReal_pos p).le) (by simp)
@@ -425,8 +468,10 @@ theorem eLpNorm_normalizedCubeMeasure_succ_originCube_cubeDirichletOddReflection
         (normalizedCubeMeasure (originCube d m)) := by
   rw [normalizedCubeMeasure_originCube_eq_smul_restrict_openCubeSet,
     normalizedCubeMeasure_originCube_eq_smul_restrict_openCubeSet,
-    MeasureTheory.eLpNorm_smul_measure_of_ne_top p.lt_top.ne,
-    MeasureTheory.eLpNorm_smul_measure_of_ne_top p.lt_top.ne,
+    MeasureTheory.eLpNorm_smul_measure_of_ne_zero_of_ne_top
+      (finiteLpExponent_ne_zero p) p.lt_top.ne,
+    MeasureTheory.eLpNorm_smul_measure_of_ne_zero_of_ne_top
+      (finiteLpExponent_ne_zero p) p.lt_top.ne,
     eLpNorm_openCubeSet_succ_originCube_cubeDirichletOddReflectionVectorField]
   simp only [smul_eq_mul, one_div, ENNReal.toReal_inv]
   rw [← mul_assoc, normalized_originCube_reflection_factor_cancel]
@@ -462,11 +507,18 @@ theorem eLpNorm_cubeFaceReflectionCellCube_cubeDirichletOddReflectionVectorField
         (openCubeSet (cubeFaceReflectionCellCube Q choice))) =
       MeasureTheory.eLpNorm (fun x => HilbertVec.ofVec (G x)) p.exponent
         (MeasureTheory.volume.restrict (openCubeSet Q)) := by
-  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
-      (finiteLpExponent_ne_zero p) p.lt_top.ne,
-    MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
-      (finiteLpExponent_ne_zero p) p.lt_top.ne,
-    lintegral_cubeFaceReflectionCellCube_cubeDirichletOddReflectionVectorField]
+  by_cases hG : MeasureTheory.AEStronglyMeasurable (fun x => HilbertVec.ofVec (G x))
+      (MeasureTheory.volume.restrict (openCubeSet Q))
+  · rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
+        (finiteLpExponent_ne_zero p) p.lt_top.ne
+        (aestronglyMeasurable_hilbertVec_ofVec_cubeDirichletOddReflectionVectorField_cell
+          Q choice G hG),
+      MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
+        (finiteLpExponent_ne_zero p) p.lt_top.ne hG,
+      lintegral_cubeFaceReflectionCellCube_cubeDirichletOddReflectionVectorField]
+  · rw [MeasureTheory.eLpNorm_of_not_aestronglyMeasurable hG,
+      MeasureTheory.eLpNorm_of_not_aestronglyMeasurable fun h =>
+        hG (aestronglyMeasurable_of_cell_cubeDirichletOddReflectionVectorField Q choice G h)]
 
 end
 

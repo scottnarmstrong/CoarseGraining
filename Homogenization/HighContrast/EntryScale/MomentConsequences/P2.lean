@@ -2,7 +2,7 @@ import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Data.Finset.Lattice.Fold
-import Mathlib.Data.NNReal.Basic
+import Mathlib.Basic.NNReal.Basic
 import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
 import Mathlib.MeasureTheory.Integral.Lebesgue.Add
 import Mathlib.Order.Interval.Finset.Nat

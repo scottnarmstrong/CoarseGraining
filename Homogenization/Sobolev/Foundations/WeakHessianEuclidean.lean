@@ -142,7 +142,7 @@ theorem frobeniusMagnitude_memLp_normalizedCubeMeasure (Q : TriadicCube d)
     intro i _
     apply Finset.aestronglyMeasurable_fun_sum Finset.univ
     intro j _
-    exact (H.hess_memLp_normalizedCubeMeasure Q i j).1.pow 2
+    exact (H.hess_memLp_normalizedCubeMeasure Q i j).aestronglyMeasurable.pow 2
   have hmag_meas : MeasureTheory.AEStronglyMeasurable H.frobeniusMagnitude
       (normalizedCubeMeasure Q) := by
     have hsqrt := Real.continuous_sqrt.comp_aestronglyMeasurable hsquare_meas

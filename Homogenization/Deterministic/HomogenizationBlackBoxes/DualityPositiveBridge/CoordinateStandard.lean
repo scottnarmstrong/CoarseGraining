@@ -66,13 +66,30 @@ theorem sq_cubeLpNorm_two_coordinateVectorField {d : ℕ}
     (Q : TriadicCube d) (i : Fin d) (g : Vec d → ℝ) :
     (cubeLpNorm Q (2 : ℝ≥0∞) (coordinateVectorField i g)) ^ 2 =
       (cubeLpNorm Q (2 : ℝ≥0∞) g) ^ 2 := by
-  rw [cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal (E := Vec d),
-    cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal (E := ℝ)]
-  congr 1
-  apply MeasureTheory.lintegral_congr
-  intro x
-  rw [← ofReal_norm, ← ofReal_norm,
-    norm_coordinateVectorField_apply]
+  have hcoord : g = fun x => coordinateVectorField i g x i := by
+    funext x; simp [coordinateVectorField]
+  by_cases hg : MeasureTheory.AEStronglyMeasurable g (normalizedCubeMeasure Q)
+  · have hv : MeasureTheory.AEStronglyMeasurable (coordinateVectorField i g)
+        (normalizedCubeMeasure Q) := by
+      have hsingle : coordinateVectorField i g = fun x => (Pi.single i (g x) : Vec d) := by
+        funext x j; simp [coordinateVectorField, Pi.single_apply]
+      rw [hsingle]
+      exact (ContinuousLinearMap.single ℝ (fun _ : Fin d => ℝ) i).continuous
+        |>.comp_aestronglyMeasurable hg
+    rw [cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal (E := Vec d) _ _ hv,
+      cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal (E := ℝ) _ _ hg]
+    congr 1
+    apply MeasureTheory.lintegral_congr
+    intro x
+    rw [← ofReal_norm, ← ofReal_norm,
+      norm_coordinateVectorField_apply]
+  · have hv : ¬ MeasureTheory.AEStronglyMeasurable (coordinateVectorField i g)
+        (normalizedCubeMeasure Q) := fun h => hg <| by
+      rw [hcoord]; exact (continuous_apply i).comp_aestronglyMeasurable h
+    change (MeasureTheory.eLpNorm _ 2 (normalizedCubeMeasure Q)).toReal ^ 2 =
+      (MeasureTheory.eLpNorm _ 2 (normalizedCubeMeasure Q)).toReal ^ 2
+    rw [MeasureTheory.eLpNorm_of_not_aestronglyMeasurable hv,
+      MeasureTheory.eLpNorm_of_not_aestronglyMeasurable hg]
 
 theorem cubeBesovPositiveVectorDepthAverage_coordinateVectorField {d : ℕ}
     (Q : TriadicCube d) (i : Fin d) (g : Vec d → ℝ) (j : ℕ) :

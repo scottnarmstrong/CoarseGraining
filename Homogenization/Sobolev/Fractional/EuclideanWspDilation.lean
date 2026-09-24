@@ -46,7 +46,8 @@ private theorem euclideanWspDilation_measurePreserving {d : ℕ}
   have hvol : cubeVolume (Book.Ch02.dilateCube k Q) = r ^ d * cubeVolume Q := by
     simpa only [r] using cubeVolume_dilateCube k Q
   refine ⟨T.measurable, ?_⟩
-  rw [normalizedCubeMeasure, normalizedCubeMeasure, Measure.map_smul, hres]
+  rw [normalizedCubeMeasure, normalizedCubeMeasure,
+    Measure.map_smul _ T.measurable.aemeasurable, hres]
   rw [smul_smul]
   congr 1
   rw [← ENNReal.ofReal_mul (inv_nonneg.mpr (cubeVolume_nonneg Q))]
@@ -142,12 +143,7 @@ theorem cubeEuclideanNormalizedLpENorm_dilate {d : ℕ}
   unfold BoundedMeasurableDomain.normalizedLpENorm
   rw [cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
     cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
-  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
-    (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne,
-    eLpNorm_eq_lintegral_rpow_enorm_toReal
-      (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne]
-  congr 1
-  rw [MeasurePreserving.lintegral_map_equiv _ T hMP]
+  rw [← hMP.map_eq, T.measurableEmbedding.eLpNorm_map_measure]
   rfl
 
 /-- The Euclidean fractional seminorm acquires exactly the physical factor
@@ -176,7 +172,8 @@ theorem cubeEuclideanWspESeminorm_dilate {d : ℕ}
     simpa only [Function.comp_apply, r, a] using! cubeEuclideanWspKernel_dilate k s p F z
   rw [cubeEuclideanWspESeminorm,
     euclideanWspDilation_pair_measure_target_eq_smul_map]
-  rw [eLpNorm_smul_measure_of_ne_top p.lt_top.ne]
+  rw [eLpNorm_smul_measure_of_ne_zero_of_ne_top
+    (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne]
   rw [TP.measurableEmbedding.eLpNorm_map_measure]
   rw [hker]
   change (ENNReal.ofReal r ^ d) ^ (1 / p.exponent).toReal *

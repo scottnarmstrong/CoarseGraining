@@ -177,7 +177,6 @@ private theorem tendsto_setIntegral_of_tendsto_eLpNorm_sub_of_one_lt
     {q : ℝ} (hq : 1 < q) {F : ℕ → Vec d → ℝ} {f : Vec d → ℝ}
     (hDiffMeas :
       ∀ n, MeasureTheory.AEStronglyMeasurable (fun x => F n x - f x) (volumeMeasureOn U))
-    (hf_int : MeasureTheory.Integrable f (volumeMeasureOn U))
     (hF_int : ∀ᶠ n : ℕ in Filter.atTop,
       MeasureTheory.Integrable (F n) (volumeMeasureOn U))
     (hLp :
@@ -241,7 +240,6 @@ private theorem tendsto_setIntegral_of_tendsto_eLpNorm_sub_of_one_lt
     (MeasureTheory.tendsto_integral_of_L1'
       (μ := μ)
       (f := f)
-      hf_int.aestronglyMeasurable
       (by
         filter_upwards [hF_int] with n hn
         exact hn)
@@ -252,7 +250,6 @@ private theorem tendsto_integralAverage_of_tendsto_eLpNorm_sub_of_one_lt
     {q : ℝ} (hq : 1 < q) {F : ℕ → Vec d → ℝ} {f : Vec d → ℝ}
     (hDiffMeas :
       ∀ n, MeasureTheory.AEStronglyMeasurable (fun x => F n x - f x) (volumeMeasureOn U))
-    (hf_int : MeasureTheory.Integrable f (volumeMeasureOn U))
     (hF_int : ∀ᶠ n : ℕ in Filter.atTop,
       MeasureTheory.Integrable (F n) (volumeMeasureOn U))
     (hLp :
@@ -264,7 +261,7 @@ private theorem tendsto_integralAverage_of_tendsto_eLpNorm_sub_of_one_lt
       (nhds (integralAverage U f)) := by
   have hInt :=
     tendsto_setIntegral_of_tendsto_eLpNorm_sub_of_one_lt
-      (U := U) hq hDiffMeas hf_int hF_int hLp
+      (U := U) hq hDiffMeas hF_int hLp
   simpa [integralAverage, mul_comm, mul_left_comm, mul_assoc] using
     (tendsto_const_nhds.mul hInt :
       Filter.Tendsto
@@ -364,14 +361,12 @@ private theorem tendsto_convexApproxSmoothW1p_integralAverage_ofReal
         (fun x => (ψ n).toFun x - u.toFun x) (volumeMeasureOn U) := by
     intro n
     exact ((ψ n).memLp.sub u.memLp).aestronglyMeasurable
-  have hf_int : MeasureTheory.Integrable u.toFun (volumeMeasureOn U) :=
-    u.memLp.integrable hp1
   have hψ_int : ∀ᶠ n : ℕ in Filter.atTop,
       MeasureTheory.Integrable (ψ n).toFun (volumeMeasureOn U) :=
     Filter.Eventually.of_forall fun n => (ψ n).memLp.integrable hp1
   have havg :=
     tendsto_integralAverage_of_tendsto_eLpNorm_sub_of_one_lt
-      (U := U) hq hDiffMeas hf_int hψ_int
+      (U := U) hq hDiffMeas hψ_int
       (by simpa [ψ, pE] using hLp)
   simpa [ψ, pE, hp1] using havg
 
@@ -475,11 +470,6 @@ theorem tendsto_convexApproxSmoothW1p_subAverageLpSeminorm_ofReal
     intro n
     let A : Vec d → ℝ := fun x => (ψ n).toFun x - u.toFun x
     let B : Vec d → ℝ := fun _ => integralAverage U u.toFun - integralAverage U (ψ n).toFun
-    have hmeasA : MeasureTheory.AEStronglyMeasurable A μ :=
-      ((ψ n).memLp.sub u.memLp).aestronglyMeasurable
-    have hmeasB : MeasureTheory.AEStronglyMeasurable B μ :=
-      (MeasureTheory.memLp_const (integralAverage U u.toFun - integralAverage U (ψ n).toFun)
-        (μ := μ) (p := pE)).aestronglyMeasurable
     calc
       MeasureTheory.eLpNorm
           (fun x =>
@@ -492,7 +482,7 @@ theorem tendsto_convexApproxSmoothW1p_subAverageLpSeminorm_ofReal
               dsimp [A, B]
               ring
       _ ≤ MeasureTheory.eLpNorm A pE μ + MeasureTheory.eLpNorm B pE μ :=
-            MeasureTheory.eLpNorm_add_le hmeasA hmeasB hp1
+            MeasureTheory.eLpNorm_add_le hp1
       _ = MeasureTheory.eLpNorm (fun x => (ψ n).toFun x - u.toFun x) pE μ +
             MeasureTheory.eLpNorm
               (fun _ : Vec d => integralAverage U u.toFun - integralAverage U (ψ n).toFun)

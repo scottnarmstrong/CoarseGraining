@@ -146,7 +146,7 @@ theorem overlapCentersAverage_overlapCubeLpNorm_grad_sq_le {d : ℕ}
           refine Finset.sum_congr rfl ?_
           intro S _hS
           exact overlapCubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal
-            (E := Vec d) S (G.coord i).grad
+            (E := Vec d) S (G.coord i).grad (hloc S _hS).aestronglyMeasurable
     _ ≤
           (3 ^ d : ℝ) *
             (∫⁻ x, ‖(G.coord i).grad x‖ₑ ^ (2 : ℝ)
@@ -154,7 +154,8 @@ theorem overlapCentersAverage_overlapCubeLpNorm_grad_sq_le {d : ℕ}
     _ =
           (3 ^ d : ℝ) *
             (cubeLpNorm Q (2 : ℝ≥0∞) (G.coord i).grad) ^ 2 := by
-          rw [cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal (E := Vec d)]
+          rw [cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal (E := Vec d) _ _
+            hparent.aestronglyMeasurable]
 
 theorem cubeLpNorm_two_grad_le_volume_inv_rpow_half_mul_gradientCoordL2NormSum
     {d : ℕ} {Q : TriadicCube d} (u : H1Function (openCubeSet Q)) :

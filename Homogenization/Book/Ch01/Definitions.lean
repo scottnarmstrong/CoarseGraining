@@ -62,7 +62,7 @@ theorem normalizedAverage_eq_cubeAverage {d : ℕ} (Q : Cube d) (f : Vec d → �
 
 /-- The extended normalized cube `L^p` value. -/
 noncomputable abbrev normalizedLpENorm {d : ℕ} {E : Type*} [ENorm E]
-    (Q : Cube d) (p : ℝ≥0∞) (f : Vec d → E) : ℝ≥0∞ :=
+    [TopologicalSpace E] (Q : Cube d) (p : ℝ≥0∞) (f : Vec d → E) : ℝ≥0∞ :=
   (Homogenization.cubeBoundedMeasurableDomain Q).normalizedLpENorm p f
 
 /-- The finite normalized cube `L^p` value certified by a `MemLp` witness. -/
@@ -75,7 +75,8 @@ noncomputable abbrev normalizedLpNorm {d : ℕ} {E : Type*}
 
 /-- The cube extended norm is `eLpNorm` for normalized cube measure. -/
 theorem normalizedLpENorm_eq_eLpNorm_normalizedCubeMeasure {d : ℕ}
-    {E : Type*} [ENorm E] (Q : Cube d) (p : ℝ≥0∞) (f : Vec d → E) :
+    {E : Type*} [ENorm E] [TopologicalSpace E] (Q : Cube d) (p : ℝ≥0∞)
+    (f : Vec d → E) :
     normalizedLpENorm Q p f =
       MeasureTheory.eLpNorm f p (Homogenization.normalizedCubeMeasure Q) := by
   change MeasureTheory.eLpNorm f p
@@ -98,13 +99,15 @@ theorem normalizedLpNorm_eq_integral_rpow {d : ℕ} {E : Type*}
 
 /-- At `p = ∞`, the exact normalized cube value is the essential supremum. -/
 theorem normalizedLpENorm_top_eq_essSup {d : ℕ} {E : Type*} [ENorm E]
-    (Q : Cube d) (f : Vec d → E) :
+    [TopologicalSpace E] (Q : Cube d) (f : Vec d → E)
+    (hf : MeasureTheory.AEStronglyMeasurable f (Homogenization.normalizedCubeMeasure Q)) :
     normalizedLpENorm Q ∞ f =
       essSup (fun x => ‖f x‖ₑ) (Homogenization.normalizedCubeMeasure Q) := by
   change (Homogenization.cubeBoundedMeasurableDomain Q).normalizedLpENorm ∞ f = _
-  rw [Homogenization.BoundedMeasurableDomain.normalizedLpENorm_top_eq_essSup
-      (Homogenization.cubeBoundedMeasurableDomain Q) f,
-    Homogenization.cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
+  rw [← Homogenization.cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
+    at hf ⊢
+  exact Homogenization.BoundedMeasurableDomain.normalizedLpENorm_top_eq_essSup
+    (Homogenization.cubeBoundedMeasurableDomain Q) f hf
 
 /-- The extended normalized Euclidean `L^p` value of a vector field. -/
 noncomputable abbrev normalizedEuclideanLpENorm {d n : ℕ} (Q : Cube d)
@@ -134,15 +137,18 @@ theorem normalizedEuclideanLpNorm_eq_integral_rpow {d n : ℕ} (Q : Cube d)
 
 /-- At `p = ∞`, the vector lane is the essential supremum of Euclidean magnitude. -/
 theorem normalizedEuclideanLpENorm_top_eq_essSup {d n : ℕ} (Q : Cube d)
-    (f : Vec d → Vec n) :
+    (f : Vec d → Vec n)
+    (hf : MeasureTheory.AEStronglyMeasurable (fun x => Homogenization.euclideanNorm (f x))
+      (Homogenization.normalizedCubeMeasure Q)) :
     normalizedEuclideanLpENorm Q ∞ f =
       essSup (fun x => ENNReal.ofReal (Homogenization.euclideanNorm (f x)))
         (Homogenization.normalizedCubeMeasure Q) := by
   change Homogenization.BoundedMeasurableDomain.normalizedEuclideanLpENorm
     (Homogenization.cubeBoundedMeasurableDomain Q) ∞ f = _
-  rw [Homogenization.BoundedMeasurableDomain.normalizedEuclideanLpENorm_top_eq_essSup
-      (Homogenization.cubeBoundedMeasurableDomain Q) f,
-    Homogenization.cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
+  rw [← Homogenization.cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
+    at hf ⊢
+  exact Homogenization.BoundedMeasurableDomain.normalizedEuclideanLpENorm_top_eq_essSup
+    (Homogenization.cubeBoundedMeasurableDomain Q) f hf
 
 /-! ## Normalized Sobolev quantities -/
 

@@ -2,7 +2,9 @@ import Homogenization.Besov.Duality.WrapperComparison
 import Homogenization.Multiscale.ProjectionConvergence
 import Mathlib.MeasureTheory.Function.ContinuousMapDense
 import Mathlib.MeasureTheory.Integral.DominatedConvergence
-import Mathlib.MeasureTheory.Measure.MeasureSpace
+import Mathlib.MeasureTheory.Measure.Restrict
+import Mathlib.MeasureTheory.Measure.Map
+import Mathlib.MeasureTheory.Measure.Sum
 import Mathlib.Order.Filter.AtTopBot.Basic
 
 namespace Homogenization

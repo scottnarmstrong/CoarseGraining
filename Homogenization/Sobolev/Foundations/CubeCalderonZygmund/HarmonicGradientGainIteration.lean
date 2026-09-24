@@ -92,11 +92,11 @@ noncomputable def HarmonicEuclideanGradientGain.fromScalar {d : ℕ}
     have hcoord : ∀ i : Fin d, MeasureTheory.MemLp (fun x => u.grad x i)
         r.exponent μ := fun i => G.memLp Q u h i
     have hvec : MeasureTheory.AEStronglyMeasurable (fun x => u.grad x) μ :=
-      (aemeasurable_pi_lambda _ fun i => (hcoord i).aemeasurable).aestronglyMeasurable
+      (AEMeasurable.of_eval fun i => (hcoord i).aemeasurable).aestronglyMeasurable
     have hhilbert : MeasureTheory.AEStronglyMeasurable
         (fun x => HilbertVec.ofVec (u.grad x)) μ := by
       simpa using (HilbertVec.ofVecL d).continuous.comp_aestronglyMeasurable hvec
-    refine ⟨hhilbert, ?_⟩
+    refine MeasureTheory.memLp_iff.2 ?_
     have hsum : ∑ i : Fin d,
         MeasureTheory.eLpNorm (fun x => u.grad x i) r.exponent μ ≤
         (d : ℝ≥0∞) * (G.constant * ∑ j : Fin d,
@@ -783,7 +783,7 @@ noncomputable def HarmonicGradientGain.upgrade {d : ℕ} (hd : 0 < d)
       _ = K * R := by simp [K]; ring
   refine ⟨K, hKpos, hKtop, ?_, hpoint⟩
   intro Q u h i
-  refine ⟨(G.restrict_one_more Q u h i).aestronglyMeasurable, ?_⟩
+  refine MeasureTheory.memLp_iff.2 ?_
   apply lt_of_le_of_lt (hpoint Q u h i)
   exact lt_top_iff_ne_top.mpr (ENNReal.mul_ne_top hKtop
     ((ENNReal.sum_ne_top).2 fun j _ =>
@@ -799,10 +799,9 @@ noncomputable def HarmonicGradientGain.downgrade {d : ℕ} {r s : FiniteLpExpone
     let : MeasureTheory.IsProbabilityMeasure
         (normalizedCubeMeasure (centralDescendant Q depth)) :=
       ⟨normalizedCubeMeasure_apply_univ _⟩
-    refine ⟨(G.memLp Q u h i).aestronglyMeasurable, ?_⟩
+    refine MeasureTheory.memLp_iff.2 ?_
     apply lt_of_le_of_lt
-      (MeasureTheory.eLpNorm_le_eLpNorm_of_exponent_le hsr
-        (G.memLp Q u h i).aestronglyMeasurable)
+      (MeasureTheory.eLpNorm_le_eLpNorm_of_exponent_le hsr)
     exact lt_of_le_of_lt (G.bound Q u h i)
       (lt_top_iff_ne_top.mpr (ENNReal.mul_ne_top G.constant_ne_top
         ((ENNReal.sum_ne_top).2 fun j _ =>
@@ -811,8 +810,7 @@ noncomputable def HarmonicGradientGain.downgrade {d : ℕ} {r s : FiniteLpExpone
     let : MeasureTheory.IsProbabilityMeasure
         (normalizedCubeMeasure (centralDescendant Q depth)) :=
       ⟨normalizedCubeMeasure_apply_univ _⟩
-    exact (MeasureTheory.eLpNorm_le_eLpNorm_of_exponent_le hsr
-      (G.memLp Q u h i).aestronglyMeasurable).trans (G.bound Q u h i)
+    exact (MeasureTheory.eLpNorm_le_eLpNorm_of_exponent_le hsr).trans (G.bound Q u h i)
 
 /-- The explicit finite Sobolev ladder used above the `L²` base.  The side
 condition is precisely the positivity of its denominator. -/

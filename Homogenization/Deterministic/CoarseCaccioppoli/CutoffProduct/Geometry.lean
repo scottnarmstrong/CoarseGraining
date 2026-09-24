@@ -21,6 +21,9 @@ theorem cubeLpNorm_infty_le_of_bound_on_cubeSet {d : ℕ} {E : Type*}
     (hC : 0 ≤ C)
     (hbound : ∀ x ∈ cubeSet Q, ‖f x‖ ≤ C) :
     cubeLpNorm Q ∞ f ≤ C := by
+  by_cases hf : MeasureTheory.AEStronglyMeasurable f (normalizedCubeMeasure Q)
+  swap
+  · simp [cubeLpNorm, MeasureTheory.eLpNorm_of_not_aestronglyMeasurable hf, hC]
   have hbound_ae_cube : ∀ᵐ x ∂ cubeMeasure Q, ‖f x‖ ≤ C := by
     exact (MeasureTheory.ae_restrict_iff' (measurableSet_cubeSet Q)).2 <|
       Filter.Eventually.of_forall hbound
@@ -29,7 +32,7 @@ theorem cubeLpNorm_infty_le_of_bound_on_cubeSet {d : ℕ} {E : Type*}
       (ae_smul_measure hbound_ae_cube (ENNReal.ofReal ((cubeVolume Q)⁻¹)))
   have hle :
       MeasureTheory.eLpNorm f ∞ (normalizedCubeMeasure Q) ≤ ENNReal.ofReal C := by
-    simpa [MeasureTheory.eLpNorm_exponent_top] using
+    simpa [MeasureTheory.eLpNorm_exponent_top hf] using
       MeasureTheory.eLpNormEssSup_le_of_ae_bound hbound_ae
   have htoReal := ENNReal.toReal_mono ENNReal.ofReal_ne_top hle
   simpa [cubeLpNorm, ENNReal.toReal_ofReal, hC] using htoReal
@@ -129,12 +132,12 @@ theorem cubeLpNorm_component_le_cubeLpNorm {d : ℕ} (Q : TriadicCube d) (p : �
       MeasureTheory.eLpNorm (fun x => u x i) p (normalizedCubeMeasure Q) ≤
         ENNReal.ofReal (1 : ℝ) *
           MeasureTheory.eLpNorm u p (normalizedCubeMeasure Q) :=
-    MeasureTheory.eLpNorm_le_mul_eLpNorm_of_ae_le_mul hpoint p
+    MeasureTheory.eLpNorm_le_mul_eLpNorm_of_ae_le_mul hui.aestronglyMeasurable hpoint p
   have htop_u :
-      MeasureTheory.eLpNorm u p (normalizedCubeMeasure Q) ≠ ∞ := ne_of_lt hu.2
+      MeasureTheory.eLpNorm u p (normalizedCubeMeasure Q) ≠ ∞ := ne_of_lt hu.eLpNorm_lt_top
   have htop_ui :
       MeasureTheory.eLpNorm (fun x => u x i) p (normalizedCubeMeasure Q) ≠ ∞ :=
-    ne_of_lt hui.2
+    ne_of_lt hui.eLpNorm_lt_top
   have htoReal :
       (MeasureTheory.eLpNorm (fun x => u x i) p (normalizedCubeMeasure Q)).toReal ≤
         (MeasureTheory.eLpNorm u p (normalizedCubeMeasure Q)).toReal := by
@@ -385,8 +388,8 @@ theorem cubeLpNorm_two_le_cubeLpNorm_infty_of_memLp_infty {d : ℕ}
   have hle :
       MeasureTheory.eLpNorm u (2 : ℝ≥0∞) (normalizedCubeMeasure Q) ≤
         MeasureTheory.eLpNorm u ∞ (normalizedCubeMeasure Q) := by
-    exact MeasureTheory.eLpNorm_le_eLpNorm_of_exponent_le (by norm_num) hu.1
-  have htoReal := ENNReal.toReal_mono (ne_of_lt hu.2) hle
+    exact MeasureTheory.eLpNorm_le_eLpNorm_of_exponent_le (by norm_num)
+  have htoReal := ENNReal.toReal_mono (ne_of_lt hu.eLpNorm_lt_top) hle
   simpa [cubeLpNorm] using htoReal
 
 theorem cubeBesovOscillation_two_le_cubeScaleFactor_mul_of_contDiff_bound {d : ℕ}

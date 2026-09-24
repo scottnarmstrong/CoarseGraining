@@ -56,14 +56,16 @@ noncomputable def cubeEuclideanWspESeminorm {d : ℕ}
 
 theorem cubeEuclideanWspESeminorm_eq_lintegral {d : ℕ}
     (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent)
-    (F : Vec d → Vec d) :
+    (F : Vec d → Vec d)
+    (hF : AEStronglyMeasurable (cubeEuclideanWspKernel s p F)
+      (Gagliardo.gagliardoCubeMeasure Q)) :
     cubeEuclideanWspESeminorm Q s p F =
       (∫⁻ z, ‖cubeEuclideanWspKernel s p F z‖ₑ ^ p.exponent.toReal
         ∂Gagliardo.gagliardoCubeMeasure Q) ^
           (1 / p.exponent.toReal) := by
   unfold cubeEuclideanWspESeminorm
   exact eLpNorm_eq_lintegral_rpow_enorm_toReal
-    (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne
+    (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne hF
 
 theorem memCubeEuclideanWsp_iff {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent} {F : Vec d → Vec d} :
@@ -71,20 +73,20 @@ theorem memCubeEuclideanWsp_iff {d : ℕ} {Q : TriadicCube d}
       AEStronglyMeasurable (cubeEuclideanWspKernel s p F)
           (Gagliardo.gagliardoCubeMeasure Q) ∧
         cubeEuclideanWspESeminorm Q s p F < ∞ :=
-  Iff.rfl
+  ⟨fun h => ⟨MemLp.aestronglyMeasurable h, h⟩, fun h => h.2⟩
 
 theorem MemCubeEuclideanWsp.aestronglyMeasurable {d : ℕ}
     {Q : TriadicCube d} {s : FractionalOrder} {p : FiniteLpExponent}
     {F : Vec d → Vec d} (hF : MemCubeEuclideanWsp Q s p F) :
     AEStronglyMeasurable (cubeEuclideanWspKernel s p F)
       (Gagliardo.gagliardoCubeMeasure Q) :=
-  hF.1
+  MemLp.aestronglyMeasurable hF
 
 theorem MemCubeEuclideanWsp.eSeminorm_lt_top {d : ℕ}
     {Q : TriadicCube d} {s : FractionalOrder} {p : FiniteLpExponent}
     {F : Vec d → Vec d} (hF : MemCubeEuclideanWsp Q s p F) :
     cubeEuclideanWspESeminorm Q s p F < ∞ :=
-  hF.2
+  hF.eLpNorm_lt_top
 
 structure CubeEuclideanWspField {d : ℕ} (Q : TriadicCube d)
     (s : FractionalOrder) (p : FiniteLpExponent)

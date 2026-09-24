@@ -161,12 +161,12 @@ theorem eLpNorm_finiteMeasure_downgrade_le {d : ℕ} {U : Set (Vec d)}
 factor because the normalized cube measure is a probability measure. -/
 theorem eLpNorm_normalizedCubeMeasure_downgrade_le {d : ℕ} (Q : TriadicCube d)
     (p : FiniteLpExponent) (hp : p.exponent ≤ 2) (f : Vec d → ℝ)
-    (hf : MeasureTheory.AEStronglyMeasurable f (normalizedCubeMeasure Q)) :
+    (_hf : MeasureTheory.AEStronglyMeasurable f (normalizedCubeMeasure Q)) :
     MeasureTheory.eLpNorm f p.exponent (normalizedCubeMeasure Q) ≤
       MeasureTheory.eLpNorm f 2 (normalizedCubeMeasure Q) := by
   let : MeasureTheory.IsProbabilityMeasure (normalizedCubeMeasure Q) :=
     ⟨normalizedCubeMeasure_apply_univ Q⟩
-  exact MeasureTheory.eLpNorm_le_eLpNorm_of_exponent_le hp hf
+  exact MeasureTheory.eLpNorm_le_eLpNorm_of_exponent_le hp
 
 /-- The normalized-cube exponent downgrade for the value representative of
 an `H¹` function. -/

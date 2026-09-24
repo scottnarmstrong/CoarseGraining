@@ -550,7 +550,10 @@ noncomputable def toOpenCubeSetOriginCube {d : ℕ} [NeZero d] {n : ℤ}
             ≤ ENNReal.ofReal (1 / ((m : ℝ) + 1)) * μo Set.univ ^ (1 / ((2 : ENNReal).toReal)) :=
               MeasureTheory.eLpNorm_sub_le_of_dist_bdd
                 (μ := μo) (p := (2 : ENNReal)) (s := Set.univ)
-                (by simp) MeasurableSet.univ (by positivity) (hεShift m).2.2.1
+                (by simp) MeasurableSet.univ (by positivity)
+                ((happrox'_smooth m).continuous.aestronglyMeasurable.sub
+                  ((u.approx_smooth m).differentiable (by simp)).continuous.aestronglyMeasurable)
+                (hεShift m).2.2.1
                 (by simp) (by simp)
         _ = ENNReal.ofReal ((1 / ((m : ℝ) + 1)) * cμ) := by
               rw [hpow_eq, ← ENNReal.ofReal_mul]
@@ -602,6 +605,15 @@ noncomputable def toOpenCubeSetOriginCube {d : ℕ} [NeZero d] {n : ℤ}
                 - (fderiv ℝ (u.approx m) x) (basisVec i)) 2 μo ≤
               ENNReal.ofReal ((1 / ((m : ℝ) + 1)) * cμ) := by
       intro m
+      have hcont :
+          Continuous (fun x : Vec d => (fderiv ℝ (u.approx m) x) (basisVec i)) := by
+        simpa using
+          ((u.approx_smooth m).continuous_fderiv (by simp)).clm_apply continuous_const
+      have hcontShift :
+          Continuous
+            (fun x : Vec d =>
+              (fderiv ℝ (u.approx m) (x - diagonalShift (d := d) (εShift m))) (basisVec i)) :=
+        hcont.comp (continuous_id.sub continuous_const)
       calc
         MeasureTheory.eLpNorm
             (fun x =>
@@ -610,7 +622,9 @@ noncomputable def toOpenCubeSetOriginCube {d : ℕ} [NeZero d] {n : ℤ}
             ≤ ENNReal.ofReal (1 / ((m : ℝ) + 1)) * μo Set.univ ^ (1 / ((2 : ENNReal).toReal)) :=
               MeasureTheory.eLpNorm_sub_le_of_dist_bdd
                 (μ := μo) (p := (2 : ENNReal)) (s := Set.univ)
-                (by simp) MeasurableSet.univ (by positivity) ((hεShift m).2.2.2 i)
+                (by simp) MeasurableSet.univ (by positivity)
+                (hcontShift.aestronglyMeasurable.sub hcont.aestronglyMeasurable)
+                ((hεShift m).2.2.2 i)
                 (by simp) (by simp)
         _ = ENNReal.ofReal ((1 / ((m : ℝ) + 1)) * cμ) := by
               rw [hpow_eq, ← ENNReal.ofReal_mul]
@@ -649,16 +663,10 @@ noncomputable def toOpenCubeSetOriginCube {d : ℕ} [NeZero d] {n : ℤ}
         refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hsum
           (fun _ => bot_le) ?_
         intro m
-        have hmeas₁ :
-            MeasureTheory.AEStronglyMeasurable (fun x => u.approx m x - v.toFun x) μo :=
-          ((u.approx_smooth m).differentiable (by simp)).continuous.aestronglyMeasurable.sub
-            v.memL2.aestronglyMeasurable
-        have hmeas₂ :
-            MeasureTheory.AEStronglyMeasurable (fun x => approx' m x - u.approx m x) μo :=
-          (happrox'_smooth m).continuous.aestronglyMeasurable.sub
-            ((u.approx_smooth m).differentiable (by simp)).continuous.aestronglyMeasurable
         have htri :=
-          MeasureTheory.eLpNorm_add_le hmeas₁ hmeas₂ (by norm_num : (1 : ENNReal) ≤ 2)
+          MeasureTheory.eLpNorm_add_le (μ := μo)
+            (f := fun x => u.approx m x - v.toFun x) (g := fun x => approx' m x - u.approx m x)
+            (by norm_num : (1 : ENNReal) ≤ 2)
         have hsum_eq :
             ((fun x => u.approx m x - v.toFun x) + fun x => approx' m x - u.approx m x) =
               (fun x => approx' m x - v.toFun x) := by
@@ -682,35 +690,13 @@ noncomputable def toOpenCubeSetOriginCube {d : ℕ} [NeZero d] {n : ℤ}
         refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hsum
           (fun _ => bot_le) ?_
         intro m
-        have hmeas₁ :
-            MeasureTheory.AEStronglyMeasurable
-              (fun x => (fderiv ℝ (u.approx m) x) (basisVec i) - v.grad x i) μo := by
-          have hcont :
-              Continuous (fun x : Vec d => (fderiv ℝ (u.approx m) x) (basisVec i)) := by
-            simpa using
-              ((u.approx_smooth m).continuous_fderiv (by simp)).clm_apply continuous_const
-          exact hcont.aestronglyMeasurable.sub (v.gradMemL2 i).aestronglyMeasurable
-        have hmeas₂ :
-            MeasureTheory.AEStronglyMeasurable
-              (fun x =>
-                (fderiv ℝ (u.approx m) (x - diagonalShift (d := d) (εShift m))) (basisVec i)
-                  - (fderiv ℝ (u.approx m) x) (basisVec i)) μo := by
-          have hcontShift :
-              Continuous
-                (fun x : Vec d =>
-                  (fderiv ℝ (u.approx m) (x - diagonalShift (d := d) (εShift m))) (basisVec i)) := by
-            have hbase :
-                Continuous (fun x : Vec d => (fderiv ℝ (u.approx m) x) (basisVec i)) := by
-              simpa using
-                ((u.approx_smooth m).continuous_fderiv (by simp)).clm_apply continuous_const
-            exact hbase.comp (continuous_id.sub continuous_const)
-          have hcont :
-              Continuous (fun x : Vec d => (fderiv ℝ (u.approx m) x) (basisVec i)) := by
-            simpa using
-              ((u.approx_smooth m).continuous_fderiv (by simp)).clm_apply continuous_const
-          exact hcontShift.aestronglyMeasurable.sub hcont.aestronglyMeasurable
         have htri :=
-          MeasureTheory.eLpNorm_add_le hmeas₁ hmeas₂ (by norm_num : (1 : ENNReal) ≤ 2)
+          MeasureTheory.eLpNorm_add_le (μ := μo)
+            (f := fun x => (fderiv ℝ (u.approx m) x) (basisVec i) - v.grad x i)
+            (g := fun x =>
+              (fderiv ℝ (u.approx m) (x - diagonalShift (d := d) (εShift m))) (basisVec i)
+                - (fderiv ℝ (u.approx m) x) (basisVec i))
+            (by norm_num : (1 : ENNReal) ≤ 2)
         have hsum_eq :
             ((fun x => (fderiv ℝ (u.approx m) x) (basisVec i) - v.grad x i) +
                 fun x =>

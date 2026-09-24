@@ -1,4 +1,6 @@
-import Mathlib.MeasureTheory.Measure.MeasureSpace
+import Mathlib.MeasureTheory.Measure.Restrict
+import Mathlib.MeasureTheory.Measure.Map
+import Mathlib.MeasureTheory.Measure.Sum
 import Mathlib.MeasureTheory.Measure.NullMeasurable
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Order
 

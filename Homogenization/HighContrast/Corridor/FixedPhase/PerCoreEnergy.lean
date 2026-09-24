@@ -103,7 +103,7 @@ theorem setIntegral_coreBox_inter_cubeSet_eq_openCubeSet {m : ℤ}
     (∫ x in coreBox ℓ σ k ∩ cubeSet (originCube d m), f x)
       = ∫ x in coreBox ℓ σ k ∩ openCubeSet (originCube d m), f x := by
   refine setIntegral_congr_set ?_
-  exact (Filter.EventuallyEq.refl _ _).inter (cubeSet_originCube_ae_eq_openCubeSet (d := d) m)
+  exact (Filter.EventuallyEqSet.refl _ _).inter (cubeSet_originCube_ae_eq_openCubeSet (d := d) m)
 
 
 /-! ## The per-core minimizer energy bound -/

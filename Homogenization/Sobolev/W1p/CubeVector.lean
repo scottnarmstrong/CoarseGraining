@@ -157,13 +157,14 @@ theorem eLpNorm_jacobianHilbert_le_sum_grad
       ∑ i : Fin d, MeasureTheory.eLpNorm (singleRow i) p.exponent
         (normalizedCubeMeasure Q) := by
           exact MeasureTheory.eLpNorm_sum_le
-            (fun i _ ↦ (hsingleRow i).aestronglyMeasurable) p.one_lt.le
+            p.one_lt.le
     _ = ∑ i : Fin d, MeasureTheory.eLpNorm
         (fun x ↦ HilbertVec.ofVec ((F.coord i).grad x))
         p.exponent (normalizedCubeMeasure Q) := by
           apply Finset.sum_congr rfl
           intro i _
-          apply MeasureTheory.eLpNorm_congr_norm_ae
+          apply MeasureTheory.eLpNorm_congr_norm_ae (hsingleRow i).aestronglyMeasurable
+            (F.jacobianRowMemLp i).aestronglyMeasurable
           exact MeasureTheory.ae_of_all (normalizedCubeMeasure Q) fun x ↦ by
             simp [singleRow, row]
 

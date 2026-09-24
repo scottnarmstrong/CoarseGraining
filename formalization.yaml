@@ -109,11 +109,11 @@ automation:
         - "gpt-5.5"
       framework: "Claude Code (Anthropic) and Codex (OpenAI) agentic coding harnesses"
       tool_setup: >-
-        Lake builds under leanprover/lean4:v4.33.0 with Mathlib v4.33.0 (commit
-        db584cd6d46c92f209a44c0f1c829460d327499d). The Lean comparator was run
+        Lake builds under leanprover/lean4:v4.35.0-rc2 with Mathlib v4.35.0-rc2 (commit
+        065356127b1dc0016f66b7283ce0ce2c4055aa55). The Lean comparator was run
         locally on all five pairs (comparator commit
-        575674928e239f5bc452aab72d1dd7b0f1326494, lean4export tag v4.33.0 =
-        commit 15f6055e299ad5b89345e533cc2192f4cc00f659, landrun 0.1.18 = commit 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4), and
+        32bd61da1d68fbaa310234964e9b820b03a0f82f, lean4export tag v4.35.0-rc2 =
+        commit 6cea97789dc088ea47fcea15692db85685aedac5, landrun 0.1.18 = commit 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4), and
         additionally with the independent nanoda kernel (nanoda_lib 0.4.15 =
         commit 6ae1f0cd962f081f6c423454c5da729d841236a7), which the
         .github/workflows/comparator.yml workflow enables on every push. Multiple

@@ -64,7 +64,11 @@ private theorem cubeLpNorm_grad_le_cubeLpNorm_euclideanGrad {d : ℕ}
         openCubeSet_boundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
         using u.gradEuclideanMemLp U (2 : ℝ≥0∞)
     exact hmem.eLpNorm_ne_top
-  · apply MeasureTheory.eLpNorm_mono_ae
+  · have hgrad : MeasureTheory.AEStronglyMeasurable u.grad (normalizedCubeMeasure Q) := by
+      rw [← openCubeSet_boundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure Q]
+      refine (aemeasurable_pi_iff.2 fun i => ?_).aestronglyMeasurable
+      exact (u.gradMemLp i).aestronglyMeasurable.aemeasurable.smul_measure _
+    apply MeasureTheory.eLpNorm_mono_ae hgrad
     filter_upwards [] with x
     simpa only [Real.norm_eq_abs, abs_of_nonneg (norm_nonneg _),
       abs_of_nonneg (euclideanNorm_nonneg _),

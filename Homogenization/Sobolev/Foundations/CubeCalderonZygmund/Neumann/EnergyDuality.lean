@@ -170,10 +170,20 @@ theorem centeredCubeH1MeanZeroScalarDivergence_cz_two
   rw [← ofReal_norm,
     Real.norm_of_nonneg (inv_nonneg.mpr hsigma0.le),
     ENNReal.ofReal_inv_of_pos hsigma0] at hnormalized
+  have hmeasU : AEStronglyMeasurable (hilbertifyVecField u.toH1Function.grad)
+      (centeredCubeDomain d m).normalizedVolume := by
+    rw [centeredCube_normalizedVolume_eq_smul_openCubeVolume_neumann]
+    exact (memHilbertVectorL2_hilbertifyVecField
+      u.toH1Function.grad_memVectorL2).aestronglyMeasurable.smul_measure _
+  have hmeasH : AEStronglyMeasurable (hilbertifyVecField h.toField)
+      (centeredCubeDomain d m).normalizedVolume := by
+    rw [centeredCube_normalizedVolume_eq_smul_openCubeVolume_neumann]
+    exact (memHilbertVectorL2_hilbertifyVecField hH).aestronglyMeasurable.smul_measure _
+  rw [← eLpNorm_norm _ hmeasU, ← eLpNorm_norm _ hmeasH] at hnormalized
   simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
     BoundedMeasurableDomain.normalizedLpENorm,
     FiniteLpExponent.two_exponent, euclideanNorm_eq_norm_ofVec,
-    eLpNorm_norm, hilbertifyVecField] using! hnormalized
+    hilbertifyVecField] using! hnormalized
 
 private theorem nonempty_openCubeSet_originCube_neumann (d : ℕ) (m : ℤ) :
     Set.Nonempty (openCubeSet (originCube d m)) := by

@@ -642,7 +642,11 @@ theorem exists_cubeLpNorm_euclideanCoordDeriv_averagingField_coord_sq_le_vector_
               ((euclideanCoordDeriv k
                   (fun y : Vec d => P.averagingField h y i) x) ^ 2)
             ∂ normalizedCubeMeasure Q).toReal := by
-          rw [cubeLpNorm_two_sq_eq_lintegral_ofReal_sq_toReal]
+          have hmeasD : MeasureTheory.AEStronglyMeasurable
+              (fun x => euclideanCoordDeriv k (fun y : Vec d => P.averagingField h y i) x)
+              (normalizedCubeMeasure Q) :=
+            (measurable_fderiv_apply_const ℝ _ _).aestronglyMeasurable
+          rw [cubeLpNorm_two_sq_eq_lintegral_ofReal_sq_toReal _ _ hmeasD]
     _ ≤ R.toReal := htoReal
     _ =
         (ENNReal.ofReal
@@ -749,7 +753,7 @@ theorem exists_cubeLpNorm_euclideanCoordDeriv_averagingField_coord_sq_le_depthAv
         (hloc S hS)
     simpa [B] using
       toReal_overlapCentersAtDepth_average_lintegral_fluctuation_eq_depthAverage
-        Q h j hfin
+        Q h j hfin (fun S hS => (hloc S hS).aestronglyMeasurable)
   have hconst_toReal :
       (ENNReal.ofReal K *
           ((3 ^ d : ℝ≥0∞) *

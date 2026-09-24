@@ -117,8 +117,12 @@ theorem cubeResidualNorm_le_continuousKResidualNorm {d : ℕ}
         (fun x => euclideanNorm (F x - G.toField x)) (2 : ℝ≥0∞)
         (unitCenteredCubeDomain d).normalizedVolume).toReal
   rw [normalizedCubeMeasure_originCube_zero_eq_unitCenteredCubeDomain_normalizedVolume]
+  have hR_meas : MeasureTheory.AEStronglyMeasurable (fun x => F x - G.toField x)
+      (unitCenteredCubeDomain d).normalizedVolume :=
+    (PiLp.continuous_ofLp 2 _).comp_aestronglyMeasurable
+      (F.euclideanMemL2.sub G.euclideanMemL2).aestronglyMeasurable
   apply ENNReal.toReal_mono hmem.eLpNorm_ne_top
-  apply MeasureTheory.eLpNorm_mono
+  apply MeasureTheory.eLpNorm_mono hR_meas
   intro x
   simpa only [Real.norm_eq_abs, abs_of_nonneg (euclideanNorm_nonneg _)] using
     norm_le_euclideanNorm (F x - G.toField x)
@@ -170,7 +174,12 @@ theorem continuousKResidualNorm_le_dimPlusOne_mul_cubeResidualNorm {d : ℕ}
       ENNReal.toReal_mono
         ((hR_vec_mem.const_smul C).eLpNorm_ne_top)
         (by
-          apply MeasureTheory.eLpNorm_mono
+          have hRn_meas : MeasureTheory.AEStronglyMeasurable
+              (fun x => euclideanNorm (R x)) (unitCenteredCubeDomain d).normalizedVolume := by
+            simp_rw [euclideanNorm_eq_norm_ofVec]
+            exact (PiLp.continuous_toLp 2 fun _ : Fin d => ℝ).norm.comp_aestronglyMeasurable
+              hR_vec_mem.aestronglyMeasurable
+          apply MeasureTheory.eLpNorm_mono hRn_meas
           intro x
           simpa only [Real.norm_eq_abs, abs_of_nonneg (euclideanNorm_nonneg _)] using
             hbound x)
@@ -233,11 +242,11 @@ theorem continuousKGradientNorm_le_cubeRelativeGradientCoordL2NormSum {d : ℕ}
           ≤ ∑ j : Fin d,
               MeasureTheory.eLpNorm (fun x => ‖f i j x‖) (2 : ℝ≥0∞) μ :=
             MeasureTheory.eLpNorm_sum_le
-              (fun j _ => (hcoord i j).norm.aestronglyMeasurable) (by norm_num)
+              (by norm_num)
       _ = ∑ j : Fin d, MeasureTheory.eLpNorm (f i j) (2 : ℝ≥0∞) μ := by
             apply Finset.sum_congr rfl
             intro j _
-            exact MeasureTheory.eLpNorm_norm (f i j)
+            exact MeasureTheory.eLpNorm_norm (f i j) (hcoord i j).aestronglyMeasurable
   have htotal_bound : MeasureTheory.eLpNorm total (2 : ℝ≥0∞) μ ≤
       ∑ i : Fin d, ∑ j : Fin d, MeasureTheory.eLpNorm (f i j) (2 : ℝ≥0∞) μ := by
     calc
@@ -245,7 +254,7 @@ theorem continuousKGradientNorm_le_cubeRelativeGradientCoordL2NormSum {d : ℕ}
           ≤ ∑ i : Fin d, MeasureTheory.eLpNorm (row i) (2 : ℝ≥0∞) μ := by
             rw [htotal_eq]
             exact MeasureTheory.eLpNorm_sum_le
-              (fun i _ => hrow_meas i) (by norm_num)
+              (by norm_num)
       _ ≤ ∑ i : Fin d, ∑ j : Fin d,
           MeasureTheory.eLpNorm (f i j) (2 : ℝ≥0∞) μ := by
             apply Finset.sum_le_sum
@@ -254,7 +263,12 @@ theorem continuousKGradientNorm_le_cubeRelativeGradientCoordL2NormSum {d : ℕ}
   have hfrob_bound : MeasureTheory.eLpNorm
       (fun x => matrixFrobeniusMagnitude (G.gradient x)) (2 : ℝ≥0∞) μ ≤
       MeasureTheory.eLpNorm total (2 : ℝ≥0∞) μ := by
-    apply MeasureTheory.eLpNorm_mono
+    have hfrob_meas : MeasureTheory.AEStronglyMeasurable
+        (fun x => matrixFrobeniusMagnitude (G.gradient x)) μ := by
+      dsimp [μ, Q]
+      rw [normalizedCubeMeasure_originCube_zero_eq_unitCenteredCubeDomain_normalizedVolume]
+      exact G.gradientFrobeniusMemL2.aestronglyMeasurable
+    apply MeasureTheory.eLpNorm_mono hfrob_meas
     intro x
     rw [Real.norm_eq_abs, abs_of_nonneg (matrixFrobeniusMagnitude_nonneg _)]
     have htotal_nonneg : 0 ≤ total x := by
@@ -325,7 +339,9 @@ theorem cubeRelativeGradientCoordL2NormSum_le_dimPlusOne_sq_mul_continuousKGradi
       MeasureTheory.eLpNorm (f i j) (2 : ℝ≥0∞) μ ≤
         MeasureTheory.eLpNorm hFrob (2 : ℝ≥0∞) μ := by
     intro i j
-    apply MeasureTheory.eLpNorm_mono
+    apply MeasureTheory.eLpNorm_mono (by
+      dsimp [f, μ, Q]
+      exact ((G.coord i).grad_memL2_normalizedCubeMeasure j).aestronglyMeasurable)
     intro x
     have hfrob_nonneg : 0 ≤ hFrob x := by
       dsimp [hFrob]

@@ -183,7 +183,7 @@ theorem scalarAt_of_mem_openUnitCell {d : ℕ} {lam Lam : ℝ}
   classical
   unfold scalarAt
   let h : ∃ w : Lattice d, x ∈ openUnitCell w := ⟨z, hz⟩
-  rw [dif_pos h]
+  rw [dite_eq_left h]
   congr 1
   exact congrArg ω (openUnitCell_unique (Classical.choose_spec h) hz)
 
@@ -193,7 +193,7 @@ theorem scalarAt_of_not_mem_any_openUnitCell {d : ℕ} {lam Lam : ℝ}
     scalarAt lam Lam ω x = lam := by
   classical
   unfold scalarAt
-  rw [dif_neg hx]
+  rw [dite_eq_right hx]
 
 /-- The region where the checkerboard scalar takes the upper value `Lam`. -/
 def upperConductanceRegion {d : ℕ} (ω : Sample d) : Set (Vec d) :=

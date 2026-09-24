@@ -92,10 +92,13 @@ private theorem supKernel_measurable {d : ℕ} {Q : TriadicCube d} {φ : Vec d �
     (hφ : MemLp φ 2 (normalizedCubeMeasure Q)) :
     AEStronglyMeasurable (Gagliardo.gagliardoKernel (3 / 4 : ℝ) 2 φ)
       (Gagliardo.gagliardoCubeMeasure Q) := by
+  have : SFinite (cubeMeasure Q) := by
+    unfold cubeMeasure
+    infer_instance
   have hcube : AEStronglyMeasurable φ (cubeMeasure Q) := by
-    refine ⟨hφ.1.mk _, hφ.1.stronglyMeasurable_mk, ?_⟩
-    exact Gagliardo.ae_normalizedCubeMeasure_iff.mp hφ.1.ae_eq_mk
-  have hfst := hφ.1.comp_quasiMeasurePreserving
+    refine ⟨hφ.aestronglyMeasurable.mk _, hφ.aestronglyMeasurable.stronglyMeasurable_mk, ?_⟩
+    exact Gagliardo.ae_normalizedCubeMeasure_iff.mp hφ.aestronglyMeasurable.ae_eq_mk
+  have hfst := hφ.aestronglyMeasurable.comp_quasiMeasurePreserving
     (Measure.quasiMeasurePreserving_fst (ν := cubeMeasure Q))
   have hsnd := hcube.comp_quasiMeasurePreserving
     (Measure.quasiMeasurePreserving_snd (μ := normalizedCubeMeasure Q))
@@ -112,13 +115,13 @@ private theorem supSeminorm_bound {d : ℕ} (hd : 2 ≤ d) {Q : TriadicCube d}
   let D : ℝ := (d : ℝ) ^ ((3 / 4 : ℝ) + (d : ℝ) / 2)
   have hD : 0 ≤ D := Real.rpow_nonneg (Nat.cast_nonneg _) _
   have hle := eLpNorm_le_mul_eLpNorm_of_ae_le_mul
-    (μ := Gagliardo.gagliardoCubeMeasure Q)
+    (μ := Gagliardo.gagliardoCubeMeasure Q) (supKernel_measurable hφ.1)
     (Filter.Eventually.of_forall (kernel_bound hd φ)) (2 : ℝ≥0∞)
   have hfinite : ENNReal.ofReal D * eLpNorm (kernel φ) 2
       (Gagliardo.gagliardoCubeMeasure Q) ≠ ∞ :=
-    ENNReal.mul_ne_top ENNReal.ofReal_ne_top hφ.2.2.ne
+    ENNReal.mul_ne_top ENNReal.ofReal_ne_top hφ.2.eLpNorm_ne_top
   have hmem : Gagliardo.MemWsp Q (3 / 4 : ℝ) 2 φ :=
-    ⟨supKernel_measurable hφ.1, lt_of_le_of_lt hle (lt_top_iff_ne_top.mpr hfinite)⟩
+    lt_of_le_of_lt hle (lt_top_iff_ne_top.mpr hfinite)
   refine ⟨hmem, ?_⟩
   have hr := ENNReal.toReal_mono hfinite hle
   simpa [Book.Ch01.Legacy.fractionalSobolevSeminorm,
@@ -131,7 +134,7 @@ private theorem partialSeminorm_bound {d : ℕ} [NeZero d] {Q : TriadicCube d}
     cubeBesovPartialSeminorm Q (3 / 4 : ℝ) 2 2 N φ ≤
       (3 : ℝ) ^ ((d : ℝ) / 2) * Book.Ch01.Legacy.wspVsBsppConstant d *
         Book.Ch01.Legacy.fractionalSobolevSeminorm Q (3 / 4 : ℝ) 2 φ := by
-  obtain ⟨ψ, hψ, heq⟩ := hφ.1.aemeasurable
+  obtain ⟨ψ, hψ, heq⟩ := hφ.aestronglyMeasurable.aemeasurable
   have heqCube := Gagliardo.ae_normalizedCubeMeasure_iff.mp heq
   have hψW := (Gagliardo.memWsp_congr_ae heqCube).mp hW
   have hbound := Book.Ch01.Legacy.besovOverlapPartial_le_const_mul_gagliardo Q

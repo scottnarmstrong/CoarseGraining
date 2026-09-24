@@ -36,6 +36,9 @@ private theorem aestronglyMeasurable_cubeEuclideanWspKernel_of_memLp
       (normalizedCubeMeasure Q)) :
     AEStronglyMeasurable (cubeEuclideanWspKernel s p F)
       (Gagliardo.gagliardoCubeMeasure Q) := by
+  have : SFinite (cubeMeasure Q) := by
+    unfold cubeMeasure
+    infer_instance
   let μ := Gagliardo.gagliardoCubeMeasure Q
   let D : Set (Vec d × Vec d) := (Set.diagonal (Vec d))ᶜ
   have hFcube : AEStronglyMeasurable (fun x => HilbertVec.ofVec (F x))
@@ -102,7 +105,7 @@ theorem memCubeEuclideanWsp_of_memLp_of_eSeminorm_lt_top
     rw [hkernel]
     exact MemLp.zero
   · let : NeZero d := ⟨hd⟩
-    exact ⟨aestronglyMeasurable_cubeEuclideanWspKernel_of_memLp hF, hsemi⟩
+    exact hsemi
 
 end
 

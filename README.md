@@ -31,7 +31,7 @@ infrastructure, and a finite-exponent local coarse-graining theorem.
 - **No custom `axiom`.** The public theorems reduce to `mathlib`'s three
   standard foundational axioms — `propext`, `Classical.choice`, `Quot.sound` —
   verified by [`Homogenization/Meta/AxiomsAudit.lean`](Homogenization/Meta/AxiomsAudit.lean).
-- Pinned to Lean `v4.33.0` and `mathlib` `v4.33.0`.
+- Pinned to Lean `v4.35.0-rc2` and `mathlib` `v4.35.0-rc2`.
 
 ## Scope and faithfulness
 

@@ -703,6 +703,11 @@ private theorem cubeEuclideanOverlap_rpow_le_constant_mul_wsp_of_measurable
   let A := cubeCoordinateGagliardoComparisonConstant d p
   let B : ℝ≥0∞ := 2 * 3 ^ d
   let M := cubeEuclideanWspMetricComparisonConstant d p
+  have hK : AEStronglyMeasurable (cubeAmbientHilbertWspKernel s p F.toField)
+      (Gagliardo.gagliardoCubeMeasure Q) :=
+    (measurable_dist.pow measurable_const).aestronglyMeasurable.smul
+      ((HilbertVec.ofVecL d).continuous.comp_aestronglyMeasurable
+        ((hF.comp measurable_fst).sub (hF.comp measurable_snd)).aestronglyMeasurable)
   calc
     (cubeEuclideanPositiveBesovOverlapESeminorm Q s p F) ^ p.exponent.toReal =
         cubeEuclideanPositiveBesovOverlapPowerEnergy Q s p F :=
@@ -721,7 +726,7 @@ private theorem cubeEuclideanOverlap_rpow_le_constant_mul_wsp_of_measurable
     _ ≤ A * (B * ((d : ℝ≥0∞) * (M *
         (cubeEuclideanWspESeminorm Q s p F) ^ p.exponent.toReal))) := by
       gcongr
-      exact cubeAmbientHilbertWspESeminorm_rpow_le_metricComparisonConstant_mul Q s p F
+      exact cubeAmbientHilbertWspESeminorm_rpow_le_metricComparisonConstant_mul Q s p F hK
     _ = cubeEuclideanOverlapToWspPowerConstant d p *
         (cubeEuclideanWspESeminorm Q s p F) ^ p.exponent.toReal := by
       unfold cubeEuclideanOverlapToWspPowerConstant
@@ -738,10 +743,19 @@ private theorem cubeEuclideanWsp_rpow_le_constant_mul_overlap_of_measurable
         (cubeEuclideanPositiveBesovOverlapESeminorm Q s p F) ^ p.exponent.toReal := by
   let A := cubeCoordinateGagliardoComparisonConstant d p
   let L := (Gagliardo.gagliardoBesovLowerConstant d) ^ p.exponent.toReal
+  have hdist : Measurable fun z : Vec d × Vec d => euclideanDist z.1 z.2 := by
+    simp only [euclideanDist_eq_norm_sub_ofVec]
+    exact (((HilbertVec.ofVecL d).continuous.comp continuous_fst).sub
+      ((HilbertVec.ofVecL d).continuous.comp continuous_snd)).norm.measurable
+  have hK : AEStronglyMeasurable (cubeEuclideanWspKernel s p F.toField)
+      (Gagliardo.gagliardoCubeMeasure Q) :=
+    (hdist.pow measurable_const).aestronglyMeasurable.smul
+      ((HilbertVec.ofVecL d).continuous.comp_aestronglyMeasurable
+        ((hF.comp measurable_fst).sub (hF.comp measurable_snd)).aestronglyMeasurable)
   calc
     (cubeEuclideanWspESeminorm Q s p F) ^ p.exponent.toReal ≤
       (cubeAmbientHilbertWspESeminorm Q s p F) ^ p.exponent.toReal :=
-      cubeEuclideanWspESeminorm_rpow_le_ambientHilbert Q s p F
+      cubeEuclideanWspESeminorm_rpow_le_ambientHilbert Q s p F hK
     _ ≤ A * cubeCoordinateGagliardoPowerEnergy Q s p F :=
       cubeAmbientHilbertWspESeminorm_rpow_le_coordinateGagliardoPowerEnergy Q s p F hF
     _ ≤ A * (L * cubeEuclideanCoordinateExactOverlapPowerEnergy Q s p F) := by

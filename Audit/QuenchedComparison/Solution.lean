@@ -457,7 +457,7 @@ private theorem toRepoLawCarrier {d : ℕ} [NeZero d] (S : Setup d) :
       (Measure.map (toRepoField (d := d)) S.P) where
   isProbability := by
     have := S.isProbability
-    exact Measure.isProbabilityMeasure_map measurable_toRepoField.aemeasurable
+    infer_instance
   ae_locally_uniformly_elliptic := by
     refine (ae_map_toRepoField_iff (μ := S.P)).2 ?_
     filter_upwards [S.uniformlyElliptic] with a ha

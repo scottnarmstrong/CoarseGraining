@@ -140,13 +140,32 @@ theorem eLpNorm_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionScalar
       ((3 : ℝ≥0∞) ^ d) ^ (1 / p.exponent.toReal) *
         MeasureTheory.eLpNorm F p.exponent
           (MeasureTheory.volume.restrict (openCubeSet Q)) := by
-  rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
-      (finiteLpExponent_ne_zero p) p.lt_top.ne,
-    MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
-      (finiteLpExponent_ne_zero p) p.lt_top.ne,
-    lintegral_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionScalar]
-  rw [ENNReal.mul_rpow_of_nonneg _ _
-    (one_div_nonneg.mpr (finiteLpExponent_toReal_pos p).le)]
+  by_cases hF : MeasureTheory.AEStronglyMeasurable F
+      (MeasureTheory.volume.restrict (openCubeSet Q))
+  · have hae : MeasureTheory.AEStronglyMeasurable
+        (cubeDirichletOddReflectionScalar Q F)
+        (MeasureTheory.volume.restrict (cubeFaceReflectionBlockSet Q)) := by
+      rw [cubeFaceReflectionBlockSet_eq_iUnion_cellCube Q]
+      exact MeasureTheory.AEStronglyMeasurable.iUnion fun choice ↦
+        aestronglyMeasurable_cubeDirichletOddReflectionScalar_cell Q choice F hF
+    rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
+        (finiteLpExponent_ne_zero p) p.lt_top.ne hae,
+      MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal
+        (finiteLpExponent_ne_zero p) p.lt_top.ne hF,
+      lintegral_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionScalar]
+    rw [ENNReal.mul_rpow_of_nonneg _ _
+      (one_div_nonneg.mpr (finiteLpExponent_toReal_pos p).le)]
+  · have hR : ¬MeasureTheory.AEStronglyMeasurable
+        (cubeDirichletOddReflectionScalar Q F)
+        (MeasureTheory.volume.restrict (cubeFaceReflectionBlockSet Q)) := by
+      intro h
+      apply hF
+      refine (h.mono_measure (MeasureTheory.Measure.restrict_mono
+        (openCubeSet_subset_cubeFaceReflectionBlockSet Q) le_rfl)).congr ?_
+      filter_upwards [MeasureTheory.ae_restrict_mem (measurableSet_openCubeSet Q)] with x hx
+      exact cubeDirichletOddReflectionScalar_eq_self_of_mem_openCubeSet Q F hx
+    rw [MeasureTheory.eLpNorm_of_not_aestronglyMeasurable hR,
+      MeasureTheory.eLpNorm_of_not_aestronglyMeasurable hF, ENNReal.mul_top (by simp)]
 
 /-- Finite-`p` scalar integrability transports from a cube to the complete
 Dirichlet odd-reflection block. -/
@@ -158,15 +177,8 @@ theorem memLp_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionScalar
     MeasureTheory.MemLp (cubeDirichletOddReflectionScalar Q F)
       p.exponent
       (MeasureTheory.volume.restrict (cubeFaceReflectionBlockSet Q)) := by
-  have hae : MeasureTheory.AEStronglyMeasurable
-      (cubeDirichletOddReflectionScalar Q F)
-      (MeasureTheory.volume.restrict (cubeFaceReflectionBlockSet Q)) := by
-    rw [cubeFaceReflectionBlockSet_eq_iUnion_cellCube Q]
-    exact MeasureTheory.AEStronglyMeasurable.iUnion fun choice ↦
-      aestronglyMeasurable_cubeDirichletOddReflectionScalar_cell
-        Q choice F hF.aestronglyMeasurable
-  refine ⟨hae, ?_⟩
-  rw [eLpNorm_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionScalar Q F p]
+  rw [MeasureTheory.memLp_iff,
+    eLpNorm_cubeFaceReflectionBlockSet_cubeDirichletOddReflectionScalar Q F p]
   refine ENNReal.mul_lt_top ?_ hF.eLpNorm_lt_top
   exact ENNReal.rpow_lt_top_of_nonneg
     (one_div_nonneg.mpr (finiteLpExponent_toReal_pos p).le) (by simp)
@@ -285,8 +297,10 @@ theorem eLpNorm_normalizedCubeMeasure_succ_originCube_cubeDirichletOddReflection
         (normalizedCubeMeasure (originCube d m)) := by
   rw [normalizedCubeMeasure_originCube_eq_smul_restrict_openCubeSet,
     normalizedCubeMeasure_originCube_eq_smul_restrict_openCubeSet,
-    MeasureTheory.eLpNorm_smul_measure_of_ne_top p.lt_top.ne,
-    MeasureTheory.eLpNorm_smul_measure_of_ne_top p.lt_top.ne,
+    MeasureTheory.eLpNorm_smul_measure_of_ne_zero_of_ne_top
+      (finiteLpExponent_ne_zero p) p.lt_top.ne,
+    MeasureTheory.eLpNorm_smul_measure_of_ne_zero_of_ne_top
+      (finiteLpExponent_ne_zero p) p.lt_top.ne,
     eLpNorm_openCubeSet_succ_originCube_cubeDirichletOddReflectionScalar]
   simp only [smul_eq_mul, one_div, ENNReal.toReal_inv]
   rw [← mul_assoc, normalized_originCube_reflection_factor_cancel]

@@ -51,15 +51,15 @@ theorem rawOverlapWeight_le_one {d : ℕ}
     rawOverlapWeight Q j S x ≤ 1 := by
   unfold rawOverlapWeight
   split
-  · exact Finset.prod_le_one
+  · exact Finset.prod_le_one₀
       (fun i _ =>
         mul_nonneg
           (lowerOverlapTransition_nonneg Q S i x)
           (upperOverlapTransition_nonneg Q S i x))
       (fun i _ =>
-        mul_le_one₀
-          (lowerOverlapTransition_le_one Q S i x)
+        (mul_le_of_le_one_left
           (upperOverlapTransition_nonneg Q S i x)
+          (lowerOverlapTransition_le_one Q S i x)).trans
           (upperOverlapTransition_le_one Q S i x))
   · norm_num
 
@@ -221,7 +221,7 @@ theorem norm_fderiv_rawOverlapWeight_le {d : ℕ}
                 overlapTransitionFactor_nonneg Q S j x
             have hprod_le_one :
                 (∏ j ∈ (Finset.univ : Finset (Fin d)).erase i, factor j x) ≤ 1 :=
-              Finset.prod_le_one
+              Finset.prod_le_one₀
                 (fun j _hj => overlapTransitionFactor_nonneg Q S j x)
                 (fun j _hj => overlapTransitionFactor_le_one Q S j x)
             have hprod_norm_le :
@@ -333,7 +333,7 @@ theorem rawOverlapWeight_pos_of_mem_openOverlap {d : ℕ}
     (hS : S ∈ overlapCentersAtDepth Q j)
     (hxS : x ∈ openOverlapCubeSet S) :
     0 < rawOverlapWeight Q j S x := by
-  simp only [rawOverlapWeight, if_pos hS]
+  simp only [rawOverlapWeight, ite_eq_left hS]
   exact Finset.prod_pos fun i _ =>
     mul_pos
       (lowerOverlapTransition_pos_of_mem_openOverlap (Q := Q) hxS)

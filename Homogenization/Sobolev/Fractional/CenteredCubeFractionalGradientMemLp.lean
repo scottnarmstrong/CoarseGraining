@@ -31,6 +31,12 @@ theorem centeredCubeH10ScalarDivergence_grad_memLp
     { toField := h.toField
       euclideanMemLp := h.euclideanMemLp
       euclideanMemL2 := h.euclideanMemL2 }
+  have hgrad_l2 : MemLp (fun x => HilbertVec.ofVec (w.toH1Function.grad x)) 2
+      (normalizedCubeMeasure (originCube d m)) := by
+    rw [MeasureTheory.memLp_piLp_iff]
+    intro i
+    simpa only [HilbertVec.ofVec, PiLp.toLp_apply] using
+      w.toH1Function.grad_memL2_normalizedCubeMeasure i
   have hbound :
       eLpNorm (fun x => HilbertVec.ofVec (w.toH1Function.grad x)) q.exponent
           (normalizedCubeMeasure (originCube d m)) ≤
@@ -40,15 +46,10 @@ theorem centeredCubeH10ScalarDivergence_grad_memLp
     simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
       BoundedMeasurableDomain.normalizedLpENorm, centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-      euclideanNorm_eq_norm_ofVec, MeasureTheory.eLpNorm_norm, hField] using
+      euclideanNorm_eq_norm_ofVec,
+      MeasureTheory.eLpNorm_norm _ hgrad_l2.aestronglyMeasurable,
+      MeasureTheory.eLpNorm_norm _ h.euclideanMemLp.aestronglyMeasurable, hField] using
       hC m sigma0 hField w hsigma0 (by simpa only [hField] using! hsolution)
-  have hgrad_l2 : MemLp (fun x => HilbertVec.ofVec (w.toH1Function.grad x)) 2
-      (normalizedCubeMeasure (originCube d m)) := by
-    rw [MeasureTheory.memLp_piLp_iff]
-    intro i
-    simpa only [HilbertVec.ofVec, PiLp.toLp_apply] using
-      w.toH1Function.grad_memL2_normalizedCubeMeasure i
-  refine ⟨hgrad_l2.aestronglyMeasurable, ?_⟩
   exact lt_of_le_of_lt hbound (ENNReal.mul_lt_top
     (ENNReal.mul_lt_top hCtop (ENNReal.inv_ne_top.mpr
       (ne_of_gt (ENNReal.ofReal_pos.mpr hsigma0))).lt_top)

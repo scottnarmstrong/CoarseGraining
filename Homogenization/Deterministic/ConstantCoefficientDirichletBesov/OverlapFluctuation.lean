@@ -174,7 +174,7 @@ theorem overlapCentersAverage_lintegral_rpow_enorm_two_le {d : ℕ} {E : Type*}
     have hnorm :
         AEMeasurable (fun x => ‖R x‖ₑ ^ (2 : ℝ))
           (normalizedCubeMeasure Q) :=
-      hR.1.aemeasurable.enorm.pow_const (2 : ℝ)
+      hR.aestronglyMeasurable.aemeasurable.enorm.pow_const (2 : ℝ)
     have hc : ENNReal.ofReal ((cubeVolume Q)⁻¹) ≠ 0 :=
       ENNReal.ofReal_ne_zero_iff.2 (inv_pos.mpr (cubeVolume_pos Q))
     simpa [normalizedCubeMeasure, cubeMeasure] using
@@ -189,7 +189,7 @@ theorem overlapCentersAverage_lintegral_rpow_enorm_two_le {d : ℕ} {E : Type*}
     have hnorm :
         AEMeasurable (fun x => ‖R x‖ₑ ^ (2 : ℝ))
           (normalizedOverlapCubeMeasure S) :=
-      (hRloc S hS).1.aemeasurable.enorm.pow_const (2 : ℝ)
+      (hRloc S hS).aestronglyMeasurable.aemeasurable.enorm.pow_const (2 : ℝ)
     have hc : ENNReal.ofReal ((overlapCubeVolume S)⁻¹) ≠ 0 :=
       ENNReal.ofReal_ne_zero_iff.2 (inv_pos.mpr (overlapCubeVolume_pos S))
     simpa [normalizedOverlapCubeMeasure, overlapCubeMeasure] using
@@ -206,7 +206,7 @@ theorem overlapCentersAverage_lintegral_rpow_enorm_two_le {d : ℕ} {E : Type*}
     simpa [IQ] using
       (MeasureTheory.eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top
         (p := (2 : ℝ≥0∞)) (μ := normalizedCubeMeasure Q) (f := R)
-        (by norm_num) (by norm_num)).1 hR.2
+        (by norm_num) (by norm_num) hR.aestronglyMeasurable).1 hR.eLpNorm_lt_top
   have hIQ_ne_top : IQ ≠ ∞ := ne_of_lt hIQ_lt_top
   have hI_ne_top : ∀ S ∈ D, I S ≠ ∞ := by
     intro S hS
@@ -214,7 +214,8 @@ theorem overlapCentersAverage_lintegral_rpow_enorm_two_le {d : ℕ} {E : Type*}
       simpa [I] using
         (MeasureTheory.eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top
           (p := (2 : ℝ≥0∞)) (μ := normalizedOverlapCubeMeasure S) (f := R)
-          (by norm_num) (by norm_num)).1 (hRloc S (by simpa [D] using hS)).2
+          (by norm_num) (by norm_num) (hRloc S (by simpa [D] using hS)).aestronglyMeasurable).1
+          (hRloc S (by simpa [D] using hS)).eLpNorm_lt_top
     exact ne_of_lt hSlt
   have hright_ne_top : (3 ^ d : ℝ≥0∞) * IQ ≠ ∞ := by
     exact ENNReal.mul_ne_top
@@ -476,7 +477,10 @@ theorem toReal_overlapCentersAtDepth_average_lintegral_fluctuation_eq_depthAvera
       ∀ S ∈ overlapCentersAtDepth Q j,
         (∫⁻ x,
           ‖overlapCubeFluctuationVec S u x‖ₑ ^ (2 : ℝ)
-          ∂ normalizedOverlapCubeMeasure S) ≠ ∞) :
+          ∂ normalizedOverlapCubeMeasure S) ≠ ∞)
+    (hmeas :
+      ∀ S ∈ overlapCentersAtDepth Q j,
+        AEStronglyMeasurable u (normalizedOverlapCubeMeasure S)) :
     ((((overlapCentersAtDepth Q j).card : ℝ≥0∞)⁻¹) *
         (overlapCentersAtDepth Q j).sum
           (fun S =>
@@ -519,9 +523,15 @@ theorem toReal_overlapCentersAtDepth_average_lintegral_fluctuation_eq_depthAvera
                     (overlapCubeFluctuationVec S u)) ^ 2)
           congr 1
           refine Finset.sum_congr rfl ?_
-          intro S _hS
-          exact (overlapCubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal
-            (E := Vec d) S (overlapCubeFluctuationVec S u)).symm
+          intro S hS
+          have hmeasS :
+              AEStronglyMeasurable (overlapCubeFluctuationVec S u)
+                (normalizedOverlapCubeMeasure S) :=
+            (hmeas S (by simpa [D] using hS)).sub aestronglyMeasurable_const
+          unfold overlapCubeLpNorm
+          rw [eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num) hmeasS,
+            ← ENNReal.toReal_pow, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]
+          norm_num [I]
 
 theorem lintegral_overlapCubeFluctuationVec_rpow_enorm_two_ne_top
     {d : ℕ} (S : TriadicCube d) (u : Vec d → Vec d)
@@ -543,7 +553,7 @@ theorem lintegral_overlapCubeFluctuationVec_rpow_enorm_two_ne_top
         (p := (2 : ℝ≥0∞))
         (μ := normalizedOverlapCubeMeasure S)
         (f := overlapCubeFluctuationVec S u)
-        (by norm_num) (by norm_num)).1 hfluct.2
+        (by norm_num) (by norm_num) hfluct.aestronglyMeasurable).1 hfluct.eLpNorm_lt_top
   exact ne_of_lt hlt
 
 theorem overlapCentersAtDepth_average_lintegral_fluctuation_ne_top

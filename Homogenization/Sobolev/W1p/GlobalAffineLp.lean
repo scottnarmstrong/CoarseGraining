@@ -48,6 +48,7 @@ theorem map_globalAffineExpansion_volume {d : ℕ} (x0 : Vec d) {ε : ℝ}
       Set.smul_set_univ₀ ha.ne'
     rw [hsmul_univ, Measure.restrict_univ] at hmap
     rw [hmap, Measure.map_smul, map_add_right_eq_self]
+    exact (measurable_add_const _).aemeasurable
 
 /-- The outward affine expansion is quasi-measure-preserving for Lebesgue
 measure whenever its scalar factor is positive. -/
@@ -63,7 +64,7 @@ outward affine expansion. -/
 theorem Filter.EventuallyEq.comp_globalAffineExpansion {d : ℕ} {f g : Vec d → ℝ}
     (hfg : f =ᵐ[volume] g) (x0 : Vec d) {ε : ℝ} (hε : 0 ≤ ε) :
     f ∘ globalAffineExpansion x0 ε =ᵐ[volume] g ∘ globalAffineExpansion x0 ε :=
-  (quasiMeasurePreserving_globalAffineExpansion x0 hε).ae_eq hfg
+  (quasiMeasurePreserving_globalAffineExpansion x0 hε).ae_eq_comp hfg
 
 /-- Finite `Lᵖ` functions remain in `Lᵖ` after an outward affine expansion. -/
 theorem MemLp.comp_globalAffineExpansion {d : ℕ} {g : Vec d → ℝ} {p : ℝ≥0∞}
@@ -95,7 +96,8 @@ theorem eLpNorm_comp_globalAffineExpansion {d : ℕ} {g : Vec d → ℝ} {p : �
     exact (hg.smul_measure ENNReal.ofReal_ne_top).aestronglyMeasurable
   rw [← MeasureTheory.eLpNorm_map_measure hg_map hmeas, hmap,
     MeasureTheory.eLpNorm_smul_measure_of_ne_top hp]
-  simp only [smul_eq_mul]
+  · simp only [smul_eq_mul]
+  · exact hg.aestronglyMeasurable
 
 private theorem eLpNorm_comp_globalAffineExpansion_le {d : ℕ} {g : Vec d → ℝ}
     {p : ℝ≥0∞} (hp : p ≠ ∞) (hg : MemLp g p volume) (x0 : Vec d) {ε : ℝ}
@@ -242,7 +244,8 @@ private theorem tendsto_eLpNorm_comp_globalAffineExpansion_sub_zero_of_continuou
   have hEq : (fun n => eLpNorm (h ∘ globalAffineExpansion x0 (ε n) - h) p volume) =
       fun n => eLpNorm (h ∘ globalAffineExpansion x0 (ε n) - h) p (volume.restrict B) := by
     funext n
-    exact (eLpNorm_restrict_eq_of_support_subset (hdiff_support n)).symm
+    exact (eLpNorm_restrict_eq_of_support_subset ((hmem_comp n).sub hmem).aestronglyMeasurable
+      (hdiff_support n)).symm
   rw [hEq]
   exact hlocal
 
@@ -286,15 +289,12 @@ theorem tendsto_eLpNorm_comp_globalAffineExpansion_sub_zero {d : ℕ}
         ((h ∘ globalAffineExpansion x0 (ε n) - h) + (h - g))) p volume ≤
       eLpNorm ((g - h) ∘ globalAffineExpansion x0 (ε n)) p volume +
         eLpNorm ((h ∘ globalAffineExpansion x0 (ε n) - h) + (h - g)) p volume :=
-      eLpNorm_add_le hgh_comp.aestronglyMeasurable
-        ((hh_comp.aestronglyMeasurable.sub hh.aestronglyMeasurable).add
-          (hh.aestronglyMeasurable.sub hg.aestronglyMeasurable)) hp
+      eLpNorm_add_le hp
     _ ≤ eLpNorm ((g - h) ∘ globalAffineExpansion x0 (ε n)) p volume +
         (eLpNorm (h ∘ globalAffineExpansion x0 (ε n) - h) p volume +
           eLpNorm (h - g) p volume) := by
       gcongr
-      exact eLpNorm_add_le (hh_comp.aestronglyMeasurable.sub hh.aestronglyMeasurable)
-        (hh.aestronglyMeasurable.sub hg.aestronglyMeasurable) hp
+      exact eLpNorm_add_le hp
     _ ≤ δ / 3 + (δ / 3 + δ / 3) := by
       gcongr
       · exact eLpNorm_comp_globalAffineExpansion_le hp_top (hg.sub hh) x0 (hε_nonneg n)

@@ -210,7 +210,7 @@ theorem cutoffProduct_component_partialNormTop_le_gradient_rhs
     exact hu.sub (MeasureTheory.memLp_const (cubeAverage Q (fun x => u x)))
   have hF : MeasureTheory.MemLp F (2 : ℝ≥0∞) (normalizedCubeMeasure Q) := by
     let : ENNReal.HolderTriple (2 : ℝ≥0∞) ∞ (2 : ℝ≥0∞) := by infer_instance
-    simpa [F, v] using! hξLp.smul (p := (2 : ℝ≥0∞)) (r := (2 : ℝ≥0∞)) hv
+    simpa [F, v] using! hv.smul (p := (2 : ℝ≥0∞)) (q := ∞) (r := (2 : ℝ≥0∞)) hξLp
   have hP :
       cubeBesovPartialNormTop Q s (2 : ℝ≥0∞) M v ≤ P := by
     simpa [P, v] using

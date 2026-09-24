@@ -318,7 +318,7 @@ theorem canonicalScalarResponseGradientAverageCubeSet_eq_cubeAverageVec_canonica
       canonicalMuHilbertMinimizerCubeSet Q (-p, q) a =
           ((canonicalAEEMuOperatorSystemData Q k aSlice).toMuHilbertRealization).minimizerMap
             (-p, q) := by
-            simp only [canonicalMuHilbertMinimizerCubeSet, dif_pos hSlice, k, aSlice]
+            simp only [canonicalMuHilbertMinimizerCubeSet, dite_eq_left hSlice, k, aSlice]
       _ = toHilbertBlockL2OfBlockField (U := cubeSet Q) hAdm.memBlockL2_eval :=
             hHilbert.symm
   have hPotentialAE :
@@ -546,7 +546,7 @@ theorem canonicalScalarResponseFluxAverageCubeSet_eq_cubeAverageVec_canonicalMax
       canonicalMuHilbertMinimizerCubeSet Q (-p, q) a =
           ((canonicalAEEMuOperatorSystemData Q k aSlice).toMuHilbertRealization).minimizerMap
             (-p, q) := by
-            simp only [canonicalMuHilbertMinimizerCubeSet, dif_pos hSlice, k, aSlice]
+            simp only [canonicalMuHilbertMinimizerCubeSet, dite_eq_left hSlice, k, aSlice]
       _ = toHilbertBlockL2OfBlockField (U := cubeSet Q) hAdm.memBlockL2_eval :=
             hHilbert.symm
   have hFluxAE :

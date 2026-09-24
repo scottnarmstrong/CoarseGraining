@@ -410,7 +410,7 @@ theorem pointwise_pair_sum_le (Q : TriadicCube d) {a pr : ℝ} (ha : 1 ≤ a)
             _ = ScalarOverlap.scaleFactor S := rfl
             _ = cubeScaleFactor Q / 3 ^ j :=
                 ScalarOverlap.scaleFactor_eq_cubeScaleFactor_div_pow_of_mem_centersAtDepth hS
-        rw [if_pos hd]
+        rw [ite_eq_left hd]
         refine mul_le_mul_right ?_ _
         calc (∑ S ∈ ScalarOverlap.centersAtDepth Q j,
               (ScalarOverlap.cubeSet S ×ˢ ScalarOverlap.cubeSet S).indicator
@@ -577,7 +577,10 @@ theorem ofReal_partialSeminorm_rpow_le_gagliardo [NeZero d]
         rw [lintegral_gagliardoCubeMeasure_eq Q]
     _ = 2 * 3 ^ d * cubeGagliardoESeminorm Q s p u ^ p.toReal := by
         congr 1
-        rw [Internal.cubeGagliardoESeminorm_eq_lintegral hp0 hpt,
+        rw [Internal.cubeGagliardoESeminorm_eq_lintegral hp0 hpt
+            ((measurable_dist.pow measurable_const).smul
+              ((humeas.comp measurable_fst).sub
+                (humeas.comp measurable_snd))).aestronglyMeasurable,
           ← ENNReal.rpow_mul, one_div_mul_cancel hpr.ne', ENNReal.rpow_one]
 
 /-- Corollary: when the Gagliardo seminorm is finite, the set of partial

@@ -82,7 +82,7 @@ theorem map_centeredCubeDilation_normalizedVolume {d : ℕ} (m : ℤ) :
   rw [cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
     cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
   unfold normalizedCubeMeasure
-  rw [Measure.map_smul]
+  rw [Measure.map_smul _ (measurable_centeredCubeDilation m).aemeasurable]
   have hmap :
       Measure.map (centeredCubeDilation (d := d) m) (cubeMeasure (originCube d 0)) =
         ENNReal.ofReal (((centeredCubeScale m) ^ d)⁻¹) •

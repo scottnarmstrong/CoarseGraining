@@ -117,12 +117,6 @@ noncomputable def ofTendstoELpNorm
       tendsto_approx := by
         refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hfun_bound
           (fun n => zero_le) (fun n => ?_)
-        have hsm_ψ : AEStronglyMeasurable (ψ n) μ :=
-          ((u_n n).approx_smooth (k n)).continuous.aestronglyMeasurable
-        have hsm_un : AEStronglyMeasurable (u_n n).toFun μ :=
-          (u_n n).memLp.aestronglyMeasurable
-        have hsm_target : AEStronglyMeasurable target.toFun μ :=
-          target.memLp.aestronglyMeasurable
         have heq :
             (fun x => ψ n x - target.toFun x) =
               (fun x => ψ n x - (u_n n).toFun x) +
@@ -131,24 +125,12 @@ noncomputable def ofTendstoELpNorm
           simp only [Pi.add_apply]
           ring
         rw [heq]
-        refine (eLpNorm_add_le (hsm_ψ.sub hsm_un) (hsm_un.sub hsm_target)
-          p.one_lt.le).trans ?_
+        refine (eLpNorm_add_le p.one_lt.le).trans ?_
         exact add_le_add (le_of_lt (hk n).1) le_rfl
       tendsto_approx_grad := by
         intro i
         refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds
           (hgrad_bound i) (fun n => zero_le) (fun n => ?_)
-        have hsm_dψ : AEStronglyMeasurable
-            (fun x => (fderiv ℝ (ψ n) x) (basisVec i)) μ := by
-          have hcont : ContDiff ℝ (⊤ : ℕ∞)
-              (fun x => (fderiv ℝ (ψ n) x) (basisVec i)) :=
-            (((u_n n).approx_smooth (k n)).fderiv_right (m := (⊤ : ℕ∞))
-              (by norm_cast)).clm_apply contDiff_const
-          exact hcont.continuous.aestronglyMeasurable
-        have hsm_un : AEStronglyMeasurable (fun x => (u_n n).grad x i) μ :=
-          (u_n n).gradMemLp i |>.aestronglyMeasurable
-        have hsm_target : AEStronglyMeasurable (fun x => target.grad x i) μ :=
-          target.gradMemLp i |>.aestronglyMeasurable
         have heq :
             (fun x => (fderiv ℝ (ψ n) x) (basisVec i) - target.grad x i) =
               (fun x => (fderiv ℝ (ψ n) x) (basisVec i) - (u_n n).grad x i) +
@@ -157,8 +139,7 @@ noncomputable def ofTendstoELpNorm
           simp only [Pi.add_apply]
           ring
         rw [heq]
-        refine (eLpNorm_add_le (hsm_dψ.sub hsm_un) (hsm_un.sub hsm_target)
-          p.one_lt.le).trans ?_
+        refine (eLpNorm_add_le p.one_lt.le).trans ?_
         exact add_le_add (le_of_lt ((hk n).2 i)) le_rfl }
 
 @[simp] theorem ofTendstoELpNorm_toFun

@@ -46,13 +46,15 @@ noncomputable def cubeAmbientHilbertWspESeminorm {d : ℕ}
 
 theorem cubeAmbientHilbertWspESeminorm_eq_lintegral {d : ℕ}
     (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent)
-    (F : Vec d → Vec d) :
+    (F : Vec d → Vec d)
+    (hF : AEStronglyMeasurable (cubeAmbientHilbertWspKernel s p F)
+      (Gagliardo.gagliardoCubeMeasure Q)) :
     cubeAmbientHilbertWspESeminorm Q s p F =
       (∫⁻ z, ‖cubeAmbientHilbertWspKernel s p F z‖ₑ ^ p.exponent.toReal
         ∂Gagliardo.gagliardoCubeMeasure Q) ^ (1 / p.exponent.toReal) := by
   unfold cubeAmbientHilbertWspESeminorm
   exact eLpNorm_eq_lintegral_rpow_enorm_toReal
-    (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne
+    (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne hF
 
 /-- The scalar coordinates of the intermediate vector kernel are precisely
 the scalar ambient-distance Gagliardo kernels. -/
@@ -322,13 +324,15 @@ private theorem scalar_gagliardoKernel_enorm_rpow_measurable {d : ℕ}
 
 private theorem scalar_cubeGagliardoESeminorm_rpow_eq_lintegral {d : ℕ}
     (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent)
-    (f : Vec d → ℝ) :
+    (f : Vec d → ℝ)
+    (hf : AEStronglyMeasurable (Gagliardo.gagliardoKernel s.1 p.exponent f)
+      (Gagliardo.gagliardoCubeMeasure Q)) :
     (Gagliardo.cubeGagliardoESeminorm Q s.1 p.exponent f) ^
         p.exponent.toReal =
       ∫⁻ z, ‖Gagliardo.gagliardoKernel s.1 p.exponent f z‖ₑ ^
         p.exponent.toReal ∂Gagliardo.gagliardoCubeMeasure Q := by
   rw [Gagliardo.Internal.cubeGagliardoESeminorm_eq_lintegral
-    (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne]
+    (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne hf]
   rw [← ENNReal.rpow_mul]
   have hp : p.exponent.toReal ≠ 0 := (ENNReal.toReal_pos
     (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne).ne'
@@ -347,7 +351,8 @@ theorem cubeCoordinateGagliardoPowerEnergy_eq_lintegral_sum {d : ℕ}
           p.exponent.toReal ∂Gagliardo.gagliardoCubeMeasure Q := by
   unfold cubeCoordinateGagliardoPowerEnergy
   rw [Finset.sum_congr rfl fun i _ =>
-    scalar_cubeGagliardoESeminorm_rpow_eq_lintegral Q s p (fun x => F x i)]
+    scalar_cubeGagliardoESeminorm_rpow_eq_lintegral Q s p (fun x => F x i)
+      (scalar_gagliardoKernel_measurable s p F hF i).aestronglyMeasurable]
   rw [← lintegral_finsetSum' Finset.univ]
   intro i _
   exact (scalar_gagliardoKernel_enorm_rpow_measurable s p F hF i).aemeasurable
@@ -355,11 +360,13 @@ theorem cubeCoordinateGagliardoPowerEnergy_eq_lintegral_sum {d : ℕ}
 /-- The powered Euclidean seminorm is exactly its kernel integral. -/
 theorem cubeEuclideanWspESeminorm_rpow_eq_lintegral {d : ℕ}
     (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent)
-    (F : Vec d → Vec d) :
+    (F : Vec d → Vec d)
+    (hF : AEStronglyMeasurable (cubeEuclideanWspKernel s p F)
+      (Gagliardo.gagliardoCubeMeasure Q)) :
     (cubeEuclideanWspESeminorm Q s p F) ^ p.exponent.toReal =
       ∫⁻ z, ‖cubeEuclideanWspKernel s p F z‖ₑ ^ p.exponent.toReal
         ∂Gagliardo.gagliardoCubeMeasure Q := by
-  rw [cubeEuclideanWspESeminorm_eq_lintegral, ← ENNReal.rpow_mul]
+  rw [cubeEuclideanWspESeminorm_eq_lintegral Q s p F hF, ← ENNReal.rpow_mul]
   have hp : p.exponent.toReal ≠ 0 := (ENNReal.toReal_pos
     (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne).ne'
   have hmul : 1 / p.exponent.toReal * p.exponent.toReal = 1 := by
@@ -369,11 +376,13 @@ theorem cubeEuclideanWspESeminorm_rpow_eq_lintegral {d : ℕ}
 /-- The powered intermediate seminorm is exactly its kernel integral. -/
 theorem cubeAmbientHilbertWspESeminorm_rpow_eq_lintegral {d : ℕ}
     (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent)
-    (F : Vec d → Vec d) :
+    (F : Vec d → Vec d)
+    (hF : AEStronglyMeasurable (cubeAmbientHilbertWspKernel s p F)
+      (Gagliardo.gagliardoCubeMeasure Q)) :
     (cubeAmbientHilbertWspESeminorm Q s p F) ^ p.exponent.toReal =
       ∫⁻ z, ‖cubeAmbientHilbertWspKernel s p F z‖ₑ ^ p.exponent.toReal
         ∂Gagliardo.gagliardoCubeMeasure Q := by
-  rw [cubeAmbientHilbertWspESeminorm_eq_lintegral, ← ENNReal.rpow_mul]
+  rw [cubeAmbientHilbertWspESeminorm_eq_lintegral Q s p F hF, ← ENNReal.rpow_mul]
   have hp : p.exponent.toReal ≠ 0 := (ENNReal.toReal_pos
     (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne).ne'
   have hmul : 1 / p.exponent.toReal * p.exponent.toReal = 1 := by
@@ -384,11 +393,21 @@ theorem cubeAmbientHilbertWspESeminorm_rpow_eq_lintegral {d : ℕ}
 ambient-distance Hilbert energy. -/
 theorem cubeEuclideanWspESeminorm_rpow_le_ambientHilbert {d : ℕ} [NeZero d]
     (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent)
-    (F : Vec d → Vec d) :
+    (F : Vec d → Vec d)
+    (hF : AEStronglyMeasurable (cubeEuclideanWspKernel s p F)
+      (Gagliardo.gagliardoCubeMeasure Q)) :
     (cubeEuclideanWspESeminorm Q s p F) ^ p.exponent.toReal ≤
       (cubeAmbientHilbertWspESeminorm Q s p F) ^ p.exponent.toReal := by
-  rw [cubeEuclideanWspESeminorm_rpow_eq_lintegral,
-    cubeAmbientHilbertWspESeminorm_rpow_eq_lintegral]
+  by_cases hA : AEStronglyMeasurable (cubeAmbientHilbertWspKernel s p F)
+      (Gagliardo.gagliardoCubeMeasure Q)
+  swap
+  · have hp : 0 < p.exponent.toReal :=
+      ENNReal.toReal_pos (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne
+    rw [cubeAmbientHilbertWspESeminorm, eLpNorm_of_not_aestronglyMeasurable hA,
+      ENNReal.top_rpow_of_pos hp]
+    exact le_top
+  rw [cubeEuclideanWspESeminorm_rpow_eq_lintegral Q s p F hF,
+    cubeAmbientHilbertWspESeminorm_rpow_eq_lintegral Q s p F hA]
   exact lintegral_mono fun z =>
     cubeEuclideanWspKernel_rpow_le_ambientHilbert s p F z
 
@@ -424,12 +443,25 @@ private theorem metric_factor_le_uniform_metricComparisonConstant {d : ℕ} [NeZ
 energy with an explicit constant uniform in the fractional order. -/
 theorem cubeAmbientHilbertWspESeminorm_rpow_le_metricComparisonConstant_mul
     {d : ℕ} [NeZero d] (Q : TriadicCube d) (s : FractionalOrder)
-    (p : FiniteLpExponent) (F : Vec d → Vec d) :
+    (p : FiniteLpExponent) (F : Vec d → Vec d)
+    (hF : AEStronglyMeasurable (cubeAmbientHilbertWspKernel s p F)
+      (Gagliardo.gagliardoCubeMeasure Q)) :
     (cubeAmbientHilbertWspESeminorm Q s p F) ^ p.exponent.toReal ≤
       cubeEuclideanWspMetricComparisonConstant d p *
         (cubeEuclideanWspESeminorm Q s p F) ^ p.exponent.toReal := by
-  rw [cubeAmbientHilbertWspESeminorm_rpow_eq_lintegral,
-    cubeEuclideanWspESeminorm_rpow_eq_lintegral]
+  by_cases hE : AEStronglyMeasurable (cubeEuclideanWspKernel s p F)
+      (Gagliardo.gagliardoCubeMeasure Q)
+  swap
+  · have hp : 0 < p.exponent.toReal :=
+      ENNReal.toReal_pos (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne
+    have hM : cubeEuclideanWspMetricComparisonConstant d p ≠ 0 :=
+      (ENNReal.ofReal_pos.2 (Real.rpow_pos_of_pos
+        (Nat.cast_pos.2 (Nat.pos_of_ne_zero (NeZero.ne d))) _)).ne'
+    rw [cubeEuclideanWspESeminorm, eLpNorm_of_not_aestronglyMeasurable hE,
+      ENNReal.top_rpow_of_pos hp, ENNReal.mul_top hM]
+    exact le_top
+  rw [cubeAmbientHilbertWspESeminorm_rpow_eq_lintegral Q s p F hF,
+    cubeEuclideanWspESeminorm_rpow_eq_lintegral Q s p F hE]
   calc
     (∫⁻ z, ‖cubeAmbientHilbertWspKernel s p F z‖ₑ ^ p.exponent.toReal
         ∂Gagliardo.gagliardoCubeMeasure Q) ≤

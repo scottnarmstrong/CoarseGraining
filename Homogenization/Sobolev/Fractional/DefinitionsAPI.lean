@@ -30,12 +30,13 @@ variable {d : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 /-- At `p = ∞` the fractional Sobolev seminorm is the essential Hölder
 `C^{0,s}` seminorm: the kernel exponent collapses to `s` and the `eLpNorm`
 becomes an essential supremum. -/
-theorem cubeGagliardoESeminorm_top (Q : TriadicCube d) (s : ℝ) (u : Vec d → E) :
+theorem cubeGagliardoESeminorm_top (Q : TriadicCube d) (s : ℝ) (u : Vec d → E)
+    (hu : AEStronglyMeasurable (gagliardoKernel s ∞ u) (gagliardoCubeMeasure Q)) :
     cubeGagliardoESeminorm Q s ∞ u =
       essSup (fun z : Vec d × Vec d =>
         ‖(dist z.1 z.2 ^ (-s)) • (u z.1 - u z.2)‖ₑ)
         (gagliardoCubeMeasure Q) := by
-  rw [Internal.cubeGagliardoESeminorm_def, eLpNorm_exponent_top,
+  rw [Internal.cubeGagliardoESeminorm_def, eLpNorm_exponent_top hu,
     eLpNormEssSup]
   simp only [gagliardoKernel, kernelExponent_top]
 
@@ -62,7 +63,7 @@ theorem gagliardoESeminormOn_comp_swap (A : Set (Vec d)) (s : ℝ) (p : ℝ≥0�
 `Set`-variant: the manuscript's `⨍∫` normalization contributes the volume
 factor at power `1/p`. -/
 theorem cubeGagliardoESeminorm_eq_smul_gagliardoESeminormOn
-    (Q : TriadicCube d) (s : ℝ) {p : ℝ≥0∞} (hpt : p ≠ ∞) (u : Vec d → E) :
+    (Q : TriadicCube d) (s : ℝ) {p : ℝ≥0∞} (u : Vec d → E) :
     cubeGagliardoESeminorm Q s p u =
       ENNReal.ofReal (cubeVolume Q)⁻¹ ^ (1 / p).toReal •
         gagliardoESeminormOn (Homogenization.cubeSet Q) s p u := by
@@ -71,7 +72,8 @@ theorem cubeGagliardoESeminorm_eq_smul_gagliardoESeminormOn
   rw [Internal.cubeGagliardoESeminorm_def, gagliardoESeminormOn,
     gagliardoCubeMeasure, Homogenization.normalizedCubeMeasure,
     Homogenization.cubeMeasure, Measure.prod_smul_left,
-    eLpNorm_smul_measure_of_ne_top hpt]
+    eLpNorm_smul_measure_of_ne_zero
+      (ENNReal.ofReal_pos.2 (inv_pos.2 (cubeVolume_pos Q))).ne']
 
 section Translation
 
@@ -81,11 +83,10 @@ noncomputable def cubeShiftVector (shift : Fin d → ℤ) (Q : TriadicCube d) :
   fun i => (shift i : ℝ) * cubeScaleFactor Q
 
 /-- Translation covariance of the fractional Sobolev seminorm: translating
-the cube matches precomposing with the translation.  Stated for `p ≠ 0, ∞`
-(the manuscript range); the `p = ∞` endpoint can be added via the `essSup`
-characterization if ever needed. -/
+the cube matches precomposing with the translation, for every exponent
+`p`. -/
 theorem cubeGagliardoESeminorm_translate (shift : Fin d → ℤ)
-    (Q : TriadicCube d) (s : ℝ) {p : ℝ≥0∞} (hp0 : p ≠ 0) (hpt : p ≠ ∞)
+    (Q : TriadicCube d) (s : ℝ) {p : ℝ≥0∞}
     (u : Vec d → E) :
     cubeGagliardoESeminorm (translateCube shift Q) s p u =
       cubeGagliardoESeminorm Q s p
@@ -123,7 +124,8 @@ theorem cubeGagliardoESeminorm_translate (shift : Fin d → ℤ)
       Homogenization.normalizedCubeMeasure, Homogenization.normalizedCubeMeasure,
       Homogenization.cubeMeasure, Homogenization.cubeMeasure, hvol, hres,
       Measure.prod_smul_left, Measure.prod_smul_left,
-      Measure.map_prod_map _ _ T.measurable T.measurable, Measure.map_smul]
+      Measure.map_prod_map _ _ T.measurable T.measurable,
+      Measure.map_smul _ (T.measurable.prodMap T.measurable).aemeasurable]
   have hMP : MeasureTheory.MeasurePreserving (⇑(T.prodCongr T))
       (gagliardoCubeMeasure Q) (gagliardoCubeMeasure (translateCube shift Q)) := by
     refine ⟨(T.prodCongr T).measurable, ?_⟩
@@ -137,13 +139,12 @@ theorem cubeGagliardoESeminorm_translate (shift : Fin d → ℤ)
     show gagliardoKernel s p u (T z.1, T z.2) = _
     rw [gagliardoKernel_apply, gagliardoKernel_apply, hTapp, hTapp,
       dist_add_right]
-  -- conclude through the lintegral form
-  rw [Internal.cubeGagliardoESeminorm_eq_lintegral hp0 hpt,
-    Internal.cubeGagliardoESeminorm_eq_lintegral hp0 hpt]
+  -- conclude through the pushforward under the pair translation
+  rw [Internal.cubeGagliardoESeminorm_def, Internal.cubeGagliardoESeminorm_def,
+    ← hMP.map_eq, (T.prodCongr T).measurableEmbedding.eLpNorm_map_measure]
   congr 1
-  rw [MeasurePreserving.lintegral_map_equiv _ (T.prodCongr T) hMP]
-  refine lintegral_congr fun z => ?_
-  rw [hker]
+  funext z
+  exact hker z
 
 end Translation
 

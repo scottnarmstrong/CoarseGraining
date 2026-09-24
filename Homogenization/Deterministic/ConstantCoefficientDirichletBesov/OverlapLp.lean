@@ -118,7 +118,7 @@ theorem overlapCubeLpNorm_one_eq_integral_norm {d : ℕ} {E : Type*}
     (hf : MeasureTheory.AEStronglyMeasurable f (normalizedOverlapCubeMeasure S)) :
     overlapCubeLpNorm S 1 f = ∫ x, ‖f x‖ ∂ normalizedOverlapCubeMeasure S := by
   unfold overlapCubeLpNorm
-  rw [MeasureTheory.eLpNorm_one_eq_lintegral_enorm,
+  rw [MeasureTheory.eLpNorm_one_eq_lintegral_enorm hf,
     ← MeasureTheory.integral_norm_eq_lintegral_enorm hf]
 
 theorem overlapCubeLpNorm_mul_le_mul_overlapCubeLpNorm_of_holderConjugate {d : ℕ}
@@ -133,14 +133,14 @@ theorem overlapCubeLpNorm_mul_le_mul_overlapCubeLpNorm_of_holderConjugate {d : �
         1 * MeasureTheory.eLpNorm f p (normalizedOverlapCubeMeasure S) *
           MeasureTheory.eLpNorm g q (normalizedOverlapCubeMeasure S) := by
     simpa using
-      (MeasureTheory.eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm
-        hf.1 hg.1 (fun a b => a * b) 1
+      (MeasureTheory.eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm (fun a b => a * b) 1
+        continuous_mul hf.aestronglyMeasurable hg.aestronglyMeasurable
         (Filter.Eventually.of_forall fun x => by
           simp))
   have hf_top :
-      MeasureTheory.eLpNorm f p (normalizedOverlapCubeMeasure S) ≠ ∞ := ne_of_lt hf.2
+      MeasureTheory.eLpNorm f p (normalizedOverlapCubeMeasure S) ≠ ∞ := ne_of_lt hf.eLpNorm_lt_top
   have hg_top :
-      MeasureTheory.eLpNorm g q (normalizedOverlapCubeMeasure S) ≠ ∞ := ne_of_lt hg.2
+      MeasureTheory.eLpNorm g q (normalizedOverlapCubeMeasure S) ≠ ∞ := ne_of_lt hg.eLpNorm_lt_top
   have hmul_top :
       1 * MeasureTheory.eLpNorm f p (normalizedOverlapCubeMeasure S) *
         MeasureTheory.eLpNorm g q (normalizedOverlapCubeMeasure S) ≠ ∞ := by
@@ -162,7 +162,7 @@ theorem abs_overlapCubeAverage_mul_le_mul_overlapCubeLpNorm_of_holderConjugate {
       overlapCubeLpNorm S p f * overlapCubeLpNorm S q g := by
   have hfg_meas : MeasureTheory.AEStronglyMeasurable
       (fun x => f x * g x) (normalizedOverlapCubeMeasure S) :=
-    hf.1.mul hg.1
+    hf.aestronglyMeasurable.mul hg.aestronglyMeasurable
   calc
     |overlapCubeAverage S (fun x => f x * g x)|
         = |∫ x, f x * g x ∂ normalizedOverlapCubeMeasure S| := by
@@ -206,12 +206,12 @@ theorem overlapCubeLpNorm_component_le_overlapCubeLpNorm {d : ℕ}
       MeasureTheory.eLpNorm (fun x => u x i) p (normalizedOverlapCubeMeasure S) ≤
         ENNReal.ofReal (1 : ℝ) *
           MeasureTheory.eLpNorm u p (normalizedOverlapCubeMeasure S) :=
-    MeasureTheory.eLpNorm_le_mul_eLpNorm_of_ae_le_mul hpoint p
+    MeasureTheory.eLpNorm_le_mul_eLpNorm_of_ae_le_mul hui.aestronglyMeasurable hpoint p
   have htop_u :
-      MeasureTheory.eLpNorm u p (normalizedOverlapCubeMeasure S) ≠ ∞ := ne_of_lt hu.2
+      MeasureTheory.eLpNorm u p (normalizedOverlapCubeMeasure S) ≠ ∞ := ne_of_lt hu.eLpNorm_lt_top
   have htop_ui :
       MeasureTheory.eLpNorm (fun x => u x i) p (normalizedOverlapCubeMeasure S) ≠ ∞ :=
-    ne_of_lt hui.2
+    ne_of_lt hui.eLpNorm_lt_top
   have htoReal :
       (MeasureTheory.eLpNorm (fun x => u x i) p
           (normalizedOverlapCubeMeasure S)).toReal ≤
@@ -278,15 +278,15 @@ theorem overlapCubeLpNorm_add_le {d : ℕ} {E : Type*} [NormedAddCommGroup E]
       MeasureTheory.eLpNorm (fun x => f x + g x) p (normalizedOverlapCubeMeasure S) ≤
         MeasureTheory.eLpNorm f p (normalizedOverlapCubeMeasure S) +
           MeasureTheory.eLpNorm g p (normalizedOverlapCubeMeasure S) := by
-    simpa using! MeasureTheory.eLpNorm_add_le hf.1 hg.1 hp
+    simpa using! MeasureTheory.eLpNorm_add_le (f := f) (g := g) hp
   have hsum_top :
       MeasureTheory.eLpNorm f p (normalizedOverlapCubeMeasure S) +
         MeasureTheory.eLpNorm g p (normalizedOverlapCubeMeasure S) ≠ ∞ :=
-    ENNReal.add_ne_top.2 ⟨ne_of_lt hf.2, ne_of_lt hg.2⟩
+    ENNReal.add_ne_top.2 ⟨ne_of_lt hf.eLpNorm_lt_top, ne_of_lt hg.eLpNorm_lt_top⟩
   have htoReal :=
     ENNReal.toReal_mono hsum_top hsum
-  rw [ENNReal.toReal_add (ne_of_lt hf.2) (ne_of_lt hg.2)] at htoReal
-  simpa [overlapCubeLpNorm, ne_of_lt hf.2, ne_of_lt hg.2] using htoReal
+  rw [ENNReal.toReal_add (ne_of_lt hf.eLpNorm_lt_top) (ne_of_lt hg.eLpNorm_lt_top)] at htoReal
+  simpa [overlapCubeLpNorm, ne_of_lt hf.eLpNorm_lt_top, ne_of_lt hg.eLpNorm_lt_top] using htoReal
 
 theorem overlapCubeLpNorm_two_vec_le_sum_components {d : ℕ}
     (S : TriadicCube d) (u : Vec d → Vec d)
@@ -327,7 +327,7 @@ theorem overlapCubeLpNorm_two_vec_le_sum_components {d : ℕ}
             (fun j _hj => norm_nonneg (u x j)) (Finset.mem_univ i)
         simpa [Real.norm_eq_abs, abs_of_nonneg hD_nonneg] using hu_le_D
     simpa using
-      (MeasureTheory.eLpNorm_le_mul_eLpNorm_of_ae_le_mul hpoint
+      (MeasureTheory.eLpNorm_le_mul_eLpNorm_of_ae_le_mul hu.aestronglyMeasurable hpoint
         (2 : ℝ≥0∞))
   have hsum_eLp :
       MeasureTheory.eLpNorm D (2 : ℝ≥0∞) μ ≤
@@ -342,7 +342,6 @@ theorem overlapCubeLpNorm_two_vec_le_sum_components {d : ℕ}
       MeasureTheory.eLpNorm_sum_le
         (μ := μ) (p := (2 : ℝ≥0∞)) (s := Finset.univ)
         (f := fun i : Fin d => fun x : Vec d => ‖u x i‖)
-        (fun i _hi => (hcoord_norm_mem i).1)
         (by norm_num : (1 : ℝ≥0∞) ≤ (2 : ℝ≥0∞))
   have hmain :
       MeasureTheory.eLpNorm u (2 : ℝ≥0∞) μ ≤
@@ -352,13 +351,13 @@ theorem overlapCubeLpNorm_two_vec_le_sum_components {d : ℕ}
   have hsum_ne_top :
       (∑ i : Fin d,
           MeasureTheory.eLpNorm (fun x => ‖u x i‖) (2 : ℝ≥0∞) μ) ≠ ∞ :=
-    ENNReal.sum_ne_top.2 fun i _hi => (hcoord_norm_mem i).2.ne
+    ENNReal.sum_ne_top.2 fun i _hi => (hcoord_norm_mem i).eLpNorm_lt_top.ne
   have htoReal :
       (MeasureTheory.eLpNorm u (2 : ℝ≥0∞) μ).toReal ≤
         (∑ i : Fin d,
           MeasureTheory.eLpNorm (fun x => ‖u x i‖) (2 : ℝ≥0∞) μ).toReal :=
     ENNReal.toReal_mono hsum_ne_top hmain
-  rw [ENNReal.toReal_sum (fun i _hi => (hcoord_norm_mem i).2.ne)] at htoReal
+  rw [ENNReal.toReal_sum (fun i _hi => (hcoord_norm_mem i).eLpNorm_lt_top.ne)] at htoReal
   have hsum_toReal_norm :
       (∑ i : Fin d,
           (MeasureTheory.eLpNorm (fun x => ‖u x i‖) (2 : ℝ≥0∞) μ).toReal) =
@@ -366,12 +365,13 @@ theorem overlapCubeLpNorm_two_vec_le_sum_components {d : ℕ}
           (MeasureTheory.eLpNorm (fun x => u x i) (2 : ℝ≥0∞) μ).toReal := by
     refine Finset.sum_congr rfl ?_
     intro i _hi
-    rw [MeasureTheory.eLpNorm_norm]
+    rw [MeasureTheory.eLpNorm_norm _ (hcoord_mem i).aestronglyMeasurable]
   rw [hsum_toReal_norm] at htoReal
   simpa [overlapCubeLpNorm, μ] using htoReal
 
 theorem cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal {d : ℕ} {E : Type*}
-    [NormedAddCommGroup E] (Q : TriadicCube d) (f : Vec d → E) :
+    [NormedAddCommGroup E] (Q : TriadicCube d) (f : Vec d → E)
+    (hf : MeasureTheory.AEStronglyMeasurable f (normalizedCubeMeasure Q)) :
     (cubeLpNorm Q (2 : ℝ≥0∞) f) ^ 2 =
       (∫⁻ x, ‖f x‖ₑ ^ (2 : ℝ) ∂ normalizedCubeMeasure Q).toReal := by
   unfold cubeLpNorm
@@ -384,17 +384,18 @@ theorem cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal {d : ℕ} {E : Type*}
           norm_num
     _ =
           (∫⁻ x, ‖f x‖ₑ ^ (2 : ℝ) ∂ normalizedCubeMeasure Q).toReal := by
-          rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]
+          rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num) hf]
           let A : ℝ≥0∞ := ∫⁻ x, ‖f x‖ₑ ^ (2 : ℝ) ∂ normalizedCubeMeasure Q
           change ((A ^ (1 / (2 : ℝ))) ^ (2 : ℝ)).toReal = A.toReal
           rw [← ENNReal.rpow_mul]
           norm_num
 
 theorem cubeLpNorm_two_sq_eq_lintegral_ofReal_sq_toReal {d : ℕ}
-    (Q : TriadicCube d) (f : Vec d → ℝ) :
+    (Q : TriadicCube d) (f : Vec d → ℝ)
+    (hf : MeasureTheory.AEStronglyMeasurable f (normalizedCubeMeasure Q)) :
     (cubeLpNorm Q (2 : ℝ≥0∞) f) ^ 2 =
       (∫⁻ x, ENNReal.ofReal ((f x) ^ 2) ∂ normalizedCubeMeasure Q).toReal := by
-  rw [cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal]
+  rw [cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal Q f hf]
   congr 1
   apply MeasureTheory.lintegral_congr
   intro x
@@ -409,6 +410,9 @@ theorem cubeLpNorm_two_sq_le_lintegral_ofReal_vecNormSq_toReal_of_le
     (hbound :
       ∫⁻ x, ENNReal.ofReal (vecNormSq (F x)) ∂ normalizedCubeMeasure Q ≤ B) :
     (cubeLpNorm Q (2 : ℝ≥0∞) F) ^ 2 ≤ B.toReal := by
+  by_cases hF : MeasureTheory.AEStronglyMeasurable F (normalizedCubeMeasure Q)
+  swap
+  · simp [cubeLpNorm, MeasureTheory.eLpNorm_of_not_aestronglyMeasurable hF]
   have hnorm :
       ∫⁻ x, ‖F x‖ₑ ^ (2 : ℝ) ∂ normalizedCubeMeasure Q ≤
         ∫⁻ x, ENNReal.ofReal (vecNormSq (F x)) ∂ normalizedCubeMeasure Q :=
@@ -418,10 +422,11 @@ theorem cubeLpNorm_two_sq_le_lintegral_ofReal_vecNormSq_toReal_of_le
     hnorm.trans hbound
   have htoReal := ENNReal.toReal_mono hB_ne_top hle
   simpa [cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal
-    (Q := Q) (f := F)] using htoReal
+    (Q := Q) (f := F) hF] using htoReal
 
 theorem overlapCubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal {d : ℕ} {E : Type*}
-    [NormedAddCommGroup E] (S : TriadicCube d) (f : Vec d → E) :
+    [NormedAddCommGroup E] (S : TriadicCube d) (f : Vec d → E)
+    (hf : MeasureTheory.AEStronglyMeasurable f (normalizedOverlapCubeMeasure S)) :
     (overlapCubeLpNorm S (2 : ℝ≥0∞) f) ^ 2 =
       (∫⁻ x, ‖f x‖ₑ ^ (2 : ℝ) ∂ normalizedOverlapCubeMeasure S).toReal := by
   unfold overlapCubeLpNorm
@@ -435,7 +440,7 @@ theorem overlapCubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal {d : ℕ} {E : T
           norm_num
     _ =
           (∫⁻ x, ‖f x‖ₑ ^ (2 : ℝ) ∂ normalizedOverlapCubeMeasure S).toReal := by
-          rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]
+          rw [MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num) hf]
           let A : ℝ≥0∞ := ∫⁻ x, ‖f x‖ₑ ^ (2 : ℝ) ∂ normalizedOverlapCubeMeasure S
           change ((A ^ (1 / (2 : ℝ))) ^ (2 : ℝ)).toReal = A.toReal
           rw [← ENNReal.rpow_mul]
@@ -447,6 +452,9 @@ theorem overlapCubeLpNorm_two_sq_le_lintegral_ofReal_vecNormSq_toReal_of_le
     (hbound :
       ∫⁻ x, ENNReal.ofReal (vecNormSq (F x)) ∂ normalizedOverlapCubeMeasure S ≤ B) :
     (overlapCubeLpNorm S (2 : ℝ≥0∞) F) ^ 2 ≤ B.toReal := by
+  by_cases hF : MeasureTheory.AEStronglyMeasurable F (normalizedOverlapCubeMeasure S)
+  swap
+  · simp [overlapCubeLpNorm, MeasureTheory.eLpNorm_of_not_aestronglyMeasurable hF]
   have hnorm :
       ∫⁻ x, ‖F x‖ₑ ^ (2 : ℝ) ∂ normalizedOverlapCubeMeasure S ≤
         ∫⁻ x, ENNReal.ofReal (vecNormSq (F x)) ∂ normalizedOverlapCubeMeasure S :=
@@ -456,7 +464,7 @@ theorem overlapCubeLpNorm_two_sq_le_lintegral_ofReal_vecNormSq_toReal_of_le
     hnorm.trans hbound
   have htoReal := ENNReal.toReal_mono hB_ne_top hle
   simpa [overlapCubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal
-    (S := S) (f := F)] using htoReal
+    (S := S) (f := F) hF] using htoReal
 
 theorem ae_mem_overlapCubeSet_normalizedOverlapCubeMeasure {d : ℕ}
     (S : TriadicCube d) :
@@ -553,7 +561,9 @@ theorem cubeLpNorm_two_eq_volume_inv_rpow_half_mul_norm_toVectorL2_openCubeSet
     unfold cubeLpNorm normalizedCubeMeasure
     rw [MeasureTheory.eLpNorm_smul_measure_of_ne_top
       (by norm_num : (2 : ℝ≥0∞) ≠ ∞)]
-    simp [c, hμ_eq, μ]
+    · simp [c, hμ_eq, μ]
+    · rw [hμ_eq]
+      exact hopen.aestronglyMeasurable
   have hopen_norm :
       ‖Homogenization.toVectorL2 hopen‖ =
         (MeasureTheory.eLpNorm f (2 : ℝ≥0∞) μ).toReal := by
@@ -675,7 +685,9 @@ theorem overlapCubeLpNorm_two_eq_volume_inv_rpow_half_mul_norm_toScalarL2_openOv
     unfold overlapCubeLpNorm normalizedOverlapCubeMeasure
     rw [MeasureTheory.eLpNorm_smul_measure_of_ne_top
       (by norm_num : (2 : ℝ≥0∞) ≠ ∞)]
-    simp [c, hμ_eq, μ]
+    · simp [c, hμ_eq, μ]
+    · rw [hμ_eq]
+      exact hopen.aestronglyMeasurable
   have hopen_norm :
       ‖Homogenization.toScalarL2 hopen‖ =
         (MeasureTheory.eLpNorm f (2 : ℝ≥0∞) μ).toReal := by
@@ -751,7 +763,9 @@ theorem overlapCubeLpNorm_two_eq_volume_inv_rpow_half_mul_norm_toVectorL2_openOv
     unfold overlapCubeLpNorm normalizedOverlapCubeMeasure
     rw [MeasureTheory.eLpNorm_smul_measure_of_ne_top
       (by norm_num : (2 : ℝ≥0∞) ≠ ∞)]
-    simp [c, hμ_eq, μ]
+    · simp [c, hμ_eq, μ]
+    · rw [hμ_eq]
+      exact hopen.aestronglyMeasurable
   have hopen_norm :
       ‖Homogenization.toVectorL2 hopen‖ =
         (MeasureTheory.eLpNorm f (2 : ℝ≥0∞) μ).toReal := by

@@ -812,17 +812,19 @@ theorem overlapCentersAtDepth_average_lintegral_normalizedOverlapCubeMeasure_le
 
 theorem cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal
     {d : ℕ} {E : Type*} [NormedAddCommGroup E]
-    (Q : Cube d) (f : Vec d → E) :
+    (Q : Cube d) (f : Vec d → E)
+    (hf : MeasureTheory.AEStronglyMeasurable f (normalizedCubeMeasure Q)) :
     (cubeLpNorm Q (2 : ℝ≥0∞) f) ^ 2 =
       (∫⁻ x, ‖f x‖ₑ ^ (2 : ℝ) ∂ normalizedCubeMeasure Q).toReal :=
-  Homogenization.cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal Q f
+  Homogenization.cubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal Q f hf
 
 theorem overlapCubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal
     {d : ℕ} {E : Type*} [NormedAddCommGroup E]
-    (S : Cube d) (f : Vec d → E) :
+    (S : Cube d) (f : Vec d → E)
+    (hf : MeasureTheory.AEStronglyMeasurable f (normalizedOverlapCubeMeasure S)) :
     (overlapCubeLpNorm S (2 : ℝ≥0∞) f) ^ 2 =
       (∫⁻ x, ‖f x‖ₑ ^ (2 : ℝ) ∂ normalizedOverlapCubeMeasure S).toReal :=
-  Homogenization.overlapCubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal S f
+  Homogenization.overlapCubeLpNorm_two_sq_eq_lintegral_rpow_enorm_toReal S f hf
 
 theorem memLp_cubeMeasure_of_memLp_normalizedCubeMeasure
     {d : ℕ} {E : Type*} [NormedAddCommGroup E]

@@ -34,6 +34,15 @@ private theorem centeredCube_memLp_hilbertMeanZeroGradient_two
   exact (memHilbertVectorL2_hilbertifyVecField
     u.toH1Function.grad_memVectorL2).smul_measure ENNReal.ofReal_ne_top
 
+private theorem normalizedEuclideanLpENorm_eq_eLpNorm_hilbertifyVecField
+    {d : ℕ} (U : BoundedMeasurableDomain d) (p : ℝ≥0∞) {f : Vec d → Vec d}
+    (hf : AEStronglyMeasurable (hilbertifyVecField f) U.normalizedVolume) :
+    U.normalizedEuclideanLpENorm p f =
+      eLpNorm (hilbertifyVecField f) p U.normalizedVolume := by
+  rw [← eLpNorm_norm _ hf]
+  exact congrArg (eLpNorm · p U.normalizedVolume)
+    (funext fun x => euclideanNorm_eq_norm_ofVec (f x))
+
 /-- The below-two supplied-solution Neumann CZ estimate with `L^p`-only datum. -/
 theorem centeredCubeH1MeanZeroNeumannDivergence_cz_lpData_of_lt_two
     (d : ℕ) [NeZero d] (q : FiniteLpExponent)
@@ -126,12 +135,13 @@ theorem centeredCubeH1MeanZeroNeumannDivergence_cz_lpData_of_lt_two
     have hVbound : eLpNorm (hilbertifyVecField v.toH1Function.grad)
         q.conjugate.exponent μ ≤ C * (ENNReal.ofReal sigma0)⁻¹ *
           eLpNorm (hilbertifyVecField G) q.conjugate.exponent μ := by
-      simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
-        BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-        eLpNorm_norm, μ, v, G, Gfield, hilbertifyVecField] using! hvbound
+      rw [normalizedEuclideanLpENorm_eq_eLpNorm_hilbertifyVecField
+          (centeredCubeDomain d m) _ (f := v.toH1Function.grad) hVtwo.aestronglyMeasurable,
+        normalizedEuclideanLpENorm_eq_eLpNorm_hilbertifyVecField
+          (centeredCubeDomain d m) _ (f := Gfield.toField) hGq.aestronglyMeasurable] at hvbound
+      exact hvbound
     have hVq : MemLp (hilbertifyVecField v.toH1Function.grad)
         q.conjugate.exponent μ := by
-      refine ⟨hVtwo.aestronglyMeasurable, ?_⟩
       apply lt_of_le_of_lt hVbound
       apply ENNReal.mul_lt_top
       · exact (ENNReal.mul_ne_top hCtop.ne
@@ -147,6 +157,8 @@ theorem centeredCubeH1MeanZeroNeumannDivergence_cz_lpData_of_lt_two
           ∫⁻ x, INTERNAL.truncatedMoment q.exponent.toReal n F x ∂μ := by
       simpa only [μ, F, G, Gfield, hilbertifyVecField] using!
         INTERNAL.eLpNorm_hilbertRadialTruncation_rpow_conjugate_eq_truncatedMoment q n F
+          (by simpa only [μ, F] using
+            (centeredCube_memLp_hilbertMeanZeroGradient_two u).aestronglyMeasurable)
     have hreal : q.exponent.toReal.HolderConjugate q.conjugate.exponent.toReal :=
       ENNReal.HolderConjugate.toReal hqreal
     have hexp : (q.conjugate.exponent.toReal)⁻¹ = 1 - q.exponent.toReal⁻¹ := by
@@ -195,9 +207,11 @@ theorem centeredCubeH1MeanZeroNeumannDivergence_cz_lpData_of_lt_two
           rw [hGnorm]
           dsimp only [A]
           ac_rfl
-  simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
-    BoundedMeasurableDomain.normalizedLpENorm, euclideanNorm_eq_norm_ofVec,
-    eLpNorm_norm, F, H, μ, A] using! hmain
+  rw [normalizedEuclideanLpENorm_eq_eLpNorm_hilbertifyVecField
+      (centeredCubeDomain d m) _ (f := u.toH1Function.grad) hFmeas,
+    normalizedEuclideanLpENorm_eq_eLpNorm_hilbertifyVecField
+      (centeredCubeDomain d m) _ (f := h.toField) hHq.aestronglyMeasurable]
+  exact hmain
 
 /-- The supplied-solution centered-cube Neumann Calderón--Zygmund estimate for
 every finite exponent and an `L^p` datum.  No auxiliary `L²` hypothesis is

@@ -56,6 +56,30 @@ theorem norm_hilbertVec_ofVec_cubeCoordinateFoldReflectedVectorField_eq_oddRefle
   rw [HilbertVec.norm_sq_ofVec, HilbertVec.norm_sq_ofVec]
   exact (cubeDirichletOddReflectionVectorField_self_pairing Q G x).symm
 
+private theorem measurable_cubeDirichletOddReflectionSign
+    {d : ℕ} (Q : TriadicCube d) :
+    Measurable (cubeDirichletOddReflectionSign Q) := by
+  classical
+  refine Finset.measurable_prod _ fun i _ => ?_
+  unfold cubeCoordinateFoldSign
+  exact Measurable.ite (measurableSet_lt (measurable_pi_apply i) measurable_const)
+    measurable_const
+    (Measurable.ite (measurableSet_lt (measurable_pi_apply i) measurable_const)
+      measurable_const measurable_const)
+
+private theorem aestronglyMeasurable_hilbertVec_ofVec_of_eq_oddSign_smul
+    {d : ℕ} (Q : TriadicCube d) {mu : Measure (Vec d)} {F H : Vec d → Vec d}
+    (hH : ∀ x, H x = cubeDirichletOddReflectionSign Q x • F x)
+    (hF : AEStronglyMeasurable (fun x ↦ HilbertVec.ofVec (F x)) mu) :
+    AEStronglyMeasurable (fun x ↦ HilbertVec.ofVec (H x)) mu := by
+  have hvec : AEStronglyMeasurable F mu := by
+    simpa using
+      (HilbertVec.continuousLinearEquivVec d).continuous.comp_aestronglyMeasurable hF
+  have hsmul : AEStronglyMeasurable H mu :=
+    ((measurable_cubeDirichletOddReflectionSign Q).aestronglyMeasurable.smul hvec).congr
+      (ae_of_all _ fun x => (hH x).symm)
+  exact (HilbertVec.ofVecL d).continuous.comp_aestronglyMeasurable hsmul
+
 /-- Every `L^p` seminorm of the Neumann even reflection agrees with the
 corresponding Dirichlet odd-reflection seminorm. -/
 theorem eLpNorm_cubeCoordinateFoldReflectedVectorField_eq_oddReflection
@@ -67,11 +91,22 @@ theorem eLpNorm_cubeCoordinateFoldReflectedVectorField_eq_oddReflection
       eLpNorm
         (fun x ↦ HilbertVec.ofVec
           (cubeDirichletOddReflectionVectorField Q G x)) p mu := by
-  apply eLpNorm_congr_norm_ae
-  filter_upwards with x
-  exact
-    norm_hilbertVec_ofVec_cubeCoordinateFoldReflectedVectorField_eq_oddReflection
-      Q G x
+  by_cases hf : AEStronglyMeasurable
+      (fun x ↦ HilbertVec.ofVec (cubeCoordinateFoldReflectedVectorField Q G x)) mu
+  · have hg := aestronglyMeasurable_hilbertVec_ofVec_of_eq_oddSign_smul Q
+      (H := cubeDirichletOddReflectionVectorField Q G) (fun x => rfl) hf
+    apply eLpNorm_congr_norm_ae hf hg
+    filter_upwards with x
+    exact
+      norm_hilbertVec_ofVec_cubeCoordinateFoldReflectedVectorField_eq_oddReflection
+        Q G x
+  · have hg : ¬ AEStronglyMeasurable
+        (fun x ↦ HilbertVec.ofVec (cubeDirichletOddReflectionVectorField Q G x)) mu :=
+      fun hg => hf (aestronglyMeasurable_hilbertVec_ofVec_of_eq_oddSign_smul Q
+        (fun x => by
+          rw [cubeDirichletOddReflectionVectorField_apply, smul_smul,
+            cubeDirichletOddReflectionSign_mul_self, one_smul]) hg)
+    rw [eLpNorm_of_not_aestronglyMeasurable hf, eLpNorm_of_not_aestronglyMeasurable hg]
 
 /-- Exact finite-`p` scaling from a centered cube to its parent under Neumann
 even reflection. -/
@@ -175,9 +210,7 @@ theorem memLp_openCubeSet_succ_originCube_cubeCoordinateFoldReflectedVectorField
         (cubeCoordinateFoldReflectedVectorField (originCube d m) G x))
       p.exponent
       (volume.restrict (openCubeSet (originCube d (m + 1)))) := by
-  refine ⟨aestronglyMeasurable_openCubeSet_succ_originCube_cubeCoordinateFoldReflectedVectorField
-      hG.aestronglyMeasurable, ?_⟩
-  rw [eLpNorm_openCubeSet_succ_originCube_cubeCoordinateFoldReflectedVectorField]
+  rw [memLp_iff, eLpNorm_openCubeSet_succ_originCube_cubeCoordinateFoldReflectedVectorField]
   refine ENNReal.mul_lt_top ?_ hG.eLpNorm_lt_top
   exact ENNReal.rpow_lt_top_of_nonneg (by positivity) (by simp)
 

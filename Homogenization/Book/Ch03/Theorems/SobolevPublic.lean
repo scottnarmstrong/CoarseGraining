@@ -113,7 +113,7 @@ theorem cubeLpNorm_two_vec_le_sum_components {d : ℕ}
             (fun j _hj => norm_nonneg (u x j)) (Finset.mem_univ i)
         simpa [Real.norm_eq_abs, abs_of_nonneg hD_nonneg] using hu_le_D
     simpa using
-      (MeasureTheory.eLpNorm_le_mul_eLpNorm_of_ae_le_mul hpoint
+      (MeasureTheory.eLpNorm_le_mul_eLpNorm_of_ae_le_mul hu.aestronglyMeasurable hpoint
         (2 : ℝ≥0∞))
   have hsum_eLp :
       MeasureTheory.eLpNorm D (2 : ℝ≥0∞) μ ≤
@@ -128,7 +128,6 @@ theorem cubeLpNorm_two_vec_le_sum_components {d : ℕ}
       MeasureTheory.eLpNorm_sum_le
         (μ := μ) (p := (2 : ℝ≥0∞)) (s := Finset.univ)
         (f := fun i : Fin d => fun x : Vec d => ‖u x i‖)
-        (fun i _hi => (hcoord_norm_mem i).1)
         (by norm_num : (1 : ℝ≥0∞) ≤ (2 : ℝ≥0∞))
   have hmain :
       MeasureTheory.eLpNorm u (2 : ℝ≥0∞) μ ≤
@@ -138,13 +137,13 @@ theorem cubeLpNorm_two_vec_le_sum_components {d : ℕ}
   have hsum_ne_top :
       (∑ i : Fin d,
           MeasureTheory.eLpNorm (fun x => ‖u x i‖) (2 : ℝ≥0∞) μ) ≠ ∞ :=
-    ENNReal.sum_ne_top.2 fun i _hi => (hcoord_norm_mem i).2.ne
+    ENNReal.sum_ne_top.2 fun i _hi => (hcoord_norm_mem i).eLpNorm_lt_top.ne
   have htoReal :
       (MeasureTheory.eLpNorm u (2 : ℝ≥0∞) μ).toReal ≤
         (∑ i : Fin d,
           MeasureTheory.eLpNorm (fun x => ‖u x i‖) (2 : ℝ≥0∞) μ).toReal :=
     ENNReal.toReal_mono hsum_ne_top hmain
-  rw [ENNReal.toReal_sum (fun i _hi => (hcoord_norm_mem i).2.ne)] at htoReal
+  rw [ENNReal.toReal_sum (fun i _hi => (hcoord_norm_mem i).eLpNorm_lt_top.ne)] at htoReal
   have hsum_toReal_norm :
       (∑ i : Fin d,
           (MeasureTheory.eLpNorm (fun x => ‖u x i‖) (2 : ℝ≥0∞) μ).toReal) =
@@ -152,7 +151,7 @@ theorem cubeLpNorm_two_vec_le_sum_components {d : ℕ}
           (MeasureTheory.eLpNorm (fun x => u x i) (2 : ℝ≥0∞) μ).toReal := by
     refine Finset.sum_congr rfl ?_
     intro i _hi
-    rw [MeasureTheory.eLpNorm_norm]
+    rw [MeasureTheory.eLpNorm_norm _ (hcoord_mem i).aestronglyMeasurable]
   rw [hsum_toReal_norm] at htoReal
   simpa [cubeLpNorm, μ] using htoReal
 

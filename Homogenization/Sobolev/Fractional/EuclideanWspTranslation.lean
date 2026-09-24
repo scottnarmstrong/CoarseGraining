@@ -45,7 +45,7 @@ private theorem euclideanWspTranslation_measurePreserving {d : ℕ}
   have hvol : cubeVolume (translateCube shift Q) = cubeVolume Q := rfl
   refine ⟨T.measurable, ?_⟩
   rw [normalizedCubeMeasure, normalizedCubeMeasure, cubeMeasure, cubeMeasure,
-    hvol, hres, Measure.map_smul]
+    hvol, hres, Measure.map_smul _ T.measurable.aemeasurable]
 
 private theorem euclideanWspTranslation_pair_measurePreserving {d : ℕ}
     (shift : Fin d → ℤ) (Q : TriadicCube d) :
@@ -115,12 +115,7 @@ theorem cubeEuclideanNormalizedLpENorm_translate {d : ℕ}
   unfold BoundedMeasurableDomain.normalizedLpENorm
   rw [cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
     cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
-  rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
-    (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne,
-    eLpNorm_eq_lintegral_rpow_enorm_toReal
-      (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne]
-  congr 1
-  rw [MeasurePreserving.lintegral_map_equiv _ T hMP]
+  rw [← hMP.map_eq, MeasurableEmbedding.eLpNorm_map_measure T.measurableEmbedding]
   rfl
 
 /-- Exact covariance of the Euclidean fractional seminorm under a triadic
@@ -134,12 +129,11 @@ theorem cubeEuclideanWspESeminorm_translate {d : ℕ}
   let T := euclideanWspTranslationEquiv shift Q
   let TP := T.prodCongr T
   have hMP := euclideanWspTranslation_pair_measurePreserving shift Q
-  rw [cubeEuclideanWspESeminorm_eq_lintegral,
-    cubeEuclideanWspESeminorm_eq_lintegral]
+  unfold cubeEuclideanWspESeminorm
+  rw [← hMP.map_eq, MeasurableEmbedding.eLpNorm_map_measure TP.measurableEmbedding]
   congr 1
-  rw [MeasurePreserving.lintegral_map_equiv _ TP hMP]
-  refine lintegral_congr fun z => ?_
-  rw [cubeEuclideanWspKernel_translate]
+  funext z
+  exact cubeEuclideanWspKernel_translate shift Q s p F z
 
 /-- Fractional Sobolev membership is exactly transported by a triadic lattice
 translation. -/
@@ -158,21 +152,19 @@ theorem memCubeEuclideanWsp_translate_iff {d : ℕ}
     funext z
     symm
     exact cubeEuclideanWspKernel_translate shift Q s p F z
+  rw [memCubeEuclideanWsp_iff, memCubeEuclideanWsp_iff]
   constructor
   · rintro ⟨hmeas, hfinite⟩
     constructor
     · rw [hker]
       exact (hMP.aestronglyMeasurable_comp_iff TP.measurableEmbedding).2 hmeas
-    · change cubeEuclideanWspESeminorm Q s p
-          (fun x => F (x + Gagliardo.cubeShiftVector shift Q)) < ∞
-      rwa [← cubeEuclideanWspESeminorm_translate shift Q s p F]
+    · rwa [← cubeEuclideanWspESeminorm_translate shift Q s p F]
   · rintro ⟨hmeas, hfinite⟩
     constructor
     · apply (hMP.aestronglyMeasurable_comp_iff TP.measurableEmbedding).1
       rw [← hker]
       exact hmeas
-    · change cubeEuclideanWspESeminorm (translateCube shift Q) s p F < ∞
-      rwa [cubeEuclideanWspESeminorm_translate shift Q s p F]
+    · rwa [cubeEuclideanWspESeminorm_translate shift Q s p F]
 
 /-- Exact covariance of the full normalized Euclidean fractional power norm
 under a triadic lattice translation. -/

@@ -88,7 +88,7 @@ theorem cubeBesovDepthSeminorm_gradCoord_le_depthWeight_mul_descendantsAverage_s
         ((cubeVolume R)⁻¹ + 1) * (hC R hR).constant *
           ‖((H.restrict (isOpen_openCubeSet R)
               (openCubeSet_subset_of_mem_descendantsAtDepth hR)).gradCoordH1Function i).gradToVectorL2‖
-    rw [dif_pos hR]
+    rw [dite_eq_left hR]
   refine
     cubeBesovDepthSeminorm_two_le_depthWeight_mul_descendantsAverage_sq_rpow_half
       Q 1 (fun x => u.grad x i) j A ?_ ?_
@@ -149,7 +149,7 @@ theorem cubeBesovDepthSeminorm_gradCoord_le_depthWeight_mul_descendantsAverage_v
         ((cubeVolume R)⁻¹) ^ (1 / 2 : ℝ) * (hC R hR).constant *
           ‖((H.restrict (isOpen_openCubeSet R)
               (openCubeSet_subset_of_mem_descendantsAtDepth hR)).gradCoordH1Function i).gradToVectorL2‖
-    rw [dif_pos hR]
+    rw [dite_eq_left hR]
   refine
     cubeBesovDepthSeminorm_two_le_depthWeight_mul_descendantsAverage_sq_rpow_half
       Q 1 (fun x => u.grad x i) j A ?_ ?_
@@ -212,7 +212,7 @@ theorem cubeBesovDepthSeminorm_gradCoord_le_depthWeight_mul_const_mul_of_descend
         0) =
         ‖((H.restrict (isOpen_openCubeSet R)
             (openCubeSet_subset_of_mem_descendantsAtDepth hR)).gradCoordH1Function i).gradToVectorL2‖
-    rw [dif_pos hR]
+    rw [dite_eq_left hR]
   have hP_eval :
       ∀ R (hR : R ∈ descendantsAtDepth Q j),
         P R = ((cubeVolume R)⁻¹) ^ (1 / 2 : ℝ) * (hC R hR).constant * Row R := by
@@ -223,7 +223,7 @@ theorem cubeBesovDepthSeminorm_gradCoord_le_depthWeight_mul_const_mul_of_descend
       else
         0) =
         ((cubeVolume R)⁻¹) ^ (1 / 2 : ℝ) * (hC R hR).constant * Row R
-    rw [dif_pos hR]
+    rw [dite_eq_left hR]
   have hP_nonneg :
       ∀ R ∈ descendantsAtDepth Q j, 0 ≤ P R := by
     intro R hR
@@ -349,7 +349,7 @@ theorem cubeBesovDepthSeminorm_gradCoord_le_depthWeight_mul_const_mul_of_descend
         0) =
         ‖((H.restrict (isOpen_openCubeSet R)
             (openCubeSet_subset_of_mem_descendantsAtDepth hR)).gradCoordH1Function i).gradToVectorL2‖
-    rw [dif_pos hR]
+    rw [dite_eq_left hR]
   have hP_eval :
       ∀ R (hR : R ∈ descendantsAtDepth Q j),
         P R = ((cubeVolume R)⁻¹ + 1) * (hC R hR).constant * Row R := by
@@ -360,7 +360,7 @@ theorem cubeBesovDepthSeminorm_gradCoord_le_depthWeight_mul_const_mul_of_descend
       else
         0) =
         ((cubeVolume R)⁻¹ + 1) * (hC R hR).constant * Row R
-    rw [dif_pos hR]
+    rw [dite_eq_left hR]
   have hP_nonneg :
       ∀ R ∈ descendantsAtDepth Q j, 0 ≤ P R := by
     intro R hR
@@ -481,7 +481,7 @@ theorem cubeBesovDepthSeminorm_gradCoord_le_depthWeight_mul_const_mul_global_hes
           descendantsAverage Q j (fun _R => B ^ 2) := by
       refine descendantsAverage_le_descendantsAverage Q j ?_
       intro R hR
-      rw [dif_pos hR]
+      rw [dite_eq_left hR]
       exact pow_le_pow_left₀ (norm_nonneg _)
         (by
           change

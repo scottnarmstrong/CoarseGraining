@@ -137,7 +137,12 @@ private theorem tendsto_eLpNorm_sub_zero_convolution_scaledConvexApproxKernel_of
           (scaledConvexApproxKernel ρ (a n) ⋆[ContinuousLinearMap.lsmul ℝ ℝ, volume] f) x -
             f x)
         p volume ≤ ENNReal.ofReal δ * volume K ^ (1 / p.toReal) := by
-    exact eLpNorm_sub_le_of_dist_bdd volume hp hK_meas hδ_pos.le hdist hconv_support hf_support
+    refine eLpNorm_sub_le_of_dist_bdd volume hp hK_meas.nullMeasurableSet hδ_pos.le ?_ hdist
+      hconv_support hf_support
+    exact ((hasCompactSupport_scaledConvexApproxKernel hρ.compactSupport
+      han_pos).continuous_convolution_left (L := ContinuousLinearMap.lsmul ℝ ℝ)
+      (contDiff_scaledConvexApproxKernel hρ (a n)).continuous
+      hf_cont.locallyIntegrable).sub hf_cont |>.aestronglyMeasurable
   have hδmul : δ * cK ≤ η.toReal := by
     have hfrac_le : cK / (cK + 1) ≤ 1 := by
       exact div_le_one_of_le₀ (by linarith) (by linarith)
@@ -193,7 +198,6 @@ theorem tendsto_eLpNorm_sub_zero_convolution_scaledConvexApproxKernel
   have hδ_pos : 0 < δ := lt_min hη₁_pos hη₂_pos
   obtain ⟨f, hf_supp, happrox, hf_cont, hf_mem⟩ :=
     hg.exists_hasCompactSupport_eLpNorm_sub_le hp hδ_pos.ne'
-  have hthird_mem : MemLp (fun x => f x - g x) p volume := hf_mem.sub hg
   have hthird_norm : eLpNorm (fun x => f x - g x) p volume ≤ η₁ := by
     have hneg : (fun x => f x - g x) = -(fun x => g x - f x) := by
       ext x
@@ -252,31 +256,19 @@ theorem tendsto_eLpNorm_sub_zero_convolution_scaledConvexApproxKernel
             eLpNorm_convolution_scaledConvexApproxKernel_le hρ hp1 hp hn_scale
               (hg.sub hf_mem).aemeasurable
       _ ≤ η₂ := happrox.trans (min_le_right _ _)
-  have hfirst_meas : AEStronglyMeasurable
-      (k ⋆[ContinuousLinearMap.lsmul ℝ ℝ, volume] fun x => g x - f x) volume := by
-    exact
-      (hk_compact.continuous_convolution_left (L := ContinuousLinearMap.lsmul ℝ ℝ)
-        hk_cont hdiff_loc).aestronglyMeasurable
-  have hmiddle_meas : AEStronglyMeasurable
-      (fun x => (k ⋆[ContinuousLinearMap.lsmul ℝ ℝ, volume] f) x - f x) volume := by
-    exact
-      (hk_compact.continuous_convolution_left (L := ContinuousLinearMap.lsmul ℝ ℝ)
-        hk_cont hf_loc).sub hf_cont |>.aestronglyMeasurable
   have hfirst_middle :
       eLpNorm
         ((k ⋆[ContinuousLinearMap.lsmul ℝ ℝ, volume] fun x => g x - f x) +
           fun x => (k ⋆[ContinuousLinearMap.lsmul ℝ ℝ, volume] f) x - f x)
         p volume < η₁ := by
-    exact hη₂ _ _ hfirst_meas hmiddle_meas hfirst_norm (by simpa only [k] using hmid)
+    exact hη₂ _ _ hfirst_norm (by simpa only [k] using hmid)
   have hsum :
       eLpNorm
         (((k ⋆[ContinuousLinearMap.lsmul ℝ ℝ, volume] fun x => g x - f x) +
           fun x => (k ⋆[ContinuousLinearMap.lsmul ℝ ℝ, volume] f) x - f x) +
           fun x => f x - g x)
         p volume < η := by
-    exact hη₁ _ _
-      (hfirst_meas.add hmiddle_meas) hthird_mem.aestronglyMeasurable
-      hfirst_middle.le hthird_norm
+    exact hη₁ _ _ hfirst_middle.le hthird_norm
   have hdecomp :
       eLpNorm
         (fun x =>

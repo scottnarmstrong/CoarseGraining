@@ -53,7 +53,8 @@ theorem exists_scalarPoisson_hessianHilbertMat_normalizedCubeMeasure_le_two
       eLpNorm (fun x ↦ HilbertMat.ofMat (fun i j ↦ H.hess i j x)) 2
           (normalizedCubeMeasure Q) =
         eLpNorm H.frobeniusMagnitude 2 (normalizedCubeMeasure Q) := by
-    apply eLpNorm_congr_norm_ae
+    refine eLpNorm_congr_norm_ae hHmat.aestronglyMeasurable
+      (H.frobeniusMagnitude_memLp_normalizedCubeMeasure Q).aestronglyMeasurable ?_
     exact ae_of_all _ fun x ↦ by
       have hnonneg : 0 ≤ matrixFrobeniusMagnitude (fun i j ↦ H.hess i j x) :=
         matrixFrobeniusMagnitude_nonneg _

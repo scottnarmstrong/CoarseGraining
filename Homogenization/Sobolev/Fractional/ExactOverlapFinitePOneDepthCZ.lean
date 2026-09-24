@@ -62,6 +62,12 @@ private theorem cubeDirichletDivergenceProblem_grad_memLp
     { toField := h
       euclideanMemLp := hhq
       euclideanMemL2 := hh2 }
+  have hgrad_l2 : MemLp (fun x => HilbertVec.ofVec (w.toH1Function.grad x)) 2
+      (normalizedCubeMeasure (originCube d m)) := by
+    rw [MeasureTheory.memLp_piLp_iff]
+    intro i
+    simpa only [HilbertVec.ofVec, PiLp.toLp_apply] using
+      w.toH1Function.grad_memL2_normalizedCubeMeasure i
   have hbound :
       eLpNorm (fun x => HilbertVec.ofVec (w.toH1Function.grad x)) q.exponent
           (normalizedCubeMeasure (originCube d m)) ≤
@@ -71,27 +77,23 @@ private theorem cubeDirichletDivergenceProblem_grad_memLp
     simpa only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
       BoundedMeasurableDomain.normalizedLpENorm, centeredCubeDomain,
       cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-      euclideanNorm_eq_norm_ofVec, MeasureTheory.eLpNorm_norm, hField] using
+      euclideanNorm_eq_norm_ofVec,
+      MeasureTheory.eLpNorm_norm _ hgrad_l2.aestronglyMeasurable,
+      MeasureTheory.eLpNorm_norm _ hhq.aestronglyMeasurable, hField] using
       hC m 1 hField w (by norm_num)
         (cubeDirichletDivergenceProblem_to_centered_normalized m hh2 hw)
-  have hgrad_l2 : MemLp (fun x => HilbertVec.ofVec (w.toH1Function.grad x)) 2
-      (normalizedCubeMeasure (originCube d m)) := by
-    rw [MeasureTheory.memLp_piLp_iff]
-    intro i
-    simpa only [HilbertVec.ofVec, PiLp.toLp_apply] using
-      w.toH1Function.grad_memL2_normalizedCubeMeasure i
-  refine ⟨hgrad_l2.aestronglyMeasurable, ?_⟩
   exact lt_of_le_of_lt hbound (by
     simpa only [ENNReal.ofReal_one, inv_one, mul_one] using
       ENNReal.mul_lt_top hCtop hhq.eLpNorm_lt_top)
 
 private theorem eLpNorm_rpow_eq_lintegral_enorm {α E : Type*}
     [MeasurableSpace α] [NormedAddCommGroup E]
-    (q : FiniteLpExponent) (μ : Measure α) (f : α → E) :
+    (q : FiniteLpExponent) (μ : Measure α) (f : α → E)
+    (hf : AEStronglyMeasurable f μ) :
     (eLpNorm f q.exponent μ) ^ q.exponent.toReal =
       ∫⁻ x, ‖f x‖ₑ ^ q.exponent.toReal ∂μ := by
   rw [eLpNorm_eq_lintegral_rpow_enorm_toReal
-    (zero_lt_one.trans q.one_lt).ne' q.lt_top.ne, ← ENNReal.rpow_mul]
+    (zero_lt_one.trans q.one_lt).ne' q.lt_top.ne hf, ← ENNReal.rpow_mul]
   have hq : q.exponent.toReal ≠ 0 :=
     ENNReal.toReal_pos (zero_lt_one.trans q.one_lt).ne' q.lt_top.ne |>.ne'
   rw [one_div, inv_mul_cancel₀ hq, ENNReal.rpow_one]
@@ -179,7 +181,10 @@ private theorem exactOverlapFiniteP_residual_rpow_le
     lintegral_enorm_rpow_sub_averagingField_le_overlapDepthENorm_rpow P h q hhq
   rw [← eLpNorm_rpow_eq_lintegral_enorm q
     (normalizedCubeMeasure (originCube d m))
-    (fun x => HilbertVec.ofVec (h x - P.averagingField h x))] at hresidual
+    (fun x => HilbertVec.ofVec (h x - P.averagingField h x))
+    (by
+      simpa only [WithLp.toLp_sub] using
+        hhq.aestronglyMeasurable.fun_sub hGq.aestronglyMeasurable)] at hresidual
   calc
     (cubeEuclideanPositiveBesovOverlapDepthENorm (originCube d m) q
         (fun x => w.toH1Function.grad x - v.toH1Function.grad x) j) ^
@@ -265,7 +270,8 @@ private theorem exactOverlapFiniteP_smooth_rpow_le
         (if r ≤ 2 then 1 else (3 ^ d : ℝ≥0∞) ^ (r / 2 - 1)) *
         (3 ^ d : ℝ≥0∞)) *
         (cubeEuclideanPositiveBesovOverlapDepthENorm (originCube d m) q h j) ^ r := by
-    rw [eLpNorm_rpow_eq_lintegral_enorm]
+    rw [eLpNorm_rpow_eq_lintegral_enorm _ _ _
+      (P.averagingCompetitorW1p h q).jacobianHilbertMemLp.aestronglyMeasurable]
     simpa only [P, ell, r] using hjacobian
   have hcomparison_pow := ENNReal.rpow_le_rpow hcomparison
     (show 0 ≤ r from ENNReal.toReal_nonneg)
@@ -367,10 +373,10 @@ theorem exists_exactOverlapFiniteP_oneDepth_cz
     have hthree : (3 ^ d : ℝ≥0∞) < ∞ :=
       (ENNReal.pow_ne_top ENNReal.ofNat_ne_top).lt_top
     by_cases hq : q.exponent.toReal ≤ 2
-    · simp only [if_pos hq, one_mul, mul_one]
+    · simp only [ite_eq_left hq, one_mul, mul_one]
       exact ENNReal.mul_lt_top
         (ENNReal.mul_lt_top (ENNReal.natCast_ne_top (Fintype.card (Fin d × Fin d))).lt_top hder) hthree
-    · simp only [if_neg hq]
+    · simp only [ite_eq_right hq]
       have hr : 0 ≤ q.exponent.toReal / 2 - 1 := by
         have htwo : 2 < q.exponent.toReal := lt_of_not_ge hq
         linarith

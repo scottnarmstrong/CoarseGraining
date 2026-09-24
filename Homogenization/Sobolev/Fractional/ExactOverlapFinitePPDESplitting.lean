@@ -112,6 +112,24 @@ theorem exists_exactOverlapFiniteP_pdeSplitting
   have hv_normalized :=
     cubeDirichletDivergenceProblem_to_centered_normalized m hG2_l2 hv
   have hstab_bound := hstab m 1 hField gField w v (by norm_num) hw_normalized hv_normalized
+  have hgrad_l2 : ∀ u : H10Function (openCubeSet (originCube d m)),
+      MemLp (fun x => HilbertVec.ofVec (u.toH1Function.grad x)) 2
+        (normalizedCubeMeasure (originCube d m)) := by
+    intro u
+    rw [MeasureTheory.memLp_piLp_iff]
+    intro i
+    simpa only [HilbertVec.ofVec, PiLp.toLp_apply] using
+      u.toH1Function.grad_memL2_normalizedCubeMeasure i
+  have hwv : AEStronglyMeasurable
+      (fun x => HilbertVec.ofVec (w.toH1Function.grad x - v.toH1Function.grad x))
+      (normalizedCubeMeasure (originCube d m)) := by
+    simpa only [WithLp.toLp_sub] using
+      (hgrad_l2 w).aestronglyMeasurable.fun_sub (hgrad_l2 v).aestronglyMeasurable
+  have hhg : AEStronglyMeasurable
+      (fun x => HilbertVec.ofVec (h x - P.averagingField h x))
+      (normalizedCubeMeasure (originCube d m)) := by
+    simpa only [WithLp.toLp_sub, hGq] using
+      hhq.aestronglyMeasurable.fun_sub hGq_q.aestronglyMeasurable
   refine ⟨v, V, hv, hVfield, ?_, ?_⟩
   · calc
       eLpNorm (fun x => HilbertVec.ofVec
@@ -122,7 +140,7 @@ theorem exists_exactOverlapFiniteP_pdeSplitting
             simp only [BoundedMeasurableDomain.normalizedEuclideanLpENorm,
               BoundedMeasurableDomain.normalizedLpENorm, centeredCubeDomain,
               cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-              euclideanNorm_eq_norm_ofVec, MeasureTheory.eLpNorm_norm]
+              euclideanNorm_eq_norm_ofVec, MeasureTheory.eLpNorm_norm _ hwv]
       _ ≤ Cstab * (ENNReal.ofReal (1 : ℝ))⁻¹ *
           (centeredCubeDomain d m).normalizedEuclideanLpENorm q.exponent
             (fun x => hField.toField x - gField.toField x) := hstab_bound
@@ -133,7 +151,7 @@ theorem exists_exactOverlapFiniteP_pdeSplitting
               BoundedMeasurableDomain.normalizedEuclideanLpENorm,
               BoundedMeasurableDomain.normalizedLpENorm, centeredCubeDomain,
               cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-              euclideanNorm_eq_norm_ofVec, MeasureTheory.eLpNorm_norm,
+              euclideanNorm_eq_norm_ofVec, MeasureTheory.eLpNorm_norm _ hhg,
               hField, gField, hGq]
       _ ≤ (Cstab + Cgrad) * eLpNorm (fun x => HilbertVec.ofVec
           (h x - P.averagingField h x)) q.exponent

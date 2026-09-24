@@ -219,7 +219,7 @@ private theorem dualTestNorm_eq_repo {d : ℕ} (Q : TriadicCube d)
       _root_.Homogenization.cubeBesovDualTestNorm (toRepoCube Q) comparisonS 2 2 N φ := by
   rw [partialTestNorm_eq_repo, _root_.Homogenization.cubeBesovDualTestNorm,
     _root_.Homogenization.cubeBesovConjExponent, conjExponent_two,
-    if_neg (by simp)]
+    ite_eq_right (by simp)]
 
 private theorem locallyL2_eq_repo {d : ℕ} (Q : TriadicCube d) (φ : Vec d → ℝ) :
     Sobolev34.LocallyL2OnDescendants Q φ ↔

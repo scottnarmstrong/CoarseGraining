@@ -1,5 +1,5 @@
 import Homogenization.CoarseGraining.BlockMatrixProperties
-import Mathlib.Data.Real.Pointwise
+import Mathlib.Basic.Real.Pointwise
 
 namespace Homogenization
 

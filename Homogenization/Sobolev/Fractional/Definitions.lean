@@ -137,29 +137,30 @@ theorem cubeGagliardoESeminorm_def (Q : TriadicCube d) (s : ℝ) (p : ℝ≥0∞
 
 /-- Finite-`p` lintegral form, reserved for the comparison proof files. -/
 theorem cubeGagliardoESeminorm_eq_lintegral {Q : TriadicCube d} {s : ℝ}
-    {p : ℝ≥0∞} {u : Vec d → E} (hp0 : p ≠ 0) (hpt : p ≠ ∞) :
+    {p : ℝ≥0∞} {u : Vec d → E} (hp0 : p ≠ 0) (hpt : p ≠ ∞)
+    (hu : AEStronglyMeasurable (gagliardoKernel s p u) (gagliardoCubeMeasure Q)) :
     cubeGagliardoESeminorm Q s p u =
       (∫⁻ z, ‖gagliardoKernel s p u z‖ₑ ^ p.toReal
         ∂gagliardoCubeMeasure Q) ^ (1 / p.toReal) :=
-  eLpNorm_eq_lintegral_rpow_enorm_toReal hp0 hpt
+  eLpNorm_eq_lintegral_rpow_enorm_toReal hp0 hpt hu
 
 end Internal
 
 theorem MemWsp.aestronglyMeasurable {Q : TriadicCube d} {s : ℝ} {p : ℝ≥0∞}
     {u : Vec d → E} (h : MemWsp Q s p u) :
     AEStronglyMeasurable (gagliardoKernel s p u) (gagliardoCubeMeasure Q) :=
-  h.1
+  MemLp.aestronglyMeasurable h
 
 theorem MemWsp.eSeminorm_lt_top {Q : TriadicCube d} {s : ℝ} {p : ℝ≥0∞}
     {u : Vec d → E} (h : MemWsp Q s p u) :
     cubeGagliardoESeminorm Q s p u < ∞ :=
-  h.2
+  h.eLpNorm_lt_top
 
 theorem memWsp_iff {Q : TriadicCube d} {s : ℝ} {p : ℝ≥0∞} {u : Vec d → E} :
     MemWsp Q s p u ↔
       AEStronglyMeasurable (gagliardoKernel s p u) (gagliardoCubeMeasure Q) ∧
         cubeGagliardoESeminorm Q s p u < ∞ :=
-  Iff.rfl
+  ⟨fun h => ⟨MemLp.aestronglyMeasurable h, h⟩, fun h => h.2⟩
 
 theorem MemWsp.add {Q : TriadicCube d} {s : ℝ} {p : ℝ≥0∞} {u v : Vec d → E}
     (hu : MemWsp Q s p u) (hv : MemWsp Q s p v) :
@@ -202,11 +203,11 @@ theorem cubeGagliardoESeminorm_const_smul (Q : TriadicCube d) (s : ℝ)
 
 /-- Triangle inequality for the fractional Sobolev seminorm. -/
 theorem cubeGagliardoESeminorm_add_le {Q : TriadicCube d} {s : ℝ} {p : ℝ≥0∞}
-    {u v : Vec d → E} (hp : 1 ≤ p) (hu : MemWsp Q s p u) (hv : MemWsp Q s p v) :
+    {u v : Vec d → E} (hp : 1 ≤ p) :
     cubeGagliardoESeminorm Q s p (u + v) ≤
       cubeGagliardoESeminorm Q s p u + cubeGagliardoESeminorm Q s p v := by
   simp only [Internal.cubeGagliardoESeminorm_def, gagliardoKernel_add]
-  exact eLpNorm_add_le hu.aestronglyMeasurable hv.aestronglyMeasurable hp
+  exact eLpNorm_add_le hp
 
 theorem cubeGagliardoSeminorm_nonneg (Q : TriadicCube d) (s : ℝ) (p : ℝ≥0∞)
     (u : Vec d → E) :

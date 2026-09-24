@@ -39,8 +39,7 @@ def law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) : Book.Ch04.Restr
 instance instIsProbabilityMeasure_law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) :
     IsProbabilityMeasure (law d lam Lam p hp) := by
   rw [law]
-  exact Measure.isProbabilityMeasure_map
-    (measurable_checkerRegField (d := d) lam Lam).aemeasurable
+  infer_instance
 
 theorem isProbabilityMeasure_law (d : ℕ) (lam Lam : ℝ) (p : ℝ≥0) (hp : p ≤ 1) :
     IsProbabilityMeasure (law d lam Lam p hp) :=

@@ -150,9 +150,9 @@ private theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp
   have hfh_int : ∀ n, Integrable (fun x => f n x * h x) μ := by
     intro n
     simpa [μ, mul_comm] using
-      (memLp_one_iff_integrable.mp (hh.mul' (hf n)))
+      (memLp_one_iff_integrable.mp ((hf n).fun_mul (r := 1) hh))
   have hgh_int : Integrable (fun x => g x * h x) μ := by
-    simpa [μ, mul_comm] using (memLp_one_iff_integrable.mp (hh.mul' hg))
+    simpa [μ, mul_comm] using (memLp_one_iff_integrable.mp (hg.fun_mul (r := 1) hh))
   rw [← tendsto_sub_nhds_zero_iff]
   have hdiff_eq : ∀ n,
       (∫ x, f n x * h x ∂μ) - (∫ x, g x * h x ∂μ)
@@ -166,7 +166,7 @@ private theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp
       eLpNorm h p.conjugate.exponent μ with hB
   have hBtend : Tendsto (fun n => (B n).toReal) atTop (nhds 0) := by
     have hprod : Tendsto B atTop (nhds (0 * eLpNorm h p.conjugate.exponent μ)) := by
-      refine ENNReal.Tendsto.mul (by simpa [μ] using htend) (Or.inr hh.2.ne)
+      refine ENNReal.Tendsto.mul (by simpa [μ] using htend) (Or.inr hh.eLpNorm_lt_top.ne)
         tendsto_const_nhds (Or.inr (by simp))
     rw [zero_mul] at hprod
     have hreal := (ENNReal.tendsto_toReal (by simp : (0 : ℝ≥0∞) ≠ ⊤)).comp hprod
@@ -180,18 +180,21 @@ private theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp
   have hHolder : eLpNorm (fun x => (f n x - g x) * h x) 1 μ ≤ B n := by
     have h := eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm
       (p := p.exponent) (q := p.conjugate.exponent) (r := 1)
-      ((hf n).sub hg).1 hh.1 (fun a b => a * b) 1 hbound
+      (fun a b => a * b) 1 continuous_mul
+      ((hf n).sub hg).aestronglyMeasurable hh.aestronglyMeasurable hbound
     simpa [B] using! h
+  have hmeas : AEStronglyMeasurable (fun x => (f n x - g x) * h x) μ :=
+    ((hf n).sub hg).aestronglyMeasurable.mul hh.aestronglyMeasurable
   calc
     ‖∫ x, (f n x - g x) * h x ∂μ‖
       ≤ (∫⁻ x, ENNReal.ofReal ‖(f n x - g x) * h x‖ ∂μ).toReal :=
         norm_integral_le_lintegral_norm _
     _ = (eLpNorm (fun x => (f n x - g x) * h x) 1 μ).toReal := by
-      rw [eLpNorm_one_eq_lintegral_enorm]
+      rw [eLpNorm_one_eq_lintegral_enorm hmeas]
       simp_rw [ofReal_norm]
     _ ≤ (B n).toReal := by
       apply ENNReal.toReal_mono _ hHolder
-      exact ENNReal.mul_ne_top ((hf n).sub hg).2.ne hh.2.ne
+      exact ENNReal.mul_ne_top ((hf n).sub hg).eLpNorm_lt_top.ne hh.eLpNorm_lt_top.ne
 
 private theorem HasWeakPartialDerivOn.of_tendsto_eLpNorm_finiteLp
     {U : Set (Vec d)} (p : FiniteLpExponent) {i : Fin d}
@@ -395,15 +398,14 @@ def foldExtensionFiniteP {m : ℕ} (lo hi : Vec (m + 1)) (hlt : ∀ k, lo k < hi
     exact heq.fderiv_eq
   have hEu_mem : MemLp (fun x => g (Fold lo hi x)) p.exponent
       (volume.restrict (Box3 lo hi)) := by
-    refine ⟨(hg_meas.comp hFold_meas).aestronglyMeasurable, ?_⟩
+    refine memLp_iff.2 ?_
     rw [eLpNorm_foldComp_finiteLp p hg_meas lo hi hlt, ← eLpNorm_congr_ae hg_ae]
     exact ENNReal.mul_lt_top hCd_lt u.memLp.eLpNorm_lt_top
   have hEu_grad_mem : ∀ i, MemLp
       (fun x => gi i (Fold lo hi x) * foldSign (lo i) (hi i) (x i)) p.exponent
       (volume.restrict (Box3 lo hi)) := by
     intro i
-    refine ⟨(((hgi_meas i).comp hFold_meas).mul
-      (measurable_foldSign_comp lo hi i)).aestronglyMeasurable, ?_⟩
+    refine memLp_iff.2 ?_
     refine lt_of_le_of_lt
       (eLpNorm_foldComp_mul_foldSign_le_finiteLp p (hgi_meas i) lo hi hlt i) ?_
     rw [← eLpNorm_congr_ae (hgi_ae i)]
@@ -411,7 +413,7 @@ def foldExtensionFiniteP {m : ℕ} (lo hi : Vec (m + 1)) (hlt : ∀ k, lo k < hi
   have hEn_mem : ∀ n, MemLp (fun x => wn n (Fold lo hi x)) p.exponent
       (volume.restrict (Box3 lo hi)) := by
     intro n
-    refine ⟨((hw_cont n).comp hFold_cont).aestronglyMeasurable, ?_⟩
+    refine memLp_iff.2 ?_
     rw [eLpNorm_foldComp_finiteLp p (hw_meas n) lo hi hlt]
     have hmem : MemLp (wn n) p.exponent (volume.restrict (Box lo hi)) :=
       ((hw_cont n).memLp_of_hasCompactSupport (hw_cptsupp n)).restrict _
@@ -423,8 +425,7 @@ def foldExtensionFiniteP {m : ℕ} (lo hi : Vec (m + 1)) (hlt : ∀ k, lo k < hi
     have hcont : Continuous (fun y => fderiv ℝ (wn n) y (basisVec i)) :=
       (((hw_smooth n).of_le (by exact_mod_cast le_top) : ContDiff ℝ 1 (wn n)).continuous_fderiv
         (by simp)).clm_apply continuous_const
-    refine ⟨((hcont.measurable.comp hFold_meas).mul
-      (measurable_foldSign_comp lo hi i)).aestronglyMeasurable, ?_⟩
+    refine memLp_iff.2 ?_
     refine lt_of_le_of_lt
       (eLpNorm_foldComp_mul_foldSign_le_finiteLp p hcont.measurable lo hi hlt i) ?_
     have hmem : MemLp (fun y => fderiv ℝ (wn n) y (basisVec i)) p.exponent
@@ -533,7 +534,7 @@ def foldExtensionFiniteP {m : ℕ} (lo hi : Vec (m + 1)) (hlt : ∀ k, lo k < hi
             (Set.mem_univ_pi.1 hxU k).2.le⟩
         have hsign : foldSign (lo i) (hi i) (x i) = 1 := by
           unfold foldSign
-          rw [if_neg (not_lt.mpr hxk.1.le), if_neg (not_lt.mpr hxk.2.le)]
+          rw [ite_eq_right (not_lt.mpr hxk.1.le), ite_eq_right (not_lt.mpr hxk.2.le)]
         show gi i (Fold lo hi x) * foldSign (lo i) (hi i) (x i) = u.grad x i
         rw [hfold, hsign, mul_one, hgix]
       eLpNorm_le := le_of_eq (by

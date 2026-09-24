@@ -184,7 +184,7 @@ theorem integrable_sqrt_mul_sqrt_of_integrable_of_ae_nonneg
   have : ENNReal.HolderTriple (2 : ℝ≥0∞) (2 : ℝ≥0∞) (1 : ℝ≥0∞) := by
     infer_instance
   have hProd_mem : MemLp (fun x => sqrtA x * sqrtB x) 1 μ := by
-    simpa [sqrtA, sqrtB] using! hSqrtB_mem.mul hSqrtA_mem
+    simpa [sqrtA, sqrtB] using! hSqrtA_mem.mul (r := (1 : ℝ≥0∞)) hSqrtB_mem
   simpa [sqrtA, sqrtB] using hProd_mem.integrable (by norm_num : (1 : ℝ≥0∞) ≤ 1)
 
 /-- Integrability of a nonnegative product from square integrability of both
@@ -258,7 +258,7 @@ theorem abs_cubeAverage_le_sqrt_cubeAverage_mul_sqrt_cubeAverage_of_ae_abs_le_sq
   have : ENNReal.HolderTriple (2 : ℝ≥0∞) (2 : ℝ≥0∞) (1 : ℝ≥0∞) := by
     infer_instance
   have hProd_mem : MemLp (fun x => sqrtA x * sqrtB x) 1 μ := by
-    simpa [μ, sqrtA, sqrtB] using! hSqrtB_mem.mul hSqrtA_mem
+    simpa [μ, sqrtA, sqrtB] using! hSqrtA_mem.mul (r := (1 : ℝ≥0∞)) hSqrtB_mem
   have hProd_int : Integrable (fun x => sqrtA x * sqrtB x) μ :=
     hProd_mem.integrable (by norm_num : (1 : ℝ≥0∞) ≤ 1)
   have hAbs_le :

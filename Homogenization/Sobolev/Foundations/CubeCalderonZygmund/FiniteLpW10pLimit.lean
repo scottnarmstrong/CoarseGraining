@@ -89,22 +89,6 @@ private theorem tendsto_eLpNorm_finiteLpSolutionApproximation_grad_pair
   have hsum := hfst_norm.add hsnd_norm
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds
     (by simpa using hsum) (fun _ => zero_le) (fun nk => ?_)
-  have hfn : MemLp (F nk.1) q.exponent
-      (volume.restrict (openCubeSet (originCube d m))) := by
-    rw [memLp_piLp_iff]
-    intro i
-    simpa only [F, Function.comp_apply, HilbertVec.ofVec, PiLp.toLp_apply,
-      Pi.sub_apply] using!
-      ((finiteLpW10pSolutionApproximation q m hsigma0 h nk.1).gradMemLp i).sub
-        (finiteLpGradientLimit_gradMemLp q m hsigma0 h i)
-  have hfk : MemLp (F nk.2) q.exponent
-      (volume.restrict (openCubeSet (originCube d m))) := by
-    rw [memLp_piLp_iff]
-    intro i
-    simpa only [F, Function.comp_apply, HilbertVec.ofVec, PiLp.toLp_apply,
-      Pi.sub_apply] using!
-      ((finiteLpW10pSolutionApproximation q m hsigma0 h nk.2).gradMemLp i).sub
-        (finiteLpGradientLimit_gradMemLp q m hsigma0 h i)
   have heq : (fun x => HilbertVec.ofVec
       ((finiteLpW10pSolutionApproximation q m hsigma0 h nk.1).grad x -
         (finiteLpW10pSolutionApproximation q m hsigma0 h nk.2).grad x)) =
@@ -118,7 +102,7 @@ private theorem tendsto_eLpNorm_finiteLpSolutionApproximation_grad_pair
           ((finiteLpW10pSolutionApproximation q m hsigma0 h nk.2).grad x - Du x) by abel]
     exact (HilbertVec.ofVecL d).map_sub _ _
   rw [heq]
-  exact eLpNorm_sub_le hfn.aestronglyMeasurable hfk.aestronglyMeasurable q.one_lt.le
+  exact eLpNorm_sub_le q.one_lt.le
 
 private theorem tendsto_sum_eLpNorm_finiteLpSolutionApproximation_gradCoord_pair
     {d : ℕ} [NeZero d] (q : FiniteLpExponent) (m : ℤ) {sigma0 : ℝ}

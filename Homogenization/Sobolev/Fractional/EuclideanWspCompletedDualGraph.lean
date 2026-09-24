@@ -245,7 +245,8 @@ private theorem enorm_graphFieldComponent {d : ℕ} {Q : TriadicCube d}
   unfold BoundedMeasurableDomain.normalizedEuclideanLpENorm
   unfold BoundedMeasurableDomain.normalizedLpENorm
   rw [cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure]
-  simp only [euclideanNorm_eq_norm_ofVec, eLpNorm_norm]
+  simp only [euclideanNorm_eq_norm_ofVec]
+  exact (eLpNorm_norm _ h.toCubeEuclideanWspField.euclideanMemLp.aestronglyMeasurable).symm
 
 private theorem enorm_graphKernelComponent {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent}

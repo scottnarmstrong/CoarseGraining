@@ -101,9 +101,7 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
     rw [hWh]
   -- a.e.-convergent subsequence.
   obtain ⟨σ, hσ_mono, hσ_ae⟩ :=
-    (tendstoInMeasure_of_tendsto_eLpNorm (by norm_num)
-      (fun n => (W.approx_smooth n).continuous.aestronglyMeasurable) h.memL2.1
-      hWconv).exists_seq_tendsto_ae
+    (tendstoInMeasure_of_tendsto_eLpNorm (by norm_num) hWconv).exists_seq_tendsto_ae
   -- Assemble via the `H¹₀`-limit lemma.
   refine memH10_of_tendsto_H1 hU T (fun n => V1 (σ n) - V2) (fun n => hΨmem (σ n)) ?_ ?_
   · -- Function convergence.
@@ -122,7 +120,9 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
       exact hWconv.comp hσ_mono.tendsto_atTop
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hub
       (fun n => zero_le) (fun n => ?_)
-    refine eLpNorm_mono (fun x => ?_)
+    refine eLpNorm_mono
+      (T.memL2.aestronglyMeasurable.fun_sub (V1 (σ n) - V2).memL2.aestronglyMeasurable)
+      (fun x => ?_)
     have hTx : T.toFun x = max (w₁.toFun x - c) 0 - max (w₂.toFun x - c) 0 := congrFun hTtf x
     have hΨx : (V1 (σ n) - V2).toFun x
         = max ((S (σ n)).toFun x - c) 0 - max (w₂.toFun x - c) 0 := by
@@ -143,11 +143,11 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
     intro i
     have haesm_ind' :
         AEStronglyMeasurable (fun x => if c < w₁.toFun x then (1:ℝ) else 0) (volumeMeasureOn U) :=
-      hind_aesm w₁.toFun w₁.memL2.1
+      hind_aesm w₁.toFun w₁.memL2.aestronglyMeasurable
     have haesm_indn : ∀ n,
         AEStronglyMeasurable (fun x => if c < (S n).toFun x then (1:ℝ) else 0)
           (volumeMeasureOn U) :=
-      fun n => hind_aesm (S n).toFun (S n).memL2.1
+      fun n => hind_aesm (S n).toFun (S n).memL2.aestronglyMeasurable
     set TA : ℕ → Vec d → ℝ :=
       fun n x => (if c < (S n).toFun x then (1:ℝ) else 0) * (h.grad x i - (Φ n).grad x i)
       with hTA_def
@@ -158,8 +158,8 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
         (Sset.indicator g x) i = if x ∈ Sset then g x i else 0 := by
       intro Sset g x
       by_cases hxs : x ∈ Sset
-      · rw [Set.indicator_of_mem hxs, if_pos hxs]
-      · rw [Set.indicator_of_notMem hxs, if_neg hxs]; rfl
+      · rw [Set.indicator_of_mem hxs, ite_eq_left hxs]
+      · rw [Set.indicator_of_notMem hxs, ite_eq_right hxs]; rfl
     -- The actual gradient difference equals `TA + TB` a.e.
     have hkey : ∀ n, (fun x => V1'.grad x i - (V1 n).grad x i)
         =ᵐ[volumeMeasureOn U] (fun x => TA n x + TB n x) := by
@@ -180,10 +180,11 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
       split_ifs <;> ring
     have haesm_TA : ∀ n, AEStronglyMeasurable (TA n) (volumeMeasureOn U) := by
       intro n
-      exact (haesm_indn n).mul ((h.gradMemL2 i).1.sub ((Φ n).gradMemL2 i).1)
+      exact (haesm_indn n).mul
+        ((h.gradMemL2 i).aestronglyMeasurable.sub ((Φ n).gradMemL2 i).aestronglyMeasurable)
     have haesm_TB : ∀ n, AEStronglyMeasurable (TB n) (volumeMeasureOn U) := by
       intro n
-      exact (haesm_ind'.sub (haesm_indn n)).mul (w₁.gradMemL2 i).1
+      exact (haesm_ind'.sub (haesm_indn n)).mul (w₁.gradMemL2 i).aestronglyMeasurable
     -- `‖TA_n‖ ≤ ‖∇φ_n − ∇h‖` → 0 in L².
     have hEconv : Tendsto
         (fun n => eLpNorm (fun x => h.grad x i - (Φ n).grad x i) 2 (volumeMeasureOn U))
@@ -200,7 +201,7 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
     have hTA_conv : Tendsto (fun n => eLpNorm (TA n) 2 (volumeMeasureOn U)) atTop (nhds 0) := by
       refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hEconv
         (fun n => zero_le) (fun n => ?_)
-      refine eLpNorm_mono (fun x => ?_)
+      refine eLpNorm_mono (haesm_TA n) (fun x => ?_)
       simp only [hTA_def]
       rw [norm_mul]
       refine mul_le_of_le_one_left (norm_nonneg _) ?_
@@ -231,7 +232,7 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
             filter_upwards [hSconv.eventually_const_lt hlt] with n hn using hn
           refine Tendsto.congr' ?_ tendsto_const_nhds
           filter_upwards [hev] with n hn
-          simp only [hTB_def]; rw [if_pos hlt, if_pos hn]; ring
+          simp only [hTB_def]; rw [ite_eq_left hlt, ite_eq_left hn]; ring
         · have hg0 : w₁.grad x i = 0 := by simp [hxD2 heqc.symm]
           refine Tendsto.congr' ?_ tendsto_const_nhds
           filter_upwards with n
@@ -240,7 +241,7 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
             filter_upwards [hSconv.eventually_lt_const hgt] with n hn using not_lt.mpr hn.le
           refine Tendsto.congr' ?_ tendsto_const_nhds
           filter_upwards [hev] with n hn
-          simp only [hTB_def]; rw [if_neg (not_lt.mpr hgt.le), if_neg hn]; ring
+          simp only [hTB_def]; rw [ite_eq_right (not_lt.mpr hgt.le), ite_eq_right hn]; ring
       have hmain := tendsto_eLpNorm_two_of_tendsto_ae_of_dominated
         (fun n => haesm_TB (σ n)) (memLp_const (0:ℝ)) hdom hbnd hae
       simpa using hmain
@@ -256,6 +257,6 @@ theorem memH10_max_sub_matched {d : ℕ} {U : Set (Vec d)}
       simp only [hT_def, H1Function.sub_grad, Pi.sub_apply]
       ring
     rw [hVcancel, eLpNorm_congr_ae (hkey (σ n))]
-    exact eLpNorm_add_le (haesm_TA (σ n)) (haesm_TB (σ n)) (by norm_num)
+    exact eLpNorm_add_le (by norm_num)
 
 end Homogenization

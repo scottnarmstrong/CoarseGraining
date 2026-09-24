@@ -67,6 +67,26 @@ theorem descendantsENNAverage_lintegral_normalizedCubeMeasure_eq {d : ℕ}
     _ = ENNReal.ofReal (cubeVolume Q)⁻¹ *
           ∫⁻ x in cubeSet Q, f x ∂MeasureTheory.volume := by rw [hsum]
 
+private theorem normalizedCubeMeasure_absolutelyContinuous_of_mem_descendantsAtDepth
+    {d : ℕ} {Q R : TriadicCube d} {j : ℕ} (hR : R ∈ descendantsAtDepth Q j) :
+    normalizedCubeMeasure R ≪ normalizedCubeMeasure Q := by
+  rw [normalizedCubeMeasure, normalizedCubeMeasure]
+  refine Measure.smul_absolutelyContinuous.trans
+    (Measure.AbsolutelyContinuous.trans ?_ (Measure.absolutelyContinuous_smul ?_))
+  · exact Measure.absolutelyContinuous_of_le
+      (Measure.restrict_mono_set _ (cubeSet_subset_of_mem_descendantsAtDepth hR))
+  · exact ENNReal.ofReal_ne_zero_iff.2 (inv_pos.2 (cubeVolume_pos Q))
+
+private theorem gagliardoCubeMeasure_absolutelyContinuous_of_mem_descendantsAtDepth
+    {d : ℕ} {Q R : TriadicCube d} {j : ℕ} (hR : R ∈ descendantsAtDepth Q j) :
+    Gagliardo.gagliardoCubeMeasure R ≪ Gagliardo.gagliardoCubeMeasure Q := by
+  have : ∀ S : TriadicCube d, SFinite (cubeMeasure S) := fun S => by
+    unfold cubeMeasure
+    infer_instance
+  exact (normalizedCubeMeasure_absolutelyContinuous_of_mem_descendantsAtDepth hR).prod
+    (Measure.absolutelyContinuous_of_le
+      (Measure.restrict_mono_set _ (cubeSet_subset_of_mem_descendantsAtDepth hR)))
+
 /-- The exact finite-exponent Euclidean normalized `Lᵖ` descendant partition. -/
 theorem descendantsENNAverage_normalizedEuclideanLpENorm_rpow_eq {d n : ℕ}
     (Q : TriadicCube d) (j : ℕ) (p : ℝ≥0∞) (F : Vec d → Vec n)
@@ -76,26 +96,62 @@ theorem descendantsENNAverage_normalizedEuclideanLpENorm_rpow_eq {d n : ℕ}
       ((cubeBoundedMeasurableDomain Q).normalizedEuclideanLpENorm p F) ^ p.toReal := by
   let f : Vec d → ℝ≥0∞ := fun x => ‖euclideanNorm (F x)‖ₑ ^ p.toReal
   have hp : 0 < p.toReal := ENNReal.toReal_pos hp0 hpt
-  have hpow (R : TriadicCube d) :
+  have hpow (R : TriadicCube d)
+      (hR : AEStronglyMeasurable (fun x => euclideanNorm (F x)) (normalizedCubeMeasure R)) :
       ((cubeBoundedMeasurableDomain R).normalizedEuclideanLpENorm p F) ^ p.toReal =
         ∫⁻ x, f x ∂normalizedCubeMeasure R := by
     unfold BoundedMeasurableDomain.normalizedEuclideanLpENorm
     unfold BoundedMeasurableDomain.normalizedLpENorm
     rw [cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
-      MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal hp0 hpt, ← ENNReal.rpow_mul]
+      MeasureTheory.eLpNorm_eq_lintegral_rpow_enorm_toReal hp0 hpt hR, ← ENNReal.rpow_mul]
     have hpr : (1 / p.toReal) * p.toReal = 1 := by field_simp
     rw [hpr, ENNReal.rpow_one]
+  by_cases hQ : AEStronglyMeasurable (fun x => euclideanNorm (F x)) (normalizedCubeMeasure Q)
+  swap
+  · -- Not a.e.-strongly measurable: both sides are `∞`.
+    have htop (R : TriadicCube d)
+        (hR : ¬ AEStronglyMeasurable (fun x => euclideanNorm (F x)) (normalizedCubeMeasure R)) :
+        ((cubeBoundedMeasurableDomain R).normalizedEuclideanLpENorm p F) ^ p.toReal = ∞ := by
+      unfold BoundedMeasurableDomain.normalizedEuclideanLpENorm
+      unfold BoundedMeasurableDomain.normalizedLpENorm
+      rw [cubeBoundedMeasurableDomain_normalizedVolume_eq_normalizedCubeMeasure,
+        eLpNorm_of_not_aestronglyMeasurable hR, ENNReal.top_rpow_of_pos hp]
+    obtain ⟨R, hRD, hR⟩ : ∃ R ∈ descendantsAtDepth Q j,
+        ¬ AEStronglyMeasurable (fun x => euclideanNorm (F x)) (normalizedCubeMeasure R) := by
+      by_contra hall
+      push Not at hall
+      apply hQ
+      have hR' : ∀ R : ((descendantsAtDepth Q j : Set (TriadicCube d))),
+          AEStronglyMeasurable (fun x => euclideanNorm (F x))
+            (volume.restrict (cubeSet (R : TriadicCube d))) := by
+        intro R
+        have h1 := hall R R.2
+        rw [normalizedCubeMeasure, cubeMeasure] at h1
+        exact h1.mono_ac (Measure.absolutelyContinuous_smul
+          (ENNReal.ofReal_ne_zero_iff.2 (inv_pos.2 (cubeVolume_pos (R : TriadicCube d)))))
+      have hU : AEStronglyMeasurable (fun x => euclideanNorm (F x))
+          (volume.restrict (cubeSet Q)) := by
+        rw [cubeSet_eq_iUnion_descendantsAtDepth Q j, Set.biUnion_eq_iUnion]
+        exact AEStronglyMeasurable.iUnion hR'
+      rw [normalizedCubeMeasure, cubeMeasure]
+      exact hU.smul_measure _
+    have hsum : (∑ R ∈ descendantsAtDepth Q j,
+        ((cubeBoundedMeasurableDomain R).normalizedEuclideanLpENorm p F) ^ p.toReal) = ∞ :=
+      ENNReal.sum_eq_top.2 ⟨R, hRD, htop R hR⟩
+    rw [htop Q hQ, descendantsENNAverage, hsum]
+    exact ENNReal.mul_top (ENNReal.inv_ne_zero.2 (ENNReal.natCast_ne_top _))
   calc
     descendantsENNAverage Q j (fun R =>
       ((cubeBoundedMeasurableDomain R).normalizedEuclideanLpENorm p F) ^ p.toReal)
       = descendantsENNAverage Q j (fun R => ∫⁻ x, f x ∂normalizedCubeMeasure R) := by
-          congr 2
-          funext R
-          exact hpow R
+          unfold descendantsENNAverage
+          congr 1
+          exact Finset.sum_congr rfl fun R hR => hpow R (hQ.mono_ac
+            (normalizedCubeMeasure_absolutelyContinuous_of_mem_descendantsAtDepth hR))
     _ = ∫⁻ x, f x ∂normalizedCubeMeasure Q :=
       descendantsENNAverage_lintegral_normalizedCubeMeasure_eq Q j f
     _ = ((cubeBoundedMeasurableDomain Q).normalizedEuclideanLpENorm p F) ^ p.toReal :=
-      (hpow Q).symm
+      (hpow Q hQ).symm
 
 /-- Exact change of the anchored `p`-power scale weight down `j` triadic
 levels.  The factor is the manuscript's `3^(j*s*p)`. -/
@@ -197,18 +253,30 @@ theorem descendantsENNAverage_cubeEuclideanWspESeminorm_rpow_le {d : ℕ}
     ‖cubeEuclideanWspKernel s p F z‖ₑ ^ p.exponent.toReal
   have hp : 0 < p.exponent.toReal :=
     ENNReal.toReal_pos (ne_of_gt (lt_trans zero_lt_one p.one_lt)) p.lt_top.ne
-  have hpow (R : TriadicCube d) :
+  have hpow (R : TriadicCube d)
+      (hR : AEStronglyMeasurable (cubeEuclideanWspKernel s p F)
+        (Gagliardo.gagliardoCubeMeasure R)) :
       (cubeEuclideanWspESeminorm R s p F) ^ p.exponent.toReal =
         ENNReal.ofReal (cubeVolume R)⁻¹ * ∫⁻ z in cubeSet R ×ˢ cubeSet R, f z ∂(volume.prod volume) := by
-    rw [cubeEuclideanWspESeminorm_eq_lintegral, ← ENNReal.rpow_mul]
+    rw [cubeEuclideanWspESeminorm_eq_lintegral R s p F hR, ← ENNReal.rpow_mul]
     have h : (1 / p.exponent.toReal) * p.exponent.toReal = 1 := by field_simp
     rw [h, ENNReal.rpow_one]
     simpa [f] using Gagliardo.lintegral_gagliardoCubeMeasure_eq R f
+  by_cases hQ : AEStronglyMeasurable (cubeEuclideanWspKernel s p F)
+    (Gagliardo.gagliardoCubeMeasure Q)
+  swap
+  · have htop : cubeEuclideanWspESeminorm Q s p F = ∞ :=
+      eLpNorm_of_not_aestronglyMeasurable hQ
+    rw [htop, ENNReal.top_rpow_of_pos hp]
+    exact le_top
   rw [show (cubeEuclideanWspESeminorm Q s p F) ^ p.exponent.toReal =
-    ENNReal.ofReal (cubeVolume Q)⁻¹ * ∫⁻ z in cubeSet Q ×ˢ cubeSet Q, f z ∂(volume.prod volume) by exact hpow Q]
+    ENNReal.ofReal (cubeVolume Q)⁻¹ * ∫⁻ z in cubeSet Q ×ˢ cubeSet Q, f z ∂(volume.prod volume) by
+      exact hpow Q hQ]
   unfold descendantsENNAverage
   rw [Finset.mul_sum]
-  simp_rw [hpow]
+  rw [Finset.sum_congr rfl fun R hR => congrArg (((descendantsAtDepth Q j).card : ℝ≥0∞)⁻¹ * ·)
+    (hpow R (hQ.mono_ac
+      (gagliardoCubeMeasure_absolutelyContinuous_of_mem_descendantsAtDepth hR)))]
   let D := descendantsAtDepth Q j
   have hD : D.Nonempty := by simpa [D] using descendantsAtDepth_nonempty Q j
   have hf : ∀ R ∈ D, ((D.card : ℝ≥0∞)⁻¹) * ENNReal.ofReal (cubeVolume R)⁻¹ =

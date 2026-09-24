@@ -249,19 +249,18 @@ theorem H1Function.norm_gradToVectorL2_le_gradientCoordL2NormSum
       (MeasureTheory.eLpNorm_sum_le
         (μ := μ) (p := (2 : ℝ≥0∞)) (s := Finset.univ)
         (f := fun j : Fin d => fun x : Vec d => ‖v.grad x j‖)
-        (fun j _hj => (hcoord_mem j).1)
         (by norm_num : (1 : ℝ≥0∞) ≤ (2 : ℝ≥0∞)))
   have hsum_toReal :
       ENNReal.toReal
           (∑ j : Fin d,
             MeasureTheory.eLpNorm (fun x => ‖v.grad x j‖) (2 : ℝ≥0∞) μ) =
         ∑ j : Fin d, ‖v.gradCoordToScalarL2 j‖ := by
-    rw [ENNReal.toReal_sum (fun j _hj => (hcoord_mem j).2.ne)]
+    rw [ENNReal.toReal_sum (fun j _hj => (hcoord_mem j).eLpNorm_lt_top.ne)]
     refine Finset.sum_congr rfl ?_
     intro j _hj
-    rw [MeasureTheory.eLpNorm_norm]
+    rw [MeasureTheory.eLpNorm_norm _ (v.grad_memL2 j).aestronglyMeasurable]
     simp [H1Function.gradCoordToScalarL2, Homogenization.toScalarL2,
-      MeasureTheory.Lp.norm_toLp, μ]
+      MeasureTheory.Lp.norm_toLp]
   calc
     ‖v.gradToVectorL2‖ ≤ ‖dCoordLp‖ := hrow_le_sumLp
     _ = ENNReal.toReal (MeasureTheory.eLpNorm D (2 : ℝ≥0∞) μ) := by
@@ -271,7 +270,7 @@ theorem H1Function.norm_gradToVectorL2_le_gradientCoordL2NormSum
           (∑ j : Fin d,
             MeasureTheory.eLpNorm (fun x => ‖v.grad x j‖) (2 : ℝ≥0∞) μ) := by
           refine ENNReal.toReal_mono ?_ hsum_eLp
-          exact ENNReal.sum_ne_top.2 fun j _hj => (hcoord_mem j).2.ne
+          exact ENNReal.sum_ne_top.2 fun j _hj => (hcoord_mem j).eLpNorm_lt_top.ne
     _ = v.gradientCoordL2NormSum := by
           simpa [H1Function.gradientCoordL2NormSum] using hsum_toReal
 

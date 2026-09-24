@@ -85,7 +85,14 @@ theorem coordinate_eLpNorm_le_euclidean {α : Type*} [MeasurableSpace α]
     (F : α → Vec d) (i : Fin d) :
     eLpNorm (fun x => F x i) p.exponent μ ≤
       eLpNorm (fun x => HilbertVec.ofVec (F x)) p.exponent μ := by
-  apply eLpNorm_mono_ae
+  by_cases hG : AEStronglyMeasurable (fun x => HilbertVec.ofVec (F x)) μ
+  swap
+  · rw [eLpNorm_of_not_aestronglyMeasurable hG]
+    exact le_top
+  have hFi : AEStronglyMeasurable (fun x => F x i) μ :=
+    (continuous_apply i).comp_aestronglyMeasurable
+      ((HilbertVec.continuousLinearEquivVec d).continuous.comp_aestronglyMeasurable hG)
+  apply eLpNorm_mono_ae hFi
   filter_upwards [] with x
   simpa only [Real.norm_eq_abs, HilbertVec.ofVec, PiLp.toLp_apply] using
     HilbertVec.abs_apply_le_norm (HilbertVec.ofVec (F x)) i
@@ -147,7 +154,9 @@ theorem euclidean_eLpNorm_le_dimension_mul_sum_coordinates
   have hvec_le_D :
       eLpNorm (fun x => HilbertVec.ofVec (F x)) p.exponent μ ≤
         eLpNorm (fun x => (d : ℝ) * D x) p.exponent μ :=
-    eLpNorm_mono_ae hpoint
+    eLpNorm_mono_ae
+      ((HilbertVec.continuousLinearEquivVec d).symm.continuous.comp_aestronglyMeasurable
+        (AEMeasurable.of_eval fun i => (hcoord i).aemeasurable).aestronglyMeasurable) hpoint
   have hDsum :
       eLpNorm D p.exponent μ ≤
         ∑ i : Fin d, eLpNorm (fun x => ‖F x i‖) p.exponent μ := by
@@ -156,7 +165,6 @@ theorem euclidean_eLpNorm_le_dimension_mul_sum_coordinates
       simp [D]
     rw [hD]
     exact eLpNorm_sum_le
-      (fun i _ => hcoord_norm_meas i)
       (finiteLpExponent_one_le p)
   calc
     eLpNorm (fun x => HilbertVec.ofVec (F x)) p.exponent μ ≤
@@ -172,7 +180,7 @@ theorem euclidean_eLpNorm_le_dimension_mul_sum_coordinates
       congr 1
       apply Finset.sum_congr rfl
       intro i _
-      exact eLpNorm_norm (f := fun x => F x i) (p := p.exponent) (μ := μ)
+      exact eLpNorm_norm (f := fun x => F x i) (p := p.exponent) (μ := μ) (hcoord i)
 
 /-- Raising the coordinate-sum upper bound to the finite `p` power. -/
 theorem euclidean_eLpNorm_rpow_le_dimension_sum_rpow
