@@ -1,8 +1,12 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.ExactSmallCube.CenteredFronts
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.InputSpecializations
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalConstantBranch
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.CenteredLocalCoefficient
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.QuantitativeCutoffInputs.Setup
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.ExactSmallCube.CenteredFronts
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.InputSpecializations
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalConstantBranch
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.CenteredLocalCoefficient
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.QuantitativeCutoffInputs.Setup
+
+@[expose] public section
 
 namespace Homogenization
 

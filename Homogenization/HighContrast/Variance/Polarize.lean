@@ -1,7 +1,9 @@
-import Homogenization.HighContrast.Variance.Scalar
-import Homogenization.Book.Ch04.AnnealedDefinitions
-import Homogenization.Book.Ch04.Theorems.AnnealedSubadditivity.BlockLoewner
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.NormalizedBlocks
+module
+
+public import Homogenization.HighContrast.Variance.Scalar
+public import Homogenization.Book.Ch04.AnnealedDefinitions
+public import Homogenization.Book.Ch04.Theorems.AnnealedSubadditivity.BlockLoewner
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.NormalizedBlocks
 
 /-!
 # Centered second moments of the block matrix
@@ -18,6 +20,8 @@ entrywise annealed matrix.
 * `centered_quadratic_second_moment` — for arbitrary `w`,
   `𝔼[(w·(A_m − Ā_m)w)²] = Var[w·A_m w] ≤ Cd·(Θ|w.1|²+|w.2|²)²·min{1, Θ²3^{-βm}}`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

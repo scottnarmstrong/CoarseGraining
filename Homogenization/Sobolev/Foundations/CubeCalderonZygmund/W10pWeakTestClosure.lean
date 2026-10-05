@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.SmoothLimit
-import Homogenization.Sobolev.FiniteLpExponent
-import Homogenization.Sobolev.W1p.Definitions
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.SmoothLimit
+public import Homogenization.Sobolev.FiniteLpExponent
+public import Homogenization.Sobolev.W1p.Definitions
+
+@[expose] public section
 
 namespace Homogenization
 

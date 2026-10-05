@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch04.Measurability
-import Homogenization.Probability.LocalObservable
-import Homogenization.Probability.RegCoeffField.SliceMeasurability
-import Homogenization.Probability.RegCoeffField.RestrictionBridge
+module
+
+public import Homogenization.Book.Ch04.Measurability
+public import Homogenization.Probability.LocalObservable
+public import Homogenization.Probability.RegCoeffField.SliceMeasurability
+public import Homogenization.Probability.RegCoeffField.RestrictionBridge
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

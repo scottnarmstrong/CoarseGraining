@@ -1,4 +1,8 @@
-import Homogenization.Besov.ProjectionCharacterization
+module
+
+public import Homogenization.Besov.ProjectionCharacterization
+
+@[expose] public section
 
 namespace Homogenization
 

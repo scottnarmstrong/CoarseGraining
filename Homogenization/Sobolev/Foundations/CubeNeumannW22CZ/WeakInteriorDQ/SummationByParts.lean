@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.DifferenceQuotient
+module
+
+public import Homogenization.Sobolev.Foundations.DifferenceQuotient
+
+@[expose] public section
 
 namespace Homogenization
 

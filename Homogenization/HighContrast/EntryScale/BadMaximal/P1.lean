@@ -1,10 +1,14 @@
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Continuity
-import Mathlib.Analysis.CStarAlgebra.Matrix
-import Mathlib.Analysis.Matrix.HermitianFunctionalCalculus
-import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
-import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.Triangle
-import Homogenization.HighContrast.EntryScale.MomentConsequences.P2
+module
+
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Continuity
+public import Mathlib.Analysis.CStarAlgebra.Matrix
+public import Mathlib.Analysis.Matrix.HermitianFunctionalCalculus
+public import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
+public import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.Triangle
+public import Homogenization.HighContrast.EntryScale.MomentConsequences.P2
+
+@[expose] public section
 
 open MeasureTheory
 open scoped ENNReal

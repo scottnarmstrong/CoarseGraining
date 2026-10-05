@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.TerminalBounds
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.TerminalBounds
+
+@[expose] public section
 
 namespace Homogenization
 

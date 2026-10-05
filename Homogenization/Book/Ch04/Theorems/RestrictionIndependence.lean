@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch04.RestrictionObservable
-import Homogenization.Geometry.ScaleColoring
+module
+
+public import Homogenization.Book.Ch04.RestrictionObservable
+public import Homogenization.Geometry.ScaleColoring
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2Response
-import Homogenization.Deterministic.CoarsePoincareRHS.ForceLocalization
+module
+
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2Response
+public import Homogenization.Deterministic.CoarsePoincareRHS.ForceLocalization
+
+@[expose] public section
 
 namespace Homogenization
 

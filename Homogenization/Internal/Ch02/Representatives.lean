@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch02.Definitions
-import Homogenization.CoarseGraining.Symmetric.Basic
-import Mathlib.MeasureTheory.Function.StronglyMeasurable.AEStronglyMeasurable
-import Mathlib.MeasureTheory.MeasurableSpace.MeasurablyGenerated
-import Mathlib.MeasureTheory.OuterMeasure.AE
+module
+
+public import Homogenization.Book.Ch02.Definitions
+public import Homogenization.CoarseGraining.Symmetric.Basic
+public import Mathlib.MeasureTheory.Function.StronglyMeasurable.AEStronglyMeasurable
+public import Mathlib.MeasureTheory.MeasurableSpace.MeasurablyGenerated
+public import Mathlib.MeasureTheory.OuterMeasure.AE
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

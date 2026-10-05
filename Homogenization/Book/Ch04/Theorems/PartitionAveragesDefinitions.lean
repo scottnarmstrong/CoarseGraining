@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch04.PartitionAverageConstants
-import Homogenization.Book.Ch04.RestrictionObservable
+module
+
+public import Homogenization.Book.Ch04.PartitionAverageConstants
+public import Homogenization.Book.Ch04.RestrictionObservable
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

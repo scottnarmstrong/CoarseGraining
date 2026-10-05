@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingDefinitions
-import Homogenization.Sobolev.Fractional.EuclideanWspLocalization
+module
+
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingDefinitions
+public import Homogenization.Sobolev.Fractional.EuclideanWspLocalization
 
 /-!
 # Finite-`p` local coarse-graining aggregation algebra
@@ -7,6 +9,8 @@ import Homogenization.Sobolev.Fractional.EuclideanWspLocalization
 This file contains the elementary `ENNReal` power identities used to assemble
 the finite-`p` local coarse-graining estimate.  It has no PDE content.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

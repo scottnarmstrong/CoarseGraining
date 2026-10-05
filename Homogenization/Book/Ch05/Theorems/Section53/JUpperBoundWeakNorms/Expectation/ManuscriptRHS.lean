@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.Expectation.RHS
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.Expectation.RHS
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

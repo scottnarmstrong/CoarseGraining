@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.PointwiseBounds
-import Mathlib.MeasureTheory.Function.ContinuousMapDense
+module
+
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.PointwiseBounds
+public import Mathlib.MeasureTheory.Function.ContinuousMapDense
+
+@[expose] public section
 
 namespace Homogenization
 

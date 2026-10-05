@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.AdjointSymmetry.BasicAdjoint
+module
+
+public import Homogenization.CoarseGraining.AdjointSymmetry.BasicAdjoint
+
+@[expose] public section
 
 namespace Homogenization
 

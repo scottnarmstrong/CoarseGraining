@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.KernelUnion
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentUnion
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.KernelUnion
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentUnion
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

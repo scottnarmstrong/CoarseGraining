@@ -1,13 +1,15 @@
-import Homogenization.Besov.Duality.Definitions
-import Homogenization.Besov.Duality.OverlapDefinitions
-import Homogenization.Besov.Duality.OverlapBridge
-import Homogenization.Besov.Duality.Full
-import Homogenization.Besov.Duality.OverlapFull
-import Homogenization.Besov.Duality.ProjectedPairing
-import Homogenization.Besov.Duality.WrapperComparison
-import Homogenization.Besov.Duality.ProjectionLimit
-import Homogenization.Besov.Duality.GlobalComparison
-import Homogenization.Besov.Duality.Elementary
-import Homogenization.Besov.Duality.CaccioppoliBridge
-import Homogenization.Besov.Duality.OverlapCaccioppoliBridge
-import Homogenization.Besov.Duality.CaccioppoliVectorization
+module
+
+public import Homogenization.Besov.Duality.Definitions
+public import Homogenization.Besov.Duality.OverlapDefinitions
+public import Homogenization.Besov.Duality.OverlapBridge
+public import Homogenization.Besov.Duality.Full
+public import Homogenization.Besov.Duality.OverlapFull
+public import Homogenization.Besov.Duality.ProjectedPairing
+public import Homogenization.Besov.Duality.WrapperComparison
+public import Homogenization.Besov.Duality.ProjectionLimit
+public import Homogenization.Besov.Duality.GlobalComparison
+public import Homogenization.Besov.Duality.Elementary
+public import Homogenization.Besov.Duality.CaccioppoliBridge
+public import Homogenization.Besov.Duality.OverlapCaccioppoliBridge
+public import Homogenization.Besov.Duality.CaccioppoliVectorization

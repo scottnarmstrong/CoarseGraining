@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section52.P4Integrability
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section52.P4Integrability
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

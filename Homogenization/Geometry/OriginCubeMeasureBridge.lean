@@ -1,5 +1,9 @@
-import Homogenization.Geometry.CubeMeasure
-import Mathlib.MeasureTheory.Integral.Bochner.Set
+module
+
+public import Homogenization.Geometry.CubeMeasure
+public import Mathlib.MeasureTheory.Integral.Bochner.Set
+
+@[expose] public section
 
 namespace Homogenization
 

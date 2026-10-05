@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.ArbitraryCubeEndpoint
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.ArbitraryCubeEndpoint
+
+@[expose] public section
 
 namespace Homogenization
 

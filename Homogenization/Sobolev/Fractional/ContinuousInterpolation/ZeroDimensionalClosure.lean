@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.RootScaleControl
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.EuclideanGagliardoCoordinateBridge
+module
+
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.RootScaleControl
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.EuclideanGagliardoCoordinateBridge
 
 /-!
 # Zero-dimensional closure of the continuous interpolation quantities
@@ -8,6 +10,8 @@ All vector fields and gradient matrices in dimension zero are forced to vanish. 
 records the resulting exact zero identities for the normalized `L²`, continuous `K`, sampled
 series, and Euclidean fractional quantities.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

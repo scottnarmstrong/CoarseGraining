@@ -1,14 +1,18 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
-import Homogenization.Deterministic.WeakNormInterfacesComponentwise
-import Homogenization.Ambient.ScalarMatrix
-import Homogenization.PDE.DirichletRHS
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.Regularity
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.WeakDerivativeTestClosure
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.HessianGradientH1
-import Homogenization.Sobolev.Foundations.CubePoisson.AnalyticInput
-import Homogenization.Sobolev.PotentialSolenoidalCubeBridge
-import Homogenization.Sobolev.PotentialSolenoidalL2Realization
-import Mathlib.Algebra.Order.Chebyshev
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
+public import Homogenization.Deterministic.WeakNormInterfacesComponentwise
+public import Homogenization.Ambient.ScalarMatrix
+public import Homogenization.PDE.DirichletRHS
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.Regularity
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.WeakDerivativeTestClosure
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.HessianGradientH1
+public import Homogenization.Sobolev.Foundations.CubePoisson.AnalyticInput
+public import Homogenization.Sobolev.PotentialSolenoidalCubeBridge
+public import Homogenization.Sobolev.PotentialSolenoidalL2Realization
+public import Mathlib.Algebra.Order.Chebyshev
+
+@[expose] public section
 
 namespace Homogenization
 

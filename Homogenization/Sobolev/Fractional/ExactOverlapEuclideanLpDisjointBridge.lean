@@ -1,5 +1,7 @@
-import Homogenization.Besov.PositiveOverlapBridge
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
+module
+
+public import Homogenization.Besov.PositiveOverlapBridge
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
 
 /-!
 # Disjoint-to-exact-overlap finite-`p` bridge
@@ -9,6 +11,8 @@ coarse-graining forcing argument in the disjoint lane.  It compares the
 resulting parent disjoint series to the canonical exact overlap series; it
 does not assert localization of the overlap seminorm itself.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

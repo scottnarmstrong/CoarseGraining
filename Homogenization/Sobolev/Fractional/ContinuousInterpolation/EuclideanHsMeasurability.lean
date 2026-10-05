@@ -1,8 +1,12 @@
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.MeasurableRepresentative
+module
+
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.MeasurableRepresentative
 
 /-!
 # Measurability closure for the exact Euclidean fractional energy
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

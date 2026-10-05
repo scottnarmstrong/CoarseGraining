@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Basic
+module
+
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Basic
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

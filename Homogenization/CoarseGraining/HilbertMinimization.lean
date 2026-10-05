@@ -1,6 +1,10 @@
-import Mathlib.Analysis.InnerProductSpace.LaxMilgram
-import Mathlib.Analysis.Normed.Operator.BoundedLinearMaps
-import Mathlib.Topology.Algebra.Module.ClosedSubmodule
+module
+
+public import Mathlib.Analysis.InnerProductSpace.LaxMilgram
+public import Mathlib.Analysis.Normed.Operator.BoundedLinearMaps
+public import Mathlib.Topology.Algebra.Module.ClosedSubmodule
+
+@[expose] public section
 
 namespace Homogenization
 

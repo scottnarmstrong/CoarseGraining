@@ -1,4 +1,6 @@
-import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.Existence
+module
+
+public import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.Existence
 
 /-!
 # Origin-cube elliptic recovery -- quadraticity of Mu on the centered cube
@@ -8,6 +10,8 @@ centered open cube packaged from recovery data, existence of coarse block
 matrices, and the HasOriginCubeResponseJ\{Block,PureFlux,PureGradient\}QuadraticDataAtScale
 structures and their construction from hasQuadraticMu.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

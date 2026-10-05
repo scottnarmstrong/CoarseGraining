@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.AxisCubeHarmonicCovariance
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.StoppingRadius
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.AxisCubeHarmonicCovariance
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.StoppingRadius
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,8 +1,10 @@
-import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability.Measurability
-import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability.LipschitzBounds
-import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability.Integrals
-import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability.BlockEnergyAverage
-import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability.MuObservable
+module
+
+public import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability.Measurability
+public import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability.LipschitzBounds
+public import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability.Integrals
+public import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability.BlockEnergyAverage
+public import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability.MuObservable
 
 /-!
 # Audit tag (Ch4 rebuild contract `CH04_REBUILD_SURFACE_2026-05-16.md`)
@@ -22,3 +24,5 @@ MuFamily}.lean`, then `Theorems/Mu.lean :: aemeasurable_Mu_cubeSet`.
 If a sixth file becomes necessary in this chain, that is the signal to
 refactor rather than extend, per the rebuild contract.
 -/
+
+@[expose] public section

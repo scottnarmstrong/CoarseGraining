@@ -1,5 +1,9 @@
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.SigmaStarPosDef
-import Homogenization.CoarseGraining.Symmetric.CompletedSquare
+module
+
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.SigmaStarPosDef
+public import Homogenization.CoarseGraining.Symmetric.CompletedSquare
+
+@[expose] public section
 
 namespace Homogenization
 

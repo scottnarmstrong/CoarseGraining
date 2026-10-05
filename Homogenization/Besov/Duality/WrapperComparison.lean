@@ -1,5 +1,9 @@
-import Homogenization.Besov.Duality.Full
-import Homogenization.Besov.Duality.ProjectedPairing
+module
+
+public import Homogenization.Besov.Duality.Full
+public import Homogenization.Besov.Duality.ProjectedPairing
+
+@[expose] public section
 
 namespace Homogenization
 

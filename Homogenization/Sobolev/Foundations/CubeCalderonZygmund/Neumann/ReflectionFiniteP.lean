@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionWeightedTail
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentL2
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionWeightedTail
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentL2
 
 /-!
 # Finite-p transport under Neumann even reflection
@@ -11,6 +13,8 @@ already-developed Dirichlet odd reflection, whose additional scalar sign has
 unit modulus.  This file transfers the exact finite-`p` norm and weighted-tail
 identities to the even reflection used by the Neumann good-`lambda` argument.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

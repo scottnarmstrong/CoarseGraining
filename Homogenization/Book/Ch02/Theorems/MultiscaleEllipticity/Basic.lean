@@ -1,14 +1,18 @@
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticityDefinitions
-import Homogenization.Book.Ch02.Theorems.BasicVariationalIdentities
-import Homogenization.Book.Ch02.Theorems.MatrixOperatorNorm
-import Homogenization.Book.Ch02.Theorems.MatrixPositivity
-import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.Existence
-import Homogenization.Deterministic.CoarsePoincare.Setup.UniformBounds
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.EllipticityFiniteQ.ChangeOfQ
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.EllipticityFiniteQ.ScaleBounds
-import Homogenization.Internal.Ch02.Adapters
-import Homogenization.Internal.Ch02.Representatives
-import Mathlib.Analysis.Complex.ExponentialBounds
+module
+
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticityDefinitions
+public import Homogenization.Book.Ch02.Theorems.BasicVariationalIdentities
+public import Homogenization.Book.Ch02.Theorems.MatrixOperatorNorm
+public import Homogenization.Book.Ch02.Theorems.MatrixPositivity
+public import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.Existence
+public import Homogenization.Deterministic.CoarsePoincare.Setup.UniformBounds
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.EllipticityFiniteQ.ChangeOfQ
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.EllipticityFiniteQ.ScaleBounds
+public import Homogenization.Internal.Ch02.Adapters
+public import Homogenization.Internal.Ch02.Representatives
+public import Mathlib.Analysis.Complex.ExponentialBounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

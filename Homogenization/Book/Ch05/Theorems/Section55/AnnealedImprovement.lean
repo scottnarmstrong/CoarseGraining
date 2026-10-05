@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole
-import Homogenization.Book.Ch05.Theorems.Section55.ShiftedOneStepContraction
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole
+public import Homogenization.Book.Ch05.Theorems.Section55.ShiftedOneStepContraction
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book
@@ -35,7 +39,7 @@ private theorem section53CoarseFluctuationBetaCoreParams_pos {d : ℕ}
   exact lt_min hgap
     (lt_min hupper (lt_min hlower (lt_min hupper_gain hlower_gain)))
 
-private theorem section53CoarseFluctuationBetaParams_pos {d : ℕ}
+private theorem section53CoarseFluctuationBetaParams_pos_annealed {d : ℕ}
     (params : QuantitativeCoarseGrainedEllipticityParams d) :
     0 < section53CoarseFluctuationBetaParams params := by
   unfold section53CoarseFluctuationBetaParams
@@ -280,7 +284,7 @@ theorem oneStepAnnealedImprovement_homogenizationScale_of_auxiliary
   obtain ⟨Cstep, hCstep_pos, hCstep⟩ :=
     shiftedOneStepContraction_homogenizationScale (d := d) params
   have hβpos : 0 < section53CoarseFluctuationBetaParams params :=
-    section53CoarseFluctuationBetaParams_pos params
+    section53CoarseFluctuationBetaParams_pos_annealed params
   obtain ⟨Cshift, hCshift_nonneg, hCshift⟩ :=
     shiftedWidetildeThetaBound_homogenizationScale
       (d := d) params.xi (section53CoarseFluctuationBetaParams params) hβpos
@@ -571,7 +575,7 @@ private theorem oneStepAnnealedImprovement_scalar_discreteInputs
   have hB_ge_C0 : C0 ≤ B := by dsimp [B]; exact le_max_left _ _
   have hB_ge_one : 1 ≤ B := by dsimp [B]; exact le_max_right _ _
   have hβ_pos : 0 < β := by
-    simpa [β] using section53CoarseFluctuationBetaParams_pos params
+    simpa [β] using section53CoarseFluctuationBetaParams_pos_annealed params
   have hlog3_pos : 0 < Real.log (3 : ℝ) := Real.log_pos (by norm_num)
   have hβlog_pos : 0 < β * Real.log 3 := mul_pos hβ_pos hlog3_pos
   have hD_ge_B : B ≤ D := by dsimp [D]; exact le_max_left _ _

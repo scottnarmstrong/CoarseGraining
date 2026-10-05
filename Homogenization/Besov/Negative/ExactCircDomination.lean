@@ -1,6 +1,8 @@
-import Homogenization.Besov.Negative.ExactCircDominationFinite
-import Homogenization.Besov.Negative.ExactCircDominationQOne
-import Homogenization.Besov.Negative.ExactCircDominationTop
+module
+
+public import Homogenization.Besov.Negative.ExactCircDominationFinite
+public import Homogenization.Besov.Negative.ExactCircDominationQOne
+public import Homogenization.Besov.Negative.ExactCircDominationTop
 
 /-!
 # Exact circ domination of the dual negative Besov kernels
@@ -10,6 +12,8 @@ dual-to-circ comparison.  It also records that the depth-zero circ weight in
 the full-norm bounds is literally the manuscript factor `3^(s m)`, with
 `m = Q.scale`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

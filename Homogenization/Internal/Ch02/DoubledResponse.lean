@@ -1,1 +1,3 @@
-import Homogenization.Internal.Ch02.DoubledResponse.Theory
+module
+
+public import Homogenization.Internal.Ch02.DoubledResponse.Theory

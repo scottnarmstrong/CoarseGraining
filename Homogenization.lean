@@ -1,171 +1,173 @@
-import Homogenization.Ambient.Basic
-import Homogenization.Ambient.HilbertFinite
-import Homogenization.Ambient.Euclidean
-import Homogenization.Ambient.CoefficientField
-import Homogenization.Geometry.Domain
-import Homogenization.Geometry.BoundedMeasurableDomain
-import Homogenization.Geometry.TriadicCube
-import Homogenization.Geometry.TriadicCubeTranslation
-import Homogenization.Geometry.TriadicPartition
-import Homogenization.Geometry.BoundaryLayer
-import Homogenization.Geometry.CubeMeasure
-import Homogenization.Geometry.OriginCubeMeasureBridge
-import Homogenization.Geometry.OriginCubeBoundaryPush
-import Homogenization.Geometry.ConvexDomain
-import Homogenization.Geometry.CubeColoring
-import Homogenization.Multiscale.CubeAverage
-import Homogenization.Multiscale.FiniteAverage
-import Homogenization.Multiscale.Projection
-import Homogenization.Multiscale.NormalizedNorms
-import Homogenization.Multiscale.ProjectionLp
-import Homogenization.Besov.Basic
-import Homogenization.Besov.Positive
-import Homogenization.Besov.PositiveOverlapBridge
-import Homogenization.Besov.Negative
-import Homogenization.Besov.Duality
-import Homogenization.Besov.ProjectionCharacterization
-import Homogenization.Besov.Poincare.HarmonicGradient
-import Homogenization.Sobolev.L2Ambient
-import Homogenization.Sobolev.H1
-import Homogenization.Sobolev.W1p
-import Homogenization.Sobolev.H1.OriginCubeSymmetry
-import Homogenization.Sobolev.PotentialSolenoidal
-import Homogenization.Sobolev.PotentialSolenoidalCubeBridge
-import Homogenization.Sobolev.Foundations.Hodge
-import Homogenization.Sobolev.Foundations.MeanZero
-import Homogenization.Sobolev.Foundations.CoerciveH1
-import Homogenization.Sobolev.Foundations.CoerciveSmooth
-import Homogenization.Sobolev.Foundations.CoerciveH10
-import Homogenization.Sobolev.Foundations.CoerciveMeanZero
-import Homogenization.Sobolev.Foundations.PoincareMeanZero
-import Homogenization.Sobolev.Foundations.PoincareW1p
-import Homogenization.Sobolev.Foundations.PoincareZeroTrace
-import Homogenization.Sobolev.Foundations.H10Graph
-import Homogenization.Sobolev.Foundations.AffineAverage
-import Homogenization.Sobolev.Foundations.QuantitativeCutoff
-import Homogenization.Sobolev.Foundations.AxisCube
-import Homogenization.Sobolev.Foundations.Cutoff.OpenSet
-import Homogenization.Sobolev.Foundations.Cutoff.Box
-import Homogenization.Sobolev.Truncation.MatchedTrace
-import Homogenization.Sobolev.CubeEmbedding
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund
-import Homogenization.Sobolev.MatchedPair
-import Homogenization.Sobolev.PotentialSolenoidalOriginCubeSymmetry
-import Homogenization.Sobolev.PotentialSolenoidalL2
-import Homogenization.Sobolev.PotentialSolenoidalL2Realization
-import Homogenization.PDE.Harmonic
-import Homogenization.PDE.HarmonicTranslation
-import Homogenization.PDE.HarmonicCube
-import Homogenization.PDE.HarmonicHilbert
-import Homogenization.CoarseGraining.BlockFormalism
-import Homogenization.CoarseGraining.HilbertMinimization
-import Homogenization.CoarseGraining.HilbertMinimizationMeasurability
-import Homogenization.CoarseGraining.MuWellPosedness
-import Homogenization.CoarseGraining.Definitions
-import Homogenization.CoarseGraining.MuQuadratic
-import Homogenization.CoarseGraining.MuOperator
-import Homogenization.CoarseGraining.MuRecovery
-import Homogenization.CoarseGraining.ResponseIdentities.ConvexAverageFormulas
-import Homogenization.CoarseGraining.MuRecoveryBlockResponse
-import Homogenization.CoarseGraining.OriginCubeEllipticRecovery
-import Homogenization.CoarseGraining.Symmetric
-import Homogenization.CoarseGraining.OriginCubeOpenBridge
-import Homogenization.Deterministic.MultiscaleQuantities
-import Homogenization.Deterministic.WeakFluxRHS
-import Homogenization.Deterministic.WeakNormInterfaces.HodgeZero
-import Homogenization.Deterministic.HomogenizationBlackBoxes
-import Homogenization.Probability.RandomField
-import Homogenization.Probability.RegCoeffField
-import Homogenization.Probability.RegCoeffField.Sigma
-import Homogenization.Probability.RegCoeffField.EllipticSet
-import Homogenization.Probability.RegCoeffField.Endomorphisms
-import Homogenization.Probability.RegCoeffField.Restriction
-import Homogenization.Probability.RegCoeffField.RestrictionBridge
-import Homogenization.Probability.RegCoeffField.Laws
-import Homogenization.Probability.RegCoeffField.Differentiation
-import Homogenization.Probability.RegCoeffField.SliceMeasurability
-import Homogenization.Probability.RegCoeffField.EllipticSupport
-import Homogenization.Probability.Source.Coarse.Semantics
-import Homogenization.Probability.SeparableHilbertMeasurability
-import Homogenization.Probability.LocalEllipticitySlices
-import Homogenization.Probability.RandomFieldMeasurability
-import Homogenization.Probability.RandomCoeffField
-import Homogenization.Probability.IndependentSums.WeakOrlicz
-import Homogenization.Probability.IndependentSums.PsiCalculus
-import Homogenization.Probability.IndependentSums.Triangle
-import Homogenization.Probability.IndependentSums.PsiConcentration
-import Homogenization.Probability.IndependentSums.IndependentCopy
-import Homogenization.Probability.IndependentSums.Rosenthal
-import Homogenization.Probability.IndependentSums.GammaSigma
-import Homogenization.Probability.IndependentSums.GammaSigmaExpRegime
-import Homogenization.Probability.IndependentSums.GammaSigmaConcentration
-import Homogenization.Probability.IndependentSums.PsiSigma
-import Homogenization.Probability.RescaledLaw
-import Homogenization.Probability.Scalarization
-import Homogenization.Probability.OriginCubeSymmetry
-import Homogenization.Probability.EfronStein
-import Homogenization.Probability.EfronStein.Transfer
+module
 
-import Homogenization.CoarseGraining.ThetaEllipticity
-import Homogenization.CoarseGraining.SharpBlockBounds
-import Homogenization.CoarseGraining.QuadraticStability
-import Homogenization.CoarseGraining.CubeMinimizer
-import Homogenization.CoarseGraining.CoarseBounds
+public import Homogenization.Ambient.Basic
+public import Homogenization.Ambient.HilbertFinite
+public import Homogenization.Ambient.Euclidean
+public import Homogenization.Ambient.CoefficientField
+public import Homogenization.Geometry.Domain
+public import Homogenization.Geometry.BoundedMeasurableDomain
+public import Homogenization.Geometry.TriadicCube
+public import Homogenization.Geometry.TriadicCubeTranslation
+public import Homogenization.Geometry.TriadicPartition
+public import Homogenization.Geometry.BoundaryLayer
+public import Homogenization.Geometry.CubeMeasure
+public import Homogenization.Geometry.OriginCubeMeasureBridge
+public import Homogenization.Geometry.OriginCubeBoundaryPush
+public import Homogenization.Geometry.ConvexDomain
+public import Homogenization.Geometry.CubeColoring
+public import Homogenization.Multiscale.CubeAverage
+public import Homogenization.Multiscale.FiniteAverage
+public import Homogenization.Multiscale.Projection
+public import Homogenization.Multiscale.NormalizedNorms
+public import Homogenization.Multiscale.ProjectionLp
+public import Homogenization.Besov.Basic
+public import Homogenization.Besov.Positive
+public import Homogenization.Besov.PositiveOverlapBridge
+public import Homogenization.Besov.Negative
+public import Homogenization.Besov.Duality
+public import Homogenization.Besov.ProjectionCharacterization
+public import Homogenization.Besov.Poincare.HarmonicGradient
+public import Homogenization.Sobolev.L2Ambient
+public import Homogenization.Sobolev.H1
+public import Homogenization.Sobolev.W1p
+public import Homogenization.Sobolev.H1.OriginCubeSymmetry
+public import Homogenization.Sobolev.PotentialSolenoidal
+public import Homogenization.Sobolev.PotentialSolenoidalCubeBridge
+public import Homogenization.Sobolev.Foundations.Hodge
+public import Homogenization.Sobolev.Foundations.MeanZero
+public import Homogenization.Sobolev.Foundations.CoerciveH1
+public import Homogenization.Sobolev.Foundations.CoerciveSmooth
+public import Homogenization.Sobolev.Foundations.CoerciveH10
+public import Homogenization.Sobolev.Foundations.CoerciveMeanZero
+public import Homogenization.Sobolev.Foundations.PoincareMeanZero
+public import Homogenization.Sobolev.Foundations.PoincareW1p
+public import Homogenization.Sobolev.Foundations.PoincareZeroTrace
+public import Homogenization.Sobolev.Foundations.H10Graph
+public import Homogenization.Sobolev.Foundations.AffineAverage
+public import Homogenization.Sobolev.Foundations.QuantitativeCutoff
+public import Homogenization.Sobolev.Foundations.AxisCube
+public import Homogenization.Sobolev.Foundations.Cutoff.OpenSet
+public import Homogenization.Sobolev.Foundations.Cutoff.Box
+public import Homogenization.Sobolev.Truncation.MatchedTrace
+public import Homogenization.Sobolev.CubeEmbedding
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund
+public import Homogenization.Sobolev.MatchedPair
+public import Homogenization.Sobolev.PotentialSolenoidalOriginCubeSymmetry
+public import Homogenization.Sobolev.PotentialSolenoidalL2
+public import Homogenization.Sobolev.PotentialSolenoidalL2Realization
+public import Homogenization.PDE.Harmonic
+public import Homogenization.PDE.HarmonicTranslation
+public import Homogenization.PDE.HarmonicCube
+public import Homogenization.PDE.HarmonicHilbert
+public import Homogenization.CoarseGraining.BlockFormalism
+public import Homogenization.CoarseGraining.HilbertMinimization
+public import Homogenization.CoarseGraining.HilbertMinimizationMeasurability
+public import Homogenization.CoarseGraining.MuWellPosedness
+public import Homogenization.CoarseGraining.Definitions
+public import Homogenization.CoarseGraining.MuQuadratic
+public import Homogenization.CoarseGraining.MuOperator
+public import Homogenization.CoarseGraining.MuRecovery
+public import Homogenization.CoarseGraining.ResponseIdentities.ConvexAverageFormulas
+public import Homogenization.CoarseGraining.MuRecoveryBlockResponse
+public import Homogenization.CoarseGraining.OriginCubeEllipticRecovery
+public import Homogenization.CoarseGraining.Symmetric
+public import Homogenization.CoarseGraining.OriginCubeOpenBridge
+public import Homogenization.Deterministic.MultiscaleQuantities
+public import Homogenization.Deterministic.WeakFluxRHS
+public import Homogenization.Deterministic.WeakNormInterfaces.HodgeZero
+public import Homogenization.Deterministic.HomogenizationBlackBoxes
+public import Homogenization.Probability.RandomField
+public import Homogenization.Probability.RegCoeffField
+public import Homogenization.Probability.RegCoeffField.Sigma
+public import Homogenization.Probability.RegCoeffField.EllipticSet
+public import Homogenization.Probability.RegCoeffField.Endomorphisms
+public import Homogenization.Probability.RegCoeffField.Restriction
+public import Homogenization.Probability.RegCoeffField.RestrictionBridge
+public import Homogenization.Probability.RegCoeffField.Laws
+public import Homogenization.Probability.RegCoeffField.Differentiation
+public import Homogenization.Probability.RegCoeffField.SliceMeasurability
+public import Homogenization.Probability.RegCoeffField.EllipticSupport
+public import Homogenization.Probability.Source.Coarse.Semantics
+public import Homogenization.Probability.SeparableHilbertMeasurability
+public import Homogenization.Probability.LocalEllipticitySlices
+public import Homogenization.Probability.RandomFieldMeasurability
+public import Homogenization.Probability.RandomCoeffField
+public import Homogenization.Probability.IndependentSums.WeakOrlicz
+public import Homogenization.Probability.IndependentSums.PsiCalculus
+public import Homogenization.Probability.IndependentSums.Triangle
+public import Homogenization.Probability.IndependentSums.PsiConcentration
+public import Homogenization.Probability.IndependentSums.IndependentCopy
+public import Homogenization.Probability.IndependentSums.Rosenthal
+public import Homogenization.Probability.IndependentSums.GammaSigma
+public import Homogenization.Probability.IndependentSums.GammaSigmaExpRegime
+public import Homogenization.Probability.IndependentSums.GammaSigmaConcentration
+public import Homogenization.Probability.IndependentSums.PsiSigma
+public import Homogenization.Probability.RescaledLaw
+public import Homogenization.Probability.Scalarization
+public import Homogenization.Probability.OriginCubeSymmetry
+public import Homogenization.Probability.EfronStein
+public import Homogenization.Probability.EfronStein.Transfer
+
+public import Homogenization.CoarseGraining.ThetaEllipticity
+public import Homogenization.CoarseGraining.SharpBlockBounds
+public import Homogenization.CoarseGraining.QuadraticStability
+public import Homogenization.CoarseGraining.CubeMinimizer
+public import Homogenization.CoarseGraining.CoarseBounds
 
 
-import Homogenization.Book.Ch01
-import Homogenization.Book.Ch01.Theorems.MeanSquareDeviation
-import Homogenization.Book.Ch02
-import Homogenization.Book.Ch03
-import Homogenization.Book.Ch04
-import Homogenization.Book.Ch04.Theorems.DilationResponse
-import Homogenization.Book.Ch05
+public import Homogenization.Book.Ch01
+public import Homogenization.Book.Ch01.Theorems.MeanSquareDeviation
+public import Homogenization.Book.Ch02
+public import Homogenization.Book.Ch03
+public import Homogenization.Book.Ch04
+public import Homogenization.Book.Ch04.Theorems.DilationResponse
+public import Homogenization.Book.Ch05
 
-import Homogenization.Besov.Poincare
-import Homogenization.Book
-import Homogenization.Book.Ch01.Theorems.FractionalSobolevVsBesov
-import Homogenization.Book.Ch02.Interfaces
-import Homogenization.Book.Ch03.Theorems.SobolevPublic
-import Homogenization.Book.Ch04.AnnealedObjects
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.Assembly
-import Homogenization.Book.Ch05.Theorems.Section57.UniformEllipticityBridge
-import Homogenization.Book.MainResults
-import Homogenization.CoarseGraining.AdjointSymmetry
-import Homogenization.CoarseGraining.AdjointSymmetry.EllipticWrappers
-import Homogenization.CoarseGraining.ResponseIdentities
-import Homogenization.Deterministic.CoarseCaccioppoli
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal
-import Homogenization.Deterministic.CoarseCaccioppoliEnergyBridge
-import Homogenization.Deterministic.CoarseCaccioppoliSingleCubeToRaw
-import Homogenization.Deterministic.CoarsePoincare
-import Homogenization.Deterministic.CoarsePoincareRHS
-import Homogenization.Deterministic.CoarsePoincareRHS.Compatibility
-import Homogenization.Deterministic.CoarsePoincareRHS.Energy
-import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems
-import Homogenization.Deterministic.CoarsePoincareRHSLocalRecurrence
-import Homogenization.Examples.Periodic.DiracBridge
-import Homogenization.Examples.Periodic.MField
-import Homogenization.Examples.Periodic.PeriodicConcreteComparison
-import Homogenization.Examples.Periodic.PeriodicGeneralComparison
-import Homogenization.Examples.Periodic.PeriodicSmoothComparison
-import Homogenization.Examples.RandomCheckerboard.Basic
-import Homogenization.Examples.RandomCheckerboard.CarrierLaw
-import Homogenization.Examples.RandomCheckerboard.SourceLaw
-import Homogenization.Examples.RandomCheckerboard.AKLLaw
-import Homogenization.Internal
-import Homogenization.Internal.Ch02
-import Homogenization.Sobolev.Fractional.AssemblyPieces
-import Homogenization.Sobolev.Fractional.BesovLeGagliardo
-import Homogenization.Sobolev.Fractional.ClassicalDualComparison
-import Homogenization.Sobolev.Fractional.CongruenceAE
-import Homogenization.Sobolev.Fractional.Constants
-import Homogenization.Sobolev.Fractional.Definitions
-import Homogenization.Sobolev.Fractional.DefinitionsAPI
-import Homogenization.Sobolev.Fractional.ENNRealBridge
-import Homogenization.Sobolev.Fractional.GagliardoLeBesov
-import Homogenization.Sobolev.Fractional.JensenStep
-import Homogenization.Sobolev.Fractional.OverlapCount
-import Homogenization.Sobolev.Fractional.OverlapIntegral
-import Homogenization.Sobolev.Fractional.PairCapture
-import Homogenization.Sobolev.Fractional.ShellGeometry
-import Homogenization.Sobolev.Fractional.TailSummation
+public import Homogenization.Besov.Poincare
+public import Homogenization.Book
+public import Homogenization.Book.Ch01.Theorems.FractionalSobolevVsBesov
+public import Homogenization.Book.Ch02.Interfaces
+public import Homogenization.Book.Ch03.Theorems.SobolevPublic
+public import Homogenization.Book.Ch04.AnnealedObjects
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.Assembly
+public import Homogenization.Book.Ch05.Theorems.Section57.UniformEllipticityBridge
+public import Homogenization.Book.MainResults
+public import Homogenization.CoarseGraining.AdjointSymmetry
+public import Homogenization.CoarseGraining.AdjointSymmetry.EllipticWrappers
+public import Homogenization.CoarseGraining.ResponseIdentities
+public import Homogenization.Deterministic.CoarseCaccioppoli
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal
+public import Homogenization.Deterministic.CoarseCaccioppoliEnergyBridge
+public import Homogenization.Deterministic.CoarseCaccioppoliSingleCubeToRaw
+public import Homogenization.Deterministic.CoarsePoincare
+public import Homogenization.Deterministic.CoarsePoincareRHS
+public import Homogenization.Deterministic.CoarsePoincareRHS.Compatibility
+public import Homogenization.Deterministic.CoarsePoincareRHS.Energy
+public import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems
+public import Homogenization.Deterministic.CoarsePoincareRHSLocalRecurrence
+public import Homogenization.Examples.Periodic.DiracBridge
+public import Homogenization.Examples.Periodic.MField
+public import Homogenization.Examples.Periodic.PeriodicConcreteComparison
+public import Homogenization.Examples.Periodic.PeriodicGeneralComparison
+public import Homogenization.Examples.Periodic.PeriodicSmoothComparison
+public import Homogenization.Examples.RandomCheckerboard.Basic
+public import Homogenization.Examples.RandomCheckerboard.CarrierLaw
+public import Homogenization.Examples.RandomCheckerboard.SourceLaw
+public import Homogenization.Examples.RandomCheckerboard.AKLLaw
+public import Homogenization.Internal
+public import Homogenization.Internal.Ch02
+public import Homogenization.Sobolev.Fractional.AssemblyPieces
+public import Homogenization.Sobolev.Fractional.BesovLeGagliardo
+public import Homogenization.Sobolev.Fractional.ClassicalDualComparison
+public import Homogenization.Sobolev.Fractional.CongruenceAE
+public import Homogenization.Sobolev.Fractional.Constants
+public import Homogenization.Sobolev.Fractional.Definitions
+public import Homogenization.Sobolev.Fractional.DefinitionsAPI
+public import Homogenization.Sobolev.Fractional.ENNRealBridge
+public import Homogenization.Sobolev.Fractional.GagliardoLeBesov
+public import Homogenization.Sobolev.Fractional.JensenStep
+public import Homogenization.Sobolev.Fractional.OverlapCount
+public import Homogenization.Sobolev.Fractional.OverlapIntegral
+public import Homogenization.Sobolev.Fractional.PairCapture
+public import Homogenization.Sobolev.Fractional.ShellGeometry
+public import Homogenization.Sobolev.Fractional.TailSummation

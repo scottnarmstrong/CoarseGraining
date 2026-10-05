@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.H1Graph.Graph
+module
+
+public import Homogenization.Sobolev.Foundations.H1Graph.Graph
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,8 @@
-import Homogenization.HighContrast.Variance.Polarize
-import Homogenization.HighContrast.Corridor.PhaseComparison.Averaging
-import Homogenization.CoarseGraining.CoarseBounds.Sandwich
+module
+
+public import Homogenization.HighContrast.Variance.Polarize
+public import Homogenization.HighContrast.Corridor.PhaseComparison.Averaging
+public import Homogenization.CoarseGraining.CoarseBounds.Sandwich
 
 /-!
 # Scalar normalization bounds for the fluctuation bridge
@@ -23,6 +25,8 @@ The `b` and `c` values are read off the isotropic annealed block matrix
 basis pairings equal `b` and `c⁻¹`, integrated against the a.s. `C1′` sandwich
 (`mean_zero_coarse_blockQuadratic`).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

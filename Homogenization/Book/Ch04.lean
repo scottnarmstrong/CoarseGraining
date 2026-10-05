@@ -1,11 +1,13 @@
-import Homogenization.Book.Ch04.Definitions
-import Homogenization.Book.Ch04.Law
-import Homogenization.Book.Ch04.MuLocalityGate
-import Homogenization.Book.Ch04.Observable
-import Homogenization.Book.Ch04.RestrictionLaw
-import Homogenization.Book.Ch04.RestrictionObservable
-import Homogenization.Book.Ch04.Source
-import Homogenization.Book.Ch04.Theorems
+module
+
+public import Homogenization.Book.Ch04.Definitions
+public import Homogenization.Book.Ch04.Law
+public import Homogenization.Book.Ch04.MuLocalityGate
+public import Homogenization.Book.Ch04.Observable
+public import Homogenization.Book.Ch04.RestrictionLaw
+public import Homogenization.Book.Ch04.RestrictionObservable
+public import Homogenization.Book.Ch04.Source
+public import Homogenization.Book.Ch04.Theorems
 
 /-!
 # Chapter 4
@@ -22,3 +24,5 @@ inside private declarations. The `Source` umbrella faithfully imports the
 current Chapter 4 source modules, while the restriction lane remains available
 through its explicit modules and endpoints.
 -/
+
+@[expose] public section

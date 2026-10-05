@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.NormalizedResponseEllipticity
-import Homogenization.Book.Ch03.Theorems.CoarsePoincare.Finite
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.NormalizedResponseEllipticity
+public import Homogenization.Book.Ch03.Theorems.CoarsePoincare.Finite
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

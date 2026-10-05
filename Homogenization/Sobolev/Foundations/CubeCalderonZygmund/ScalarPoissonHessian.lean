@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarPoissonHessianBelowTwo
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarPoissonHessianAboveTwo
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarPoissonHessianTwo
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarPoissonHessianBelowTwo
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarPoissonHessianAboveTwo
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarPoissonHessianTwo
 
 /-!
 # Finite-exponent scalar Poisson Hessian estimates
@@ -19,6 +21,8 @@ Calderón--Zygmund estimate for every finite exponent.
 The proof selects the below-energy duality theorem, the energy theorem, or the
 above-energy good-`λ` theorem according to the exponent.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

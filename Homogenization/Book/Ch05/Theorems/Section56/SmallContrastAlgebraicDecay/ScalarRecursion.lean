@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

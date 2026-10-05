@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.MuRecovery.CorrectionSpaceEnergy
+module
+
+public import Homogenization.CoarseGraining.MuRecovery.CorrectionSpaceEnergy
+
+@[expose] public section
 
 namespace Homogenization
 

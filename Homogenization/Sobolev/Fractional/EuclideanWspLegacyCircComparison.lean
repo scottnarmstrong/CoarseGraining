@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDualNegativeBesov
-import Homogenization.Besov.Negative
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDualNegativeBesov
+public import Homogenization.Besov.Negative
 
 /-!
 # Legacy scalar circ versus the source negative Besov envelope
@@ -10,6 +12,8 @@ the half-open finite range `0, …, N - 1`.  This module records the literal
 finite-depth change of presentation without adding an `Lᵖ` assumption to the
 represented `L²` field.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch05.Theorems.Section57.LocalizedUnitEllipticity
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleMinimal
-import Homogenization.Book.Ch05.Theorems.Section57.MinimalScaleTail
-import Homogenization.Book.Ch05.Theorems.Section57.QuenchedLocalizedEstimate
-import Homogenization.Book.Ch05.Theorems.Section57.SmallBottomTail
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.LocalizedUnitEllipticity
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleMinimal
+public import Homogenization.Book.Ch05.Theorems.Section57.MinimalScaleTail
+public import Homogenization.Book.Ch05.Theorems.Section57.QuenchedLocalizedEstimate
+public import Homogenization.Book.Ch05.Theorems.Section57.SmallBottomTail
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

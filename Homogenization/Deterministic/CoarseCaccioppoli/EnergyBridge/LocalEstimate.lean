@@ -1,1 +1,3 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimate.SingleCube
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimate.SingleCube

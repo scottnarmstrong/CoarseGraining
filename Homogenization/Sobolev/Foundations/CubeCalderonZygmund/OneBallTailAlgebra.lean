@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalScaledDatumEnergy
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.AxisCubeNormalizedLp
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalScaledDatumEnergy
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.AxisCubeNormalizedLp
+
+@[expose] public section
 
 namespace Homogenization
 

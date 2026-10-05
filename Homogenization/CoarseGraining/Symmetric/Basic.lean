@@ -1,4 +1,8 @@
-import Homogenization.Probability.RandomField
+module
+
+public import Homogenization.Probability.RandomField
+
+@[expose] public section
 
 namespace Homogenization
 

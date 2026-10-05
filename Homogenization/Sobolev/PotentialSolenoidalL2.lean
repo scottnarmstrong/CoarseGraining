@@ -1,11 +1,15 @@
-import Homogenization.Sobolev.L2Ambient
-import Homogenization.Sobolev.Foundations.MeanZero
-import Homogenization.Sobolev.Foundations.ZeroTraceAverages
-import Homogenization.Sobolev.PotentialSolenoidal
-import Homogenization.Geometry.ConvexDomain
-import Mathlib.Analysis.InnerProductSpace.Dual
-import Mathlib.Topology.Algebra.Module.ClosedSubmodule
-import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.PiProd
+module
+
+public import Homogenization.Sobolev.L2Ambient
+public import Homogenization.Sobolev.Foundations.MeanZero
+public import Homogenization.Sobolev.Foundations.ZeroTraceAverages
+public import Homogenization.Sobolev.PotentialSolenoidal
+public import Homogenization.Geometry.ConvexDomain
+public import Mathlib.Analysis.InnerProductSpace.Dual
+public import Mathlib.Topology.Algebra.Module.ClosedSubmodule
+public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.PiProd
+
+@[expose] public section
 
 namespace Homogenization
 

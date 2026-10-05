@@ -1,9 +1,13 @@
-import Homogenization.Besov.Localization
-import Homogenization.Besov.Poincare.Descendants
-import Homogenization.CoarseGraining.BlockMatrixProperties
-import Homogenization.CoarseGraining.BlockResponse
-import Homogenization.CoarseGraining.OriginCubeOpenBridge
-import Homogenization.Geometry.OriginCubeBoundaryPush
+module
+
+public import Homogenization.Besov.Localization
+public import Homogenization.Besov.Poincare.Descendants
+public import Homogenization.CoarseGraining.BlockMatrixProperties
+public import Homogenization.CoarseGraining.BlockResponse
+public import Homogenization.CoarseGraining.OriginCubeOpenBridge
+public import Homogenization.Geometry.OriginCubeBoundaryPush
+
+@[expose] public section
 
 namespace Homogenization
 

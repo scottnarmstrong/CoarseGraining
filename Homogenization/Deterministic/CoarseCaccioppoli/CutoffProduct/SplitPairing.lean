@@ -1,4 +1,6 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.Centered
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.Scalar
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.Vector
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.VectorFullDual
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.Centered
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.Scalar
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.Vector
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.VectorFullDual

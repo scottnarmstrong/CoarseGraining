@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.NormalizedLp
-import Homogenization.Sobolev.W1p.Definitions
-import Mathlib.MeasureTheory.SpecificCodomains.WithLp
+module
+
+public import Homogenization.Sobolev.NormalizedLp
+public import Homogenization.Sobolev.W1p.Definitions
+public import Mathlib.MeasureTheory.SpecificCodomains.WithLp
 
 /-!
 # Generic normalized `W^{1,p}` implementation kernel
@@ -11,6 +13,8 @@ kernel, not the Chapter 1 source-facing carrier: Chapter 1 exposes these
 operations only after restricting to its nonempty bounded open convex-domain
 facade.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

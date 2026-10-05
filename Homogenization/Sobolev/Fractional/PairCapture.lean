@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.ShellGeometry
+module
+
+public import Homogenization.Sobolev.Fractional.ShellGeometry
 
 /-!
 # Pair capture by overlapping centers (G3)
@@ -14,6 +16,8 @@ then clamps the cell of the first point one step towards the center of the
 window so that the resulting overlapping cube both stays inside `Q` and
 captures the second point.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Gagliardo

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentSummation
-import Homogenization.Book.Ch05.Theorems.Section57.ScaleGeometry
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentSummation
+public import Homogenization.Book.Ch05.Theorems.Section57.ScaleGeometry
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

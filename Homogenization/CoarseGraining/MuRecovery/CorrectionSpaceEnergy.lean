@@ -1,5 +1,9 @@
-import Homogenization.CoarseGraining.MuRecovery.CorrectionSpaceSolenoidal
-import Mathlib.Topology.Bases
+module
+
+public import Homogenization.CoarseGraining.MuRecovery.CorrectionSpaceSolenoidal
+public import Mathlib.Topology.Bases
+
+@[expose] public section
 
 namespace Homogenization
 

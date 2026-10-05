@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.Splitting
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.FiveTermSplit
-import Homogenization.Book.Ch02.Theorems.CoarseGrainingEstimates
-import Homogenization.Deterministic.WeakNormInterfacesPositiveQTwo
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.Splitting
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.FiveTermSplit
+public import Homogenization.Book.Ch02.Theorems.CoarseGrainingEstimates
+public import Homogenization.Deterministic.WeakNormInterfacesPositiveQTwo
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

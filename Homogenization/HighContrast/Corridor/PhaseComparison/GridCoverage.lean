@@ -1,4 +1,6 @@
-import Homogenization.HighContrast.Corridor.Geometry
+module
+
+public import Homogenization.HighContrast.Corridor.Geometry
 
 /-!
 # Discrete uniform-grid corridor coverage count
@@ -22,6 +24,8 @@ continuum corridor-coverage estimate `e.corridor.coverage`:
 Only `4 ≤ ℓ` and `ℓ ≤ N` are used; the constant `3` is not sharp (any
 `C·N/ℓ` is acceptable, absorbed into `C_d` downstream).
 -/
+
+@[expose] public section
 
 open Homogenization
 open scoped MeasureTheory

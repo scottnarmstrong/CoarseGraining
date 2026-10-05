@@ -1,7 +1,9 @@
-import Homogenization.Probability.EfronStein.Fin
-import Homogenization.Book.Ch04.Theorems.RestrictionIndependence
-import Mathlib.Probability.Independence.Basic
-import Mathlib.MeasureTheory.Integral.Prod
+module
+
+public import Homogenization.Probability.EfronStein.Fin
+public import Homogenization.Book.Ch04.Theorems.RestrictionIndependence
+public import Mathlib.Probability.Independence.Basic
+public import Mathlib.MeasureTheory.Integral.Prod
 
 /-!
 # Efron–Stein transfer to coefficient-field laws
@@ -27,6 +29,8 @@ independent copy of `P` re-drawn only on `C i`.
 
 Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
+
+@[expose] public section
 
 open scoped MeasureTheory ProbabilityTheory BigOperators
 

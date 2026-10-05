@@ -1,11 +1,15 @@
-import Homogenization.Besov.Duality.WrapperComparison
-import Homogenization.Multiscale.ProjectionConvergence
-import Mathlib.MeasureTheory.Function.ContinuousMapDense
-import Mathlib.MeasureTheory.Integral.DominatedConvergence
-import Mathlib.MeasureTheory.Measure.Restrict
-import Mathlib.MeasureTheory.Measure.Map
-import Mathlib.MeasureTheory.Measure.Sum
-import Mathlib.Order.Filter.AtTopBot.Basic
+module
+
+public import Homogenization.Besov.Duality.WrapperComparison
+public import Homogenization.Multiscale.ProjectionConvergence
+public import Mathlib.MeasureTheory.Function.ContinuousMapDense
+public import Mathlib.MeasureTheory.Integral.DominatedConvergence
+public import Mathlib.MeasureTheory.Measure.Restrict
+public import Mathlib.MeasureTheory.Measure.Map
+public import Mathlib.MeasureTheory.Measure.Sum
+public import Mathlib.Order.Filter.AtTopBot.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

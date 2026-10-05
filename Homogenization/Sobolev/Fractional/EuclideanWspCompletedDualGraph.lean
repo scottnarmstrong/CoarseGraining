@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.EuclideanWspSmoothGraph
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWspSmoothGraph
 
 /-!
 # Completed two-component graph for cube Euclidean fractional Sobolev tests
@@ -10,6 +12,8 @@ graph, and the closure of the graph; it makes no claim about a completed dual
 pairing.
 -/
 
+@[expose] public section
+
 namespace Homogenization
 
 open MeasureTheory Set
@@ -17,7 +21,7 @@ open scoped ENNReal
 
 noncomputable section
 
-private instance instCubeEuclideanWspGraphFactOneLe (p : FiniteLpExponent) :
+instance instCubeEuclideanWspGraphFactOneLe (p : FiniteLpExponent) :
     Fact (1 ≤ p.exponent) :=
   ⟨p.one_lt.le⟩
 
@@ -28,12 +32,12 @@ noncomputable abbrev CubeEuclideanWspGraphComponent {d : ℕ} (Q : TriadicCube d
   | true => Lp (HilbertVec d) p.exponent
     (Gagliardo.gagliardoCubeMeasure Q)
 
-private instance instCubeEuclideanWspGraphComponentNormedAddCommGroup {d : ℕ}
+instance instCubeEuclideanWspGraphComponentNormedAddCommGroup {d : ℕ}
     (Q : TriadicCube d) (p : FiniteLpExponent) [Fact (1 ≤ p.exponent)]
     (b : Bool) : NormedAddCommGroup (CubeEuclideanWspGraphComponent Q p b) := by
   cases b <;> infer_instance
 
-private instance instCubeEuclideanWspGraphComponentNormedSpace {d : ℕ}
+instance instCubeEuclideanWspGraphComponentNormedSpace {d : ℕ}
     (Q : TriadicCube d) (p : FiniteLpExponent) [Fact (1 ≤ p.exponent)]
     (b : Bool) : NormedSpace ℝ (CubeEuclideanWspGraphComponent Q p b) := by
   cases b <;> infer_instance
@@ -62,21 +66,21 @@ noncomputable def cubeEuclideanWspGraphFieldScale {d : ℕ} (Q : TriadicCube d)
 
 namespace CubeEuclideanWspSmoothTest
 
-private noncomputable def graphFieldComponent {d : ℕ} {Q : TriadicCube d}
+noncomputable def graphFieldComponent {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent}
     (h : CubeEuclideanWspSmoothTest Q s p) :
     CubeEuclideanWspGraphComponent Q p false :=
   h.toCubeEuclideanWspField.euclideanMemLp.toLp
     (fun x => HilbertVec.ofVec (h.toField x))
 
-private noncomputable def graphKernelComponent {d : ℕ} {Q : TriadicCube d}
+noncomputable def graphKernelComponent {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent}
     (h : CubeEuclideanWspSmoothTest Q s p) :
     CubeEuclideanWspGraphComponent Q p true :=
   h.toCubeEuclideanWspField.euclideanMemWsp.toLp
     (cubeEuclideanWspKernel s p h.toField)
 
-private theorem graphFieldComponent_add {d : ℕ} {Q : TriadicCube d}
+theorem graphFieldComponent_add {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent}
     (h k : CubeEuclideanWspSmoothTest Q s p) :
     graphFieldComponent (h + k) = graphFieldComponent h + graphFieldComponent k := by
@@ -100,7 +104,7 @@ private theorem graphFieldComponent_add {d : ℕ} {Q : TriadicCube d}
       rw [← hh', ← hk']
       exact hadd.symm
 
-private theorem graphFieldComponent_smul {d : ℕ} {Q : TriadicCube d}
+theorem graphFieldComponent_smul {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent} (c : ℝ)
     (h : CubeEuclideanWspSmoothTest Q s p) :
     graphFieldComponent (c • h) = c • graphFieldComponent h := by
@@ -121,7 +125,7 @@ private theorem graphFieldComponent_smul {d : ℕ} {Q : TriadicCube d}
       rw [← hh']
       exact hsmul.symm
 
-private theorem cubeEuclideanWspKernel_smoothTest_add {d : ℕ} {Q : TriadicCube d}
+theorem cubeEuclideanWspKernel_smoothTest_add {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent}
     (h k : CubeEuclideanWspSmoothTest Q s p) :
     cubeEuclideanWspKernel s p (h + k).toField =
@@ -140,7 +144,7 @@ private theorem cubeEuclideanWspKernel_smoothTest_add {d : ℕ} {Q : TriadicCube
   rw [(HilbertVec.ofVecL d).map_add, smul_add]
   simp only [HilbertVec.ofVecL_apply]
 
-private theorem cubeEuclideanWspKernel_smoothTest_smul {d : ℕ} {Q : TriadicCube d}
+theorem cubeEuclideanWspKernel_smoothTest_smul {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent} (c : ℝ)
     (h : CubeEuclideanWspSmoothTest Q s p) :
     cubeEuclideanWspKernel s p (c • h).toField =
@@ -158,7 +162,7 @@ private theorem cubeEuclideanWspKernel_smoothTest_smul {d : ℕ} {Q : TriadicCub
   rw [(HilbertVec.ofVecL d).map_smul, smul_smul, smul_smul, mul_comm]
   simp only [HilbertVec.ofVecL_apply]
 
-private theorem graphKernelComponent_add {d : ℕ} {Q : TriadicCube d}
+theorem graphKernelComponent_add {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent}
     (h k : CubeEuclideanWspSmoothTest Q s p) :
     graphKernelComponent (h + k) = graphKernelComponent h + graphKernelComponent k := by
@@ -179,7 +183,7 @@ private theorem graphKernelComponent_add {d : ℕ} {Q : TriadicCube d}
       rw [← hh', ← hk']
       exact hadd.symm
 
-private theorem graphKernelComponent_smul {d : ℕ} {Q : TriadicCube d}
+theorem graphKernelComponent_smul {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent} (c : ℝ)
     (h : CubeEuclideanWspSmoothTest Q s p) :
     graphKernelComponent (c • h) = c • graphKernelComponent h := by
@@ -232,7 +236,7 @@ noncomputable def graph {d : ℕ} {Q : TriadicCube d} {s : FractionalOrder}
           rw [graphFieldComponent_smul, smul_smul, smul_smul, mul_comm]
         · exact graphKernelComponent_smul c h }
 
-private theorem enorm_graphFieldComponent {d : ℕ} {Q : TriadicCube d}
+theorem enorm_graphFieldComponent {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent}
     (h : CubeEuclideanWspSmoothTest Q s p) :
     ‖graphFieldComponent h‖ₑ =
@@ -248,13 +252,13 @@ private theorem enorm_graphFieldComponent {d : ℕ} {Q : TriadicCube d}
   simp only [euclideanNorm_eq_norm_ofVec]
   exact (eLpNorm_norm _ h.toCubeEuclideanWspField.euclideanMemLp.aestronglyMeasurable).symm
 
-private theorem enorm_graphKernelComponent {d : ℕ} {Q : TriadicCube d}
+theorem enorm_graphKernelComponent {d : ℕ} {Q : TriadicCube d}
     {s : FractionalOrder} {p : FiniteLpExponent}
     (h : CubeEuclideanWspSmoothTest Q s p) :
     ‖graphKernelComponent h‖ₑ = cubeEuclideanWspESeminorm Q s p h.toField := by
   exact Lp.enorm_toLp h.toCubeEuclideanWspField.euclideanMemWsp
 
-private theorem enorm_graphFieldScale_rpow_eq_wspScalePowerWeight {d : ℕ}
+theorem enorm_graphFieldScale_rpow_eq_wspScalePowerWeight {d : ℕ}
     (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent) :
     ‖cubeEuclideanWspGraphFieldScale Q s‖ₑ ^ p.exponent.toReal =
       cubeEuclideanWspScalePowerWeight Q s p := by

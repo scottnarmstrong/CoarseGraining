@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch05.Theorems.Public
-import Homogenization.Book.MainResults
+module
+
+public import Homogenization.Book.Ch05.Theorems.Public
+public import Homogenization.Book.MainResults
 
 /-!
 # Axiom audit
@@ -11,6 +13,8 @@ public theorem reduces to mathlib's three standard foundational axioms:
 `propext`, `Classical.choice`, and `Quot.sound`.  Building this file prints
 those dependencies for inspection (see CI logs).
 -/
+
+@[expose] public section
 
 #print axioms Homogenization.Book.Ch05.homogenization_quenched_minimal_scale
 #print axioms Homogenization.Book.Ch05.homogenization_quenched_homogenization_comparison

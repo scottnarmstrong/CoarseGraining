@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicScalarControls
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicScalarControls
+
+@[expose] public section
 
 namespace Homogenization
 

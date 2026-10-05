@@ -1,5 +1,9 @@
-import Homogenization.CoarseGraining.AdjointSymmetry.SigmaAdjoint
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences
+module
+
+public import Homogenization.CoarseGraining.AdjointSymmetry.SigmaAdjoint
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.Besov.Duality.CaccioppoliBridge
+module
+
+public import Homogenization.Besov.Duality.CaccioppoliBridge
+
+@[expose] public section
 
 namespace Homogenization
 

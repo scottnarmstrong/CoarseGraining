@@ -1,5 +1,7 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.ContinuousKRegularity
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.FullNormEquivalence
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.ContinuousKRegularity
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.FullNormEquivalence
 
 /-!
 # Full continuous K-regularity for the unit-cube Dirichlet problem
@@ -9,6 +11,8 @@ combines it with the exact normalized Euclidean `L²` energy estimate.  The
 resulting full-norm constant is chosen before the fractional order, datum, and
 solution.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

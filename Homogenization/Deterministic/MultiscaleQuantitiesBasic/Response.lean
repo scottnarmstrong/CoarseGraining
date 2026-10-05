@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Foundation
-import Homogenization.Geometry.TriadicCubeTranslation
-import Homogenization.Sobolev.Foundations.HodgeCubeBridge
+module
+
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Foundation
+public import Homogenization.Geometry.TriadicCubeTranslation
+public import Homogenization.Sobolev.Foundations.HodgeCubeBridge
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Ellipticity.QOneRoot
+module
+
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Ellipticity.QOneRoot
+
+@[expose] public section
 
 namespace Homogenization
 

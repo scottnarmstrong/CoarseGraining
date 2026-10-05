@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section52.MomentBounds
-import Homogenization.Book.Ch05.Theorems.Section52.WidetildeTheta
-import Homogenization.Book.Ch05.Theorems.Section52.ScalarPreliminaries
-import Homogenization.Book.Ch05.Theorems.Section52.CenteredResponses
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section52.MomentBounds
+public import Homogenization.Book.Ch05.Theorems.Section52.WidetildeTheta
+public import Homogenization.Book.Ch05.Theorems.Section52.ScalarPreliminaries
+public import Homogenization.Book.Ch05.Theorems.Section52.CenteredResponses
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

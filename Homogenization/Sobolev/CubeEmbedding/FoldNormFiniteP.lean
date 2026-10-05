@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.CubeEmbedding.FoldNorm
-import Homogenization.Sobolev.FiniteLpExponent
+module
+
+public import Homogenization.Sobolev.CubeEmbedding.FoldNorm
+public import Homogenization.Sobolev.FiniteLpExponent
 
 /-!
 # Finite-`p` norm transport under the even fold
@@ -8,6 +10,8 @@ This module upgrades the exact `L²` transport in `FoldNorm` to every finite
 exponent used by the `W^{1,p}` development.  The measure transport itself
 remains `lintegral_foldComp`; only the outer `p`-th root is new here.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

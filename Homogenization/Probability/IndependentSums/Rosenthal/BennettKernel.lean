@@ -1,4 +1,8 @@
-import Homogenization.Probability.IndependentSums.Rosenthal.BennettFunction
+module
+
+public import Homogenization.Probability.IndependentSums.Rosenthal.BennettFunction
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

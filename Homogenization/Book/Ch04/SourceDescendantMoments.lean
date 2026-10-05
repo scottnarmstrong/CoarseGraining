@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch04.PartitionAverageConstants
-import Homogenization.Book.Ch04.SourceColorClassMoments
-import Homogenization.Probability.IndependentSums.MomentCalculus
+module
+
+public import Homogenization.Book.Ch04.PartitionAverageConstants
+public import Homogenization.Book.Ch04.SourceColorClassMoments
+public import Homogenization.Probability.IndependentSums.MomentCalculus
 
 /-!
 # Real-moment bounds for source descendant sums
@@ -8,6 +10,8 @@ import Homogenization.Probability.IndependentSums.MomentCalculus
 This internal assembly layer combines real-exponent Rosenthal bounds on
 source scale-color classes into a bound over all descendants.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

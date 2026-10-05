@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.InputSpecializations.LocalPatchNoteRawBridge.CoefficientBounds
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.InputSpecializations.LocalPatchNoteRawBridge.CoefficientBounds
+
+@[expose] public section
 
 namespace Homogenization
 

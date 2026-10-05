@@ -1,6 +1,10 @@
-import Homogenization.Multiscale.ProjectionLp
-import Mathlib.Analysis.MeanInequalities
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+module
+
+public import Homogenization.Multiscale.ProjectionLp
+public import Mathlib.Analysis.MeanInequalities
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+
+@[expose] public section
 
 namespace Homogenization
 

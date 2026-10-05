@@ -1,9 +1,11 @@
 /-
 Copyright (c) 2026. All rights reserved.
 -/
-import Homogenization.Probability.EfronStein.TwoPoint
-import Homogenization.Probability.EfronStein.ProdDecomp
-import Homogenization.Probability.EfronStein.Fin
+module
+
+public import Homogenization.Probability.EfronStein.TwoPoint
+public import Homogenization.Probability.EfronStein.ProdDecomp
+public import Homogenization.Probability.EfronStein.Fin
 
 /-!
 # Efron–Stein inequality on finite products
@@ -21,3 +23,5 @@ Supporting public lemmas:
 * `Homogenization.variance_prod_eq` — two-factor (law-of-total-variance) split;
 * `Homogenization.efronStein_fin` — the `Fin n` version proved by induction.
 -/
+
+@[expose] public section

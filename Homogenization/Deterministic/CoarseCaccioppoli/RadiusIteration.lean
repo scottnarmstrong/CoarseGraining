@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.RadiusIteration.Standard
-import Homogenization.Deterministic.CoarseCaccioppoli.CrossTerm
-import Mathlib.Data.Nat.Choose.Bounds
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.RadiusIteration.Standard
+public import Homogenization.Deterministic.CoarseCaccioppoli.CrossTerm
+public import Mathlib.Data.Nat.Choose.Bounds
+
+@[expose] public section
 
 namespace Homogenization
 

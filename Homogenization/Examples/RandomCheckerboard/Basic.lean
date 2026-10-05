@@ -1,9 +1,11 @@
-import Homogenization.Ambient.ScalarMatrix
-import Homogenization.Probability.RegCoeffField.EllipticSupport
-import Homogenization.Probability.RegCoeffField.Restriction
-import Homogenization.Geometry.ConvexDomain
-import Mathlib.Probability.Independence.InfinitePi
-import Mathlib.Probability.ProbabilityMassFunction.Constructions
+module
+
+public import Homogenization.Ambient.ScalarMatrix
+public import Homogenization.Probability.RegCoeffField.EllipticSupport
+public import Homogenization.Probability.RegCoeffField.Restriction
+public import Homogenization.Geometry.ConvexDomain
+public import Mathlib.Probability.Independence.InfinitePi
+public import Mathlib.Probability.ProbabilityMassFunction.Constructions
 
 /-!
 # Bernoulli checkerboard: the honest carrier-valued sample map
@@ -31,6 +33,8 @@ checkerboard law (`CarrierLaw.lean`).
 
 Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Examples

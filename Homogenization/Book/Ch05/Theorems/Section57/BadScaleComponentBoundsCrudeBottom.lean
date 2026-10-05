@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentBoundsBottom
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentBoundsBottom
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

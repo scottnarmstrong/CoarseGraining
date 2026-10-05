@@ -1,9 +1,11 @@
-import Homogenization.Besov.Duality.OverlapDefinitions
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapLp
-import Homogenization.Multiscale.OverlapLp
-import Homogenization.Sobolev.FiniteLpCoordinate
-import Homogenization.Sobolev.Foundations.PoincareW1p.OverlapCube
-import Homogenization.Sobolev.W1p.CubeVector
+module
+
+public import Homogenization.Besov.Duality.OverlapDefinitions
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapLp
+public import Homogenization.Multiscale.OverlapLp
+public import Homogenization.Sobolev.FiniteLpCoordinate
+public import Homogenization.Sobolev.Foundations.PoincareW1p.OverlapCube
+public import Homogenization.Sobolev.W1p.CubeVector
 
 /-!
 # Vector finite-`p` Poincare estimates on overlap cubes
@@ -11,6 +13,8 @@ import Homogenization.Sobolev.W1p.CubeVector
 The scalar overlap-cube estimate is transported here to the normalized vector
 carrier used by the finite-`p` Calderon--Zygmund layer.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

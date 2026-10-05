@@ -1,7 +1,11 @@
-import Homogenization.Sobolev.Foundations.DifferenceQuotient
-import Homogenization.Sobolev.H1.Algebra.Membership
-import Homogenization.Sobolev.H1.Algebra.H1Function
-import Homogenization.Sobolev.H1.Translation
+module
+
+public import Homogenization.Sobolev.Foundations.DifferenceQuotient
+public import Homogenization.Sobolev.H1.Algebra.Membership
+public import Homogenization.Sobolev.H1.Algebra.H1Function
+public import Homogenization.Sobolev.H1.Translation
+
+@[expose] public section
 
 namespace Homogenization
 

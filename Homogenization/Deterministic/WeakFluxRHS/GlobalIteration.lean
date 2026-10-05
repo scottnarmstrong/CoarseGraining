@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.DepthWeightAlgebra
-import Homogenization.Deterministic.WeakFluxRHS.AveragedStepping
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.DepthWeightAlgebra
+public import Homogenization.Deterministic.WeakFluxRHS.AveragedStepping
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.CoarsePoincare.QTwo
-import Homogenization.Deterministic.WeakNormInterfacesQTwo
-import Homogenization.Deterministic.WeakFluxRHS.NeumannCorrector
+module
+
+public import Homogenization.Deterministic.CoarsePoincare.QTwo
+public import Homogenization.Deterministic.WeakNormInterfacesQTwo
+public import Homogenization.Deterministic.WeakFluxRHS.NeumannCorrector
+
+@[expose] public section
 
 namespace Homogenization
 

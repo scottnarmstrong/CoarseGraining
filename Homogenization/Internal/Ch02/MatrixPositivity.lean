@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.MatrixExtraction
+module
+
+public import Homogenization.Internal.Ch02.MatrixExtraction
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

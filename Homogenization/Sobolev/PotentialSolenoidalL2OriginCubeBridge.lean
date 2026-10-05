@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
-import Homogenization.Sobolev.PotentialSolenoidalOriginCubeBridge
+module
+
+public import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+public import Homogenization.Sobolev.PotentialSolenoidalOriginCubeBridge
+
+@[expose] public section
 
 namespace Homogenization
 

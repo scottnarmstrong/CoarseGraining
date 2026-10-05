@@ -1,4 +1,6 @@
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingAggregation
+module
+
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingAggregation
 
 /-!
 # Finite-`p` algebra for local coarse-graining assembly
@@ -7,6 +9,8 @@ This module records the outer finite descendant-average triangle estimate in
 the literal `ENNReal` carrier used by the local coarse-graining definitions.
 It is independent of the PDE and response inputs.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,6 +1,8 @@
-import Homogenization.Geometry.ConvexDomain
-import Homogenization.Geometry.OriginCubeMeasureBridge
-import Homogenization.Sobolev.Fractional.UnitCubeEuclideanL2
+module
+
+public import Homogenization.Geometry.ConvexDomain
+public import Homogenization.Geometry.OriginCubeMeasureBridge
+public import Homogenization.Sobolev.Fractional.UnitCubeEuclideanL2
 
 /-!
 # Geometry of the unit centered cube for continuous interpolation
@@ -10,6 +12,8 @@ the exact continuous interpolation theorem.  The analytic domain is the open
 centered unit cube; the normalized measure retains the canonical half-open
 cube carrier.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

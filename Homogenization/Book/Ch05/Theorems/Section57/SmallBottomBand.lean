@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section57.ScaleGeometry
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleEntrySplit
-import Homogenization.Book.Ch05.Theorems.Section57.BadPairNoLog
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentSummation
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.ScaleGeometry
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleEntrySplit
+public import Homogenization.Book.Ch05.Theorems.Section57.BadPairNoLog
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentSummation
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

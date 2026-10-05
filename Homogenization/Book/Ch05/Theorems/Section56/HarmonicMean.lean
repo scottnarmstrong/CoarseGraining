@@ -1,5 +1,9 @@
-import Homogenization.Ambient.MatrixOrderBridge
-import Mathlib.Tactic.NoncommRing
+module
+
+public import Homogenization.Ambient.MatrixOrderBridge
+public import Mathlib.Tactic.NoncommRing
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

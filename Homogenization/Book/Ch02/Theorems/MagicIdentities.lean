@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.MagicIdentities
+module
+
+public import Homogenization.Internal.Ch02.MagicIdentities
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

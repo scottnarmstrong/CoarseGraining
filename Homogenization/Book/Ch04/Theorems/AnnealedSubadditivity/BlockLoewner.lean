@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch02.Theorems.HomogenizationError.ResponseBounds
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Basic
-import Homogenization.Book.Ch04.Theorems.PartitionAveragesDefinitions
-import Homogenization.Book.Ch04.Theorems.StationaryExpectations
-import Homogenization.Book.Ch04.Theorems.ScalarizationDefinitions
+module
+
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError.ResponseBounds
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Basic
+public import Homogenization.Book.Ch04.Theorems.PartitionAveragesDefinitions
+public import Homogenization.Book.Ch04.Theorems.StationaryExpectations
+public import Homogenization.Book.Ch04.Theorems.ScalarizationDefinitions
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

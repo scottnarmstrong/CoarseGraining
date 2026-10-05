@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapLp
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapLp
+
+@[expose] public section
 
 namespace Homogenization
 

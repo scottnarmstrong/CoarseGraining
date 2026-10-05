@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section57.QuenchedGammaEllipticity
-import Homogenization.Book.Ch05.Theorems.Section51.AnnealedConvergence
-import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole.ScalarChain
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ScaleCompression
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.QuenchedGammaEllipticity
+public import Homogenization.Book.Ch05.Theorems.Section51.AnnealedConvergence
+public import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole.ScalarChain
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ScaleCompression
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliScaleZeroScalarBounds
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliScaleZeroScalarBounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

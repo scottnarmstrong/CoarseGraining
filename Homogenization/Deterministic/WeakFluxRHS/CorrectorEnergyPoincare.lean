@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ExpandedAndElliptic
-import Homogenization.Deterministic.WeakFluxRHS.CorrectorEnergy
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ExpandedAndElliptic
+public import Homogenization.Deterministic.WeakFluxRHS.CorrectorEnergy
+
+@[expose] public section
 
 namespace Homogenization
 

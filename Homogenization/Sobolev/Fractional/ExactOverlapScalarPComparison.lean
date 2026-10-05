@@ -1,6 +1,8 @@
-import Homogenization.Besov.Positive.ExactOverlapScalarP
-import Homogenization.Sobolev.Fractional.BesovLeGagliardo
-import Homogenization.Sobolev.Fractional.GagliardoLeBesov
+module
+
+public import Homogenization.Besov.Positive.ExactOverlapScalarP
+public import Homogenization.Sobolev.Fractional.BesovLeGagliardo
+public import Homogenization.Sobolev.Fractional.GagliardoLeBesov
 
 /-!
 # Exact scalar overlap comparison at arbitrary finite exponent
@@ -8,6 +10,8 @@ import Homogenization.Sobolev.Fractional.GagliardoLeBesov
 This module transports the established finite-depth scalar overlap estimates
 to the exact diagonal overlap seminorm through its exact `p`-power identity.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

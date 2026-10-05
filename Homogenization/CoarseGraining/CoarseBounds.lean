@@ -1,6 +1,8 @@
-import Homogenization.CoarseGraining.CoarseBounds.Sandwich
-import Homogenization.CoarseGraining.CoarseBounds.AeBridge
-import Homogenization.CoarseGraining.CoarseBounds.LawObservable
+module
+
+public import Homogenization.CoarseGraining.CoarseBounds.Sandwich
+public import Homogenization.CoarseGraining.CoarseBounds.AeBridge
+public import Homogenization.CoarseGraining.CoarseBounds.LawObservable
 
 /-!
 # Coarse sandwich, a.e. bridge, and law-level measurability
@@ -24,3 +26,5 @@ Submodules:
 
 All matrix/vector work is on `Vec d = Fin d → ℝ` / `Mat d`; no `EuclideanSpace`.
 -/
+
+@[expose] public section

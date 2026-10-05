@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CoerciveH1
-import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
+module
+
+public import Homogenization.Sobolev.Foundations.CoerciveH1
+public import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
+
+@[expose] public section
 
 namespace Homogenization
 

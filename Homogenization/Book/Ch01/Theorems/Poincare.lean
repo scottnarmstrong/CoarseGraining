@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch01.Definitions
-import Homogenization.Sobolev.Foundations.PoincareMeanZero
-import Homogenization.Sobolev.Foundations.PoincareW1p
+module
+
+public import Homogenization.Book.Ch01.Definitions
+public import Homogenization.Sobolev.Foundations.PoincareMeanZero
+public import Homogenization.Sobolev.Foundations.PoincareW1p
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

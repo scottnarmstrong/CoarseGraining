@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section52.GeometrySeries
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section52.GeometrySeries
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

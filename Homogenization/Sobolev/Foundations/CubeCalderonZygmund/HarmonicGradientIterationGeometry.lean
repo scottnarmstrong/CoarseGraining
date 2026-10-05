@@ -1,6 +1,10 @@
-import Homogenization.Besov.Duality.ProjectionLimit
-import Homogenization.Sobolev.Foundations.Cutoff.Cube
-import Homogenization.Sobolev.W1p.FiniteMeasureDowngrade
+module
+
+public import Homogenization.Besov.Duality.ProjectionLimit
+public import Homogenization.Sobolev.Foundations.Cutoff.Cube
+public import Homogenization.Sobolev.W1p.FiniteMeasureDowngrade
+
+@[expose] public section
 
 namespace Homogenization
 

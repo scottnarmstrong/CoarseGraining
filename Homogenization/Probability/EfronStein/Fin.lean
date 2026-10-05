@@ -1,8 +1,10 @@
 /-
 Copyright (c) 2026. All rights reserved.
 -/
-import Homogenization.Probability.EfronStein.ProdDecomp
-import Mathlib.MeasureTheory.Constructions.Pi
+module
+
+public import Homogenization.Probability.EfronStein.ProdDecomp
+public import Mathlib.MeasureTheory.Constructions.Pi
 
 /-!
 # Efron–Stein on finite products indexed by `Fin n`
@@ -10,6 +12,8 @@ import Mathlib.MeasureTheory.Constructions.Pi
 Elementary induction on the number of coordinates, splitting off coordinate `0`
 via `MeasurableEquiv.piFinSuccAbove`.
 -/
+
+@[expose] public section
 
 open MeasureTheory Filter Fin Function ProbabilityTheory
 open scoped ProbabilityTheory ENNReal BigOperators

@@ -1,4 +1,6 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.Correctors
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.Correctors
 
 /-!
 # Coarse Poincare with right-hand side
@@ -9,3 +11,5 @@ The recurrence and note-facing theorem files live under
 `CoarsePoincareRHSLocalRecurrence.lean` until the Caccioppoli bridge import can be
 retargeted without creating an import cycle.
 -/
+
+@[expose] public section

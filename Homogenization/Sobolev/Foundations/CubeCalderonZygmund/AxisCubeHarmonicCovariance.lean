@@ -1,9 +1,13 @@
-import Homogenization.Sobolev.Foundations.CoerciveH1Dilation
-import Homogenization.Sobolev.Foundations.AxisCube
-import Homogenization.Sobolev.H1.Translation
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInterior
-import Homogenization.Geometry.TriadicCubeTranslation
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.HarmonicGradientIterationGeometry
+module
+
+public import Homogenization.Sobolev.Foundations.CoerciveH1Dilation
+public import Homogenization.Sobolev.Foundations.AxisCube
+public import Homogenization.Sobolev.H1.Translation
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInterior
+public import Homogenization.Geometry.TriadicCubeTranslation
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.HarmonicGradientIterationGeometry
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,6 @@
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingForcing
+module
+
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingForcing
 
 /-!
 # Strict finite-`p` to legacy `q = 2` Besov regularity
@@ -8,6 +10,8 @@ This adapter transports the source finite-`p` carrier to the legacy signed
 The quantitative strict-gap summation is owned by
 `LocalCoarseGrainingForcing`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

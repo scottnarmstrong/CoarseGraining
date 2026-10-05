@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleMinimalQuantitative
-import Homogenization.Book.Ch05.Theorems.Section51.EntryScale
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleMinimalQuantitative
+public import Homogenization.Book.Ch05.Theorems.Section51.EntryScale
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

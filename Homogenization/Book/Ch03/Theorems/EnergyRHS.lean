@@ -1,1 +1,3 @@
-import Homogenization.Book.Ch03.Theorems.EnergyRHS.Theory
+module
+
+public import Homogenization.Book.Ch03.Theorems.EnergyRHS.Theory

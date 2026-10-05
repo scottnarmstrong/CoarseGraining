@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.GlobalBaseBounds
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.GlobalBaseBounds
+
+@[expose] public section
 
 namespace Homogenization
 

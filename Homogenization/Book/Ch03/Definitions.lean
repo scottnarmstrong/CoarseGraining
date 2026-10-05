@@ -1,9 +1,13 @@
-import Homogenization.Book.Ch01.Definitions
-import Homogenization.Book.Ch02.Definitions
-import Homogenization.Ambient.ScalarMatrix
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionSharpKernel
-import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
-import Homogenization.Geometry.TriadicCubeTranslation
+module
+
+public import Homogenization.Book.Ch01.Definitions
+public import Homogenization.Book.Ch02.Definitions
+public import Homogenization.Ambient.ScalarMatrix
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionSharpKernel
+public import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
+public import Homogenization.Geometry.TriadicCubeTranslation
+
+@[expose] public section
 
 open scoped BigOperators ENNReal Pointwise
 

@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.PoincareLp
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing
+module
+
+public import Homogenization.Sobolev.Foundations.PoincareLp
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing
+
+@[expose] public section
 
 namespace Homogenization
 

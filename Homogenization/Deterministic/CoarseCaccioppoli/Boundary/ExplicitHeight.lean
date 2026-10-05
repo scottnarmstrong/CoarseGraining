@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.Boundary.NoteRhs
-import Homogenization.Deterministic.CoarseCaccioppoli.RadiusIteration
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.Boundary.NoteRhs
+public import Homogenization.Deterministic.CoarseCaccioppoli.RadiusIteration
+
+@[expose] public section
 
 namespace Homogenization
 

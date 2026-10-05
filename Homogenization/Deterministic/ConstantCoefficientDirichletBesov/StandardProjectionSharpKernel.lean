@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionBoundaryNeighborCount
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionSummation
-import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionBoundaryNeighborCount
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionSummation
+public import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
+
+@[expose] public section
 
 namespace Homogenization
 

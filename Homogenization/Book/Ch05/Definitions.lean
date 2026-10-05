@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch04.Theorems.Expectations
-import Homogenization.Book.Ch04.Theorems.MomentFactorBounds
-import Homogenization.Book.Ch04.Theorems.Scalarization
+module
+
+public import Homogenization.Book.Ch04.Theorems.Expectations
+public import Homogenization.Book.Ch04.Theorems.MomentFactorBounds
+public import Homogenization.Book.Ch04.Theorems.Scalarization
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

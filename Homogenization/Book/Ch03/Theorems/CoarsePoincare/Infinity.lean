@@ -1,9 +1,13 @@
-import Homogenization.Book.Ch03.Theorems.CoarsePoincare.Finite
-import Homogenization.Book.Ch03.Definitions
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity
-import Homogenization.CoarseGraining.ResponseIdentities.Existence
-import Homogenization.Deterministic.CoarsePoincare.QTwo
-import Homogenization.Deterministic.WeakNormInterfaces.AECongruence
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarsePoincare.Finite
+public import Homogenization.Book.Ch03.Definitions
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity
+public import Homogenization.CoarseGraining.ResponseIdentities.Existence
+public import Homogenization.Deterministic.CoarsePoincare.QTwo
+public import Homogenization.Deterministic.WeakNormInterfaces.AECongruence
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

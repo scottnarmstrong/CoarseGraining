@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch04.SourceMu
-import Homogenization.Book.Ch04.Internal.CoarseObservableMeasurability.Basic
-import Homogenization.Besov.Basic
+module
+
+public import Homogenization.Book.Ch04.SourceMu
+public import Homogenization.Book.Ch04.Internal.CoarseObservableMeasurability.Basic
+public import Homogenization.Besov.Basic
 
 /-!
 # Exact-source coarse observables
@@ -9,6 +11,8 @@ The coarse block entries are finite polarizations of the exact source-local
 `Mu` observable.  This module packages those deterministic consequences in
 the coarse source local sigma algebra.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

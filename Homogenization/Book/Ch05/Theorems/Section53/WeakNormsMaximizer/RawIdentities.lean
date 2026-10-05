@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.Basic
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.CanonicalFields
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.Basic
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.CanonicalFields
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,6 +1,10 @@
-import Mathlib.MeasureTheory.Constructions.Pi
-import Mathlib.MeasureTheory.Integral.Prod
-import Homogenization.Ambient.Basic
+module
+
+public import Mathlib.MeasureTheory.Constructions.Pi
+public import Mathlib.MeasureTheory.Integral.Prod
+public import Homogenization.Ambient.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

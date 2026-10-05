@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta.Uniform
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta.Uniform
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book
@@ -21,7 +25,7 @@ private theorem sLower_add_beta_pos' {d : ℕ} [NeZero d]
     0 < hP4.sLower + section53CoarseFluctuationBeta hP4 :=
   add_pos hP4.sLower_pos (section53CoarseFluctuationBeta_pos hP4)
 
-private theorem sUpper_add_beta_lt_one' {d : ℕ} [NeZero d]
+theorem sUpper_add_beta_lt_one' {d : ℕ} [NeZero d]
     {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sUpper + section53CoarseFluctuationBeta hP4 < 1 := by
   have hsum := sUpper_add_sLower_add_two_beta_le_one hP4
@@ -30,7 +34,7 @@ private theorem sUpper_add_beta_lt_one' {d : ℕ} [NeZero d]
     sLower_add_beta_pos' hP4
   nlinarith
 
-private theorem sLower_add_beta_lt_one' {d : ℕ} [NeZero d]
+theorem sLower_add_beta_lt_one' {d : ℕ} [NeZero d]
     {P : Ch04.RestrictionCoeffLaw d} (hP4 : QuantitativeCoarseGrainedEllipticity P) :
     hP4.sLower + section53CoarseFluctuationBeta hP4 < 1 := by
   have hsum := sUpper_add_sLower_add_two_beta_le_one hP4

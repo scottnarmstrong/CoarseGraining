@@ -1,8 +1,10 @@
-import Homogenization.Sobolev.Foundations.WeakHessianEuclidean
-import Homogenization.Sobolev.H1.Algebra.H1Function
-import Homogenization.Sobolev.Fractional.UnitCubeEuclideanL2
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.MeasureTheory.SpecificCodomains.WithLp
+module
+
+public import Homogenization.Sobolev.Foundations.WeakHessianEuclidean
+public import Homogenization.Sobolev.H1.Algebra.H1Function
+public import Homogenization.Sobolev.Fractional.UnitCubeEuclideanL2
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.MeasureTheory.SpecificCodomains.WithLp
 
 /-!
 # The continuous centered-cube `K`-functional
@@ -12,6 +14,8 @@ constant-coefficient Dirichlet argument.  The unit centered open cube is used
 for the coordinatewise `H¹` competitors; normalized volume is realized by its
 a.e.-equal half-open cube.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

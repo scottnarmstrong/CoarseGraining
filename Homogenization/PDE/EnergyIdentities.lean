@@ -1,4 +1,8 @@
-import Homogenization.PDE.DirichletRHS
+module
+
+public import Homogenization.PDE.DirichletRHS
+
+@[expose] public section
 
 namespace Homogenization
 

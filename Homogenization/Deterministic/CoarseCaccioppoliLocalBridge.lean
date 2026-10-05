@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.WeakNormInterfacesComponentwise
+module
+
+public import Homogenization.Deterministic.WeakNormInterfacesComponentwise
+
+@[expose] public section
 
 namespace Homogenization
 

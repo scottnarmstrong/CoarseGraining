@@ -1,14 +1,18 @@
-import Homogenization.Ambient.Basic
-import Homogenization.Sobolev.Foundations.Cutoff.Euclidean
-import Homogenization.Sobolev.Foundations.Cutoff.Profile
-import Homogenization.Sobolev.WeakDerivatives
-import Mathlib.Analysis.Calculus.ContDiff.Basic
-import Mathlib.Analysis.Calculus.ContDiff.Bounds
-import Mathlib.Analysis.Calculus.ContDiff.Operations
-import Mathlib.Analysis.Calculus.Deriv.Basic
-import Mathlib.Analysis.Calculus.FDeriv.Pow
-import Mathlib.Analysis.Calculus.FDeriv.Add
-import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
+module
+
+public import Homogenization.Ambient.Basic
+public import Homogenization.Sobolev.Foundations.Cutoff.Euclidean
+public import Homogenization.Sobolev.Foundations.Cutoff.Profile
+public import Homogenization.Sobolev.WeakDerivatives
+public import Mathlib.Analysis.Calculus.ContDiff.Basic
+public import Mathlib.Analysis.Calculus.ContDiff.Bounds
+public import Mathlib.Analysis.Calculus.ContDiff.Operations
+public import Mathlib.Analysis.Calculus.Deriv.Basic
+public import Mathlib.Analysis.Calculus.FDeriv.Pow
+public import Mathlib.Analysis.Calculus.FDeriv.Add
+public import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
+
+@[expose] public section
 
 noncomputable section
 

@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.ResponseIdentities.Foundations
+module
+
+public import Homogenization.CoarseGraining.ResponseIdentities.Foundations
+
+@[expose] public section
 
 namespace Homogenization
 

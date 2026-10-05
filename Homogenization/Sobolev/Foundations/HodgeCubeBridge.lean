@@ -1,7 +1,11 @@
-import Homogenization.Geometry.ConvexDomain
-import Homogenization.Sobolev.Foundations.Hodge
-import Homogenization.Sobolev.PotentialSolenoidalOriginCubeBridge
-import Homogenization.Sobolev.PotentialSolenoidalTranslation
+module
+
+public import Homogenization.Geometry.ConvexDomain
+public import Homogenization.Sobolev.Foundations.Hodge
+public import Homogenization.Sobolev.PotentialSolenoidalOriginCubeBridge
+public import Homogenization.Sobolev.PotentialSolenoidalTranslation
+
+@[expose] public section
 
 namespace Homogenization
 

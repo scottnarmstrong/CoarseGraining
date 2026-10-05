@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch04.SourcePartitionAverageMoments
-import Homogenization.Probability.IndependentSums.MomentCalculus
+module
+
+public import Homogenization.Book.Ch04.SourcePartitionAverageMoments
+public import Homogenization.Probability.IndependentSums.MomentCalculus
 
 /-!
 # Finite-moment source partition-average bounds
@@ -7,6 +9,8 @@ import Homogenization.Probability.IndependentSums.MomentCalculus
 This module derives the finite-moment `L¹` partition-average estimate on the
 exact coarse source carrier.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

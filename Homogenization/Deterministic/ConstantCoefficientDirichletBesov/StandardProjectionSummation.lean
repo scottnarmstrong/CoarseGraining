@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.DiscreteConvolution
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.DiscreteConvolution
+
+@[expose] public section
 
 namespace Homogenization
 

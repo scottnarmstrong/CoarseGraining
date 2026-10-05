@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.Assembly
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.FluctuationIntegrability
-import Homogenization.Book.Ch05.Theorems.Section52.MomentBounds
-import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.EnergyDefect
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.Assembly
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.FluctuationIntegrability
+public import Homogenization.Book.Ch05.Theorems.Section52.MomentBounds
+public import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.EnergyDefect
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

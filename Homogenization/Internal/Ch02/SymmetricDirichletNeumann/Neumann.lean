@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.SymmetricDirichletNeumann.Common
+module
+
+public import Homogenization.Internal.Ch02.SymmetricDirichletNeumann.Common
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

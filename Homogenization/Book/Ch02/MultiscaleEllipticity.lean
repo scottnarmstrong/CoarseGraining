@@ -1,9 +1,13 @@
-import Homogenization.Book.Ch02.Block
-import Homogenization.Geometry.CubeMetric
-import Homogenization.Geometry.TriadicPartition
-import Mathlib.Analysis.CStarAlgebra.Matrix
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Topology.Algebra.InfiniteSum.Real
+module
+
+public import Homogenization.Book.Ch02.Block
+public import Homogenization.Geometry.CubeMetric
+public import Homogenization.Geometry.TriadicPartition
+public import Mathlib.Analysis.CStarAlgebra.Matrix
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.Topology.Algebra.InfiniteSum.Real
+
+@[expose] public section
 
 open scoped BigOperators
 

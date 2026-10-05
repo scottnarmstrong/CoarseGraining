@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAveragePackaging
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.PartitionAverage
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ProbeVariance
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAveragePackaging
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.PartitionAverage
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ProbeVariance
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

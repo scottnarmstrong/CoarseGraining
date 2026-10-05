@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch04.SourceIndependence
-import Homogenization.Geometry.CubeMeasure
-import Homogenization.Geometry.ScaleColoring
+module
+
+public import Homogenization.Book.Ch04.SourceIndependence
+public import Homogenization.Geometry.CubeMeasure
+public import Homogenization.Geometry.ScaleColoring
 
 /-!
 # Independence of source-local observables on a scale-color class
@@ -10,6 +12,8 @@ specialization.  Its metric bridge is kept local: the coloring separates cubes
 in the ambient sup metric, while source P2 is formulated with the Euclidean
 metric.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

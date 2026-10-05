@@ -1,4 +1,8 @@
-import Homogenization.Besov.Poincare.Structures
+module
+
+public import Homogenization.Besov.Poincare.Structures
+
+@[expose] public section
 
 namespace Homogenization
 

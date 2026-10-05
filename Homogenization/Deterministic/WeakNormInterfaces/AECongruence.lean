@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.WeakNormInterfacesQTwo
+module
+
+public import Homogenization.Deterministic.WeakNormInterfacesQTwo
+
+@[expose] public section
 
 namespace Homogenization
 

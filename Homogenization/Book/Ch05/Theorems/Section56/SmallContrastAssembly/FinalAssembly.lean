@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.WeightedGeometricSummation
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceAverageEstimate
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.FluctuationSumEstimate
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastJBound
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.WeightedGeometricSummation
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceAverageEstimate
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.FluctuationSumEstimate
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastJBound
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

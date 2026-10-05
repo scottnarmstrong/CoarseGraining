@@ -1,10 +1,14 @@
-import Homogenization.Book.Ch04.Tails
-import Mathlib.Order.Filter.Finite
-import Homogenization.Probability.IndependentSums.GammaSigmaConcentration
-import Homogenization.Probability.IndependentSums.GammaSigmaExpRegime
-import Homogenization.Probability.IndependentSums.PsiConcentration
-import Homogenization.Probability.IndependentSums.PsiSigma
-import Homogenization.Probability.IndependentSums.Rosenthal
+module
+
+public import Homogenization.Book.Ch04.Tails
+public import Mathlib.Order.Filter.Finite
+public import Homogenization.Probability.IndependentSums.GammaSigmaConcentration
+public import Homogenization.Probability.IndependentSums.GammaSigmaExpRegime
+public import Homogenization.Probability.IndependentSums.PsiConcentration
+public import Homogenization.Probability.IndependentSums.PsiSigma
+public import Homogenization.Probability.IndependentSums.Rosenthal
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

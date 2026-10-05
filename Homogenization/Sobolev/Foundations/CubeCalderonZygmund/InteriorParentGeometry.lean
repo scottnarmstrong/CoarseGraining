@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GlobalParentGeometry
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GlobalParentGeometry
+
+@[expose] public section
 
 namespace Homogenization
 

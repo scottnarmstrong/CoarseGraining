@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentBoundsTop
-import Homogenization.Book.Ch05.Theorems.Section57.WeightedExponentialKernel
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentBoundsTop
+public import Homogenization.Book.Ch05.Theorems.Section57.WeightedExponentialKernel
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

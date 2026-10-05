@@ -1,5 +1,7 @@
-import Homogenization.Probability.Source.Coarse.Laws
-import Homogenization.Probability.RescaledLaw
+module
+
+public import Homogenization.Probability.Source.Coarse.Laws
+public import Homogenization.Probability.RescaledLaw
 
 /-!
 # Triadic scaling of the exact coarse source carrier
@@ -8,6 +10,8 @@ This module keeps the source-side rescaling kernel independent of the regular
 carrier.  The normalized action is the pullback `a ↦ (x ↦ a (3^k x))`; hence a
 local observable on `U` pulls back to information on `3^k U`.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Source.Coarse
 
@@ -63,7 +67,7 @@ noncomputable def Carrier.dilateNat {d : ℕ} (k : ℕ) : Carrier d → Carrier 
     Carrier.dilateNat k a x = a (((3 : ℝ) ^ k)⁻¹ • x) :=
   rfl
 
-private theorem Carrier.smul_dilateNat_rescale {d : ℕ} (k : ℕ) (a : Carrier d) :
+theorem Carrier.smul_dilateNat_rescale {d : ℕ} (k : ℕ) (a : Carrier d) :
     Carrier.dilateNat k (Carrier.rescale k a) = a := by
   apply Subtype.ext
   funext x i j
@@ -71,7 +75,7 @@ private theorem Carrier.smul_dilateNat_rescale {d : ℕ} (k : ℕ) (a : Carrier 
   simp only [Carrier.dilateNat, Carrier.rescale, Carrier.smul_apply]
   rw [smul_smul, mul_inv_cancel₀ hk, one_smul]
 
-private theorem Carrier.smul_rescale_dilateNat {d : ℕ} (k : ℕ) (a : Carrier d) :
+theorem Carrier.smul_rescale_dilateNat {d : ℕ} (k : ℕ) (a : Carrier d) :
     Carrier.rescale k (Carrier.dilateNat k a) = a := by
   apply Subtype.ext
   funext x i j

@@ -1,10 +1,14 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.CutoffSizes
-import Homogenization.Deterministic.CoarseCaccioppoli.Basic
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.Geometry
-import Homogenization.Sobolev.H1
-import Homogenization.Sobolev.Foundations.QuantitativeCutoff
-import Mathlib.Analysis.Calculus.ContDiff.Bounds
-import Mathlib.Analysis.Calculus.FDeriv.CompCLM
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.CutoffSizes
+public import Homogenization.Deterministic.CoarseCaccioppoli.Basic
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.Geometry
+public import Homogenization.Sobolev.H1
+public import Homogenization.Sobolev.Foundations.QuantitativeCutoff
+public import Mathlib.Analysis.Calculus.ContDiff.Bounds
+public import Mathlib.Analysis.Calculus.FDeriv.CompCLM
+
+@[expose] public section
 
 namespace Homogenization
 

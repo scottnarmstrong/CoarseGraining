@@ -1,7 +1,11 @@
-import Homogenization.Besov.Poincare.HarmonicGradient
-import Homogenization.Sobolev.H1.BasicLemmas
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ
-import Homogenization.Sobolev.Foundations.CubeBesovPoincare.W12Embedding
+module
+
+public import Homogenization.Besov.Poincare.HarmonicGradient
+public import Homogenization.Sobolev.H1.BasicLemmas
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ
+public import Homogenization.Sobolev.Foundations.CubeBesovPoincare.W12Embedding
+
+@[expose] public section
 
 namespace Homogenization
 

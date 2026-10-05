@@ -1,4 +1,6 @@
-import Mathlib
+module
+
+public import Mathlib
 
 /-!
 # Statement-level audit vocabulary (random Bernoulli checkerboard)
@@ -19,6 +21,8 @@ within the repository line budget; `Solution.lean` imports it and adds the
 private bridges to the repository theorem together with the audited theorem
 itself.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace StatementAudit
@@ -441,7 +445,8 @@ theorem measurableSet_openUnitCell {d : ℕ} (z : Lattice d) :
         openUnitCell z =
           ⋂ i : Fin d, {x : Vec d | |x i - (z i : ℝ)| < (1 / 2 : ℝ)} := by
       ext x
-      simp [openUnitCell]
+      rw [Set.mem_iInter]
+      exact Iff.rfl
     rw [hset]
     refine isOpen_iInter_of_finite fun i : Fin d => ?_
     exact isOpen_lt (((continuous_apply i).sub continuous_const).abs) continuous_const
@@ -468,7 +473,10 @@ theorem measurable_conductance {d : ℕ} (lam Lam : ℝ) (ω : Sample d) :
 
 theorem abs_conductance_le {d : ℕ} (lam Lam : ℝ) (ω : Sample d) (x : Vec d) :
     |conductance lam Lam ω x| ≤ max |lam| |Lam| := by
-  by_cases hx : x ∈ highConductanceRegion ω <;> simp [conductance, hx]
+  unfold conductance
+  split_ifs
+  · exact le_max_right _ _
+  · exact le_max_left _ _
 
 /-- A bounded measurable scalar field is locally integrable. -/
 theorem locallyIntegrable_of_bounded {d : ℕ} {f : Vec d → ℝ}
@@ -479,7 +487,8 @@ theorem locallyIntegrable_of_bounded {d : ℕ} {f : Vec d → ℝ}
   refine Measure.integrableOn_of_bounded (hk.measure_lt_top).ne
     hf.aestronglyMeasurable (M := C) ?_
   filter_upwards with x
-  simpa [Real.norm_eq_abs] using hC x
+  rw [Real.norm_eq_abs]
+  exact hC x
 
 /-- The checkerboard realization attached to a coin sample: the two-valued
 conductance times the identity matrix. -/
@@ -489,20 +498,44 @@ noncomputable def checkerboardField {d : ℕ} (lam Lam : ℝ) (ω : Sample d) :
   entry_measurable := fun i j => by
     by_cases hij : i = j
     · subst hij
-      simpa [scalarMatrix] using measurable_conductance lam Lam ω
-    · simp [scalarMatrix, hij]
+      have h : (fun x : Vec d => (scalarMatrix (conductance lam Lam ω x) : Mat d) i i)
+          = conductance lam Lam ω := by
+        funext x
+        rw [scalarMatrix, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]
+      show Measurable (fun x : Vec d => (scalarMatrix (conductance lam Lam ω x) : Mat d) i i)
+      rw [h]
+      exact measurable_conductance lam Lam ω
+    · have h : (fun x : Vec d => (scalarMatrix (conductance lam Lam ω x) : Mat d) i j)
+          = fun _ : Vec d => (0 : ℝ) := by
+        funext x
+        rw [scalarMatrix, Matrix.smul_apply, Matrix.one_apply_ne hij, smul_zero]
+      show Measurable (fun x : Vec d => (scalarMatrix (conductance lam Lam ω x) : Mat d) i j)
+      rw [h]
+      exact measurable_const
   entry_locallyIntegrable := fun i j => by
     by_cases hij : i = j
     · subst hij
+      have hdiag : ∀ x : Vec d,
+          (scalarMatrix (conductance lam Lam ω x) : Mat d) i i = conductance lam Lam ω x := by
+        intro x
+        rw [scalarMatrix, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]
       refine locallyIntegrable_of_bounded ?_ (C := max |lam| |Lam|) ?_
-      · simpa [scalarMatrix] using measurable_conductance lam Lam ω
+      · have h : (fun x : Vec d => (scalarMatrix (conductance lam Lam ω x) : Mat d) i i)
+            = conductance lam Lam ω := funext hdiag
+        show Measurable (fun x : Vec d => (scalarMatrix (conductance lam Lam ω x) : Mat d) i i)
+        rw [h]
+        exact measurable_conductance lam Lam ω
       · intro x
-        simpa [scalarMatrix] using abs_conductance_le lam Lam ω x
+        show |(scalarMatrix (conductance lam Lam ω x) : Mat d) i i| ≤ max |lam| |Lam|
+        rw [hdiag x]
+        exact abs_conductance_le lam Lam ω x
     · have hzero :
           (fun x : Vec d => (scalarMatrix (conductance lam Lam ω x) : Mat d) i j)
             = fun _ : Vec d => (0 : ℝ) := by
         funext x
-        simp [scalarMatrix, hij]
+        rw [scalarMatrix, Matrix.smul_apply, Matrix.one_apply_ne hij, smul_zero]
+      show LocallyIntegrable
+        (fun x : Vec d => (scalarMatrix (conductance lam Lam ω x) : Mat d) i j) volume
       rw [hzero]
       exact locallyIntegrable_const (0 : ℝ)
 

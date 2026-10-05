@@ -1,5 +1,7 @@
-import Mathlib.MeasureTheory.Function.LpSeminorm.ChebyshevMarkov
-import Mathlib.Analysis.MeanInequalitiesPow
+module
+
+public import Mathlib.MeasureTheory.Function.LpSeminorm.ChebyshevMarkov
+public import Mathlib.Analysis.MeanInequalitiesPow
 
 /-!
 # Chebyshev level bound and the recursion assembly
@@ -15,6 +17,8 @@ Two purely analytic helpers used by the generic De Giorgi core
 
 Both are proved at default heartbeats, no `sorry`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch02.Theorems.ExistenceDefinitions
-import Homogenization.CoarseGraining.ResponseIdentities.Existence
-import Homogenization.Internal.Ch02.Adapters
-import Homogenization.Internal.Ch02.Representatives
+module
+
+public import Homogenization.Book.Ch02.Theorems.ExistenceDefinitions
+public import Homogenization.CoarseGraining.ResponseIdentities.Existence
+public import Homogenization.Internal.Ch02.Adapters
+public import Homogenization.Internal.Ch02.Representatives
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

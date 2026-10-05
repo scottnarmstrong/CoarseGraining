@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Fractional.CenteredCubeFractionalGradientMemLp
-import Homogenization.Sobolev.Fractional.EuclideanWspLpMembership
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePFullCZ
+module
+
+public import Homogenization.Sobolev.Fractional.CenteredCubeFractionalGradientMemLp
+public import Homogenization.Sobolev.Fractional.EuclideanWspLpMembership
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePFullCZ
 
 /-!
 # Fractional Calderón--Zygmund estimate on centered cubes
@@ -8,6 +10,8 @@ import Homogenization.Sobolev.Fractional.ExactOverlapFinitePFullCZ
 This module packages the supplied zero-trace cube solution with the literal
 Euclidean fractional-Sobolev field carried by its gradient.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

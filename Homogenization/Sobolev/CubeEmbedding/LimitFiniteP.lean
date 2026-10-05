@@ -1,8 +1,10 @@
-import Homogenization.Sobolev.CubeEmbedding.FoldExtensionFiniteP
-import Homogenization.Sobolev.CubeEmbedding.GagliardoNirenbergSobolevFiniteP
-import Homogenization.Sobolev.Foundations.AxisCube
-import Mathlib.MeasureTheory.Function.ConvergenceInMeasure
-import Mathlib.MeasureTheory.Function.LpSpace.Complete
+module
+
+public import Homogenization.Sobolev.CubeEmbedding.FoldExtensionFiniteP
+public import Homogenization.Sobolev.CubeEmbedding.GagliardoNirenbergSobolevFiniteP
+public import Homogenization.Sobolev.Foundations.AxisCube
+public import Mathlib.MeasureTheory.Function.ConvergenceInMeasure
+public import Mathlib.MeasureTheory.Function.LpSpace.Complete
 
 /-!
 # Finite-`p` coordinate GNS input for cube localization
@@ -11,6 +13,8 @@ This module records the coordinate form of the ambient finite-`p`
 Gagliardo--Nirenberg--Sobolev theorem.  It is the analytic estimate applied to
 compactly supported smooth folded approximants in the cube localization step.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

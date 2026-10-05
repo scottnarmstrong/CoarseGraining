@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.EllipticityFromMinimalScale
-import Homogenization.Book.Ch03.Theorems.HomogenizationBlackBoxes
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.EllipticityFromMinimalScale
+public import Homogenization.Book.Ch03.Theorems.HomogenizationBlackBoxes
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

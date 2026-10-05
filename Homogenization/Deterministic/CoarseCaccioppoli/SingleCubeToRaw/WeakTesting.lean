@@ -1,11 +1,15 @@
-import Homogenization.CoarseGraining.ResponseIdentities.Foundations
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.QuantitativeCutoff
-import Homogenization.Geometry.ConvexDomain
-import Homogenization.Geometry.CubeMeasure
-import Homogenization.PDE.Harmonic
-import Homogenization.Sobolev.H1.Algebra
-import Homogenization.Sobolev.H1.LocalizedZeroTrace
-import Homogenization.Sobolev.PotentialSolenoidalL2
+module
+
+public import Homogenization.CoarseGraining.ResponseIdentities.Foundations
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.QuantitativeCutoff
+public import Homogenization.Geometry.ConvexDomain
+public import Homogenization.Geometry.CubeMeasure
+public import Homogenization.PDE.Harmonic
+public import Homogenization.Sobolev.H1.Algebra
+public import Homogenization.Sobolev.H1.LocalizedZeroTrace
+public import Homogenization.Sobolev.PotentialSolenoidalL2
+
+@[expose] public section
 
 namespace Homogenization
 

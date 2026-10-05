@@ -1,7 +1,11 @@
-import Homogenization.Sobolev.H1.BasicLemmas
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing
-import Mathlib.Analysis.Calculus.FDeriv.Mul
-import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
+module
+
+public import Homogenization.Sobolev.H1.BasicLemmas
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing
+public import Mathlib.Analysis.Calculus.FDeriv.Mul
+public import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
+
+@[expose] public section
 
 namespace Homogenization
 

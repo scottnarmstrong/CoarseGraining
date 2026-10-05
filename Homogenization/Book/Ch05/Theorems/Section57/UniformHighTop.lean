@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.UniformHighBottom
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailDenominator
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.UniformHighBottom
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailDenominator
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseRHSPrep
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.EllipticityMoments
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.ResponseMomentIntegrability
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ProbeMomentCompression
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseRHSPrep
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.EllipticityMoments
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.ResponseMomentIntegrability
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ProbeMomentCompression
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

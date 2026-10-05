@@ -1,7 +1,11 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.SeminormRecurrence
-import Homogenization.Deterministic.WeakFluxRHS.CorrectorEnergy
-import Homogenization.Deterministic.WeakFluxRHS.FluxStepping
-import Homogenization.Deterministic.WeakFluxRHS.WeakSolutionBridge
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.SeminormRecurrence
+public import Homogenization.Deterministic.WeakFluxRHS.CorrectorEnergy
+public import Homogenization.Deterministic.WeakFluxRHS.FluxStepping
+public import Homogenization.Deterministic.WeakFluxRHS.WeakSolutionBridge
+
+@[expose] public section
 
 namespace Homogenization
 

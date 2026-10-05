@@ -1,10 +1,14 @@
-import Homogenization.Book.Ch02.Theorems.DoubledMuDefinitions
-import Homogenization.Book.Ch02.Theorems.GradientUniqueness
-import Homogenization.Book.Ch01.Theorems.PotentialSolenoidal
-import Homogenization.CoarseGraining.MuRecovery.RecoveryPackages
-import Homogenization.Internal.Ch02.MatrixExtraction
-import Homogenization.Internal.Ch02.DoubledResponse.ScalarMaximizers
-import Homogenization.Internal.Ch02.Representatives
+module
+
+public import Homogenization.Book.Ch02.Theorems.DoubledMuDefinitions
+public import Homogenization.Book.Ch02.Theorems.GradientUniqueness
+public import Homogenization.Book.Ch01.Theorems.PotentialSolenoidal
+public import Homogenization.CoarseGraining.MuRecovery.RecoveryPackages
+public import Homogenization.Internal.Ch02.MatrixExtraction
+public import Homogenization.Internal.Ch02.DoubledResponse.ScalarMaximizers
+public import Homogenization.Internal.Ch02.Representatives
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

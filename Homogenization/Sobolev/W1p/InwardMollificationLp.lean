@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.W1p.GlobalAffineLp
-import Homogenization.Sobolev.W1p.GlobalMollifierLp
-import Homogenization.Sobolev.W1p.InwardMollificationGeometry
+module
+
+public import Homogenization.Sobolev.W1p.GlobalAffineLp
+public import Homogenization.Sobolev.W1p.GlobalMollifierLp
+public import Homogenization.Sobolev.W1p.InwardMollificationGeometry
 
 /-!
 # Global `L^p` convergence of inward mollification
@@ -9,6 +11,8 @@ This file combines the global approximate-identity theorem with strong
 continuity under the outward affine expansion.  The result is independent of
 domain geometry and boundary conditions.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

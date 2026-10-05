@@ -1,7 +1,11 @@
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Response
-import Homogenization.CoarseGraining.ResponseIdentities.Existence
-import Homogenization.Sobolev.Foundations.HodgeCubeBridge
-import Homogenization.Geometry.CubeMetric
+module
+
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Response
+public import Homogenization.CoarseGraining.ResponseIdentities.Existence
+public import Homogenization.Sobolev.Foundations.HodgeCubeBridge
+public import Homogenization.Geometry.CubeMetric
+
+@[expose] public section
 
 namespace Homogenization
 

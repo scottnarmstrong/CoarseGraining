@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliStandardScalar
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliStandardScalar
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book
@@ -200,7 +204,7 @@ private theorem two_endpoint_inv_mul_self_one_sub_le_inv {s : ℝ}
       field_simp [hs_ne, hs1_ne]
     _ ≤ s⁻¹ := hone_le_inv
 
-private noncomputable def centeredAverageFrontEnvelope
+noncomputable def centeredAverageFrontEnvelope
     (d : ℕ) (C : ℝ) : ℝ :=
   (d : ℝ) * (((3 / 2 : ℝ) * C * Real.rpow (3 : ℝ) ((d : ℝ) + 1)) *
     ((5 : ℝ) * (Homogenization.geometricDiscount (1 : ℝ) 1)⁻¹)) *
@@ -288,7 +292,7 @@ private theorem centeredAverageFront_mul_den_le_envelope_mul_inv
           exact mul_le_mul_of_nonneg_left
             (inv_mul_self_one_sub_le_inv hs hs_le) henv_nonneg
 
-private noncomputable def centeredHessianFrontEnvelope
+noncomputable def centeredHessianFrontEnvelope
     (d : ℕ) (C : ℝ) : ℝ :=
   (d : ℝ) * Real.rpow (3 : ℝ) ((d : ℝ) + 1) *
     ((5 : ℝ) *
@@ -434,7 +438,7 @@ private theorem triple_endpoint_inv_mul_self_one_sub_eq_inv {s : ℝ}
   have hs1_ne : 1 - s ≠ 0 := hs1_pos.ne'
   field_simp [hs_ne, hs1_ne]
 
-private noncomputable def centeredGradientFrontEnvelope
+noncomputable def centeredGradientFrontEnvelope
     (d : ℕ) (C : ℝ) : ℝ :=
   (d : ℝ) * Real.rpow (3 : ℝ) ((d : ℝ) + 1) *
     ((5 : ℝ) *

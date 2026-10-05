@@ -1,6 +1,10 @@
-import Mathlib.MeasureTheory.Integral.Layercake
-import Mathlib.MeasureTheory.Function.L1Space.Integrable
-import Homogenization.Probability.IndependentSums.PsiCalculus
+module
+
+public import Mathlib.MeasureTheory.Integral.Layercake
+public import Mathlib.MeasureTheory.Function.L1Space.Integrable
+public import Homogenization.Probability.IndependentSums.PsiCalculus
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

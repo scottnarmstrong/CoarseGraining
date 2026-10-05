@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.DoubledResponse.Common
+module
+
+public import Homogenization.Internal.Ch02.DoubledResponse.Common
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.AveragingResidualExplicit
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.AveragingResidualExplicit
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,7 @@
-import Homogenization.HighContrast.Coupled.WeakForm
-import Homogenization.CoarseGraining.CubeMinimizer
+module
+
+public import Homogenization.HighContrast.Coupled.WeakForm
+public import Homogenization.CoarseGraining.CubeMinimizer
 
 /-!
 # Coupled representation (Proposition 3.1, existence direction)
@@ -18,6 +20,8 @@ in `Coupled/WeakForm.lean`.  This file assembles the existence package `G1`:
 
 Vectors are `Vec d = Fin d → ℝ`; no `EuclideanSpace`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

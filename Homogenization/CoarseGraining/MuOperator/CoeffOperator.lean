@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.MuOperator.HilbertOperator
+module
+
+public import Homogenization.CoarseGraining.MuOperator.HilbertOperator
+
+@[expose] public section
 
 namespace Homogenization
 

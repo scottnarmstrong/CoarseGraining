@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch03.ABK26.FluxComparisonLocalization
-import Homogenization.Sobolev.Fractional.CenteredCubeFractionalCZFullNorm
-import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDualFieldPairing
+module
+
+public import Homogenization.Book.Ch03.ABK26.FluxComparisonLocalization
+public import Homogenization.Sobolev.Fractional.CenteredCubeFractionalCZFullNorm
+public import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDualFieldPairing
 
 /-!
 # Fractional Calderón--Zygmund flux comparison on centered cubes
@@ -11,6 +13,8 @@ manuscript hypotheses: the Dirichlet adjoint solve, fractional
 Calderón--Zygmund estimate, smooth-dual passage, and descendant localization
 are all internal proof steps.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

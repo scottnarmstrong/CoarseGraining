@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch02.Dilation
-import Homogenization.Book.Ch02.Theorems.DoubledMu
-import Homogenization.Book.Ch02.Theorems.DoubledResponse
-import Homogenization.Book.Ch02.Theorems.HomogenizationError
+module
+
+public import Homogenization.Book.Ch02.Dilation
+public import Homogenization.Book.Ch02.Theorems.DoubledMu
+public import Homogenization.Book.Ch02.Theorems.DoubledResponse
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError
+
+@[expose] public section
 
 open scoped BigOperators MatrixOrder Matrix.Norms.Frobenius Pointwise ENNReal
 

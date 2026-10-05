@@ -1,4 +1,6 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.Interior
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.Interior
 
 /-!
 # Deterministic coarse-grained Caccioppoli backbones
@@ -6,3 +8,5 @@ import Homogenization.Deterministic.CoarseCaccioppoli.Interior
 Compatibility wrapper for the coarse Caccioppoli subdirectory.  The development
 now lives in `Homogenization.Deterministic.CoarseCaccioppoli.*`.
 -/
+
+@[expose] public section

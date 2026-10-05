@@ -1,1 +1,3 @@
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.MagicIdentities
+module
+
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.MagicIdentities

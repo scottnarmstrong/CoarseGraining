@@ -1,5 +1,9 @@
-import Homogenization.Geometry.Domain
-import Mathlib.Topology.MetricSpace.Bounded
+module
+
+public import Homogenization.Geometry.Domain
+public import Mathlib.Topology.MetricSpace.Bounded
+
+@[expose] public section
 
 namespace Homogenization
 

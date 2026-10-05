@@ -1,10 +1,14 @@
-import Homogenization.Geometry.Translation
-import Homogenization.Sobolev.Foundations.EuclideanL2CZ
-import Homogenization.Sobolev.Foundations.PoincareLpSmooth
-import Mathlib.Analysis.Convex.Integral
-import Mathlib.Analysis.Convex.Mul
-import Mathlib.MeasureTheory.Integral.IntervalAverage
-import Mathlib.MeasureTheory.Integral.Prod
+module
+
+public import Homogenization.Geometry.Translation
+public import Homogenization.Sobolev.Foundations.EuclideanL2CZ
+public import Homogenization.Sobolev.Foundations.PoincareLpSmooth
+public import Mathlib.Analysis.Convex.Integral
+public import Mathlib.Analysis.Convex.Mul
+public import Mathlib.MeasureTheory.Integral.IntervalAverage
+public import Mathlib.MeasureTheory.Integral.Prod
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Besov.Poincare.HarmonicGradient
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.LocalPairing
+module
+
+public import Homogenization.Besov.Poincare.HarmonicGradient
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.LocalPairing
+
+@[expose] public section
 
 namespace Homogenization
 

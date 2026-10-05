@@ -1,5 +1,9 @@
-import Homogenization.Ambient.BlockMatrix
-import Mathlib.Analysis.Matrix.Order
+module
+
+public import Homogenization.Ambient.BlockMatrix
+public import Mathlib.Analysis.Matrix.Order
+
+@[expose] public section
 
 namespace Homogenization
 

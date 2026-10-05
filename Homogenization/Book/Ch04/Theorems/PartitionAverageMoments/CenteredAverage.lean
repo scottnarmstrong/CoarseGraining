@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.Rosenthal
+module
+
+public import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.Rosenthal
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

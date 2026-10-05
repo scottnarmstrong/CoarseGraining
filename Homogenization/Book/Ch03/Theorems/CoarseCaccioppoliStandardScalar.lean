@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch03.Definitions
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.Endpoints
+module
+
+public import Homogenization.Book.Ch03.Definitions
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.Endpoints
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

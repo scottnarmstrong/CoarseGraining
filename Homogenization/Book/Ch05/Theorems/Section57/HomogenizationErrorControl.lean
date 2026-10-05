@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationQuenched
-import Homogenization.Book.Ch05.Theorems.Section57.UniformHomogenizationQuenched
-import Homogenization.Book.Ch02.Theorems.HomogenizationError.EllipticityControl
-import Homogenization.Book.Ch02.Theorems.HomogenizationError.Finite
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationQuenched
+public import Homogenization.Book.Ch05.Theorems.Section57.UniformHomogenizationQuenched
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError.EllipticityControl
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError.Finite
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

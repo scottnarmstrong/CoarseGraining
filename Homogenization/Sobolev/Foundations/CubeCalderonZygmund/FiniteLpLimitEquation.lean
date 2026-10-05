@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpGradientLimit
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpGradientLimit
 
 /-!
 # The finite-`L^p` limiting weak equation
@@ -8,6 +10,8 @@ This internal module passes the canonical finite-data weak equations to the
 integrability needed for the two Hölder estimates; no regularity or boundary
 witness for the limiting gradient is assumed here.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

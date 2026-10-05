@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInterior
-import Homogenization.Sobolev.Foundations.CubePoisson.AnalyticInput
-import Homogenization.Sobolev.Foundations.CubePoisson.Solver
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInterior
+public import Homogenization.Sobolev.Foundations.CubePoisson.AnalyticInput
+public import Homogenization.Sobolev.Foundations.CubePoisson.Solver
+
+@[expose] public section
 
 namespace Homogenization
 

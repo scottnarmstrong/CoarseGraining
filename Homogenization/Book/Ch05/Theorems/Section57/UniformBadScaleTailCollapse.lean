@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section57.UniformBadScaleTail
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailCollapse
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleThresholds
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.UniformBadScaleTail
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailCollapse
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleThresholds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

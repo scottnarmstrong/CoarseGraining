@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseFluxResponse.RHSScalarAbsorption
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSScalarAbsorption
+
+@[expose] public section
 
 namespace Homogenization
 

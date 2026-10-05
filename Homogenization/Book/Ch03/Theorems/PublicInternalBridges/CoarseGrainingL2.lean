@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.EndPoints
+module
+
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.EndPoints
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

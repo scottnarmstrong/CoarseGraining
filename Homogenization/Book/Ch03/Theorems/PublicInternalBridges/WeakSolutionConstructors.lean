@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.WeakSolutions
+module
+
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.WeakSolutions
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

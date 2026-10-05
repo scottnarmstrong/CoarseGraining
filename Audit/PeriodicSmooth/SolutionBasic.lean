@@ -1,4 +1,6 @@
-import Mathlib
+module
+
+public import Mathlib
 
 /-!
 # Statement vocabulary for the smooth periodic comparison solution
@@ -36,6 +38,8 @@ The main source correspondences on the repository side are:
 * the public theorem surface:
   `Homogenization/Examples/Periodic/PeriodicSmoothComparison.lean`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace StatementAudit

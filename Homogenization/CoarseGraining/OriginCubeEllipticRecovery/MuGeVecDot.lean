@@ -1,4 +1,6 @@
-import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.Translate
+module
+
+public import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.Translate
 
 /-!
 # Origin-cube elliptic recovery -- lower bound and exact slice equalities
@@ -7,6 +9,8 @@ The long mu_ge_vecDot_openCubeSet_originCube_of_hasOpenCubeEllipticRecoveryData
 packaging, together with the pure-flux and pure-gradient slice equalities
 feeding DeterministicCoarseData.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

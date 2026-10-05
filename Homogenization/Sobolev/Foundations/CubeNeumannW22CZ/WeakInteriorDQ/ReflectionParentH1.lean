@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentH1Graph
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentH1Graph
+
+@[expose] public section
 
 namespace Homogenization
 

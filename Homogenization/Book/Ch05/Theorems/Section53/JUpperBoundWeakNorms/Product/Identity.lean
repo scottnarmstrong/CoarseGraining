@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.Product.Bridge
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.Product.Bridge
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

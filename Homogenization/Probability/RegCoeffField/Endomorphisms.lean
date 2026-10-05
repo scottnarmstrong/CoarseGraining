@@ -1,6 +1,8 @@
-import Homogenization.Probability.RegCoeffField.EllipticSet
-import Homogenization.Probability.RandomField
-import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
+module
+
+public import Homogenization.Probability.RegCoeffField.EllipticSet
+public import Homogenization.Probability.RandomField
+public import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
 
 /-!
 # Carrier endomorphisms
@@ -26,6 +28,8 @@ at that declaration).
 
 Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -72,7 +76,7 @@ theorem continuous_matVecMul (R : Mat d) : Continuous (fun x : Vec d => matVecMu
   exact continuous_pi fun i =>
     continuous_finsetSum Finset.univ fun j _ => continuous_const.mul (continuous_apply j)
 
-private theorem matVecMul_one' (x : Vec d) : matVecMul (1 : Mat d) x = x := by
+theorem matVecMul_one' (x : Vec d) : matVecMul (1 : Mat d) x = x := by
   funext i; simp [matVecMul, Matrix.one_apply, Finset.sum_ite_eq]
 
 /-- A signed permutation acts as a homeomorphism of the base space. -/

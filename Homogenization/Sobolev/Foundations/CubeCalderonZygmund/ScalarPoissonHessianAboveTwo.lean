@@ -1,8 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaIntegration
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaParameters
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedHessianRowOneLevelTail
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeakHessianFiniteP
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.EuclideanNormalized
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaIntegration
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaParameters
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedHessianRowOneLevelTail
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeakHessianFiniteP
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.EuclideanNormalized
 
 /-!
 # Scalar Poisson Hessian estimates above the energy exponent
@@ -11,6 +13,8 @@ This file integrates the source-facing one-level Hessian-row estimate.  The
 good-`lambda` parameters, weak Hessian, reflected problem, cutoff, and
 low-level estimate are all chosen internally.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

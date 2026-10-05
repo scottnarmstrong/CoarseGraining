@@ -1,4 +1,8 @@
-import Homogenization.Geometry.TriadicPartition
+module
+
+public import Homogenization.Geometry.TriadicPartition
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.AxisCube
-import Homogenization.Sobolev.Foundations.EuclideanL2CZ
+module
+
+public import Homogenization.Sobolev.Foundations.AxisCube
+public import Homogenization.Sobolev.Foundations.EuclideanL2CZ
+
+@[expose] public section
 
 namespace Homogenization
 

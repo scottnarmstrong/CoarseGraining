@@ -1,4 +1,6 @@
-import Mathlib
+module
+
+public import Mathlib
 
 /-!
 # Statement-level audit vocabulary (carrier mirror)
@@ -22,6 +24,8 @@ particular for the `Module ℝ (Vec d)` instance buried inside `fderiv` in
 `Solution.lean` imports this file together with the repository theorem and
 adds the private bridges and the audited theorem itself.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace StatementAudit
@@ -120,10 +124,10 @@ noncomputable def periodicMultiplier {d : ℕ} (x : Vec d) : ℝ :=
 theorem two_le_periodicMultiplier {d : ℕ} (x : Vec d) :
     (2 : ℝ) ≤ periodicMultiplier x := by
   have hsum : -((d : ℝ)) ≤ ∑ i : Fin d, Real.cos (2 * Real.pi * x i) := by
-    calc -((d : ℝ)) = ∑ _i : Fin d, (-1 : ℝ) := by simp
+    calc -((d : ℝ)) = ∑ _i : Fin d, (-1 : ℝ) := by rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_neg_one]
       _ ≤ ∑ i : Fin d, Real.cos (2 * Real.pi * x i) :=
           Finset.sum_le_sum fun i _hi => Real.neg_one_le_cos _
-  simp only [periodicMultiplier]
+  unfold periodicMultiplier
   linarith
 
 theorem periodicMultiplier_le {d : ℕ} (x : Vec d) :
@@ -131,8 +135,8 @@ theorem periodicMultiplier_le {d : ℕ} (x : Vec d) :
   have hsum : (∑ i : Fin d, Real.cos (2 * Real.pi * x i)) ≤ (d : ℝ) := by
     calc (∑ i : Fin d, Real.cos (2 * Real.pi * x i)) ≤ ∑ _i : Fin d, (1 : ℝ) :=
           Finset.sum_le_sum fun i _hi => Real.cos_le_one _
-      _ = (d : ℝ) := by simp
-  simp only [periodicMultiplier]
+      _ = (d : ℝ) := by rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one]
+  unfold periodicMultiplier
   linarith
 
 theorem abs_periodicMultiplier_le {d : ℕ} (x : Vec d) :
@@ -161,7 +165,8 @@ theorem locallyIntegrable_of_bounded {d : ℕ} {f : Vec d → ℝ}
   refine MeasureTheory.Measure.integrableOn_of_bounded (hk.measure_lt_top).ne
     hf.aestronglyMeasurable (M := C) ?_
   filter_upwards with x
-  simpa [Real.norm_eq_abs] using hC x
+  rw [Real.norm_eq_abs]
+  exact hC x
 
 /-- The explicit periodic field as an element of the coefficient carrier. -/
 noncomputable def periodicField (d : ℕ) : CoefficientField d where
@@ -169,22 +174,42 @@ noncomputable def periodicField (d : ℕ) : CoefficientField d where
   entry_measurable := fun i j => by
     by_cases hij : i = j
     · subst hij
-      simpa [periodicRawField, scalarMatrix] using
-        measurable_periodicMultiplier (d := d)
-    · simp [periodicRawField, scalarMatrix, hij]
+      have h : (fun x : Vec d => periodicRawField d x i i) = periodicMultiplier := by
+        funext x
+        show (scalarMatrix (periodicMultiplier x) : Mat d) i i = periodicMultiplier x
+        rw [scalarMatrix, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]
+      show Measurable (fun x : Vec d => periodicRawField d x i i)
+      rw [h]
+      exact measurable_periodicMultiplier (d := d)
+    · have h : (fun x : Vec d => periodicRawField d x i j) = fun _ : Vec d => (0 : ℝ) := by
+        funext x
+        show (scalarMatrix (periodicMultiplier x) : Mat d) i j = 0
+        rw [scalarMatrix, Matrix.smul_apply, Matrix.one_apply_ne hij, smul_zero]
+      show Measurable (fun x : Vec d => periodicRawField d x i j)
+      rw [h]
+      exact measurable_const
   entry_locallyIntegrable := fun i j => by
     by_cases hij : i = j
     · subst hij
+      have hdiag : ∀ x : Vec d, periodicRawField d x i i = periodicMultiplier x := by
+        intro x
+        show (scalarMatrix (periodicMultiplier x) : Mat d) i i = periodicMultiplier x
+        rw [scalarMatrix, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]
       have hmeas : Measurable fun x : Vec d => periodicRawField d x i i := by
-        simpa [periodicRawField, scalarMatrix] using
-          measurable_periodicMultiplier (d := d)
+        have h : (fun x : Vec d => periodicRawField d x i i) = periodicMultiplier :=
+          funext hdiag
+        rw [h]
+        exact measurable_periodicMultiplier (d := d)
       refine locallyIntegrable_of_bounded hmeas (C := 2 * (d : ℝ) + 2) fun x => ?_
-      simpa [periodicRawField, scalarMatrix] using
-        abs_periodicMultiplier_le (d := d) x
+      show |periodicRawField d x i i| ≤ 2 * (d : ℝ) + 2
+      rw [hdiag x]
+      exact abs_periodicMultiplier_le (d := d) x
     · have hzero : (fun x : Vec d => periodicRawField d x i j)
           = fun _ : Vec d => (0 : ℝ) := by
         funext x
-        simp [periodicRawField, scalarMatrix, hij]
+        show (scalarMatrix (periodicMultiplier x) : Mat d) i j = 0
+        rw [scalarMatrix, Matrix.smul_apply, Matrix.one_apply_ne hij, smul_zero]
+      show LocallyIntegrable (fun x : Vec d => periodicRawField d x i j) volume
       rw [hzero]
       exact locallyIntegrable_const (0 : ℝ)
 

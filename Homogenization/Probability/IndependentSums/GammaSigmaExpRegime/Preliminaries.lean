@@ -1,8 +1,12 @@
-import Mathlib.Analysis.Real.Pi.Bounds
-import Mathlib.Analysis.MeanInequalities
-import Mathlib.Analysis.SpecialFunctions.Stirling
-import Mathlib.Probability.Moments.Basic
-import Homogenization.Probability.IndependentSums.GammaSigma
+module
+
+public import Mathlib.Analysis.Real.Pi.Bounds
+public import Mathlib.Analysis.MeanInequalities
+public import Mathlib.Analysis.SpecialFunctions.Stirling
+public import Mathlib.Probability.Moments.Basic
+public import Homogenization.Probability.IndependentSums.GammaSigma
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

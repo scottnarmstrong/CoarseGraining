@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.Basic
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.QuantitativeCutoff
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.Basic
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.QuantitativeCutoff
+
+@[expose] public section
 
 namespace Homogenization
 

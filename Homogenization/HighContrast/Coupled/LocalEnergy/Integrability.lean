@@ -1,5 +1,7 @@
-import Homogenization.HighContrast.Coupled.LocalEnergy.TestPair
-import Homogenization.Sobolev.PotentialSolenoidalL2
+module
+
+public import Homogenization.HighContrast.Coupled.LocalEnergy.TestPair
+public import Homogenization.Sobolev.PotentialSolenoidalL2
 
 /-!
 # Local block energy: integrability workhorses
@@ -14,6 +16,8 @@ weak-form expansion is either
 Both are `L¹` on the finite-measure cube; the two lemmas below package the
 Hölder/`L∞` bookkeeping so the downstream files never touch it directly.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

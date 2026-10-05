@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.BlockResponse.Perturbation.BlockEnergyFirstVariation
+module
+
+public import Homogenization.CoarseGraining.BlockResponse.Perturbation.BlockEnergyFirstVariation
+
+@[expose] public section
 
 namespace Homogenization
 

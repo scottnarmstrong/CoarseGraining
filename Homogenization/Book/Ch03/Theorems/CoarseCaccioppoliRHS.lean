@@ -1,1 +1,3 @@
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS.Theory
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS.Theory

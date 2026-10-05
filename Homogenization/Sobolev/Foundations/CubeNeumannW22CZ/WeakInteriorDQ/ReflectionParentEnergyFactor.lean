@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentSmoothBound
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentSmoothBound
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -8,7 +12,7 @@ noncomputable section
 
 namespace MeanZeroNeumannPoissonSolution
 
-private noncomputable def originCubeParentReducedSolverEnergyInside
+noncomputable def originCubeParentReducedSolverEnergyInside
     (d : ℕ) (m : ℤ) : ℝ :=
   let Q : TriadicCube d := originCube d m
   let Qp : TriadicCube d := originCube d (m + 1)

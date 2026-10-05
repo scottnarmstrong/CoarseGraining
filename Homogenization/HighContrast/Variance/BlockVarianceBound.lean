@@ -1,5 +1,7 @@
-import Homogenization.HighContrast.Variance.ProbeMoment
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.BudgetAbsorption
+module
+
+public import Homogenization.HighContrast.Variance.ProbeMoment
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.BudgetAbsorption
 
 /-!
 # Block-variance bound (`t.block.variance`)
@@ -28,6 +30,8 @@ The finite-probe linearity is kept generic in the matrix family so that the
 heavy `fullBlockNormalizedFluctuationMatrix` definition is never unfolded during
 the summation algebra.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,9 +1,11 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedOneLevelTail
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaIntegration
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaParameters
-import Homogenization.Sobolev.Fractional.CenteredCubeEuclideanL2
-import Homogenization.Sobolev.Fractional.EuclideanWsp
-import Homogenization.Sobolev.SmoothCompactSupport
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedOneLevelTail
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaIntegration
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaParameters
+public import Homogenization.Sobolev.Fractional.CenteredCubeEuclideanL2
+public import Homogenization.Sobolev.Fractional.EuclideanWsp
+public import Homogenization.Sobolev.SmoothCompactSupport
 
 /-!
 # Finite-exponent cube Calderón--Zygmund interface
@@ -13,6 +15,8 @@ constant-coefficient cube Calderón--Zygmund argument.  The one-level
 good-`λ` input remains internal to this module while the source-facing
 declarations below keep the manuscript's supplied-solution interfaces exact.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.OverlapCoordinateBridge
+module
+
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.OverlapCoordinateBridge
+
+@[expose] public section
 
 namespace Homogenization
 

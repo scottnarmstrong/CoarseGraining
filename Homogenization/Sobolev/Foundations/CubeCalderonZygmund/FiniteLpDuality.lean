@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.H10Adjoint
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.H10Adjoint
 
 /-!
 # Finite-exponent duality support for cube Calderón--Zygmund estimates
@@ -9,6 +11,8 @@ packages the radial truncations, Hölder pairing, and monotone-convergence
 facts that will be consumed once the supplied-solution `q > 2` estimate is
 available.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

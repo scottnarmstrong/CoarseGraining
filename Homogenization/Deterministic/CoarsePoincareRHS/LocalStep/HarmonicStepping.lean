@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.LocalCorrector
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.LocalCorrector
+
+@[expose] public section
 
 namespace Homogenization
 

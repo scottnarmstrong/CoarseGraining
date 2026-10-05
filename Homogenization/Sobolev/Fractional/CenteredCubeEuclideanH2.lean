@@ -1,8 +1,10 @@
-import Homogenization.Sobolev.Fractional.CenteredCubeEuclideanL2
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.EuclideanHsMeasurability
-import Homogenization.Sobolev.Fractional.Definitions
-import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
-import Mathlib.MeasureTheory.Measure.Prod
+module
+
+public import Homogenization.Sobolev.Fractional.CenteredCubeEuclideanL2
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.EuclideanHsMeasurability
+public import Homogenization.Sobolev.Fractional.Definitions
+public import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
+public import Mathlib.MeasureTheory.Measure.Prod
 
 /-!
 # Exact Euclidean fractional `H^s` on centered triadic cubes
@@ -27,6 +29,8 @@ It then transports that energy to the centered unit cube under
   `(3 ^ m) ^ (-s)` seminorm scaling.
 - `memCenteredCubeEuclideanHs_iff_pullbackToUnit`: exact membership transport.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

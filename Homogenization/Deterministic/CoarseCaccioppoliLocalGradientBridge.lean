@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoliLocalBridge
-import Homogenization.Deterministic.CoarsePoincareRHS.Correctors
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoliLocalBridge
+public import Homogenization.Deterministic.CoarsePoincareRHS.Correctors
+
+@[expose] public section
 
 namespace Homogenization
 

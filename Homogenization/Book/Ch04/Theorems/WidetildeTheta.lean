@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch04.Theorems.ScalarizationDefinitions
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.Properties
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Public
-import Homogenization.Book.Ch04.Theorems.CoarseObservables
-import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
+module
+
+public import Homogenization.Book.Ch04.Theorems.ScalarizationDefinitions
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.Properties
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Public
+public import Homogenization.Book.Ch04.Theorems.CoarseObservables
+public import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

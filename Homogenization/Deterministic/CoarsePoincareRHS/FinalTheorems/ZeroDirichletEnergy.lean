@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ExpandedAndElliptic
-import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ExpandedAndElliptic
+public import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
+
+@[expose] public section
 
 namespace Homogenization
 

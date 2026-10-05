@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.CubeTranslationTransport
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.CubeTranslationTransport
+
+@[expose] public section
 
 namespace Homogenization
 

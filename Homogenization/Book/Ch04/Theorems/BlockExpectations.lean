@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch04.Theorems.StationaryExpectations
+module
+
+public import Homogenization.Book.Ch04.Theorems.StationaryExpectations
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

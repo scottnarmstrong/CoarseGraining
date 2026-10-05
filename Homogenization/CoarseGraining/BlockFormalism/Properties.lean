@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.BlockFormalism.EllipticBounds
+module
+
+public import Homogenization.CoarseGraining.BlockFormalism.EllipticBounds
+
+@[expose] public section
 
 namespace Homogenization
 

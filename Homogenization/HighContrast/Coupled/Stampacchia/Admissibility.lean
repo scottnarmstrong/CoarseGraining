@@ -1,4 +1,6 @@
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+module
+
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 /-!
 # The De Giorgi admissibility algebra
@@ -9,6 +11,8 @@ With `α = q/2`, `β = α − 1`, `B = 4^α`, `Crec = C_F²·E₀²`, `K = Cd·L
 `q = 2d/(d−2)`), the powers of `L` and `E₀` cancel and the admissibility
 condition reduces to a choice of `Cd ≥ C_F·B^{1/(2β)}`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch03.Theorems.Duality
-import Homogenization.Book.Ch03.Theorems.GeneralCoarseGrainingL2TwoExponent
+module
+
+public import Homogenization.Book.Ch03.Theorems.Duality
+public import Homogenization.Book.Ch03.Theorems.GeneralCoarseGrainingL2TwoExponent
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

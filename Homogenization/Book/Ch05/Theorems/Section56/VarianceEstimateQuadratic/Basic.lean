@@ -1,10 +1,14 @@
-import Homogenization.Book.Ch04.Theorems.BlockExpectations
-import Homogenization.Book.Ch02.Theorems.WrapAround
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.FluctuationIntegrability
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.NormalizedBlocks
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ScaleCompression
-import Mathlib.Analysis.Matrix.PosDef
-import Mathlib.Tactic.NoncommRing
+module
+
+public import Homogenization.Book.Ch04.Theorems.BlockExpectations
+public import Homogenization.Book.Ch02.Theorems.WrapAround
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.FluctuationIntegrability
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.NormalizedBlocks
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ScaleCompression
+public import Mathlib.Analysis.Matrix.PosDef
+public import Mathlib.Tactic.NoncommRing
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.WeakFluxRHS.AbsorbedComponentBounds
-import Homogenization.Deterministic.WeakFluxRHS.CorrectorEnergyPoincare
+module
+
+public import Homogenization.Deterministic.WeakFluxRHS.AbsorbedComponentBounds
+public import Homogenization.Deterministic.WeakFluxRHS.CorrectorEnergyPoincare
+
+@[expose] public section
 
 namespace Homogenization
 

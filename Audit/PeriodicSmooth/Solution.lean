@@ -1,6 +1,10 @@
-import Mathlib
-import Homogenization.Examples.Periodic.PeriodicSmoothComparison
-import Audit.PeriodicSmooth.SolutionBasic
+module
+
+public import Mathlib
+public import Homogenization.Examples.Periodic.PeriodicSmoothComparison
+public import Audit.PeriodicSmooth.SolutionBasic
+
+@[expose] public section
 
 attribute [-instance] Homogenization.instMeasurableSpaceVec
 attribute [-instance] Homogenization.instMeasurableSpaceMat

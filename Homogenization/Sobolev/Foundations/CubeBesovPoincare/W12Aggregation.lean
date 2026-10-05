@@ -1,5 +1,7 @@
-import Homogenization.Besov.Poincare.Projection
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.PositiveBesovCore
+module
+
+public import Homogenization.Besov.Poincare.Projection
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.PositiveBesovCore
 
 /-!
 # Finite positive Besov aggregation
@@ -8,6 +10,8 @@ This is the scale-cancellation step from a local cube Poincare estimate to a
 finite `B¹_{2,∞}` seminorm bound.  It contains no analytic input beyond the
 explicit local oscillation and normalized descendant-energy hypotheses.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.AnnealedLimit
-import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.Basic
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.AnnealedLimit
+public import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.Basic
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

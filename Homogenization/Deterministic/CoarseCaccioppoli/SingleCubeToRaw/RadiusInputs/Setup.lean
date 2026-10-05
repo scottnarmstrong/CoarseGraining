@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.Localization
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimate.Split
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.Localization
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimate.Split
+
+@[expose] public section
 
 namespace Homogenization
 

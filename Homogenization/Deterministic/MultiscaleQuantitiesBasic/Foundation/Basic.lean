@@ -1,10 +1,14 @@
-import Homogenization.Deterministic.MultiscaleQuantities
-import Homogenization.CoarseGraining.BlockResponse
-import Homogenization.CoarseGraining.MagicIdentities.StarredSubadditivity
-import Homogenization.CoarseGraining.Subadditivity
-import Homogenization.CoarseGraining.Translation
-import Homogenization.Geometry.TriadicPartition
-import Homogenization.CoarseGraining.OriginCubeOpenBridge
+module
+
+public import Homogenization.Deterministic.MultiscaleQuantities
+public import Homogenization.CoarseGraining.BlockResponse
+public import Homogenization.CoarseGraining.MagicIdentities.StarredSubadditivity
+public import Homogenization.CoarseGraining.Subadditivity
+public import Homogenization.CoarseGraining.Translation
+public import Homogenization.Geometry.TriadicPartition
+public import Homogenization.CoarseGraining.OriginCubeOpenBridge
+
+@[expose] public section
 
 namespace Homogenization
 

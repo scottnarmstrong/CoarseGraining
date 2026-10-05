@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.LocalizedFiniteBasis
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.BudgetAbsorption
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.LocalizedFiniteBasis
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.BudgetAbsorption
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

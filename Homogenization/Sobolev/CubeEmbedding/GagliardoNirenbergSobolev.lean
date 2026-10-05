@@ -1,5 +1,9 @@
-import Mathlib.Analysis.FunctionalSpaces.SobolevInequality
-import Homogenization.Ambient.Basic
+module
+
+public import Mathlib.Analysis.FunctionalSpaces.SobolevInequality
+public import Homogenization.Ambient.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,9 +1,11 @@
-import Homogenization.Sobolev.Fractional.ConvexApproxGagliardoLpBound
-import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDual
-import Homogenization.Sobolev.FiniteLpCoordinate
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.Convergence
-import Mathlib.MeasureTheory.Integral.DominatedConvergence
+module
+
+public import Homogenization.Sobolev.Fractional.ConvexApproxGagliardoLpBound
+public import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDual
+public import Homogenization.Sobolev.FiniteLpCoordinate
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.Convergence
+public import Mathlib.MeasureTheory.Integral.DominatedConvergence
 
 /-!
 # Smooth density for Euclidean fractional Sobolev fields
@@ -11,6 +13,8 @@ import Mathlib.MeasureTheory.Integral.DominatedConvergence
 This module is the source-facing smooth-density layer for the Euclidean
 fractional full norm on a triadic cube.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

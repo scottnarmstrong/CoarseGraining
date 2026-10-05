@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch04.SourceLaw
-import Homogenization.Book.Ch04.RestrictionLaw
+module
+
+public import Homogenization.Book.Ch04.SourceLaw
+public import Homogenization.Book.Ch04.RestrictionLaw
 
 /-!
 # Canonical Chapter 4 source laws
@@ -8,6 +10,8 @@ Unprefixed Chapter 4 law names denote the exact coarse-source, integral-local
 semantics. The separate pointwise-restriction/sup-metric engineering lane is
 exposed through the `Restriction*` names imported from `RestrictionLaw`.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

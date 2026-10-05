@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliScaleZeroBridge
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliScaleZeroBridge
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

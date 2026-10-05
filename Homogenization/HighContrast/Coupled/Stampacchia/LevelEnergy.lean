@@ -1,9 +1,11 @@
-import Homogenization.HighContrast.Coupled.WeakForm
-import Homogenization.HighContrast.Coupled.LocalEnergy.Pointwise
-import Homogenization.Sobolev.Truncation.Basic
-import Homogenization.Sobolev.Truncation.MatchedTrace
-import Homogenization.CoarseGraining.ThetaEllipticity
-import Mathlib.Algebra.Order.Chebyshev
+module
+
+public import Homogenization.HighContrast.Coupled.WeakForm
+public import Homogenization.HighContrast.Coupled.LocalEnergy.Pointwise
+public import Homogenization.Sobolev.Truncation.Basic
+public import Homogenization.Sobolev.Truncation.MatchedTrace
+public import Homogenization.CoarseGraining.ThetaEllipticity
+public import Mathlib.Algebra.Order.Chebyshev
 
 /-!
 # The coupled level-energy estimate
@@ -24,6 +26,8 @@ inequality (`symmForm_young`, `t = 1`) and the coefficient bounds
 `E_k ≤ 2M²|A_k|`; then `s ≥ 1` and a Cauchy–Schwarz on the `2d`
 coordinate norms give the `√`-shaped conclusion.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

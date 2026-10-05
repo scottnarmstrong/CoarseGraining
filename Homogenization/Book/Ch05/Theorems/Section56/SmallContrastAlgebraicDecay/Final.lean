@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay.Iteration
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay.Iteration
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

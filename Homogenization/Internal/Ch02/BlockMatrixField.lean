@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch02.Theorems.BlockMatrixFieldDefinitions
-import Homogenization.CoarseGraining.BlockFormalism.EllipticBounds
-import Homogenization.Internal.Ch02.Representatives
+module
+
+public import Homogenization.Book.Ch02.Theorems.BlockMatrixFieldDefinitions
+public import Homogenization.CoarseGraining.BlockFormalism.EllipticBounds
+public import Homogenization.Internal.Ch02.Representatives
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

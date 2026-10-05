@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAverageCompression
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAverageCompression
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

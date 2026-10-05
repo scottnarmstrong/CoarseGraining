@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.CenteredAverage
+module
+
+public import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.CenteredAverage
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

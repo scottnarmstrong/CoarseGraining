@@ -1,4 +1,8 @@
-import Homogenization.Ambient.HilbertFinite
+module
+
+public import Homogenization.Ambient.HilbertFinite
+
+@[expose] public section
 
 namespace Homogenization
 

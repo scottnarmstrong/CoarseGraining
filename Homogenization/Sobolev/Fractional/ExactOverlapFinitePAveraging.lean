@@ -1,9 +1,11 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.AveragingGradient
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.AveragingGradientExplicit
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.AveragingResidual
-import Homogenization.Sobolev.Fractional.ConvexApproxGagliardoSmoothing
-import Homogenization.Sobolev.Fractional.ExactOverlapEuclideanLpComparison
-import Homogenization.Sobolev.W1p.CubeVector
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.AveragingGradient
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.AveragingGradientExplicit
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.AveragingResidual
+public import Homogenization.Sobolev.Fractional.ConvexApproxGagliardoSmoothing
+public import Homogenization.Sobolev.Fractional.ExactOverlapEuclideanLpComparison
+public import Homogenization.Sobolev.W1p.CubeVector
 
 /-!
 # Finite-`p` synchronized overlap averaging
@@ -15,6 +17,8 @@ one-depth estimates are stated against the direct Euclidean overlap energy,
 so later Calderón--Zygmund interpolation can use them without introducing a
 separate `K`-functional carrier.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

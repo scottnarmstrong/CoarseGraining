@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges
-import Homogenization.Book.Ch03.Theorems.DualityPositivePairing
-import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge.SharpLoss
+module
+
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges
+public import Homogenization.Book.Ch03.Theorems.DualityPositivePairing
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge.SharpLoss
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

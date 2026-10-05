@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole.ScalarChain
-import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole.RealAlgebra
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole.ScalarChain
+public import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole.RealAlgebra
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

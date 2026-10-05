@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Fractional.EuclideanWspCompletedDualGraph
-import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDual
-import Mathlib.Analysis.Normed.Operator.Extend
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWspCompletedDualGraph
+public import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDual
+public import Mathlib.Analysis.Normed.Operator.Extend
 
 /-!
 # Finite smooth-dual extension to the completed fractional-Sobolev graph
@@ -9,6 +11,8 @@ On the finite locus of the smooth negative fractional-Sobolev dual norm, the
 normalized pairing extends canonically from smooth tests to the completed
 two-component graph.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

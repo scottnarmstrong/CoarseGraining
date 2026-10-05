@@ -1,7 +1,11 @@
-import Homogenization.Multiscale.Projection
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
-import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
+module
+
+public import Homogenization.Multiscale.Projection
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
+public import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

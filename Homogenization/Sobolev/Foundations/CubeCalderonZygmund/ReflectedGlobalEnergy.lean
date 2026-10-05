@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedLocalInputs
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionL2
-import Homogenization.Ambient.CoefficientFieldHilbert
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedLocalInputs
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionL2
+public import Homogenization.Ambient.CoefficientFieldHilbert
+
+@[expose] public section
 
 namespace Homogenization
 

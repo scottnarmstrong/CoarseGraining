@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch03.Theorems.EnergyRHS.Neumann
-import Homogenization.Book.Ch03.Theorems.EnergyRHS.HarmonicRemainderSplit
+module
+
+public import Homogenization.Book.Ch03.Theorems.EnergyRHS.Neumann
+public import Homogenization.Book.Ch03.Theorems.EnergyRHS.HarmonicRemainderSplit
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

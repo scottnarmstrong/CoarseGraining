@@ -1,8 +1,10 @@
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingNegativeAssembly
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingOneCube
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingForcing
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingResponseOrder
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingAssemblyAlgebra
+module
+
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingNegativeAssembly
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingOneCube
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingForcing
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingResponseOrder
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingAssemblyAlgebra
 
 /-!
 # Local finite-`p` coarse-graining assembly
@@ -12,6 +14,8 @@ coarse-graining theorem.  The reusable input modules deliberately keep the
 negative-series expansion, descendant restriction, response localization, and
 forcing summation separate; this file only combines those literal carriers.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

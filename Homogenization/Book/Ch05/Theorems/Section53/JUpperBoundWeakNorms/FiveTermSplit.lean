@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.Additivity.CrossTerm
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.Additivity.CrossTerm
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

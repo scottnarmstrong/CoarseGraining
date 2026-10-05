@@ -1,4 +1,8 @@
-import Homogenization.Besov.Poincare.HarmonicGradient.Descendants
+module
+
+public import Homogenization.Besov.Poincare.HarmonicGradient.Descendants
+
+@[expose] public section
 
 namespace Homogenization
 

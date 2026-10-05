@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch03.Theorems.CoarsePoincareRHS
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS
-import Homogenization.Book.Ch03.Theorems.WeakFluxRHS
-import Homogenization.Book.Ch03.Theorems.CoarseFluxResponseRHS
-import Homogenization.Book.Ch03.Theorems.EnergyRHS
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarsePoincareRHS
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS
+public import Homogenization.Book.Ch03.Theorems.WeakFluxRHS
+public import Homogenization.Book.Ch03.Theorems.CoarseFluxResponseRHS
+public import Homogenization.Book.Ch03.Theorems.EnergyRHS
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

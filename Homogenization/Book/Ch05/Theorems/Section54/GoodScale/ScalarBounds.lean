@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch02.Theorems.MatrixOperatorNorm
-import Homogenization.Book.Ch05.Theorems.Section54.GoodScale.SpecialVectorAlgebra
-import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole.ScalarChain
+module
+
+public import Homogenization.Book.Ch02.Theorems.MatrixOperatorNorm
+public import Homogenization.Book.Ch05.Theorems.Section54.GoodScale.SpecialVectorAlgebra
+public import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole.ScalarChain
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

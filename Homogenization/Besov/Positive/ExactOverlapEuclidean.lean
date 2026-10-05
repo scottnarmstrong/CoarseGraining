@@ -1,5 +1,7 @@
-import Homogenization.Besov.Positive.ExactOverlap
-import Homogenization.Ambient.Euclidean
+module
+
+public import Homogenization.Besov.Positive.ExactOverlap
+public import Homogenization.Ambient.Euclidean
 
 /-!
 # Exact Euclidean-valued overlapping positive-order Besov kernel
@@ -10,6 +12,8 @@ the root mean are aggregated over coordinates with the Euclidean `ℓ²` norm.
 All quantities remain `ENNReal`-valued, so no finiteness assumption is hidden
 in the definition.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

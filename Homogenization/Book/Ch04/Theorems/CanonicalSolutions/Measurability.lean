@@ -1,9 +1,13 @@
-import Homogenization.Book.Ch04.Measurability
-import Homogenization.Book.Ch04.Theorems.CoarseObservables
-import Homogenization.Book.Ch02.Theorems.SolutionIntegrability
-import Homogenization.Book.Ch04.Internal.AEESliceAssembly.CarrierMinimizerFamily
+module
 
-import Homogenization.Book.Ch04.Theorems.CanonicalSolutions.AverageIdentities
+public import Homogenization.Book.Ch04.Measurability
+public import Homogenization.Book.Ch04.Theorems.CoarseObservables
+public import Homogenization.Book.Ch02.Theorems.SolutionIntegrability
+public import Homogenization.Book.Ch04.Internal.AEESliceAssembly.CarrierMinimizerFamily
+
+public import Homogenization.Book.Ch04.Theorems.CanonicalSolutions.AverageIdentities
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.ChangeExponentDiscount
+module
+
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.ChangeExponentDiscount
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,7 @@
-import Homogenization.Probability.RegCoeffField.Restriction
-import Mathlib.Probability.Independence.Basic
+module
+
+public import Homogenization.Probability.RegCoeffField.Restriction
+public import Mathlib.Probability.Independence.Basic
 
 /-!
 # Structural laws on the carrier
@@ -24,6 +26,8 @@ we record the corresponding integral/integrable transfer lemmas.
 
 Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

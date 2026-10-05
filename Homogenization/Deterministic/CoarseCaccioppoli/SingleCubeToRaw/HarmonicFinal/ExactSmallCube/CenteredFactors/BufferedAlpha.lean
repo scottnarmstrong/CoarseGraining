@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.ExactSmallCube.CenteredFactors.LocalAlpha
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.ExactSmallCube.CenteredFactors.LocalAlpha
+
+@[expose] public section
 
 namespace Homogenization
 

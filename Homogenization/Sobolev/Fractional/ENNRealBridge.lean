@@ -1,5 +1,7 @@
-import Homogenization.Besov.Positive.Overlap
-import Homogenization.Sobolev.Fractional.Definitions
+module
+
+public import Homogenization.Besov.Positive.Overlap
+public import Homogenization.Sobolev.Fractional.Definitions
 
 /-!
 # ℝ≥0∞ bridge for the overlap Besov pieces
@@ -13,6 +15,8 @@ Bridge lemmas toward the Gagliardo side are stated as junk-value-safe
 inequalities (`≤`), which hold without integrability hypotheses; equalities
 hold under `MemLp` and are provided where needed.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Gagliardo

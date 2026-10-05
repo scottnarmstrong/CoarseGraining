@@ -1,4 +1,8 @@
-import Homogenization.Geometry.TriadicCube
+module
+
+public import Homogenization.Geometry.TriadicCube
+
+@[expose] public section
 
 namespace Homogenization
 

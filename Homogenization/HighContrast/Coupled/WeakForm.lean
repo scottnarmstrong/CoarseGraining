@@ -1,7 +1,9 @@
-import Homogenization.CoarseGraining.CoarseBounds.Sandwich
-import Homogenization.Sobolev.Foundations.Hodge
-import Homogenization.Sobolev.H1.OriginCubeBridge
-import Homogenization.CoarseGraining.BlockFormalism.MatrixIdentities
+module
+
+public import Homogenization.CoarseGraining.CoarseBounds.Sandwich
+public import Homogenization.Sobolev.Foundations.Hodge
+public import Homogenization.Sobolev.H1.OriginCubeBridge
+public import Homogenization.CoarseGraining.BlockFormalism.MatrixIdentities
 
 /-!
 # Coupled representation: weak-form definition and algebraic scaffolding
@@ -13,6 +15,8 @@ existence package in `Coupled/Representation.lean`.
 All coefficients act on `Vec d = Fin d → ℝ`; no `EuclideanSpace`.  The file is
 deliberately factored into small named lemmas.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

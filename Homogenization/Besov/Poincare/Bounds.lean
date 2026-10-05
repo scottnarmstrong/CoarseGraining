@@ -1,4 +1,8 @@
-import Homogenization.Besov.Poincare.Descendants
+module
+
+public import Homogenization.Besov.Poincare.Descendants
+
+@[expose] public section
 
 namespace Homogenization
 

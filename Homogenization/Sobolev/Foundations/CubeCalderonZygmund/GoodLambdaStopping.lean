@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.StoppingRadius
-import Mathlib.MeasureTheory.Covering.DensityTheorem
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.StoppingRadius
+public import Mathlib.MeasureTheory.Covering.DensityTheorem
+
+@[expose] public section
 
 namespace Homogenization
 

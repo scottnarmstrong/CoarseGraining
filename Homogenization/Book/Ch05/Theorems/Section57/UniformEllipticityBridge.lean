@@ -1,9 +1,13 @@
-import Homogenization.Book.Ch05.Theorems.Section57.UniformEllipticityEndpoint
-import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.UnitDescendantSup
-import Homogenization.Book.Ch05.Theorems.Section52.ScalarAlgebra
-import Homogenization.Book.Ch04.Theorems.MomentFactorBounds.Apex
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Representatives
-import Homogenization.Deterministic.CoarsePoincare.Setup.UniformBounds
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.UniformEllipticityEndpoint
+public import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.UnitDescendantSup
+public import Homogenization.Book.Ch05.Theorems.Section52.ScalarAlgebra
+public import Homogenization.Book.Ch04.Theorems.MomentFactorBounds.Apex
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Representatives
+public import Homogenization.Deterministic.CoarsePoincare.Setup.UniformBounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

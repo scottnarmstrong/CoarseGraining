@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.PotentialSolenoidalL2
+module
+
+public import Homogenization.Sobolev.PotentialSolenoidalL2
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

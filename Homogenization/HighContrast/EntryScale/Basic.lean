@@ -1,3 +1,5 @@
+module
+
 /-!
 # Basic metadata for the entry-scale assembly
 
@@ -5,6 +7,8 @@ This file contains only source-control metadata for the development.
 Mathematical theorem statements should be introduced only after their source
 labels and dependency role are recorded.
 -/
+
+@[expose] public section
 
 namespace Homogenization.HighContrast.EntryScale
 

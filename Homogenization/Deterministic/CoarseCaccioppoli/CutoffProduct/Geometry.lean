@@ -1,8 +1,12 @@
-import Homogenization.Deterministic.WeakNormInterfacesComponentwise
-import Homogenization.Deterministic.CoarseCaccioppoliLocalBridge
-import Homogenization.Geometry.CubeMetric
-import Homogenization.Sobolev.Foundations.PoincareLpSmooth
-import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
+module
+
+public import Homogenization.Deterministic.WeakNormInterfacesComponentwise
+public import Homogenization.Deterministic.CoarseCaccioppoliLocalBridge
+public import Homogenization.Geometry.CubeMetric
+public import Homogenization.Sobolev.Foundations.PoincareLpSmooth
+public import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
+
+@[expose] public section
 
 namespace Homogenization
 

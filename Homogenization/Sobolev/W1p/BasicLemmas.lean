@@ -1,5 +1,9 @@
-import Homogenization.Geometry.ConvexDomain
-import Homogenization.Sobolev.W1p.Definitions
+module
+
+public import Homogenization.Geometry.ConvexDomain
+public import Homogenization.Sobolev.W1p.Definitions
+
+@[expose] public section
 
 namespace Homogenization
 

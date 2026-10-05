@@ -1,7 +1,9 @@
 /-
 Copyright (c) 2026. All rights reserved.
 -/
-import Homogenization.Probability.EfronStein.TwoPoint
+module
+
+public import Homogenization.Probability.EfronStein.TwoPoint
 
 /-!
 # Two-factor variance decomposition
@@ -13,6 +15,8 @@ direct Fubini computation for *bounded* observables (no `condExp`).
   and probability measures `P, Q`,
   `Var[F; P ⊗ Q] = ∫ b, Var[F(·,b); P] dQ + Var[b ↦ ∫ F(·,b) dP; Q]`.
 -/
+
+@[expose] public section
 
 open MeasureTheory Filter ProbabilityTheory
 open scoped ProbabilityTheory ENNReal

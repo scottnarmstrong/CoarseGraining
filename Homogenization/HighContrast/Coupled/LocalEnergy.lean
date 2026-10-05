@@ -1,4 +1,6 @@
-import Homogenization.HighContrast.Coupled.LocalEnergy.Bounds
+module
+
+public import Homogenization.HighContrast.Coupled.LocalEnergy.Bounds
 
 /-!
 # Local block energy (Prop 3.4)
@@ -14,6 +16,8 @@ estimates (`bulkIntegrand_le`, `cutoffIntegrand_le`).
 
 `M² = Θ|p|² + |q|²`.  No `EuclideanSpace`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.CutoffOscillation
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.CutoffOscillation
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

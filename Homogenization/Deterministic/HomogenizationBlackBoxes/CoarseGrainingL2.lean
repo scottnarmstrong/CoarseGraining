@@ -1,8 +1,12 @@
-import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
-import Homogenization.Deterministic.CoarseFluxResponse
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic
-import Homogenization.Deterministic.WeakNormInterfacesPositiveQTwo
-import Homogenization.PDE.EnergyIdentities
+module
+
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
+public import Homogenization.Deterministic.CoarseFluxResponse
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic
+public import Homogenization.Deterministic.WeakNormInterfacesPositiveQTwo
+public import Homogenization.PDE.EnergyIdentities
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch01.Theorems.CircDomination
-import Homogenization.Besov.Duality.CaccioppoliBridge
+module
+
+public import Homogenization.Book.Ch01.Theorems.CircDomination
+public import Homogenization.Besov.Duality.CaccioppoliBridge
 
 /-!
 # Legacy Chapter 1 Besov pairing helpers
@@ -8,6 +10,8 @@ This module contains only restricted `p = 2` totalized-real, disjoint-cube
 compatibility helpers. They are not exact source pairing theorems and are
 available only in `Book.Ch01.Legacy`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

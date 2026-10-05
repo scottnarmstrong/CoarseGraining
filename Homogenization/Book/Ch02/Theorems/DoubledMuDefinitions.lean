@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.DoubledResponse
+module
+
+public import Homogenization.Book.Ch02.DoubledResponse
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

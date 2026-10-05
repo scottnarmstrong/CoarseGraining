@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch04.Theorems.WidetildeTheta
-import Homogenization.Book.Ch04.Theorems.Scalarization
-import Homogenization.Book.Ch04.Theorems.Expectations
-import Homogenization.Book.Ch02.Theorems.Dilation
-import Homogenization.Probability.RescaledLaw
+module
+
+public import Homogenization.Book.Ch04.Theorems.WidetildeTheta
+public import Homogenization.Book.Ch04.Theorems.Scalarization
+public import Homogenization.Book.Ch04.Theorems.Expectations
+public import Homogenization.Book.Ch02.Theorems.Dilation
+public import Homogenization.Probability.RescaledLaw
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book
@@ -372,7 +376,7 @@ private theorem dist_triadicDilateVec {d : ℕ} (k : ℕ) (x y : Vec d) :
     ring
   rw [dist_eq_norm, dist_eq_norm, hsub, norm_smul_of_nonneg hr]
 
-private theorem AreUnitSeparated.triadicDilateSet {d : ℕ} {U V : Set (Vec d)}
+theorem AreUnitSeparated.triadicDilateSet {d : ℕ} {U V : Set (Vec d)}
     (hUV : AreUnitSeparated U V) (k : ℕ) :
     AreUnitSeparated (triadicDilateSet k U) (triadicDilateSet k V) := by
   intro x y hx hy

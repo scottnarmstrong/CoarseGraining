@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingAggregation
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingDescendantWsp
-import Homogenization.Sobolev.Fractional.ExactOverlapEuclideanLpDisjointBridge
+module
+
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingAggregation
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingDescendantWsp
+public import Homogenization.Sobolev.Fractional.ExactOverlapEuclideanLpDisjointBridge
 
 /-!
 # Finite-`p` forcing aggregation for local coarse graining
@@ -9,6 +11,8 @@ This module isolates the source forcing term before it is combined with the
 PDE or response estimates.  Its physical-scale index is written as `n - j`:
 thus `j` is exactly the source depth below the prescribed scale `n`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

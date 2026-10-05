@@ -1,7 +1,9 @@
-import Homogenization.HighContrast.Corridor.PhaseComparison.Stability
-import Homogenization.HighContrast.Corridor.PhaseComparison.GridCoverage
-import Homogenization.CoarseGraining.CoarseBounds.AeBridge
-import Homogenization.CoarseGraining.CoarseBounds.Sandwich
+module
+
+public import Homogenization.HighContrast.Corridor.PhaseComparison.Stability
+public import Homogenization.HighContrast.Corridor.PhaseComparison.GridCoverage
+public import Homogenization.CoarseGraining.CoarseBounds.AeBridge
+public import Homogenization.CoarseGraining.CoarseBounds.Sandwich
 
 /-!
 # Grid averaging + choice
@@ -25,6 +27,8 @@ M2 pointwise-in-`a`; exchange `∫ ∂L` with the finite grid sum
 (constant `3d/ℓ`); the C4-glue `F ≤ 2M²`; `|F_σ − F|² ≤ 4M²·|F_σ − F|`; below-average
 member of the nonempty grid (`N ≥ ℓ ≥ 4 > 0`).  `M² := Θ·|p|² + |q|²`.
 -/
+
+@[expose] public section
 
 open Homogenization
 open Homogenization.Book.Ch04 (RestrictionCoeffLaw RestrictionLawCarrier)

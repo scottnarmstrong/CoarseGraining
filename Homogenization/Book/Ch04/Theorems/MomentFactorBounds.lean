@@ -1,3 +1,5 @@
-import Homogenization.Book.Ch04.Theorems.MomentFactorBounds.Helpers
-import Homogenization.Book.Ch04.Theorems.MomentFactorBounds.FactorBounds
-import Homogenization.Book.Ch04.Theorems.MomentFactorBounds.Apex
+module
+
+public import Homogenization.Book.Ch04.Theorems.MomentFactorBounds.Helpers
+public import Homogenization.Book.Ch04.Theorems.MomentFactorBounds.FactorBounds
+public import Homogenization.Book.Ch04.Theorems.MomentFactorBounds.Apex

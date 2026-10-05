@@ -1,4 +1,8 @@
-import Homogenization.Probability.IndependentSums.Rosenthal.ProductDifference
+module
+
+public import Homogenization.Probability.IndependentSums.Rosenthal.ProductDifference
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

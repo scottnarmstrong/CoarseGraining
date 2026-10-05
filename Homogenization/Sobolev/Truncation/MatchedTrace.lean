@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Truncation.H10Limit
-import Homogenization.Sobolev.Truncation.LevelSets
+module
+
+public import Homogenization.Sobolev.Truncation.H10Limit
+public import Homogenization.Sobolev.Truncation.LevelSets
+
+@[expose] public section
 
 namespace Homogenization
 

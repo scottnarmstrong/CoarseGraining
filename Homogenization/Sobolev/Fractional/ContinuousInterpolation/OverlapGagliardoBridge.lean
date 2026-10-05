@@ -1,7 +1,9 @@
-import Homogenization.Sobolev.Fractional.BesovLeGagliardo
-import Homogenization.Sobolev.Fractional.GagliardoLeBesov
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.EuclideanGagliardoCoordinateBridge
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.OverlapCoordinateBridge
+module
+
+public import Homogenization.Sobolev.Fractional.BesovLeGagliardo
+public import Homogenization.Sobolev.Fractional.GagliardoLeBesov
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.EuclideanGagliardoCoordinateBridge
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.OverlapCoordinateBridge
 
 /-!
 # Extended overlap-Besov and coordinate Gagliardo energies
@@ -16,6 +18,8 @@ measurability, `MemLp`, and `[NeZero d]` hypotheses are intended to be discharge
 measurable-representative and zero-dimensional wrappers, rather than exposed in the final
 source-facing theorem.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

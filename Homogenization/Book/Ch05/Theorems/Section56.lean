@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch05.Theorems.Section56.HarmonicMean
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastJBound
-import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.HarmonicMean
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastJBound
+public import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

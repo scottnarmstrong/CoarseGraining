@@ -1,16 +1,20 @@
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Algebra.Order.BigOperators.Group.Finset
-import Mathlib.Analysis.SpecialFunctions.Sqrt
-import Mathlib.Tactic.Abel
-import Mathlib.Tactic.FieldSimp
-import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.Ring
-import Homogenization.Book.Ch02.Theorems.MatrixOperatorNorm
-import Homogenization.Book.Ch04.Theorems.PartitionAveragesDefinitions
-import Homogenization.Book.Ch04.Theorems.StationaryExpectations
-import Homogenization.Book.Ch05.Theorems.Section52.ScalarPreliminaries
-import Homogenization.Book.Ch05.Theorems.Section54.GoodScale.ScalarBounds
-import Homogenization.HighContrast.EntryScale.Inputs
+module
+
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+public import Mathlib.Algebra.Order.BigOperators.Group.Finset
+public import Mathlib.Analysis.SpecialFunctions.Sqrt
+public import Mathlib.Tactic.Abel
+public import Mathlib.Tactic.FieldSimp
+public import Mathlib.Tactic.Linarith
+public import Mathlib.Tactic.Ring
+public import Homogenization.Book.Ch02.Theorems.MatrixOperatorNorm
+public import Homogenization.Book.Ch04.Theorems.PartitionAveragesDefinitions
+public import Homogenization.Book.Ch04.Theorems.StationaryExpectations
+public import Homogenization.Book.Ch05.Theorems.Section52.ScalarPreliminaries
+public import Homogenization.Book.Ch05.Theorems.Section54.GoodScale.ScalarBounds
+public import Homogenization.HighContrast.EntryScale.Inputs
+
+@[expose] public section
 
 open scoped BigOperators Matrix.Norms.Elementwise
 open scoped Matrix.Norms.L2Operator

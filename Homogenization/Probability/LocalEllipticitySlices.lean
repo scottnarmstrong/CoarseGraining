@@ -1,13 +1,17 @@
-import Homogenization.Ambient.HilbertFinite
-import Homogenization.Geometry.BoundaryLayer
-import Homogenization.Geometry.CubeMeasure
-import Homogenization.Geometry.CubeMetric
-import Homogenization.Probability.RandomField
-import Homogenization.Probability.RandomFieldMeasurability
-import Homogenization.Probability.SeparableHilbertMeasurability
-import Mathlib.MeasureTheory.Function.LpSpace.Complete
-import Mathlib.MeasureTheory.MeasurableSpace.Constructions
-import Mathlib.MeasureTheory.Measure.SeparableMeasure
+module
+
+public import Homogenization.Ambient.HilbertFinite
+public import Homogenization.Geometry.BoundaryLayer
+public import Homogenization.Geometry.CubeMeasure
+public import Homogenization.Geometry.CubeMetric
+public import Homogenization.Probability.RandomField
+public import Homogenization.Probability.RandomFieldMeasurability
+public import Homogenization.Probability.SeparableHilbertMeasurability
+public import Mathlib.MeasureTheory.Function.LpSpace.Complete
+public import Mathlib.MeasureTheory.MeasurableSpace.Constructions
+public import Mathlib.MeasureTheory.Measure.SeparableMeasure
+
+@[expose] public section
 
 namespace Homogenization
 

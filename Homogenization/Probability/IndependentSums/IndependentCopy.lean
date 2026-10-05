@@ -1,4 +1,8 @@
-import Mathlib.Probability.IdentDistrib
+module
+
+public import Mathlib.Probability.IdentDistrib
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

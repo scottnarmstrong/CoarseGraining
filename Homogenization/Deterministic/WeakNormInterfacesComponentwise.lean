@@ -1,7 +1,11 @@
-import Homogenization.Deterministic.WeakNormInterfacesPositiveQTwo
-import Homogenization.Besov.Duality.CaccioppoliBridge
-import Homogenization.Besov.Duality.CaccioppoliVectorization
-import Homogenization.Besov.Poincare.Bounds
+module
+
+public import Homogenization.Deterministic.WeakNormInterfacesPositiveQTwo
+public import Homogenization.Besov.Duality.CaccioppoliBridge
+public import Homogenization.Besov.Duality.CaccioppoliVectorization
+public import Homogenization.Besov.Poincare.Bounds
+
+@[expose] public section
 
 namespace Homogenization
 

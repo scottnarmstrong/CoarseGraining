@@ -1,9 +1,11 @@
-import Homogenization.Probability.RegCoeffField.Sigma
-import Homogenization.Probability.RegCoeffField.EllipticSet
-import Mathlib.MeasureTheory.Covering.DensityTheorem
-import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
-import Mathlib.Analysis.Convex.Integral
-import Mathlib.MeasureTheory.SpecificCodomains.Pi
+module
+
+public import Homogenization.Probability.RegCoeffField.Sigma
+public import Homogenization.Probability.RegCoeffField.EllipticSet
+public import Mathlib.MeasureTheory.Covering.DensityTheorem
+public import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+public import Mathlib.Analysis.Convex.Integral
+public import Mathlib.MeasureTheory.SpecificCodomains.Pi
 
 /-!
 # Ball averages of carrier fields and Lebesgue differentiation
@@ -36,6 +38,8 @@ spatial a.e. ellipticity in terms of rational-ball averages:
 
 Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

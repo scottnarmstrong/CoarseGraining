@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.HessianBesovSummation
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.HessianBesovSummation
+
+@[expose] public section
 
 namespace Homogenization
 

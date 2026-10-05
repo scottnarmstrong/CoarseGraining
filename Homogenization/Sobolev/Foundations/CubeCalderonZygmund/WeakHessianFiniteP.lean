@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.FiniteLpExponent
-import Homogenization.Sobolev.Foundations.WeakHessianEuclidean
-import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
+module
+
+public import Homogenization.Sobolev.FiniteLpExponent
+public import Homogenization.Sobolev.Foundations.WeakHessianEuclidean
+public import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
 
 /-!
 # Finite-`p` aggregation for weak Hessians
@@ -9,6 +11,8 @@ This file packages rowwise Euclidean `L^p` control of a weak Hessian into the
 project's Hilbert matrix carrier.  The norm estimate retains the exact finite
 exponent and bounds the matrix norm by the finite sum of its row norms.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.PoincareW1p.Seminorms
+module
+
+public import Homogenization.Sobolev.Foundations.PoincareW1p.Seminorms
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -7,7 +11,7 @@ open scoped ENNReal
 namespace W1pFunction
 
 variable {d : ℕ} {U : Set (Vec d)} {p : ENNReal}
-private noncomputable def smoothPoincareLpBase
+noncomputable def smoothPoincareLpBase
     (hU : IsOpenBoundedConvexDomain U) : ℝ :=
   ((MeasureTheory.volume U).toReal⁻¹ *
       (((2 * Classical.choose hU.isBoundedDomain) ^ d) / (d : ℝ))) *
@@ -24,7 +28,7 @@ theorem smoothPoincareLpConst_nonneg
   dsimp [smoothPoincareLpConst]
   positivity
 
-private theorem smoothPoincareLpBase_le_const
+theorem smoothPoincareLpBase_le_const
     (hU : IsOpenBoundedConvexDomain U) :
     smoothPoincareLpBase (d := d) (U := U) hU ≤
       smoothPoincareLpConst (d := d) (U := U) hU := by

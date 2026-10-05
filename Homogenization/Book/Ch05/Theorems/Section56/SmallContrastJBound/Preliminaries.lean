@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.YoungRHS
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.ResponseMoment
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.RHSCompression
-import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta.Final
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.YoungRHS
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.ResponseMoment
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.RHSCompression
+public import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta.Final
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

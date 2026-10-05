@@ -1,4 +1,6 @@
-import Homogenization.Besov.Negative.ExactFiniteBridge
+module
+
+public import Homogenization.Besov.Negative.ExactFiniteBridge
 
 /-!
 # Finite aggregation transport for exact negative Besov kernels
@@ -8,6 +10,8 @@ aggregations to the extended finite and infinite aggregations used by the
 exact Chapter 1 kernels.  They retain extended-value behavior without analytic
 convergence or real-valued upper-bound hypotheses.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

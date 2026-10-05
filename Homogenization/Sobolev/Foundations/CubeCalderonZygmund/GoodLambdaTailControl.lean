@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.OneStoppingBallTail
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.OneStoppingBallTail
+
+@[expose] public section
 
 namespace Homogenization
 

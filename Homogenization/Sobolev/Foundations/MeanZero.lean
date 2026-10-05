@@ -1,5 +1,9 @@
-import Homogenization.Geometry.Domain
-import Homogenization.Sobolev.H1.Algebra
+module
+
+public import Homogenization.Geometry.Domain
+public import Homogenization.Sobolev.H1.Algebra
+
+@[expose] public section
 
 namespace Homogenization
 

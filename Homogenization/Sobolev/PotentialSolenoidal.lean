@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.H1
+module
+
+public import Homogenization.Sobolev.H1
+
+@[expose] public section
 
 namespace Homogenization
 

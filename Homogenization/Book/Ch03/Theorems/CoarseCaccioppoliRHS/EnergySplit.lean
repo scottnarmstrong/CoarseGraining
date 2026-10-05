@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS.Setup
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS.Setup
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

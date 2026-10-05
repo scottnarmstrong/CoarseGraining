@@ -1,4 +1,8 @@
-import Homogenization.Geometry.CubeColoring
+module
+
+public import Homogenization.Geometry.CubeColoring
+
+@[expose] public section
 
 namespace Homogenization
 

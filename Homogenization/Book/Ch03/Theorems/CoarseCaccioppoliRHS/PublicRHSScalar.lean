@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS.ZeroTraceValue
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS.ZeroTraceValue
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

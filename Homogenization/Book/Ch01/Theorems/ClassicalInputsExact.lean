@@ -1,7 +1,9 @@
-import Homogenization.Book.Ch01.Definitions
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.ExactOverlapEuclideanRegularity
-import Homogenization.Sobolev.Foundations.CenteredCubeCalderonZygmundQTwo
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.FullNormEquivalence
+module
+
+public import Homogenization.Book.Ch01.Definitions
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.ExactOverlapEuclideanRegularity
+public import Homogenization.Sobolev.Foundations.CenteredCubeCalderonZygmundQTwo
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.FullNormEquivalence
 
 /-!
 # Exact Chapter 1 classical inputs
@@ -12,6 +14,8 @@ with the literal continuous `K`-functional kernel and its approved additive
 full-norm equivalence with the exact fractional Sobolev carrier.  It does not
 replace the older discrete/legacy Chapter 1 facade.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

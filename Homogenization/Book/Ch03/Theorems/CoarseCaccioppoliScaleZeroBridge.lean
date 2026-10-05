@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliScaleZeroRHS.Monotonicity
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliScalarEnvelopes
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliScaleZeroRHS.Monotonicity
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliScalarEnvelopes
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.FiniteLpExponent
-import Homogenization.Multiscale.OverlapLp
+module
+
+public import Homogenization.Sobolev.FiniteLpExponent
+public import Homogenization.Multiscale.OverlapLp
 
 /-!
 # Exact finite-`p` Euclidean overlap Besov seminorm
@@ -8,6 +10,8 @@ The canonical positive overlap seminorm for vector fields uses Euclidean local
 oscillations about `ScalarOverlap.cubeAverageVec`, with a single outer
 `1 / p` root after summing all physical scales.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

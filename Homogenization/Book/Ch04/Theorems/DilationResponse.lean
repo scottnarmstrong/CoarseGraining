@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch04.Theorems.DilationLaw
+module
+
+public import Homogenization.Book.Ch04.Theorems.DilationLaw
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

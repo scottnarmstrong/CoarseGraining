@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.DoubledResponse.ResponseSpace
+module
+
+public import Homogenization.Internal.Ch02.DoubledResponse.ResponseSpace
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch04.Theorems.PartitionAverageFluctuationsAEMeasurable
-import Homogenization.Book.Ch04.Theorems.BlockExpectations
-import Homogenization.Book.Ch04.Theorems.AnnealedSubadditivity.BlockLoewner
-import Homogenization.Book.Ch02.Theorems.WrapAround
-import Mathlib.LinearAlgebra.Matrix.Bilinear
+module
+
+public import Homogenization.Book.Ch04.Theorems.PartitionAverageFluctuationsAEMeasurable
+public import Homogenization.Book.Ch04.Theorems.BlockExpectations
+public import Homogenization.Book.Ch04.Theorems.AnnealedSubadditivity.BlockLoewner
+public import Homogenization.Book.Ch02.Theorems.WrapAround
+public import Mathlib.LinearAlgebra.Matrix.Bilinear
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

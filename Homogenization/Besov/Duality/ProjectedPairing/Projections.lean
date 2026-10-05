@@ -1,4 +1,8 @@
-import Homogenization.Besov.Duality.Definitions
+module
+
+public import Homogenization.Besov.Duality.Definitions
+
+@[expose] public section
 
 namespace Homogenization
 

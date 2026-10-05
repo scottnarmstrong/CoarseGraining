@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.H1.BasicLemmas
-import Mathlib.Analysis.Calculus.FDeriv.Symmetric
+module
+
+public import Homogenization.Sobolev.H1.BasicLemmas
+public import Mathlib.Analysis.Calculus.FDeriv.Symmetric
+
+@[expose] public section
 
 namespace Homogenization
 

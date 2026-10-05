@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationQuenched
-import Homogenization.Book.Ch05.Theorems.Section57.UnitEllipticityMinimalExpLogSq
-import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationErrorMinimalScale
-import Homogenization.Book.Ch05.Theorems.Section57.UniformHomogenizationQuenched
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationQuenched
+public import Homogenization.Book.Ch05.Theorems.Section57.UnitEllipticityMinimalExpLogSq
+public import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationErrorMinimalScale
+public import Homogenization.Book.Ch05.Theorems.Section57.UniformHomogenizationQuenched
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

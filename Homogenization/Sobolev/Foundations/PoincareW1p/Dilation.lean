@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.PoincareW1p.Core
-import Homogenization.Sobolev.W1p.Dilation
+module
+
+public import Homogenization.Sobolev.Foundations.PoincareW1p.Core
+public import Homogenization.Sobolev.W1p.Dilation
+
+@[expose] public section
 
 namespace Homogenization
 

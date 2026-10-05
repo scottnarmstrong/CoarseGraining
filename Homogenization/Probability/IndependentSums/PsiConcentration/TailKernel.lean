@@ -1,4 +1,8 @@
-import Homogenization.Probability.IndependentSums.PsiConcentration.Truncation
+module
+
+public import Homogenization.Probability.IndependentSums.PsiConcentration.Truncation
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

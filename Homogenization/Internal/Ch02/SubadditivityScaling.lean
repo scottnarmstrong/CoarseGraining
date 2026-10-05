@@ -1,9 +1,13 @@
-import Homogenization.Book.Ch02.Theorems.SubadditivityScalingDefinitions
-import Homogenization.Book.Ch02.Theorems.MatrixPositivity
-import Homogenization.Internal.Ch02.MatrixExtraction
-import Homogenization.Internal.Ch02.Representatives
-import Homogenization.CoarseGraining.Subadditivity
-import Homogenization.CoarseGraining.ResponseIdentities.Homogeneity
+module
+
+public import Homogenization.Book.Ch02.Theorems.SubadditivityScalingDefinitions
+public import Homogenization.Book.Ch02.Theorems.MatrixPositivity
+public import Homogenization.Internal.Ch02.MatrixExtraction
+public import Homogenization.Internal.Ch02.Representatives
+public import Homogenization.CoarseGraining.Subadditivity
+public import Homogenization.CoarseGraining.ResponseIdentities.Homogeneity
+
+@[expose] public section
 
 open scoped BigOperators
 

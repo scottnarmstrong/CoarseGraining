@@ -1,10 +1,12 @@
-import Homogenization.Probability.RegCoeffField
-import Mathlib.MeasureTheory.MeasurableSpace.Prod
-import Mathlib.MeasureTheory.Measure.Restrict
-import Mathlib.MeasureTheory.Measure.Map
-import Mathlib.MeasureTheory.Measure.Sum
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.Analysis.Calculus.ContDiff.Basic
+module
+
+public import Homogenization.Probability.RegCoeffField
+public import Mathlib.MeasureTheory.MeasurableSpace.Prod
+public import Mathlib.MeasureTheory.Measure.Restrict
+public import Mathlib.MeasureTheory.Measure.Map
+public import Mathlib.MeasureTheory.Measure.Sum
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.Analysis.Calculus.ContDiff.Basic
 
 /-!
 # The carrier σ-algebra, its additive structure, and the layered builder
@@ -34,6 +36,8 @@ The raw `CoeffField`'s ambient σ-algebra is deliberately kept out of scope here
 so the pi structure on `Vec d → Mat d` is the one used throughout (the paper,
 Armstrong–Kuusi–Loher, to appear).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

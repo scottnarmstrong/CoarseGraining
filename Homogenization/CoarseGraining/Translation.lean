@@ -1,6 +1,10 @@
-import Homogenization.CoarseGraining.Definitions
-import Homogenization.PDE.HarmonicTranslation
-import Homogenization.Sobolev.L2Ambient
+module
+
+public import Homogenization.CoarseGraining.Definitions
+public import Homogenization.PDE.HarmonicTranslation
+public import Homogenization.Sobolev.L2Ambient
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.Height
-import Mathlib.Analysis.Convex.SpecificFunctions.Basic
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.Height
+public import Mathlib.Analysis.Convex.SpecificFunctions.Basic
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -10,7 +14,7 @@ open scoped BigOperators
 /-- Geometric ratio used in the standard beta-dependent radius iteration.
 It is close enough to `1` that the geometric loss has ratio bounded away from
 `1`, but `1 - theta` is still explicitly comparable to `(max 1 beta)⁻¹`. -/
-private noncomputable def coarseCaccioppoliStandardRadiusTheta (β : ℝ) : ℝ :=
+noncomputable def coarseCaccioppoliStandardRadiusTheta (β : ℝ) : ℝ :=
   1 - (4 * max 1 β)⁻¹
 
 private theorem coarseCaccioppoliStandardRadiusTheta_pos {β : ℝ} (_hβ : 0 ≤ β) :

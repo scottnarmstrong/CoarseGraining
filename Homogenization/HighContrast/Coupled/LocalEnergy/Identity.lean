@@ -1,7 +1,9 @@
-import Homogenization.HighContrast.Coupled.LocalEnergy.Integrability
-import Homogenization.HighContrast.Coupled.LocalEnergy.Pointwise
-import Homogenization.HighContrast.Coupled.Representation
-import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+module
+
+public import Homogenization.HighContrast.Coupled.LocalEnergy.Integrability
+public import Homogenization.HighContrast.Coupled.LocalEnergy.Pointwise
+public import Homogenization.HighContrast.Coupled.Representation
+public import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
 
 /-!
 # Local block energy: the test identity
@@ -22,6 +24,8 @@ of the bulk density, the cutoff density and the weak-form defect
 `(a∇v·∇φ + aᵀ∇v*·∇φ*) − q·∇φ`; integrating and cancelling the defect via the
 weak form yields the identity.  No `EuclideanSpace`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

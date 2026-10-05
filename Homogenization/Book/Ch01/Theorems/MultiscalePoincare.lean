@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch01.Theorems.CubeNeumannCZ
-import Homogenization.Sobolev.Foundations.CubeBesovPoincare
+module
+
+public import Homogenization.Book.Ch01.Theorems.CubeNeumannCZ
+public import Homogenization.Sobolev.Foundations.CubeBesovPoincare
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

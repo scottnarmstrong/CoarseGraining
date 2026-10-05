@@ -1,5 +1,9 @@
-import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
-import Homogenization.Probability.IndependentSums.Rosenthal.Endpoint
+module
+
+public import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
+public import Homogenization.Probability.IndependentSums.Rosenthal.Endpoint
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

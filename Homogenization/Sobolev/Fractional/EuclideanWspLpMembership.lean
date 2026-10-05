@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.EuclideanWspCongruence
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWspCongruence
 
 /-!
 # Finite-seminorm membership for Euclidean fractional Sobolev fields
@@ -7,6 +9,8 @@ This file packages the product-measure measurability needed to turn a
 normalized-cube `L^p` field with finite Euclidean fractional seminorm into a
 literal `MemCubeEuclideanWsp` witness.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

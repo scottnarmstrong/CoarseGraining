@@ -1,7 +1,11 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GlobalLocalization
-import Homogenization.Sobolev.Foundations.WeakHessianEuclidean
-import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
-import Mathlib.MeasureTheory.SpecificCodomains.WithLp
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GlobalLocalization
+public import Homogenization.Sobolev.Foundations.WeakHessianEuclidean
+public import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
+public import Mathlib.MeasureTheory.SpecificCodomains.WithLp
+
+@[expose] public section
 
 namespace Homogenization
 

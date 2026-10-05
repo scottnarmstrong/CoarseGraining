@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.RootScaleControl
+module
+
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.RootScaleControl
 
 /-!
 # Closure of the continuum and sampled continuous K energies
@@ -6,6 +8,8 @@ import Homogenization.Sobolev.Fractional.ContinuousInterpolation.RootScaleContro
 This module reinserts the root triadic sample into the lower continuum-series
 comparison, without applying any real-valued totalization to the energies.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

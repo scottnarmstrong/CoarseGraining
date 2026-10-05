@@ -1,10 +1,14 @@
-import Homogenization.Sobolev.Foundations.CoerciveH1
-import Mathlib.Analysis.InnerProductSpace.Dual
-import Mathlib.Analysis.InnerProductSpace.LaxMilgram
-import Mathlib.Analysis.InnerProductSpace.ProdL2
-import Mathlib.Analysis.InnerProductSpace.Subspace
-import Mathlib.Analysis.Normed.Operator.BoundedLinearMaps
-import Mathlib.Topology.Algebra.Module.ClosedSubmodule
+module
+
+public import Homogenization.Sobolev.Foundations.CoerciveH1
+public import Mathlib.Analysis.InnerProductSpace.Dual
+public import Mathlib.Analysis.InnerProductSpace.LaxMilgram
+public import Mathlib.Analysis.InnerProductSpace.ProdL2
+public import Mathlib.Analysis.InnerProductSpace.Subspace
+public import Mathlib.Analysis.Normed.Operator.BoundedLinearMaps
+public import Mathlib.Topology.Algebra.Module.ClosedSubmodule
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -29,24 +33,24 @@ instance : CoeFun (H1WeakTestFunction U) (fun _ => Vec d → ℝ) where
 noncomputable def deriv (φ : H1WeakTestFunction U) (i : Fin d) : Vec d → ℝ :=
   fun x => (fderiv ℝ φ x) (basisVec i)
 
-private theorem continuous (φ : H1WeakTestFunction U) : Continuous φ :=
+theorem continuous (φ : H1WeakTestFunction U) : Continuous φ :=
   (φ.smooth.differentiable (by simp)).continuous
 
-private theorem memScalarL2 (φ : H1WeakTestFunction U) : MemScalarL2 U φ := by
+theorem memScalarL2 (φ : H1WeakTestFunction U) : MemScalarL2 U φ := by
   simpa [MemScalarL2, volumeMeasureOn] using
     (φ.continuous.memLp_of_hasCompactSupport φ.compactSupport).restrict U
 
-private theorem deriv_continuous (φ : H1WeakTestFunction U) (i : Fin d) :
+theorem deriv_continuous (φ : H1WeakTestFunction U) (i : Fin d) :
     Continuous (φ.deriv i) := by
   simpa [H1WeakTestFunction.deriv] using!
     (φ.smooth.continuous_fderiv (by simp)).clm_apply continuous_const
 
-private theorem deriv_compactSupport (φ : H1WeakTestFunction U) (i : Fin d) :
+theorem deriv_compactSupport (φ : H1WeakTestFunction U) (i : Fin d) :
     HasCompactSupport (φ.deriv i) := by
   simpa [H1WeakTestFunction.deriv] using!
     φ.compactSupport.fderiv_apply (𝕜 := ℝ) (basisVec i)
 
-private theorem deriv_memScalarL2 (φ : H1WeakTestFunction U) (i : Fin d) :
+theorem deriv_memScalarL2 (φ : H1WeakTestFunction U) (i : Fin d) :
     MemScalarL2 U (φ.deriv i) := by
   simpa [MemScalarL2, volumeMeasureOn] using
     ((φ.deriv_continuous i).memLp_of_hasCompactSupport (φ.deriv_compactSupport i)).restrict U

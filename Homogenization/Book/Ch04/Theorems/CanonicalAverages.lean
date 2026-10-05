@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch04.Theorems.CoarseObservables
+module
+
+public import Homogenization.Book.Ch04.Theorems.CoarseObservables
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

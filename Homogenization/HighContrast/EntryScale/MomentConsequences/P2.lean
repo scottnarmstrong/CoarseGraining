@@ -1,16 +1,20 @@
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Algebra.Order.BigOperators.Group.Finset
-import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
-import Mathlib.Data.Finset.Lattice.Fold
-import Mathlib.Basic.NNReal.Basic
-import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
-import Mathlib.MeasureTheory.Integral.Lebesgue.Add
-import Mathlib.Order.Interval.Finset.Nat
-import Homogenization.Book.Ch05.Theorems.Section52.GeometrySeries.DescendantCardinality
-import Homogenization.Deterministic.CoarsePoincare.Setup.HarmonicAndData
-import Homogenization.Geometry.TriadicPartition
-import Homogenization.HighContrast.EntryScale.DeterministicAlgebra
-import Homogenization.HighContrast.EntryScale.MomentConsequences.P1
+module
+
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+public import Mathlib.Algebra.Order.BigOperators.Group.Finset
+public import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+public import Mathlib.Data.Finset.Lattice.Fold
+public import Mathlib.Basic.NNReal.Basic
+public import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
+public import Mathlib.MeasureTheory.Integral.Lebesgue.Add
+public import Mathlib.Order.Interval.Finset.Nat
+public import Homogenization.Book.Ch05.Theorems.Section52.GeometrySeries.DescendantCardinality
+public import Homogenization.Deterministic.CoarsePoincare.Setup.HarmonicAndData
+public import Homogenization.Geometry.TriadicPartition
+public import Homogenization.HighContrast.EntryScale.DeterministicAlgebra
+public import Homogenization.HighContrast.EntryScale.MomentConsequences.P1
+
+@[expose] public section
 
 open scoped BigOperators
 open scoped Topology

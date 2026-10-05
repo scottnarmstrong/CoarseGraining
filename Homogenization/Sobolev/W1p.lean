@@ -1,3 +1,5 @@
-import Homogenization.Sobolev.W1p.ConvexApproxGeometry
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing
-import Homogenization.Sobolev.W1p.Translation
+module
+
+public import Homogenization.Sobolev.W1p.ConvexApproxGeometry
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing
+public import Homogenization.Sobolev.W1p.Translation

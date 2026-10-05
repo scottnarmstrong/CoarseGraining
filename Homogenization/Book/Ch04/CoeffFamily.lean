@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch04.Law
+module
+
+public import Homogenization.Book.Ch04.Law
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

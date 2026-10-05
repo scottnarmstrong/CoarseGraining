@@ -1,4 +1,6 @@
-import Homogenization.Probability.Source.Coarse.Laws
+module
+
+public import Homogenization.Probability.Source.Coarse.Laws
 
 /-!
 # Exact coarse-source Chapter 4 laws
@@ -7,6 +9,8 @@ This is the staging law surface for the coarse-graining source.  Its carrier
 and probability assumptions are deliberately separate from the existing
 regular/restriction Chapter 4 lane.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

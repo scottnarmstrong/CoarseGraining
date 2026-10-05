@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.CutoffSizes
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.CutoffSizes
+
+@[expose] public section
 
 namespace Homogenization
 

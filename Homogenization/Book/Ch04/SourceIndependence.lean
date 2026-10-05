@@ -1,4 +1,6 @@
-import Homogenization.Book.Ch04.SourceObservable
+module
+
+public import Homogenization.Book.Ch04.SourceObservable
 
 /-!
 # Independence of exact coarse-source local random variables
@@ -7,6 +9,8 @@ This module promotes the coarse source's unit-range-dependence law to finite
 independence of its exact local sigma algebras and observables.  It is separate
 from the regular-carrier restriction-local compatibility lane.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

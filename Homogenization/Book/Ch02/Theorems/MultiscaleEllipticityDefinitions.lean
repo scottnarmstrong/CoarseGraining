@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.MultiscaleEllipticity
+module
+
+public import Homogenization.Book.Ch02.MultiscaleEllipticity
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

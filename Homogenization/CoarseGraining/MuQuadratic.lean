@@ -1,5 +1,9 @@
-import Homogenization.Ambient.HilbertFinite
-import Homogenization.CoarseGraining.Definitions
+module
+
+public import Homogenization.Ambient.HilbertFinite
+public import Homogenization.CoarseGraining.Definitions
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,10 @@
-import Homogenization.Geometry.ConvexDomain
-import Mathlib.Data.Set.Function
-import Mathlib.LinearAlgebra.AffineSpace.AffineMap
+module
+
+public import Homogenization.Geometry.ConvexDomain
+public import Mathlib.Data.Set.Function
+public import Mathlib.LinearAlgebra.AffineSpace.AffineMap
+
+@[expose] public section
 
 namespace Homogenization
 

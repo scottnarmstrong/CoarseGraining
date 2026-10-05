@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincare.QOne
+module
+
+public import Homogenization.Deterministic.CoarsePoincare.QOne
+
+@[expose] public section
 
 namespace Homogenization
 

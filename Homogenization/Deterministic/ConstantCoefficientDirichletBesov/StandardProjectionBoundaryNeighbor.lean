@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionBoundary
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionIncrementEnergy
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionBoundary
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionIncrementEnergy
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,10 @@
-import Homogenization.CoarseGraining.CoarseBounds.Sandwich
-import Homogenization.CoarseGraining.CoarseBounds.AeBridge
-import Homogenization.Book.Ch04.Theorems.CoarseObservables
+module
+
+public import Homogenization.CoarseGraining.CoarseBounds.Sandwich
+public import Homogenization.CoarseGraining.CoarseBounds.AeBridge
+public import Homogenization.Book.Ch04.Theorems.CoarseObservables
+
+@[expose] public section
 
 namespace Homogenization
 

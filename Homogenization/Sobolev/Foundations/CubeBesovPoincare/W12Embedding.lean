@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeBesovPoincare.W12Aggregation
-import Homogenization.Sobolev.Foundations.CubeBesovPoincare.W12LocalPoincare
-import Homogenization.Sobolev.Foundations.CubeBesovPoincare.W12NormalizedPartition
+module
+
+public import Homogenization.Sobolev.Foundations.CubeBesovPoincare.W12Aggregation
+public import Homogenization.Sobolev.Foundations.CubeBesovPoincare.W12LocalPoincare
+public import Homogenization.Sobolev.Foundations.CubeBesovPoincare.W12NormalizedPartition
 
 /-!
 # Triadic-cube `W^{1,2}` to positive Besov embedding
@@ -9,6 +11,8 @@ This module exposes the exact source-facing normalized `W^{1,2}` estimate.
 The local Poincare estimate and the normalized descendant-energy partition
 are assembled by the generic finite-depth `B^1_{2,∞}` aggregation lemma.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

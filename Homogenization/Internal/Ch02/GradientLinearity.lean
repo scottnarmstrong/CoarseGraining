@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch02.Theorems.GradientLinearityDefinitions
-import Homogenization.Internal.Ch02.FirstVariation
-import Homogenization.Internal.Ch02.GradientUniqueness
+module
+
+public import Homogenization.Book.Ch02.Theorems.GradientLinearityDefinitions
+public import Homogenization.Internal.Ch02.FirstVariation
+public import Homogenization.Internal.Ch02.GradientUniqueness
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.Boundary
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.Boundary
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.LocalizedUnitEllipticityMinimal
-import Homogenization.Book.Ch05.Theorems.Section57.AbsoluteScaleCompression
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.LocalizedUnitEllipticityMinimal
+public import Homogenization.Book.Ch05.Theorems.Section57.AbsoluteScaleCompression
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

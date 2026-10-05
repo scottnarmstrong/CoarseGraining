@@ -1,8 +1,12 @@
-import Homogenization.Ambient.ScalarMatrix
-import Homogenization.PDE.DirichletRHS
-import Homogenization.Sobolev.Foundations.AxisCube
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.AxisCubeHarmonicCovariance
-import Homogenization.Sobolev.PotentialSolenoidalL2Realization
+module
+
+public import Homogenization.Ambient.ScalarMatrix
+public import Homogenization.PDE.DirichletRHS
+public import Homogenization.Sobolev.Foundations.AxisCube
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.AxisCubeHarmonicCovariance
+public import Homogenization.Sobolev.PotentialSolenoidalL2Realization
+
+@[expose] public section
 
 namespace Homogenization
 

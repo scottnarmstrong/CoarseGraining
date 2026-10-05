@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.CubeEmbedding.GagliardoNirenbergSobolev
-import Homogenization.Sobolev.FiniteLpExponent
+module
+
+public import Homogenization.Sobolev.CubeEmbedding.GagliardoNirenbergSobolev
+public import Homogenization.Sobolev.FiniteLpExponent
 
 /-!
 # Finite-`p` Gagliardo--Nirenberg--Sobolev on `Vec d`
@@ -8,6 +10,8 @@ This is the ambient compact-support form of the finite-exponent Sobolev
 inequality.  The cube localization layer can use it without committing to a
 particular formula for the critical exponent.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

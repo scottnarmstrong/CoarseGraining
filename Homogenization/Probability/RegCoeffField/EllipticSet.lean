@@ -1,7 +1,9 @@
-import Homogenization.Probability.RegCoeffField.Sigma
-import Mathlib.Analysis.Convex.Basic
-import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
-import Mathlib.Topology.Instances.Matrix
+module
+
+public import Homogenization.Probability.RegCoeffField.Sigma
+public import Mathlib.Analysis.Convex.Basic
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+public import Mathlib.Topology.Instances.Matrix
 
 /-!
 # The elliptic-matrix locus is closed, convex and measurable
@@ -26,6 +28,8 @@ genuine pi type so that closed matrix sets are measurable for the carrier's
 
 Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

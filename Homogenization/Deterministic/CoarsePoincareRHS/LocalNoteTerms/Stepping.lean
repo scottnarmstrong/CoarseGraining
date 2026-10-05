@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.LocalStep
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.LocalStep
+
+@[expose] public section
 
 namespace Homogenization
 

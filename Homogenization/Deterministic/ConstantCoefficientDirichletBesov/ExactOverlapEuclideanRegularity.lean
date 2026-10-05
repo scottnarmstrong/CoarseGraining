@@ -1,5 +1,7 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CenteredCubeHsRegularity
-import Homogenization.Sobolev.Fractional.ExactOverlapEuclideanFullComparison
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CenteredCubeHsRegularity
+public import Homogenization.Sobolev.Fractional.ExactOverlapEuclideanFullComparison
 
 /-!
 # Exact overlap-Besov regularity for the centered-cube Dirichlet problem
@@ -10,6 +12,8 @@ exact overlap-Besov/physical-Sobolev full-norm equivalence with the all-scale
 constant-coefficient Dirichlet estimate.  All comparison, endpoint, scale,
 and representative inputs remain proof-internal.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

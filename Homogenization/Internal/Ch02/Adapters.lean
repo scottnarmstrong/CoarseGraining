@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch02.Definitions
-import Homogenization.CoarseGraining.Definitions
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.HarmonicMean
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.UpperLeftAverage
+module
+
+public import Homogenization.Book.Ch02.Definitions
+public import Homogenization.CoarseGraining.Definitions
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.HarmonicMean
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.UpperLeftAverage
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

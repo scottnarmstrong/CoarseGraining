@@ -1,4 +1,8 @@
-import Homogenization.Besov.Poincare.Bounds
+module
+
+public import Homogenization.Besov.Poincare.Bounds
+
+@[expose] public section
 
 namespace Homogenization
 

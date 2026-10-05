@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section57.SmallBottomBand
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailDenominator
-import Homogenization.Book.Ch05.Theorems.Section57.BadScalePrefactorGapQuantitative
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleThresholds
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.SmallBottomBand
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailDenominator
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScalePrefactorGapQuantitative
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleThresholds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

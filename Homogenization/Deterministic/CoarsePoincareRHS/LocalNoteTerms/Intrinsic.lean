@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.LocalNoteTerms.Bounded
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.LocalNoteTerms.Bounded
+
+@[expose] public section
 
 namespace Homogenization
 

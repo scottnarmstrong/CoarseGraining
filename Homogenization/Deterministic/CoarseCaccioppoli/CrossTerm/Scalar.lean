@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.TriadicScale
-import Mathlib.Analysis.SpecialFunctions.Log.Base
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.TriadicScale
+public import Mathlib.Analysis.SpecialFunctions.Log.Base
+
+@[expose] public section
 
 namespace Homogenization
 

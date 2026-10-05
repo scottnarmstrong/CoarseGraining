@@ -1,10 +1,12 @@
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Basic.Real.Basic
-import Mathlib.MeasureTheory.Integral.Lebesgue.Basic
-import Homogenization.Geometry.TriadicPartition
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.Basic
-import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta
-import Homogenization.HighContrast.EntryScale.Basic
+module
+
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.MeasureTheory.Integral.Lebesgue.Basic
+public import Homogenization.Geometry.TriadicPartition
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.Basic
+public import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta
+public import Homogenization.HighContrast.EntryScale.Basic
 
 /-!
 # Source labels and external analytic inputs
@@ -14,6 +16,8 @@ analytic source material.  It deliberately records metadata, not theorem
 surfaces: precise Lean statements should be added only after the corresponding
 provenance has been audited against the source.
 -/
+
+@[expose] public section
 
 namespace Homogenization.HighContrast.EntryScale
 

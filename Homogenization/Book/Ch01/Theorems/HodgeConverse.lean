@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch01.Definitions
-import Homogenization.Sobolev.Foundations.Hodge
+module
+
+public import Homogenization.Book.Ch01.Definitions
+public import Homogenization.Sobolev.Foundations.Hodge
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

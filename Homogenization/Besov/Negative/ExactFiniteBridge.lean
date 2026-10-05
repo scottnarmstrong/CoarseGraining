@@ -1,6 +1,8 @@
-import Homogenization.Besov.Duality.ProjectionLimit
-import Homogenization.Besov.Negative.ExactCirc
-import Homogenization.Besov.Negative.ExactDual
+module
+
+public import Homogenization.Besov.Duality.ProjectionLimit
+public import Homogenization.Besov.Negative.ExactCirc
+public import Homogenization.Besov.Negative.ExactDual
 
 /-!
 # Finite projected-pairing bridges for the exact Chapter 1 kernels
@@ -11,6 +13,8 @@ ordinary descendant-block means, and parent-to-block integrability transport.
 They deliberately do not identify the extended exact aggregations with the
 legacy real-valued partial norms.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

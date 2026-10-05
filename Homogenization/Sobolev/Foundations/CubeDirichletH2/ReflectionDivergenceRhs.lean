@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionParentH1Graph
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionParentH1Graph
+
+@[expose] public section
 
 namespace Homogenization
 

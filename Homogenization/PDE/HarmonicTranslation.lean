@@ -1,5 +1,7 @@
-import Homogenization.PDE.Harmonic
-import Homogenization.Sobolev.PotentialSolenoidalTranslation
+module
+
+public import Homogenization.PDE.Harmonic
+public import Homogenization.Sobolev.PotentialSolenoidalTranslation
 
 /-!
 # Translation of harmonic functions
@@ -7,6 +9,8 @@ import Homogenization.Sobolev.PotentialSolenoidalTranslation
 This file contains the PDE-level translation API for `AHarmonicFunction`.  It is
 used by both coarse-graining response identities and cube/open-cube transport.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

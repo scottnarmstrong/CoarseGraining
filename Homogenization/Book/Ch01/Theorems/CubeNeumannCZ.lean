@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch01.Definitions
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.Regularity
+module
+
+public import Homogenization.Book.Ch01.Definitions
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.Regularity
 
 /-!
 # Legacy Chapter 1 Neumann compatibility facade
@@ -9,6 +11,8 @@ This module is deliberately quarantined in
 theorem alias a downstream positive-test estimate; they are not the literal
 weak-Hessian Calderon--Zygmund statement from the manuscript.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

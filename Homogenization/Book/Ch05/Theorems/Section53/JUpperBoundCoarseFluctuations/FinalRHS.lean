@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.PairedWeakNormSquares
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.LinearProductAbsorption
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.CutoffOscillationUniform
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.RHSConversion
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.WeakNormSquareIntegrability
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.PairedWeakNormSquares
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.LinearProductAbsorption
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.CutoffOscillationUniform
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.RHSConversion
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.WeakNormSquareIntegrability
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

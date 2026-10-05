@@ -1,5 +1,9 @@
-import Homogenization.CoarseGraining.MuOperator.CoeffOperator
-import Homogenization.Sobolev.PotentialSolenoidalL2OriginCubeBridge
+module
+
+public import Homogenization.CoarseGraining.MuOperator.CoeffOperator
+public import Homogenization.Sobolev.PotentialSolenoidalL2OriginCubeBridge
+
+@[expose] public section
 
 namespace Homogenization
 

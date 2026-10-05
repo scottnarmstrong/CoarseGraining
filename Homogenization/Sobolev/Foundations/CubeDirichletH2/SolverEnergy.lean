@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.EnergyBound
-import Homogenization.Sobolev.Foundations.CubeCoerciveH1
-import Homogenization.Sobolev.Foundations.PoincareZeroTrace
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.EnergyBound
+public import Homogenization.Sobolev.Foundations.CubeCoerciveH1
+public import Homogenization.Sobolev.Foundations.PoincareZeroTrace
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -346,7 +350,7 @@ noncomputable def originCubeParentReducedSolverEnergyBoundExact
               ((3 : ℝ) ^ d * (C * (C * B)) ^ 2))))) ^
     (1 / (2 : ℝ))
 
-private noncomputable def originCubeParentReducedSolverEnergyInsideExact
+noncomputable def originCubeParentReducedSolverEnergyInsideExactDirichlet
     (d : ℕ) [NeZero d] (m : ℤ) : ℝ :=
   let Q : TriadicCube d := originCube d m
   let Qp : TriadicCube d := originCube d (m + 1)
@@ -368,9 +372,9 @@ private noncomputable def originCubeParentReducedSolverEnergyInsideExact
         ((2 : ℝ) * ((3 : ℝ) ^ d * (C * B) ^ 2) +
           (2 : ℝ) * (Kouter * ((3 : ℝ) ^ d * (C * (C * B)) ^ 2))))
 
-private theorem originCubeParentReducedSolverEnergyInsideExact_nonneg
+theorem originCubeParentReducedSolverEnergyInsideExactDirichlet_nonneg
     (d : ℕ) [NeZero d] (m : ℤ) :
-    0 ≤ originCubeParentReducedSolverEnergyInsideExact d m := by
+    0 ≤ originCubeParentReducedSolverEnergyInsideExactDirichlet d m := by
   let Q : TriadicCube d := originCube d m
   let Qp : TriadicCube d := originCube d (m + 1)
   let C : ℝ := originCubeZeroTraceH1HilbertCoerciveConstant d m
@@ -409,27 +413,27 @@ private theorem originCubeParentReducedSolverEnergyInsideExact_nonneg
       · exact mul_nonneg (by norm_num)
           (mul_nonneg hKouter_nonneg
             (mul_nonneg (by positivity) (sq_nonneg _)))
-  dsimp [originCubeParentReducedSolverEnergyInsideExact, Q, Qp, C, V, B, Kinner, Kouter]
+  dsimp [originCubeParentReducedSolverEnergyInsideExactDirichlet, Q, Qp, C, V, B, Kinner, Kouter]
   exact mul_nonneg (by norm_num) hmain_nonneg
 
 /-- The coefficient obtained by factoring the normalized forcing norm out of
 the exact Dirichlet solver-energy bound. -/
 noncomputable def originCubeParentReducedSolverEnergyConstantExact
     (d : ℕ) [NeZero d] (m : ℤ) : ℝ :=
-  (originCubeParentReducedSolverEnergyInsideExact d m) ^ (1 / (2 : ℝ))
+  (originCubeParentReducedSolverEnergyInsideExactDirichlet d m) ^ (1 / (2 : ℝ))
 
 theorem originCubeParentReducedSolverEnergyConstantExact_nonneg
     (d : ℕ) [NeZero d] (m : ℤ) :
     0 ≤ originCubeParentReducedSolverEnergyConstantExact d m := by
   unfold originCubeParentReducedSolverEnergyConstantExact
   exact Real.rpow_nonneg
-    (originCubeParentReducedSolverEnergyInsideExact_nonneg d m) _
+    (originCubeParentReducedSolverEnergyInsideExactDirichlet_nonneg d m) _
 
-private theorem originCubeParentReducedSolverEnergyInsideExact_eq_volume_mul_unit
+theorem originCubeParentReducedSolverEnergyInsideExactDirichlet_eq_volume_mul_unit
     (d : ℕ) [NeZero d] (m : ℤ) :
-    originCubeParentReducedSolverEnergyInsideExact d m =
+    originCubeParentReducedSolverEnergyInsideExactDirichlet d m =
       cubeVolume (originCube d m) *
-        originCubeParentReducedSolverEnergyInsideExact d 0 := by
+        originCubeParentReducedSolverEnergyInsideExactDirichlet d 0 := by
   let s : ℝ := (3 : ℝ) ^ m
   let C₀ : ℝ := originCubeZeroTraceH1HilbertCoerciveConstant d 0
   have hs_pos : 0 < s := by
@@ -458,7 +462,7 @@ private theorem originCubeParentReducedSolverEnergyInsideExact_eq_volume_mul_uni
   have hBsq : ((s ^ d) ^ (1 / 2 : ℝ)) ^ 2 = s ^ d := by
     rw [← Real.sqrt_eq_rpow]
     exact Real.sq_sqrt (by positivity)
-  dsimp [originCubeParentReducedSolverEnergyInsideExact]
+  dsimp [originCubeParentReducedSolverEnergyInsideExactDirichlet]
   rw [hV_m, hV_0, hC_m, hC_0, hR_m, hR_0]
   norm_num
   ring_nf
@@ -471,18 +475,18 @@ theorem originCubeParentReducedSolverEnergyConstantExact_volume_cancel
         originCubeParentReducedSolverEnergyConstantExact d m =
       originCubeParentReducedSolverEnergyConstantExact d 0 := by
   let V : ℝ := cubeVolume (originCube d m)
-  let A : ℝ := originCubeParentReducedSolverEnergyInsideExact d 0
+  let A : ℝ := originCubeParentReducedSolverEnergyInsideExactDirichlet d 0
   have hV_pos : 0 < V := by
     dsimp [V]
     exact cubeVolume_pos (originCube d m)
   have hV_nonneg : 0 ≤ V := le_of_lt hV_pos
   have hA_nonneg : 0 ≤ A := by
     dsimp [A]
-    exact originCubeParentReducedSolverEnergyInsideExact_nonneg d 0
+    exact originCubeParentReducedSolverEnergyInsideExactDirichlet_nonneg d 0
   have hinside :
-      originCubeParentReducedSolverEnergyInsideExact d m = V * A := by
+      originCubeParentReducedSolverEnergyInsideExactDirichlet d m = V * A := by
     dsimp [V, A]
-    exact originCubeParentReducedSolverEnergyInsideExact_eq_volume_mul_unit d m
+    exact originCubeParentReducedSolverEnergyInsideExactDirichlet_eq_volume_mul_unit d m
   have hV_cancel :
       (V⁻¹) ^ (1 / 2 : ℝ) * (V ^ (1 / 2 : ℝ)) = 1 := by
     rw [Real.inv_rpow hV_nonneg (1 / 2 : ℝ)]
@@ -531,21 +535,21 @@ theorem originCubeParentReducedSolverEnergyBoundExact_eq_constant_mul_cubeLpNorm
             ((2 : ℝ) * ((3 : ℝ) ^ d * (C * (B * L)) ^ 2) +
               (2 : ℝ) *
                 (Kouter * ((3 : ℝ) ^ d * (C * (C * (B * L))) ^ 2)))) =
-        originCubeParentReducedSolverEnergyInsideExact d m * L ^ 2 := by
-    dsimp [originCubeParentReducedSolverEnergyInsideExact, Q, Qp, C, V, B, L, Kinner, Kouter]
+        originCubeParentReducedSolverEnergyInsideExactDirichlet d m * L ^ 2 := by
+    dsimp [originCubeParentReducedSolverEnergyInsideExactDirichlet, Q, Qp, C, V, B, L, Kinner, Kouter]
     rw [Real.rpow_two]
     ring
   calc
     originCubeParentReducedSolverEnergyBoundExact d m F i
-        = ((originCubeParentReducedSolverEnergyInsideExact d m) * L ^ 2) ^
+        = ((originCubeParentReducedSolverEnergyInsideExactDirichlet d m) * L ^ 2) ^
             (1 / (2 : ℝ)) := by
           dsimp [originCubeParentReducedSolverEnergyBoundExact, Q, Qp, C, V, L, B,
             Kinner, Kouter]
           rw [hfactor]
-    _ = (originCubeParentReducedSolverEnergyInsideExact d m) ^ (1 / (2 : ℝ)) *
+    _ = (originCubeParentReducedSolverEnergyInsideExactDirichlet d m) ^ (1 / (2 : ℝ)) *
           (L ^ 2) ^ (1 / (2 : ℝ)) := by
           rw [Real.mul_rpow
-            (originCubeParentReducedSolverEnergyInsideExact_nonneg d m) (sq_nonneg L)]
+            (originCubeParentReducedSolverEnergyInsideExactDirichlet_nonneg d m) (sq_nonneg L)]
     _ = originCubeParentReducedSolverEnergyConstantExact d m * L := by
           unfold originCubeParentReducedSolverEnergyConstantExact
           rw [show (L ^ 2) ^ (1 / (2 : ℝ)) = L by

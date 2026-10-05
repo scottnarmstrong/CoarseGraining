@@ -1,5 +1,9 @@
-import Homogenization.CoarseGraining.BlockResponse.Equalities
-import Homogenization.CoarseGraining.MuRecovery
+module
+
+public import Homogenization.CoarseGraining.BlockResponse.Equalities
+public import Homogenization.CoarseGraining.MuRecovery
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,11 +1,15 @@
-import Homogenization.Sobolev.Truncation.ChainRule
-import Homogenization.Sobolev.Truncation.WeakGradientLimit
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.Convergence
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.WeakDerivSmoothing
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.SmoothRepresentative
-import Homogenization.Sobolev.H1.BasicLemmas
-import Mathlib.Analysis.SpecialFunctions.SmoothTransition
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+module
+
+public import Homogenization.Sobolev.Truncation.ChainRule
+public import Homogenization.Sobolev.Truncation.WeakGradientLimit
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.Convergence
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.WeakDerivSmoothing
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.SmoothRepresentative
+public import Homogenization.Sobolev.H1.BasicLemmas
+public import Mathlib.Analysis.SpecialFunctions.SmoothTransition
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+
+@[expose] public section
 
 namespace Homogenization
 

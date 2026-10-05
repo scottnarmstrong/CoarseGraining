@@ -1,5 +1,7 @@
-import Homogenization.HighContrast.Coupled.LocalEnergy.Cutoff
-import Homogenization.Sobolev.Foundations.MeanZero
+module
+
+public import Homogenization.HighContrast.Coupled.LocalEnergy.Cutoff
+public import Homogenization.Sobolev.Foundations.MeanZero
 
 /-!
 # Local block energy: the centered potentials and the test pair
@@ -11,6 +13,8 @@ the smooth test pair `(η²u, η²u*)` built from the library's smooth×`H¹` pr
 `MemH10 (η²u + η²u*)` is obtained from `η²·(v+v*−p·x) ∈ H¹₀` via
 `H10Function.mulContDiffMemLpTop`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

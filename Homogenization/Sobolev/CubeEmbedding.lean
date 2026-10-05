@@ -1,7 +1,11 @@
-import Homogenization.Sobolev.CubeEmbedding.GagliardoNirenbergSobolev
-import Homogenization.Sobolev.CubeEmbedding.Limit
-import Homogenization.Sobolev.Foundations.AxisCube
-import Homogenization.Sobolev.L2Ambient
+module
+
+public import Homogenization.Sobolev.CubeEmbedding.GagliardoNirenbergSobolev
+public import Homogenization.Sobolev.CubeEmbedding.Limit
+public import Homogenization.Sobolev.Foundations.AxisCube
+public import Homogenization.Sobolev.L2Ambient
+
+@[expose] public section
 
 namespace Homogenization
 

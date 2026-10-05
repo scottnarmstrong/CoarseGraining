@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.DescendantSummation
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimateFullDual
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.DescendantSummation
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimateFullDual
+
+@[expose] public section
 
 namespace Homogenization
 

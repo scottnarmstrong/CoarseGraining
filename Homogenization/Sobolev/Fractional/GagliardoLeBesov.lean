@@ -1,8 +1,10 @@
-import Homogenization.Sobolev.Fractional.PairCapture
-import Homogenization.Sobolev.Fractional.AssemblyPieces
-import Homogenization.Sobolev.Fractional.ENNRealBridge
-import Homogenization.Sobolev.Fractional.Constants
-import Homogenization.Sobolev.Fractional.OverlapIntegral
+module
+
+public import Homogenization.Sobolev.Fractional.PairCapture
+public import Homogenization.Sobolev.Fractional.AssemblyPieces
+public import Homogenization.Sobolev.Fractional.ENNRealBridge
+public import Homogenization.Sobolev.Fractional.Constants
+public import Homogenization.Sobolev.Fractional.OverlapIntegral
 
 /-!
 # Gagliardo-to-Besov direction of the fractional comparison
@@ -18,6 +20,8 @@ matching depth (G3, `exists_centersAtDepth_pair_mem`), splits the difference
 through the cube average (triangle inequality plus `L^p` bookkeeping), and
 resums the shells into the depth seminorms.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Gagliardo

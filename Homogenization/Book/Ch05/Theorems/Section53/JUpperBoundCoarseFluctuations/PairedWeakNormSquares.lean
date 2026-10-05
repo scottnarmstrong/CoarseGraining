@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.PairedSquares
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.PairedSquares
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

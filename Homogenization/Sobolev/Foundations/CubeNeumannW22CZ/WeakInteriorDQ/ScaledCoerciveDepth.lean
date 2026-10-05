@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeCoerciveH1
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.HessianRestrictionSum
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCoerciveH1
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.HessianRestrictionSum
+
+@[expose] public section
 
 namespace Homogenization
 

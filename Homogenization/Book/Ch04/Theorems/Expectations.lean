@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch04.Theorems.CoarseObservables
-import Homogenization.Book.Ch04.AnnealedDefinitions
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Foundation.Basic
+module
+
+public import Homogenization.Book.Ch04.Theorems.CoarseObservables
+public import Homogenization.Book.Ch04.AnnealedDefinitions
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Foundation.Basic
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

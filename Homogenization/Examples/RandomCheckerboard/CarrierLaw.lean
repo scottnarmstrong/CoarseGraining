@@ -1,7 +1,9 @@
-import Homogenization.Examples.RandomCheckerboard.Basic
-import Homogenization.Book.Ch04.Theorems.DilationLaw
-import Homogenization.Book.MainResults
-import Homogenization.CoarseGraining.ThetaEllipticity
+module
+
+public import Homogenization.Examples.RandomCheckerboard.Basic
+public import Homogenization.Book.Ch04.Theorems.DilationLaw
+public import Homogenization.Book.MainResults
+public import Homogenization.CoarseGraining.ThetaEllipticity
 
 /-!
 # The Bernoulli checkerboard carrier law and its instances
@@ -22,6 +24,8 @@ instance stack on the carrier:
 * the triadically scaled family (`scaledLaw`, `checkerboardSetup`) and the
   public quenched-comparison corollary.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Examples

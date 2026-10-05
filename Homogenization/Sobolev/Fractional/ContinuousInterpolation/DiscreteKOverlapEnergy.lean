@@ -1,7 +1,9 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.ConcreteAveraging
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapPoincare
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.ContinuousDiscreteKBridge
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.OverlapGagliardoBridge
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.ConcreteAveraging
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapPoincare
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.ContinuousDiscreteKBridge
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.OverlapGagliardoBridge
 
 /-!
 # Extended discrete K-functional energy and concrete overlap comparison
@@ -10,6 +12,8 @@ The discrete K-functional energy is the `ℝ≥0∞` supremum of its finite squa
 partial seminorms.  Both comparison directions below are lifted directly from
 proved finite-depth averaging and overlap-Poincare estimates.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

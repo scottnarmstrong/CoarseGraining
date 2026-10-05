@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Foundation
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Response
+module
+
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Foundation
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Response
+
+@[expose] public section
 
 namespace Homogenization
 

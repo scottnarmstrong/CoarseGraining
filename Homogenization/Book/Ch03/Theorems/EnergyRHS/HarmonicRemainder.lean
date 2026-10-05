@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.EnergyRHS.DirichletSplit
+module
+
+public import Homogenization.Book.Ch03.Theorems.EnergyRHS.DirichletSplit
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

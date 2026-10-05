@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletCorrectedWeakFlux
-import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
-import Homogenization.Deterministic.WeakFluxRHS.CorrectorEnergyAveraged
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletCorrectedWeakFlux
+public import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
+public import Homogenization.Deterministic.WeakFluxRHS.CorrectorEnergyAveraged
+
+@[expose] public section
 
 namespace Homogenization
 

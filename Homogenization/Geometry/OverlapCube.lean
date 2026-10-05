@@ -1,4 +1,8 @@
-import Homogenization.Geometry.CubeMeasure
+module
+
+public import Homogenization.Geometry.CubeMeasure
+
+@[expose] public section
 
 namespace Homogenization
 

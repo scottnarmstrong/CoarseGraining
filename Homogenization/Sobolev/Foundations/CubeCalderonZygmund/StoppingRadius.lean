@@ -1,7 +1,11 @@
-import Homogenization.Geometry.CubeMetric
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambda
-import Mathlib.MeasureTheory.Integral.DominatedConvergence
-import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+module
+
+public import Homogenization.Geometry.CubeMetric
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambda
+public import Mathlib.MeasureTheory.Integral.DominatedConvergence
+public import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+
+@[expose] public section
 
 namespace Homogenization
 

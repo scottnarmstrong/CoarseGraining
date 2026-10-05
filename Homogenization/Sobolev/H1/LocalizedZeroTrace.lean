@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.H1.Algebra.Membership
+module
+
+public import Homogenization.Sobolev.H1.Algebra.Membership
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.BlockMatrixField
+module
+
+public import Homogenization.Internal.Ch02.BlockMatrixField
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

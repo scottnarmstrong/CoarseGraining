@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.FinalAbsorption
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.FinalAbsorption
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

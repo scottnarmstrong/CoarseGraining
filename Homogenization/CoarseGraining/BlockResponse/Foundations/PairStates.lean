@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.BlockResponse.Foundations.IntegrabilityFamily
+module
+
+public import Homogenization.CoarseGraining.BlockResponse.Foundations.IntegrabilityFamily
+
+@[expose] public section
 
 namespace Homogenization
 

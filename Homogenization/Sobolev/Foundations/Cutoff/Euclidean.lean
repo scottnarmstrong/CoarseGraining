@@ -1,8 +1,12 @@
-import Homogenization.Ambient.Euclidean
-import Homogenization.Geometry.Translation
-import Mathlib.Analysis.Calculus.ContDiff.Operations
-import Mathlib.Basic.Real.Pointwise
-import Mathlib.Topology.MetricSpace.Pseudo.Pi
+module
+
+public import Homogenization.Ambient.Euclidean
+public import Homogenization.Geometry.Translation
+public import Mathlib.Analysis.Calculus.ContDiff.Operations
+public import Mathlib.Basic.Real.Pointwise
+public import Mathlib.Topology.MetricSpace.Pseudo.Pi
+
+@[expose] public section
 
 noncomputable section
 

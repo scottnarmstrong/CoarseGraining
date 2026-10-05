@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.EnergyDuality
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.FiniteLpAboveTwo
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpBelowTwo
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.EnergyDuality
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.FiniteLpAboveTwo
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpBelowTwo
 
 /-!
 # Below-two Neumann cube Calderón--Zygmund estimate
@@ -9,6 +11,8 @@ This file proves the adjoint-duality branch for a supplied mean-zero Neumann
 solution with only `L^p` datum, then combines it with the energy and good-`λ`
 branches to cover every finite exponent.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge.Contracts
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionSharpKernel
-import Homogenization.Deterministic.WeakNormInterfacesComponentwise
+module
+
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge.Contracts
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionSharpKernel
+public import Homogenization.Deterministic.WeakNormInterfacesComponentwise
+
+@[expose] public section
 
 namespace Homogenization
 

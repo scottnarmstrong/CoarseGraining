@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceAveragePackaging
-import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.MatrixTools
-import Mathlib.Algebra.Order.Chebyshev
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceAveragePackaging
+public import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.MatrixTools
+public import Mathlib.Algebra.Order.Chebyshev
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

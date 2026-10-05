@@ -1,10 +1,12 @@
-import Homogenization.HighContrast.Coupled.Stampacchia.Iteration
-import Homogenization.HighContrast.Coupled.Stampacchia.LevelRecursion
-import Homogenization.HighContrast.Coupled.Stampacchia.Admissibility
-import Homogenization.Sobolev.Truncation.Basic
-import Homogenization.Sobolev.Truncation.MatchedTrace
-import Homogenization.Sobolev.MatchedPair
-import Homogenization.Sobolev.CubeEmbedding
+module
+
+public import Homogenization.HighContrast.Coupled.Stampacchia.Iteration
+public import Homogenization.HighContrast.Coupled.Stampacchia.LevelRecursion
+public import Homogenization.HighContrast.Coupled.Stampacchia.Admissibility
+public import Homogenization.Sobolev.Truncation.Basic
+public import Homogenization.Sobolev.Truncation.MatchedTrace
+public import Homogenization.Sobolev.MatchedPair
+public import Homogenization.Sobolev.CubeEmbedding
 
 /-!
 # The generic one-sided De Giorgi core
@@ -20,6 +22,8 @@ inequality (`F4`), Chebyshev (`real_chebyshev_level`), the squared level recursi
 (`sq_level_recursion_of_le`), the admissibility algebra (`deGiorgi_admissible`)
 and the iteration engine (`deGiorgi_levelVolume_tendsto_zero`).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.EnergyDuality
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.ReflectedOneLevelTail
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.EnergyDuality
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.ReflectedOneLevelTail
 
 /-!
 # Centered-cube Neumann Calderón--Zygmund estimates above two
@@ -9,6 +11,8 @@ This file closes the reflected Neumann good-`lambda` estimate by layer-cake
 integration.  Its public endpoint exposes only the supplied mean-zero weak
 solution and the normalized finite-exponent datum.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

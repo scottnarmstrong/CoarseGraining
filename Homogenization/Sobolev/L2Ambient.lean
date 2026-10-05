@@ -1,11 +1,15 @@
-import Homogenization.Ambient.Basic
-import Homogenization.Ambient.HilbertFinite
-import Mathlib.Analysis.InnerProductSpace.Dual
-import Mathlib.MeasureTheory.Function.L2Space
-import Mathlib.MeasureTheory.Constructions.Pi
-import Mathlib.MeasureTheory.Function.LpSpace.Basic
-import Mathlib.MeasureTheory.Function.LpSpace.Indicator
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+module
+
+public import Homogenization.Ambient.Basic
+public import Homogenization.Ambient.HilbertFinite
+public import Mathlib.Analysis.InnerProductSpace.Dual
+public import Mathlib.MeasureTheory.Function.L2Space
+public import Mathlib.MeasureTheory.Constructions.Pi
+public import Mathlib.MeasureTheory.Function.LpSpace.Basic
+public import Mathlib.MeasureTheory.Function.LpSpace.Indicator
+public import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

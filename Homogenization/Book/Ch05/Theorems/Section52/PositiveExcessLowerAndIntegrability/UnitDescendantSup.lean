@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessUpper
-import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.PowIntegrable
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessUpper
+public import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.PowIntegrable
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

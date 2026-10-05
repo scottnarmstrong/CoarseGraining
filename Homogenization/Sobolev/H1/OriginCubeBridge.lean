@@ -1,18 +1,22 @@
-import Homogenization.Sobolev.H1.BasicLemmas
-import Homogenization.Geometry.OriginCubeBoundaryPush
-import Homogenization.Geometry.OriginCubeMeasureBridge
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.MeasureTheory.Integral.DominatedConvergence
-import Mathlib.Order.Filter.AtTopBot.Basic
+module
+
+public import Homogenization.Sobolev.H1.BasicLemmas
+public import Homogenization.Geometry.OriginCubeBoundaryPush
+public import Homogenization.Geometry.OriginCubeMeasureBridge
+public import Mathlib.Analysis.SpecificLimits.Basic
+public import Mathlib.MeasureTheory.Integral.DominatedConvergence
+public import Mathlib.Order.Filter.AtTopBot.Basic
+
+@[expose] public section
 
 namespace Homogenization
 
 open scoped Topology
 
-private def diagonalShift {d : ℕ} (ε : ℝ) : Vec d :=
+def diagonalShift {d : ℕ} (ε : ℝ) : Vec d :=
   fun _ => ε
 
-private theorem volume_cubeSet_originCube_lt_top {d : ℕ} (n : ℤ) :
+theorem volume_cubeSet_originCube_lt_top {d : ℕ} (n : ℤ) :
     MeasureTheory.volume (cubeSet (originCube d n)) < ⊤ := by
   rw [lt_top_iff_ne_top]
   intro htop
@@ -21,13 +25,13 @@ private theorem volume_cubeSet_originCube_lt_top {d : ℕ} (n : ℤ) :
   rw [volume_cubeSet_toReal] at hzero
   exact (ne_of_gt (cubeVolume_pos (originCube d n))) hzero
 
-private theorem volume_openCubeSet_originCube_lt_top {d : ℕ} (n : ℤ) :
+theorem volume_openCubeSet_originCube_lt_top {d : ℕ} (n : ℤ) :
     MeasureTheory.volume (openCubeSet (originCube d n)) < ⊤ := by
   exact lt_of_le_of_lt
     (MeasureTheory.measure_mono (openCubeSet_subset_cubeSet (originCube d n)))
     (volume_cubeSet_originCube_lt_top (d := d) n)
 
-private theorem dist_sub_diagonalShift_le {d : ℕ} (x : Vec d) {ε : ℝ} (hε : 0 ≤ ε) :
+theorem dist_sub_diagonalShift_le {d : ℕ} (x : Vec d) {ε : ℝ} (hε : 0 ≤ ε) :
     dist (x - diagonalShift (d := d) ε) x ≤ ε := by
   rw [dist_pi_le_iff hε]
   intro i
@@ -35,7 +39,7 @@ private theorem dist_sub_diagonalShift_le {d : ℕ} (x : Vec d) {ε : ℝ} (hε 
     simp [diagonalShift]
   rw [Real.dist_eq, hcoord, abs_neg, abs_of_nonneg hε]
 
-private theorem exists_abs_bound_of_continuous_of_hasCompactSupport {d : ℕ} {f : Vec d → ℝ}
+theorem exists_abs_bound_of_continuous_of_hasCompactSupport {d : ℕ} {f : Vec d → ℝ}
     (hf_cont : Continuous f) (hf_compact : HasCompactSupport f) :
     ∃ C : ℝ, ∀ x, |f x| ≤ C := by
   obtain ⟨C, hC⟩ := hf_compact.exists_bound_of_continuous hf_cont
@@ -43,7 +47,7 @@ private theorem exists_abs_bound_of_continuous_of_hasCompactSupport {d : ℕ} {f
   intro x
   simpa [Real.norm_eq_abs] using hC x
 
-private theorem tendsto_precomp_sub_diagonalShift {d : ℕ} (x : Vec d) (ε₀ : ℝ) :
+theorem tendsto_precomp_sub_diagonalShift {d : ℕ} (x : Vec d) (ε₀ : ℝ) :
     Filter.Tendsto
       (fun n : ℕ => x - diagonalShift (d := d) (ε₀ / ((n : ℝ) + 2)))
       Filter.atTop (𝓝 x) := by
@@ -61,7 +65,7 @@ private theorem tendsto_precomp_sub_diagonalShift {d : ℕ} (x : Vec d) (ε₀ :
   intro i
   simpa [diagonalShift] using tendsto_const_nhds.sub hε
 
-private theorem tendsto_setIntegral_mul_precomp_subRight_of_memL2On
+theorem tendsto_setIntegral_mul_precomp_subRight_of_memL2On
     {d : ℕ} {U : Set (Vec d)} [MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict U)]
     {f ψ : Vec d → ℝ} (hfL2 : MemL2On U f) (hψ_cont : Continuous ψ)
     (hψ_compact : HasCompactSupport ψ) (ε₀ : ℝ) :

@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.WeakFluxRHS.AbsorbedNoteConstants
-import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
+module
+
+public import Homogenization.Deterministic.WeakFluxRHS.AbsorbedNoteConstants
+public import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
+
+@[expose] public section
 
 namespace Homogenization
 

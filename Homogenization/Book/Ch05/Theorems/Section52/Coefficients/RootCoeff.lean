@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section52.GeometrySeries
-import Homogenization.Book.Ch05.Theorems.Section52.Coefficients.Constants
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section52.GeometrySeries
+public import Homogenization.Book.Ch05.Theorems.Section52.Coefficients.Constants
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

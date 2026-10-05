@@ -1,12 +1,16 @@
-import Homogenization.Book.Ch04.PartitionAverageConstants
-import Homogenization.Book.Ch04.SourceLaw
-import Homogenization.Book.Ch04.TriadicCubeTranslation
+module
+
+public import Homogenization.Book.Ch04.PartitionAverageConstants
+public import Homogenization.Book.Ch04.SourceLaw
+public import Homogenization.Book.Ch04.TriadicCubeTranslation
 
 /-!
 # Source-carrier partition-average definitions
 
 The exact coarse-source counterparts of the origin-cube partition averages.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

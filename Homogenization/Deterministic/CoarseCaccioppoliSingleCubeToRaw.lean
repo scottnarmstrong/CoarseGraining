@@ -1,11 +1,13 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.QuantitativeCutoffInputs
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.FinalWrappers
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicQuantitativeCutoff
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicCoefficientBounds
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicScalarControls
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicGradientControls
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicCanonicalGradient
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.QuantitativeCutoffInputs
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.FinalWrappers
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicQuantitativeCutoff
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicCoefficientBounds
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicScalarControls
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicGradientControls
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicCanonicalGradient
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal
 
 /-!
 # From single-cube Caccioppoli to the radius raw estimate
@@ -13,3 +15,5 @@ import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFi
 Compatibility wrapper for the single-cube-to-raw subdirectory.  The development
 now lives in `Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.*`.
 -/
+
+@[expose] public section

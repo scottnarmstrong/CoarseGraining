@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.SigmaLeBCoarse
+module
+
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.SigmaLeBCoarse
+
+@[expose] public section
 
 namespace Homogenization
 

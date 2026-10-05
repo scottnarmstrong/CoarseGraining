@@ -1,8 +1,12 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.RadiusInputs
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.QuantitativeCutoff
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.WeakTesting
-import Homogenization.Deterministic.CoarseCaccioppoli.TriadicScale
-import Homogenization.Besov.Poincare.Projection
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.RadiusInputs
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.QuantitativeCutoff
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.WeakTesting
+public import Homogenization.Deterministic.CoarseCaccioppoli.TriadicScale
+public import Homogenization.Besov.Poincare.Projection
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAverageGeometric
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceBudgetAlgebra
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAverageGeometric
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceBudgetAlgebra
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,9 @@
-import Homogenization.Geometry.TriadicCube
-import Homogenization.Probability.Scalarization
+module
+
+public import Homogenization.Geometry.TriadicCube
+public import Homogenization.Probability.Scalarization
+
+@[expose] public section
 
 namespace Homogenization
 

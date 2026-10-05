@@ -1,7 +1,11 @@
-import Homogenization.Probability.IndependentSums.WeakOrlicz
-import Homogenization.Probability.LocalObservable
-import Mathlib.Analysis.Calculus.ContDiff.Operations
-import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
+module
+
+public import Homogenization.Probability.IndependentSums.WeakOrlicz
+public import Homogenization.Probability.LocalObservable
+public import Mathlib.Analysis.Calculus.ContDiff.Operations
+public import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
+
+@[expose] public section
 
 open scoped Pointwise
 

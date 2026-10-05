@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.AbsoluteBadScaleTail
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleMinimal
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.AbsoluteBadScaleTail
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleMinimal
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

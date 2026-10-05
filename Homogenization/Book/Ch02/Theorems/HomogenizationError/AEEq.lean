@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.Theorems.HomogenizationError.InfinityOne
+module
+
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError.InfinityOne
+
+@[expose] public section
 
 open scoped BigOperators MatrixOrder Matrix.Norms.Frobenius
 

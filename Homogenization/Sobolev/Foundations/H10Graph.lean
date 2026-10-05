@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.H1Graph
-import Homogenization.Sobolev.Foundations.PoincareZeroTrace
-import Mathlib.Analysis.Normed.Operator.Banach
+module
+
+public import Homogenization.Sobolev.Foundations.H1Graph
+public import Homogenization.Sobolev.Foundations.PoincareZeroTrace
+public import Mathlib.Analysis.Normed.Operator.Banach
+
+@[expose] public section
 
 namespace Homogenization
 

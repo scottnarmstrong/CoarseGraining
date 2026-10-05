@@ -1,6 +1,8 @@
-import Homogenization.Examples.Periodic.PeriodicConcreteComparison
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.FaceVanishCollar
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CubeVectorH1
+module
+
+public import Homogenization.Examples.Periodic.PeriodicConcreteComparison
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.FaceVanishCollar
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CubeVectorH1
 
 /-!
 # Classical flux periodic comparison corollary
@@ -23,6 +25,8 @@ theorem against the proof below.  See `Audit/README.md` for the comparator map.
 (`PeriodicConcreteComparison`, `Audit/PeriodicConcrete`) → *classical data (this
 file)*.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Examples

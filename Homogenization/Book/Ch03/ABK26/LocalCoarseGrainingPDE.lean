@@ -1,8 +1,10 @@
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingDefinitions
-import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
-import Homogenization.Deterministic.WeakNormInterfacesComponentwise
-import Homogenization.PDE.EnergyIdentities
-import Homogenization.Sobolev.W1p.ZeroExtensionGraph
+module
+
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingDefinitions
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
+public import Homogenization.Deterministic.WeakNormInterfacesComponentwise
+public import Homogenization.PDE.EnergyIdentities
+public import Homogenization.Sobolev.W1p.ZeroExtensionGraph
 
 /-!
 # Local coarse-graining PDE bridges
@@ -12,6 +14,8 @@ assumption to the internal carriers used by local coarse-graining estimates.
 The public statements retain `CoeffOn`; pointwise coefficient representatives
 are confined to the private bridge to the legacy weak-solution predicate.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

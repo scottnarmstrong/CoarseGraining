@@ -1,7 +1,11 @@
-import Homogenization.Sobolev.Foundations.CubeReflection.Reflections
-import Homogenization.Sobolev.Foundations.CubeReflection.Derivatives
-import Homogenization.Sobolev.WeakDerivatives
-import Mathlib.Analysis.Calculus.FDeriv.Pi
+module
+
+public import Homogenization.Sobolev.Foundations.CubeReflection.Reflections
+public import Homogenization.Sobolev.Foundations.CubeReflection.Derivatives
+public import Homogenization.Sobolev.WeakDerivatives
+public import Mathlib.Analysis.Calculus.FDeriv.Pi
+
+@[expose] public section
 
 namespace Homogenization
 

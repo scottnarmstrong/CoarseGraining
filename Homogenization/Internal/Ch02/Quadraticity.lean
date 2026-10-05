@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch02.Theorems.QuadraticityDefinitions
-import Homogenization.Internal.Ch02.GradientLinearity
-import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas.BasicVariation
+module
+
+public import Homogenization.Book.Ch02.Theorems.QuadraticityDefinitions
+public import Homogenization.Internal.Ch02.GradientLinearity
+public import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas.BasicVariation
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

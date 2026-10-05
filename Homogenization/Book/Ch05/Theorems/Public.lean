@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationQuenched
-import Homogenization.Book.Ch05.Theorems.Section57.UniformHomogenizationQuenched
-import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationAssemblyRHS
-import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationAssemblyEndpoint
-import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationAssemblyOptimized
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationQuenched
+public import Homogenization.Book.Ch05.Theorems.Section57.UniformHomogenizationQuenched
+public import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationAssemblyRHS
+public import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationAssemblyEndpoint
+public import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationAssemblyOptimized
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

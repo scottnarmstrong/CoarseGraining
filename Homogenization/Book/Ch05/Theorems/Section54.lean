@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole
-import Homogenization.Book.Ch05.Theorems.Section54.GoodScale
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole
+public import Homogenization.Book.Ch05.Theorems.Section54.GoodScale
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

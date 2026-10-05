@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.WeakDerivatives
-import Mathlib.Topology.Order.OrderClosed
-import Mathlib.Data.Fin.Tuple.Basic
+module
+
+public import Homogenization.Sobolev.WeakDerivatives
+public import Mathlib.Topology.Order.OrderClosed
+public import Mathlib.Data.Fin.Tuple.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

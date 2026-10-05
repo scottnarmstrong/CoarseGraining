@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.GeometricSum
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastJBound.Preliminaries
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.GeometricSum
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastJBound.Preliminaries
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

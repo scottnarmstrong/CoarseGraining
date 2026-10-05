@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.EnergyRHS.Corrector
+module
+
+public import Homogenization.Book.Ch03.Theorems.EnergyRHS.Corrector
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

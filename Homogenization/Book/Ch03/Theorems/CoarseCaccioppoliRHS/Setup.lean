@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch01.Theorems.MultiscalePoincare
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoli
-import Homogenization.Book.Ch03.Theorems.EnergyRHS
+module
+
+public import Homogenization.Book.Ch01.Theorems.MultiscalePoincare
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoli
+public import Homogenization.Book.Ch03.Theorems.EnergyRHS
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

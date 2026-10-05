@@ -1,4 +1,6 @@
-import Homogenization.HighContrast.Coupled.LocalEnergy.Identity
+module
+
+public import Homogenization.HighContrast.Coupled.LocalEnergy.Identity
 
 /-!
 # Local block energy: the bulk and cutoff estimates
@@ -13,6 +15,8 @@ absorbed against the energy density, following `e.local.block.bulk` and
 
 where `M² = Θ|p|² + |q|²`.  No `EuclideanSpace`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

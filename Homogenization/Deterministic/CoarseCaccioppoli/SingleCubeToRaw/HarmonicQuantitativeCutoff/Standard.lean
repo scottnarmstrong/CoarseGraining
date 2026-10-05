@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.FinalWrappers
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.FinalWrappers
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas.CanonicalBasic
+module
+
+public import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas.CanonicalBasic
+
+@[expose] public section
 
 namespace Homogenization
 

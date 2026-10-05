@@ -1,4 +1,8 @@
-import Homogenization.Geometry.OverlapCube
+module
+
+public import Homogenization.Geometry.OverlapCube
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,9 +1,13 @@
-import Homogenization.Geometry.ConvexDomain
-import Homogenization.Geometry.TriadicPartition
-import Homogenization.Multiscale.NormalizedNorms
-import Homogenization.Sobolev.H1.Definitions
-import Homogenization.Sobolev.L2Ambient
-import Mathlib.MeasureTheory.SpecificCodomains.Pi
+module
+
+public import Homogenization.Geometry.ConvexDomain
+public import Homogenization.Geometry.TriadicPartition
+public import Homogenization.Multiscale.NormalizedNorms
+public import Homogenization.Sobolev.H1.Definitions
+public import Homogenization.Sobolev.L2Ambient
+public import Mathlib.MeasureTheory.SpecificCodomains.Pi
+
+@[expose] public section
 
 namespace Homogenization
 

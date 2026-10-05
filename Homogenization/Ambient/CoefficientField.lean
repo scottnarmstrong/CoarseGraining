@@ -1,8 +1,12 @@
-import Homogenization.Ambient.BlockMatrix
-import Homogenization.Sobolev.L2Ambient
-import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
-import Mathlib.MeasureTheory.Constructions.Pi
-import Mathlib.MeasureTheory.SpecificCodomains.Pi
+module
+
+public import Homogenization.Ambient.BlockMatrix
+public import Homogenization.Sobolev.L2Ambient
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import Mathlib.MeasureTheory.Constructions.Pi
+public import Mathlib.MeasureTheory.SpecificCodomains.Pi
+
+@[expose] public section
 
 namespace Homogenization
 

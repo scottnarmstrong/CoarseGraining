@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.DepthWeightAlgebra
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.DepthWeightAlgebra
+
+@[expose] public section
 
 namespace Homogenization
 

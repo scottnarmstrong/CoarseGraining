@@ -1,4 +1,6 @@
-import Mathlib
+module
+
+public import Mathlib
 
 /-!
 # Statement-level audit vocabulary for the `PeriodicGeneral` comparator
@@ -26,6 +28,8 @@ imports this file and adds the private bridges.
 Every definition, structure, instance and docstring below appears character for
 character as in the challenge.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace StatementAudit

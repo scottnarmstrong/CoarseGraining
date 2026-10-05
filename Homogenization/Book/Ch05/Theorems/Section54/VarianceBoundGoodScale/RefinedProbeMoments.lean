@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ProbeMomentCompression
-import Homogenization.Book.Ch04.Theorems.MomentFactorBounds.FactorBounds
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ProbeMomentCompression
+public import Homogenization.Book.Ch04.Theorems.MomentFactorBounds.FactorBounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

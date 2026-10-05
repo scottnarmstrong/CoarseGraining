@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.PotentialSolenoidalL2
-import Homogenization.Sobolev.Foundations.H10Graph
+module
+
+public import Homogenization.Sobolev.PotentialSolenoidalL2
+public import Homogenization.Sobolev.Foundations.H10Graph
+
+@[expose] public section
 
 namespace Homogenization
 

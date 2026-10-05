@@ -1,4 +1,6 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.Compatibility
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.Compatibility
 
 /-!
 # Coarse Poincare RHS local recurrence compatibility wrapper
@@ -6,3 +8,5 @@ import Homogenization.Deterministic.CoarsePoincareRHS.Compatibility
 The implementation has been split into the
 `Homogenization.Deterministic.CoarsePoincareRHS.*` submodules.
 -/
+
+@[expose] public section

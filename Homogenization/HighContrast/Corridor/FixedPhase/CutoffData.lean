@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.Cutoff.Box
-import Homogenization.HighContrast.Corridor.FixedPhase.Resample
+module
+
+public import Homogenization.Sobolev.Foundations.Cutoff.Box
+public import Homogenization.HighContrast.Corridor.FixedPhase.Resample
 
 /-!
 # The per-core cutoff datum
@@ -18,6 +20,8 @@ is finite because the gradient is supported in the (closed, bounded) enlargement
 `Set.Icc (coreLo − ℓ) (coreHi + ℓ)`: off that enlargement `η` vanishes on an open
 set, so its Fréchet derivative is zero there.
 -/
+
+@[expose] public section
 
 open Homogenization MeasureTheory
 open scoped BigOperators

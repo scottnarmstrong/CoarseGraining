@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
-import Mathlib.MeasureTheory.Function.ContinuousMapDense
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
+public import Mathlib.MeasureTheory.Function.ContinuousMapDense
 
 /-!
 # Bounded `L² ∩ Lᵖ` approximation of cube data
@@ -8,6 +10,8 @@ Every finite-exponent cube datum admits bounded continuous approximants on the
 same normalized cube measure.  Boundedness supplies the additional `L²`
 membership required by the supplied-solution Calderón--Zygmund theorem.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -18,14 +22,14 @@ noncomputable section
 
 namespace CubeCalderonZygmund
 
-private noncomputable def boundedApproximation
+noncomputable def boundedApproximation
     {d : ℕ} {Q : TriadicCube d} {q : FiniteLpExponent}
     (h : CubeEuclideanLpField Q q) (n : ℕ) :
     BoundedContinuousFunction (Vec d) (HilbertVec d) :=
   Classical.choose (h.euclideanMemLp.exists_boundedContinuous_eLpNorm_sub_le
     q.lt_top.ne (ε := ((n : ℝ≥0∞) + 1)⁻¹) (by simp))
 
-private theorem boundedApproximation_memLp
+theorem boundedApproximation_memLp
     {d : ℕ} {Q : TriadicCube d} {q : FiniteLpExponent}
     (h : CubeEuclideanLpField Q q) (n : ℕ) :
     MemLp (boundedApproximation h n) q.exponent (normalizedCubeMeasure Q) :=
@@ -40,7 +44,7 @@ private theorem eLpNorm_sub_boundedApproximation_le
   (Classical.choose_spec (h.euclideanMemLp.exists_boundedContinuous_eLpNorm_sub_le
     q.lt_top.ne (ε := ((n : ℝ≥0∞) + 1)⁻¹) (by simp))).1
 
-private theorem boundedApproximation_memLp_two
+theorem boundedApproximation_memLp_two
     {d : ℕ} {Q : TriadicCube d} {q : FiniteLpExponent}
     (h : CubeEuclideanLpField Q q) (n : ℕ) :
     MemLp (boundedApproximation h n) 2 (normalizedCubeMeasure Q) := by

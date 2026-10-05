@@ -1,7 +1,9 @@
-import Homogenization.Sobolev.CubeEmbedding.Extension
-import Homogenization.Sobolev.CubeEmbedding.FoldNormFiniteP
-import Homogenization.Sobolev.Foundations.PoincareW1p.ConvexApproxTendsto
-import Mathlib.MeasureTheory.Function.LpSpace.Complete
+module
+
+public import Homogenization.Sobolev.CubeEmbedding.Extension
+public import Homogenization.Sobolev.CubeEmbedding.FoldNormFiniteP
+public import Homogenization.Sobolev.Foundations.PoincareW1p.ConvexApproxTendsto
+public import Mathlib.MeasureTheory.Function.LpSpace.Complete
 
 /-!
 # Finite-`p` even-fold extension on an axis box
@@ -11,6 +13,8 @@ approximants are cut off outside the tripled box, transported by the fold, and
 closed using finite-exponent Hölder pairings against compactly supported test
 functions.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -24,7 +28,7 @@ variable {d : ℕ}
 private theorem finiteLpExponent_ne_zero' (p : FiniteLpExponent) : p.exponent ≠ 0 :=
   (zero_lt_one.trans p.one_lt).ne'
 
-private theorem tendsto_eLpNorm_convexApproxSmoothW1p {U : Set (Vec d)}
+theorem tendsto_eLpNorm_convexApproxSmoothW1p {U : Set (Vec d)}
     (hU : IsOpenBoundedConvexDomain U) (p : FiniteLpExponent)
     (u : W1pFunction U p.exponent) {x0 : Vec d} {r : ℝ}
     (hball : Metric.closedBall x0 r ⊆ U) (hr : 0 < r) :
@@ -74,7 +78,7 @@ private theorem tendsto_eLpNorm_convexApproxSmoothW1p {U : Set (Vec d)}
     W1pFunction.ofContDiffOnIsOpenBoundedConvexDomain,
     W1pFunction.ofContDiffOnIsSobolevRegularDomain]
 
-private theorem tendsto_eLpNorm_grad_convexApproxSmoothW1p {U : Set (Vec d)}
+theorem tendsto_eLpNorm_grad_convexApproxSmoothW1p {U : Set (Vec d)}
     (hU : IsOpenBoundedConvexDomain U) (p : FiniteLpExponent)
     (u : W1pFunction U p.exponent) {x0 : Vec d} {r : ℝ}
     (hball : Metric.closedBall x0 r ⊆ U) (hr : 0 < r) (i : Fin d) :
@@ -133,7 +137,7 @@ private theorem tendsto_eLpNorm_grad_convexApproxSmoothW1p {U : Set (Vec d)}
     W1pFunction.ofContDiffOnIsOpenBoundedConvexDomain,
     W1pFunction.ofContDiffOnIsSobolevRegularDomain]
 
-private theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp
+private theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp_fold
     {U : Set (Vec d)} (p : FiniteLpExponent) {h : Vec d → ℝ}
     {f : ℕ → Vec d → ℝ} {g : Vec d → ℝ}
     (hh : MemLp h p.conjugate.exponent (volume.restrict U))
@@ -196,7 +200,7 @@ private theorem tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp
       apply ENNReal.toReal_mono _ hHolder
       exact ENNReal.mul_ne_top ((hf n).sub hg).eLpNorm_lt_top.ne hh.eLpNorm_lt_top.ne
 
-private theorem HasWeakPartialDerivOn.of_tendsto_eLpNorm_finiteLp
+theorem HasWeakPartialDerivOn.of_tendsto_eLpNorm_finiteLp_fold
     {U : Set (Vec d)} (p : FiniteLpExponent) {i : Fin d}
     {u gi : Vec d → ℝ} {u_n g_n : ℕ → Vec d → ℝ}
     (hu : MemLp u p.exponent (volume.restrict U))
@@ -228,8 +232,8 @@ private theorem HasWeakPartialDerivOn.of_tendsto_eLpNorm_finiteLp
     exact (hcont.memLp_of_hasCompactSupport hcs).restrict U
   have hφmem : MemLp φ p.conjugate.exponent (volume.restrict U) :=
     (hφ.continuous.memLp_of_hasCompactSupport hφ_compact).restrict U
-  have hlhs := tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp p hDφ hu_n hu htend_u
-  have hrhs := tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp p hφmem hg_n hgi htend_g
+  have hlhs := tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp_fold p hDφ hu_n hu htend_u
+  have hrhs := tendsto_setIntegral_mul_of_tendsto_eLpNorm_finiteLp_fold p hφmem hg_n hgi htend_g
   have heq_n : ∀ n,
       (∫ x in U, u_n n x * (fderiv ℝ φ x) (basisVec i) ∂volume)
         = -(∫ x in U, g_n n x * φ x ∂volume) :=
@@ -242,7 +246,7 @@ private theorem HasWeakPartialDerivOn.of_tendsto_eLpNorm_finiteLp
     rw [heq_n n]
   exact tendsto_nhds_unique hlhs' hrhs.neg
 
-private theorem HasWeakGradientOn.of_tendsto_eLpNorm_finiteLp
+theorem HasWeakGradientOn.of_tendsto_eLpNorm_finiteLp_fold
     {U : Set (Vec d)} (p : FiniteLpExponent)
     {u : Vec d → ℝ} {Du : Vec d → Vec d}
     {u_n : ℕ → Vec d → ℝ} {Du_n : ℕ → Vec d → Vec d}
@@ -259,7 +263,7 @@ private theorem HasWeakGradientOn.of_tendsto_eLpNorm_finiteLp
       atTop (nhds 0)) :
     HasWeakGradientOn U u Du := by
   intro i
-  exact HasWeakPartialDerivOn.of_tendsto_eLpNorm_finiteLp p hu (hDu i)
+  exact HasWeakPartialDerivOn.of_tendsto_eLpNorm_finiteLp_fold p hu (hDu i)
     hu_n (fun n => hDu_n n i) (fun n => hweak n i) htend_u (htend_Du i)
 
 /-- Data of the finite-`p` even-fold extension. -/
@@ -277,7 +281,7 @@ structure FoldExtensionFiniteP (lo hi : Vec d) (p : FiniteLpExponent)
       ≤ ((3 : ℝ≥0∞) ^ d) ^ (1 / p.exponent.toReal) *
         eLpNorm (fun x => u.grad x i) p.exponent (volume.restrict (Box lo hi))
 
-private theorem finiteLpExponent_toReal_pos' (p : FiniteLpExponent) :
+theorem finiteLpExponent_toReal_pos' (p : FiniteLpExponent) :
     0 < p.exponent.toReal :=
   ENNReal.toReal_pos (finiteLpExponent_ne_zero' p) p.lt_top.ne
 
@@ -516,7 +520,7 @@ def foldExtensionFiniteP {m : ℕ} (lo hi : Vec (m + 1)) (hlt : ∀ k, lo k < hi
           grad := fun x i => gi i (Fold lo hi x) * foldSign (lo i) (hi i) (x i)
           memLp := hEu_mem
           gradMemLp := hEu_grad_mem
-          hasWeakGradient := HasWeakGradientOn.of_tendsto_eLpNorm_finiteLp p
+          hasWeakGradient := HasWeakGradientOn.of_tendsto_eLpNorm_finiteLp_fold p
             hEu_mem hEu_grad_mem hEn_mem hDEn_mem hweak htend_u htend_Du }
       toFun_ae := by
         filter_upwards [ae_restrict_mem (isOpen_Box lo hi).measurableSet, hg_ae] with x hxU hgx

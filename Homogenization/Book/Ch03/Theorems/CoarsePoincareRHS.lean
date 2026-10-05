@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges
-import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ZeroDirichletEnergy
-import Homogenization.Deterministic.WeakFluxRHS.WeakSolutionBridge
+module
+
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges
+public import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ZeroDirichletEnergy
+public import Homogenization.Deterministic.WeakFluxRHS.WeakSolutionBridge
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

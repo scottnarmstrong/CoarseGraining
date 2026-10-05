@@ -1,12 +1,16 @@
-import Homogenization.Book.Ch02.Theorems.BasicVariationalIdentitiesDefinitions
-import Homogenization.Internal.Ch02.MatrixExtraction
-import Homogenization.Internal.Ch02.Adapters
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.HarmonicMean
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.UpperLeftAverage
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.SigmaLeBCoarse
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.SigmaStarLeSigma
-import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas.CoarseFormulas
-import Homogenization.CoarseGraining.ResponseIdentities.Existence
+module
+
+public import Homogenization.Book.Ch02.Theorems.BasicVariationalIdentitiesDefinitions
+public import Homogenization.Internal.Ch02.MatrixExtraction
+public import Homogenization.Internal.Ch02.Adapters
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.HarmonicMean
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.UpperLeftAverage
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.SigmaLeBCoarse
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.SigmaStarLeSigma
+public import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas.CoarseFormulas
+public import Homogenization.CoarseGraining.ResponseIdentities.Existence
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

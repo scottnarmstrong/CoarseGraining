@@ -1,7 +1,11 @@
-import Homogenization.Ambient.ScalarMatrix
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov
-import Homogenization.Deterministic.WeakNormInterfacesQTwo
-import Homogenization.PDE.Harmonic
+module
+
+public import Homogenization.Ambient.ScalarMatrix
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov
+public import Homogenization.Deterministic.WeakNormInterfacesQTwo
+public import Homogenization.PDE.Harmonic
+
+@[expose] public section
 
 namespace Homogenization
 

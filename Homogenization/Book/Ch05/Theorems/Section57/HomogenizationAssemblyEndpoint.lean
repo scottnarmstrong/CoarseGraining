@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationAssemblyRHS
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationAssemblyRHS
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

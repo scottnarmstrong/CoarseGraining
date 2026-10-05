@@ -1,6 +1,8 @@
-import Homogenization.Besov.Positive.ExactOverlapEuclideanLp
-import Homogenization.Besov.Positive.ExactOverlapScalarP
-import Homogenization.Sobolev.FiniteLpCoordinate
+module
+
+public import Homogenization.Besov.Positive.ExactOverlapEuclideanLp
+public import Homogenization.Besov.Positive.ExactOverlapScalarP
+public import Homogenization.Sobolev.FiniteLpCoordinate
 
 /-!
 # Coordinate bridge for the finite-`p` Euclidean overlap oscillation
@@ -11,6 +13,8 @@ local, exact coordinate identification with the scalar overlap fluctuation and
 the one-coordinate `L^p` bound.  It deliberately contains no aggregation over
 coordinates, centers, or depths.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

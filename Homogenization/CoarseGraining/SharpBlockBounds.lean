@@ -1,5 +1,7 @@
-import Homogenization.CoarseGraining.SharpBlockBounds.Basic
-import Homogenization.CoarseGraining.SharpBlockBounds.DiagonalSandwich
+module
+
+public import Homogenization.CoarseGraining.SharpBlockBounds.Basic
+public import Homogenization.CoarseGraining.SharpBlockBounds.DiagonalSandwich
 
 /-!
 # Sharp-constant pointwise block bounds (Proposition 2.1)
@@ -14,3 +16,5 @@ of the high-moment paper (Armstrong–Kuusi–Loher, to appear):
 
 All matrix/vector work is on `Vec d = Fin d → ℝ` / `Mat d`; no `EuclideanSpace`.
 -/
+
+@[expose] public section

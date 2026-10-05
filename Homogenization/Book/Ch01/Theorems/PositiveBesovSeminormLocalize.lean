@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch01.Theorems.PositiveBesovLocalize
+module
+
+public import Homogenization.Book.Ch01.Theorems.PositiveBesovLocalize
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

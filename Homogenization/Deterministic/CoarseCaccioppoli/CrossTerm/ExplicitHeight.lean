@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.CrossTerm.Scalar
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.CrossTerm.Scalar
+
+@[expose] public section
 
 namespace Homogenization
 

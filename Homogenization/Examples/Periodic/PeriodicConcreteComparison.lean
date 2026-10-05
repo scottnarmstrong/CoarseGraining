@@ -1,4 +1,6 @@
-import Homogenization.Examples.Periodic.MField
+module
+
+public import Homogenization.Examples.Periodic.MField
 
 /-!
 # Concrete periodic comparison corollary
@@ -16,6 +18,8 @@ theorem against the proof below.  See `Audit/README.md` for the comparator map.
 (`PeriodicGeneralComparison`, `Audit/PeriodicGeneral`) → *explicit field (this
 file)* → classical data (`PeriodicSmoothComparison`, `Audit/PeriodicSmooth`).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Examples

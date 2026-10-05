@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionHessianRowCellH1
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedParentInteriorHessian
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionHessianRowCellH1
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedParentInteriorHessian
 
 /-!
 # Identifying the reflected-parent weak Hessian
@@ -11,6 +13,8 @@ The proof uses weak-derivative uniqueness on each open reflection cell and the
 fact that the finitely many cells cover the centered parent modulo reflecting
 faces of measure zero.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

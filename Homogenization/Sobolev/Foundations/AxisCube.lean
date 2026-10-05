@@ -1,4 +1,8 @@
-import Homogenization.Geometry.ConvexDomain
+module
+
+public import Homogenization.Geometry.ConvexDomain
+
+@[expose] public section
 
 namespace Homogenization
 

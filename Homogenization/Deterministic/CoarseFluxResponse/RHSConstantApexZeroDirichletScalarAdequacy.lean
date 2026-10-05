@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletEstimates
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletEstimates
+
+@[expose] public section
 
 namespace Homogenization
 

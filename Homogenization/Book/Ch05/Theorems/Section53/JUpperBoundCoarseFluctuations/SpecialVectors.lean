@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.Basic
-import Homogenization.Book.Ch05.Theorems.Section52.CenteredResponses
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.Basic
+public import Homogenization.Book.Ch05.Theorems.Section52.CenteredResponses
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

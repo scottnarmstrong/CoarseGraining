@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationAssemblyRHS
-import Homogenization.Book.Ch02.Theorems.MatrixOperatorNorm
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Basic
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationAssemblyRHS
+public import Homogenization.Book.Ch02.Theorems.MatrixOperatorNorm
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Basic
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

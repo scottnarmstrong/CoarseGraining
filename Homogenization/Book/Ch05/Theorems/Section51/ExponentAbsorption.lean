@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section51.SmallWidetildeEntry
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section51.SmallWidetildeEntry
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

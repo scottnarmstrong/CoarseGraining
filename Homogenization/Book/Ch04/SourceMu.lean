@@ -1,8 +1,10 @@
-import Homogenization.Book.Ch04.SourceEllipticity
-import Homogenization.Book.Ch04.SourceObservable
-import Homogenization.Book.Ch04.Internal.AEESliceAssembly.CarrierMuFamily
-import Homogenization.Probability.RegCoeffField.SmoothSliceMeasurability
-import Homogenization.Probability.Source.Coarse.RegIntegralAdapter
+module
+
+public import Homogenization.Book.Ch04.SourceEllipticity
+public import Homogenization.Book.Ch04.SourceObservable
+public import Homogenization.Book.Ch04.Internal.AEESliceAssembly.CarrierMuFamily
+public import Homogenization.Probability.RegCoeffField.SmoothSliceMeasurability
+public import Homogenization.Probability.Source.Coarse.RegIntegralAdapter
 
 /-!
 # Source-local coarse-grained energy
@@ -13,6 +15,8 @@ the carrier `Mu` engine consume the source's smooth integral observables.  A
 countable `liftCover` then gives an exactly source-local, pointwise equal
 version of `Mu`.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge
+module
+
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch04.AnnealedDefinitions
-import Homogenization.Book.Ch04.Internal.ScalarizationWitnesses
+module
+
+public import Homogenization.Book.Ch04.AnnealedDefinitions
+public import Homogenization.Book.Ch04.Internal.ScalarizationWitnesses
 
 /-!
 # Annealed coarse objects
@@ -10,3 +12,5 @@ The public annealed matrix and response definitions live in
 `Homogenization.Book.Ch04.AnnealedDefinitions`.  Route-specific scalarization
 witnesses live under `Homogenization.Book.Ch04.Internal`.
 -/
+
+@[expose] public section

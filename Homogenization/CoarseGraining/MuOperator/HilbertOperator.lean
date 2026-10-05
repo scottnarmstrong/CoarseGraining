@@ -1,8 +1,12 @@
-import Homogenization.CoarseGraining.MuQuadratic
-import Homogenization.CoarseGraining.MuWellPosedness
-import Homogenization.CoarseGraining.HilbertMinimizationMeasurability
-import Mathlib.MeasureTheory.Group.Arithmetic
-import Mathlib.Topology.Instances.Matrix
+module
+
+public import Homogenization.CoarseGraining.MuQuadratic
+public import Homogenization.CoarseGraining.MuWellPosedness
+public import Homogenization.CoarseGraining.HilbertMinimizationMeasurability
+public import Mathlib.MeasureTheory.Group.Arithmetic
+public import Mathlib.Topology.Instances.Matrix
+
+@[expose] public section
 
 namespace Homogenization
 

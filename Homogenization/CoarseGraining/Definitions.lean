@@ -1,7 +1,11 @@
-import Homogenization.Ambient.BlockMatrix
-import Homogenization.CoarseGraining.BlockFormalism
-import Mathlib.LinearAlgebra.QuadraticForm.Basic
-import Mathlib.Tactic.Linarith
+module
+
+public import Homogenization.Ambient.BlockMatrix
+public import Homogenization.CoarseGraining.BlockFormalism
+public import Mathlib.LinearAlgebra.QuadraticForm.Basic
+public import Mathlib.Tactic.Linarith
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -132,7 +136,7 @@ def HasQuadraticMu {d : ℕ} (U : Set (Vec d)) (a : CoeffField d) : Prop :=
   ∃ Q : QuadraticForm ℝ (FullBlockVec d),
     ∀ P : BlockVec d, Mu U P a = (1 / 2 : ℝ) * Q (toFullBlockVec P)
 
-private noncomputable def coarseBlockEntry {d : ℕ} (U : Set (Vec d)) (a : CoeffField d)
+noncomputable def coarseBlockEntry {d : ℕ} (U : Set (Vec d)) (a : CoeffField d)
     (α β : BlockCoord d) : ℝ :=
   if _h : α = β then
     2 * Mu U (blockBasis α) a
@@ -217,7 +221,7 @@ theorem coarseBlockMatrix_restrictCoeffField_eq {d : ℕ} {U : Set (Vec d)}
     (b := a)
     (fun P => Mu_restrictCoeffField_eq hU P a)
 
-private theorem coarseBlockEntry_eq_of_isCoarseBlockMatrix {d : ℕ} {U : Set (Vec d)}
+theorem coarseBlockEntry_eq_of_isCoarseBlockMatrix {d : ℕ} {U : Set (Vec d)}
     {a : CoeffField d} {Abar : BlockMat d} (hA : IsCoarseBlockMatrix U a Abar)
     (α β : BlockCoord d) :
     coarseBlockEntry U a α β = blockMatEntry Abar α β := by
@@ -351,7 +355,7 @@ def IsSigmaStarInvCoarse {d : ℕ} (U : Set (Vec d)) (a : CoeffField d) (sigmaSt
   sigmaStarInv.IsSymm ∧
     ∀ q : Vec d, ResponseJ U 0 q a = (1 / 2 : ℝ) * vecDot q (matVecMul sigmaStarInv q)
 
-private noncomputable def sigmaStarInvEntry {d : ℕ} (U : Set (Vec d)) (a : CoeffField d)
+noncomputable def sigmaStarInvEntry {d : ℕ} (U : Set (Vec d)) (a : CoeffField d)
     (i j : Fin d) : ℝ :=
   if _h : i = j then
     2 * ResponseJ U 0 (Pi.single i 1) a
@@ -376,7 +380,7 @@ noncomputable def sigmaStarInvCoarse {d : ℕ} (U : Set (Vec d)) (a : CoeffField
         - ResponseJ U 0 (Pi.single j 1) a := by
   simp [sigmaStarInvCoarse, sigmaStarInvEntry, hij]
 
-private theorem sigmaStarInvEntry_eq_of_isSigmaStarInvCoarse {d : ℕ} {U : Set (Vec d)}
+theorem sigmaStarInvEntry_eq_of_isSigmaStarInvCoarse {d : ℕ} {U : Set (Vec d)}
     {a : CoeffField d} {sigmaStarInv : Mat d} (hS : IsSigmaStarInvCoarse U a sigmaStarInv)
     (i j : Fin d) :
     sigmaStarInvEntry U a i j = sigmaStarInv i j := by
@@ -464,7 +468,7 @@ noncomputable def sigmaStarInvKappaCoarse {d : ℕ} (U : Set (Vec d)) (a : Coeff
       - ResponseJ U 0 (Pi.single i 1) a
       + vecDot (Pi.single j 1) (Pi.single i 1)
 
-private theorem sigmaStarInvKappaEntry_eq_of_isSigmaStarInvKappaCoarse {d : ℕ}
+theorem sigmaStarInvKappaEntry_eq_of_isSigmaStarInvKappaCoarse {d : ℕ}
     {U : Set (Vec d)} {a : CoeffField d} {M : Mat d}
     (hM : IsSigmaStarInvKappaCoarse U a M) (i j : Fin d) :
     sigmaStarInvKappaCoarse U a i j = M i j := by
@@ -535,7 +539,7 @@ def IsSigmaCanonicalCoarse {d : ℕ} (U : Set (Vec d)) (a : CoeffField d) (sigma
     ∀ p : Vec d,
       sigmaCorrectedResponse U a p = (1 / 2 : ℝ) * vecDot p (matVecMul sigma p)
 
-private noncomputable def sigmaEntry {d : ℕ} (U : Set (Vec d)) (a : CoeffField d)
+noncomputable def sigmaEntry {d : ℕ} (U : Set (Vec d)) (a : CoeffField d)
     (i j : Fin d) : ℝ :=
   if _h : i = j then
     2 * sigmaCorrectedResponse U a (Pi.single i 1)
@@ -560,7 +564,7 @@ noncomputable def sigmaCoarse {d : ℕ} (U : Set (Vec d)) (a : CoeffField d) : M
         - sigmaCorrectedResponse U a (Pi.single j 1) := by
   simp [sigmaCoarse, sigmaEntry, hij]
 
-private theorem sigmaEntry_eq_of_isSigmaCanonicalCoarse {d : ℕ} {U : Set (Vec d)}
+theorem sigmaEntry_eq_of_isSigmaCanonicalCoarse {d : ℕ} {U : Set (Vec d)}
     {a : CoeffField d} {sigma : Mat d} (hSigma : IsSigmaCanonicalCoarse U a sigma)
     (i j : Fin d) :
     sigmaEntry U a i j = sigma i j := by

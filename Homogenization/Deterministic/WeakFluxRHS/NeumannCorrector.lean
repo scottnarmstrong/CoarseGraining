@@ -1,11 +1,15 @@
-import Homogenization.Geometry.CubeMetric
-import Homogenization.Multiscale.Projection
-import Homogenization.PDE.EnergyIdentities
-import Homogenization.PDE.Harmonic
-import Homogenization.PDE.NeumannRHS
-import Homogenization.Sobolev.Foundations.PoincareMeanZero
-import Homogenization.Sobolev.Foundations.ZeroTraceAverages
-import Homogenization.Sobolev.PotentialSolenoidalCubeBridge
+module
+
+public import Homogenization.Geometry.CubeMetric
+public import Homogenization.Multiscale.Projection
+public import Homogenization.PDE.EnergyIdentities
+public import Homogenization.PDE.Harmonic
+public import Homogenization.PDE.NeumannRHS
+public import Homogenization.Sobolev.Foundations.PoincareMeanZero
+public import Homogenization.Sobolev.Foundations.ZeroTraceAverages
+public import Homogenization.Sobolev.PotentialSolenoidalCubeBridge
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -20,7 +24,7 @@ residual has zero normal trace; on a cube this forces the residual flux average
 to vanish.
 -/
 
-private theorem isFiniteMeasureVolumeMeasureOnCubeSet_weakFluxRHS {d : ℕ}
+theorem isFiniteMeasureVolumeMeasureOnCubeSet_weakFluxRHS {d : ℕ}
     (Q : TriadicCube d) :
     MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) := by
   let U : Set (Vec d) := cubeSet Q

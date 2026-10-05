@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalComparisonBridges
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalComparisonBridges
+
+@[expose] public section
 
 namespace Homogenization
 

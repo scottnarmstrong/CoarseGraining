@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.PoincareLpKernel.TimeCollapse
+module
+
+public import Homogenization.Sobolev.Foundations.PoincareLpKernel.TimeCollapse
+
+@[expose] public section
 
 namespace Homogenization
 

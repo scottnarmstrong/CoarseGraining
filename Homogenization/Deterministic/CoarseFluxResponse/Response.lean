@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseFluxResponse.EnergyForm
-import Homogenization.Deterministic.CoarsePoincare.Setup.HarmonicAndData
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.EnergyForm
+public import Homogenization.Deterministic.CoarsePoincare.Setup.HarmonicAndData
+
+@[expose] public section
 
 namespace Homogenization
 

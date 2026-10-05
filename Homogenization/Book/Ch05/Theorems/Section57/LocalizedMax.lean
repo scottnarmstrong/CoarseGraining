@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section57.FirstQuenchedEstimate
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.FirstQuenchedEstimate
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

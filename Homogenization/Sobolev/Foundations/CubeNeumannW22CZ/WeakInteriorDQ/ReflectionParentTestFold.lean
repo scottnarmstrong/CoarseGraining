@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.FaceVanishCollar
-import Homogenization.Sobolev.Foundations.CubeReflection.Folding
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.FaceVanishCollar
+public import Homogenization.Sobolev.Foundations.CubeReflection.Folding
+
+@[expose] public section
 
 namespace Homogenization
 

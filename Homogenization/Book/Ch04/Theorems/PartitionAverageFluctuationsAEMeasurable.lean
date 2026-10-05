@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch04.Theorems.DescendantAveragesAEMeasurable
-import Homogenization.Book.Ch04.Theorems.PartitionAverageFluctuations
+module
+
+public import Homogenization.Book.Ch04.Theorems.DescendantAveragesAEMeasurable
+public import Homogenization.Book.Ch04.Theorems.PartitionAverageFluctuations
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

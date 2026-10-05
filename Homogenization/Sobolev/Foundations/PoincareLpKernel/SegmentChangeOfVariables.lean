@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.PoincareLpKernel.Basic
-import Mathlib.MeasureTheory.Integral.Prod
+module
+
+public import Homogenization.Sobolev.Foundations.PoincareLpKernel.Basic
+public import Mathlib.MeasureTheory.Integral.Prod
+
+@[expose] public section
 
 namespace Homogenization
 

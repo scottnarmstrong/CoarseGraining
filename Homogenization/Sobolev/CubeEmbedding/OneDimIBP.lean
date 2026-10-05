@@ -1,6 +1,10 @@
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
-import Mathlib.MeasureTheory.Integral.IntegralEqImproper
-import Mathlib.Analysis.Calculus.Deriv.Basic
+module
+
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
+public import Mathlib.MeasureTheory.Integral.IntegralEqImproper
+public import Mathlib.Analysis.Calculus.Deriv.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

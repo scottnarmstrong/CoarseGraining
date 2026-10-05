@@ -1,8 +1,12 @@
-import Homogenization.Ambient.CoefficientField
-import Homogenization.CoarseGraining.HilbertMinimization
-import Homogenization.Sobolev.PotentialSolenoidalL2
-import Mathlib.Analysis.InnerProductSpace.LinearMap
-import Mathlib.Analysis.InnerProductSpace.Symmetric
+module
+
+public import Homogenization.Ambient.CoefficientField
+public import Homogenization.CoarseGraining.HilbertMinimization
+public import Homogenization.Sobolev.PotentialSolenoidalL2
+public import Mathlib.Analysis.InnerProductSpace.LinearMap
+public import Mathlib.Analysis.InnerProductSpace.Symmetric
+
+@[expose] public section
 
 namespace Homogenization
 

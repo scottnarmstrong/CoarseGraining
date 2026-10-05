@@ -1,5 +1,9 @@
-import Homogenization.Geometry.Translation
-import Homogenization.Sobolev.W1p.BasicLemmas
+module
+
+public import Homogenization.Geometry.Translation
+public import Homogenization.Sobolev.W1p.BasicLemmas
+
+@[expose] public section
 
 namespace Homogenization
 

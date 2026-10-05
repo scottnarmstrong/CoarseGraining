@@ -1,5 +1,9 @@
-import Homogenization.Besov.Duality.GlobalComparison
-import Homogenization.Sobolev.Foundations.CubePoisson.Solver
+module
+
+public import Homogenization.Besov.Duality.GlobalComparison
+public import Homogenization.Sobolev.Foundations.CubePoisson.Solver
+
+@[expose] public section
 
 namespace Homogenization
 

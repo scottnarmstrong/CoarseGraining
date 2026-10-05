@@ -1,7 +1,11 @@
-import Homogenization.CoarseGraining.CubeMinimizer
-import Homogenization.CoarseGraining.SharpBlockBounds.DiagonalSandwich
-import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.QuadraticMu
-import Homogenization.Sobolev.Foundations.ZeroTraceAverages
+module
+
+public import Homogenization.CoarseGraining.CubeMinimizer
+public import Homogenization.CoarseGraining.SharpBlockBounds.DiagonalSandwich
+public import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.QuadraticMu
+public import Homogenization.Sobolev.Foundations.ZeroTraceAverages
+
+@[expose] public section
 
 namespace Homogenization
 

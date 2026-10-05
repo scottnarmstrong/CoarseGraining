@@ -1,7 +1,11 @@
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.Identities
-import Homogenization.CoarseGraining.MuOperator.CoeffOperator
-import Homogenization.CoarseGraining.MuRecoveryBlockResponse
-import Homogenization.Sobolev.Foundations.HodgeCubeBridge
+module
+
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.Identities
+public import Homogenization.CoarseGraining.MuOperator.CoeffOperator
+public import Homogenization.CoarseGraining.MuRecoveryBlockResponse
+public import Homogenization.Sobolev.Foundations.HodgeCubeBridge
+
+@[expose] public section
 
 namespace Homogenization
 

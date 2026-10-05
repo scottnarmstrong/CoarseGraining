@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaStopping
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaStopping
+
+@[expose] public section
 
 namespace Homogenization
 

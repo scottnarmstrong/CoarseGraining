@@ -1,6 +1,10 @@
-import Homogenization.CoarseGraining.ThetaEllipticity
-import Homogenization.CoarseGraining.Definitions
-import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+module
+
+public import Homogenization.CoarseGraining.ThetaEllipticity
+public import Homogenization.CoarseGraining.Definitions
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

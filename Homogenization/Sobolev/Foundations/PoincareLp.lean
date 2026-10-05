@@ -1,8 +1,12 @@
-import Homogenization.Sobolev.Foundations.PoincareLpIntegral
-import Homogenization.Sobolev.Foundations.PoincareLpKernel
-import Homogenization.Sobolev.Foundations.PoincareLpSmooth
-import Mathlib.MeasureTheory.Function.LocallyIntegrable
-import Mathlib.MeasureTheory.Integral.DominatedConvergence
+module
+
+public import Homogenization.Sobolev.Foundations.PoincareLpIntegral
+public import Homogenization.Sobolev.Foundations.PoincareLpKernel
+public import Homogenization.Sobolev.Foundations.PoincareLpSmooth
+public import Mathlib.MeasureTheory.Function.LocallyIntegrable
+public import Mathlib.MeasureTheory.Integral.DominatedConvergence
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.WeakFluxRHS.Selection.Budgets
+module
+
+public import Homogenization.Book.Ch03.Theorems.WeakFluxRHS.Selection.Budgets
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

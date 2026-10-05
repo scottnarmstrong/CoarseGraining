@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationErrorClosed
-import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationErrorLowerEnvelope
-import Homogenization.Book.Ch05.Theorems.Section57.LocalizedUnitEllipticity
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationErrorClosed
+public import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationErrorLowerEnvelope
+public import Homogenization.Book.Ch05.Theorems.Section57.LocalizedUnitEllipticity
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

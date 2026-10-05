@@ -1,10 +1,12 @@
-import Homogenization.Ambient.CoefficientField
-import Mathlib.MeasureTheory.Function.LocallyIntegrable
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.MeasureTheory.Integral.IntegrableOn
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.MeasureTheory.Group.Arithmetic
-import Mathlib.Topology.Algebra.Support
+module
+
+public import Homogenization.Ambient.CoefficientField
+public import Mathlib.MeasureTheory.Function.LocallyIntegrable
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.MeasureTheory.Integral.IntegrableOn
+public import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+public import Mathlib.MeasureTheory.Group.Arithmetic
+public import Mathlib.Topology.Algebra.Support
 
 /-!
 # The regular-coefficient-field carrier
@@ -27,6 +29,8 @@ corresponding closure of measurability and local integrability.
 
 Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

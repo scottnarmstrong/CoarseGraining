@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.ConvexApproxGagliardoSmoothing
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.PointwiseBounds
+module
+
+public import Homogenization.Sobolev.Fractional.ConvexApproxGagliardoSmoothing
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.PointwiseBounds
 
 /-!
 # Finite-`p` bounds for diagonal Gagliardo smoothing
@@ -7,6 +9,8 @@ import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.PointwiseBounds
 This module begins the measure-transport layer needed to turn the diagonal
 Jensen estimate into an unconditional fractional-kernel bound.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

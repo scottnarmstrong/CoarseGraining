@@ -1,12 +1,14 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.InteriorHessianRowTailTransfer
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.InteriorOneLevelTail
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.InteriorParentGeometry
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedParentHessianRowIdentification
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionScalarWeightedTail
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeakHessianRowL2Energy
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeakPoissonDerivative
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.Regularity
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentApprox
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.InteriorHessianRowTailTransfer
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.InteriorOneLevelTail
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.InteriorParentGeometry
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedParentHessianRowIdentification
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionScalarWeightedTail
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeakHessianRowL2Energy
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeakPoissonDerivative
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.Regularity
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentApprox
 
 /-!
 # One-level tails for Hessian rows of scalar Dirichlet solutions
@@ -17,6 +19,8 @@ identifies their rows by mixed-parity reflection, and transfers the interior
 one-level estimate back to the source cube. No regularity, comparison, or
 reflection premise is exposed to the caller.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.Definitions
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.Definitions
+
+@[expose] public section
 
 namespace Homogenization
 

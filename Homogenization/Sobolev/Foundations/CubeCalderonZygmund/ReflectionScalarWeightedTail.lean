@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionWeightedTail
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionScalarFiniteP
-import Homogenization.Sobolev.Foundations.Cutoff.Cube
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionWeightedTail
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionScalarFiniteP
+public import Homogenization.Sobolev.Foundations.Cutoff.Cube
 
 /-!
 # Square-weighted tails of reflected scalars
@@ -9,6 +11,8 @@ Scalar odd reflection preserves square-weighted level tails up to the exact
 `3^d` parent-volume factor.  The proof embeds the scalar into one coordinate
 of the existing reflected-vector API; the zero-dimensional case is direct.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

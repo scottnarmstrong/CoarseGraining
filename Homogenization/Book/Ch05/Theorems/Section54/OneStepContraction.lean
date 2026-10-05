@@ -1,11 +1,15 @@
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.Assembly
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.BetaBridge
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseFullBlock
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseFluctuationInput
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseRHSPrep
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.ResponseMoment
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.RHSCompression
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.TauSum
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.Assembly
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.BetaBridge
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseFullBlock
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseFluctuationInput
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseRHSPrep
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.ResponseMoment
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.RHSCompression
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.TauSum
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

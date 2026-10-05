@@ -1,6 +1,10 @@
-import Homogenization.Geometry.ConvexDomain
-import Homogenization.Sobolev.Foundations.ZeroTraceAverages
-import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+module
+
+public import Homogenization.Geometry.ConvexDomain
+public import Homogenization.Sobolev.Foundations.ZeroTraceAverages
+public import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+
+@[expose] public section
 
 namespace Homogenization
 

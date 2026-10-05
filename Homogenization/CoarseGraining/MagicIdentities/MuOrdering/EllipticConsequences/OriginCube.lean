@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.BCoarseCanonical
+module
+
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.BCoarseCanonical
+
+@[expose] public section
 
 namespace Homogenization
 

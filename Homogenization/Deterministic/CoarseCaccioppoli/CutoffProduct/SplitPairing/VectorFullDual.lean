@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.CenteredProductFullDual
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.Vector
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.CenteredProductFullDual
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.Vector
+
+@[expose] public section
 
 namespace Homogenization
 

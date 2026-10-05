@@ -1,6 +1,10 @@
-import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
-import Mathlib.MeasureTheory.Integral.Bochner.Set
-import Homogenization.Probability.IndependentSums.WeakOrlicz
+module
+
+public import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
+public import Mathlib.MeasureTheory.Integral.Bochner.Set
+public import Homogenization.Probability.IndependentSums.WeakOrlicz
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

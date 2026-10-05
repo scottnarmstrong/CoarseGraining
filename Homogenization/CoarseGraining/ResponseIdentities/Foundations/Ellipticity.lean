@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.ResponseIdentities.Foundations.Maximizer
+module
+
+public import Homogenization.CoarseGraining.ResponseIdentities.Foundations.Maximizer
+
+@[expose] public section
 
 namespace Homogenization
 

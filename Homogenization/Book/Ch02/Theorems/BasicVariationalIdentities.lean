@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch02.Theorems.Existence
-import Homogenization.Internal.Ch02.BasicVariationalIdentities
+module
+
+public import Homogenization.Book.Ch02.Theorems.Existence
+public import Homogenization.Internal.Ch02.BasicVariationalIdentities
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

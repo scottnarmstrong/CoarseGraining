@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailJoint
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailJoint
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

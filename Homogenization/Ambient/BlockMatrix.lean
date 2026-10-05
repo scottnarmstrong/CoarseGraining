@@ -1,9 +1,13 @@
-import Homogenization.Ambient.Basic
-import Mathlib.Data.Matrix.Mul
-import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
-import Mathlib.LinearAlgebra.Matrix.SesquilinearForm
-import Mathlib.LinearAlgebra.Matrix.Symmetric
-import Mathlib.Topology.Algebra.Module.FiniteDimension
+module
+
+public import Homogenization.Ambient.Basic
+public import Mathlib.Data.Matrix.Mul
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import Mathlib.LinearAlgebra.Matrix.SesquilinearForm
+public import Mathlib.LinearAlgebra.Matrix.Symmetric
+public import Mathlib.Topology.Algebra.Module.FiniteDimension
+
+@[expose] public section
 
 namespace Homogenization
 

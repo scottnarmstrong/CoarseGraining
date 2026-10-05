@@ -1,5 +1,9 @@
-import Homogenization.CoarseGraining.BlockResponse.Foundations.BasicIdentities
-import Homogenization.CoarseGraining.MuOperator.CoeffOperator
+module
+
+public import Homogenization.CoarseGraining.BlockResponse.Foundations.BasicIdentities
+public import Homogenization.CoarseGraining.MuOperator.CoeffOperator
+
+@[expose] public section
 
 namespace Homogenization
 

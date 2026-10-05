@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Definitions
-import Homogenization.Book.Ch04.Theorems.AnnealedSubadditivity
-import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.Theory
-import Homogenization.Book.Ch04.Theorems.Scalarization
+module
+
+public import Homogenization.Book.Ch05.Definitions
+public import Homogenization.Book.Ch04.Theorems.AnnealedSubadditivity
+public import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.Theory
+public import Homogenization.Book.Ch04.Theorems.Scalarization
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

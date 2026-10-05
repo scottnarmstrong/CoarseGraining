@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Fractional.CenteredCubeDivergenceRescaling
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePHomogeneity
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePOneDepthCZ
+module
+
+public import Homogenization.Sobolev.Fractional.CenteredCubeDivergenceRescaling
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePHomogeneity
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePOneDepthCZ
 
 /-!
 # Global finite-`p` exact-overlap Calderón--Zygmund estimate
@@ -9,6 +11,8 @@ The one-depth exact-overlap estimate is summed with the source scale weights,
 then rooted at the finite exponent.  The coefficient scale is removed by
 rescaling the datum before applying the one-depth result.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

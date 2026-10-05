@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApex
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApex
+
+@[expose] public section
 
 namespace Homogenization
 

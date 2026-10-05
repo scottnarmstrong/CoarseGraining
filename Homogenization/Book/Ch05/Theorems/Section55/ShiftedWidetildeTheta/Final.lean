@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta.TwoStep
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta.TwoStep
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

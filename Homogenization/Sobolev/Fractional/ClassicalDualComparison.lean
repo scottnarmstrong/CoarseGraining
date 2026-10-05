@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.SobolevPublic
-import Homogenization.Besov.Duality.CaccioppoliBridge
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.UnitCubeGeometry
+module
+
+public import Homogenization.Book.Ch03.Theorems.SobolevPublic
+public import Homogenization.Besov.Duality.CaccioppoliBridge
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.UnitCubeGeometry
 
 /-!
 # Classical fractional dual comparison
@@ -9,6 +11,8 @@ Scalar Euclidean Gagliardo tests with a scale-weighted normalized L² term
 embed into the legacy partition Besov test space. All real-valued suprema
 below are proved bounded for the L² fields to which the comparison applies.
 -/
+
+@[expose] public section
 
 namespace Homogenization.ClassicalSobolev34
 

@@ -1,7 +1,11 @@
-import Homogenization.Sobolev.Foundations.PoincareLpKernel.SegmentChangeOfVariables
-import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
-import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
-import Mathlib.MeasureTheory.Measure.WithDensity
+module
+
+public import Homogenization.Sobolev.Foundations.PoincareLpKernel.SegmentChangeOfVariables
+public import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
+public import Mathlib.MeasureTheory.Measure.WithDensity
+
+@[expose] public section
 
 namespace Homogenization
 

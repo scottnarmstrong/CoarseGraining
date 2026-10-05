@@ -1,10 +1,14 @@
-import Homogenization.CoarseGraining.BlockMatrixProperties
-import Homogenization.CoarseGraining.BlockResponse
-import Homogenization.CoarseGraining.MuRecovery
-import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas
-import Homogenization.CoarseGraining.Subadditivity
-import Homogenization.CoarseGraining.Translation
-import Homogenization.CoarseGraining.OriginCubeOpenBridge
+module
+
+public import Homogenization.CoarseGraining.BlockMatrixProperties
+public import Homogenization.CoarseGraining.BlockResponse
+public import Homogenization.CoarseGraining.MuRecovery
+public import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas
+public import Homogenization.CoarseGraining.Subadditivity
+public import Homogenization.CoarseGraining.Translation
+public import Homogenization.CoarseGraining.OriginCubeOpenBridge
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability
-import Homogenization.CoarseGraining.HilbertMinimizationMeasurability
-import Homogenization.CoarseGraining.MuOperator.AEEOperator
+module
+
+public import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability
+public import Homogenization.CoarseGraining.HilbertMinimizationMeasurability
+public import Homogenization.CoarseGraining.MuOperator.AEEOperator
+
+@[expose] public section
 
 namespace Homogenization
 

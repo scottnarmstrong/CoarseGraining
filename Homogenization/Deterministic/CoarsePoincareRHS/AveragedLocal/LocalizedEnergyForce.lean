@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.AveragedLocal.ComponentBoundsBasic
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.AveragedLocal.ComponentBoundsBasic
+
+@[expose] public section
 
 namespace Homogenization
 

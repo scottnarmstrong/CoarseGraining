@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch04.SourceObservable
-import Homogenization.Book.Ch04.SourceMeasurability
+module
+
+public import Homogenization.Book.Ch04.SourceObservable
+public import Homogenization.Book.Ch04.SourceMeasurability
 
 /-!
 # Canonical Chapter 4 source observables
@@ -9,6 +11,8 @@ for the exact coarse-source, integral-local API. The separate
 `RestrictionObservable` API remains in the pointwise-restriction engineering
 lane.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

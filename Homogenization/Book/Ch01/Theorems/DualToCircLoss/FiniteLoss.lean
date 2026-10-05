@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch01.Theorems.DualToCircLoss.ProjectionTests
+module
+
+public import Homogenization.Book.Ch01.Theorems.DualToCircLoss.ProjectionTests
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

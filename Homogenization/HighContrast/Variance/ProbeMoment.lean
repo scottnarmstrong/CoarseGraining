@@ -1,5 +1,7 @@
-import Homogenization.HighContrast.Variance.ScalarBounds
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.FiniteNet
+module
+
+public import Homogenization.HighContrast.Variance.ScalarBounds
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.FiniteNet
 
 /-!
 # Per-probe second moments of the normalized fluctuation matrix
@@ -16,6 +18,8 @@ of each such probe by the centered-second-moment estimate
 * `probe_sq_integral_le` — for any probe `q` with `⟪q,q⟫ ≤ 2`, the second moment
   of `fullBlockQuadratic H q` is at most `16·Cd·Θ⁶·(3^m)^{-β}`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

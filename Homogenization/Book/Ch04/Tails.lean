@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch04.Law
-import Homogenization.Probability.IndependentSums.GammaSigma
-import Homogenization.Probability.IndependentSums.PsiSigma
-import Homogenization.Probability.IndependentSums.WeakOrlicz
+module
+
+public import Homogenization.Book.Ch04.Law
+public import Homogenization.Probability.IndependentSums.GammaSigma
+public import Homogenization.Probability.IndependentSums.PsiSigma
+public import Homogenization.Probability.IndependentSums.WeakOrlicz
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

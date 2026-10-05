@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.ContinuousKFunctional
+module
+
+public import Homogenization.Sobolev.Fractional.ContinuousKFunctional
 
 /-!
 # Approximate competitors for the continuous K-functional
@@ -7,6 +9,8 @@ This file records convention-neutral consequences of the definition of the conti
 `K`-functional as a real infimum. The infimum need not be attained: every positive error admits
 a genuine `ContinuousKCompetitor` whose value lies within that error of the infimum.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapFluctuation
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapFluctuation
+
+@[expose] public section
 
 namespace Homogenization
 

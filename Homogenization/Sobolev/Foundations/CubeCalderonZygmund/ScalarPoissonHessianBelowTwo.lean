@@ -1,15 +1,17 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarPoissonGradientBelowTwo
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeakHessianFiniteP
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.W10pWeakTestClosure
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedParentInteriorHessian
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedParentHessianRowIdentification
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedHessianRowOneLevelTail
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarPoissonHessianTwo
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.H1CutoffIntegrationByParts
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.SourceParentFiniteLpExtension
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeakHessianRowL2Energy
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.VectorFieldAndApex.WeakEquationHelpers
-import Homogenization.Sobolev.W1p.ZeroExtensionGraph
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarPoissonGradientBelowTwo
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeakHessianFiniteP
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.W10pWeakTestClosure
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedParentInteriorHessian
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedParentHessianRowIdentification
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedHessianRowOneLevelTail
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarPoissonHessianTwo
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.H1CutoffIntegrationByParts
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.SourceParentFiniteLpExtension
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeakHessianRowL2Energy
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.VectorFieldAndApex.WeakEquationHelpers
+public import Homogenization.Sobolev.W1p.ZeroExtensionGraph
 
 /-!
 # Scalar Poisson Hessian estimates below the energy exponent
@@ -19,6 +21,8 @@ cube.  The small utility below is intentionally kept here: it is the exact
 bridge used when a compactly supported `H¹₀` multiplier must be inserted into
 the smooth-test divergence identity.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

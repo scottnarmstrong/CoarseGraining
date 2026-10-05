@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAverageEstimate
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastJBound.Preliminaries
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAverageEstimate
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastJBound.Preliminaries
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PartitionDerivatives
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PartitionDerivatives
+
+@[expose] public section
 
 namespace Homogenization
 

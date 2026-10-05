@@ -1,4 +1,6 @@
-import Homogenization.HighContrast.Corridor.PhaseComparison.Averaging
+module
+
+public import Homogenization.HighContrast.Corridor.PhaseComparison.Averaging
 
 /-!
 # Uniform-constant grid-phase averaging
@@ -8,6 +10,8 @@ import Homogenization.HighContrast.Corridor.PhaseComparison.Averaging
 `576·d`, so the same reproduction trick used in `FixedPhaseUniform` pulls it
 outside the field quantifiers, giving `∃ Cd, ∀ params`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

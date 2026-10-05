@@ -1,6 +1,8 @@
-import Homogenization.Book.MainResults
-import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
-import Homogenization.Probability.RegCoeffField.EllipticSupport
+module
+
+public import Homogenization.Book.MainResults
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
+public import Homogenization.Probability.RegCoeffField.EllipticSupport
 
 /-!
 # Dirac-law bridge for deterministic periodic examples
@@ -20,6 +22,8 @@ endomorphisms (`Measure.map_dirac'`); unit-range dependence is formal because
 uniform-ellipticity support event is the genuinely measurable fixed-constant
 event of `RegCoeffField/EllipticSupport.lean`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Examples

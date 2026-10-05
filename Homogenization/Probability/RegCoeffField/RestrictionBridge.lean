@@ -1,4 +1,6 @@
-import Homogenization.Probability.RegCoeffField.Restriction
+module
+
+public import Homogenization.Probability.RegCoeffField.Restriction
 
 /-!
 # The local-to-restriction σ-algebra bridge
@@ -34,6 +36,8 @@ field.
 
 Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

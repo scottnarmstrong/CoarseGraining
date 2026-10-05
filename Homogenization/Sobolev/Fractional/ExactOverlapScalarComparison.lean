@@ -1,6 +1,8 @@
-import Homogenization.Besov.Positive.ExactOverlap
-import Homogenization.Sobolev.Fractional.BesovLeGagliardo
-import Homogenization.Sobolev.Fractional.GagliardoLeBesov
+module
+
+public import Homogenization.Besov.Positive.ExactOverlap
+public import Homogenization.Sobolev.Fractional.BesovLeGagliardo
+public import Homogenization.Sobolev.Fractional.GagliardoLeBesov
 
 /-!
 # Exact scalar overlap Besov–Gagliardo comparison
@@ -14,6 +16,8 @@ The only analytic input used by the identification is concrete parent-cube
 `L²` membership.  It supplies both the root integrability and every enlarged
 overlap-cube integrability certificate required by the exact kernel.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.Kernel
-import Homogenization.Sobolev.W1p.ConvolutionLp
-import Mathlib.MeasureTheory.Function.ContinuousMapDense
+module
+
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.Kernel
+public import Homogenization.Sobolev.W1p.ConvolutionLp
+public import Mathlib.MeasureTheory.Function.ContinuousMapDense
 
 /-!
 # Global `L^p` convergence of the scaled mollifier
@@ -9,6 +11,8 @@ This file proves the global approximate-identity statement for the convex
 kernel family.  It is deliberately independent of the affine inward
 mollification and of bounded-domain Sobolev theory.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

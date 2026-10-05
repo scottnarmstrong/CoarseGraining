@@ -1,8 +1,12 @@
-import Homogenization.Multiscale.NormalizedNorms
-import Mathlib.MeasureTheory.Measure.Restrict
-import Mathlib.MeasureTheory.Measure.Map
-import Mathlib.MeasureTheory.Measure.Sum
-import Mathlib.MeasureTheory.Measure.Restrict
+module
+
+public import Homogenization.Multiscale.NormalizedNorms
+public import Mathlib.MeasureTheory.Measure.Restrict
+public import Mathlib.MeasureTheory.Measure.Map
+public import Mathlib.MeasureTheory.Measure.Sum
+public import Mathlib.MeasureTheory.Measure.Restrict
+
+@[expose] public section
 
 namespace Homogenization
 

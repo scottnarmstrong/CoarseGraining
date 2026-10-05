@@ -1,6 +1,10 @@
-import Homogenization.Ambient.CoefficientFieldHilbert
-import Homogenization.PDE.Harmonic
-import Homogenization.Sobolev.Foundations.Hodge
+module
+
+public import Homogenization.Ambient.CoefficientFieldHilbert
+public import Homogenization.PDE.Harmonic
+public import Homogenization.Sobolev.Foundations.Hodge
+
+@[expose] public section
 
 namespace Homogenization
 

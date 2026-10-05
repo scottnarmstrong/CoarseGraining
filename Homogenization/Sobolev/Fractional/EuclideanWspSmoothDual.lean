@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Fractional.EuclideanWsp
-import Mathlib.Analysis.Calculus.ContDiff.Defs
-import Mathlib.Analysis.Calculus.ContDiff.Operations
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWsp
+public import Mathlib.Analysis.Calculus.ContDiff.Defs
+public import Mathlib.Analysis.Calculus.ContDiff.Operations
 
 /-!
 # Smooth full-dual surface for Euclidean fractional Sobolev fields
@@ -8,6 +10,8 @@ import Mathlib.Analysis.Calculus.ContDiff.Operations
 The smooth-test supremum is retained as a `SmoothDualENorm`; no completion or
 density assertion is made in this module.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

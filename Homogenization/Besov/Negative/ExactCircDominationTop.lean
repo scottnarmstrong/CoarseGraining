@@ -1,7 +1,9 @@
-import Homogenization.Besov.Duality.ProjectedPairing.MainBounds
-import Homogenization.Besov.Negative.ExactAggregationBridge
-import Homogenization.Besov.Negative.ExactExponentBridge
-import Homogenization.Besov.PositiveOverlapBridge
+module
+
+public import Homogenization.Besov.Duality.ProjectedPairing.MainBounds
+public import Homogenization.Besov.Negative.ExactAggregationBridge
+public import Homogenization.Besov.Negative.ExactExponentBridge
+public import Homogenization.Besov.PositiveOverlapBridge
 
 /-!
 # Exact circ domination at the negative `q = ∞` endpoint
@@ -11,6 +13,8 @@ endpoint and the exact concrete circ endpoint.  All finite projected-pairing
 premises are derived internally from the parent `MemLp` certificates carried
 by the exact definitions.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

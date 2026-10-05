@@ -1,7 +1,11 @@
-import Homogenization.Sobolev.H1.Definitions
-import Homogenization.Sobolev.L2Ambient
-import Homogenization.Geometry.ConvexDomain
-import Mathlib.Analysis.Calculus.MeanValue
+module
+
+public import Homogenization.Sobolev.H1.Definitions
+public import Homogenization.Sobolev.L2Ambient
+public import Homogenization.Geometry.ConvexDomain
+public import Mathlib.Analysis.Calculus.MeanValue
+
+@[expose] public section
 
 namespace Homogenization
 

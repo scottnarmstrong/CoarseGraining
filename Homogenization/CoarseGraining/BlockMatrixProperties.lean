@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.Definitions
+module
+
+public import Homogenization.CoarseGraining.Definitions
+
+@[expose] public section
 
 namespace Homogenization
 

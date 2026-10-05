@@ -1,5 +1,9 @@
-import Homogenization.Geometry.ConvexDomain
-import Homogenization.PDE.Harmonic
+module
+
+public import Homogenization.Geometry.ConvexDomain
+public import Homogenization.PDE.Harmonic
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

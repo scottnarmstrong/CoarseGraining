@@ -1,9 +1,11 @@
-import Homogenization.Probability.RegCoeffField.SliceMeasurability
-import Homogenization.Probability.RegCoeffField.SmoothSigma
-import Mathlib.Geometry.Manifold.PartitionOfUnity
-import Mathlib.MeasureTheory.Constructions.BorelSpace.Metrizable
-import Mathlib.MeasureTheory.Integral.DominatedConvergence
-import Mathlib.Topology.MetricSpace.HausdorffDistance
+module
+
+public import Homogenization.Probability.RegCoeffField.SliceMeasurability
+public import Homogenization.Probability.RegCoeffField.SmoothSigma
+public import Mathlib.Geometry.Manifold.PartitionOfUnity
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.Metrizable
+public import Mathlib.MeasureTheory.Integral.DominatedConvergence
+public import Mathlib.Topology.MetricSpace.HausdorffDistance
 
 /-!
 # Smooth-local measurability of quantitative ellipticity slices
@@ -13,6 +15,8 @@ cube approximate the ball indicator.  Dominated convergence then transfers the
 ball-average presentation of the quantitative ellipticity slice to the smooth
 local sigma algebra.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

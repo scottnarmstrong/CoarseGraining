@@ -1,11 +1,15 @@
-import Homogenization.Sobolev.H1.Definitions
-import Homogenization.Sobolev.WeakDerivatives
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.SmoothLimit
-import Homogenization.Geometry.ConvexDomain
-import Mathlib.MeasureTheory.Integral.Lebesgue.DominatedConvergence
-import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
-import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
+module
+
+public import Homogenization.Sobolev.H1.Definitions
+public import Homogenization.Sobolev.WeakDerivatives
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.SmoothLimit
+public import Homogenization.Geometry.ConvexDomain
+public import Mathlib.MeasureTheory.Integral.Lebesgue.DominatedConvergence
+public import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
+public import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

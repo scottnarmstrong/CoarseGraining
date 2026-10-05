@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliScaleZeroBudgetEnvelopes
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliScaleZeroBudgetEnvelopes
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book
@@ -23,7 +27,7 @@ noncomputable section
 
 open scoped ENNReal
 
-private noncomputable def caccioppoliScaleZeroEnvelopeBound
+noncomputable def caccioppoliScaleZeroEnvelopeBound
     (A X : ℝ) : ℝ :=
   36 * ((6561 : ℝ) * 6561 * X ^ (2 : ℕ)) +
     36 * Real.exp 1 * ((9 : ℝ) * 4 * 81 * X * X * A) + 1

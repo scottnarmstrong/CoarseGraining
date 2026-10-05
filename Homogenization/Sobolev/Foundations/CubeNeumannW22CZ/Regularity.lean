@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ArbitraryCubeEndpoint
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ArbitraryCubeEndpoint
+
+@[expose] public section
 
 namespace Homogenization
 

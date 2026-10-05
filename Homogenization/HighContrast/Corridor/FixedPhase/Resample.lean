@@ -1,5 +1,7 @@
-import Homogenization.HighContrast.Corridor.PhaseComparison.Stability
-import Homogenization.HighContrast.Corridor.FixedPhase.Recombination
+module
+
+public import Homogenization.HighContrast.Corridor.PhaseComparison.Stability
+public import Homogenization.HighContrast.Corridor.FixedPhase.Recombination
 
 /-!
 # One-core resampling stability
@@ -22,6 +24,8 @@ comparison replaced by the resampling comparison: instead of comparing `a` with
 We factor out the corridor-independent core as the general lemma
 `abs_coarseObservable_sub_le_of_minimizer`.
 -/
+
+@[expose] public section
 
 open Homogenization
 open MeasureTheory

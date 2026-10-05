@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpBelowTwo
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpBelowTwo
 
 /-!
 # Stability of finite-exponent cube divergence solutions
@@ -8,6 +10,8 @@ difference of two zero-trace solutions.  This file packages that subtraction
 step, retaining the same exponent-only constant and the exact inverse
 coefficient scaling.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

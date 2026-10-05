@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.PoincareW1p.ConvexApproxTendsto
+module
+
+public import Homogenization.Sobolev.Foundations.PoincareW1p.ConvexApproxTendsto
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -7,7 +11,7 @@ open scoped ENNReal
 namespace W1pFunction
 
 variable {d : ℕ} {U : Set (Vec d)} {p : ENNReal}
-private theorem subAverageLpSeminorm_le_smoothPoincareLpConst_mul_gradientCoordLpSeminormSum
+theorem subAverageLpSeminorm_le_smoothPoincareLpConst_mul_gradientCoordLpSeminormSum
     [NeZero d] (hU : IsOpenBoundedConvexDomain U)
     {q : ℝ} (hq : 1 < q) (hvol : 0 < (MeasureTheory.volume U).toReal)
     (u : W1pFunction U (ENNReal.ofReal q)) :
@@ -132,7 +136,7 @@ theorem subAverageLpSeminorm_eq_valueLpSeminorm_of_meanZero
   filter_upwards with x
   simp [havg]
 
-private theorem valueLpSeminorm_eq_zero_of_volume_toReal_eq_zero
+theorem valueLpSeminorm_eq_zero_of_volume_toReal_eq_zero
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
     (hvol : (MeasureTheory.volume U).toReal = 0) (u : W1pFunction U p) :
     u.valueLpSeminorm = 0 := by
@@ -202,7 +206,7 @@ theorem subAverageLpSeminorm_eq_valueLpSeminorm
   simpa [W1pMeanZeroFunction.valueLpSeminorm] using
     u.toW1pFunction.subAverageLpSeminorm_eq_valueLpSeminorm_of_meanZero u.meanZero
 
-private theorem valueLpSeminorm_eq_zero_of_dim_zero
+theorem valueLpSeminorm_eq_zero_of_dim_zero
     {U : Set (Vec 0)} [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
     (hvol : 0 < (MeasureTheory.volume U).toReal) (u : W1pMeanZeroFunction U p) :
     u.valueLpSeminorm = 0 := by

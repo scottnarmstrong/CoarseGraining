@@ -1,7 +1,11 @@
-import Homogenization.PDE.Harmonic
-import Homogenization.Probability.Scalarization
-import Homogenization.Sobolev.L2Ambient
-import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+module
+
+public import Homogenization.PDE.Harmonic
+public import Homogenization.Probability.Scalarization
+public import Homogenization.Sobolev.L2Ambient
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+
+@[expose] public section
 
 namespace Homogenization
 

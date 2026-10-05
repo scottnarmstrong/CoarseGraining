@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.PoincareW1p.SmoothCase
+module
+
+public import Homogenization.Sobolev.Foundations.PoincareW1p.SmoothCase
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.UniformEllipticityEndpoint
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentBoundsCrudeBottom
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.UniformEllipticityEndpoint
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentBoundsCrudeBottom
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

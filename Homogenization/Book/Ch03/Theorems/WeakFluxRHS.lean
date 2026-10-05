@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch03.Theorems.WeakFluxRHS.Selection.AveragedTail
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges
-import Homogenization.Deterministic.WeakFluxRHS.AbsorbedNoteApex
+module
+
+public import Homogenization.Book.Ch03.Theorems.WeakFluxRHS.Selection.AveragedTail
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges
+public import Homogenization.Deterministic.WeakFluxRHS.AbsorbedNoteApex
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

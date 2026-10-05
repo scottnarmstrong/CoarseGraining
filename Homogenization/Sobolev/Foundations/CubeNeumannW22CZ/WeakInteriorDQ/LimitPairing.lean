@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.LimitHessian
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.SummationByParts
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.LimitHessian
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.SummationByParts
+
+@[expose] public section
 
 namespace Homogenization
 

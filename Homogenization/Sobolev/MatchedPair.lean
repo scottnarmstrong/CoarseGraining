@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.MatchedPair.Core
-import Homogenization.Sobolev.CubeEmbedding
+module
+
+public import Homogenization.Sobolev.MatchedPair.Core
+public import Homogenization.Sobolev.CubeEmbedding
+
+@[expose] public section
 
 namespace Homogenization
 

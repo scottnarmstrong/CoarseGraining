@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailSelected
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailSelected
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch02.Theorems.DeterministicIdentities
-import Homogenization.Book.Ch04.SourceMu
+module
+
+public import Homogenization.Book.Ch02.Theorems.DeterministicIdentities
+public import Homogenization.Book.Ch04.SourceMu
 
 /-!
 # Exact-source scalar response observables
@@ -9,6 +11,8 @@ into one exact-source local `Mu` observable and a constant.  The local Chapter
 2 coefficient realization below is built directly from source-carrier
 ellipticity on the cube.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

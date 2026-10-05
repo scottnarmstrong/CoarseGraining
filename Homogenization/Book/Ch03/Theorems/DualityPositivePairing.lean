@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch03.Theorems.EnergyRHS.HarmonicRemainder
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardOverlapComparison
-import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge.Contracts
-import Homogenization.Deterministic.WeakNormInterfaces.Localization
+module
+
+public import Homogenization.Book.Ch03.Theorems.EnergyRHS.HarmonicRemainder
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardOverlapComparison
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge.Contracts
+public import Homogenization.Deterministic.WeakNormInterfaces.Localization
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

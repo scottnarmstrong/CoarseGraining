@@ -1,4 +1,8 @@
-import Homogenization.Probability.IndependentSums.PsiConcentration.TailKernel
+module
+
+public import Homogenization.Probability.IndependentSums.PsiConcentration.TailKernel
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

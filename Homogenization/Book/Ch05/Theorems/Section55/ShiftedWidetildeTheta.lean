@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section55.DilatedP4
-import Homogenization.Book.Ch05.Theorems.Section52.MomentBounds
-import Homogenization.Book.Ch05.Theorems.Section52.WidetildeTheta
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.EllipticityMoments
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section55.DilatedP4
+public import Homogenization.Book.Ch05.Theorems.Section52.MomentBounds
+public import Homogenization.Book.Ch05.Theorems.Section52.WidetildeTheta
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.EllipticityMoments
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

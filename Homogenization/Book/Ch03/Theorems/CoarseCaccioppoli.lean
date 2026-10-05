@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliDilationTransport
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliDilationTransport
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

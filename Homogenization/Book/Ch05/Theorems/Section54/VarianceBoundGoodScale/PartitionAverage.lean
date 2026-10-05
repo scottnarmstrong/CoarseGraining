@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.FiniteNet
-import Mathlib.LinearAlgebra.Matrix.Bilinear
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.FiniteNet
+public import Mathlib.LinearAlgebra.Matrix.Bilinear
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

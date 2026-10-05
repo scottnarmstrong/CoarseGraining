@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Definitions
-import Homogenization.Book.Ch05.Theorems.Section52.P4Integrability
-import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.UnitDescendantSup
-import Homogenization.Book.Ch04.Theorems.BlockResponseConcentration
+module
+
+public import Homogenization.Book.Ch05.Definitions
+public import Homogenization.Book.Ch05.Theorems.Section52.P4Integrability
+public import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.UnitDescendantSup
+public import Homogenization.Book.Ch04.Theorems.BlockResponseConcentration
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

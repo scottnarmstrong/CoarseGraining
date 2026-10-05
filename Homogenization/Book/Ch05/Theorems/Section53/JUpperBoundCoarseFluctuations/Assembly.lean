@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.FluctuationIntegrability
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.HighScaleAverages
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.FluctuationIntegrability
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.HighScaleAverages
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

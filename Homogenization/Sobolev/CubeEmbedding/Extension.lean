@@ -1,8 +1,12 @@
-import Homogenization.Sobolev.CubeEmbedding.FoldNorm
-import Homogenization.Sobolev.CubeEmbedding.FoldTransport
-import Homogenization.Sobolev.Truncation.WeakGradientLimit
-import Homogenization.Sobolev.Foundations.Cutoff.Box
-import Homogenization.Sobolev.Foundations.PoincareMeanZero
+module
+
+public import Homogenization.Sobolev.CubeEmbedding.FoldNorm
+public import Homogenization.Sobolev.CubeEmbedding.FoldTransport
+public import Homogenization.Sobolev.Truncation.WeakGradientLimit
+public import Homogenization.Sobolev.Foundations.Cutoff.Box
+public import Homogenization.Sobolev.Foundations.PoincareMeanZero
+
+@[expose] public section
 
 namespace Homogenization
 

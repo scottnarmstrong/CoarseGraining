@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch01.Definitions
-import Homogenization.Besov.Duality.GlobalComparison
+module
+
+public import Homogenization.Book.Ch01.Definitions
+public import Homogenization.Besov.Duality.GlobalComparison
 
 /-!
 # Chapter 1 circ domination
@@ -8,6 +10,8 @@ The Chapter 1 public facade consists of the six exact source-regime bounds
 below.  The former totalized-real, disjoint-cube comparisons remain available
 only as compatibility results in `Book.Ch01.Legacy`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge.CoordinateStandard
+module
+
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge.CoordinateStandard
+
+@[expose] public section
 
 namespace Homogenization
 

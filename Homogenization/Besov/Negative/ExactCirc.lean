@@ -1,4 +1,6 @@
-import Homogenization.Multiscale.NormalizedNorms
+module
+
+public import Homogenization.Multiscale.NormalizedNorms
 
 /-!
 # Exact concrete circ negative Besov kernel
@@ -7,6 +9,8 @@ This is the extended-valued source-facing circ lane from Chapter 1.  Its
 natural depth `j` represents the manuscript scale `n = Q.scale - j`, and its
 blocks are exactly the disjoint descendants at that depth.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

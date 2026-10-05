@@ -1,10 +1,14 @@
-import Homogenization.Geometry.CubeMetric
-import Homogenization.Sobolev.Foundations.Cutoff.Ball
-import Homogenization.Sobolev.Foundations.Cutoff.Cube
-import Homogenization.Sobolev.Foundations.Cutoff.DerivativeBounds
-import Homogenization.Sobolev.Foundations.Cutoff.Profile
-import Homogenization.Sobolev.WeakDerivatives
-import Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries
+module
+
+public import Homogenization.Geometry.CubeMetric
+public import Homogenization.Sobolev.Foundations.Cutoff.Ball
+public import Homogenization.Sobolev.Foundations.Cutoff.Cube
+public import Homogenization.Sobolev.Foundations.Cutoff.DerivativeBounds
+public import Homogenization.Sobolev.Foundations.Cutoff.Profile
+public import Homogenization.Sobolev.WeakDerivatives
+public import Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries
+
+@[expose] public section
 
 noncomputable section
 

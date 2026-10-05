@@ -1,6 +1,10 @@
-import Homogenization.Geometry.CubeMeasure
-import Homogenization.Sobolev.Foundations.CubeReflection.Reflections
-import Mathlib.MeasureTheory.Group.Measure
+module
+
+public import Homogenization.Geometry.CubeMeasure
+public import Homogenization.Sobolev.Foundations.CubeReflection.Reflections
+public import Mathlib.MeasureTheory.Group.Measure
+
+@[expose] public section
 
 namespace Homogenization
 

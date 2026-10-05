@@ -1,5 +1,7 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PublicTheorems
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.ContinuousDiscreteKBridge
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PublicTheorems
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.ContinuousDiscreteKBridge
 
 /-!
 # Continuous K-functional regularity for the unit-cube Dirichlet problem
@@ -7,6 +9,8 @@ import Homogenization.Sobolev.Fractional.ContinuousInterpolation.ContinuousDiscr
 This module transfers the concrete constant-coefficient Dirichlet endpoint
 estimates to the exact continuous `K`-functional on the centered unit cube.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch04.AnnealedDefinitions
-import Homogenization.Probability.Scalarization
+module
+
+public import Homogenization.Book.Ch04.AnnealedDefinitions
+public import Homogenization.Probability.Scalarization
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

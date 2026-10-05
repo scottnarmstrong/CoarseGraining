@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CoerciveH10
+module
+
+public import Homogenization.Sobolev.Foundations.CoerciveH10
+
+@[expose] public section
 
 namespace Homogenization
 

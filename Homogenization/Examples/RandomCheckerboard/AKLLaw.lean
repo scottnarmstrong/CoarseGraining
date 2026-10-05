@@ -1,7 +1,9 @@
-import Homogenization.Examples.RandomCheckerboard.Basic
-import Homogenization.Probability.Source.AKL.Laws
-import Homogenization.Probability.Source.AKL.RegQuotientAdapter
-import Homogenization.Probability.RegCoeffField.RestrictionBridge
+module
+
+public import Homogenization.Examples.RandomCheckerboard.Basic
+public import Homogenization.Probability.Source.AKL.Laws
+public import Homogenization.Probability.Source.AKL.RegQuotientAdapter
+public import Homogenization.Probability.RegCoeffField.RestrictionBridge
 
 /-!
 # The AKL Bernoulli checkerboard law
@@ -10,6 +12,8 @@ The Bernoulli checkerboard, viewed through AKL's a.e.-quotient carrier.  The
 regular checkerboard is only used in the forward, measurable direction supplied
 by `regularToAKL`; no quotient representative is chosen here.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Examples.RandomCheckerboard.AKL
 
@@ -22,7 +26,7 @@ attribute [local instance] Classical.propDecidable
 
 /-- The regular checkerboard realization with the fixed `(1, Θ)` a.e.
 ellipticity witness required to enter AKL's quotient carrier. -/
-private def regularCheckerCarrier {d : ℕ} {Θ : ℝ} (hΘ : 1 ≤ Θ) :
+def regularCheckerCarrier {d : ℕ} {Θ : ℝ} (hΘ : 1 ≤ Θ) :
     Sample d → Source.AKL.RegularAKLCarrier d Θ :=
   fun ω => ⟨checkerRegField 1 Θ ω, Filter.Eventually.of_forall fun x =>
     scalarMatrix_isEllipticMatrix_between (d := d) one_pos hΘ

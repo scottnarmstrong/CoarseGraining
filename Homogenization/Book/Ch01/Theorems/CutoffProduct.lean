@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch01.Definitions
-import Homogenization.Book.Ch01.Theorems.MultiscalePoincare
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.VectorProduct
-import Homogenization.Deterministic.WeakNormInterfacesComponentwise
+module
+
+public import Homogenization.Book.Ch01.Definitions
+public import Homogenization.Book.Ch01.Theorems.MultiscalePoincare
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.VectorProduct
+public import Homogenization.Deterministic.WeakNormInterfacesComponentwise
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.EntryScaleCompression
-import Homogenization.Book.Ch05.Theorems.Section57.UniformEllipticityEndpoint
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.EntryScaleCompression
+public import Homogenization.Book.Ch05.Theorems.Section57.UniformEllipticityEndpoint
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

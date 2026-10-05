@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch03.Theorems.Duality
-import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantEnvelope
-import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2Response
-import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2RHSCoefficientLocalization
+module
+
+public import Homogenization.Book.Ch03.Theorems.Duality
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantEnvelope
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2Response
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2RHSCoefficientLocalization
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

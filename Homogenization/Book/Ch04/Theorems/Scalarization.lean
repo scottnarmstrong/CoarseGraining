@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch04.Theorems.ScalarizationDefinitions
-import Homogenization.Book.Ch04.Theorems.CoarseObservables
-import Homogenization.CoarseGraining.AdjointSymmetry.BasicAdjoint
-import Homogenization.CoarseGraining.OriginCubeOpenBridge
+module
+
+public import Homogenization.Book.Ch04.Theorems.ScalarizationDefinitions
+public import Homogenization.Book.Ch04.Theorems.CoarseObservables
+public import Homogenization.CoarseGraining.AdjointSymmetry.BasicAdjoint
+public import Homogenization.CoarseGraining.OriginCubeOpenBridge
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

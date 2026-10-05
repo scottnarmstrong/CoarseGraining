@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch01.Theorems.NormScaling
-import Homogenization.Book.Ch02.HomogenizationError
-import Homogenization.Sobolev.Foundations.CoerciveH1Dilation
+module
+
+public import Homogenization.Book.Ch01.Theorems.NormScaling
+public import Homogenization.Book.Ch02.HomogenizationError
+public import Homogenization.Sobolev.Foundations.CoerciveH1Dilation
+
+@[expose] public section
 
 open scoped Pointwise
 

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.WeakFluxRHS.AbsorbedGlobalIteration
+module
+
+public import Homogenization.Deterministic.WeakFluxRHS.AbsorbedGlobalIteration
+
+@[expose] public section
 
 namespace Homogenization
 

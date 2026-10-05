@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.MagicIdentities.BlockSubadditivity
+module
+
+public import Homogenization.CoarseGraining.MagicIdentities.BlockSubadditivity
+
+@[expose] public section
 
 namespace Homogenization
 

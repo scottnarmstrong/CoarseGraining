@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadPairNoLog
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentSummation
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentBoundsTop
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadPairNoLog
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentSummation
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentBoundsTop
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

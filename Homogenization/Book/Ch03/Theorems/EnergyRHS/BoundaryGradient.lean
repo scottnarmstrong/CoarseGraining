@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.EnergyRHS.HarmonicRemainder
+module
+
+public import Homogenization.Book.Ch03.Theorems.EnergyRHS.HarmonicRemainder
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

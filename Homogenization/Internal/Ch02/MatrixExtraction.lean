@@ -1,12 +1,16 @@
-import Homogenization.Book.Ch02.Theorems.MatrixExtraction
-import Homogenization.Internal.Ch02.Existence
-import Homogenization.Internal.Ch02.Adapters
-import Homogenization.CoarseGraining.MuRecoveryBlockResponse
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticWrappers
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.SigmaStarPosDef
-import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.QuadraticMu
-import Homogenization.Sobolev.PotentialSolenoidalL2Realization
-import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+module
+
+public import Homogenization.Book.Ch02.Theorems.MatrixExtraction
+public import Homogenization.Internal.Ch02.Existence
+public import Homogenization.Internal.Ch02.Adapters
+public import Homogenization.CoarseGraining.MuRecoveryBlockResponse
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticWrappers
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.SigmaStarPosDef
+public import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.QuadraticMu
+public import Homogenization.Sobolev.PotentialSolenoidalL2Realization
+public import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

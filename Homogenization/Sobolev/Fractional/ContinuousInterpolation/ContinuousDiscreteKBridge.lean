@@ -1,6 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.KFunctional
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.KInfimum
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.UnitCubeGeometry
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.KFunctional
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.KInfimum
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.UnitCubeGeometry
 
 /-!
 # Exact continuous-to-discrete unit-cube K-functional bridge
@@ -10,6 +12,8 @@ on the origin unit cube, and compares their residual and gradient quantities.
 The resulting inequalities are internal transport facts for the finite-depth
 continuous interpolation argument.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

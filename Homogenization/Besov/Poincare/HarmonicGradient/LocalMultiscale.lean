@@ -1,4 +1,8 @@
-import Homogenization.Besov.Poincare.HarmonicGradient.FullCirc
+module
+
+public import Homogenization.Besov.Poincare.HarmonicGradient.FullCirc
+
+@[expose] public section
 
 namespace Homogenization
 

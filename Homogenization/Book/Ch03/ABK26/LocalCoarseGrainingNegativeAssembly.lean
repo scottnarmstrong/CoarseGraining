@@ -1,4 +1,6 @@
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingAggregation
+module
+
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingAggregation
 
 /-!
 # Exact negative-Besov assembly for local coarse graining
@@ -6,6 +8,8 @@ import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingAggregation
 This module flattens the nested normalized descendant average in the
 source-facing local negative Besov carrier into its physical-scale series.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

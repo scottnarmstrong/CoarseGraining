@@ -1,16 +1,20 @@
-import Homogenization.Book.Ch02.Theorems.SymmetricDirichletNeumannDefinitions
-import Homogenization.Book.Ch01.Theorems.PotentialSolenoidal
-import Homogenization.CoarseGraining.Symmetric.Bracketing
-import Homogenization.CoarseGraining.Symmetric.OpenBoundedConvex
-import Homogenization.CoarseGraining.Symmetric.VariationalProblems
-import Homogenization.Internal.Ch02.GradientUniqueness
-import Homogenization.Internal.Ch02.MatrixExtraction
-import Homogenization.Internal.Ch02.Representatives
-import Homogenization.PDE.EnergyIdentities
-import Homogenization.PDE.DirichletRHS
-import Homogenization.PDE.NeumannRHS
-import Homogenization.Sobolev.Foundations.PoincareMeanZero
-import Homogenization.Sobolev.PotentialSolenoidalL2Realization
+module
+
+public import Homogenization.Book.Ch02.Theorems.SymmetricDirichletNeumannDefinitions
+public import Homogenization.Book.Ch01.Theorems.PotentialSolenoidal
+public import Homogenization.CoarseGraining.Symmetric.Bracketing
+public import Homogenization.CoarseGraining.Symmetric.OpenBoundedConvex
+public import Homogenization.CoarseGraining.Symmetric.VariationalProblems
+public import Homogenization.Internal.Ch02.GradientUniqueness
+public import Homogenization.Internal.Ch02.MatrixExtraction
+public import Homogenization.Internal.Ch02.Representatives
+public import Homogenization.PDE.EnergyIdentities
+public import Homogenization.PDE.DirichletRHS
+public import Homogenization.PDE.NeumannRHS
+public import Homogenization.Sobolev.Foundations.PoincareMeanZero
+public import Homogenization.Sobolev.PotentialSolenoidalL2Realization
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

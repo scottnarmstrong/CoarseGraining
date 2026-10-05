@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.ReflectionWeakEquation
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedGlobalEnergy
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.ReflectionWeakEquation
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedGlobalEnergy
 
 /-!
 # Global energy for centered-Neumann even reflection
@@ -9,6 +11,8 @@ extensions as the Dirichlet argument, but the solution gradient and datum are
 transported by the coordinate-fold even reflection.  This file identifies the
 actual global energy of those extensions with its source-cube expression.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

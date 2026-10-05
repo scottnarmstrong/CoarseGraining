@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.SeminormRecurrence
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.SeminormRecurrence
+
+@[expose] public section
 
 namespace Homogenization
 

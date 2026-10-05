@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.LowerVariants
-import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.PowIntegrable
-import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.UnitDescendantSup
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.LowerVariants
+public import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.PowIntegrable
+public import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessLowerAndIntegrability.UnitDescendantSup
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

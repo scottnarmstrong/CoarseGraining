@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.EuclideanWsp
-import Homogenization.Sobolev.Fractional.DefinitionsAPI
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWsp
+public import Homogenization.Sobolev.Fractional.DefinitionsAPI
 
 /-!
 # Triadic translation covariance for finite-p Euclidean fractional norms
@@ -8,6 +10,8 @@ The translation is represented by the lattice vector attached to
 `translateCube`.  All identities preserve the normalized measures exactly.
 -/
 
+@[expose] public section
+
 namespace Homogenization
 
 open MeasureTheory
@@ -15,11 +19,11 @@ open scoped ENNReal
 
 noncomputable section
 
-private noncomputable def euclideanWspTranslationEquiv {d : ℕ}
+noncomputable def euclideanWspTranslationEquiv {d : ℕ}
     (shift : Fin d → ℤ) (Q : TriadicCube d) : Vec d ≃ᵐ Vec d :=
   MeasurableEquiv.addRight (Gagliardo.cubeShiftVector shift Q)
 
-private theorem euclideanWspTranslation_measurePreserving {d : ℕ}
+theorem euclideanWspTranslation_measurePreserving {d : ℕ}
     (shift : Fin d → ℤ) (Q : TriadicCube d) :
     MeasurePreserving (euclideanWspTranslationEquiv shift Q)
       (normalizedCubeMeasure Q)
@@ -47,7 +51,7 @@ private theorem euclideanWspTranslation_measurePreserving {d : ℕ}
   rw [normalizedCubeMeasure, normalizedCubeMeasure, cubeMeasure, cubeMeasure,
     hvol, hres, Measure.map_smul _ T.measurable.aemeasurable]
 
-private theorem euclideanWspTranslation_pair_measurePreserving {d : ℕ}
+theorem euclideanWspTranslation_pair_measurePreserving {d : ℕ}
     (shift : Fin d → ℤ) (Q : TriadicCube d) :
     MeasurePreserving
       ((euclideanWspTranslationEquiv shift Q).prodCongr

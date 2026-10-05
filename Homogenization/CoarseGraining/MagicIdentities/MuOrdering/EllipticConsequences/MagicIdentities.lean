@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.OriginCube
+module
+
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.OriginCube
+
+@[expose] public section
 
 namespace Homogenization
 

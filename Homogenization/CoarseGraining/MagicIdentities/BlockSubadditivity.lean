@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.MagicIdentities.Basics
+module
+
+public import Homogenization.CoarseGraining.MagicIdentities.Basics
+
+@[expose] public section
 
 namespace Homogenization
 

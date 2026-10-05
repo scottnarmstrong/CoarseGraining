@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionWeightedTail
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionHessianRowFiniteP
-import Homogenization.Sobolev.Foundations.Cutoff.Cube
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionWeightedTail
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionHessianRowFiniteP
+public import Homogenization.Sobolev.Foundations.Cutoff.Cube
 
 /-!
 # Square-weighted tails of reflected Hessian rows
@@ -10,6 +12,8 @@ norm as the ordinary odd reflection of the source row.  Consequently its
 square-weighted level tail on an origin-cube parent is exactly the existing
 odd-vector tail, with no new measure decomposition.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

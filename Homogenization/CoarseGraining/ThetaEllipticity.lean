@@ -1,6 +1,10 @@
-import Homogenization.CoarseGraining.BlockFormalism.EllipticBounds
-import Homogenization.Book.Ch02.Block
-import Homogenization.Book.Ch04.Law
+module
+
+public import Homogenization.CoarseGraining.BlockFormalism.EllipticBounds
+public import Homogenization.Book.Ch02.Block
+public import Homogenization.Book.Ch04.Law
+
+@[expose] public section
 
 namespace Homogenization
 

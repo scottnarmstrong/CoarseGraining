@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.NoteStepAndConstants
-import Homogenization.Deterministic.CoarsePoincareRHS.LocalNoteTerms.Intrinsic
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.NoteStepAndConstants
+public import Homogenization.Deterministic.CoarsePoincareRHS.LocalNoteTerms.Intrinsic
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentApprox
-import Homogenization.Sobolev.Foundations.PoincareMeanZero
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentApprox
+public import Homogenization.Sobolev.Foundations.PoincareMeanZero
+
+@[expose] public section
 
 namespace Homogenization
 

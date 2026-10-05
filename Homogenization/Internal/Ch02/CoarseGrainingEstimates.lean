@@ -1,10 +1,14 @@
-import Homogenization.Book.Ch02.Theorems.CoarseGrainingEstimatesDefinitions
-import Homogenization.Internal.Ch02.Existence
-import Homogenization.Internal.Ch02.MatrixExtraction
-import Homogenization.Internal.Ch02.Representatives
-import Homogenization.CoarseGraining.AdjointSymmetry.SigmaAdjoint
-import Homogenization.CoarseGraining.MagicIdentities.Basics
-import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas.CoarseFormulas
+module
+
+public import Homogenization.Book.Ch02.Theorems.CoarseGrainingEstimatesDefinitions
+public import Homogenization.Internal.Ch02.Existence
+public import Homogenization.Internal.Ch02.MatrixExtraction
+public import Homogenization.Internal.Ch02.Representatives
+public import Homogenization.CoarseGraining.AdjointSymmetry.SigmaAdjoint
+public import Homogenization.CoarseGraining.MagicIdentities.Basics
+public import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas.CoarseFormulas
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

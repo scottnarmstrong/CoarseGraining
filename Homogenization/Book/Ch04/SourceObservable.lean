@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch04.SourceLaw
-import Mathlib.MeasureTheory.Constructions.Pi
+module
+
+public import Homogenization.Book.Ch04.SourceLaw
+public import Mathlib.MeasureTheory.Constructions.Pi
 
 /-!
 # Exact coarse-source local observables
@@ -8,11 +10,13 @@ Locality in this file is measurability for the coarse source's integral-only
 sigma algebra.  It is intentionally separate from restriction locality.
 -/
 
+@[expose] public section
+
 namespace Homogenization.Book.Ch04
 
 open MeasureTheory
 
-private instance instMeasurableSpaceMat (d : ℕ) : MeasurableSpace (Mat d) :=
+instance instMeasurableSpaceMat (d : ℕ) : MeasurableSpace (Mat d) :=
   inferInstanceAs (MeasurableSpace (Fin d → Fin d → ℝ))
 
 /-- A random variable local for the exact coarse source sigma algebra. -/

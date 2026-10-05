@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.OriginCubeEndpoint
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.SmoothTestBoundEstimate
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.OriginCubeEndpoint
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.SmoothTestBoundEstimate
+
+@[expose] public section
 
 namespace Homogenization
 

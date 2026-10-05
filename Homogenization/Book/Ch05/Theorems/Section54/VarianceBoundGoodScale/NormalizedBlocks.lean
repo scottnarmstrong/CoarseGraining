@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole.ScalarChain
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.GeometricSum
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole.ScalarChain
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.GeometricSum
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

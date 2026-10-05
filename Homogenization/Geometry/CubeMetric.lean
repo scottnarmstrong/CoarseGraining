@@ -1,7 +1,11 @@
-import Homogenization.Geometry.CubeMeasure
-import Homogenization.Multiscale.CubeAverage
-import Mathlib.MeasureTheory.Integral.Average
-import Mathlib.Topology.MetricSpace.Pseudo.Pi
+module
+
+public import Homogenization.Geometry.CubeMeasure
+public import Homogenization.Multiscale.CubeAverage
+public import Mathlib.MeasureTheory.Integral.Average
+public import Mathlib.Topology.MetricSpace.Pseudo.Pi
+
+@[expose] public section
 
 namespace Homogenization
 

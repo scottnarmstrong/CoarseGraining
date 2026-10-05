@@ -1,5 +1,9 @@
-import Mathlib.Analysis.Matrix.Order
-import Homogenization.CoarseGraining.MagicIdentities.StarredSubadditivity
+module
+
+public import Mathlib.Analysis.Matrix.Order
+public import Homogenization.CoarseGraining.MagicIdentities.StarredSubadditivity
+
+@[expose] public section
 
 namespace Homogenization
 

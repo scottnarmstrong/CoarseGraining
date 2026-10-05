@@ -1,7 +1,9 @@
-import Homogenization.HighContrast.Coupled.IterationLemma
-import Mathlib.MeasureTheory.Measure.Restrict
-import Mathlib.MeasureTheory.Measure.Map
-import Mathlib.MeasureTheory.Measure.Sum
+module
+
+public import Homogenization.HighContrast.Coupled.IterationLemma
+public import Mathlib.MeasureTheory.Measure.Restrict
+public import Mathlib.MeasureTheory.Measure.Map
+public import Mathlib.MeasureTheory.Measure.Sum
 
 /-!
 # Generic De Giorgi iteration (level-volume decay)
@@ -20,6 +22,8 @@ The statement is fully abstract in the nonnegative "level-volume" function
 `Y_n = L^{-d} a(k_n)`) reduces the recursion to the toolbox lemma
 `iteration_geometric_decay_tendsto_zero`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

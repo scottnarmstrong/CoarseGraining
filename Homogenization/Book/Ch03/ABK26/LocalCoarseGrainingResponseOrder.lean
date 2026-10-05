@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingResponse
-import Homogenization.Book.Ch02.Theorems.HomogenizationError.EllipticityControl
+module
+
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingResponse
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError.EllipticityControl
 
 /-!
 # Order lowering for the local coarse-graining response
@@ -8,6 +10,8 @@ The frozen local theorem uses a `q = 2` response at the local order and the
 parent-truncated response at a smaller order.  This module supplies that
 order-lowering step before the existing exact descendant localization.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

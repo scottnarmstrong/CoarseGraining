@@ -1,7 +1,11 @@
-import Homogenization.CoarseGraining.ResponseIdentities.Foundations.Algebra
-import Homogenization.Geometry.Translation
-import Homogenization.Sobolev.Foundations.Cutoff.Euclidean
-import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
+module
+
+public import Homogenization.CoarseGraining.ResponseIdentities.Foundations.Algebra
+public import Homogenization.Geometry.Translation
+public import Homogenization.Sobolev.Foundations.Cutoff.Euclidean
+public import Mathlib.MeasureTheory.Measure.Haar.NormedSpace
+
+@[expose] public section
 
 open scoped Pointwise ENNReal
 

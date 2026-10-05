@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.WeakFluxRHS.AbsorbedComponents
+module
+
+public import Homogenization.Deterministic.WeakFluxRHS.AbsorbedComponents
+
+@[expose] public section
 
 namespace Homogenization
 

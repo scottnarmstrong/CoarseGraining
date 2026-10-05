@@ -1,9 +1,11 @@
-import Homogenization.Geometry.ConvexDomain
-import Homogenization.Geometry.TriadicCubeTranslation
-import Homogenization.Geometry.TriadicPartition
-import Homogenization.PDE.Harmonic
-import Homogenization.PDE.HarmonicTranslation
-import Homogenization.Sobolev.PotentialSolenoidalOriginCubeBridge
+module
+
+public import Homogenization.Geometry.ConvexDomain
+public import Homogenization.Geometry.TriadicCubeTranslation
+public import Homogenization.Geometry.TriadicPartition
+public import Homogenization.PDE.Harmonic
+public import Homogenization.PDE.HarmonicTranslation
+public import Homogenization.Sobolev.PotentialSolenoidalOriginCubeBridge
 
 /-!
 # Harmonic functions on triadic subcubes
@@ -14,17 +16,19 @@ separate; on open cubes the restriction follows directly from descendant
 containment and monotonicity of ellipticity.
 -/
 
+@[expose] public section
+
 namespace Homogenization
 
 noncomputable section
 
 namespace AHarmonicFunction
 
-private noncomputable def castDomain {d : ℕ} {a : CoeffField d} {U V : Set (Vec d)}
+noncomputable def castDomain {d : ℕ} {a : CoeffField d} {U V : Set (Vec d)}
     (hUV : U = V) (u : AHarmonicFunction a U) : AHarmonicFunction a V :=
   hUV ▸ u
 
-private noncomputable def castCoeff {d : ℕ} {a b : CoeffField d} {U : Set (Vec d)}
+noncomputable def castCoeff {d : ℕ} {a b : CoeffField d} {U : Set (Vec d)}
     (hab : a = b) (u : AHarmonicFunction a U) : AHarmonicFunction b U :=
   hab ▸ u
 
@@ -78,7 +82,7 @@ noncomputable def toOpenCubeSetOriginCube {d : ℕ} [NeZero d] {n : ℤ} {a : Co
     (u.toOpenCubeSetOriginCube (n := n)).toH1.grad = u.toH1.grad :=
   rfl
 
-private noncomputable def toCubeSetOrigin {d : ℕ} [NeZero d] {a : CoeffField d}
+noncomputable def toCubeSetOrigin {d : ℕ} [NeZero d] {a : CoeffField d}
     (Q : TriadicCube d) (u : AHarmonicFunction a (cubeSet Q)) :
     AHarmonicFunction (translateCoeffField (triadicCubeShift Q) a)
       (cubeSet (originCube d Q.scale)) := by
@@ -96,7 +100,7 @@ private noncomputable def toCubeSetOrigin {d : ℕ} [NeZero d] {a : CoeffField d
     simpa [sub_eq_add_neg] using (translateSet_translateSet (d := d) z (-z) U)
   exact castDomain hdomain uOrigin
 
-private noncomputable def toOpenCubeSetOrigin {d : ℕ} [NeZero d] {a : CoeffField d}
+noncomputable def toOpenCubeSetOrigin {d : ℕ} [NeZero d] {a : CoeffField d}
     (Q : TriadicCube d) (u : AHarmonicFunction a (openCubeSet Q)) :
     AHarmonicFunction (translateCoeffField (triadicCubeShift Q) a)
       (openCubeSet (originCube d Q.scale)) := by

@@ -1,5 +1,7 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CubeVectorH1
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CubeVectorH1
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
 
 /-!
 # Coefficient rescaling for centered-cube divergence solutions
@@ -7,6 +9,8 @@ import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
 This file converts the normalized weak formulation with a positive scalar
 coefficient into the raw cube Dirichlet divergence problem with rescaled data.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.VectorFullDual
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimate
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.VectorFullDual
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimate
+
+@[expose] public section
 
 namespace Homogenization
 

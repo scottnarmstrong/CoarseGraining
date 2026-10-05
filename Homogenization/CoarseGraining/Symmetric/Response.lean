@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.Symmetric.CoarseMatrices
+module
+
+public import Homogenization.CoarseGraining.Symmetric.CoarseMatrices
+
+@[expose] public section
 
 namespace Homogenization
 

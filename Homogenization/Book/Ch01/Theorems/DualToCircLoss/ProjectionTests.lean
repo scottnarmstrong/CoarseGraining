@@ -1,10 +1,14 @@
-import Homogenization.Book.Ch01.Theorems.CircDomination
-import Homogenization.Besov.Duality.CaccioppoliBridge
-import Homogenization.Besov.Poincare.Projection
-import Homogenization.Besov.Duality.ProjectionLimit
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.VectorProduct
-import Homogenization.Deterministic.CoarsePoincareRHS.NoteConstants
-import Homogenization.Deterministic.WeakNormInterfacesQTwo
+module
+
+public import Homogenization.Book.Ch01.Theorems.CircDomination
+public import Homogenization.Besov.Duality.CaccioppoliBridge
+public import Homogenization.Besov.Poincare.Projection
+public import Homogenization.Besov.Duality.ProjectionLimit
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.VectorProduct
+public import Homogenization.Deterministic.CoarsePoincareRHS.NoteConstants
+public import Homogenization.Deterministic.WeakNormInterfacesQTwo
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

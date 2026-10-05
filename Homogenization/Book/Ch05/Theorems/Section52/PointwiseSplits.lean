@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section52.Weights
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section52.Weights
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

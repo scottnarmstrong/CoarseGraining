@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadScalePrefactorGap
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScalePrefactorGap
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

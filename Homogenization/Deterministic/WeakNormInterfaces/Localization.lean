@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.WeakNormInterfacesComponentwise
-import Mathlib.Algebra.Order.Chebyshev
+module
+
+public import Homogenization.Deterministic.WeakNormInterfacesComponentwise
+public import Mathlib.Algebra.Order.Chebyshev
+
+@[expose] public section
 
 namespace Homogenization
 

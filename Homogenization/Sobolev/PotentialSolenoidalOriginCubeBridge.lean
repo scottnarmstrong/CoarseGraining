@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.PotentialSolenoidal
-import Homogenization.Sobolev.H1.OriginCubeBridge
-import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
+module
+
+public import Homogenization.Sobolev.PotentialSolenoidal
+public import Homogenization.Sobolev.H1.OriginCubeBridge
+public import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.RadiusIteration
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.RadiusIteration
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

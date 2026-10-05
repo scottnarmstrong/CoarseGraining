@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.EndPoints
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.CoarseFluxResponseRHS
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.CoarseGrainingL2
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.WeakSolutionConstructors
+module
+
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.EndPoints
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.CoarseFluxResponseRHS
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.CoarseGrainingL2
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.WeakSolutionConstructors
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

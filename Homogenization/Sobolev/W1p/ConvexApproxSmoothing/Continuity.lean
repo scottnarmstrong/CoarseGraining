@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.WeakDerivSmoothing
+module
+
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.WeakDerivSmoothing
+
+@[expose] public section
 
 namespace Homogenization
 

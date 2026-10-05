@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.Theorems.MagicIdentitiesDefinitions
+module
+
+public import Homogenization.Book.Ch02.Theorems.MagicIdentitiesDefinitions
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

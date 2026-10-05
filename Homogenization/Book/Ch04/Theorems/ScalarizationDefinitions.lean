@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch04.Definitions
-import Homogenization.Book.Ch04.Internal.ScalarizationWitnesses
+module
+
+public import Homogenization.Book.Ch04.Definitions
+public import Homogenization.Book.Ch04.Internal.ScalarizationWitnesses
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

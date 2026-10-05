@@ -1,8 +1,12 @@
-import Homogenization.Geometry.OriginCubeBoundaryPush
-import Homogenization.Geometry.Translation
-import Mathlib.Analysis.Normed.Module.Convex
-import Mathlib.MeasureTheory.Measure.Typeclasses.Finite
-import Mathlib.Topology.MetricSpace.Bounded
+module
+
+public import Homogenization.Geometry.OriginCubeBoundaryPush
+public import Homogenization.Geometry.Translation
+public import Mathlib.Analysis.Normed.Module.Convex
+public import Mathlib.MeasureTheory.Measure.Typeclasses.Finite
+public import Mathlib.Topology.MetricSpace.Bounded
+
+@[expose] public section
 
 namespace Homogenization
 

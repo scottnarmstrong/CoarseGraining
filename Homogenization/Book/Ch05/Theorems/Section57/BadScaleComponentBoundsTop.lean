@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.ExponentCompetition
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleSplit
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.ExponentCompetition
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleSplit
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

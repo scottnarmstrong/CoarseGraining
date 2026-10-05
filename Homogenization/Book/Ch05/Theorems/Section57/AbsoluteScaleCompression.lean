@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.AbsoluteMinimalScale
-import Homogenization.Book.Ch05.Theorems.Section57.EntryScaleCompression
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.AbsoluteMinimalScale
+public import Homogenization.Book.Ch05.Theorems.Section57.EntryScaleCompression
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

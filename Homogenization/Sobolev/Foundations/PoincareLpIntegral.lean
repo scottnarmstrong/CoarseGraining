@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.MeanZero
+module
+
+public import Homogenization.Sobolev.Foundations.MeanZero
+
+@[expose] public section
 
 namespace Homogenization
 

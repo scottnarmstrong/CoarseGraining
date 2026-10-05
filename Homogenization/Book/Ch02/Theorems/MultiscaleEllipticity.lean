@@ -1,1 +1,3 @@
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Public
+module
+
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Public

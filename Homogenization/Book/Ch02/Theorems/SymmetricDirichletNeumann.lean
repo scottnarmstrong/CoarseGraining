@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.SymmetricDirichletNeumann
+module
+
+public import Homogenization.Internal.Ch02.SymmetricDirichletNeumann
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

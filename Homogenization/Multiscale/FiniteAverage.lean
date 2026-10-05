@@ -1,6 +1,11 @@
-import Mathlib.Algebra.Module.BigOperators
-import Mathlib.Algebra.Module.NatInt
-import Mathlib.Basic.Real.Basic
+module
+
+public import Mathlib.Algebra.Module.BigOperators
+public import Mathlib.Algebra.Module.NatInt
+public import Mathlib.Algebra.GroupWithZero.Action.Units
+public import Mathlib.Basic.Real.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

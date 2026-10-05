@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentL2
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.SmoothLimit
-import Homogenization.Sobolev.Foundations.DifferenceQuotient
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentL2
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.SmoothLimit
+public import Homogenization.Sobolev.Foundations.DifferenceQuotient
+
+@[expose] public section
 
 namespace Homogenization
 

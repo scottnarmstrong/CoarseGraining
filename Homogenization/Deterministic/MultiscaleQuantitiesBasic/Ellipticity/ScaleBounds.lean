@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Ellipticity.Descendants
+module
+
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Ellipticity.Descendants
+
+@[expose] public section
 
 namespace Homogenization
 

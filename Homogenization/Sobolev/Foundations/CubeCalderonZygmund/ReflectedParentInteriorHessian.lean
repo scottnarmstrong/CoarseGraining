@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionParentH1Graph
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.LimitHessianPointwise
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ScaledCubeGeometry
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionParentH1Graph
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.LimitHessianPointwise
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ScaledCubeGeometry
+
+@[expose] public section
 
 namespace Homogenization
 

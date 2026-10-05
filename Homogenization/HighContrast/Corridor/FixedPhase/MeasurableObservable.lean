@@ -1,7 +1,9 @@
-import Homogenization.HighContrast.Corridor.FixedPhase.CorePatchEnergy
-import Homogenization.CoarseGraining.CubeMinimizer
-import Homogenization.CoarseGraining.ThetaEllipticity
-import Homogenization.CoarseGraining.MuOperator.AEEOperator.CanonicalCubeSet
+module
+
+public import Homogenization.HighContrast.Corridor.FixedPhase.CorePatchEnergy
+public import Homogenization.CoarseGraining.CubeMinimizer
+public import Homogenization.CoarseGraining.ThetaEllipticity
+public import Homogenization.CoarseGraining.MuOperator.AEEOperator.CanonicalCubeSet
 
 /-!
 # The product-measurable observable and its a.e. identity
@@ -33,6 +35,8 @@ The genuine spatial measurability of the underlying field — required for the
 `IsEllipticFieldOn` hypotheses of links 1 and 3 — is exactly the measurability
 conjunct of `ThetaEllipticLaw` (amended 2026-07-22).
 -/
+
+@[expose] public section
 
 open Homogenization
 open scoped MeasureTheory BigOperators

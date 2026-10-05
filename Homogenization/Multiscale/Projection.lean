@@ -1,6 +1,10 @@
-import Homogenization.Geometry.TriadicPartition
-import Homogenization.Geometry.CubeMeasure
-import Homogenization.Multiscale.CubeAverage
+module
+
+public import Homogenization.Geometry.TriadicPartition
+public import Homogenization.Geometry.CubeMeasure
+public import Homogenization.Multiscale.CubeAverage
+
+@[expose] public section
 
 namespace Homogenization
 

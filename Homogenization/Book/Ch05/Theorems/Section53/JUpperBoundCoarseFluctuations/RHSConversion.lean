@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.Assembly
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.EllipticityMoments
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.PositiveExcessDefectSquare
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.AdditivityDefects
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.LinearProductAbsorption
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.Assembly
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.EllipticityMoments
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.PositiveExcessDefectSquare
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.AdditivityDefects
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.LinearProductAbsorption
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

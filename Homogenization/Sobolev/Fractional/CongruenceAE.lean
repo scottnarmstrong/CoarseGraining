@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.Definitions
-import Homogenization.Besov.Positive.Full
+module
+
+public import Homogenization.Sobolev.Fractional.Definitions
+public import Homogenization.Besov.Positive.Full
 
 /-!
 # Almost-everywhere congruence for the fractional Sobolev and Besov seminorms
@@ -18,6 +20,8 @@ congruence lemmas once, against the canonical hypothesis
 These discharge the `congr_ae` item of the frozen API surface and enable the
 measurability-free public wrapper of CG Lemma 1.3.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Gagliardo

@@ -1,4 +1,6 @@
-import Homogenization.HighContrast.Corridor.FixedPhase.VarianceFinal
+module
+
+public import Homogenization.HighContrast.Corridor.FixedPhase.VarianceFinal
 
 /-!
 # Uniform-constant fixed-phase variance
@@ -14,6 +16,8 @@ of `m, Θ, ℓ, σ, P` under a single `B`).  We therefore reproduce the assembly
 `fixed_phase_variance` with the `obtain B` hoisted above the `∀`, yielding the
 `∃ Cd, ∀ params` form directly.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,2 +1,4 @@
-import Homogenization.Book.Ch03.Definitions
-import Homogenization.Book.Ch03.Theorems
+module
+
+public import Homogenization.Book.Ch03.Definitions
+public import Homogenization.Book.Ch03.Theorems

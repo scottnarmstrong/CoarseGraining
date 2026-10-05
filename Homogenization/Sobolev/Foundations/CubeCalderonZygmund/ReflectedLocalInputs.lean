@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GlobalLocalization
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GlobalParentGeometry
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalWeakRestriction
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GlobalLocalization
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GlobalParentGeometry
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalWeakRestriction
+
+@[expose] public section
 
 namespace Homogenization
 

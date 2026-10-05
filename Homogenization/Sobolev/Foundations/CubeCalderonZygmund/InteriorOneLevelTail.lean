@@ -1,7 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.InteriorLocalInputs
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GlobalStoppingFamily
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaTailControl
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaVitaliAssembly
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.InteriorLocalInputs
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GlobalStoppingFamily
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaTailControl
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaVitaliAssembly
 
 /-!
 # An interior one-level cube good-`lambda` inequality
@@ -12,6 +14,8 @@ comparison-parent containment and the global energy cutoff remain explicit
 internal hypotheses.  Consequently, the result is an internal conditional
 assembly theorem, not a source-facing Calderon--Zygmund estimate.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

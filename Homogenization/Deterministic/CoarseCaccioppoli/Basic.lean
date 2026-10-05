@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecificLimits.Normed
+module
+
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic
+public import Mathlib.Analysis.SpecialFunctions.Log.Basic
+public import Mathlib.Analysis.SpecificLimits.Normed
+
+@[expose] public section
 
 namespace Homogenization
 

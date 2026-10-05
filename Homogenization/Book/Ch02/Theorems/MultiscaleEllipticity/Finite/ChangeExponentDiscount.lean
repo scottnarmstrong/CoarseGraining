@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.OneCubeBounds
+module
+
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.OneCubeBounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

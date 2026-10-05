@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeightedLayerCake
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeightedLayerCake
+
+@[expose] public section
 
 namespace Homogenization
 

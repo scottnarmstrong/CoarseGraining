@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PartitionGeometry
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PartitionGeometry
+
+@[expose] public section
 
 namespace Homogenization
 

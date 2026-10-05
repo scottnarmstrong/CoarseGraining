@@ -1,7 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionL2
-import Homogenization.Sobolev.FiniteLpExponent
-import Homogenization.Ambient.CoefficientFieldHilbert
-import Homogenization.Geometry.OriginCubeMeasureBridge
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionL2
+public import Homogenization.Sobolev.FiniteLpExponent
+public import Homogenization.Ambient.CoefficientFieldHilbert
+public import Homogenization.Geometry.OriginCubeMeasureBridge
 
 /-!
 # Finite-`p` transport under Dirichlet odd reflection
@@ -11,6 +13,8 @@ Those signs are Euclidean isometries.  Combined with the measure-preserving
 cell fold maps, this gives exact finite-`p` transport from a cube to its full
 reflection block.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

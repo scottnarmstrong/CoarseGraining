@@ -1,5 +1,10 @@
-import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletHomogeneous
-import Homogenization.Deterministic.WeakFluxRHS.AbsorbedGlobalIteration
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletHomogeneous
+public import Homogenization.Deterministic.WeakFluxRHS.AbsorbedGlobalIteration
+
+@[expose] public section
+
 namespace Homogenization
 
 noncomputable section

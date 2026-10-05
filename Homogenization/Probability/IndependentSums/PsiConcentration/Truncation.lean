@@ -1,12 +1,16 @@
-import Mathlib.Analysis.SpecialFunctions.Pow.Integral
-import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
-import Mathlib.Analysis.Calculus.Taylor
-import Mathlib.Analysis.Complex.ExponentialBounds
-import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
-import Mathlib.MeasureTheory.Integral.Layercake
-import Mathlib.Probability.Moments.Basic
-import Homogenization.Probability.IndependentSums.WeakOrlicz
+module
+
+public import Mathlib.Analysis.SpecialFunctions.Pow.Integral
+public import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
+public import Mathlib.Analysis.Calculus.Taylor
+public import Mathlib.Analysis.Complex.ExponentialBounds
+public import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+public import Mathlib.MeasureTheory.Integral.Layercake
+public import Mathlib.Probability.Moments.Basic
+public import Homogenization.Probability.IndependentSums.WeakOrlicz
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

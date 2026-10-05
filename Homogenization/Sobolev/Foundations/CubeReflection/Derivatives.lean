@@ -1,6 +1,10 @@
-import Homogenization.Geometry.CubeMeasure
-import Homogenization.Sobolev.Foundations.EuclideanL2CZ
-import Homogenization.Sobolev.Foundations.CubeReflection.Homeomorphism
+module
+
+public import Homogenization.Geometry.CubeMeasure
+public import Homogenization.Sobolev.Foundations.EuclideanL2CZ
+public import Homogenization.Sobolev.Foundations.CubeReflection.Homeomorphism
+
+@[expose] public section
 
 namespace Homogenization
 

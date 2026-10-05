@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.InnerCubeAndHessian
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.InnerCubeAndHessian
+
+@[expose] public section
 
 namespace Homogenization
 

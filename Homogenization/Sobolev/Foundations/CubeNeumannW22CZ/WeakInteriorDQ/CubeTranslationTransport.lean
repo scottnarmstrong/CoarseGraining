@@ -1,5 +1,9 @@
-import Homogenization.Geometry.TriadicCubeTranslation
-import Homogenization.Sobolev.Foundations.CubePoisson.Solver
+module
+
+public import Homogenization.Geometry.TriadicCubeTranslation
+public import Homogenization.Sobolev.Foundations.CubePoisson.Solver
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Fractional.UnitCubeEuclideanL2
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.MeasureTheory.Measure.Prod
+module
+
+public import Homogenization.Sobolev.Fractional.UnitCubeEuclideanL2
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.MeasureTheory.Measure.Prod
 
 /-!
 # Exact Euclidean fractional `H^s` carrier on the centered unit cube
@@ -15,6 +17,8 @@ and the target magnitude below are instead spelled out through `euclideanDist`
 and `HilbertVec.ofVec`, exactly as required by the source's Euclidean
 convention for vector fields.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

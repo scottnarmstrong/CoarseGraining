@@ -1,4 +1,8 @@
-import Homogenization.Besov.Poincare.HarmonicGradient.LocalMultiscale
+module
+
+public import Homogenization.Besov.Poincare.HarmonicGradient.LocalMultiscale
+
+@[expose] public section
 
 namespace Homogenization
 

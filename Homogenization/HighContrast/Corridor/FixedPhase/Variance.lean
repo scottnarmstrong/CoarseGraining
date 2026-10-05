@@ -1,7 +1,9 @@
-import Homogenization.HighContrast.Corridor.FixedPhase.PerCoreEnergy
-import Homogenization.HighContrast.Corridor.FixedPhase.EfronSteinPhase
-import Homogenization.HighContrast.Corridor.PhaseComparison.Stability
-import Homogenization.CoarseGraining.CoarseBounds.Sandwich
+module
+
+public import Homogenization.HighContrast.Corridor.FixedPhase.PerCoreEnergy
+public import Homogenization.HighContrast.Corridor.FixedPhase.EfronSteinPhase
+public import Homogenization.HighContrast.Corridor.PhaseComparison.Stability
+public import Homogenization.CoarseGraining.CoarseBounds.Sandwich
 
 /-!
 # The fixed-phase variance (Proposition 4.3), realization bound
@@ -23,6 +25,8 @@ corridor field serves both the sensitivity (via
 
 This is the deterministic, measurability-free core of Proposition 4.3.
 -/
+
+@[expose] public section
 
 open Homogenization MeasureTheory
 open scoped BigOperators

@@ -1,9 +1,13 @@
-import Homogenization.Book.Ch04.Theorems.Expectations
-import Homogenization.Book.Ch04.Theorems.Scalarization
-import Homogenization.Book.Ch04.TriadicCubeTranslation
-import Homogenization.Book.Ch02.Theorems.MatrixOperatorNorm
-import Homogenization.CoarseGraining.Translation
-import Homogenization.Probability.LocalObservable
+module
+
+public import Homogenization.Book.Ch04.Theorems.Expectations
+public import Homogenization.Book.Ch04.Theorems.Scalarization
+public import Homogenization.Book.Ch04.TriadicCubeTranslation
+public import Homogenization.Book.Ch02.Theorems.MatrixOperatorNorm
+public import Homogenization.CoarseGraining.Translation
+public import Homogenization.Probability.LocalObservable
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

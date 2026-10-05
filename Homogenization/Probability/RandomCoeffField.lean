@@ -1,4 +1,8 @@
-import Homogenization.Probability.RandomFieldMeasurability
+module
+
+public import Homogenization.Probability.RandomFieldMeasurability
+
+@[expose] public section
 
 namespace Homogenization
 

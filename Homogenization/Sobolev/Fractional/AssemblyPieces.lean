@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.Definitions
-import Homogenization.Multiscale.OverlapLp
+module
+
+public import Homogenization.Sobolev.Fractional.Definitions
+public import Homogenization.Multiscale.OverlapLp
 
 /-!
 # Assembly pieces for the Besov-to-Gagliardo direction
@@ -14,6 +16,8 @@ Three small bridges used by the final estimate:
 * the lintegral of the Gagliardo product measure as a normalized plain
   product integral.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Gagliardo

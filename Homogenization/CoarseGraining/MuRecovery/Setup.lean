@@ -1,9 +1,13 @@
-import Homogenization.CoarseGraining.BlockMatrixProperties
-import Homogenization.CoarseGraining.MuOperator.CoeffOperator
-import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas
-import Homogenization.Sobolev.Foundations.AffineAverage
-import Homogenization.Sobolev.PotentialSolenoidalL2OriginCubeBridge
-import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+module
+
+public import Homogenization.CoarseGraining.BlockMatrixProperties
+public import Homogenization.CoarseGraining.MuOperator.CoeffOperator
+public import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas
+public import Homogenization.Sobolev.Foundations.AffineAverage
+public import Homogenization.Sobolev.PotentialSolenoidalL2OriginCubeBridge
+public import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+
+@[expose] public section
 
 namespace Homogenization
 

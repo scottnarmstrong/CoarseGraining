@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2Response
-import Homogenization.Deterministic.WeakFluxRHS.AbsorbedNoteApex
+module
+
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2Response
+public import Homogenization.Deterministic.WeakFluxRHS.AbsorbedNoteApex
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,9 +1,11 @@
-import Homogenization.Sobolev.Fractional.ENNRealBridge
-import Homogenization.Sobolev.Fractional.JensenStep
-import Homogenization.Sobolev.Fractional.TailSummation
-import Homogenization.Sobolev.Fractional.OverlapIntegral
-import Homogenization.Sobolev.Fractional.AssemblyPieces
-import Homogenization.Besov.Positive.Full
+module
+
+public import Homogenization.Sobolev.Fractional.ENNRealBridge
+public import Homogenization.Sobolev.Fractional.JensenStep
+public import Homogenization.Sobolev.Fractional.TailSummation
+public import Homogenization.Sobolev.Fractional.OverlapIntegral
+public import Homogenization.Sobolev.Fractional.AssemblyPieces
+public import Homogenization.Besov.Positive.Full
 
 /-!
 # Besov-to-Gagliardo comparison: the partial overlap Besov seminorm is
@@ -22,6 +24,8 @@ backwards geometric tail (`TailSummation`) and the bounded-overlap count
 (`OverlapIntegral`) convert the depth sum into the Gagliardo kernel integral
 (`AssemblyPieces`).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Gagliardo

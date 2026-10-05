@@ -1,6 +1,8 @@
-import Homogenization.Geometry.TriadicCubeTranslation
-import Homogenization.Sobolev.Foundations.CoerciveH1Dilation
-import Homogenization.Sobolev.Fractional.UnitCubeEuclideanL2
+module
+
+public import Homogenization.Geometry.TriadicCubeTranslation
+public import Homogenization.Sobolev.Foundations.CoerciveH1Dilation
+public import Homogenization.Sobolev.Fractional.UnitCubeEuclideanL2
 
 /-!
 # Euclidean `L²` fields on centered triadic cubes
@@ -21,6 +23,8 @@ exactly.
 - `centeredCubeDilationMeasurePreserving`: normalized-volume preservation.
 - `normalizedEuclideanLpENorm_pullbackToUnit`: exact normalized norm invariance.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

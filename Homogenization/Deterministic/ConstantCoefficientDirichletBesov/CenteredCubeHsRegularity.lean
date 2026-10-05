@@ -1,6 +1,8 @@
-import Homogenization.Besov.Positive.ExactOverlap
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CenteredCubeScaleTransport
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.ContinuousKFullRegularity
+module
+
+public import Homogenization.Besov.Positive.ExactOverlap
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CenteredCubeScaleTransport
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.ContinuousKFullRegularity
 
 /-!
 # Exact centered-cube Euclidean `H^s` Dirichlet regularity
@@ -25,6 +27,8 @@ scale by the same factor.
 - `exists_centeredCubeDirichletEuclideanHsFullENormRegularity`: the all-scale
   exact Euclidean `H^s` Dirichlet estimate.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.UniformBadScaleTailCollapse
-import Homogenization.Book.Ch05.Theorems.Section57.BadScalePrefactorGapQuantitative
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.UniformBadScaleTailCollapse
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScalePrefactorGapQuantitative
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

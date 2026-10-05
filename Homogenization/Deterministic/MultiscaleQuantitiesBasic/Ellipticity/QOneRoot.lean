@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.EllipticityFiniteQ
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences
+module
+
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.EllipticityFiniteQ
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences
+
+@[expose] public section
 
 namespace Homogenization
 

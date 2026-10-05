@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadEventSummability
-import Mathlib.Data.Nat.Pairing
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadEventSummability
+public import Mathlib.Data.Nat.Pairing
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.Interior
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.QuantitativeCutoffInputs
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.Interior
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.QuantitativeCutoffInputs
+
+@[expose] public section
 
 namespace Homogenization
 

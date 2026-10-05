@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Fractional.ShellGeometry
-import Mathlib.Data.Int.Interval
-import Mathlib.Data.Fintype.BigOperators
+module
+
+public import Homogenization.Sobolev.Fractional.ShellGeometry
+public import Mathlib.Data.Int.Interval
+public import Mathlib.Data.Fintype.BigOperators
 
 /-!
 # Bounded-overlap count (G2) for the depth-`j` overlapping center family
@@ -15,6 +17,8 @@ window `(x i / c - 3/2, x i / c + 3/2]`, which contains at most `3` integers.
 Since a center is determined by its index vector, at most `3 ^ d` centers can
 capture `x`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Gagliardo

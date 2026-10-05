@@ -1,12 +1,16 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInterior
-import Homogenization.Sobolev.Foundations.DifferenceQuotientH1
-import Homogenization.Sobolev.Foundations.H1Graph.Preliminaries
-import Homogenization.Sobolev.Foundations.QuantitativeCutoff
-import Mathlib.Analysis.Normed.Lp.SmoothApprox
-import Mathlib.Analysis.Normed.Operator.Extend
-import Mathlib.Geometry.Manifold.PartitionOfUnity
-import Mathlib.MeasureTheory.Function.UniformIntegrable
-import Mathlib.Order.Filter.Finite
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInterior
+public import Homogenization.Sobolev.Foundations.DifferenceQuotientH1
+public import Homogenization.Sobolev.Foundations.H1Graph.Preliminaries
+public import Homogenization.Sobolev.Foundations.QuantitativeCutoff
+public import Mathlib.Analysis.Normed.Lp.SmoothApprox
+public import Mathlib.Analysis.Normed.Operator.Extend
+public import Mathlib.Geometry.Manifold.PartitionOfUnity
+public import Mathlib.MeasureTheory.Function.UniformIntegrable
+public import Mathlib.Order.Filter.Finite
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -420,7 +424,7 @@ noncomputable def h1WeakTestScalarL2Submodule {d : ℕ} (U : Set (Vec d)) :
         rw [hsmul]
         rfl
 
-private theorem exists_h1WeakTestScalarL2Representative
+theorem exists_h1WeakTestScalarL2Representative
     {d : ℕ} {U : Set (Vec d)}
     (x : h1WeakTestScalarL2Submodule (d := d) U) :
     ∃ φ : H1WeakTestFunction U, φ.toScalarL2 = (x : ScalarL2 U) := by

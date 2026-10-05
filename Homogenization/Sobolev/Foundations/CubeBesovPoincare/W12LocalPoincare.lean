@@ -1,6 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapLp
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardOverlapComparison
-import Homogenization.Sobolev.Foundations.CubeBesovPoincare.W12NormalizedPartition
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapLp
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardOverlapComparison
+public import Homogenization.Sobolev.Foundations.CubeBesovPoincare.W12NormalizedPartition
 
 /-!
 # Local normalized `W^{1,2}` Poincare estimate on triadic cubes
@@ -9,6 +11,8 @@ The overlap-cube `H^1` estimate is used only at the middle child of a
 triadic cube.  There its overlap is the original cube, so the estimate has a
 dimension-only constant and the exact normalized open-cube Sobolev carrier.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

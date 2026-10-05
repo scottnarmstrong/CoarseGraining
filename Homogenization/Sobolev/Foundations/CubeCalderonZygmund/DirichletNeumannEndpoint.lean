@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.DirichletEndpoint
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.NeumannEndpoint
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.DirichletEndpoint
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.NeumannEndpoint
 
 /-!
 # Dirichlet and Neumann Calderón--Zygmund endpoint
@@ -7,6 +9,8 @@ import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.NeumannEndpoint
 This file combines the arbitrary-cube Dirichlet and mean-zero Neumann
 estimates under one positive real constant.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

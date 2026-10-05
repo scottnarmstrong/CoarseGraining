@@ -1,4 +1,8 @@
-import Homogenization.Besov.Positive
+module
+
+public import Homogenization.Besov.Positive
+
+@[expose] public section
 
 namespace Homogenization
 

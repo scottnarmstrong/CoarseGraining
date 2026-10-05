@@ -1,27 +1,29 @@
-import Homogenization.Book.Ch04.Definitions
-import Homogenization.Book.Ch04.Theorems.CanonicalAverages
-import Homogenization.Book.Ch04.Theorems.CanonicalSolutions
-import Homogenization.Book.Ch04.Theorems.ColorClassConcentration
-import Homogenization.Book.Ch04.Theorems.CoarseObservables
-import Homogenization.Book.Ch04.Theorems.Concentration
-import Homogenization.Book.Ch04.Theorems.DescendantAverages
-import Homogenization.Book.Ch04.Theorems.DilationLaw
-import Homogenization.Book.Ch04.Theorems.Expectations
-import Homogenization.Book.Ch04.Theorems.IndependenceDefinitions
-import Homogenization.Book.Ch04.Theorems.LocalCoefficient
-import Homogenization.Book.Ch04.Theorems.Mu
-import Homogenization.Book.Ch04.Theorems.PartitionAverageFluctuations
-import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments
-import Homogenization.Book.Ch04.Theorems.PartitionAverages
-import Homogenization.Book.Ch04.Theorems.PartitionAveragesDefinitions
-import Homogenization.Book.Ch04.Theorems.StationaryExpectations
-import Homogenization.Book.Ch04.Theorems.BlockExpectations
-import Homogenization.Book.Ch04.Theorems.BlockResponseConcentration
-import Homogenization.Book.Ch04.Theorems.ScalarizationDefinitions
-import Homogenization.Book.Ch04.Theorems.Scalarization
-import Homogenization.Book.Ch04.Theorems.AnnealedSubadditivity
-import Homogenization.Book.Ch04.Theorems.WidetildeTheta
-import Homogenization.Book.Ch04.Theorems.MomentFactorBounds
+module
+
+public import Homogenization.Book.Ch04.Definitions
+public import Homogenization.Book.Ch04.Theorems.CanonicalAverages
+public import Homogenization.Book.Ch04.Theorems.CanonicalSolutions
+public import Homogenization.Book.Ch04.Theorems.ColorClassConcentration
+public import Homogenization.Book.Ch04.Theorems.CoarseObservables
+public import Homogenization.Book.Ch04.Theorems.Concentration
+public import Homogenization.Book.Ch04.Theorems.DescendantAverages
+public import Homogenization.Book.Ch04.Theorems.DilationLaw
+public import Homogenization.Book.Ch04.Theorems.Expectations
+public import Homogenization.Book.Ch04.Theorems.IndependenceDefinitions
+public import Homogenization.Book.Ch04.Theorems.LocalCoefficient
+public import Homogenization.Book.Ch04.Theorems.Mu
+public import Homogenization.Book.Ch04.Theorems.PartitionAverageFluctuations
+public import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments
+public import Homogenization.Book.Ch04.Theorems.PartitionAverages
+public import Homogenization.Book.Ch04.Theorems.PartitionAveragesDefinitions
+public import Homogenization.Book.Ch04.Theorems.StationaryExpectations
+public import Homogenization.Book.Ch04.Theorems.BlockExpectations
+public import Homogenization.Book.Ch04.Theorems.BlockResponseConcentration
+public import Homogenization.Book.Ch04.Theorems.ScalarizationDefinitions
+public import Homogenization.Book.Ch04.Theorems.Scalarization
+public import Homogenization.Book.Ch04.Theorems.AnnealedSubadditivity
+public import Homogenization.Book.Ch04.Theorems.WidetildeTheta
+public import Homogenization.Book.Ch04.Theorems.MomentFactorBounds
 
 /-!
 # Chapter 4 theorem surface
@@ -40,3 +42,5 @@ moments, scalarized annealed matrices, annealed subadditivity, moment-factor
 comparisons, canonical averages, canonical solution measurability, and
 scalar-response weak-norm measurability.
 -/
+
+@[expose] public section

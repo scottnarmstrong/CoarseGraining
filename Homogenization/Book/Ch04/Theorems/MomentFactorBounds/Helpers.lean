@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch04.Theorems.ScalarizationDefinitions
-import Homogenization.Book.Ch04.Theorems.Scalarization
-import Homogenization.Book.Ch04.Theorems.WidetildeTheta
-import Homogenization.Book.Ch04.Theorems.AnnealedSubadditivity
-import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.Theory
+module
+
+public import Homogenization.Book.Ch04.Theorems.ScalarizationDefinitions
+public import Homogenization.Book.Ch04.Theorems.Scalarization
+public import Homogenization.Book.Ch04.Theorems.WidetildeTheta
+public import Homogenization.Book.Ch04.Theorems.AnnealedSubadditivity
+public import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.Theory
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

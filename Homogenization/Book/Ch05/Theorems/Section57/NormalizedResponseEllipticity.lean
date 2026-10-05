@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section57.UnitJTail
-import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationErrorControl
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.SmallTail
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.UnitJTail
+public import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationErrorControl
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.SmallTail
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

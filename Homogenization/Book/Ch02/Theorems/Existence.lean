@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.Existence
+module
+
+public import Homogenization.Internal.Ch02.Existence
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

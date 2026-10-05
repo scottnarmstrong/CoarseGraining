@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CubeVectorH1
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CubeVectorH1
+
+@[expose] public section
 
 namespace Homogenization
 

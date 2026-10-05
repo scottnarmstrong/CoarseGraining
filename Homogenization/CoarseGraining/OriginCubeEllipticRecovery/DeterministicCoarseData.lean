@@ -1,8 +1,10 @@
-import Homogenization.CoarseGraining.AdjointSymmetry.BasicAdjoint
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.HarmonicMean
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.UpperLeftAverage
-import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.MuGeVecDot
+module
+
+public import Homogenization.CoarseGraining.AdjointSymmetry.BasicAdjoint
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.HarmonicMean
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.UpperLeftAverage
+public import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.MuGeVecDot
 
 /-!
 # Origin-cube elliptic recovery -- deterministic coarse data output
@@ -12,6 +14,8 @@ cube, the packaged openCubeDeterministicCoarseData_of_triadicCube and its
 descendant-family variant. These are the outputs consumed by the Chapter-3
 coarse Poincare wrappers.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

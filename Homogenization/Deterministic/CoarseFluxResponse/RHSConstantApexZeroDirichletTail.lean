@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletEnergy
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletEnergy
+
+@[expose] public section
 
 namespace Homogenization
 

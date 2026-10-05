@@ -1,21 +1,25 @@
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.H1Casts
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.Energy
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.CoeffField
-import Homogenization.Book.Ch03.Definitions
-import Homogenization.Book.Ch02.Theorems.HomogenizationError
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity
-import Homogenization.Deterministic.CoarseFluxResponse.RHS
-import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
-import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2
-import Homogenization.Deterministic.CoarsePoincareRHS.ForceLocalization
-import Homogenization.Deterministic.CoarsePoincareRHS.TerminalBounds
-import Homogenization.Deterministic.WeakFluxRHS.GlobalIteration
-import Homogenization.Deterministic.WeakFluxRHS.WeakSolutionBridge
-import Homogenization.Deterministic.WeakNormInterfaces.AECongruence
-import Homogenization.Deterministic.WeakNormInterfacesComponentwise
-import Homogenization.PDE.EnergyIdentities
-import Homogenization.PDE.NeumannRHS
-import Homogenization.Sobolev.PotentialSolenoidalCubeBridge
+module
+
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.H1Casts
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.Energy
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.CoeffField
+public import Homogenization.Book.Ch03.Definitions
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity
+public import Homogenization.Deterministic.CoarseFluxResponse.RHS
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2
+public import Homogenization.Deterministic.CoarsePoincareRHS.ForceLocalization
+public import Homogenization.Deterministic.CoarsePoincareRHS.TerminalBounds
+public import Homogenization.Deterministic.WeakFluxRHS.GlobalIteration
+public import Homogenization.Deterministic.WeakFluxRHS.WeakSolutionBridge
+public import Homogenization.Deterministic.WeakNormInterfaces.AECongruence
+public import Homogenization.Deterministic.WeakNormInterfacesComponentwise
+public import Homogenization.PDE.EnergyIdentities
+public import Homogenization.PDE.NeumannRHS
+public import Homogenization.Sobolev.PotentialSolenoidalCubeBridge
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

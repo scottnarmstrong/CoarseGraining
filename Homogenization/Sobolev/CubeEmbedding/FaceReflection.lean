@@ -1,7 +1,11 @@
-import Homogenization.Sobolev.CubeEmbedding.FaceReflectionLines
-import Homogenization.Sobolev.CubeEmbedding.OneDimIBP
-import Homogenization.Sobolev.CubeEmbedding.PeelFubini
-import Mathlib.MeasureTheory.Function.LocallyIntegrable
+module
+
+public import Homogenization.Sobolev.CubeEmbedding.FaceReflectionLines
+public import Homogenization.Sobolev.CubeEmbedding.OneDimIBP
+public import Homogenization.Sobolev.CubeEmbedding.PeelFubini
+public import Mathlib.MeasureTheory.Function.LocallyIntegrable
+
+@[expose] public section
 
 namespace Homogenization
 

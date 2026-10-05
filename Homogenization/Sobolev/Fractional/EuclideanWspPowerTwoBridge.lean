@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.EuclideanWsp
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CenteredCubeHsRegularity
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWsp
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CenteredCubeHsRegularity
 
 /-!
 # The exact `p = 2` Euclidean fractional full-norm bridge
@@ -9,6 +11,8 @@ cube with the established physical centered-cube Euclidean `H^s` seminorm.
 Their full norms differ only by the elementary comparison between
 `sqrt (A^2 + B^2)` and `A + B`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

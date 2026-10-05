@@ -1,4 +1,8 @@
-import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
+module
+
+public import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
+
+@[expose] public section
 
 noncomputable section
 

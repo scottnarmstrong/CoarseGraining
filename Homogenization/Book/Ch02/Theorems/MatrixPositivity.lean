@@ -1,5 +1,9 @@
-import Homogenization.Internal.Ch02.MatrixPositivity
-import Homogenization.Book.Ch02.Theorems.MatrixExtractionProofs
+module
+
+public import Homogenization.Internal.Ch02.MatrixPositivity
+public import Homogenization.Book.Ch02.Theorems.MatrixExtractionProofs
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

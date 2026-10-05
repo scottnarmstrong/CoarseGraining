@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.Localization
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.RadiusInputs.Setup
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimate.SingleCube
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.Localization
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.RadiusInputs.Setup
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimate.SingleCube
+
+@[expose] public section
 
 namespace Homogenization
 

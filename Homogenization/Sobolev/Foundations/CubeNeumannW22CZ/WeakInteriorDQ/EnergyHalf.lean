@@ -1,14 +1,18 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInterior
-import Homogenization.Sobolev.Foundations.DifferenceQuotientH1
-import Homogenization.Sobolev.Foundations.H1Graph.Preliminaries
-import Homogenization.Sobolev.Foundations.QuantitativeCutoff
-import Mathlib.Analysis.Normed.Lp.SmoothApprox
-import Mathlib.Analysis.Normed.Operator.Extend
-import Mathlib.Geometry.Manifold.PartitionOfUnity
-import Mathlib.MeasureTheory.Function.UniformIntegrable
-import Mathlib.Order.Filter.Finite
+module
 
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.IntegralIdentity
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInterior
+public import Homogenization.Sobolev.Foundations.DifferenceQuotientH1
+public import Homogenization.Sobolev.Foundations.H1Graph.Preliminaries
+public import Homogenization.Sobolev.Foundations.QuantitativeCutoff
+public import Mathlib.Analysis.Normed.Lp.SmoothApprox
+public import Mathlib.Analysis.Normed.Operator.Extend
+public import Mathlib.Geometry.Manifold.PartitionOfUnity
+public import Mathlib.MeasureTheory.Function.UniformIntegrable
+public import Mathlib.Order.Filter.Finite
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.IntegralIdentity
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section57.MinimalScaleTail
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.MinimalScaleTail
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

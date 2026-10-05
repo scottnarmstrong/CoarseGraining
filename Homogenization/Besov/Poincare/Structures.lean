@@ -1,8 +1,12 @@
-import Homogenization.Besov.Negative
-import Homogenization.Besov.Duality.GlobalComparison
-import Mathlib.Algebra.Order.BigOperators.Ring.Finset
-import Mathlib.Algebra.Order.Field.GeomSum
-import Mathlib.Analysis.MeanInequalities
+module
+
+public import Homogenization.Besov.Negative
+public import Homogenization.Besov.Duality.GlobalComparison
+public import Mathlib.Algebra.Order.BigOperators.Ring.Finset
+public import Mathlib.Algebra.Order.Field.GeomSum
+public import Mathlib.Analysis.MeanInequalities
+
+@[expose] public section
 
 namespace Homogenization
 

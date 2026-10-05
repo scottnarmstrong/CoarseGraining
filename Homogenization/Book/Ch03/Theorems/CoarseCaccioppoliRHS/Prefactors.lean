@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS.EnergySplit
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS.EnergySplit
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

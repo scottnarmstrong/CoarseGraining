@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section51.ShiftedP4
-import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta.Final
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section51.ShiftedP4
+public import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta.Final
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

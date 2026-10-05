@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingPDE
-import Homogenization.Sobolev.Fractional.EuclideanWspLocalization
-import Homogenization.Sobolev.Fractional.EuclideanWspLpMembership
+module
+
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingPDE
+public import Homogenization.Sobolev.Fractional.EuclideanWspLocalization
+public import Homogenization.Sobolev.Fractional.EuclideanWspLpMembership
 
 /-!
 # Descendant localization of the source fractional-Sobolev carrier
@@ -10,6 +12,8 @@ provides its literal restriction to every triadic descendant, so one-cube
 estimates can construct their regularity witnesses locally without adding a
 new hypothesis to the local coarse-graining theorem.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

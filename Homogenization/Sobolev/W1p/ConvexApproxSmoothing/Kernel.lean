@@ -1,15 +1,19 @@
-import Homogenization.Geometry.Translation
-import Homogenization.Sobolev.W1p.BasicLemmas
-import Homogenization.Sobolev.W1p.Definitions
-import Homogenization.Sobolev.W1p.ConvolutionLp
-import Homogenization.Sobolev.W1p.ConvexApproxGeometry
-import Homogenization.Sobolev.WeakDerivatives
-import Mathlib.Algebra.GroupWithZero.Action.Pointwise.Set
-import Mathlib.Analysis.Convolution
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
-import Mathlib.Analysis.Calculus.BumpFunction.Normed
-import Mathlib.MeasureTheory.Integral.Bochner.Set
+module
+
+public import Homogenization.Geometry.Translation
+public import Homogenization.Sobolev.W1p.BasicLemmas
+public import Homogenization.Sobolev.W1p.Definitions
+public import Homogenization.Sobolev.W1p.ConvolutionLp
+public import Homogenization.Sobolev.W1p.ConvexApproxGeometry
+public import Homogenization.Sobolev.WeakDerivatives
+public import Mathlib.Algebra.GroupWithZero.Action.Pointwise.Set
+public import Mathlib.Analysis.Convolution
+public import Mathlib.Analysis.SpecificLimits.Basic
+public import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
+public import Mathlib.Analysis.Calculus.BumpFunction.Normed
+public import Mathlib.MeasureTheory.Integral.Bochner.Set
+
+@[expose] public section
 
 namespace Homogenization
 

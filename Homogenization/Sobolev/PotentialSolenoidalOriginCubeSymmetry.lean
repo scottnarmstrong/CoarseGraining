@@ -1,7 +1,11 @@
-import Homogenization.Ambient.BlockMatrix
-import Homogenization.Sobolev.PotentialSolenoidal
-import Homogenization.Sobolev.H1.OriginCubeSymmetry
-import Mathlib.LinearAlgebra.Matrix.Swap
+module
+
+public import Homogenization.Ambient.BlockMatrix
+public import Homogenization.Sobolev.PotentialSolenoidal
+public import Homogenization.Sobolev.H1.OriginCubeSymmetry
+public import Mathlib.LinearAlgebra.Matrix.Swap
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Besov.Duality.Definitions
-import Homogenization.Besov.Positive.Overlap
+module
+
+public import Homogenization.Besov.Duality.Definitions
+public import Homogenization.Besov.Positive.Overlap
+
+@[expose] public section
 
 namespace Homogenization
 

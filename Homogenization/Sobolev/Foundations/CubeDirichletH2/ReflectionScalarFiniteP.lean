@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionL2
-import Homogenization.Sobolev.FiniteLpExponent
-import Homogenization.Geometry.OriginCubeMeasureBridge
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionL2
+public import Homogenization.Sobolev.FiniteLpExponent
+public import Homogenization.Geometry.OriginCubeMeasureBridge
 
 /-!
 # Finite-`p` scalar transport under Dirichlet odd reflection
@@ -11,6 +13,8 @@ maps, this gives exact finite-`p` transport from a cube to its full reflection
 block and exact preservation of normalized finite-`p` norms between centered
 origin cubes.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

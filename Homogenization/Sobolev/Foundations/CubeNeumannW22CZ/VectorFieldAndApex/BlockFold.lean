@@ -1,8 +1,12 @@
-import Homogenization.Sobolev.Foundations.CubePoisson
-import Homogenization.Sobolev.Foundations.CubeReflection
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.Definitions
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.MemL2AndPairings
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.VectorFieldAndApex.WeakEquationHelpers
+module
+
+public import Homogenization.Sobolev.Foundations.CubePoisson
+public import Homogenization.Sobolev.Foundations.CubeReflection
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.Definitions
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.MemL2AndPairings
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.VectorFieldAndApex.WeakEquationHelpers
+
+@[expose] public section
 
 namespace Homogenization
 

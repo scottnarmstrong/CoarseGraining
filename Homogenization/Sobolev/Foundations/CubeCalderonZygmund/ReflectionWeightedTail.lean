@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalWeightedTail
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionFiniteP
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalWeightedTail
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionFiniteP
 
 /-!
 # Square-weighted tails under Dirichlet odd reflection
@@ -9,6 +11,8 @@ The global good-`λ` argument works with the squared-density measure
 field on a centered parent cube are exactly `3^d` copies of the corresponding
 tail on the source cube.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

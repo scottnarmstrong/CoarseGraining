@@ -1,7 +1,11 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapGeometry
-import Homogenization.Sobolev.FiniteLpExponent
-import Homogenization.Sobolev.Foundations.PoincareW1p.Dilation
-import Homogenization.Sobolev.Foundations.PoincareW1p.Translation
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapGeometry
+public import Homogenization.Sobolev.FiniteLpExponent
+public import Homogenization.Sobolev.Foundations.PoincareW1p.Dilation
+public import Homogenization.Sobolev.Foundations.PoincareW1p.Translation
+
+@[expose] public section
 
 namespace Homogenization
 

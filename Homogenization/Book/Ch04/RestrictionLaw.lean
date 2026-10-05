@@ -1,9 +1,13 @@
-import Homogenization.Ambient.ScalarMatrix
-import Homogenization.Book.Ch02.Definitions
-import Homogenization.Probability.LocalEllipticitySlices
-import Homogenization.Probability.RegCoeffField.Laws
-import Homogenization.Probability.RegCoeffField.SliceMeasurability
-import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+module
+
+public import Homogenization.Ambient.ScalarMatrix
+public import Homogenization.Book.Ch02.Definitions
+public import Homogenization.Probability.LocalEllipticitySlices
+public import Homogenization.Probability.RegCoeffField.Laws
+public import Homogenization.Probability.RegCoeffField.SliceMeasurability
+public import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

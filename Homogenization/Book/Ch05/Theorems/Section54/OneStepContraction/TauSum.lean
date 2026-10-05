@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.ScaleErrors
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.ScaleErrors
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch01.FieldSpaces
-import Homogenization.Book.Ch02.Matrices
+module
+
+public import Homogenization.Book.Ch01.FieldSpaces
+public import Homogenization.Book.Ch02.Matrices
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

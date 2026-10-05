@@ -1,6 +1,10 @@
-import Homogenization.CoarseGraining.MuOperator.AEEOperator
-import Homogenization.Book.Ch04.Internal.AEESliceAssembly.BlockEnergyAverage
-import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability
+module
+
+public import Homogenization.CoarseGraining.MuOperator.AEEOperator
+public import Homogenization.Book.Ch04.Internal.AEESliceAssembly.BlockEnergyAverage
+public import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.AbsoluteScaleCompression
-import Homogenization.Book.Ch05.Theorems.Section57.ScaleCompressionFinal
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.AbsoluteScaleCompression
+public import Homogenization.Book.Ch05.Theorems.Section57.ScaleCompressionFinal
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

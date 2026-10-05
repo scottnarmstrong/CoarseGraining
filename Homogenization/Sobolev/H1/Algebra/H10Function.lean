@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.H1.Algebra.H1Function
+module
+
+public import Homogenization.Sobolev.H1.Algebra.H1Function
+
+@[expose] public section
 
 namespace Homogenization
 namespace H10Function

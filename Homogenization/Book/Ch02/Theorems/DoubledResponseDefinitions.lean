@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch02.Theorems.DoubledMuDefinitions
-import Homogenization.Book.Ch02.Theorems.ExistenceDefinitions
+module
+
+public import Homogenization.Book.Ch02.Theorems.DoubledMuDefinitions
+public import Homogenization.Book.Ch02.Theorems.ExistenceDefinitions
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

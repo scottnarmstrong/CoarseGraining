@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole.Assembly
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.Pigeonhole.Assembly
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

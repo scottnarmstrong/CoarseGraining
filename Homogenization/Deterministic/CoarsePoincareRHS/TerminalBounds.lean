@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.AbsorbedErrors
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.AbsorbedErrors
+
+@[expose] public section
 
 namespace Homogenization
 

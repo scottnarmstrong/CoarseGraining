@@ -1,7 +1,9 @@
-import Homogenization.Geometry.Domain
-import Mathlib.MeasureTheory.Function.L1Space.Integrable
-import Mathlib.MeasureTheory.Integral.Bochner.Set
-import Mathlib.Topology.MetricSpace.Bounded
+module
+
+public import Homogenization.Geometry.Domain
+public import Mathlib.MeasureTheory.Function.L1Space.Integrable
+public import Mathlib.MeasureTheory.Integral.Bochner.Set
+public import Mathlib.Topology.MetricSpace.Bounded
 
 /-!
 # Bounded measurable domains with normalized volume
@@ -12,6 +14,8 @@ The normalization is an `ENNReal` rescaling of restricted Lebesgue measure, so
 it has no zero-volume fallback and does not use `ENNReal.toReal` to define a
 measure.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

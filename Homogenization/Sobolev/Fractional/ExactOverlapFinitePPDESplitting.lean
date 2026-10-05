@@ -1,7 +1,9 @@
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarDivergenceGradientW1p
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpSolutionStability
-import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge
+module
+
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarDivergenceGradientW1p
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpSolutionStability
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge
 
 /-!
 # Exact-overlap finite-`p` PDE splitting
@@ -11,6 +13,8 @@ file combines that datum with the constant-coefficient cube estimates: the
 original zero-trace solution is compared to the solution driven by the smooth
 average, and the latter gradient receives a finite-`W¹ᵖ` representative.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

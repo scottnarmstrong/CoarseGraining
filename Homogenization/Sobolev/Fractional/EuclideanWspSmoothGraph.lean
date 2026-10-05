@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.EuclideanWspSmoothMembership
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWspSmoothMembership
 
 /-!
 # Algebraic carrier for smooth Euclidean fractional-Sobolev tests
@@ -8,6 +10,8 @@ smooth test fields.  The subsequent completed-dual graph will map this carrier
 to two `L^p` components once the separate diagonal-singularity integrability
 lemma establishes that every smooth test has finite Gagliardo seminorm.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

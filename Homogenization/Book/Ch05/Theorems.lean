@@ -1,11 +1,15 @@
-import Homogenization.Book.Ch05.Theorems.Section51
-import Homogenization.Book.Ch05.Theorems.Section52
-import Homogenization.Book.Ch05.Theorems.Section53
-import Homogenization.Book.Ch05.Theorems.Section54
-import Homogenization.Book.Ch05.Theorems.Section55
-import Homogenization.Book.Ch05.Theorems.Section56
-import Homogenization.Book.Ch05.Theorems.Section57
-import Homogenization.Book.Ch05.Theorems.Public
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section51
+public import Homogenization.Book.Ch05.Theorems.Section52
+public import Homogenization.Book.Ch05.Theorems.Section53
+public import Homogenization.Book.Ch05.Theorems.Section54
+public import Homogenization.Book.Ch05.Theorems.Section55
+public import Homogenization.Book.Ch05.Theorems.Section56
+public import Homogenization.Book.Ch05.Theorems.Section57
+public import Homogenization.Book.Ch05.Theorems.Public
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

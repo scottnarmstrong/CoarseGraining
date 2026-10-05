@@ -1,8 +1,12 @@
-import Mathlib.Algebra.Order.Chebyshev
-import Homogenization.Book.Ch04.PartitionAverageConstants
-import Homogenization.Book.Ch04.Theorems.ColorClassConcentration
-import Homogenization.Book.Ch04.Theorems.PartitionAveragesDefinitions
-import Homogenization.Book.Ch04.Theorems.PartitionAverages
+module
+
+public import Mathlib.Algebra.Order.Chebyshev
+public import Homogenization.Book.Ch04.PartitionAverageConstants
+public import Homogenization.Book.Ch04.Theorems.ColorClassConcentration
+public import Homogenization.Book.Ch04.Theorems.PartitionAveragesDefinitions
+public import Homogenization.Book.Ch04.Theorems.PartitionAverages
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

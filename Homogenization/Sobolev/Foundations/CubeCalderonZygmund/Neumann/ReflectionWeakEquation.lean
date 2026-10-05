@@ -1,8 +1,10 @@
-import Homogenization.Ambient.ScalarMatrix
-import Homogenization.PDE.NeumannRHS
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.ReflectionFiniteP
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentH1
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentOrthogonality
+module
+
+public import Homogenization.Ambient.ScalarMatrix
+public import Homogenization.PDE.NeumannRHS
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.ReflectionFiniteP
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentH1
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentOrthogonality
 
 /-!
 # Neumann divergence equations under even reflection
@@ -14,6 +16,8 @@ average makes it an admissible mean-zero Neumann test without changing that
 gradient.  This proves the reflected divergence equation without introducing
 any boundary or comparison hypothesis.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

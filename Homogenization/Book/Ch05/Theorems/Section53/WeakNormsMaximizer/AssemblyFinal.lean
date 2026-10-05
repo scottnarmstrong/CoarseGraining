@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.AssemblyCore
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.AssemblyCore
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

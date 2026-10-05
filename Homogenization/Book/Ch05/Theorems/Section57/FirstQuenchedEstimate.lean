@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section57.AnnealedJLimit
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.AnnealedJLimit
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

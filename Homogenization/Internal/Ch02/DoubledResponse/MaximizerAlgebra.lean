@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.DoubledResponse.ScalarMaximizers
+module
+
+public import Homogenization.Internal.Ch02.DoubledResponse.ScalarMaximizers
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

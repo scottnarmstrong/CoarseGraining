@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch03.Theorems.CoarsePoincareRHS
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.OneCube
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.Flux
-import Homogenization.Deterministic.WeakFluxRHS.CorrectorEnergyPoincare
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarsePoincareRHS
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.OneCube
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.Flux
+public import Homogenization.Deterministic.WeakFluxRHS.CorrectorEnergyPoincare
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

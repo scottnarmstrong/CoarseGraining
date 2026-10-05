@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.VectorFieldAndApex
-import Homogenization.Sobolev.H1.Translation
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.VectorFieldAndApex
+public import Homogenization.Sobolev.H1.Translation
+
+@[expose] public section
 
 namespace Homogenization
 

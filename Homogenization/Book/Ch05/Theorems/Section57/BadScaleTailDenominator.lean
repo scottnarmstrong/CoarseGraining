@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailTwoBranch
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentBoundsHigh
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentBoundsCrudeBottom
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailTwoBranch
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentBoundsHigh
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentBoundsCrudeBottom
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

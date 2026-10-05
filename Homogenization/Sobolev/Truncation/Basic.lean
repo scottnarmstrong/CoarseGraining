@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.H1.Algebra.Membership
-import Homogenization.Sobolev.Truncation.Approx
-import Homogenization.Sobolev.Foundations.Cutoff.OpenSet
+module
+
+public import Homogenization.Sobolev.H1.Algebra.Membership
+public import Homogenization.Sobolev.Truncation.Approx
+public import Homogenization.Sobolev.Foundations.Cutoff.OpenSet
+
+@[expose] public section
 
 namespace Homogenization
 

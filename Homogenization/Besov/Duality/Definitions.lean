@@ -1,7 +1,11 @@
-import Homogenization.Besov.Localization
-import Homogenization.Besov.Negative
-import Homogenization.Besov.Positive
-import Mathlib.Basic.Real.ConjExponents
+module
+
+public import Homogenization.Besov.Localization
+public import Homogenization.Besov.Negative
+public import Homogenization.Besov.Positive
+public import Mathlib.Basic.Real.ConjExponents
+
+@[expose] public section
 
 namespace Homogenization
 

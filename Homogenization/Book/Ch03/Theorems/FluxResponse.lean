@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch03.Definitions
-import Homogenization.Book.Ch02.Theorems.HomogenizationError
-import Homogenization.Deterministic.CoarseFluxResponse.Response
-import Homogenization.Deterministic.WeakNormInterfaces.AECongruence
+module
+
+public import Homogenization.Book.Ch03.Definitions
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError
+public import Homogenization.Deterministic.CoarseFluxResponse.Response
+public import Homogenization.Deterministic.WeakNormInterfaces.AECongruence
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

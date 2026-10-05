@@ -1,6 +1,10 @@
-import Homogenization.Probability.RandomCoeffField
-import Mathlib.MeasureTheory.Group.Arithmetic
-import Mathlib.MeasureTheory.Measure.AEMeasurable
+module
+
+public import Homogenization.Probability.RandomCoeffField
+public import Mathlib.MeasureTheory.Group.Arithmetic
+public import Mathlib.MeasureTheory.Measure.AEMeasurable
+
+@[expose] public section
 
 namespace Homogenization
 

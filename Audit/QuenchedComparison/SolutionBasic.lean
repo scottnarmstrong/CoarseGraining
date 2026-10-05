@@ -1,4 +1,6 @@
-import Mathlib
+module
+
+public import Mathlib
 
 /-!
 # Statement-level audit vocabulary for the quenched comparison challenge
@@ -23,6 +25,8 @@ bridges to the repository theorem, and states and proves the audited theorem.
 Because imports cannot retroactively re-elaborate the constants of an already
 compiled module, the vocabulary below stays challenge-identical.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace StatementAudit

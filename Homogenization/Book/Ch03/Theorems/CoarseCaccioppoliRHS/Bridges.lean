@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS.FinalBounds
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS.FinalBounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

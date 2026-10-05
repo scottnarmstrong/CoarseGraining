@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PartitionWeights
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PartitionWeights
+
+@[expose] public section
 
 namespace Homogenization
 

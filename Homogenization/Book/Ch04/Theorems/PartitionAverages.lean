@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch04.Theorems.Concentration
+module
+
+public import Homogenization.Book.Ch04.Theorems.Concentration
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

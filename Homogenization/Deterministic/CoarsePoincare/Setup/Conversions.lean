@@ -1,13 +1,17 @@
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic
-import Homogenization.Deterministic.WeakNormInterfaces
-import Homogenization.Multiscale.NormalizedNorms
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering
-import Homogenization.CoarseGraining.OriginCubeEllipticRecovery
-import Homogenization.CoarseGraining.ResponseIdentities.Existence
-import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas
-import Homogenization.PDE.HarmonicCube
-import Homogenization.Sobolev.Foundations.HodgeCubeBridge
-import Homogenization.Geometry.CubeMetric
+module
+
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic
+public import Homogenization.Deterministic.WeakNormInterfaces
+public import Homogenization.Multiscale.NormalizedNorms
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering
+public import Homogenization.CoarseGraining.OriginCubeEllipticRecovery
+public import Homogenization.CoarseGraining.ResponseIdentities.Existence
+public import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas
+public import Homogenization.PDE.HarmonicCube
+public import Homogenization.Sobolev.Foundations.HodgeCubeBridge
+public import Homogenization.Geometry.CubeMetric
+
+@[expose] public section
 
 namespace Homogenization
 

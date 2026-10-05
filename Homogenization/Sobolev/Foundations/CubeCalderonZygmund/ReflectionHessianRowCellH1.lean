@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionHessianRowFiniteP
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.HessianGradientH1
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionHessianRowFiniteP
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.HessianGradientH1
 
 /-!
 # Cellwise H¹ reflection of a weak Hessian row
@@ -10,6 +12,8 @@ weak gradient is exactly the mixed-parity reflection `S * s_i * s_j` of the
 `i`th Hessian row. This file makes only a cellwise assertion; it does not
 assert that the global mixed reflection belongs to `H¹`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

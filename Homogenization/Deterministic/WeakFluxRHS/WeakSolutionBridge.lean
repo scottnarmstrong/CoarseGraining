@@ -1,8 +1,12 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ExpandedAndElliptic
-import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
-import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
-import Homogenization.Deterministic.WeakFluxRHS.FluxStepping
-import Homogenization.Deterministic.WeakFluxRHS.NeumannCorrector
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ExpandedAndElliptic
+public import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
+public import Homogenization.Deterministic.WeakFluxRHS.FluxStepping
+public import Homogenization.Deterministic.WeakFluxRHS.NeumannCorrector
+
+@[expose] public section
 
 namespace Homogenization
 

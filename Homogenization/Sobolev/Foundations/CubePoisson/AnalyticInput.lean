@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubePoisson.EndpointDuality
+module
+
+public import Homogenization.Sobolev.Foundations.CubePoisson.EndpointDuality
+
+@[expose] public section
 
 namespace Homogenization
 

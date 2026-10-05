@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.QuantitativeCutoffInputs.Setup
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalPatchCutoff
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.QuantitativeCutoffInputs.Setup
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalPatchCutoff
+
+@[expose] public section
 
 namespace Homogenization
 

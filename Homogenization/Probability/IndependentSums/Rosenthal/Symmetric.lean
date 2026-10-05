@@ -1,4 +1,8 @@
-import Homogenization.Probability.IndependentSums.Rosenthal.CenteredTruncation
+module
+
+public import Homogenization.Probability.IndependentSums.Rosenthal.CenteredTruncation
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

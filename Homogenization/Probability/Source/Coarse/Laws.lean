@@ -1,5 +1,9 @@
-import Homogenization.Probability.Source.Coarse
-import Mathlib.Probability.Independence.Basic
+module
+
+public import Homogenization.Probability.Source.Coarse
+public import Mathlib.Probability.Independence.Basic
+
+@[expose] public section
 
 namespace Homogenization.Source.Coarse
 

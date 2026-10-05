@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CoerciveH1Dilation
-import Homogenization.Sobolev.Foundations.PoincareW1p.Seminorms
+module
+
+public import Homogenization.Sobolev.Foundations.CoerciveH1Dilation
+public import Homogenization.Sobolev.Foundations.PoincareW1p.Seminorms
+
+@[expose] public section
 
 namespace Homogenization
 

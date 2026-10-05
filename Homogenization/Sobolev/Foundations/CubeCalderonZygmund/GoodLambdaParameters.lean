@@ -1,5 +1,7 @@
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.MeasureTheory.Function.L1Space.Integrable
+module
+
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.MeasureTheory.Function.L1Space.Integrable
 
 /-!
 # Strict parameters for the cube good-`lambda` iteration
@@ -8,6 +10,8 @@ The local comparison coefficient is fixed before the cube, solution, and
 datum.  This file chooses the amplification and datum parameters which make
 the weighted layer-cake self coefficient strictly smaller than one.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

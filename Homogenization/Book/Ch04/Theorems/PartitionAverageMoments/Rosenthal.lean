@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch04.Theorems.PartitionAverageFluctuations
-import Homogenization.Book.Ch04.Internal.PartitionAverageMomentHelpers
+module
+
+public import Homogenization.Book.Ch04.Theorems.PartitionAverageFluctuations
+public import Homogenization.Book.Ch04.Internal.PartitionAverageMomentHelpers
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

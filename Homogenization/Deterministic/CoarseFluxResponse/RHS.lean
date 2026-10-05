@@ -1,8 +1,12 @@
-import Homogenization.Deterministic.CoarseFluxResponse.Response
-import Homogenization.Deterministic.CoarsePoincareRHS.SeminormRecurrence
-import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
-import Homogenization.Deterministic.WeakNormInterfacesPositiveQTwo
-import Homogenization.PDE.EnergyIdentities
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.Response
+public import Homogenization.Deterministic.CoarsePoincareRHS.SeminormRecurrence
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
+public import Homogenization.Deterministic.WeakNormInterfacesPositiveQTwo
+public import Homogenization.PDE.EnergyIdentities
+
+@[expose] public section
 
 namespace Real
 

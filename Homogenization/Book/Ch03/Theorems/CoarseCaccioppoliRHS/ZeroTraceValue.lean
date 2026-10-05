@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS.Prefactors
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoliRHS.Prefactors
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

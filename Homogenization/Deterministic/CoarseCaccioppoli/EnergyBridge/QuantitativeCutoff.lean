@@ -1,2 +1,4 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.QuantitativeCutoff.Basic
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.QuantitativeCutoff.NormalizedAndGradient
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.QuantitativeCutoff.Basic
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.QuantitativeCutoff.NormalizedAndGradient

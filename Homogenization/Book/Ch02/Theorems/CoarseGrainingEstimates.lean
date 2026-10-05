@@ -1,5 +1,9 @@
-import Homogenization.Internal.Ch02.CoarseGrainingEstimates
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Basic
+module
+
+public import Homogenization.Internal.Ch02.CoarseGrainingEstimates
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Basic
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.GradientLinearity
+module
+
+public import Homogenization.Internal.Ch02.GradientLinearity
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.Geometry
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.Geometry
+
+@[expose] public section
 
 namespace Homogenization
 

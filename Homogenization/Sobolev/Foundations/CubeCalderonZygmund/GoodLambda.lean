@@ -1,5 +1,9 @@
-import Mathlib.MeasureTheory.Covering.Vitali
-import Mathlib.MeasureTheory.Integral.Layercake
+module
+
+public import Mathlib.MeasureTheory.Covering.Vitali
+public import Mathlib.MeasureTheory.Integral.Layercake
+
+@[expose] public section
 
 namespace Homogenization
 

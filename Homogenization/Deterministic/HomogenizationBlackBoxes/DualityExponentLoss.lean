@@ -1,9 +1,13 @@
-import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
-import Homogenization.Deterministic.CoarsePoincareRHS.TerminalBounds
-import Homogenization.Besov.Duality.Full
-import Homogenization.Sobolev.PotentialSolenoidalL2
-import Homogenization.Book.Ch01.Theorems.DualToCircLoss.FiniteLoss
-import Homogenization.Book.Ch01.Theorems.NegativeBesovLocalize
+module
+
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.Duality
+public import Homogenization.Deterministic.CoarsePoincareRHS.TerminalBounds
+public import Homogenization.Besov.Duality.Full
+public import Homogenization.Sobolev.PotentialSolenoidalL2
+public import Homogenization.Book.Ch01.Theorems.DualToCircLoss.FiniteLoss
+public import Homogenization.Book.Ch01.Theorems.NegativeBesovLocalize
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.Basic
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.Basic
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

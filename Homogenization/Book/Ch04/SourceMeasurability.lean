@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch04.SourceObservable
-import Mathlib.MeasureTheory.Function.StronglyMeasurable.AEStronglyMeasurable
-import Mathlib.Topology.Metrizable.Basic
+module
+
+public import Homogenization.Book.Ch04.SourceObservable
+public import Mathlib.MeasureTheory.Function.StronglyMeasurable.AEStronglyMeasurable
+public import Mathlib.Topology.Metrizable.Basic
 
 /-!
 # Measurability of exact coarse-source local random variables
@@ -8,6 +10,8 @@ import Mathlib.Topology.Metrizable.Basic
 All promotions stay on the exact coarse source carrier.  In particular, no
 regular-carrier or restriction-sigma bridge is used here.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

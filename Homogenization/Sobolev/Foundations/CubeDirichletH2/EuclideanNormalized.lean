@@ -1,7 +1,11 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.Regularity
-import Homogenization.Sobolev.Foundations.WeakHessianEuclidean
-import Homogenization.Multiscale.NormalizedDomainCube
-import Homogenization.Sobolev.NormalizedLp
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.Regularity
+public import Homogenization.Sobolev.Foundations.WeakHessianEuclidean
+public import Homogenization.Multiscale.NormalizedDomainCube
+public import Homogenization.Sobolev.NormalizedLp
+
+@[expose] public section
 
 namespace Homogenization
 

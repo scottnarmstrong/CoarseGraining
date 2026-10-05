@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.TriadicScale
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.SingleCubeRhs
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.TriadicScale
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.SingleCubeRhs
+
+@[expose] public section
 
 namespace Homogenization
 

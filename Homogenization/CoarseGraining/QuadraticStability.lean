@@ -1,5 +1,7 @@
-import Homogenization.CoarseGraining.QuadraticStability.CauchySchwarz
-import Homogenization.CoarseGraining.QuadraticStability.Integral
+module
+
+public import Homogenization.CoarseGraining.QuadraticStability.CauchySchwarz
+public import Homogenization.CoarseGraining.QuadraticStability.Integral
 
 /-!
 # Quadratic stability (Lemma 4.1)
@@ -16,3 +18,5 @@ preparation):
   (integral stability of the two quadratic minima, constant `6K`) — see
   `QuadraticStability/Integral.lean`.
 -/
+
+@[expose] public section

@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section57.SmallBottomTail
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailFinalQuantitative
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailCollapse
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.SmallBottomTail
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailFinalQuantitative
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailCollapse
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubePoisson.DualTestNorm
-import Homogenization.Besov.Duality.CaccioppoliVectorization
+module
+
+public import Homogenization.Sobolev.Foundations.CubePoisson.DualTestNorm
+public import Homogenization.Besov.Duality.CaccioppoliVectorization
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,6 @@
-import Homogenization.Probability.RegCoeffField.Endomorphisms
+module
+
+public import Homogenization.Probability.RegCoeffField.Endomorphisms
 
 /-!
 # The restriction σ-algebra on the carrier
@@ -17,6 +19,8 @@ predicate of `Homogenization.Probability.RandomField`, reused unchanged.
 
 Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

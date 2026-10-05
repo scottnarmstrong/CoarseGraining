@@ -1,7 +1,11 @@
-import Homogenization.Geometry.CubeColoring
-import Homogenization.Geometry.ScaleColoring
-import Homogenization.Probability.RandomField
-import Mathlib.Analysis.Calculus.ContDiff.Operations
+module
+
+public import Homogenization.Geometry.CubeColoring
+public import Homogenization.Geometry.ScaleColoring
+public import Homogenization.Probability.RandomField
+public import Mathlib.Analysis.Calculus.ContDiff.Operations
+
+@[expose] public section
 
 namespace Homogenization
 

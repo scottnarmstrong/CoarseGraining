@@ -1,5 +1,7 @@
-import Homogenization.Probability.LocalEllipticitySlices
-import Homogenization.Probability.Source.Coarse
+module
+
+public import Homogenization.Probability.LocalEllipticitySlices
+public import Homogenization.Probability.Source.Coarse
 
 /-!
 # Deterministic ellipticity slices for the exact coarse source
@@ -9,6 +11,8 @@ Euclidean balls.  This file converts that carrier membership fact into the
 countable AEE ellipticity slices used on a fixed triadic cube without invoking
 any probabilistic assumptions.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

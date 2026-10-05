@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.InputSpecializations.NoteRawBridge
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.LocalPatchWeakTesting
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.InputSpecializations.NoteRawBridge
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.LocalPatchWeakTesting
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDensity
-import Homogenization.Sobolev.Fractional.EuclideanWspCompletedDualExtension
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpBelowTwo
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDensity
+public import Homogenization.Sobolev.Fractional.EuclideanWspCompletedDualExtension
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpBelowTwo
 
 /-!
 # Smooth-dual pairing with actual fractional Sobolev fields
@@ -8,6 +10,8 @@ import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpBelowTwo
 This module closes the smooth-test dual pairing against an actual fractional
 Sobolev field which also has the required `L²` representative.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

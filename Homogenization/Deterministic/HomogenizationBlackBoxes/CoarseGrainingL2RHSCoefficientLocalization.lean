@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2RHSComparison
-import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
+module
+
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2RHSComparison
+public import Homogenization.Deterministic.CoarsePoincareRHS.Regularity
+
+@[expose] public section
 
 namespace Homogenization
 

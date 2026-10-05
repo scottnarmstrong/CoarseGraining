@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch01.Definitions
-import Homogenization.Besov.Duality.ProjectionLimit
-import Homogenization.Besov.Poincare.Projection
+module
+
+public import Homogenization.Book.Ch01.Definitions
+public import Homogenization.Besov.Duality.ProjectionLimit
+public import Homogenization.Besov.Poincare.Projection
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

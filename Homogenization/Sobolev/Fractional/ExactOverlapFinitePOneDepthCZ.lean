@@ -1,9 +1,11 @@
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePDepthTriangle
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePGlobalBound
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePPDESplitting
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePPoincareDepth
-import Homogenization.Sobolev.Foundations.PoincareW1p.OverlapCubeVectorNormalized
+module
+
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePDepthTriangle
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePGlobalBound
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePPDESplitting
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePPoincareDepth
+public import Homogenization.Sobolev.Foundations.PoincareW1p.OverlapCubeVectorNormalized
 
 /-!
 # One-depth finite-`p` Calderon--Zygmund overlap estimate
@@ -12,6 +14,8 @@ This is the one-depth analytic closure: the exact overlap energy of the
 gradient of a cube Dirichlet divergence solution is controlled by that of its
 datum, uniformly in the root scale and overlap depth.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

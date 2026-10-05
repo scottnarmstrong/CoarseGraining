@@ -1,4 +1,6 @@
-import Homogenization.CoarseGraining.MagicIdentities.Basics
-import Homogenization.CoarseGraining.MagicIdentities.BlockSubadditivity
-import Homogenization.CoarseGraining.MagicIdentities.StarredSubadditivity
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering
+module
+
+public import Homogenization.CoarseGraining.MagicIdentities.Basics
+public import Homogenization.CoarseGraining.MagicIdentities.BlockSubadditivity
+public import Homogenization.CoarseGraining.MagicIdentities.StarredSubadditivity
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering

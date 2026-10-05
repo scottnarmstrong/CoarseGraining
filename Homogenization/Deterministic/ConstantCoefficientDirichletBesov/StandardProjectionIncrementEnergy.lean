@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.Basic
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapFluctuation
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionVector
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.Basic
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.OverlapFluctuation
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionVector
+
+@[expose] public section
 
 namespace Homogenization
 

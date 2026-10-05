@@ -1,2 +1,4 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.LocalStep.HarmonicStepping
-import Homogenization.Deterministic.CoarsePoincareRHS.LocalStep.DiscountNext
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.LocalStep.HarmonicStepping
+public import Homogenization.Deterministic.CoarsePoincareRHS.LocalStep.DiscountNext

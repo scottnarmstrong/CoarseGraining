@@ -1,8 +1,12 @@
-import Homogenization.CoarseGraining.HilbertMinimization
-import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas
-import Homogenization.Geometry.CubeMetric
-import Homogenization.PDE.HarmonicCube
-import Homogenization.PDE.HarmonicHilbert
+module
+
+public import Homogenization.CoarseGraining.HilbertMinimization
+public import Homogenization.CoarseGraining.ResponseIdentities.AverageFormulas
+public import Homogenization.Geometry.CubeMetric
+public import Homogenization.PDE.HarmonicCube
+public import Homogenization.PDE.HarmonicHilbert
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -12,7 +16,7 @@ namespace AHarmonicGradientHilbert
 
 variable {d : ℕ} {U : Set (Vec d)} {a : CoeffField d} {lam Lam : ℝ}
 
-private theorem memVectorL2_const [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
+theorem memVectorL2_const [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
     (p : Vec d) : MemVectorL2 U (fun _ : Vec d => p) := by
   simpa using
     (MeasureTheory.memLp_const (μ := volumeMeasureOn U) (c := p))

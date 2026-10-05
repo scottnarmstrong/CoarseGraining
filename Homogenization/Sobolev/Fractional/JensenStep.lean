@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.Definitions
-import Homogenization.Multiscale.OverlapLp
+module
+
+public import Homogenization.Sobolev.Fractional.Definitions
+public import Homogenization.Multiscale.OverlapLp
 
 /-!
 # Jensen/averaging step for the Gagliardo seminorm on overlap cubes
@@ -15,6 +17,8 @@ of differences (probability measure), the enorm of a Bochner integral is at
 most the lintegral of enorms, and `L^1(μ) ↪ L^p(μ)` on a probability measure
 (Jensen/Hölder).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Gagliardo

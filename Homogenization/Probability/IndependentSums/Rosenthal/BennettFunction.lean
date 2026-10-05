@@ -1,16 +1,20 @@
-import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
-import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
-import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
-import Mathlib.Algebra.Order.BigOperators.Group.Finset
-import Mathlib.Analysis.Convex.Integral
-import Mathlib.Analysis.Convex.Mul
-import Mathlib.Analysis.Normed.Module.Convex
-import Mathlib.Analysis.SpecialFunctions.Pow.Integral
-import Mathlib.Probability.Moments.Basic
-import Mathlib.MeasureTheory.Integral.Layercake
-import Mathlib.MeasureTheory.Integral.Prod
-import Homogenization.Probability.IndependentSums.IndependentCopy
-import Homogenization.Probability.IndependentSums.WeakOrlicz
+module
+
+public import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
+public import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+public import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
+public import Mathlib.Algebra.Order.BigOperators.Group.Finset
+public import Mathlib.Analysis.Convex.Integral
+public import Mathlib.Analysis.Convex.Mul
+public import Mathlib.Analysis.Normed.Module.Convex
+public import Mathlib.Analysis.SpecialFunctions.Pow.Integral
+public import Mathlib.Probability.Moments.Basic
+public import Mathlib.MeasureTheory.Integral.Layercake
+public import Mathlib.MeasureTheory.Integral.Prod
+public import Homogenization.Probability.IndependentSums.IndependentCopy
+public import Homogenization.Probability.IndependentSums.WeakOrlicz
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.HarmonicDerivative
-import Homogenization.Sobolev.CubeEmbedding
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.HarmonicDerivative
+public import Homogenization.Sobolev.CubeEmbedding
+
+@[expose] public section
 
 namespace Homogenization
 

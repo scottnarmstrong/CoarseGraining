@@ -1,17 +1,21 @@
-import Homogenization.Ambient.CoefficientField
-import Homogenization.Geometry.Translation
-import Homogenization.Geometry.SignedPermutation
-import Homogenization.Probability.Scalarization
-import Mathlib.Analysis.Calculus.ContDiff.Basic
-import Mathlib.Analysis.Calculus.ContDiff.Operations
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
-import Mathlib.LinearAlgebra.Matrix.Symmetric
-import Mathlib.MeasureTheory.Constructions.Pi
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Probability.Independence.Basic
-import Mathlib.Topology.Algebra.Support
-import Mathlib.Topology.MetricSpace.Bounded
+module
+
+public import Homogenization.Ambient.CoefficientField
+public import Homogenization.Geometry.Translation
+public import Homogenization.Geometry.SignedPermutation
+public import Homogenization.Probability.Scalarization
+public import Mathlib.Analysis.Calculus.ContDiff.Basic
+public import Mathlib.Analysis.Calculus.ContDiff.Operations
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.LinearAlgebra.Matrix.Symmetric
+public import Mathlib.MeasureTheory.Constructions.Pi
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+public import Mathlib.Probability.Independence.Basic
+public import Mathlib.Topology.Algebra.Support
+public import Mathlib.Topology.MetricSpace.Bounded
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -266,7 +270,7 @@ def IsRestrictionUnitRangeDependent {d : ℕ}
 abbrev IsUnitRangeDependent {d : ℕ} (P : MeasureTheory.Measure (CoeffField d)) : Prop :=
   IsRestrictionUnitRangeDependent P
 
-private theorem matVecMul_one {d : ℕ} (x : Vec d) :
+private theorem matVecMul_one_randomField {d : ℕ} (x : Vec d) :
     matVecMul (1 : Mat d) x = x := by
   ext i
   unfold matVecMul
@@ -302,7 +306,7 @@ private theorem localTestObservable_rotateCoeffField_signedPermutation {d : ℕ}
     apply MeasureTheory.integral_congr_ae
     filter_upwards with x
     have hback : matVecMul (matTranspose R) (matVecMul R x) = x := by
-      rw [matVecMul_mul, hR.transpose_mul_self, matVecMul_one]
+      rw [matVecMul_mul, hR.transpose_mul_self, matVecMul_one_randomField]
     have halg :
         vecDot e' (matVecMul ((matTranspose R) * (a (matVecMul R x)) * R) e) =
           vecDot (matVecMul R e') (matVecMul (a (matVecMul R x)) (matVecMul R e)) := by
@@ -350,7 +354,7 @@ private theorem localFiniteTestObservable_rotateCoeffField_signedPermutation {d 
     apply MeasureTheory.integral_congr_ae
     filter_upwards with x
     have hback : matVecMul (matTranspose R) (matVecMul R x) = x := by
-      rw [matVecMul_mul, hR.transpose_mul_self, matVecMul_one]
+      rw [matVecMul_mul, hR.transpose_mul_self, matVecMul_one_randomField]
     have hterm : ∀ k : ι,
         vecDot (e' k)
             (matVecMul ((matTranspose R) * (a (matVecMul R x)) * R) (e k)) =
@@ -416,10 +420,10 @@ theorem measurable_rotateCoeffField {d : ℕ} (R : Mat d)
       intro y hy
       refine ⟨matVecMul (matTranspose R) y, hy, ?_⟩
       change matVecMul R (matVecMul (matTranspose R) y) = y
-      rw [matVecMul_mul, hR.mul_transpose_self, matVecMul_one]
+      rw [matVecMul_mul, hR.mul_transpose_self, matVecMul_one_randomField]
     intro a b hab x hx
     have hback : matVecMul (matTranspose R) (matVecMul R x) = x := by
-      rw [matVecMul_mul, hR.transpose_mul_self, matVecMul_one]
+      rw [matVecMul_mul, hR.transpose_mul_self, matVecMul_one_randomField]
     have hpoint : a (matVecMul R x) = b (matVecMul R x) := by
       exact hab (matVecMul R x) (by simpa [hback] using hx)
     simp [rotateCoeffField, hpoint]

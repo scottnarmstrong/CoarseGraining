@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section57.ProbeMax
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.ProbeMax
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

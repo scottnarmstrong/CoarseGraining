@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch04.SourceIndependence
-import Homogenization.Book.Ch04.SourceColorClassIndependence
+module
+
+public import Homogenization.Book.Ch04.SourceIndependence
+public import Homogenization.Book.Ch04.SourceColorClassIndependence
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

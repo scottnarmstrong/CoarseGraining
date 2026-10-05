@@ -1,7 +1,9 @@
-import Mathlib.Analysis.MeanInequalitiesPow
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.AllDimensionalComposition
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.ContinuumSampleClosure
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.EuclideanHsMeasurability
+module
+
+public import Mathlib.Analysis.MeanInequalitiesPow
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.AllDimensionalComposition
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.ContinuumSampleClosure
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.EuclideanHsMeasurability
 
 /-!
 # Convention-neutral comparison of continuous interpolation seminorms
@@ -9,6 +11,8 @@ import Homogenization.Sobolev.Fractional.ContinuousInterpolation.EuclideanHsMeas
 This module takes half-powers of the all-dimensional energy comparisons. It keeps the
 directional seminorm bounds separate for use by the approved source-facing full norm.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

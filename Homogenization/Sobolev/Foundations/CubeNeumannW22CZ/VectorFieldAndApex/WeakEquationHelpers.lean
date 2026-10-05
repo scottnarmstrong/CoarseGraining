@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubePoisson
-import Homogenization.Sobolev.Foundations.CubeReflection
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.Definitions
+module
+
+public import Homogenization.Sobolev.Foundations.CubePoisson
+public import Homogenization.Sobolev.Foundations.CubeReflection
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.Definitions
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.CutoffBoundaryError
-import Homogenization.Sobolev.Foundations.CubeReflection.Reflections
-import Mathlib.Analysis.Calculus.MeanValue
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.CutoffBoundaryError
+public import Homogenization.Sobolev.Foundations.CubeReflection.Reflections
+public import Mathlib.Analysis.Calculus.MeanValue
+
+@[expose] public section
 
 namespace Homogenization
 

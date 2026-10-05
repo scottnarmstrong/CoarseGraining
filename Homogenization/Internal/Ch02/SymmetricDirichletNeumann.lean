@@ -1,1 +1,3 @@
-import Homogenization.Internal.Ch02.SymmetricDirichletNeumann.Theory
+module
+
+public import Homogenization.Internal.Ch02.SymmetricDirichletNeumann.Theory

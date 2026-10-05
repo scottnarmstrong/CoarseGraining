@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch01.Definitions
-import Homogenization.Book.Ch01.Theorems.MultiscalePoincare
-import Homogenization.Besov.Poincare.Bounds
+module
+
+public import Homogenization.Book.Ch01.Definitions
+public import Homogenization.Book.Ch01.Theorems.MultiscalePoincare
+public import Homogenization.Besov.Poincare.Bounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2
-import Homogenization.Deterministic.CoarsePoincareRHS.NoteConstants
+module
+
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2
+public import Homogenization.Deterministic.CoarsePoincareRHS.NoteConstants
+
+@[expose] public section
 
 namespace Homogenization
 

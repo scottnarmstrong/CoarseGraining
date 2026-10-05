@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.W1p.GlobalAffineLp
-import Homogenization.Sobolev.W1p.InwardMollificationGeometry
-import Homogenization.Sobolev.W1p.ConvolutionLp
+module
+
+public import Homogenization.Sobolev.W1p.GlobalAffineLp
+public import Homogenization.Sobolev.W1p.InwardMollificationGeometry
+public import Homogenization.Sobolev.W1p.ConvolutionLp
 
 /-!
 # Weak gradient of inward mollification
@@ -12,6 +14,8 @@ convolution identity by closing the identities for the supported smooth
 approximants built into `H10Function`, and then applies the affine chain rule.
 -/
 
+@[expose] public section
+
 namespace Homogenization
 
 open Function MeasureTheory _root_.Filter Set Topology
@@ -19,7 +23,7 @@ open scoped ENNReal Convolution Pointwise
 
 noncomputable section
 
-private theorem H10Function.approx_sub_zeroExtension_eq_indicator_sub
+private theorem H10Function.approx_sub_zeroExtension_eq_indicator_sub_inward
     {d : ℕ} {U : Set (Vec d)} (u : H10Function U) (n : ℕ) :
     (fun x => u.approx n x - u.zeroExtension x) =
       Set.indicator U (fun x => u.approx n x - u.toH1Function.toFun x) := by
@@ -31,7 +35,7 @@ private theorem H10Function.approx_sub_zeroExtension_eq_indicator_sub
       exact fun hx_support => hx (u.approx_support_subset n hx_support)
     rw [Set.indicator_of_notMem hx, u.zeroExtension_apply_of_not_mem hx, sub_zero, hzero]
 
-private theorem H10Function.fderiv_approx_sub_zeroExtensionGrad_eq_indicator_sub
+private theorem H10Function.fderiv_approx_sub_zeroExtensionGrad_eq_indicator_sub_inward
     {d : ℕ} {U : Set (Vec d)} (u : H10Function U) (n : ℕ) (i : Fin d) :
     (fun x =>
       (fderiv ℝ (u.approx n) x) (basisVec i) - u.zeroExtensionGrad x i) =
@@ -182,7 +186,7 @@ private theorem H10Function.hasWeakPartialDerivOn_convolution_zeroExtension
       (fun n => eLpNorm (fun x => u.approx n x - u.zeroExtension x) 2 volume)
       Filter.atTop (nhds 0) := by
     refine u.tendsto_approx.congr (fun n => ?_)
-    rw [u.approx_sub_zeroExtension_eq_indicator_sub n,
+    rw [u.approx_sub_zeroExtension_eq_indicator_sub_inward n,
       eLpNorm_indicator_eq_eLpNorm_restrict hU]
   have hgi_tend : Filter.Tendsto
       (fun n => eLpNorm
@@ -191,7 +195,7 @@ private theorem H10Function.hasWeakPartialDerivOn_convolution_zeroExtension
         2 volume)
       Filter.atTop (nhds 0) := by
     refine (u.tendsto_approx_grad i).congr (fun n => ?_)
-    rw [u.fderiv_approx_sub_zeroExtensionGrad_eq_indicator_sub n i,
+    rw [u.fderiv_approx_sub_zeroExtensionGrad_eq_indicator_sub_inward n i,
       eLpNorm_indicator_eq_eLpNorm_restrict hU]
   have hun_tend : Filter.Tendsto
       (fun n => eLpNorm

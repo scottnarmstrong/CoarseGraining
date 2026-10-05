@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.OneStoppingBallComparison
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.OneBallTailAlgebra
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.OneBallScaleFactor
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.OneStoppingBallComparison
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.OneBallTailAlgebra
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.OneBallScaleFactor
+
+@[expose] public section
 
 namespace Homogenization
 

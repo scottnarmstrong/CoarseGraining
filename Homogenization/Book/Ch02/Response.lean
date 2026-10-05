@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.Setup
+module
+
+public import Homogenization.Book.Ch02.Setup
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

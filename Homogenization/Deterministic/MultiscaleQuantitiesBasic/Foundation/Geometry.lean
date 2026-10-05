@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Foundation.GeometricOne
+module
+
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Foundation.GeometricOne
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
+module
+
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
 
 /-!
 # Finite-`p` exact-overlap depth triangle inequality
@@ -8,6 +10,8 @@ addition with the usual two-term finite-`p` constant.  The proof keeps the
 average identity and the local Minkowski step on each overlap cube, before
 summing, so no center-cardinality loss is introduced.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

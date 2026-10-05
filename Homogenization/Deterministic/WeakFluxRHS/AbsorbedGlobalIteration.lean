@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.WeakFluxRHS.AbsorbedRecurrences
+module
+
+public import Homogenization.Deterministic.WeakFluxRHS.AbsorbedRecurrences
+
+@[expose] public section
 
 namespace Homogenization
 

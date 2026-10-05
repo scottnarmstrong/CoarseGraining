@@ -1,9 +1,11 @@
-import Homogenization.Book.Ch04.SourceEllipticity
-import Homogenization.Book.Ch04.SourceObservable
-import Homogenization.Book.Ch04.Internal.AEESliceAssembly.CarrierMinimizerFamily
-import Homogenization.Book.Ch04.Theorems.CanonicalSolutions.Definitions
-import Homogenization.Probability.RegCoeffField.SmoothSliceMeasurability
-import Homogenization.Probability.Source.Coarse.RegIntegralAdapter
+module
+
+public import Homogenization.Book.Ch04.SourceEllipticity
+public import Homogenization.Book.Ch04.SourceObservable
+public import Homogenization.Book.Ch04.Internal.AEESliceAssembly.CarrierMinimizerFamily
+public import Homogenization.Book.Ch04.Theorems.CanonicalSolutions.Definitions
+public import Homogenization.Probability.RegCoeffField.SmoothSliceMeasurability
+public import Homogenization.Probability.Source.Coarse.RegIntegralAdapter
 
 /-!
 # Exact-source locality of canonical doubled-`Mu` solutions
@@ -13,6 +15,8 @@ The least-slice partition therefore assembles the canonical totalized
 minimizer and its fixed-test energy pairing pointwise from source-local slice
 pieces.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

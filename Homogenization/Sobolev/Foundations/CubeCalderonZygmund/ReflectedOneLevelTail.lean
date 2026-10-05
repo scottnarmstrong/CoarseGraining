@@ -1,9 +1,11 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedGlobalEnergy
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GlobalStoppingFamily
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaTailControl
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaVitaliAssembly
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionWeightedTail
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionDivergenceRhs
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectedGlobalEnergy
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GlobalStoppingFamily
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaTailControl
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaVitaliAssembly
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionWeightedTail
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionDivergenceRhs
 
 /-!
 # The reflected one-level cube good-`λ` inequality
@@ -12,6 +14,8 @@ This is the unconditional Caffarelli--Peral one-level estimate on a centered
 cube.  Odd reflection, extension by zero, stopping radii, local harmonic
 comparison, and Vitali selection are all constructed internally.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

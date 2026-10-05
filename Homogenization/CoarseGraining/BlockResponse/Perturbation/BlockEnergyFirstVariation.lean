@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.BlockResponse.Perturbation.VolumeAverage
+module
+
+public import Homogenization.CoarseGraining.BlockResponse.Perturbation.VolumeAverage
+
+@[expose] public section
 
 namespace Homogenization
 

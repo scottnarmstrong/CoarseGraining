@@ -1,6 +1,10 @@
-import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
-import Homogenization.Book.Ch04.Theorems.PartitionAverageFluctuations
-import Homogenization.Probability.IndependentSums.Rosenthal.Corollaries
+module
+
+public import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
+public import Homogenization.Book.Ch04.Theorems.PartitionAverageFluctuations
+public import Homogenization.Probability.IndependentSums.Rosenthal.Corollaries
+
+@[expose] public section
 
 namespace Homogenization
 

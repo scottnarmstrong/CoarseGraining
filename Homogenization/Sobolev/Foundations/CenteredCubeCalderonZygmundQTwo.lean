@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.EuclideanNormalized
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.EuclideanNormalized
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.EuclideanNormalized
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.EuclideanNormalized
 
 /-!
 # The common centered-cube Calderón--Zygmund `q = 2` constant
@@ -9,6 +11,8 @@ classical inputs.  It deliberately concerns only centered triadic cubes and
 the presently formalized `q = 2` case.  The same dimension-only constant is
 used for its Dirichlet and mean-zero Neumann branches.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

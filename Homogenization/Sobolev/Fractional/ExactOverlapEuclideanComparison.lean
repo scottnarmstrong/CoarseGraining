@@ -1,7 +1,9 @@
-import Homogenization.Sobolev.Fractional.ExactOverlapScalarComparison
-import Homogenization.Sobolev.Fractional.ExactOverlapEuclideanPoincare
-import Homogenization.Sobolev.Fractional.CenteredCubeEuclideanH2
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.EuclideanGagliardoCoordinateBridge
+module
+
+public import Homogenization.Sobolev.Fractional.ExactOverlapScalarComparison
+public import Homogenization.Sobolev.Fractional.ExactOverlapEuclideanPoincare
+public import Homogenization.Sobolev.Fractional.CenteredCubeEuclideanH2
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.EuclideanGagliardoCoordinateBridge
 
 /-!
 # Exact Euclidean overlap Besov--Gagliardo comparison on centered cubes
@@ -12,6 +14,8 @@ physical coordinate energy is kept over the physical product measure; scale
 uniformity follows because all comparison constants are dimension/order
 constants and do not depend on the centered-cube scale.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

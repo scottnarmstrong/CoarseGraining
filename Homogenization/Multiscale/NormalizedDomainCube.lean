@@ -1,6 +1,8 @@
-import Homogenization.Geometry.BoundedMeasurableDomain
-import Homogenization.Geometry.CubeMetric
-import Homogenization.Multiscale.NormalizedNorms
+module
+
+public import Homogenization.Geometry.BoundedMeasurableDomain
+public import Homogenization.Geometry.CubeMetric
+public import Homogenization.Multiscale.NormalizedNorms
 
 /-!
 # Triadic cubes as bounded measurable domains
@@ -10,6 +12,8 @@ This module packages the operational half-open carrier of a triadic cube as a
 almost-everywhere equal to this carrier; no equality of the two sets is used or
 claimed here.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

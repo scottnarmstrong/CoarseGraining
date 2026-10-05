@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincare.Setup.UniformBounds
+module
+
+public import Homogenization.Deterministic.CoarsePoincare.Setup.UniformBounds
+
+@[expose] public section
 
 namespace Homogenization
 

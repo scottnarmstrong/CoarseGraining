@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInterior
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInterior
+
+@[expose] public section
 
 namespace Homogenization
 

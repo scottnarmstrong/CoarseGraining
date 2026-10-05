@@ -1,5 +1,9 @@
-import Homogenization.Probability.IndependentSums.Rosenthal.Symmetrization
-import Mathlib.Analysis.MeanInequalitiesPow
+module
+
+public import Homogenization.Probability.IndependentSums.Rosenthal.Symmetrization
+public import Mathlib.Analysis.MeanInequalitiesPow
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

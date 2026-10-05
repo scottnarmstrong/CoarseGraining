@@ -1,7 +1,9 @@
-import Homogenization.Besov.Duality.ProjectedPairing.MainBounds
-import Homogenization.Besov.Negative.ExactAggregationBridge
-import Homogenization.Besov.Negative.ExactExponentBridge
-import Homogenization.Besov.PositiveOverlapBridge
+module
+
+public import Homogenization.Besov.Duality.ProjectedPairing.MainBounds
+public import Homogenization.Besov.Negative.ExactAggregationBridge
+public import Homogenization.Besov.Negative.ExactExponentBridge
+public import Homogenization.Besov.PositiveOverlapBridge
 
 /-!
 # Exact circ domination at the negative `q = 1` endpoint
@@ -11,6 +13,8 @@ negative Besov kernel and the exact concrete circ kernel in the `q = 1`
 branch.  All local integrability and finite-truncation premises are derived
 inside the proof from the single parent `MemLp` certificate.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

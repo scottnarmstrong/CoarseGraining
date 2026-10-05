@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.TriadicScale
+module
+
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.TriadicScale
 
 /-!
 # Triadic sample series for the continuous `K`-energy
@@ -7,6 +9,8 @@ This module assembles the disjoint triadic scale intervals into an `ENNReal`
 series.  The lower comparison is deliberately indexed from `j + 1`: the
 continuous scale integral alone cannot recover the endpoint sample at `t = 1`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

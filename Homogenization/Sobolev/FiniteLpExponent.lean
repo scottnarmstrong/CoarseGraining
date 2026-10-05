@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.UnitCubeEuclideanL2
+module
+
+public import Homogenization.Sobolev.Fractional.UnitCubeEuclideanL2
 
 /-!
 # Finite `L^p` exponents and Euclidean cube fields
@@ -7,6 +9,8 @@ This module provides the exact finite-exponent carrier used by the Chapter 3
 analytic kernels, together with restriction of a Euclidean `L^p` field to a
 subcube while retaining its same pointwise representative.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

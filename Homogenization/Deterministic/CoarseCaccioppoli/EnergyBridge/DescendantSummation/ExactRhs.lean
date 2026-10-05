@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.DescendantSummation.Averages
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.DescendantSummation.Averages
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,9 +1,13 @@
-import Homogenization.Besov.Localization
-import Homogenization.Besov.Poincare.Descendants
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.VectorProduct
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimate
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalizedEnergyProfile
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Ellipticity.Descendants
+module
+
+public import Homogenization.Besov.Localization
+public import Homogenization.Besov.Poincare.Descendants
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.VectorProduct
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimate
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalizedEnergyProfile
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Ellipticity.Descendants
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,7 +1,9 @@
-import Homogenization.HighContrast.Corridor.Geometry
-import Homogenization.CoarseGraining.CoarseBounds.LawObservable
-import Homogenization.CoarseGraining.ThetaEllipticity
-import Homogenization.Probability.RandomFieldMeasurability
+module
+
+public import Homogenization.HighContrast.Corridor.Geometry
+public import Homogenization.CoarseGraining.CoarseBounds.LawObservable
+public import Homogenization.CoarseGraining.ThetaEllipticity
+public import Homogenization.Probability.RandomFieldMeasurability
 
 /-!
 # Per-phase measurability of the corridor observable
@@ -34,6 +36,8 @@ cannot be applied against `L` directly.  Instead:
    endomorphism via `AEStronglyMeasurable.comp_measurable`
    (`aestronglyMeasurable_phaseObservable`).
 -/
+
+@[expose] public section
 
 open Homogenization
 open Homogenization.Book.Ch04 (RestrictionCoeffLaw RestrictionLawCarrier AELocallyUniformlyEllipticField

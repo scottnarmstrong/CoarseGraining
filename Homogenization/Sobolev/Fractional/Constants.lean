@@ -1,6 +1,8 @@
-import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Analysis.SpecificLimits.Basic
+module
+
+public import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.Analysis.SpecificLimits.Basic
 
 /-!
 # Constants for the fractional Sobolev versus Besov comparison
@@ -17,6 +19,8 @@ the final equivalence constant depends on the dimension only):
 * the kernel-insertion prefactor `3^{d/p+s}` is at most `3^{d+1}`;
 * the triangle-splitting factor `(2^{p-1})^{1/p}` is at most `2`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Gagliardo

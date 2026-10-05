@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.CenteredProduct
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.PositiveSeminorms.Bounds
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.CenteredProduct
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.PositiveSeminorms.Bounds
+
+@[expose] public section
 
 namespace Homogenization
 

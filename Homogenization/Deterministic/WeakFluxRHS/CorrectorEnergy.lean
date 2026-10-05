@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.SeminormRecurrence
-import Homogenization.Deterministic.CoarseCaccioppoliLocalBridge
-import Homogenization.Deterministic.WeakFluxRHS.NeumannCorrector
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.SeminormRecurrence
+public import Homogenization.Deterministic.CoarseCaccioppoliLocalBridge
+public import Homogenization.Deterministic.WeakFluxRHS.NeumannCorrector
+
+@[expose] public section
 
 namespace Homogenization
 

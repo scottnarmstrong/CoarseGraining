@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceAverageEstimate
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.WeightedGeometricSummation
-import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.NormalizedStatements
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceAverageEstimate
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.WeightedGeometricSummation
+public import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.NormalizedStatements
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

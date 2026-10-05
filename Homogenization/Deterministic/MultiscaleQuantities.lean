@@ -1,9 +1,13 @@
-import Homogenization.CoarseGraining.Definitions
-import Homogenization.Geometry.TriadicCube
-import Mathlib.Analysis.Matrix.Normed
-import Mathlib.Analysis.Matrix.Order
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Topology.Algebra.InfiniteSum.Real
+module
+
+public import Homogenization.CoarseGraining.Definitions
+public import Homogenization.Geometry.TriadicCube
+public import Mathlib.Analysis.Matrix.Normed
+public import Mathlib.Analysis.Matrix.Order
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.Topology.Algebra.InfiniteSum.Real
+
+@[expose] public section
 
 open scoped BigOperators
 open scoped MatrixOrder

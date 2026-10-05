@@ -1,1 +1,3 @@
-import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.Theory
+module
+
+public import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.Theory

@@ -1,4 +1,6 @@
-import Homogenization.Probability.EfronStein.Transfer
+module
+
+public import Homogenization.Probability.EfronStein.Transfer
 
 /-!
 # The a.e.-measurable Efron–Stein transfer wrapper
@@ -22,6 +24,8 @@ The plumbing:
 The single genuinely new measure-theoretic input is `map_update_prod_pi`: updating
 one coordinate of `Measure.pi μ` by an independent `μ i`-draw preserves `Measure.pi μ`.
 -/
+
+@[expose] public section
 
 open Homogenization
 open scoped MeasureTheory ProbabilityTheory BigOperators

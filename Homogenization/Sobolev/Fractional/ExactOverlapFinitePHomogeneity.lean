@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
-import Homogenization.Besov.Duality.OverlapDefinitions
+module
+
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
+public import Homogenization.Besov.Duality.OverlapDefinitions
 
 /-!
 # Scalar homogeneity of exact overlap depth energies
@@ -7,6 +9,8 @@ import Homogenization.Besov.Duality.OverlapDefinitions
 The normalized overlap average and the resulting one-depth energy commute
 exactly with multiplication by a real scalar.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

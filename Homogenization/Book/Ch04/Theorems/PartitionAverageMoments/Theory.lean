@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.Integrability
+module
+
+public import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.Integrability
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch04.SourceLaw
-import Homogenization.Probability.Source.Coarse.RescaledLaws
+module
+
+public import Homogenization.Book.Ch04.SourceLaw
+public import Homogenization.Probability.Source.Coarse.RescaledLaws
 
 /-!
 # Dilation of exact coarse-source Chapter 4 laws
@@ -7,6 +9,8 @@ import Homogenization.Probability.Source.Coarse.RescaledLaws
 This is the thin Chapter 4 wrapper around the source-side normalized-law
 kernel.  Probability remains separate from the structural-law bundle.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

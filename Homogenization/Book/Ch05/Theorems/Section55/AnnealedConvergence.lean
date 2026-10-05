@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section55.AnnealedImprovement
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section55.AnnealedImprovement
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.DiscreteKOverlapEnergy
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.TriadicSeries
+module
+
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.DiscreteKOverlapEnergy
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.TriadicSeries
 
 /-!
 # Triadic continuous/discrete K-series bridge
@@ -7,6 +9,8 @@ import Homogenization.Sobolev.Fractional.ContinuousInterpolation.TriadicSeries
 This module compares the canonical continuous triadic K-sample energy with
 the extended internal discrete K-functional energy.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

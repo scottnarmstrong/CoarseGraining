@@ -1,5 +1,9 @@
-import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.DeterministicCoarseData
-import Homogenization.CoarseGraining.MagicIdentities.StarredSubadditivity
+module
+
+public import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.DeterministicCoarseData
+public import Homogenization.CoarseGraining.MagicIdentities.StarredSubadditivity
+
+@[expose] public section
 
 namespace Homogenization
 

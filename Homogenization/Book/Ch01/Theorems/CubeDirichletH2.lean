@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch01.Definitions
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov
-import Homogenization.Sobolev.Foundations.CubeDirichletH2
+module
+
+public import Homogenization.Book.Ch01.Definitions
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2
 
 /-!
 # Legacy Chapter 1 Dirichlet compatibility facade
@@ -12,6 +14,8 @@ Its former final fractional facade has not passed the continuum `K`/`Hˢ` gate,
 so none of these declarations is a source-facing formulation of the
 manuscript's classical-input statements.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

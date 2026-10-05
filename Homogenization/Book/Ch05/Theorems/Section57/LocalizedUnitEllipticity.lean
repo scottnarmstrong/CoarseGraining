@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section57.FiniteSupTail
-import Homogenization.Book.Ch05.Theorems.Section57.LimitNormalization
-import Homogenization.Book.Ch05.Theorems.Section52.GeometrySeries.DescendantCardinality
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.FiniteSupTail
+public import Homogenization.Book.Ch05.Theorems.Section57.LimitNormalization
+public import Homogenization.Book.Ch05.Theorems.Section52.GeometrySeries.DescendantCardinality
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

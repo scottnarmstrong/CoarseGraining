@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.WeakNormInterfaces.AECongruence
-import Homogenization.Sobolev.PotentialSolenoidalL2
+module
+
+public import Homogenization.Deterministic.WeakNormInterfaces.AECongruence
+public import Homogenization.Sobolev.PotentialSolenoidalL2
+
+@[expose] public section
 
 namespace Homogenization
 

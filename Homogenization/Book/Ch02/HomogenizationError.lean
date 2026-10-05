@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch02.DoubledResponse
-import Homogenization.Book.Ch02.MultiscaleEllipticity
-import Mathlib.Analysis.Matrix.Order
+module
+
+public import Homogenization.Book.Ch02.DoubledResponse
+public import Homogenization.Book.Ch02.MultiscaleEllipticity
+public import Mathlib.Analysis.Matrix.Order
+
+@[expose] public section
 
 open scoped BigOperators MatrixOrder
 

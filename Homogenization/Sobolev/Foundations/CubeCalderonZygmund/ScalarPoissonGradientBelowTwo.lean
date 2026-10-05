@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpBelowTwo
-import Homogenization.Sobolev.Foundations.PoincareZeroTrace
-import Homogenization.Sobolev.W1p.H10GradientUpgrade
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpBelowTwo
+public import Homogenization.Sobolev.Foundations.PoincareZeroTrace
+public import Homogenization.Sobolev.W1p.H10GradientUpgrade
 
 /-!
 # Scalar Poisson gradient estimates below the energy exponent
@@ -13,6 +15,8 @@ Calderón--Zygmund estimate at the conjugate exponent.
 Both functions in the mutual-testing step belong to `H¹₀`; no boundary
 trace of a gradient coordinate is asserted or used.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

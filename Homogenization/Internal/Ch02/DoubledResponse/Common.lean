@@ -1,13 +1,17 @@
-import Homogenization.Book.Ch02.Theorems.DoubledResponseDefinitions
-import Homogenization.Book.Ch01.Theorems.PotentialSolenoidal
-import Homogenization.CoarseGraining.BlockResponse
-import Homogenization.Internal.Ch02.Existence
-import Homogenization.Internal.Ch02.BlockMatrixField
-import Homogenization.Internal.Ch02.FirstVariation
-import Homogenization.Internal.Ch02.GradientLinearity
-import Homogenization.Internal.Ch02.GradientUniqueness
-import Homogenization.Internal.Ch02.MatrixExtraction
-import Homogenization.Internal.Ch02.Representatives
+module
+
+public import Homogenization.Book.Ch02.Theorems.DoubledResponseDefinitions
+public import Homogenization.Book.Ch01.Theorems.PotentialSolenoidal
+public import Homogenization.CoarseGraining.BlockResponse
+public import Homogenization.Internal.Ch02.Existence
+public import Homogenization.Internal.Ch02.BlockMatrixField
+public import Homogenization.Internal.Ch02.FirstVariation
+public import Homogenization.Internal.Ch02.GradientLinearity
+public import Homogenization.Internal.Ch02.GradientUniqueness
+public import Homogenization.Internal.Ch02.MatrixExtraction
+public import Homogenization.Internal.Ch02.Representatives
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

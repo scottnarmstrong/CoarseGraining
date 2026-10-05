@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseFluxResponse.PrivateLemmas
-import Homogenization.Deterministic.CoarsePoincare.Setup.UniformBounds
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.PrivateLemmas
+public import Homogenization.Deterministic.CoarsePoincare.Setup.UniformBounds
+
+@[expose] public section
 
 namespace Homogenization
 

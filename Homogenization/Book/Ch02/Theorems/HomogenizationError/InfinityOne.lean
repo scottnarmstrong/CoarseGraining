@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.Theorems.HomogenizationError.ResponseBounds
+module
+
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError.ResponseBounds
+
+@[expose] public section
 
 open scoped BigOperators MatrixOrder Matrix.Norms.Frobenius
 

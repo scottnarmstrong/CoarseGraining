@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch02.Theorems.HomogenizationError.Finite
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.Properties
-import Homogenization.Book.Ch02.Theorems.WrapAround
-import Homogenization.Ambient.ScalarMatrix
+module
+
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError.Finite
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.Properties
+public import Homogenization.Book.Ch02.Theorems.WrapAround
+public import Homogenization.Ambient.ScalarMatrix
+
+@[expose] public section
 
 open scoped BigOperators MatrixOrder Matrix.Norms.Frobenius Matrix.Norms.L2Operator
 

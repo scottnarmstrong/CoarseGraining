@@ -1,9 +1,13 @@
-import Homogenization.CoarseGraining.OriginCubeSymmetry
-import Homogenization.CoarseGraining.Translation
-import Homogenization.PDE.HarmonicCube
-import Homogenization.Sobolev.L2Ambient
-import Homogenization.Sobolev.PotentialSolenoidalCubeBridge
-import Homogenization.Sobolev.PotentialSolenoidalOriginCubeBridge
+module
+
+public import Homogenization.CoarseGraining.OriginCubeSymmetry
+public import Homogenization.CoarseGraining.Translation
+public import Homogenization.PDE.HarmonicCube
+public import Homogenization.Sobolev.L2Ambient
+public import Homogenization.Sobolev.PotentialSolenoidalCubeBridge
+public import Homogenization.Sobolev.PotentialSolenoidalOriginCubeBridge
+
+@[expose] public section
 
 namespace Homogenization
 

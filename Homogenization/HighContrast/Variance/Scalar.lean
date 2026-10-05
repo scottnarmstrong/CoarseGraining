@@ -1,7 +1,9 @@
-import Homogenization.HighContrast.Variance.RpowOpt
-import Homogenization.HighContrast.Variance.FixedPhaseUniform
-import Homogenization.HighContrast.Variance.AveragingUniform
-import Homogenization.HighContrast.Variance.Projection
+module
+
+public import Homogenization.HighContrast.Variance.RpowOpt
+public import Homogenization.HighContrast.Variance.FixedPhaseUniform
+public import Homogenization.HighContrast.Variance.AveragingUniform
+public import Homogenization.HighContrast.Variance.Projection
 
 /-!
 # Scalar block variance (`e.scalar.block.variance`)
@@ -23,6 +25,8 @@ Step (i) is the `L²`-projection split `var_le_two_integral_add_two_var`; step (
 combines the two errors at a free width `ℓ ∈ [4, 3^m]`; step (iii) is the rpow
 optimization `scalar_opt`.  The constant is fixed *before* the field quantifiers.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

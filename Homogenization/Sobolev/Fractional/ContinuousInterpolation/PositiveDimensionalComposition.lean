@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.ContinuousDiscreteKSeriesBridge
+module
+
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.ContinuousDiscreteKSeriesBridge
 
 /-!
 # Positive-dimensional composition of exact finite-energy bridges
@@ -7,6 +9,8 @@ This module composes the finite-energy arrows in the positive-dimensional,
 measurable-representative lane.  It does not introduce a source-facing full
 norm comparison.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,7 +1,9 @@
-import Homogenization.HighContrast.Corridor.FixedPhase.Resample
-import Homogenization.CoarseGraining.CoarseBounds.AeBridge
-import Homogenization.CoarseGraining.MuQuadratic
-import Homogenization.CoarseGraining.MuOperator.CoeffOperator
+module
+
+public import Homogenization.HighContrast.Corridor.FixedPhase.Resample
+public import Homogenization.CoarseGraining.CoarseBounds.AeBridge
+public import Homogenization.CoarseGraining.MuQuadratic
+public import Homogenization.CoarseGraining.MuOperator.CoeffOperator
 
 /-!
 # The per-core energy split and its pi-measurability
@@ -40,6 +42,8 @@ Main definitions/results:
   identity, valid whenever the glued field is `(1, Θ)`-elliptic on `U`
   (which holds `Π`-a.e. after truncation; supplied by the caller).
 -/
+
+@[expose] public section
 
 open Homogenization
 open scoped MeasureTheory BigOperators

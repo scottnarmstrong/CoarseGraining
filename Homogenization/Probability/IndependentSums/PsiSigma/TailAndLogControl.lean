@@ -1,6 +1,10 @@
-import Mathlib.Analysis.SpecialFunctions.Log.Monotone
-import Homogenization.Probability.IndependentSums.Triangle
-import Homogenization.Probability.IndependentSums.PsiConcentration
+module
+
+public import Mathlib.Analysis.SpecialFunctions.Log.Monotone
+public import Homogenization.Probability.IndependentSums.Triangle
+public import Homogenization.Probability.IndependentSums.PsiConcentration
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

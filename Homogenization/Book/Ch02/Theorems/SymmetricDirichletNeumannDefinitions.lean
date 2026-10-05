@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch02.Theorems.BasicVariationalIdentitiesDefinitions
-import Homogenization.Book.Ch02.Symmetric
+module
+
+public import Homogenization.Book.Ch02.Theorems.BasicVariationalIdentitiesDefinitions
+public import Homogenization.Book.Ch02.Symmetric
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

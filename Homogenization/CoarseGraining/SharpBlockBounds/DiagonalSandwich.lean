@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.SharpBlockBounds.Basic
+module
+
+public import Homogenization.CoarseGraining.SharpBlockBounds.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

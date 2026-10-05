@@ -1,6 +1,10 @@
-import Homogenization.Besov.Duality.CaccioppoliBridge
-import Homogenization.Besov.Duality.CaccioppoliVectorization
-import Homogenization.Besov.Duality.OverlapBridge
+module
+
+public import Homogenization.Besov.Duality.CaccioppoliBridge
+public import Homogenization.Besov.Duality.CaccioppoliVectorization
+public import Homogenization.Besov.Duality.OverlapBridge
+
+@[expose] public section
 
 namespace Homogenization
 

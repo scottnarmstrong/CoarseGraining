@@ -1,8 +1,12 @@
-import Homogenization.Ambient.CoefficientField
-import Homogenization.Ambient.CoefficientFieldHilbert
-import Homogenization.Sobolev.Foundations.PoincareZeroTrace
-import Homogenization.Sobolev.Foundations.Hodge
-import Homogenization.Sobolev.PotentialSolenoidalL2
+module
+
+public import Homogenization.Ambient.CoefficientField
+public import Homogenization.Ambient.CoefficientFieldHilbert
+public import Homogenization.Sobolev.Foundations.PoincareZeroTrace
+public import Homogenization.Sobolev.Foundations.Hodge
+public import Homogenization.Sobolev.PotentialSolenoidalL2
+
+@[expose] public section
 
 namespace Homogenization
 

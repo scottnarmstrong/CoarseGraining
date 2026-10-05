@@ -1,3 +1,5 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.AveragedLocal.DescendantsAverage
-import Homogenization.Deterministic.CoarsePoincareRHS.AveragedLocal.ComponentBoundsBasic
-import Homogenization.Deterministic.CoarsePoincareRHS.AveragedLocal.LocalizedEnergyForce
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.AveragedLocal.DescendantsAverage
+public import Homogenization.Deterministic.CoarsePoincareRHS.AveragedLocal.ComponentBoundsBasic
+public import Homogenization.Deterministic.CoarsePoincareRHS.AveragedLocal.LocalizedEnergyForce

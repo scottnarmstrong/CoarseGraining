@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseRHSPrep
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseRHSPrep
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,6 +1,8 @@
-import Homogenization.Probability.RegCoeffField.Differentiation
-import Homogenization.Probability.LocalEllipticitySlices
-import Homogenization.Geometry.OriginCubeBoundaryPush
+module
+
+public import Homogenization.Probability.RegCoeffField.Differentiation
+public import Homogenization.Probability.LocalEllipticitySlices
+public import Homogenization.Geometry.OriginCubeBoundaryPush
 
 /-!
 # Genuine `LocalSigmaR`-measurability of the AEE quantitative-slice event
@@ -29,6 +31,8 @@ consumer's cube.
 
 Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch04.Theorems.ConcentrationAEMeasurable
-import Homogenization.Book.Ch04.Theorems.DescendantAverages
+module
+
+public import Homogenization.Book.Ch04.Theorems.ConcentrationAEMeasurable
+public import Homogenization.Book.Ch04.Theorems.DescendantAverages
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

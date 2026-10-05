@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.EnergyRHS.BoundaryGradient
+module
+
+public import Homogenization.Book.Ch03.Theorems.EnergyRHS.BoundaryGradient
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

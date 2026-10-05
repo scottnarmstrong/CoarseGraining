@@ -1,4 +1,6 @@
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+module
+
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 /-!
 # Corridor-width optimization (rpow algebra)
@@ -21,6 +23,8 @@ The `rpow` algebra (`exists_optimal_width`) is separated from the numeric
 regime combination (`scalar_opt`) so each declaration elaborates at default
 heartbeats.  No probability appears.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,12 +1,14 @@
-import Homogenization.Sobolev.Fractional.EuclideanWspSmoothGraph
-import Homogenization.Sobolev.Fractional.EuclideanWspExactOverlapFullControl
-import Homogenization.Sobolev.Fractional.EuclideanWspLegacyCircComparison
-import Homogenization.Besov.Negative.ExactAggregationBridge
-import Homogenization.Besov.Negative.ExactFiniteBridge
-import Homogenization.Besov.Negative.ExactExponentBridge
-import Homogenization.Besov.Duality.ProjectedPairing.MainBounds
-import Homogenization.Besov.Duality.CaccioppoliVectorization
-import Homogenization.Besov.PositiveOverlapBridge
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWspSmoothGraph
+public import Homogenization.Sobolev.Fractional.EuclideanWspExactOverlapFullControl
+public import Homogenization.Sobolev.Fractional.EuclideanWspLegacyCircComparison
+public import Homogenization.Besov.Negative.ExactAggregationBridge
+public import Homogenization.Besov.Negative.ExactFiniteBridge
+public import Homogenization.Besov.Negative.ExactExponentBridge
+public import Homogenization.Besov.Duality.ProjectedPairing.MainBounds
+public import Homogenization.Besov.Duality.CaccioppoliVectorization
+public import Homogenization.Besov.PositiveOverlapBridge
 
 /-!
 # Source negative-Besov control of the smooth fractional dual
@@ -15,6 +17,8 @@ This module uses finite block projections.  In particular, the represented
 field is used only through its `L²` integrability, never through a spurious
 `Lᵖ` upgrade.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -30,7 +34,7 @@ noncomputable def cubeEuclideanNegativeWspSmoothDualBesovConstant (d : ℕ) : �
   d * (3 : ℝ≥0∞) ^ ((d : ℝ) + 1) *
     cubeEuclideanWspExactOverlapFullControlConstant d
 
-private noncomputable def cubeEuclideanNegativeWspSmoothDualBesovScalarConstant
+noncomputable def cubeEuclideanNegativeWspSmoothDualBesovScalarConstant
     (d : ℕ) : ℝ≥0∞ :=
   (3 : ℝ≥0∞) ^ ((d : ℝ) + 1) *
     cubeEuclideanWspExactOverlapFullControlConstant d

@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalWeightedTailRestrict
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalWeightedTailRestrict
+
+@[expose] public section
 
 namespace Homogenization
 

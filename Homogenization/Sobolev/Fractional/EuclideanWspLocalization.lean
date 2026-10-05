@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Fractional.EuclideanWsp
-import Homogenization.Sobolev.Fractional.AssemblyPieces
-import Homogenization.Besov.Localization
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWsp
+public import Homogenization.Sobolev.Fractional.AssemblyPieces
+public import Homogenization.Besov.Localization
+
+@[expose] public section
 
 namespace Homogenization
 

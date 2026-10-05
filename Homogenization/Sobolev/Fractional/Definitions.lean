@@ -1,6 +1,8 @@
-import Mathlib.MeasureTheory.Measure.Prod
-import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
-import Homogenization.Multiscale.NormalizedNorms
+module
+
+public import Mathlib.MeasureTheory.Measure.Prod
+public import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
+public import Homogenization.Multiscale.NormalizedNorms
 
 /-!
 # Fractional Sobolev (Gagliardo) seminorms on triadic cubes
@@ -28,6 +30,8 @@ Design notes:
   namespace are reserved for the comparison proof files.  Everything else
   goes through the exported API.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Gagliardo

@@ -1,6 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CenteredCubeHsRegularity
-import Homogenization.Sobolev.Fractional.ExactOverlapEuclideanComparison
-import Homogenization.Sobolev.Fractional.ExactOverlapEuclideanPoincare
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CenteredCubeHsRegularity
+public import Homogenization.Sobolev.Fractional.ExactOverlapEuclideanComparison
+public import Homogenization.Sobolev.Fractional.ExactOverlapEuclideanPoincare
 
 /-!
 # Exact Euclidean overlap full-norm comparison on centered cubes
@@ -25,6 +27,8 @@ public API has no integrability, measurability, or certificate binder.
   one finite constant, fixed before scale and field, controls both full-norm
   comparison directions.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

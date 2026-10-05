@@ -1,9 +1,13 @@
-import Homogenization.Geometry.CubeMetric
-import Homogenization.Sobolev.Foundations.Cutoff.DerivativeBounds
-import Homogenization.Sobolev.Foundations.Cutoff.Profile
-import Mathlib.Algebra.Order.BigOperators.Ring.Finset
-import Mathlib.Analysis.Calculus.ContDiff.Basic
-import Mathlib.Analysis.Calculus.ContDiff.Operations
+module
+
+public import Homogenization.Geometry.CubeMetric
+public import Homogenization.Sobolev.Foundations.Cutoff.DerivativeBounds
+public import Homogenization.Sobolev.Foundations.Cutoff.Profile
+public import Mathlib.Algebra.Order.BigOperators.Ring.Finset
+public import Mathlib.Analysis.Calculus.ContDiff.Basic
+public import Mathlib.Analysis.Calculus.ContDiff.Operations
+
+@[expose] public section
 
 noncomputable section
 

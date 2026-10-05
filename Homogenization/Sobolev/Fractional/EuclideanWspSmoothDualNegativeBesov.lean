@@ -1,4 +1,6 @@
-import Homogenization.Book.Ch03.ABK26.NegativeBesov
+module
+
+public import Homogenization.Book.Ch03.ABK26.NegativeBesov
 
 /-!
 # Scalar-coordinate envelopes for the source negative Besov seminorm
@@ -8,6 +10,8 @@ from the scalar circ quantities used by the projection duality argument.  It
 only records the elementary coordinate envelope: each scalar coordinate of a
 vector field has no larger running-scale block-average envelope.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

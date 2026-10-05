@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.BlockResponse.Perturbation
+module
+
+public import Homogenization.CoarseGraining.BlockResponse.Perturbation
+
+@[expose] public section
 
 namespace Homogenization
 

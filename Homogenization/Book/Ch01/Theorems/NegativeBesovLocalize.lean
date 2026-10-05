@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch01.Theorems.PositiveBesovLocalize
-import Homogenization.Besov.Duality.CaccioppoliBridge
+module
+
+public import Homogenization.Book.Ch01.Theorems.PositiveBesovLocalize
+public import Homogenization.Besov.Duality.CaccioppoliBridge
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

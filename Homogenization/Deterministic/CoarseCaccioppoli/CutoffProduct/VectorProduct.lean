@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.PositiveSeminorms
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.PositiveSeminorms
+
+@[expose] public section
 
 namespace Homogenization
 

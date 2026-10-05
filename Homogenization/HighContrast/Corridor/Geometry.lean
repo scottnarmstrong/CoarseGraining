@@ -1,4 +1,6 @@
-import Homogenization.Probability.LocalObservable
+module
+
+public import Homogenization.Probability.LocalObservable
 
 /-!
 # Corridor geometry
@@ -21,6 +23,8 @@ records:
 * the corridor-modified coefficient field `corridorField` and its algebra;
 * the independence bridge to the unit-range dependence machinery.
 -/
+
+@[expose] public section
 
 open Homogenization
 open scoped MeasureTheory

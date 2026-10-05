@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section52.PointwiseSplits
-import Homogenization.Book.Ch05.Theorems.Section52.GeometrySeries.TwoExponentBounds
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section52.PointwiseSplits
+public import Homogenization.Book.Ch05.Theorems.Section52.GeometrySeries.TwoExponentBounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

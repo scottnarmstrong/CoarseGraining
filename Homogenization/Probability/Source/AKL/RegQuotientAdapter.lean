@@ -1,5 +1,7 @@
-import Homogenization.Probability.RegCoeffField.Sigma
-import Homogenization.Probability.Source.AKL
+module
+
+public import Homogenization.Probability.RegCoeffField.Sigma
+public import Homogenization.Probability.Source.AKL
 
 /-!
 # Regular-to-AKL quotient adapter
@@ -8,6 +10,8 @@ This module supplies the one-way bridge from regular coefficient fields with a
 fixed a.e. ellipticity bound to the AKL a.e.-quotient carrier.  It deliberately
 does not choose representatives in the reverse direction.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Source.AKL
 
@@ -36,13 +40,13 @@ set_option warn.classDefReducibility false in
 def regularGlobalSigma (d : ℕ) (Θ : ℝ) : MeasurableSpace (RegularAKLCarrier d Θ) :=
   regularLocalSigma (Θ := Θ) (⟨Set.univ, MeasurableSet.univ⟩ : BorelRegion d)
 
-private theorem aestronglyMeasurable_regularField {d : ℕ} (a : RegCoeffField d) :
+theorem aestronglyMeasurable_regularField {d : ℕ} (a : RegCoeffField d) :
     AEStronglyMeasurable (fun x : Vec d => a x) volume := by
   have hmeas : @Measurable (Vec d) (Mat d) _ _ (fun x => a x) :=
     measurable_matrix_of_entries (fun i j => a.entry_measurable i j)
   exact hmeas.aestronglyMeasurable
 
-private theorem ae_elliptic_aeeqFun_mk {d : ℕ} {Θ : ℝ}
+theorem ae_elliptic_aeeqFun_mk {d : ℕ} {Θ : ℝ}
     (a : RegularAKLCarrier d Θ) :
     ∀ᵐ x ∂volume, IsEllipticMatrix 1 Θ
       ((AEEqFun.mk (fun x : Vec d => a.1 x)

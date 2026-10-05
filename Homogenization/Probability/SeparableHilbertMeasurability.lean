@@ -1,11 +1,15 @@
-import Mathlib.Analysis.InnerProductSpace.Dual
-import Mathlib.MeasureTheory.Constructions.BorelSpace.ContinuousLinearMap
-import Mathlib.MeasureTheory.Constructions.BorelSpace.Metrizable
-import Mathlib.MeasureTheory.Constructions.BorelSpace.Order
-import Mathlib.MeasureTheory.Constructions.Polish.Basic
-import Mathlib.MeasureTheory.Function.SpecialFunctions.Basic
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Topology.MetricSpace.Pseudo.Defs
+module
+
+public import Mathlib.Analysis.InnerProductSpace.Dual
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.ContinuousLinearMap
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.Metrizable
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.Order
+public import Mathlib.MeasureTheory.Constructions.Polish.Basic
+public import Mathlib.MeasureTheory.Function.SpecialFunctions.Basic
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.Topology.MetricSpace.Pseudo.Defs
+
+@[expose] public section
 
 namespace Homogenization
 

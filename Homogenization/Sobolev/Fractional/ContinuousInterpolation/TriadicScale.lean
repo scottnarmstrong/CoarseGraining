@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.ContinuousKFunctional
+module
+
+public import Homogenization.Sobolev.Fractional.ContinuousKFunctional
 
 /-!
 # Triadic scale calculus for the continuous `K`-functional
@@ -9,6 +11,8 @@ samples.  The intervals use `(t_{j+1}, t_j] ∩ (0,1)`: this makes them disjoint
 and removes the endpoint at which the open-scale representative is totalized
 to zero.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

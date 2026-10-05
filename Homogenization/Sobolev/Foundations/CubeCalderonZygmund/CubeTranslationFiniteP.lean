@@ -1,7 +1,11 @@
-import Homogenization.PDE.DirichletRHS
-import Homogenization.PDE.NeumannRHS
-import Homogenization.Sobolev.Foundations.CoerciveH1Translation
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.CubeTranslationTransport
+module
+
+public import Homogenization.PDE.DirichletRHS
+public import Homogenization.PDE.NeumannRHS
+public import Homogenization.Sobolev.Foundations.CoerciveH1Translation
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.CubeTranslationTransport
+
+@[expose] public section
 
 namespace Homogenization
 

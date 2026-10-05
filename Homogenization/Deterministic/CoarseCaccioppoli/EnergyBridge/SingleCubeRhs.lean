@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.ExactRhs
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.ExactRhs
+
+@[expose] public section
 
 namespace Homogenization
 

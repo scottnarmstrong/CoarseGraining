@@ -1,7 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeakHessianFiniteP
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.HessianGradientH1
-import Homogenization.Sobolev.W1p.H1GradientUpgrade
-import Homogenization.Sobolev.W1p.Normalized
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeakHessianFiniteP
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.HessianGradientH1
+public import Homogenization.Sobolev.W1p.H1GradientUpgrade
+public import Homogenization.Sobolev.W1p.Normalized
 
 /-!
 # Vector-valued `W^{1,p}` functions on cubes
@@ -11,6 +13,8 @@ This file packages a vector field coordinatewise as genuine scalar
 stored weak gradients.  All `L^p` statements use normalized cube measure, but
 the carrier itself contains no cube-scale-dependent quantity.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -180,7 +184,7 @@ noncomputable def toCubeEuclideanLpField
     F.toCubeEuclideanLpField.toField = F.toField :=
   rfl
 
-private theorem weakHessianRowGradMemLpOn [NeZero d]
+theorem weakHessianRowGradMemLpOn [NeZero d]
     {u : H1Function (openCubeSet Q)}
     (H : HasWeakHessianOn (openCubeSet Q) u)
     (hrows : ∀ i : Fin d,

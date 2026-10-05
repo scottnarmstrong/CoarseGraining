@@ -1,8 +1,12 @@
-import Homogenization.Sobolev.CubeEmbedding.Extension
-import Homogenization.Sobolev.CubeEmbedding.GagliardoNirenbergSobolev
-import Homogenization.Sobolev.Foundations.AxisCube
-import Mathlib.MeasureTheory.Function.ConvergenceInMeasure
-import Mathlib.MeasureTheory.Function.LpSpace.Complete
+module
+
+public import Homogenization.Sobolev.CubeEmbedding.Extension
+public import Homogenization.Sobolev.CubeEmbedding.GagliardoNirenbergSobolev
+public import Homogenization.Sobolev.Foundations.AxisCube
+public import Mathlib.MeasureTheory.Function.ConvergenceInMeasure
+public import Mathlib.MeasureTheory.Function.LpSpace.Complete
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,10 @@
-import Mathlib
-import Homogenization.Examples.RandomCheckerboard.CarrierLaw
-import Audit.RandomCheckerboard.SolutionBasic
+module
+
+public import Mathlib
+public import Homogenization.Examples.RandomCheckerboard.CarrierLaw
+public import Audit.RandomCheckerboard.SolutionBasic
+
+@[expose] public section
 
 attribute [-instance] Homogenization.instMeasurableSpaceVec
 attribute [-instance] Homogenization.instMeasurableSpaceMat

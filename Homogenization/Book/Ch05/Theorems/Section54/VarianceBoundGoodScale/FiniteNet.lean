@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ScalarReduction
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ScalarReduction
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

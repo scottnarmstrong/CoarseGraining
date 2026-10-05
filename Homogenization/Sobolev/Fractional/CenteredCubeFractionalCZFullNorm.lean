@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.CenteredCubeFractionalCZ
+module
+
+public import Homogenization.Sobolev.Fractional.CenteredCubeFractionalCZ
 
 /-!
 # Full-norm fractional Calderón--Zygmund estimate on centered cubes
@@ -8,6 +10,8 @@ combine into the source-facing inhomogeneous fractional-Sobolev estimate.
 The combination is carried out at the powered full norm, so its constant is
 uniform in the cube, fractional order, and coefficient scale.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

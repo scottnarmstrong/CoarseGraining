@@ -1,9 +1,13 @@
-import Homogenization.Geometry.ConvexDomain
-import Homogenization.Geometry.CubeMetric
-import Homogenization.Multiscale.CubeAverage
-import Homogenization.Sobolev.H1.Algebra.H10Function
-import Homogenization.Sobolev.Foundations.MeanZero
-import Homogenization.Sobolev.PotentialSolenoidal
+module
+
+public import Homogenization.Geometry.ConvexDomain
+public import Homogenization.Geometry.CubeMetric
+public import Homogenization.Multiscale.CubeAverage
+public import Homogenization.Sobolev.H1.Algebra.H10Function
+public import Homogenization.Sobolev.Foundations.MeanZero
+public import Homogenization.Sobolev.PotentialSolenoidal
+
+@[expose] public section
 
 namespace Homogenization
 

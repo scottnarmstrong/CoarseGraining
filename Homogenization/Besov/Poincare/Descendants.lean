@@ -1,4 +1,8 @@
-import Homogenization.Besov.Poincare.Projection
+module
+
+public import Homogenization.Besov.Poincare.Projection
+
+@[expose] public section
 
 namespace Homogenization
 

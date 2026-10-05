@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.Setup.CoefficientBounds
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.Setup.SolutionInputs
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.DescendantSummation
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.Setup.CoefficientBounds
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.Setup.SolutionInputs
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.DescendantSummation
+
+@[expose] public section
 
 namespace Homogenization
 

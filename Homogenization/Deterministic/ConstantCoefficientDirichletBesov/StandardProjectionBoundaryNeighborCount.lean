@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionBoundaryNeighbor
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionBoundaryNeighbor
+
+@[expose] public section
 
 namespace Homogenization
 

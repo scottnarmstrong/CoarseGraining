@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch02.Theorems.MagicIdentitiesDefinitions
-import Homogenization.Internal.Ch02.MatrixExtraction
-import Homogenization.Internal.Ch02.Representatives
-import Homogenization.CoarseGraining.AdjointSymmetry.SigmaAdjoint
-import Homogenization.CoarseGraining.MagicIdentities.Basics
+module
+
+public import Homogenization.Book.Ch02.Theorems.MagicIdentitiesDefinitions
+public import Homogenization.Internal.Ch02.MatrixExtraction
+public import Homogenization.Internal.Ch02.Representatives
+public import Homogenization.CoarseGraining.AdjointSymmetry.SigmaAdjoint
+public import Homogenization.CoarseGraining.MagicIdentities.Basics
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

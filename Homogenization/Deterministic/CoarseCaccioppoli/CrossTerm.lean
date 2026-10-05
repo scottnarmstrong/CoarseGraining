@@ -1,1 +1,3 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.CrossTerm.Localized
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.CrossTerm.Localized

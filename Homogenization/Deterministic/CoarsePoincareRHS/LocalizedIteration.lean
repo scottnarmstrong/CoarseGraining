@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.AveragedLocal
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.AveragedLocal
+
+@[expose] public section
 
 namespace Homogenization
 

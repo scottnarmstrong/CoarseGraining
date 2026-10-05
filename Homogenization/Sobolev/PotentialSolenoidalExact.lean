@@ -1,6 +1,8 @@
-import Homogenization.Geometry.BoundedConvexDomain
-import Homogenization.Sobolev.Foundations.CoerciveH1
-import Homogenization.Sobolev.Foundations.H10Graph
+module
+
+public import Homogenization.Geometry.BoundedConvexDomain
+public import Homogenization.Sobolev.Foundations.CoerciveH1
+public import Homogenization.Sobolev.Foundations.H10Graph
 
 /-!
 # Exact potential and solenoidal spaces
@@ -16,6 +18,8 @@ The two potential spaces are literal ranges of the typed Hilbert `L²` gradient
 maps.  They are deliberately not closed: closedness is a separate analytic
 theorem, not part of these definitions.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

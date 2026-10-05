@@ -1,4 +1,8 @@
-import Homogenization.Probability.IndependentSums.PsiSigma.Parameters
+module
+
+public import Homogenization.Probability.IndependentSums.PsiSigma.Parameters
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

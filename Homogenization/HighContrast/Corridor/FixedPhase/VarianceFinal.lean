@@ -1,7 +1,9 @@
-import Homogenization.HighContrast.Corridor.FixedPhase.Variance
-import Homogenization.HighContrast.Corridor.FixedPhase.Recombination
-import Homogenization.CoarseGraining.CoarseBounds.AeBridge
-import Homogenization.HighContrast.Corridor.FixedPhase.CarrierObservable
+module
+
+public import Homogenization.HighContrast.Corridor.FixedPhase.Variance
+public import Homogenization.HighContrast.Corridor.FixedPhase.Recombination
+public import Homogenization.CoarseGraining.CoarseBounds.AeBridge
+public import Homogenization.HighContrast.Corridor.FixedPhase.CarrierObservable
 
 /-!
 # The fixed-phase variance (Proposition 4.3), final assembly
@@ -32,6 +34,8 @@ The chain is `efronStein_phaseObservable` → integrable per-core terms (bounded
 a.s. by the uniform `B`-term + AESM) → sum/integral exchange (`integral_prod`,
 `integral_finset_sum`) → `∫∫ Σ ≤ B`-term.
 -/
+
+@[expose] public section
 
 open Homogenization MeasureTheory ProbabilityTheory
 open scoped MeasureTheory ProbabilityTheory BigOperators

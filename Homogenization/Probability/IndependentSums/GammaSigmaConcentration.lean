@@ -1,3 +1,5 @@
-import Homogenization.Probability.IndependentSums.GammaSigmaConcentration.Preliminaries
-import Homogenization.Probability.IndependentSums.GammaSigmaConcentration.SmallRegime
-import Homogenization.Probability.IndependentSums.GammaSigmaConcentration.LargeRegime
+module
+
+public import Homogenization.Probability.IndependentSums.GammaSigmaConcentration.Preliminaries
+public import Homogenization.Probability.IndependentSums.GammaSigmaConcentration.SmallRegime
+public import Homogenization.Probability.IndependentSums.GammaSigmaConcentration.LargeRegime

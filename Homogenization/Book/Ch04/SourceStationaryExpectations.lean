@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch04.SourceLaw
-import Homogenization.CoarseGraining.Translation
-import Homogenization.Probability.RandomField
+module
+
+public import Homogenization.Book.Ch04.SourceLaw
+public import Homogenization.CoarseGraining.Translation
+public import Homogenization.Probability.RandomField
 
 /-!
 # Stationary expectations for the exact coarse source
@@ -9,6 +11,8 @@ This module transports deterministic set-translation covariance to the exact
 coarse-source carrier, and then applies source stationarity to obtain equality
 of laws and Bochner integrals.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

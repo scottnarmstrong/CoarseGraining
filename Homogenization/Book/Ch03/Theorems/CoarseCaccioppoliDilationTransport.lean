@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoli.Interface
-import Homogenization.Book.Ch02.Theorems.Dilation
+module
+
+public import Homogenization.Book.Ch03.Theorems.CoarseCaccioppoli.Interface
+public import Homogenization.Book.Ch02.Theorems.Dilation
+
+@[expose] public section
 
 open scoped Pointwise ENNReal
 

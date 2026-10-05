@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch04.SourceObservable
-import Homogenization.Probability.RandomField
+module
+
+public import Homogenization.Book.Ch04.SourceObservable
+public import Homogenization.Probability.RandomField
 
 /-!
 # Source-local coefficient observables
@@ -7,6 +9,8 @@ import Homogenization.Probability.RandomField
 This module provides the exact coarse-source local version of the smooth
 coefficient-field test, independently of the regular-carrier observable lane.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

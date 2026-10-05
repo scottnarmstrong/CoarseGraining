@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.Definitions
+module
+
+public import Homogenization.Sobolev.Fractional.Definitions
 
 /-!
 # Additional API for the fractional Sobolev seminorm
@@ -16,6 +18,8 @@ comparison proofs themselves:
 
 A.e.-congruence lemmas live in `CongruenceAE.lean`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Gagliardo

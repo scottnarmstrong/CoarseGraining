@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Fractional.EuclideanWsp
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.UnitCubeGeometry
-import Homogenization.Sobolev.FiniteLpCoordinate
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWsp
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.UnitCubeGeometry
+public import Homogenization.Sobolev.FiniteLpCoordinate
 
 /-!
 # Finite-`p` Euclidean-to-coordinate Gagliardo bridge
@@ -11,6 +13,8 @@ kernel by the project's ambient distance, and then compare that Hilbert-vector
 kernel with its scalar coordinates.  Every displayed constant is independent
 of the fractional order `s ∈ (0,1)`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

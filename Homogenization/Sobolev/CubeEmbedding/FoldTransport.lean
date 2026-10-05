@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.CubeEmbedding.FaceReflectionMain
-import Homogenization.Sobolev.CubeEmbedding.Fold
+module
+
+public import Homogenization.Sobolev.CubeEmbedding.FaceReflectionMain
+public import Homogenization.Sobolev.CubeEmbedding.Fold
+
+@[expose] public section
 
 namespace Homogenization
 

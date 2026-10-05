@@ -1,9 +1,11 @@
-import Homogenization.Besov.Duality.ProjectionLimit
-import Homogenization.Book.Ch02.MultiscaleEllipticity
-import Homogenization.Geometry.BoundedConvexDomain
-import Homogenization.Multiscale.NormalizedDomainCube
-import Homogenization.Sobolev.W1p.BasicLemmas
-import Homogenization.Sobolev.W1p.Normalized
+module
+
+public import Homogenization.Besov.Duality.ProjectionLimit
+public import Homogenization.Book.Ch02.MultiscaleEllipticity
+public import Homogenization.Geometry.BoundedConvexDomain
+public import Homogenization.Multiscale.NormalizedDomainCube
+public import Homogenization.Sobolev.W1p.BasicLemmas
+public import Homogenization.Sobolev.W1p.Normalized
 
 /-!
 # Normalized `W^{1,2}` data on triadic cubes
@@ -12,6 +14,8 @@ This small bridge keeps the source-facing open-cube Sobolev carrier while
 identifying its normalized volume with the cube normalization used by the
 disjoint Besov hierarchy.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

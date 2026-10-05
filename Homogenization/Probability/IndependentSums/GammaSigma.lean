@@ -1,2 +1,4 @@
-import Homogenization.Probability.IndependentSums.GammaSigma.Basic
-import Homogenization.Probability.IndependentSums.GammaSigma.Operations
+module
+
+public import Homogenization.Probability.IndependentSums.GammaSigma.Basic
+public import Homogenization.Probability.IndependentSums.GammaSigma.Operations

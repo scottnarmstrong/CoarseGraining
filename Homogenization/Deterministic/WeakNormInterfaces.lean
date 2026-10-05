@@ -1,2 +1,4 @@
-import Homogenization.Deterministic.WeakNormInterfaces.Definitions
-import Homogenization.Deterministic.WeakNormInterfaces.Bounds
+module
+
+public import Homogenization.Deterministic.WeakNormInterfaces.Definitions
+public import Homogenization.Deterministic.WeakNormInterfaces.Bounds

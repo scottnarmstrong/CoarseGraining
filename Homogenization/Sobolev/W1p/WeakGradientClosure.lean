@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.W1p.BasicLemmas
-import Homogenization.Sobolev.FiniteLpExponent
+module
+
+public import Homogenization.Sobolev.W1p.BasicLemmas
+public import Homogenization.Sobolev.FiniteLpExponent
 
 /-!
 # Finite-exponent closure of weak gradients
@@ -9,6 +11,8 @@ coordinate weak-gradient representation.  It is deliberately independent of
 any zero-trace approximation: that additional closure property is supplied by
 the next layer.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityExponentLoss
-import Homogenization.Besov.Duality.GlobalComparison
+module
+
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityExponentLoss
+public import Homogenization.Besov.Duality.GlobalComparison
+
+@[expose] public section
 
 namespace Homogenization
 

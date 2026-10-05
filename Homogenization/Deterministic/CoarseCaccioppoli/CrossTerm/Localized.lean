@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.CrossTerm.ExplicitHeight
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.CrossTerm.ExplicitHeight
+
+@[expose] public section
 
 namespace Homogenization
 

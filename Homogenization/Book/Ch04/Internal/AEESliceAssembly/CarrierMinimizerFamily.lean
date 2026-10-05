@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch04.Internal.AEESliceAssembly.CarrierMuFamily
+module
+
+public import Homogenization.Book.Ch04.Internal.AEESliceAssembly.CarrierMuFamily
+
+@[expose] public section
 
 namespace Homogenization
 

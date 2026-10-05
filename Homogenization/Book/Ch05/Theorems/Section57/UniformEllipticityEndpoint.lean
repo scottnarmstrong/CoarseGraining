@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section57.ProbeMax
-import Homogenization.Book.Ch05.Theorems.Section57.QuenchedGammaEllipticity
-import Homogenization.Book.Ch05.Theorems.Section57.LocalizedUnitEllipticity
-import Homogenization.Book.Ch04.Theorems.ConcentrationAEMeasurable
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.ProbeMax
+public import Homogenization.Book.Ch05.Theorems.Section57.QuenchedGammaEllipticity
+public import Homogenization.Book.Ch05.Theorems.Section57.LocalizedUnitEllipticity
+public import Homogenization.Book.Ch04.Theorems.ConcentrationAEMeasurable
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

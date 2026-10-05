@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicCanonicalGradient
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.Setup.CoefficientBounds
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.CutoffSizes
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicCanonicalGradient
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicFinal.Setup.CoefficientBounds
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.CutoffSizes
+
+@[expose] public section
 
 namespace Homogenization
 

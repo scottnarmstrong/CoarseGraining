@@ -1,4 +1,6 @@
-import Mathlib
+module
+
+public import Mathlib
 
 /-!
 # Quenched homogenization above a random minimal scale
@@ -28,6 +30,8 @@ Only definitions needed to read that assertion occur below.  In particular:
 
 The sole intentional `sorry` is the proof of the final theorem.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace StatementAudit

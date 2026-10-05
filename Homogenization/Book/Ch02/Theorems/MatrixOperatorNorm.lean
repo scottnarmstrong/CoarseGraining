@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch02.MultiscaleEllipticity
-import Homogenization.CoarseGraining.Subadditivity
-import Mathlib.Analysis.CStarAlgebra.Matrix
-import Mathlib.LinearAlgebra.Matrix.Reindex
-import Mathlib.LinearAlgebra.Matrix.PosDef
+module
+
+public import Homogenization.Book.Ch02.MultiscaleEllipticity
+public import Homogenization.CoarseGraining.Subadditivity
+public import Mathlib.Analysis.CStarAlgebra.Matrix
+public import Mathlib.LinearAlgebra.Matrix.Reindex
+public import Mathlib.LinearAlgebra.Matrix.PosDef
+
+@[expose] public section
 
 open scoped BigOperators Matrix.Norms.L2Operator
 

@@ -1,12 +1,16 @@
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAveragePackaging
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAverageEstimate
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAverageGeometric
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceAveragePackaging
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceBudgetAlgebra
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceAverageEstimate
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.WeightedGeometricSummation
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.FluctuationSumEstimate
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.FinalAssembly
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAveragePackaging
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAverageEstimate
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.MatrixAverageGeometric
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceAveragePackaging
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceBudgetAlgebra
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.TraceAverageEstimate
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.WeightedGeometricSummation
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.FluctuationSumEstimate
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAssembly.FinalAssembly
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

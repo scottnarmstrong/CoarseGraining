@@ -1,5 +1,9 @@
-import Homogenization.Geometry.TriadicCube
-import Homogenization.Geometry.Translation
+module
+
+public import Homogenization.Geometry.TriadicCube
+public import Homogenization.Geometry.Translation
+
+@[expose] public section
 
 open scoped Pointwise
 

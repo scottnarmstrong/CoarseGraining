@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch04.SourceColorClassIndependence
-import Homogenization.Book.Ch04.SourceMeasurability
-import Homogenization.Probability.IndependentSums.Rosenthal.Corollaries
+module
+
+public import Homogenization.Book.Ch04.SourceColorClassIndependence
+public import Homogenization.Book.Ch04.SourceMeasurability
+public import Homogenization.Probability.IndependentSums.Rosenthal.Corollaries
 
 /-!
 # Real-moment bounds on one source scale-color class
@@ -9,6 +11,8 @@ This file assembles source locality and source P2 into the independent-sum
 input required by the real-exponent Rosenthal corollary, for one scale-color
 class of descendants.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

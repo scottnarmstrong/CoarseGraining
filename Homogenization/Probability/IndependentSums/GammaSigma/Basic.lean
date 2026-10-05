@@ -1,8 +1,12 @@
-import Mathlib.Analysis.Complex.ExponentialBounds
-import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
-import Mathlib.Analysis.SpecialFunctions.Pow.Integral
-import Mathlib.MeasureTheory.Integral.Gamma
-import Homogenization.Probability.IndependentSums.Triangle
+module
+
+public import Mathlib.Analysis.Complex.ExponentialBounds
+public import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
+public import Mathlib.Analysis.SpecialFunctions.Pow.Integral
+public import Mathlib.MeasureTheory.Integral.Gamma
+public import Homogenization.Probability.IndependentSums.Triangle
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

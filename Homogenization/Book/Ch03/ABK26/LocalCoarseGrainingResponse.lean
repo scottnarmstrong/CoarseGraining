@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch02.ParentTruncatedHomogenizationError
-import Homogenization.Book.Ch02.Theorems.HomogenizationError.AEEq
-import Homogenization.Book.Ch02.Theorems.HomogenizationError.Finite
+module
+
+public import Homogenization.Book.Ch02.ParentTruncatedHomogenizationError
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError.AEEq
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError.Finite
+
+@[expose] public section
 
 open scoped BigOperators ENNReal MatrixOrder Matrix.Norms.Frobenius
 

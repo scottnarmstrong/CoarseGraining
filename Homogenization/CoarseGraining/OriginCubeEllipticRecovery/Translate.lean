@@ -1,4 +1,6 @@
-import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.QuadraticMu
+module
+
+public import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.QuadraticMu
 
 /-!
 # Origin-cube elliptic recovery -- translated and descendant variants
@@ -7,6 +9,8 @@ Quadraticity / coarse-block-matrix existence on translateSet variants of the
 centered open cube and on openCubeSet / cubeSet of an arbitrary TriadicCube,
 produced by transporting recovery data through translations.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

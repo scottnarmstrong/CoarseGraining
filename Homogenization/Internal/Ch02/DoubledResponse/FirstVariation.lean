@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.DoubledResponse.MaximizerAlgebra
+module
+
+public import Homogenization.Internal.Ch02.DoubledResponse.MaximizerAlgebra
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

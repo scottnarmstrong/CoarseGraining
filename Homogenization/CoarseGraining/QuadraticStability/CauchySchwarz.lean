@@ -1,6 +1,10 @@
-import Mathlib.Algebra.QuadraticDiscriminant
-import Mathlib.Analysis.SpecialFunctions.Sqrt
-import Homogenization.CoarseGraining.SharpBlockBounds.DiagonalSandwich
+module
+
+public import Mathlib.Algebra.QuadraticDiscriminant
+public import Mathlib.Analysis.SpecialFunctions.Sqrt
+public import Homogenization.CoarseGraining.SharpBlockBounds.DiagonalSandwich
+
+@[expose] public section
 
 namespace Homogenization
 

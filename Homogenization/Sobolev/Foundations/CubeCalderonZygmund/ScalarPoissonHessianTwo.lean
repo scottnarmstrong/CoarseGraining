@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.EuclideanNormalized
-import Mathlib.MeasureTheory.SpecificCodomains.WithLp
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.EuclideanNormalized
+public import Mathlib.MeasureTheory.SpecificCodomains.WithLp
 
 /-!
 # Scalar Poisson Hessian estimate at the energy exponent
@@ -8,6 +10,8 @@ The centered-cube Dirichlet `H²` endpoint supplies a weak Hessian with a
 dimension-only normalized Frobenius estimate.  This file restates that endpoint
 for the project's Hilbert matrix realization.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

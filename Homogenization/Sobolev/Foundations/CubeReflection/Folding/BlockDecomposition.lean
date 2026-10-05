@@ -1,7 +1,11 @@
-import Homogenization.Geometry.CubeMeasure
-import Homogenization.Geometry.TriadicCubeTranslation
-import Homogenization.Sobolev.Foundations.CubeReflection.Reflections
-import Homogenization.Sobolev.Foundations.CubeReflection.Folding.Geometry
+module
+
+public import Homogenization.Geometry.CubeMeasure
+public import Homogenization.Geometry.TriadicCubeTranslation
+public import Homogenization.Sobolev.Foundations.CubeReflection.Reflections
+public import Homogenization.Sobolev.Foundations.CubeReflection.Folding.Geometry
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch02.Theorems.FirstVariationDefinitions
-import Homogenization.Internal.Ch02.Existence
+module
+
+public import Homogenization.Book.Ch02.Theorems.FirstVariationDefinitions
+public import Homogenization.Internal.Ch02.Existence
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

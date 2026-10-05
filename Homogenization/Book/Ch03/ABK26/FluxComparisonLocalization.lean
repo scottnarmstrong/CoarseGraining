@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch03.ABK26.FluxComparisonBridges
-import Homogenization.Sobolev.Fractional.EuclideanWspNegativeLocalization
+module
+
+public import Homogenization.Book.Ch03.ABK26.FluxComparisonBridges
+public import Homogenization.Sobolev.Fractional.EuclideanWspNegativeLocalization
 
 /-!
 # Root-to-descendant localization for the Chapter 3 flux defect
@@ -7,6 +9,8 @@ import Homogenization.Sobolev.Fractional.EuclideanWspNegativeLocalization
 This is the exact localization step which identifies the generic smooth-dual
 negative-norm descendant average with the source-facing flux-defect average.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

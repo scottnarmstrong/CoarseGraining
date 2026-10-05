@@ -1,9 +1,11 @@
-import Homogenization.Probability.Source.Coarse.Semantics
-import Homogenization.Probability.Source.Coarse.RegIntegralAdapter
-import Homogenization.Probability.Source.Coarse.Laws
-import Homogenization.Probability.RegCoeffField.Laws
-import Homogenization.Examples.RandomCheckerboard.SourceLaw
-import Homogenization.Examples.RandomCheckerboard.AKLLaw
+module
+
+public import Homogenization.Probability.Source.Coarse.Semantics
+public import Homogenization.Probability.Source.Coarse.RegIntegralAdapter
+public import Homogenization.Probability.Source.Coarse.Laws
+public import Homogenization.Probability.RegCoeffField.Laws
+public import Homogenization.Examples.RandomCheckerboard.SourceLaw
+public import Homogenization.Examples.RandomCheckerboard.AKLLaw
 
 /-!
 # Semantic regressions for source measurability and locality
@@ -14,6 +16,8 @@ there is no canonical measurable `Measure.map` transport from the coarse
 integral sigma algebra to the pointwise regular carrier.  Nor is there a
 generic P2 implication between the two lanes: their separation metrics differ.
 -/
+
+@[expose] public section
 
 namespace Audit.MeasurabilityLocality.SemanticRegression
 
@@ -298,13 +302,13 @@ theorem akl_supDist_le_euclideanDist {d : ℕ} (x y : Vec d) :
     Source.AKL.supDist x y ≤ euclideanDist x y :=
   ambient_supNorm_le_euclideanNorm (x - y)
 
-private def metricPointZero : Vec 2 := fun _ => 0
-private def metricPointFourFifths : Vec 2 := ![3 / 5, 4 / 5]
+def metricPointZero : Vec 2 := fun _ => 0
+def metricPointFourFifths : Vec 2 := ![3 / 5, 4 / 5]
 
-private def metricRegionZero : Source.AKL.BorelRegion 2 :=
+def metricRegionZero : Source.AKL.BorelRegion 2 :=
   ⟨{metricPointZero}, MeasurableSet.singleton metricPointZero⟩
 
-private def metricRegionFourFifths : Source.AKL.BorelRegion 2 :=
+def metricRegionFourFifths : Source.AKL.BorelRegion 2 :=
   ⟨{metricPointFourFifths}, MeasurableSet.singleton metricPointFourFifths⟩
 
 /-- In dimension two, Euclidean unit separation does not imply AKL sup-metric

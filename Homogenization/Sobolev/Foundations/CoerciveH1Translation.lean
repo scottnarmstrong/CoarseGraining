@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CoerciveH1
-import Homogenization.Sobolev.H1.Translation
+module
+
+public import Homogenization.Sobolev.Foundations.CoerciveH1
+public import Homogenization.Sobolev.H1.Translation
+
+@[expose] public section
 
 namespace Homogenization
 

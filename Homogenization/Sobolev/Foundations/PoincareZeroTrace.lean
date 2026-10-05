@@ -1,7 +1,11 @@
-import Homogenization.Sobolev.Foundations.CoerciveH10
-import Homogenization.Sobolev.Foundations.PoincareW1p
-import Homogenization.Sobolev.W1p.Definitions
-import Homogenization.Geometry.ConvexDomain
+module
+
+public import Homogenization.Sobolev.Foundations.CoerciveH10
+public import Homogenization.Sobolev.Foundations.PoincareW1p
+public import Homogenization.Sobolev.W1p.Definitions
+public import Homogenization.Geometry.ConvexDomain
+
+@[expose] public section
 
 namespace Homogenization
 

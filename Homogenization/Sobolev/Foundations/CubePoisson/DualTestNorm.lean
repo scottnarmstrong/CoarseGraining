@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubePoisson.BesovEstimate
+module
+
+public import Homogenization.Sobolev.Foundations.CubePoisson.BesovEstimate
+
+@[expose] public section
 
 namespace Homogenization
 

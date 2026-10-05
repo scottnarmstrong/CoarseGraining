@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.Constants
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.Constants
+
+@[expose] public section
 
 namespace Homogenization
 

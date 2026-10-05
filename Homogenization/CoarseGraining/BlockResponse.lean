@@ -1,3 +1,5 @@
-import Homogenization.CoarseGraining.BlockResponse.Foundations
-import Homogenization.CoarseGraining.BlockResponse.Perturbation
-import Homogenization.CoarseGraining.BlockResponse.Equalities
+module
+
+public import Homogenization.CoarseGraining.BlockResponse.Foundations
+public import Homogenization.CoarseGraining.BlockResponse.Perturbation
+public import Homogenization.CoarseGraining.BlockResponse.Equalities

@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastJBound.Estimate
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastJBound.Estimate
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

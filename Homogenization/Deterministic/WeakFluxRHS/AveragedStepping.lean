@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.AveragedLocal.DescendantsAverage
-import Homogenization.Deterministic.WeakFluxRHS.FullStepping
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.AveragedLocal.DescendantsAverage
+public import Homogenization.Deterministic.WeakFluxRHS.FullStepping
+
+@[expose] public section
 
 namespace Homogenization
 

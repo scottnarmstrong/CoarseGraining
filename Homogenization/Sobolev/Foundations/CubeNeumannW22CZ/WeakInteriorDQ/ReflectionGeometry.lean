@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeReflection.Folding.Geometry
-import Homogenization.Sobolev.Foundations.Cutoff.Cube
-import Mathlib.MeasureTheory.Constructions.Pi
+module
+
+public import Homogenization.Sobolev.Foundations.CubeReflection.Folding.Geometry
+public import Homogenization.Sobolev.Foundations.Cutoff.Cube
+public import Mathlib.MeasureTheory.Constructions.Pi
+
+@[expose] public section
 
 namespace Homogenization
 

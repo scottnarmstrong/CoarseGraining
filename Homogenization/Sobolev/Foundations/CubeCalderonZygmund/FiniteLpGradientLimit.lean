@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpSolutionSequence
-import Mathlib.MeasureTheory.Function.LpSpace.Complete
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpSolutionSequence
+public import Mathlib.MeasureTheory.Function.LpSpace.Complete
 
 /-!
 # Internal gradient limits for finite-`L^p` cube data
@@ -8,6 +10,8 @@ This module only completes the canonical finite-data gradients.  In
 particular, it deliberately contains neither a limiting scalar solution nor a
 zero-trace assertion.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,7 +1,9 @@
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.UnitCubeGeometry
-import Homogenization.Sobolev.Fractional.EuclideanH2
-import Homogenization.Sobolev.Fractional.DefinitionsAPI
-import Homogenization.Sobolev.Fractional.AssemblyPieces
+module
+
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.UnitCubeGeometry
+public import Homogenization.Sobolev.Fractional.EuclideanH2
+public import Homogenization.Sobolev.Fractional.DefinitionsAPI
+public import Homogenization.Sobolev.Fractional.AssemblyPieces
 
 /-!
 # Euclidean-to-coordinate Gagliardo bridge
@@ -10,6 +12,8 @@ This module fixes the exact product measure and the finite-coordinate
 numerator decomposition needed to compare the Euclidean `H^s` energy with
 the scalar ambient-distance Gagliardo energies.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

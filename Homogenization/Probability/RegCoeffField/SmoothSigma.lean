@@ -1,4 +1,6 @@
-import Homogenization.Probability.RegCoeffField.Sigma
+module
+
+public import Homogenization.Probability.RegCoeffField.Sigma
 
 /-!
 # Smooth integral sigma algebras on regular coefficient fields
@@ -8,6 +10,8 @@ by source-facing integral-local probability APIs.  It intentionally installs no
 ambient measurable-space instance and remains separate from pointwise and
 restriction-local constructions.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

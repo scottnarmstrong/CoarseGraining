@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessUpper
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section52.PositiveExcessUpper
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

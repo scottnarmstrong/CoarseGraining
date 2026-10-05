@@ -1,7 +1,9 @@
-import Homogenization.Book.Ch01.Definitions
-import Homogenization.Sobolev.Fractional.BesovLeGagliardo
-import Homogenization.Sobolev.Fractional.GagliardoLeBesov
-import Homogenization.Sobolev.Fractional.CongruenceAE
+module
+
+public import Homogenization.Book.Ch01.Definitions
+public import Homogenization.Sobolev.Fractional.BesovLeGagliardo
+public import Homogenization.Sobolev.Fractional.GagliardoLeBesov
+public import Homogenization.Sobolev.Fractional.CongruenceAE
 
 /-!
 # Legacy fractional Sobolev versus Besov seminorms (CG Lemma 1.3)
@@ -36,6 +38,8 @@ statement is a.e.-invariant, and a measurable representative is transported
 through `CongruenceAE`).  The `BddAbove` side condition of the infinite-scale
 Besov seminorm is *derived*, not assumed.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

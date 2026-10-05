@@ -1,7 +1,9 @@
-import Homogenization.Geometry.BoundedConvexDomain
-import Homogenization.Sobolev.SmoothCompactSupport
-import Homogenization.Sobolev.W1p.Normalized
-import Mathlib.MeasureTheory.Function.L1Space.Integrable
+module
+
+public import Homogenization.Geometry.BoundedConvexDomain
+public import Homogenization.Sobolev.SmoothCompactSupport
+public import Homogenization.Sobolev.W1p.Normalized
+public import Mathlib.MeasureTheory.Function.L1Space.Integrable
 
 /-!
 # Normalized negative Sobolev seminorms
@@ -11,6 +13,8 @@ RULING-0001.  The first test carrier is literally Mathlib's smooth compactly
 supported test-function space; the second uses genuine weak `W^{1,p}`
 witnesses with zero normalized average.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -59,7 +63,7 @@ def MeanZeroTestAdmissible (p : ENNReal) (hp_one : 1 < p) (hp_top : p ≠ ∞)
   meanZeroTestSeminorm hU hne p hp_one hp_top φ ≤ 1
 
 omit [NeZero d] in
-private theorem smoothTest_memLp_normalized (p : ENNReal) (φ : SmoothTestFunction hU) :
+theorem smoothTest_memLp_normalized (p : ENNReal) (φ : SmoothTestFunction hU) :
     MeasureTheory.MemLp (φ : Vec d → ℝ) p (domain hU hne).normalizedVolume := by
   refine ((domain hU hne).memLp_normalizedVolume_iff p _).mpr ?_
   change MeasureTheory.MemLp (φ : Vec d → ℝ) p (MeasureTheory.volume.restrict U)
@@ -67,7 +71,7 @@ private theorem smoothTest_memLp_normalized (p : ENNReal) (φ : SmoothTestFuncti
     (φ.toW1pFunction hU.toOpens p).memLp
 
 omit [NeZero d] in
-private theorem meanZeroTest_memLp_normalized (p : ENNReal)
+theorem meanZeroTest_memLp_normalized (p : ENNReal)
     (φ : MeanZeroW1pTestFunction hU hne p) :
     MeasureTheory.MemLp φ.toW1pFunction.toFun p (domain hU hne).normalizedVolume := by
   refine ((domain hU hne).memLp_normalizedVolume_iff p _).mpr ?_
@@ -75,7 +79,7 @@ private theorem meanZeroTest_memLp_normalized (p : ENNReal)
   exact φ.toW1pFunction.memLp
 
 omit [NeZero d] in
-private theorem pairing_integrable (p : ENNReal) (hp_one : 1 < p)
+theorem pairing_integrable (p : ENNReal) (hp_one : 1 < p)
     (f : Vec d → ℝ)
     (hf : MeasureTheory.MemLp f (ENNReal.conjExponent p) (domain hU hne).normalizedVolume)
     (g : Vec d → ℝ) (hg : MeasureTheory.MemLp g p (domain hU hne).normalizedVolume) :
@@ -176,7 +180,7 @@ theorem meanZeroNegativeSobolevAbsSeminorm_eq_iSup (p : ENNReal) (hp_one : 1 < p
 
 /-! ## Test-class symmetry -/
 
-private noncomputable def negW1pFunction {p : ENNReal} (u : W1pFunction U p) :
+noncomputable def negW1pFunction {p : ENNReal} (u : W1pFunction U p) :
     W1pFunction U p :=
   { toFun := -u.toFun
     grad := -u.grad
@@ -200,14 +204,14 @@ private noncomputable def negW1pFunction {p : ENNReal} (u : W1pFunction U p) :
               apply MeasureTheory.integral_congr_ae
               exact Filter.Eventually.of_forall fun x => by ring }
 
-private noncomputable def zeroW1pFunction (p : ENNReal) : W1pFunction U p :=
+noncomputable def zeroW1pFunction (p : ENNReal) : W1pFunction U p :=
   { toFun := 0
     grad := 0
     memLp := by simp
     gradMemLp := by intro i; simp
     hasWeakGradient := by intro i φ hφ_smooth hφ_compact hφ_sub; simp }
 
-private theorem normalizedW1pSeminorm_negW1pFunction {p : ENNReal}
+theorem normalizedW1pSeminorm_negW1pFunction {p : ENNReal}
     (hp_one : 1 < p) (hp_top : p ≠ ∞) (u : W1pFunction U p) :
     BoundedMeasurableDomain.NormalizedW1pKernel.seminorm
       (domain hU hne) p (le_of_lt hp_one) hp_top
@@ -226,7 +230,7 @@ private theorem normalizedW1pSeminorm_negW1pFunction {p : ENNReal}
     (u.gradEuclideanMemLp (domain hU hne) p)
     (Filter.Eventually.of_forall (congrFun hgrad))
 
-private theorem smoothTestSeminorm_neg (p : ENNReal) (hp_one : 1 < p) (hp_top : p ≠ ∞)
+theorem smoothTestSeminorm_neg (p : ENNReal) (hp_one : 1 < p) (hp_top : p ≠ ∞)
     (φ : SmoothTestFunction hU) :
     smoothTestSeminorm hU hne p hp_one hp_top (-φ) =
       smoothTestSeminorm hU hne p hp_one hp_top φ := by
@@ -343,13 +347,13 @@ theorem meanZeroPairing_neg (p : ENNReal) (hp_one : 1 < p)
     -normalizedPairing hU hne p hp_one f hf φ.toW1pFunction.toFun _
   exact normalizedPairing_neg_right hU hne p hp_one f hf φ.toW1pFunction.toFun _
 
-private noncomputable def smoothAdmissibleNeg (p : ENNReal) (hp_one : 1 < p)
+noncomputable def smoothAdmissibleNeg (p : ENNReal) (hp_one : 1 < p)
     (hp_top : p ≠ ∞)
     (φ : {φ : SmoothTestFunction hU // SmoothTestAdmissible hU hne p hp_one hp_top φ}) :
     {φ : SmoothTestFunction hU // SmoothTestAdmissible hU hne p hp_one hp_top φ} :=
   ⟨-φ.1, smoothTestAdmissible_neg hU hne p hp_one hp_top φ.2⟩
 
-private noncomputable def meanZeroAdmissibleNeg (p : ENNReal) (hp_one : 1 < p)
+noncomputable def meanZeroAdmissibleNeg (p : ENNReal) (hp_one : 1 < p)
     (hp_top : p ≠ ∞)
     (φ : {φ : MeanZeroW1pTestFunction hU hne p //
       MeanZeroTestAdmissible hU hne p hp_one hp_top φ}) :
@@ -357,7 +361,7 @@ private noncomputable def meanZeroAdmissibleNeg (p : ENNReal) (hp_one : 1 < p)
       MeanZeroTestAdmissible hU hne p hp_one hp_top φ} :=
   ⟨φ.1.neg, meanZeroTestAdmissible_neg hU hne p hp_one hp_top φ.2⟩
 
-private theorem iSup_ofReal_eq_iSup_ofReal_abs {α : Type*} (q : α → ℝ)
+theorem iSup_ofReal_eq_iSup_ofReal_abs {α : Type*} (q : α → ℝ)
     (neg : α → α) (hneg : ∀ a, q (neg a) = -q a) :
     (⨆ a, ENNReal.ofReal (q a)) = ⨆ a, ENNReal.ofReal |q a| := by
   apply le_antisymm

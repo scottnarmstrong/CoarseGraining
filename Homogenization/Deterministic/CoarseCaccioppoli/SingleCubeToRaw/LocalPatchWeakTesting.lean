@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalPatchCutoff
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.WeakTesting
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalPatchCutoff
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.WeakTesting
+
+@[expose] public section
 
 namespace Homogenization
 

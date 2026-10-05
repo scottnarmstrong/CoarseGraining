@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.Theorems.ExistenceDefinitions
+module
+
+public import Homogenization.Book.Ch02.Theorems.ExistenceDefinitions
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

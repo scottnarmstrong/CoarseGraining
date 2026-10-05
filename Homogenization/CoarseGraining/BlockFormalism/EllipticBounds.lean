@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.BlockFormalism.MatrixIdentities
+module
+
+public import Homogenization.CoarseGraining.BlockFormalism.MatrixIdentities
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.PoincareSegment
-import Mathlib.Analysis.Calculus.ContDiff.Operations
+module
+
+public import Homogenization.Sobolev.Foundations.PoincareSegment
+public import Mathlib.Analysis.Calculus.ContDiff.Operations
+
+@[expose] public section
 
 namespace Homogenization
 

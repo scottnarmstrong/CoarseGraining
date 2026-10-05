@@ -1,6 +1,10 @@
-import Homogenization.CoarseGraining.Symmetric.AverageFormulas
-import Homogenization.PDE.Harmonic
-import Homogenization.Sobolev.Foundations.ZeroTraceAverages
+module
+
+public import Homogenization.CoarseGraining.Symmetric.AverageFormulas
+public import Homogenization.PDE.Harmonic
+public import Homogenization.Sobolev.Foundations.ZeroTraceAverages
+
+@[expose] public section
 
 namespace Homogenization
 

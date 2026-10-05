@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CoerciveSmooth
+module
+
+public import Homogenization.Sobolev.Foundations.CoerciveSmooth
+
+@[expose] public section
 
 namespace Homogenization
 

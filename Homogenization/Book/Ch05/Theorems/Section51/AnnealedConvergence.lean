@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section51.ExponentAbsorption
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section51.ExponentAbsorption
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

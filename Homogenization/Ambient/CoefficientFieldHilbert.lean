@@ -1,8 +1,12 @@
-import Homogenization.Ambient.CoefficientField
-import Homogenization.Ambient.HilbertFinite
-import Homogenization.Sobolev.L2Ambient
-import Mathlib.MeasureTheory.Group.Arithmetic
-import Mathlib.Topology.Instances.Matrix
+module
+
+public import Homogenization.Ambient.CoefficientField
+public import Homogenization.Ambient.HilbertFinite
+public import Homogenization.Sobolev.L2Ambient
+public import Mathlib.MeasureTheory.Group.Arithmetic
+public import Mathlib.Topology.Instances.Matrix
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -247,7 +251,7 @@ theorem coeFn_toContinuousLinearMap (M : PointwiseHilbertVecOperatorField U)
 
 end PointwiseHilbertVecOperatorField
 
-private noncomputable def matToHilbertOperatorLinear (d : ℕ) :
+noncomputable def matToHilbertOperatorLinear (d : ℕ) :
     Mat d →ₗ[ℝ] (HilbertVec d →L[ℝ] HilbertVec d) where
   toFun := HilbertVec.applyMat
   map_add' := by
@@ -265,17 +269,17 @@ private noncomputable def matToHilbertOperatorLinear (d : ℕ) :
     intro i
     simp [HilbertVec.applyMat_apply, matVecMul, Finset.mul_sum, mul_assoc]
 
-private noncomputable def matToHilbertOperator (d : ℕ) :
+noncomputable def matToHilbertOperator (d : ℕ) :
     Mat d →L[ℝ] (HilbertVec d →L[ℝ] HilbertVec d) :=
   ⟨matToHilbertOperatorLinear d,
     (matToHilbertOperatorLinear d).continuous_of_finiteDimensional⟩
 
-private theorem measurable_matToHilbertOperator {d : ℕ} {α : Type*}
+theorem measurable_matToHilbertOperator {d : ℕ} {α : Type*}
     [MeasurableSpace α] {A : α → Mat d} (hA : Measurable A) :
     Measurable (fun x => matToHilbertOperator d (A x)) := by
   exact (matToHilbertOperator d).continuous.measurable.comp hA
 
-@[simp] private theorem matToHilbertOperator_apply {d : ℕ} (A : Mat d) :
+@[simp] theorem matToHilbertOperator_apply {d : ℕ} (A : Mat d) :
     matToHilbertOperator d A = HilbertVec.applyMat A := by
   rfl
 

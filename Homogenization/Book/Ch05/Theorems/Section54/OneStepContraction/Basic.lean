@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section54.GoodScale
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.GoodScale
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

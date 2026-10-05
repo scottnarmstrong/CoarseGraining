@@ -1,14 +1,18 @@
-import Homogenization.Book.Ch02.Theorems.BlockCoarseMatrixDefinitions
-import Homogenization.Book.Ch02.Theorems.DoubledResponse
-import Homogenization.Book.Ch02.Theorems.MagicIdentities
-import Homogenization.Book.Ch02.Theorems.MatrixPositivity
-import Homogenization.Book.Ch02.Theorems.SubadditivityScaling
-import Homogenization.Internal.Ch02.DoubledMu
-import Homogenization.Internal.Ch02.Representatives
-import Homogenization.CoarseGraining.AdjointSymmetry.BasicAdjoint
-import Homogenization.CoarseGraining.AdjointSymmetry.SigmaAdjoint
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticWrappers
-import Homogenization.CoarseGraining.MagicIdentities.Basics
+module
+
+public import Homogenization.Book.Ch02.Theorems.BlockCoarseMatrixDefinitions
+public import Homogenization.Book.Ch02.Theorems.DoubledResponse
+public import Homogenization.Book.Ch02.Theorems.MagicIdentities
+public import Homogenization.Book.Ch02.Theorems.MatrixPositivity
+public import Homogenization.Book.Ch02.Theorems.SubadditivityScaling
+public import Homogenization.Internal.Ch02.DoubledMu
+public import Homogenization.Internal.Ch02.Representatives
+public import Homogenization.CoarseGraining.AdjointSymmetry.BasicAdjoint
+public import Homogenization.CoarseGraining.AdjointSymmetry.SigmaAdjoint
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticWrappers
+public import Homogenization.CoarseGraining.MagicIdentities.Basics
+
+@[expose] public section
 
 open scoped BigOperators
 

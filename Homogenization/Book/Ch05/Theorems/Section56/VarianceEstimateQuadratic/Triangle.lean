@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.ErrorBounds
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.ErrorBounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

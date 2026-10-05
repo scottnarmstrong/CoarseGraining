@@ -1,5 +1,7 @@
-import Homogenization.HighContrast.Corridor.Geometry
-import Homogenization.CoarseGraining.Definitions
+module
+
+public import Homogenization.HighContrast.Corridor.Geometry
+public import Homogenization.CoarseGraining.Definitions
 
 /-!
 # The `G`-factorization of the fixed-phase observable
@@ -30,6 +32,8 @@ The cores are pairwise disjoint (`disjoint_coreBox`, from the `2`-separation
 `areUnitSeparated_coreBox`), which makes the indicator-sum reconstruction
 well-defined.
 -/
+
+@[expose] public section
 
 open Homogenization
 open scoped BigOperators

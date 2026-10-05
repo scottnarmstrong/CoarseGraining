@@ -1,4 +1,6 @@
-import Homogenization.Examples.Periodic.DiracBridge
+module
+
+public import Homogenization.Examples.Periodic.DiracBridge
 
 /-!
 # Periodic deterministic comparison corollary
@@ -15,6 +17,8 @@ theorem against the proof below.  See `Audit/README.md` for the comparator map.
 (this file)* → explicit field (`PeriodicConcreteComparison`, `Audit/PeriodicConcrete`)
 → classical data (`PeriodicSmoothComparison`, `Audit/PeriodicSmooth`).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Examples

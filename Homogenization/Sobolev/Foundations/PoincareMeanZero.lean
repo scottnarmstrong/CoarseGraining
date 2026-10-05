@@ -1,8 +1,12 @@
-import Homogenization.Sobolev.Foundations.CoerciveH1
-import Homogenization.Sobolev.Foundations.H1Graph
-import Homogenization.Sobolev.Foundations.PoincareLp
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing
-import Homogenization.Geometry.ConvexDomain
+module
+
+public import Homogenization.Sobolev.Foundations.CoerciveH1
+public import Homogenization.Sobolev.Foundations.H1Graph
+public import Homogenization.Sobolev.Foundations.PoincareLp
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing
+public import Homogenization.Geometry.ConvexDomain
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -224,7 +228,7 @@ theorem fderivL2Norm_le_gradientCoordL2NormSum_ofContDiffOnIsOpenBoundedConvexDo
     _ ≤ ‖dCoordLp‖ := hderiv_le_sum
     _ ≤ u.gradientCoordL2NormSum := hsum_le
 
-private noncomputable def smoothPoincareSqConst
+noncomputable def smoothPoincareSqConst
     (hU : IsOpenBoundedConvexDomain U) : ℝ :=
   (((MeasureTheory.volume U).toReal⁻¹ *
       (((2 * Classical.choose hU.isBoundedDomain) ^ d) / (d : ℝ))) ^ (2 : ℝ)) *
@@ -252,11 +256,11 @@ private theorem smoothPoincareSqConst_nonneg
     (Real.rpow_nonneg hbase₁ _)
     (Real.rpow_nonneg hbase₂ _)
 
-private noncomputable def smoothPoincareConst
+noncomputable def smoothPoincareConst
     (hU : IsOpenBoundedConvexDomain U) : ℝ :=
   Real.sqrt (smoothPoincareSqConst (d := d) (U := U) hU)
 
-private theorem smoothPoincareConst_nonneg
+theorem smoothPoincareConst_nonneg
     (hU : IsOpenBoundedConvexDomain U) :
     0 ≤ smoothPoincareConst (d := d) (U := U) hU := by
   exact Real.sqrt_nonneg _
@@ -402,7 +406,7 @@ private theorem norm_toScalarL2_subAverage_le_smoothPoincareConst_mul_gradientCo
   change ‖u.subAverage.toScalarL2‖ ≤ C * u.gradientCoordL2NormSum
   exact le_of_sq_le_sq htarget_sq hright_nonneg
 
-private theorem unitConvexApproxScale_pos (n : ℕ) :
+theorem unitConvexApproxScale_pos_meanZero (n : ℕ) :
     0 < unitConvexApproxScale n := by
   dsimp [unitConvexApproxScale]
   positivity
@@ -415,7 +419,7 @@ noncomputable def convexApproxSmoothH1
       (U := U) (ρ := unitConvexApproxKernel (d := d)) (u := u.toFun)
       (p := (2 : ENNReal)) (x0 := x0) (r := r) (ε := unitConvexApproxScale n)
       hU.isOpen.measurableSet (isConvexApproxKernel_unitConvexApproxKernel (d := d))
-      (by norm_num : (1 : ENNReal) ≤ 2) u.memL2 hr (unitConvexApproxScale_pos n)).of_le
+      (by norm_num : (1 : ENNReal) ≤ 2) u.memL2 hr (unitConvexApproxScale_pos_meanZero n)).of_le
       (by simp))
 
 theorem convexApproxSmoothH1_toFun
@@ -464,7 +468,7 @@ theorem tendsto_convexApproxSmoothH1_toScalarL2
       (tendsto_eLpNorm_sub_zero_convexApproxSmoothing_of_memLpOn
         (U := U) hU hρ (by norm_num : (1 : ENNReal) ≤ 2) (by simp : (2 : ENNReal) ≠ ⊤)
         u.memL2 hball hr tendsto_unitConvexApproxScale_zero
-        (Filter.Eventually.of_forall unitConvexApproxScale_pos) hevent_lt_one)
+        (Filter.Eventually.of_forall unitConvexApproxScale_pos_meanZero) hevent_lt_one)
   have hrep :
       Filter.Tendsto
         (fun n : ℕ =>
@@ -479,7 +483,7 @@ theorem tendsto_convexApproxSmoothH1_toScalarL2
     apply MeasureTheory.eLpNorm_congr_ae
     filter_upwards [MeasureTheory.ae_restrict_mem hU.isOpen.measurableSet] with x hx
     rw [convexApproxSmoothRepresentative_eq_convexApproxSmoothing_of_mem
-      (u := u.toFun) hU hρ hx hball hr (unitConvexApproxScale_pos n) hε_lt_one]
+      (u := u.toFun) hU hρ hx hball hr (unitConvexApproxScale_pos_meanZero n) hε_lt_one]
   rw [tendsto_iff_dist_tendsto_zero]
   have hdist :
       (fun n => dist (ψ n).toScalarL2 u.toScalarL2) =
@@ -562,7 +566,7 @@ theorem tendsto_convexApproxSmoothH1_gradCoordToScalarL2
       (tendsto_eLpNorm_sub_zero_one_sub_mul_convexApproxSmoothing_of_memLpOn
         (U := U) hU hρ (by norm_num : (1 : ENNReal) ≤ 2) (by simp : (2 : ENNReal) ≠ ⊤)
         (u.grad_memL2 i) hball hr tendsto_unitConvexApproxScale_zero
-        (Filter.Eventually.of_forall unitConvexApproxScale_pos) hevent_lt_one)
+        (Filter.Eventually.of_forall unitConvexApproxScale_pos_meanZero) hevent_lt_one)
   have hrep :
       Filter.Tendsto
         (fun n : ℕ =>
@@ -582,11 +586,11 @@ theorem tendsto_convexApproxSmoothH1_gradCoordToScalarL2
         (U := U) (ρ := ρ) (u := u.toFun) (gi := fun y => u.grad y i)
         (i := i) (p := (2 : ENNReal)) hU hρ (by norm_num : (1 : ENNReal) ≤ 2)
         u.memL2 (u.grad_memL2 i) (u.hasWeakPartialDerivOn i)
-        hball hr (unitConvexApproxScale_pos n) hε_lt_one
+        hball hr (unitConvexApproxScale_pos_meanZero n) hε_lt_one
     filter_upwards [hbridge, MeasureTheory.ae_restrict_mem hU.isOpen.measurableSet] with x hxbridge hxU
     rw [hxbridge]
     rw [convexApproxSmoothRepresentative_eq_convexApproxSmoothing_of_mem
-      (u := fun y => u.grad y i) hU hρ hxU hball hr (unitConvexApproxScale_pos n)
+      (u := fun y => u.grad y i) hU hρ hxU hball hr (unitConvexApproxScale_pos_meanZero n)
         hε_lt_one]
   rw [tendsto_iff_dist_tendsto_zero]
   have hdist :
@@ -698,7 +702,7 @@ private theorem norm_toScalarL2_subAverage_le_smoothPoincareConst_mul_gradientCo
         (U := U) (ρ := unitConvexApproxKernel (d := d)) (u := u.toFun)
         (p := (2 : ENNReal)) (x0 := x0) (r := r) (ε := unitConvexApproxScale n)
         hU.isOpen.measurableSet (isConvexApproxKernel_unitConvexApproxKernel (d := d))
-        (by norm_num : (1 : ENNReal) ≤ 2) u.memL2 hr (unitConvexApproxScale_pos n)
+        (by norm_num : (1 : ENNReal) ≤ 2) u.memL2 hr (unitConvexApproxScale_pos_meanZero n)
     simpa [ψ, convexApproxSmoothH1, f] using
       (norm_toScalarL2_subAverage_le_smoothPoincareConst_mul_gradientCoordL2NormSum_ofContDiff
         (U := U) hU (f := f) hf hvol)
@@ -736,7 +740,7 @@ private theorem norm_toScalarL2_subAverage_le_smoothPoincareConst_mul_gradientCo
 
 /-- Positive-dimensional, positive-volume bounded open convex domains satisfy
 the mean-zero `L²` Poincare estimate. -/
-private theorem h1MeanZero_valueL2Norm_le_smoothPoincareConst_mul_gradientL2Norm
+theorem h1MeanZero_valueL2Norm_le_smoothPoincareConst_mul_gradientL2Norm
     [NeZero d] [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
     (hU : IsOpenBoundedConvexDomain U) (hvol : 0 < (MeasureTheory.volume U).toReal)
     (u : H1MeanZeroFunction U) :
@@ -772,7 +776,7 @@ private theorem h1MeanZero_valueL2Norm_le_smoothPoincareConst_mul_gradientL2Norm
     _ = (C * d) * u.gradientL2Norm := by
       ring
 
-private theorem h1MeanZero_valueL2Norm_eq_zero_of_volume_toReal_eq_zero
+theorem h1MeanZero_valueL2Norm_eq_zero_of_volume_toReal_eq_zero
     [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
     (hvol : (MeasureTheory.volume U).toReal = 0) (u : H1MeanZeroFunction U) :
     u.valueL2Norm = 0 := by
@@ -793,7 +797,7 @@ private theorem h1MeanZero_valueL2Norm_eq_zero_of_volume_toReal_eq_zero
   rw [hμ0, MeasureTheory.eLpNorm_measure_zero]
   rfl
 
-private theorem h1MeanZero_valueL2Norm_eq_zero_of_dim_zero
+theorem h1MeanZero_valueL2Norm_eq_zero_of_dim_zero
     {U : Set (Vec 0)} [MeasureTheory.IsFiniteMeasure (volumeMeasureOn U)]
     (hvol : 0 < (MeasureTheory.volume U).toReal) (u : H1MeanZeroFunction U) :
     u.valueL2Norm = 0 := by

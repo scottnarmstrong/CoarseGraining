@@ -1,4 +1,8 @@
-import Homogenization.Probability.IndependentSums.Rosenthal.Symmetric
+module
+
+public import Homogenization.Probability.IndependentSums.Rosenthal.Symmetric
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.FirstVariation
+module
+
+public import Homogenization.Internal.Ch02.FirstVariation
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

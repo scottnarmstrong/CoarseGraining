@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.Hodge
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentL2
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionWeakEquation
+module
+
+public import Homogenization.Sobolev.Foundations.Hodge
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentL2
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionWeakEquation
+
+@[expose] public section
 
 namespace Homogenization
 

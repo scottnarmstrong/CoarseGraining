@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
-import Homogenization.Sobolev.Foundations.PoincareW1p.OverlapCubeVectorNormalized
+module
+
+public import Homogenization.Sobolev.Fractional.ExactOverlapFinitePAveraging
+public import Homogenization.Sobolev.Foundations.PoincareW1p.OverlapCubeVectorNormalized
 
 /-!
 # Finite-`p` overlap Poincaré assembly at one depth
@@ -8,6 +10,8 @@ This module assembles the normalized vector overlap-cube Poincaré estimate
 over one retained depth.  All constants are chosen before the cube, depth,
 and vector field.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

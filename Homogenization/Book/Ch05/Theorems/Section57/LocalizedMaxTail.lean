@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section57.FiniteSupTail
-import Homogenization.Book.Ch05.Theorems.Section57.LocalizedMax
-import Homogenization.Book.Ch05.Theorems.Section57.ProbeMax
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.FiniteSupTail
+public import Homogenization.Book.Ch05.Theorems.Section57.LocalizedMax
+public import Homogenization.Book.Ch05.Theorems.Section57.ProbeMax
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

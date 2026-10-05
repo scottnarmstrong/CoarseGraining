@@ -1,4 +1,6 @@
-import Homogenization.Probability.Source.Coarse.Scaling
+module
+
+public import Homogenization.Probability.Source.Coarse.Scaling
 
 /-!
 # Triadically rescaled exact coarse-source laws
@@ -6,6 +8,8 @@ import Homogenization.Probability.Source.Coarse.Scaling
 The normalized source law is the pushforward by the exact carrier rescaling
 `a ↦ (x ↦ a (3^k x))`.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Source.Coarse
 

@@ -1,5 +1,7 @@
-import Homogenization.Besov.Negative.ExactCirc
-import Homogenization.Besov.Negative.ExactDual
+module
+
+public import Homogenization.Besov.Negative.ExactCirc
+public import Homogenization.Besov.Negative.ExactDual
 
 /-!
 # Exponent and coefficient bridges for exact Besov duality
@@ -8,6 +10,8 @@ This module contains only arithmetic and parameter-carrier bridges.  In
 particular, it does not compare an extended exact seminorm with a legacy
 real-valued wrapper.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

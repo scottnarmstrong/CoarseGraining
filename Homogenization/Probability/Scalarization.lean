@@ -1,8 +1,12 @@
-import Homogenization.Ambient.Basic
-import Mathlib.Data.Matrix.Mul
-import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
-import Mathlib.LinearAlgebra.Matrix.Swap
-import Mathlib.Tactic.Linarith
+module
+
+public import Homogenization.Ambient.Basic
+public import Mathlib.Data.Matrix.Mul
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import Mathlib.LinearAlgebra.Matrix.Swap
+public import Mathlib.Tactic.Linarith
+
+@[expose] public section
 
 namespace Homogenization
 

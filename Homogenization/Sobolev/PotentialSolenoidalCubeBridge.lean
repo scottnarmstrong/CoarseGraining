@@ -1,8 +1,12 @@
-import Homogenization.Geometry.TriadicCubeTranslation
-import Homogenization.Geometry.TriadicPartition
-import Homogenization.Sobolev.PotentialSolenoidalOriginCubeBridge
-import Homogenization.Sobolev.PotentialSolenoidalTranslation
-import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+module
+
+public import Homogenization.Geometry.TriadicCubeTranslation
+public import Homogenization.Geometry.TriadicPartition
+public import Homogenization.Sobolev.PotentialSolenoidalOriginCubeBridge
+public import Homogenization.Sobolev.PotentialSolenoidalTranslation
+public import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -30,7 +34,7 @@ namespace H1Function
     u.toCubeSetOriginCube.toFun = u.toFun :=
   rfl
 
-private noncomputable def castDomain {d : ℕ} {U V : Set (Vec d)}
+noncomputable def castDomain {d : ℕ} {U V : Set (Vec d)}
     (hUV : U = V) (u : H1Function U) : H1Function V :=
   hUV ▸ u
 
@@ -99,7 +103,7 @@ end H1Function
 
 namespace H10Function
 
-private noncomputable def castDomain {d : ℕ} {U V : Set (Vec d)}
+noncomputable def castDomain {d : ℕ} {U V : Set (Vec d)}
     (hUV : U = V) (u : H10Function U) : H10Function V :=
   hUV ▸ u
 

@@ -1,4 +1,8 @@
-import Homogenization.Probability.IndependentSums.PsiSigma.TailAndLogControl
+module
+
+public import Homogenization.Probability.IndependentSums.PsiSigma.TailAndLogControl
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

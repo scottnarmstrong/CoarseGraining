@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.ExponentialKernel
-import Homogenization.Book.Ch05.Theorems.Section57.WeightedExponentialKernel
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.ExponentialKernel
+public import Homogenization.Book.Ch05.Theorems.Section57.WeightedExponentialKernel
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

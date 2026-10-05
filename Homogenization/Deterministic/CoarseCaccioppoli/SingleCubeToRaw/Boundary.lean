@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.RadiusInputs
-import Homogenization.Deterministic.CoarseCaccioppoli.Boundary.ExplicitHeight
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.RadiusInputs
+public import Homogenization.Deterministic.CoarseCaccioppoli.Boundary.ExplicitHeight
+
+@[expose] public section
 
 namespace Homogenization
 

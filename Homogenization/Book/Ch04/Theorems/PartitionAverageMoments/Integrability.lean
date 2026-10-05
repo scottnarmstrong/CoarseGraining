@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.OnCube
+module
+
+public import Homogenization.Book.Ch04.Theorems.PartitionAverageMoments.OnCube
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

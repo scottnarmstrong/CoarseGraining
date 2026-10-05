@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadEventSummability
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleUnion
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadEventSummability
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleUnion
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch02.Theorems.DeterministicIdentities
-import Homogenization.Book.Ch04.CoeffFamily
-import Homogenization.Book.Ch04.Theorems.Mu
-import Homogenization.Book.Ch04.Internal.CoarseObservableMeasurability.Basic
+module
+
+public import Homogenization.Book.Ch02.Theorems.DeterministicIdentities
+public import Homogenization.Book.Ch04.CoeffFamily
+public import Homogenization.Book.Ch04.Theorems.Mu
+public import Homogenization.Book.Ch04.Internal.CoarseObservableMeasurability.Basic
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

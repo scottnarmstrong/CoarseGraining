@@ -1,4 +1,8 @@
-import Homogenization.Besov.Duality.ProjectedPairing.Averages
+module
+
+public import Homogenization.Besov.Duality.ProjectedPairing.Averages
+
+@[expose] public section
 
 namespace Homogenization
 

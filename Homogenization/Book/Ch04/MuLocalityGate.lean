@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch04.RestrictionObservable
-import Homogenization.Probability.RegCoeffField.RestrictionBridge
+module
+
+public import Homogenization.Book.Ch04.RestrictionObservable
+public import Homogenization.Probability.RegCoeffField.RestrictionBridge
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

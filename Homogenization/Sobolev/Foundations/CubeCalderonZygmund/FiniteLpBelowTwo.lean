@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpDuality
-import Homogenization.Sobolev.Fractional.CenteredCubeEuclideanL2
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpDuality
+public import Homogenization.Sobolev.Fractional.CenteredCubeEuclideanL2
 
 /-!
 # Below-two support for cube Calderón--Zygmund estimates
@@ -11,6 +13,8 @@ exports no source-facing Calderón--Zygmund theorem: the statements here only
 turn the canonical adjoint solution into a normalized weak solution and
 identify the two cross pairings.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

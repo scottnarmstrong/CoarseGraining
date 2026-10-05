@@ -1,8 +1,10 @@
-import Homogenization.HighContrast.Corridor.FixedPhase.CutoffData
-import Homogenization.HighContrast.Coupled.LocalEnergy
-import Homogenization.HighContrast.Coupled.Stampacchia
-import Homogenization.HighContrast.Coupled.Representation
-import Homogenization.Geometry.OriginCubeMeasureBridge
+module
+
+public import Homogenization.HighContrast.Corridor.FixedPhase.CutoffData
+public import Homogenization.HighContrast.Coupled.LocalEnergy
+public import Homogenization.HighContrast.Coupled.Stampacchia
+public import Homogenization.HighContrast.Coupled.Representation
+public import Homogenization.Geometry.OriginCubeMeasureBridge
 
 /-!
 # The per-core minimizer energy bound
@@ -24,6 +26,8 @@ estimates `(3ℓ)^d` and `d·(16/ℓ)²·(3ℓ)^d` and the power identity
 open-cube integrals through the null-boundary bridge
 `cubeSet_originCube_ae_eq_openCubeSet`.
 -/
+
+@[expose] public section
 
 open Homogenization MeasureTheory
 open scoped BigOperators

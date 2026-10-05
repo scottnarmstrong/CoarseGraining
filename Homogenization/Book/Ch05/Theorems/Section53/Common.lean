@@ -1,20 +1,24 @@
-import Homogenization.Book.Ch05.Definitions
-import Homogenization.Book.Ch01.Theorems.CutoffProduct
-import Homogenization.Book.Ch02.Theorems.BasicVariationalIdentities
-import Homogenization.Book.Ch02.Theorems.HomogenizationError.ResponseBounds
-import Homogenization.Book.Ch02.Theorems.MatrixPositivity
-import Homogenization.Book.Ch02.Theorems.SolutionIntegrability
-import Homogenization.Book.Ch02.Theorems.SubadditivityScaling
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.H1Transport
-import Homogenization.Book.Ch04.CoeffFamily
-import Homogenization.Book.Ch04.Theorems.CanonicalSolutions
-import Homogenization.Book.Ch04.Theorems.StationaryExpectations
-import Homogenization.Deterministic.CoarseCaccioppoliCutoffProduct
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicScalarControls
-import Homogenization.PDE.EnergyIdentities
-import Homogenization.Probability.LocalEllipticitySlices.SymmetricL2
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.QuantCutoffLowerH1
-import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+module
+
+public import Homogenization.Book.Ch05.Definitions
+public import Homogenization.Book.Ch01.Theorems.CutoffProduct
+public import Homogenization.Book.Ch02.Theorems.BasicVariationalIdentities
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError.ResponseBounds
+public import Homogenization.Book.Ch02.Theorems.MatrixPositivity
+public import Homogenization.Book.Ch02.Theorems.SolutionIntegrability
+public import Homogenization.Book.Ch02.Theorems.SubadditivityScaling
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.H1Transport
+public import Homogenization.Book.Ch04.CoeffFamily
+public import Homogenization.Book.Ch04.Theorems.CanonicalSolutions
+public import Homogenization.Book.Ch04.Theorems.StationaryExpectations
+public import Homogenization.Deterministic.CoarseCaccioppoliCutoffProduct
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicScalarControls
+public import Homogenization.PDE.EnergyIdentities
+public import Homogenization.Probability.LocalEllipticitySlices.SymmetricL2
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.QuantCutoffLowerH1
+public import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

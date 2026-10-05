@@ -1,10 +1,14 @@
-import Homogenization.Ambient.Basic
-import Mathlib.Analysis.Convex.Integral
-import Mathlib.Analysis.Convex.SpecificFunctions.Basic
-import Mathlib.Analysis.Convolution
-import Mathlib.Analysis.Normed.Module.Convex
-import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
-import Mathlib.MeasureTheory.Integral.Prod
+module
+
+public import Homogenization.Ambient.Basic
+public import Mathlib.Analysis.Convex.Integral
+public import Mathlib.Analysis.Convex.SpecificFunctions.Basic
+public import Mathlib.Analysis.Convolution
+public import Mathlib.Analysis.Normed.Module.Convex
+public import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
+public import Mathlib.MeasureTheory.Integral.Prod
+
+@[expose] public section
 
 namespace Homogenization
 

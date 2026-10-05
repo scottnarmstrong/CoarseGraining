@@ -1,8 +1,10 @@
-import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDual
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.UnitCubeGeometry
-import Mathlib.Analysis.Calculus.MeanValue
-import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
-import Mathlib.MeasureTheory.Constructions.HaarToSphere
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDual
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.UnitCubeGeometry
+public import Mathlib.Analysis.Calculus.MeanValue
+public import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
+public import Mathlib.MeasureTheory.Constructions.HaarToSphere
 
 /-!
 # Fractional Sobolev membership of smooth cube tests
@@ -11,6 +13,8 @@ The only analytic input in this file is the local integrability of a radial
 power kernel with positive gain over the dimension.  It is then applied to the
 Lipschitz bound supplied by global smoothness on the bounded cube.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

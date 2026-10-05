@@ -1,5 +1,9 @@
-import Homogenization.Ambient.Basic
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambda
+module
+
+public import Homogenization.Ambient.Basic
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambda
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,10 @@
-import Mathlib.MeasureTheory.Integral.Bochner.Set
-import Mathlib.MeasureTheory.Function.L2Space
-import Homogenization.CoarseGraining.QuadraticStability.CauchySchwarz
+module
+
+public import Mathlib.MeasureTheory.Integral.Bochner.Set
+public import Mathlib.MeasureTheory.Function.L2Space
+public import Homogenization.CoarseGraining.QuadraticStability.CauchySchwarz
+
+@[expose] public section
 
 namespace Homogenization
 

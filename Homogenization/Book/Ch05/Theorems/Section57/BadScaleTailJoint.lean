@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailRawCrude
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailAssembly
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailRawCrude
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailAssembly
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,9 @@
-import Homogenization.Probability.IndependentSums.GammaSigmaExpRegime
-import Homogenization.Probability.IndependentSums.PsiConcentration
+module
+
+public import Homogenization.Probability.IndependentSums.GammaSigmaExpRegime
+public import Homogenization.Probability.IndependentSums.PsiConcentration
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

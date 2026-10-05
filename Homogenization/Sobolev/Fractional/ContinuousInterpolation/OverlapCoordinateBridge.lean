@@ -1,5 +1,7 @@
-import Homogenization.Besov.Positive.Overlap
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PositiveNorm
+module
+
+public import Homogenization.Besov.Positive.Overlap
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PositiveNorm
 
 /-!
 # Coordinate bridges for the overlapping positive Besov seminorm
@@ -9,6 +11,8 @@ historically duplicated presentations of the same overlap geometry. This file id
 presentations and compares their finite `p = q = 2` truncations. No full real-valued `sSup`
 seminorm occurs here.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

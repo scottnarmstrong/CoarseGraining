@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.FiniteLpExponent
-import Homogenization.Sobolev.Fractional.Definitions
+module
+
+public import Homogenization.Sobolev.FiniteLpExponent
+public import Homogenization.Sobolev.Fractional.Definitions
 
 /-!
 # Euclidean fractional Sobolev core
@@ -7,6 +9,8 @@ import Homogenization.Sobolev.Fractional.Definitions
 The exact Chapter 3 Euclidean `W^(s,p)` kernel and full power norm on a
 triadic cube.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

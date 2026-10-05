@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.BlockCoarseMatrix
+module
+
+public import Homogenization.Internal.Ch02.BlockCoarseMatrix
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

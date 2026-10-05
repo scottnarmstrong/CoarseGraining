@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.AveragingGradient
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.AveragingGradient
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.DoubledMu
+module
+
+public import Homogenization.Internal.Ch02.DoubledMu
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

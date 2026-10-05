@@ -1,10 +1,12 @@
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingPDE
-import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingResponse
-import Homogenization.Book.Ch03.ABK26.FinitePToLegacyQTwo
-import Homogenization.Book.Ch02.Theorems.HomogenizationError.EllipticityControl
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.WeakSolutions
-import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletCorrectedWeakFluxAveraged
-import Homogenization.Deterministic.WeakNormInterfaces.AECongruence
+module
+
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingPDE
+public import Homogenization.Book.Ch03.ABK26.LocalCoarseGrainingResponse
+public import Homogenization.Book.Ch03.ABK26.FinitePToLegacyQTwo
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError.EllipticityControl
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.WeakSolutions
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletCorrectedWeakFluxAveraged
+public import Homogenization.Deterministic.WeakNormInterfaces.AECongruence
 
 /-!
 # One-cube local coarse-graining bridge
@@ -14,6 +16,8 @@ required by the legacy corrected weak-flux apex.  Its source-facing theorem
 will consume the strict finite-`p` regularity bridge, while the response-series
 summability remains internal to the canonical root coefficient family.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

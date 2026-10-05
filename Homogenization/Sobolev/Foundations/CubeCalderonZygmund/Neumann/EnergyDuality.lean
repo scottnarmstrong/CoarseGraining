@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.ReflectionWeakEquation
-import Homogenization.Sobolev.Foundations.CubeCoerciveH1
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.ReflectionWeakEquation
+public import Homogenization.Sobolev.Foundations.CubeCoerciveH1
 
 /-!
 # Centered-cube Neumann energy and duality
@@ -8,6 +10,8 @@ This file supplies the `q = 2` energy endpoint and the canonical mean-zero
 adjoint used by the below-two Neumann Calderón--Zygmund argument.  Coercivity
 and solvability are discharged internally from the centered-cube geometry.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -185,7 +189,7 @@ theorem centeredCubeH1MeanZeroScalarDivergence_cz_two
     FiniteLpExponent.two_exponent, euclideanNorm_eq_norm_ofVec,
     hilbertifyVecField] using! hnormalized
 
-private theorem nonempty_openCubeSet_originCube_neumann (d : ℕ) (m : ℤ) :
+theorem nonempty_openCubeSet_originCube_neumann (d : ℕ) (m : ℤ) :
     Set.Nonempty (openCubeSet (originCube d m)) := by
   refine ⟨0, ?_⟩
   rw [mem_openCubeSet_originCube_iff]
@@ -193,7 +197,7 @@ private theorem nonempty_openCubeSet_originCube_neumann (d : ℕ) (m : ℤ) :
   have hpow : 0 < (3 : ℝ) ^ m := zpow_pos (by norm_num) _
   constructor <;> simp only [Pi.zero_apply] <;> nlinarith
 
-private theorem isEllipticFieldOn_scalarMatrix_centeredCube
+theorem isEllipticFieldOn_scalarMatrix_centeredCube
     {d : ℕ} {m : ℤ} {sigma0 : ℝ} (hsigma0 : 0 < sigma0) :
     IsEllipticFieldOn sigma0 sigma0 (openCubeSet (originCube d m))
       (fun _ : Vec d ↦ scalarMatrix (d := d) sigma0) := by

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.LocalizedIteration
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.LocalizedIteration
+
+@[expose] public section
 
 namespace Homogenization
 

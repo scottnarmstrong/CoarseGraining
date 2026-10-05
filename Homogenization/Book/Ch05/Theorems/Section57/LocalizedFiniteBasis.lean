@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section57.FiniteBasis
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.FiniteBasis
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

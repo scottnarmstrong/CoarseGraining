@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarPoissonHessian
-import Homogenization.Sobolev.W1p.CubeVector
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CubeVectorH1
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ScalarPoissonHessian
+public import Homogenization.Sobolev.W1p.CubeVector
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.CubeVectorH1
 
 /-!
 # Paired-witness scalar divergence gradient endpoint
@@ -11,6 +13,8 @@ Poisson Hessian estimate.  The `H¹` witness supplies the `L²` divergence and
 the integration-by-parts identity; the `W^{1,q}` witness supplies the finite
 exponent control.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,9 +1,11 @@
-import Homogenization.Book.Ch03.ABK26.NegativeBesov
-import Homogenization.Book.Ch02.CoeffRestriction
-import Homogenization.Internal.Ch02.Representatives
-import Homogenization.Ambient.ScalarMatrix
-import Homogenization.Sobolev.Fractional.CenteredCubeEuclideanL2
-import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDual
+module
+
+public import Homogenization.Book.Ch03.ABK26.NegativeBesov
+public import Homogenization.Book.Ch02.CoeffRestriction
+public import Homogenization.Internal.Ch02.Representatives
+public import Homogenization.Ambient.ScalarMatrix
+public import Homogenization.Sobolev.Fractional.CenteredCubeEuclideanL2
+public import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDual
 
 /-!
 # Exact carriers for the Chapter 3 flux-comparison estimate
@@ -13,6 +15,8 @@ Armstrong--Kuusi--Loher flux-defect duality statement.  In particular, the
 coefficient argument remains the public a.e. `CoeffOn` object; pointwise
 representatives are used only privately to establish the `L²` certificates.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book
@@ -24,7 +28,7 @@ open scoped BigOperators ENNReal
 
 noncomputable section
 
-private theorem memLp_hilbertify_normalizedCube_of_memVectorL2 {d : ℕ}
+theorem memLp_hilbertify_normalizedCube_of_memVectorL2_flux {d : ℕ}
     {Q : TriadicCube d} {F : Vec d → Vec d}
     (hF : MemVectorL2 (openCubeSet Q) F) :
     MemLp (fun x => HilbertVec.ofVec (F x)) 2 (normalizedCubeMeasure Q) := by
@@ -35,7 +39,7 @@ private theorem memLp_hilbertify_normalizedCube_of_memVectorL2 {d : ℕ}
     volume_restrict_cubeSet_eq_volume_restrict_openCubeSet] using
     hHilbert.smul_measure ENNReal.ofReal_ne_top
 
-private theorem memVectorL2_matVecMul_pointwiseCoeffOn {d : ℕ}
+theorem memVectorL2_matVecMul_pointwiseCoeffOn_flux {d : ℕ}
     (Q : TriadicCube d) (a : Book.Ch02.CoeffOn (Book.Ch02.cubeDomain Q))
     (u : H1Function (openCubeSet Q)) :
     MemVectorL2 (openCubeSet Q)
@@ -56,7 +60,7 @@ private theorem memVectorL2_matVecMul_pointwiseCoeffOn {d : ℕ}
   filter_upwards [hba] with x hx
   simp only [hx]
 
-private theorem memVectorL2_localFluxDefect {d : ℕ}
+theorem memVectorL2_localFluxDefect_flux {d : ℕ}
     {Q R : TriadicCube d}
     (a : Book.Ch02.CoeffOn (Book.Ch02.cubeDomain Q))
     (hRQ : openCubeSet R ⊆ openCubeSet Q) (sigma0 : ℝ)
@@ -70,7 +74,7 @@ private theorem memVectorL2_localFluxDefect {d : ℕ}
     u.restrict (isOpen_openCubeSet R) hRQ
   have hflux : MemVectorL2 (openCubeSet R)
       (fun x => matVecMul (aR.toCoeffField x) (uR.grad x)) :=
-    memVectorL2_matVecMul_pointwiseCoeffOn R aR uR
+    memVectorL2_matVecMul_pointwiseCoeffOn_flux R aR uR
   have hscalar : MemVectorL2 (openCubeSet R)
       (fun x => sigma0 • uR.grad x) :=
     uR.grad_memVectorL2.const_smul sigma0
@@ -123,8 +127,8 @@ noncomputable def centeredCubeFluxDifferenceL2Field {d : ℕ}
   toField := fun x =>
     matVecMul (a.toCoeffField x) (u.grad x) - sigma0 • v.grad x
   euclideanMemLp := by
-    apply memLp_hilbertify_normalizedCube_of_memVectorL2
-    exact (memVectorL2_matVecMul_pointwiseCoeffOn (originCube d m) a u).sub
+    apply memLp_hilbertify_normalizedCube_of_memVectorL2_flux
+    exact (memVectorL2_matVecMul_pointwiseCoeffOn_flux (originCube d m) a u).sub
       (v.grad_memVectorL2.const_smul sigma0)
 
 /-- The local scalar-comparator flux defect on a descendant. -/
@@ -140,8 +144,8 @@ noncomputable def centeredCubeLocalFluxDefectL2Field {d : ℕ}
     matVecMul
       (a.toCoeffField x - scalarMatrix (d := d) sigma0) (u.grad x)
   euclideanMemLp := by
-    apply memLp_hilbertify_normalizedCube_of_memVectorL2
-    exact memVectorL2_localFluxDefect a
+    apply memLp_hilbertify_normalizedCube_of_memVectorL2_flux
+    exact memVectorL2_localFluxDefect_flux a
       (openCubeSet_subset_of_mem_descendantsAtScale (le_of_lt hnm) hR) sigma0 u
 
 /-- The normalized descendant `ell^p` average of local smooth-dual flux

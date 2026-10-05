@@ -1,9 +1,13 @@
-import Homogenization.Sobolev.Foundations.Cutoff.Euclidean
-import Homogenization.Sobolev.Foundations.Cutoff.DerivativeBounds
-import Homogenization.Sobolev.Foundations.Cutoff.Profile
-import Mathlib.Analysis.Calculus.ContDiff.Basic
-import Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries
-import Mathlib.Analysis.Calculus.ContDiff.Operations
+module
+
+public import Homogenization.Sobolev.Foundations.Cutoff.Euclidean
+public import Homogenization.Sobolev.Foundations.Cutoff.DerivativeBounds
+public import Homogenization.Sobolev.Foundations.Cutoff.Profile
+public import Mathlib.Analysis.Calculus.ContDiff.Basic
+public import Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries
+public import Mathlib.Analysis.Calculus.ContDiff.Operations
+
+@[expose] public section
 
 noncomputable section
 

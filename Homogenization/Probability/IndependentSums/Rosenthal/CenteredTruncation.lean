@@ -1,4 +1,8 @@
-import Homogenization.Probability.IndependentSums.Rosenthal.ScalarBennett
+module
+
+public import Homogenization.Probability.IndependentSums.Rosenthal.ScalarBennett
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

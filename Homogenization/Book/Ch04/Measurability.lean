@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch04.RestrictionObservable
-import Mathlib.MeasureTheory.Function.StronglyMeasurable.AEStronglyMeasurable
-import Mathlib.Topology.Metrizable.Basic
+module
+
+public import Homogenization.Book.Ch04.RestrictionObservable
+public import Mathlib.MeasureTheory.Function.StronglyMeasurable.AEStronglyMeasurable
+public import Mathlib.Topology.Metrizable.Basic
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

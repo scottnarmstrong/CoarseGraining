@@ -1,5 +1,7 @@
-import Homogenization.Probability.Source.Coarse
-import Homogenization.Probability.RegCoeffField.SmoothSigma
+module
+
+public import Homogenization.Probability.Source.Coarse
+public import Homogenization.Probability.RegCoeffField.SmoothSigma
 
 /-!
 # Coarse-to-regular integral adapter
@@ -8,6 +10,8 @@ This module compares the source coarse integral sigma algebra with the smooth
 integral sigma algebra on regular coefficient fields.  It deliberately does
 not equip the adapter with measurability into the canonical regular carrier.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Source.Coarse
 
@@ -19,7 +23,7 @@ private theorem continuous_euclideanNorm {d : ℕ} :
   simp_rw [euclideanNorm_eq_norm_ofVec]
   exact (PiLp.continuous_toLp 2 fun _ : Fin d => ℝ).norm
 
-private theorem locallyIntegrable_coarse_entry {d : ℕ} (a : Carrier d)
+theorem locallyIntegrable_coarse_entry {d : ℕ} (a : Carrier d)
     (i j : Fin d) : LocallyIntegrable (fun x : Vec d => a x i j) volume := by
   rw [locallyIntegrable_iff]
   intro K hK

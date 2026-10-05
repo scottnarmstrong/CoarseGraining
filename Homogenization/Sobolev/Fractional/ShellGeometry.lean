@@ -1,4 +1,6 @@
-import Homogenization.Geometry.OverlapCenters
+module
+
+public import Homogenization.Geometry.OverlapCenters
 
 /-!
 # Shell geometry for the fractional Sobolev versus Besov comparison
@@ -13,6 +15,8 @@ provides the geometric inputs for both directions of the comparison:
 The bounded-overlap count (G2) and the pair-capture lemma (G3) build on these
 in the companion files.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Gagliardo

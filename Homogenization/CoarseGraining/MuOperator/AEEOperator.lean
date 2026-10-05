@@ -1,2 +1,4 @@
-import Homogenization.CoarseGraining.MuOperator.AEEOperator.CoeffOperatorData
-import Homogenization.CoarseGraining.MuOperator.AEEOperator.CanonicalCubeSet
+module
+
+public import Homogenization.CoarseGraining.MuOperator.AEEOperator.CoeffOperatorData
+public import Homogenization.CoarseGraining.MuOperator.AEEOperator.CanonicalCubeSet

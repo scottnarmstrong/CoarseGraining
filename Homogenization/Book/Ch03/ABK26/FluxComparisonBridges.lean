@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch03.ABK26.FluxComparisonDefinitions
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.H1Transport
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
+module
+
+public import Homogenization.Book.Ch03.ABK26.FluxComparisonDefinitions
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.H1Transport
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLp
 
 /-!
 # Structural bridges for the Chapter 3 flux-comparison estimate
@@ -11,6 +13,8 @@ solenoidal predicates used by the deterministic testing layer.  It contains
 only algebraic and measure-normalization bridges; no quantitative estimate is
 proved here.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

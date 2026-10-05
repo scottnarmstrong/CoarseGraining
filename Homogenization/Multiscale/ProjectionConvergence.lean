@@ -1,8 +1,12 @@
-import Homogenization.Geometry.CubeMetric
-import Homogenization.Multiscale.Projection
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.MeasureTheory.Covering.DensityTheorem
-import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+module
+
+public import Homogenization.Geometry.CubeMetric
+public import Homogenization.Multiscale.Projection
+public import Mathlib.Analysis.SpecificLimits.Basic
+public import Mathlib.MeasureTheory.Covering.DensityTheorem
+public import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+
+@[expose] public section
 
 namespace Homogenization
 

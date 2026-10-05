@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailFinal
-import Homogenization.Book.Ch05.Theorems.Section57.QuenchedLocalizedEstimate
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailFinal
+public import Homogenization.Book.Ch05.Theorems.Section57.QuenchedLocalizedEstimate
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

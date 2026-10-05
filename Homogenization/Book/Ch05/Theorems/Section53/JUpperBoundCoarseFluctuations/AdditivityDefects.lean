@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.Basic
-import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.Basic
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.Expectation.RHS
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.DiscountBounds
-import Homogenization.Deterministic.WeakNormInterfaces.Definitions
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.Basic
+public import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.Basic
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.Expectation.RHS
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.DiscountBounds
+public import Homogenization.Deterministic.WeakNormInterfaces.Definitions
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

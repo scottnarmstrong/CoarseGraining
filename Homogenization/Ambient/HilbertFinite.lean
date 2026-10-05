@@ -1,5 +1,9 @@
-import Homogenization.Ambient.BlockMatrix
-import Mathlib.Analysis.InnerProductSpace.PiL2
+module
+
+public import Homogenization.Ambient.BlockMatrix
+public import Mathlib.Analysis.InnerProductSpace.PiL2
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarsePoincare.Setup.EnergyControls
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Basic
+module
+
+public import Homogenization.Deterministic.CoarsePoincare.Setup.EnergyControls
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

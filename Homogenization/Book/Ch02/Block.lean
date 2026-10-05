@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch02.Matrices
-import Homogenization.Ambient.BlockMatrix
+module
+
+public import Homogenization.Book.Ch02.Matrices
+public import Homogenization.Ambient.BlockMatrix
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

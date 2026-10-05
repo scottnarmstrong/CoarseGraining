@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailExponent
-import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentRows
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleTailExponent
+public import Homogenization.Book.Ch05.Theorems.Section57.BadScaleComponentRows
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

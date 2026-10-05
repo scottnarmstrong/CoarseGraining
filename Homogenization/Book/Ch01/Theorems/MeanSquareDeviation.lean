@@ -1,12 +1,16 @@
-import Homogenization.CoarseGraining.Definitions
-import Homogenization.Sobolev.PotentialSolenoidalL2
-import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
-import Homogenization.Sobolev.Foundations.Cutoff.Euclidean
-import Homogenization.Sobolev.Foundations.PoincareW1p.Seminorms
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.Basic
-import Mathlib.MeasureTheory.Integral.Bochner.Set
-import Mathlib.MeasureTheory.Measure.OpenPos
-import Mathlib.MeasureTheory.Measure.Typeclasses.Finite
+module
+
+public import Homogenization.CoarseGraining.Definitions
+public import Homogenization.Sobolev.PotentialSolenoidalL2
+public import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+public import Homogenization.Sobolev.Foundations.Cutoff.Euclidean
+public import Homogenization.Sobolev.Foundations.PoincareW1p.Seminorms
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.Set
+public import Mathlib.MeasureTheory.Measure.OpenPos
+public import Mathlib.MeasureTheory.Measure.Typeclasses.Finite
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

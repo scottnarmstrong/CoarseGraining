@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section54.GoodScale.ScalarBounds
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.GoodScale.ScalarBounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.RHSCompression
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.RHSCompression
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

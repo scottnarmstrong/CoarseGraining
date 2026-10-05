@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch02.Theorems.GradientUniquenessDefinitions
-import Homogenization.CoarseGraining.ResponseIdentities.Foundations.Ellipticity
-import Homogenization.Internal.Ch02.Existence
-import Mathlib.MeasureTheory.Measure.OpenPos
+module
+
+public import Homogenization.Book.Ch02.Theorems.GradientUniquenessDefinitions
+public import Homogenization.CoarseGraining.ResponseIdentities.Foundations.Ellipticity
+public import Homogenization.Internal.Ch02.Existence
+public import Mathlib.MeasureTheory.Measure.OpenPos
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

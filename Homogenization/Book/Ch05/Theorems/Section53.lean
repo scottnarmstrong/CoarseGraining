@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms
-import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms
+public import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

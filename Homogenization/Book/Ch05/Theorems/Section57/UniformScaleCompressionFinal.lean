@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.UniformBadScaleMinimalQuantitative
-import Homogenization.Book.Ch05.Theorems.Section57.AbsoluteScaleCompression
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.UniformBadScaleMinimalQuantitative
+public import Homogenization.Book.Ch05.Theorems.Section57.AbsoluteScaleCompression
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

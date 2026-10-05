@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch04.Internal.CoarseObservableMeasurability.Basic
+module
+
+public import Homogenization.Book.Ch04.Internal.CoarseObservableMeasurability.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.PositiveDimensionalComposition
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.MeasurableRepresentative
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.ZeroDimensionalClosure
+module
+
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.PositiveDimensionalComposition
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.MeasurableRepresentative
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.ZeroDimensionalClosure
 
 /-!
 # All-dimensional composition of sampled continuous K and Euclidean energies
@@ -9,6 +11,8 @@ This module removes the positive-dimension and measurability hypotheses from
 the energy comparisons.  Dimension zero is closed exactly, while positive
 dimensions use the chosen measurable representative.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

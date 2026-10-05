@@ -1,5 +1,7 @@
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Analysis.SpecificLimits.Basic
+module
+
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.Analysis.SpecificLimits.Basic
 
 /-!
 # Fast geometric-decay iteration lemma
@@ -12,6 +14,8 @@ nonnegative sequence `Y` starting below `1` satisfies a superlinear recursion
 All exponents are real (`Real.rpow`).  No `sorry`, no axioms, no heartbeat
 overrides.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

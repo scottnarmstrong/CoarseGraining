@@ -1,5 +1,7 @@
-import Homogenization.HighContrast.Corridor.FixedPhase.MeasurableObservable
-import Homogenization.CoarseGraining.CoarseBounds.Sandwich
+module
+
+public import Homogenization.HighContrast.Corridor.FixedPhase.MeasurableObservable
+public import Homogenization.CoarseGraining.CoarseBounds.Sandwich
 
 /-!
 # The globally bounded clamped observable
@@ -15,6 +17,8 @@ The clamp is the identity exactly where it matters: for any measurable, a.e.-
 genuinely `(1,Θ)`-elliptic on the cube, so `phaseObservable ℓ σ m P b ∈ [0, C]`
 (`phaseObservable_mem_Icc`), and hence `clampedPhaseObservable (R b) = phaseObservable b`.
 -/
+
+@[expose] public section
 
 open Homogenization
 open scoped MeasureTheory BigOperators

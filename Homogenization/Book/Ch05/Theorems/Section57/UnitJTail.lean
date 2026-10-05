@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section57.LimitNormalization
-import Homogenization.Book.Ch04.Theorems.ConcentrationAEMeasurable
-import Homogenization.Book.Ch04.Theorems.MomentFactorBounds.FactorBounds
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.LimitNormalization
+public import Homogenization.Book.Ch04.Theorems.ConcentrationAEMeasurable
+public import Homogenization.Book.Ch04.Theorems.MomentFactorBounds.FactorBounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

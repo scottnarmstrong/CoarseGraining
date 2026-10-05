@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.Kernel
+module
+
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.Kernel
+
+@[expose] public section
 
 namespace Homogenization
 

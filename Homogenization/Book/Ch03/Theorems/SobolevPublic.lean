@@ -1,8 +1,10 @@
-import Homogenization.Book.Ch01.Theorems.FractionalSobolevVsBesov
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.EndPoints
-import Homogenization.Besov.PositiveOverlapBridge
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.PositiveSeminorms.Definitions
-import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge.CoordinateStandard
+module
+
+public import Homogenization.Book.Ch01.Theorems.FractionalSobolevVsBesov
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges.EndPoints
+public import Homogenization.Besov.PositiveOverlapBridge
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.PositiveSeminorms.Definitions
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.DualityPositiveBridge.CoordinateStandard
 
 /-!
 # Legacy Sobolev/dual-Besov compatibility wrappers for the Chapter 3 comparison
@@ -15,6 +17,8 @@ by the already-proved deterministic comparison theorem. The positive lane is
 the legacy ambient-sup-distance, finite-truncation / real-`sSup` overlap
 presentation, not the exact Euclidean / `ENNReal` manuscript API.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

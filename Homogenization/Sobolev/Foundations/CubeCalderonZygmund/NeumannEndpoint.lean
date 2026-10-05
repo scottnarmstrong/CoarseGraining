@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.CubeTranslationFiniteP
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.FiniteLpBelowTwo
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.CubeTranslationFiniteP
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.Neumann.FiniteLpBelowTwo
 
 /-!
 # Arbitrary-cube Neumann Calderón--Zygmund endpoint
@@ -8,6 +10,8 @@ This file translates the centered finite-exponent Neumann estimate to an
 arbitrary triadic cube and exposes it on the project's raw `Vec` norm.  The
 datum needs only the stated finite-`Lᵖ` membership.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

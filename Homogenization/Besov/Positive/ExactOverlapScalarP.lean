@@ -1,6 +1,8 @@
-import Homogenization.Besov.Positive.ExactOverlap
-import Homogenization.Sobolev.FiniteLpExponent
-import Homogenization.Sobolev.Fractional.ExactOverlapScalarComparison
+module
+
+public import Homogenization.Besov.Positive.ExactOverlap
+public import Homogenization.Sobolev.FiniteLpExponent
+public import Homogenization.Sobolev.Fractional.ExactOverlapScalarComparison
 
 /-!
 # Exact scalar overlap aggregation at arbitrary finite `p`
@@ -9,6 +11,8 @@ This additive finite-`p` module identifies the diagonal `q = p` exact overlap
 seminorm with the complete source depth-energy series and with the established
 finite-depth scalar-overlap truncations.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -19,19 +23,19 @@ noncomputable section
 
 namespace FiniteLpExponent
 
-private theorem one_le (p : FiniteLpExponent) : 1 ≤ p.exponent :=
+theorem one_le (p : FiniteLpExponent) : 1 ≤ p.exponent :=
   p.one_lt.le
 
-private theorem ne_zero (p : FiniteLpExponent) : p.exponent ≠ 0 :=
+theorem ne_zero (p : FiniteLpExponent) : p.exponent ≠ 0 :=
   (zero_lt_one.trans p.one_lt).ne'
 
-private theorem ne_top (p : FiniteLpExponent) : p.exponent ≠ ∞ :=
+theorem ne_top (p : FiniteLpExponent) : p.exponent ≠ ∞ :=
   p.lt_top.ne
 
-private theorem toReal_pos (p : FiniteLpExponent) : 0 < p.exponent.toReal :=
+theorem toReal_pos (p : FiniteLpExponent) : 0 < p.exponent.toReal :=
   ENNReal.toReal_pos p.ne_zero p.ne_top
 
-private theorem one_le_toReal (p : FiniteLpExponent) : 1 ≤ p.exponent.toReal := by
+theorem one_le_toReal (p : FiniteLpExponent) : 1 ≤ p.exponent.toReal := by
   rw [← ENNReal.toReal_one]
   exact (ENNReal.toReal_le_toReal (by norm_num) p.ne_top).mpr p.one_le
 
@@ -45,7 +49,7 @@ noncomputable def exactOverlapScalarPParameters (s : FractionalOrder)
   q := p.exponent.toReal
   admissible := ⟨s.2.1, s.2.2, p.one_le_toReal, p.one_le_toReal⟩
 
-private theorem exactOverlapScalarPIntegrableOfMemLp {d : ℕ} (Q : TriadicCube d)
+theorem exactOverlapScalarPIntegrableOfMemLp {d : ℕ} (Q : TriadicCube d)
     (p : FiniteLpExponent) {u : Vec d → ℝ}
     (hmem : MemLp u p.exponent (normalizedCubeMeasure Q)) :
     ExactOverlapIntegrable Q u where
@@ -53,7 +57,7 @@ private theorem exactOverlapScalarPIntegrableOfMemLp {d : ℕ} (Q : TriadicCube 
   overlap := fun _ _ hS =>
     (Gagliardo.memLp_overlap_of_memLp hmem hS).integrable p.one_le
 
-private theorem cubeScaleFactor_div_pow_eq_sourceZPow_scalarP {d : ℕ}
+theorem cubeScaleFactor_div_pow_eq_sourceZPow_scalarP {d : ℕ}
     (Q : TriadicCube d) (j : ℕ) :
     cubeScaleFactor Q / (3 : ℝ) ^ j = (3 : ℝ) ^ (Q.scale - (j : ℤ)) := by
   unfold cubeScaleFactor
@@ -61,7 +65,7 @@ private theorem cubeScaleFactor_div_pow_eq_sourceZPow_scalarP {d : ℕ}
   · simp [div_eq_mul_inv]
   · norm_num
 
-private theorem exactOverlapDepthWeight_eq_ofReal_scalarP {d : ℕ}
+theorem exactOverlapDepthWeight_eq_ofReal_scalarP {d : ℕ}
     (Q : TriadicCube d) (s : ℝ) (j : ℕ) :
     exactOverlapDepthWeight Q s j =
       ENNReal.ofReal (cubeBesovOverlapDepthWeight Q s j) := by
@@ -76,7 +80,7 @@ private theorem exactOverlapDepthWeight_eq_ofReal_scalarP {d : ℕ}
       ((Q.scale - (j : ℤ) : ℤ) : ℝ) * -s
     ring
 
-private theorem exactOverlapLocalOscillation_p_eq_ofReal {d : ℕ}
+theorem exactOverlapLocalOscillation_p_eq_ofReal {d : ℕ}
     (S : TriadicCube d) (p : FiniteLpExponent) (u : Vec d → ℝ)
     (hu : Integrable u (ScalarOverlap.normalizedCubeMeasure S))
     (hmem : MemLp u p.exponent (ScalarOverlap.normalizedCubeMeasure S)) :
@@ -92,7 +96,7 @@ private theorem exactOverlapLocalOscillation_p_eq_ofReal {d : ℕ}
   unfold cubeBesovOverlapOscillation ScalarOverlap.cubeLpNorm
   rw [hmean]
 
-private theorem exactOverlapDepthAverage_p_eq_ofReal {d : ℕ}
+theorem exactOverlapDepthAverage_p_eq_ofReal {d : ℕ}
     (Q : TriadicCube d) (p : FiniteLpExponent) (u : Vec d → ℝ)
     (hmem : MemLp u p.exponent (normalizedCubeMeasure Q)) (j : ℕ) :
     exactOverlapDepthAverage Q p.exponent.toReal u
@@ -134,7 +138,7 @@ private theorem exactOverlapDepthAverage_p_eq_ofReal {d : ℕ}
   · intro S _
     exact Real.rpow_nonneg (cubeBesovOverlapOscillation_nonneg S p.exponent u) _
 
-private theorem exactOverlapDepthTerm_p_eq_ofReal {d : ℕ}
+theorem exactOverlapDepthTerm_p_eq_ofReal {d : ℕ}
     (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent)
     (u : Vec d → ℝ) (hmem : MemLp u p.exponent (normalizedCubeMeasure Q))
     (j : ℕ) :
@@ -169,7 +173,7 @@ theorem exactOverlapScalarPSeminorm_rpow_eq_tsum_depthEnergy {d : ℕ}
     ENNReal.mul_rpow_of_nonneg _ _ p.toReal_pos.le,
     ENNReal.rpow_inv_rpow p.toReal_pos.ne']
 
-private theorem exactOverlapScalarPSeminorm_rpow_eq_iSup_partial_canonical {d : ℕ}
+theorem exactOverlapScalarPSeminorm_rpow_eq_iSup_partial_canonical {d : ℕ}
     (s : FractionalOrder) (p : FiniteLpExponent) (Q : TriadicCube d)
     (u : Vec d → ℝ) (hmem : MemLp u p.exponent (normalizedCubeMeasure Q)) :
     (exactOverlapFiniteSeminorm (exactOverlapScalarPParameters s p) Q u

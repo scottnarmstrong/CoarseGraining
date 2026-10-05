@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.AxisCubeNormalizedLp
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalHarmonicReplacement
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalWeightedTail
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.AxisCubeNormalizedLp
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalHarmonicReplacement
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalWeightedTail
+
+@[expose] public section
 
 namespace Homogenization
 

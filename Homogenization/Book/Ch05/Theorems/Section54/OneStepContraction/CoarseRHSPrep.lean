@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.BetaBridge
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.TauSum
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.Assembly
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.BetaBridge
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.TauSum
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.Assembly
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,8 +1,12 @@
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInterior
-import Homogenization.Ambient.HilbertFinite
-import Homogenization.Multiscale.NormalizedDomainCube
-import Homogenization.Sobolev.NormalizedLp
-import Homogenization.Sobolev.Foundations.DifferenceQuotient
+module
+
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInterior
+public import Homogenization.Ambient.HilbertFinite
+public import Homogenization.Multiscale.NormalizedDomainCube
+public import Homogenization.Sobolev.NormalizedLp
+public import Homogenization.Sobolev.Foundations.DifferenceQuotient
+
+@[expose] public section
 
 namespace Homogenization
 

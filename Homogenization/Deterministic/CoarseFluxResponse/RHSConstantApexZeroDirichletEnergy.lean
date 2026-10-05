@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexEnergy
-import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ZeroDirichletEnergy
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexEnergy
+public import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ZeroDirichletEnergy
+
+@[expose] public section
 
 namespace Homogenization
 

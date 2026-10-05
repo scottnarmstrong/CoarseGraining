@@ -1,8 +1,12 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicCanonicalGradient.Definitions
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicGradientControls
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalizedEnergyProfile
-import Homogenization.Deterministic.CoarseCaccioppoli.TriadicScale
-import Homogenization.Sobolev.Foundations.CubeBesovPoincare
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicCanonicalGradient.Definitions
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.HarmonicGradientControls
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalizedEnergyProfile
+public import Homogenization.Deterministic.CoarseCaccioppoli.TriadicScale
+public import Homogenization.Sobolev.Foundations.CubeBesovPoincare
+
+@[expose] public section
 
 namespace Homogenization
 

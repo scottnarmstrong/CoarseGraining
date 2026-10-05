@@ -1,4 +1,6 @@
-import Homogenization.Besov.Poincare.Structures
-import Homogenization.Besov.Poincare.Projection
-import Homogenization.Besov.Poincare.Descendants
-import Homogenization.Besov.Poincare.Bounds
+module
+
+public import Homogenization.Besov.Poincare.Structures
+public import Homogenization.Besov.Poincare.Projection
+public import Homogenization.Besov.Poincare.Descendants
+public import Homogenization.Besov.Poincare.Bounds

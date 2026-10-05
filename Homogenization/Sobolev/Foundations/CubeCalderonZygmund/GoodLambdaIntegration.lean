@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambda
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeightedLayerCake
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambda
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.WeightedLayerCake
 
 /-!
 # Integration of an untruncated weighted good-`lambda` inequality
@@ -11,6 +13,8 @@ which is bounded by `R` when `1 / 2 < M`.  Reabsorption is therefore legitimate 
 finite cutoff, and monotone convergence then removes the cutoff without assuming `f` is in
 `L^p`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

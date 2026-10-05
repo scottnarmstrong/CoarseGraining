@@ -1,6 +1,10 @@
-import Mathlib.Algebra.Order.Field.GeomSum
-import Homogenization.Besov.Duality.Full
-import Homogenization.Besov.Duality.ProjectionLimit
+module
+
+public import Mathlib.Algebra.Order.Field.GeomSum
+public import Homogenization.Besov.Duality.Full
+public import Homogenization.Besov.Duality.ProjectionLimit
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,8 +1,12 @@
-import Homogenization.Ambient.CoefficientField
-import Homogenization.Sobolev.Foundations.MeanZero
-import Homogenization.Sobolev.H1.BasicLemmas
-import Homogenization.Sobolev.PotentialSolenoidal
-import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+module
+
+public import Homogenization.Ambient.CoefficientField
+public import Homogenization.Sobolev.Foundations.MeanZero
+public import Homogenization.Sobolev.H1.BasicLemmas
+public import Homogenization.Sobolev.PotentialSolenoidal
+public import Homogenization.Sobolev.PotentialSolenoidalL2Recovery
+
+@[expose] public section
 
 namespace Homogenization
 

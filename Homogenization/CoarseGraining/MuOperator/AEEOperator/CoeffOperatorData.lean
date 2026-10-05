@@ -1,7 +1,11 @@
-import Homogenization.CoarseGraining.MuOperator.CoeffOperator
-import Homogenization.CoarseGraining.MuAdmissibility
-import Homogenization.Probability.LocalEllipticitySlices
-import Mathlib.Topology.Order.IsLUB
+module
+
+public import Homogenization.CoarseGraining.MuOperator.CoeffOperator
+public import Homogenization.CoarseGraining.MuAdmissibility
+public import Homogenization.Probability.LocalEllipticitySlices
+public import Mathlib.Topology.Order.IsLUB
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -166,7 +170,7 @@ noncomputable def toMuOperatorRealization (M : AEEMuCoeffOperatorData U a) :
   operatorSymm := M.operatorSymm
   operatorCoercive := M.operatorCoercive
 
-private theorem le_normalizedBlockCoeffOperatorNormBound_of_isEllipticMatrix_of_mem
+theorem le_normalizedBlockCoeffOperatorNormBound_of_isEllipticMatrix_of_mem
     {lam Lam : ℝ} {x : Vec d} (hx : x ∈ U)
     (hmat : IsEllipticMatrix lam Lam (a x)) :
     ‖normalizedBlockCoeffOperator U a x‖ ≤
@@ -200,7 +204,7 @@ private theorem le_normalizedBlockCoeffOperatorNormBound_of_isEllipticMatrix_of_
     _ = MuCoeffOperatorData.normalizedBlockCoeffOperatorNormBound (d := d) U lam Lam := by
         simp [MuCoeffOperatorData.normalizedBlockCoeffOperatorNormBound]
 
-private theorem normalizedBlockCoeffOperator_self_inner_lowerBound_of_isEllipticMatrix_of_mem
+theorem normalizedBlockCoeffOperator_self_inner_lowerBound_of_isEllipticMatrix_of_mem
     {lam Lam : ℝ} {x : Vec d} (hx : x ∈ U)
     (hmat : IsEllipticMatrix lam Lam (a x)) (X : HilbertBlockVec d) :
     ((MeasureTheory.volume U).toReal⁻¹ * (lam / (1 + 2 * Lam ^ 2))) * inner ℝ X X ≤

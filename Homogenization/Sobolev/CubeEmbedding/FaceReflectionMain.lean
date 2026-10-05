@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.CubeEmbedding.FaceReflection
-import Mathlib.MeasureTheory.Integral.Bochner.Set
+module
+
+public import Homogenization.Sobolev.CubeEmbedding.FaceReflection
+public import Mathlib.MeasureTheory.Integral.Bochner.Set
+
+@[expose] public section
 
 namespace Homogenization
 

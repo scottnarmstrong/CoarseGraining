@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges
-import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletCorrectedWeakFluxAveraged
+module
+
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletCorrectedWeakFluxAveraged
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

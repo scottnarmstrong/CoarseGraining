@@ -1,7 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.InteriorLocalInputs
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalComparisonBridges
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionHessianRowWeightedTail
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.TestSubmodule
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.InteriorLocalInputs
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.LocalComparisonBridges
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.ReflectionHessianRowWeightedTail
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.TestSubmodule
 
 /-!
 # Tail transfer from an interior gradient to a reflected Hessian row
@@ -10,6 +12,8 @@ This file is a purely measure-theoretic bridge.  It consumes restricted
 almost-everywhere identities supplied by the reflected interior construction;
 it does not assert either identity or any PDE property.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

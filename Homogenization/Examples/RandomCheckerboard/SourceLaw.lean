@@ -1,8 +1,10 @@
-import Homogenization.Examples.RandomCheckerboard.Basic
-import Homogenization.Book.Ch04.SourceLaw
-import Homogenization.Probability.Source.Coarse.RescaledLaws
-import Homogenization.Probability.Source.Coarse.RegIntegralAdapter
-import Homogenization.Probability.RegCoeffField.RestrictionBridge
+module
+
+public import Homogenization.Examples.RandomCheckerboard.Basic
+public import Homogenization.Book.Ch04.SourceLaw
+public import Homogenization.Probability.Source.Coarse.RescaledLaws
+public import Homogenization.Probability.Source.Coarse.RegIntegralAdapter
+public import Homogenization.Probability.RegCoeffField.RestrictionBridge
 
 /-!
 # Exact-source law for the refined Bernoulli checkerboard
@@ -13,6 +15,8 @@ Here we use the dimension-safe refinement `d + 1`; after triadic rescaling,
 Euclidean unit separation forces the two observations to use disjoint families
 of Bernoulli coins.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Examples.RandomCheckerboard.Source
 
@@ -26,25 +30,25 @@ attribute [local instance] Classical.propDecidable
 /-- The dimension-safe triadic refinement used by the exact-source checkerboard. -/
 def refinementScale (d : ℕ) : ℕ := d + 1
 
-private def ellipticityConstant (lam Lam : ℝ) : ℝ := min lam (min 1 Lam⁻¹)
+def ellipticityConstant (lam Lam : ℝ) : ℝ := min lam (min 1 Lam⁻¹)
 
-private theorem ellipticityConstant_pos {lam Lam : ℝ} (hlam : 0 < lam) (hle : lam ≤ Lam) :
+theorem ellipticityConstant_pos {lam Lam : ℝ} (hlam : 0 < lam) (hle : lam ≤ Lam) :
     0 < ellipticityConstant lam Lam := by
   unfold ellipticityConstant
   refine lt_min hlam ?_
   refine lt_min zero_lt_one ?_
   exact inv_pos.mpr (lt_of_lt_of_le hlam hle)
 
-private theorem ellipticityConstant_le_one (lam Lam : ℝ) :
+theorem ellipticityConstant_le_one (lam Lam : ℝ) :
     ellipticityConstant lam Lam ≤ 1 := by
   unfold ellipticityConstant
   exact le_trans (min_le_right _ _) (min_le_left _ _)
 
-private theorem ellipticityConstant_le_lam (lam Lam : ℝ) :
+theorem ellipticityConstant_le_lam (lam Lam : ℝ) :
     ellipticityConstant lam Lam ≤ lam := by
   exact min_le_left _ _
 
-private theorem Lam_le_ellipticityConstant_inv {lam Lam : ℝ}
+theorem Lam_le_ellipticityConstant_inv {lam Lam : ℝ}
     (hlam : 0 < lam) (hle : lam ≤ Lam) :
     Lam ≤ (ellipticityConstant lam Lam)⁻¹ := by
   apply (le_inv_comm₀ (lt_of_lt_of_le hlam hle) (ellipticityConstant_pos hlam hle)).2
@@ -245,7 +249,7 @@ private theorem adjoint_checkerCarrier {d : ℕ} {lam Lam : ℝ}
   exact congrArg (fun a : RegCoeffField d => a x i j)
     (adjointReg_checkerRegField (lam := lam) (Lam := Lam) ω)
 
-private def baseLaw (d : ℕ) (lam Lam : ℝ) (hlam : 0 < lam) (hle : lam ≤ Lam)
+def baseLaw (d : ℕ) (lam Lam : ℝ) (hlam : 0 < lam) (hle : lam ≤ Lam)
     (p : ℝ≥0) (hp : p ≤ 1) : Measure (Source.Coarse.Carrier d) :=
   Measure.map (checkerCarrier lam Lam hlam hle) (sampleMeasure d p hp)
 

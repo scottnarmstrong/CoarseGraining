@@ -1,9 +1,11 @@
-import Homogenization.Sobolev.Fractional.EuclideanWsp
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.SmoothRepresentative
-import Mathlib.Analysis.Convex.Integral
-import Mathlib.Analysis.Convex.SpecificFunctions.Basic
-import Mathlib.Analysis.Normed.Module.Convex
-import Mathlib.MeasureTheory.Integral.Prod
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWsp
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.SmoothRepresentative
+public import Mathlib.Analysis.Convex.Integral
+public import Mathlib.Analysis.Convex.SpecificFunctions.Basic
+public import Mathlib.Analysis.Normed.Module.Convex
+public import Mathlib.MeasureTheory.Integral.Prod
 
 /-!
 # Diagonal convex smoothing of fractional kernels
@@ -13,6 +15,8 @@ sampling both variables with the same affine map.  This module records that
 operator separately from the source-facing fractional Sobolev API.  Its
 measure estimates are the analytic input for smooth density on cubes.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

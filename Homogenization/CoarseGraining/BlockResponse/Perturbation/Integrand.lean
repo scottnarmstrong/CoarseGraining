@@ -1,5 +1,9 @@
-import Homogenization.CoarseGraining.BlockResponse.Foundations
-import Homogenization.CoarseGraining.MuAdmissibility
+module
+
+public import Homogenization.CoarseGraining.BlockResponse.Foundations
+public import Homogenization.CoarseGraining.MuAdmissibility
+
+@[expose] public section
 
 namespace Homogenization
 

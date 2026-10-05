@@ -1,5 +1,7 @@
-import Homogenization.Book.Ch04.Theorems.Concentration
-import Homogenization.Geometry.ScaleColoring
+module
+
+public import Homogenization.Book.Ch04.Theorems.Concentration
+public import Homogenization.Geometry.ScaleColoring
 
 /-!
 # Coefficient-free constants for Chapter 4 partition averages
@@ -7,6 +9,8 @@ import Homogenization.Geometry.ScaleColoring
 This module owns the numerical scales and color-count constants shared by the
 partition-average and descendant-average concentration APIs.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

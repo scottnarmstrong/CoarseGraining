@@ -1,8 +1,12 @@
-import Homogenization.Sobolev.Foundations.CoerciveH1
-import Homogenization.Geometry.ConvexDomain
-import Mathlib.Analysis.FunctionalSpaces.SobolevInequality
-import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
-import Mathlib.LinearAlgebra.Pi
+module
+
+public import Homogenization.Sobolev.Foundations.CoerciveH1
+public import Homogenization.Geometry.ConvexDomain
+public import Mathlib.Analysis.FunctionalSpaces.SobolevInequality
+public import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
+public import Mathlib.LinearAlgebra.Pi
+
+@[expose] public section
 
 namespace Homogenization
 

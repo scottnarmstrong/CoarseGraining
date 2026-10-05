@@ -1,6 +1,10 @@
-import Homogenization.Internal.Ch02.SymmetricDirichletNeumann.Dirichlet
-import Homogenization.Internal.Ch02.SymmetricDirichletNeumann.Neumann
-import Homogenization.Internal.Ch02.SymmetricDirichletNeumann.ZeroDim
+module
+
+public import Homogenization.Internal.Ch02.SymmetricDirichletNeumann.Dirichlet
+public import Homogenization.Internal.Ch02.SymmetricDirichletNeumann.Neumann
+public import Homogenization.Internal.Ch02.SymmetricDirichletNeumann.ZeroDim
+
+@[expose] public section
 
 namespace Homogenization
 namespace Internal

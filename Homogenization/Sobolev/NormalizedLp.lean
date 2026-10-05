@@ -1,5 +1,7 @@
-import Homogenization.Ambient.Euclidean
-import Homogenization.Geometry.BoundedMeasurableDomain
+module
+
+public import Homogenization.Ambient.Euclidean
+public import Homogenization.Geometry.BoundedMeasurableDomain
 
 /-!
 # Normalized `L^p` quantities on bounded measurable domains
@@ -10,6 +12,8 @@ meaning of the manuscript notation `fint_U`.  Extended norms are kept in
 The ambient `Vec d` norm remains untouched: the Euclidean vector lane below
 uses the explicit function `euclideanNorm`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

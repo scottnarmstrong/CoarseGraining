@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.H1.Translation
-import Homogenization.Sobolev.PotentialSolenoidal
+module
+
+public import Homogenization.Sobolev.H1.Translation
+public import Homogenization.Sobolev.PotentialSolenoidal
+
+@[expose] public section
 
 namespace Homogenization
 

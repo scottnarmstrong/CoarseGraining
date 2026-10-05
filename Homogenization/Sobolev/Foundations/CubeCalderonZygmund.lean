@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.DirichletNeumannEndpoint
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.DirichletNeumannEndpoint
 
 /-!
 # Calderón--Zygmund estimates on cubes
@@ -6,3 +8,5 @@ import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.DirichletNeumannEn
 This module exposes the public Dirichlet and mean-zero Neumann finite-exponent
 Calderón--Zygmund estimates on triadic cubes.
 -/
+
+@[expose] public section

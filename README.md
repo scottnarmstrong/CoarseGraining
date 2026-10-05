@@ -175,7 +175,8 @@ five pairs with both the Lean kernel and the independent `nanoda` kernel.
 
 To use the library, `import Homogenization` (the root module
 [`Homogenization.lean`](Homogenization.lean)) pulls in the whole development; the
-public results are in `import Homogenization.Book.MainResults`.
+public results are in `import Homogenization.Book.MainResults`. Every file of the library is a Lean module, so a
+module that uses it writes `public import` (or `import`) of these modules.
 
 ## Repository layout
 

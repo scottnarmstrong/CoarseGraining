@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.EuclideanWspLocalization
-import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDual
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWspLocalization
+public import Homogenization.Sobolev.Fractional.EuclideanWspSmoothDual
 
 /-!
 # Descendant localization preliminaries for the smooth negative fractional norm
@@ -9,6 +11,8 @@ restriction of a globally smooth test field.  They are the two analytic inputs
 needed for negative-norm localization by finite Hoelder duality.
 -/
 
+@[expose] public section
+
 namespace Homogenization
 
 open MeasureTheory
@@ -16,7 +20,7 @@ open scoped BigOperators ENNReal
 
 noncomputable section
 
-private def CubeEuclideanWspSmoothTest.restrictToSubcube {d : ℕ}
+def CubeEuclideanWspSmoothTest.restrictToSubcube {d : ℕ}
     {Q R : TriadicCube d} {s : FractionalOrder} {p : FiniteLpExponent}
     (h : CubeEuclideanWspSmoothTest Q s p)
     (_hRQ : openCubeSet R ⊆ openCubeSet Q) :
@@ -24,7 +28,7 @@ private def CubeEuclideanWspSmoothTest.restrictToSubcube {d : ℕ}
   toField := h.toField
   contDiff := h.contDiff
 
-private theorem cubeEuclideanNormalizedSmoothPairing_restrictToSubcube {d : ℕ}
+theorem cubeEuclideanNormalizedSmoothPairing_restrictToSubcube {d : ℕ}
     {Q R : TriadicCube d} {s : FractionalOrder} {p : FiniteLpExponent}
     (F : CubeEuclideanLpField Q FiniteLpExponent.two)
     (hRQ : openCubeSet R ⊆ openCubeSet Q)
@@ -35,7 +39,7 @@ private theorem cubeEuclideanNormalizedSmoothPairing_restrictToSubcube {d : ℕ}
   rfl
 
 /-- Exact partition of a normalized real pairing over descendants. -/
-private theorem cubeEuclideanNormalizedSmoothPairing_descendants_eq {d : ℕ}
+theorem cubeEuclideanNormalizedSmoothPairing_descendants_eq {d : ℕ}
     (Q : TriadicCube d) (j : ℕ)
     (F : CubeEuclideanLpField Q FiniteLpExponent.two)
     {s : FractionalOrder} {p : FiniteLpExponent}
@@ -68,7 +72,7 @@ private theorem cubeEuclideanNormalizedSmoothPairing_descendants_eq {d : ℕ}
   simp only [dite_eq_left hR]
   rfl
 
-private theorem cubeEuclideanWspFullENorm_descendant_lt_top_of_le_one {d : ℕ}
+theorem cubeEuclideanWspFullENorm_descendant_lt_top_of_le_one {d : ℕ}
     (Q : TriadicCube d) (j : ℕ) (s : FractionalOrder) (p : FiniteLpExponent)
     (h : CubeEuclideanWspSmoothTest Q s p)
     (hunit : cubeEuclideanWspFullENorm Q s p h.toField ≤ 1)
@@ -111,14 +115,14 @@ private theorem cubeEuclideanWspFullENorm_descendant_lt_top_of_le_one {d : ℕ}
     simpa [D] using hR
   exact (ENNReal.rpow_lt_top_iff_of_pos ht).mp hterm_top
 
-private def CubeEuclideanWspSmoothTest.scale {d : ℕ}
+def CubeEuclideanWspSmoothTest.scale {d : ℕ}
     {Q : TriadicCube d} {s : FractionalOrder} {p : FiniteLpExponent}
     (c : ℝ) (h : CubeEuclideanWspSmoothTest Q s p) :
     CubeEuclideanWspSmoothTest Q s p where
   toField x := c • h.toField x
   contDiff := h.contDiff.const_smul c
 
-private theorem negativeLocalization_kernel_smul {d : ℕ}
+theorem negativeLocalization_kernel_smul {d : ℕ}
     (s : FractionalOrder) (p : FiniteLpExponent) (c : ℝ)
     (f : Vec d → Vec d) :
     cubeEuclideanWspKernel s p (fun x => c • f x) =
@@ -130,7 +134,7 @@ private theorem negativeLocalization_kernel_smul {d : ℕ}
     c • (_ • HilbertVec.ofVec (f z.1 - f z.2))
   rw [smul_smul, smul_smul, mul_comm]
 
-private theorem negativeLocalization_normalizedLp_smul {d : ℕ}
+theorem negativeLocalization_normalizedLp_smul {d : ℕ}
     (Q : TriadicCube d) (p : FiniteLpExponent) (c : ℝ)
     (f : Vec d → Vec d) :
     (cubeBoundedMeasurableDomain Q).normalizedEuclideanLpENorm p.exponent
@@ -147,7 +151,7 @@ private theorem negativeLocalization_normalizedLp_smul {d : ℕ}
   rw [eLpNorm_const_smul]
   simp
 
-private theorem negativeLocalization_eSeminorm_smul {d : ℕ}
+theorem negativeLocalization_eSeminorm_smul {d : ℕ}
     (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent)
     (c : ℝ) (f : Vec d → Vec d) :
     cubeEuclideanWspESeminorm Q s p (fun x => c • f x) =
@@ -156,7 +160,7 @@ private theorem negativeLocalization_eSeminorm_smul {d : ℕ}
   rw [negativeLocalization_kernel_smul]
   exact eLpNorm_const_smul c _ _ _
 
-private theorem negativeLocalization_fullENorm_smul {d : ℕ}
+theorem negativeLocalization_fullENorm_smul {d : ℕ}
     (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent)
     (c : ℝ) (f : Vec d → Vec d) :
     cubeEuclideanWspFullENorm Q s p (fun x => c • f x) =
@@ -187,7 +191,7 @@ private theorem negativeLocalization_fullENorm_smul {d : ℕ}
     _ = ‖c‖ₑ * (W * L ^ t + S ^ t) ^ t⁻¹ := by
       rw [← ENNReal.rpow_mul, mul_inv_cancel₀ ht.ne', ENNReal.rpow_one]
 
-private theorem negativeLocalization_pairing_scale {d : ℕ}
+theorem negativeLocalization_pairing_scale {d : ℕ}
     {Q : TriadicCube d} {s : FractionalOrder} {p : FiniteLpExponent}
     (F : CubeEuclideanLpField Q FiniteLpExponent.two)
     (h : CubeEuclideanWspSmoothTest Q s p) (c : ℝ) :
@@ -197,7 +201,7 @@ private theorem negativeLocalization_pairing_scale {d : ℕ}
   simp_rw [vecDot_smul_right]
   exact integral_const_mul c _
 
-private theorem negativeLocalization_normalizedLp_eq_zero_of_full_eq_zero {d : ℕ}
+theorem negativeLocalization_normalizedLp_eq_zero_of_full_eq_zero {d : ℕ}
     (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent)
     (f : Vec d → Vec d) (hf : cubeEuclideanWspFullENorm Q s p f = 0) :
     (cubeBoundedMeasurableDomain Q).normalizedEuclideanLpENorm p.exponent f = 0 := by
@@ -221,7 +225,7 @@ private theorem negativeLocalization_normalizedLp_eq_zero_of_full_eq_zero {d : �
   have hpow : L ^ t = 0 := (mul_eq_zero.mp hterm).resolve_left hW
   exact (ENNReal.rpow_eq_zero_iff_of_pos ht).mp hpow
 
-private theorem negativeLocalization_pairing_eq_zero_of_full_eq_zero {d : ℕ}
+theorem negativeLocalization_pairing_eq_zero_of_full_eq_zero {d : ℕ}
     (Q : TriadicCube d) (s : FractionalOrder)
     (F : CubeEuclideanLpField Q FiniteLpExponent.two)
     {p : FiniteLpExponent} (h : CubeEuclideanWspSmoothTest Q s p)
@@ -247,7 +251,7 @@ private theorem negativeLocalization_pairing_eq_zero_of_full_eq_zero {d : ℕ}
   filter_upwards [hfield_zero] with x hx
   simp [hx, vecDot]
 
-private theorem negativeLocalization_pairing_le_dual_mul_full {d : ℕ}
+theorem negativeLocalization_pairing_le_dual_mul_full {d : ℕ}
     (Q : TriadicCube d) (s : FractionalOrder) (p : FiniteLpExponent)
     (F : CubeEuclideanLpField Q FiniteLpExponent.two)
     (h : CubeEuclideanWspSmoothTest Q s p.conjugate)
@@ -304,7 +308,7 @@ private theorem negativeLocalization_pairing_le_dual_mul_full {d : ℕ}
       _ ≤ N * D := by simpa [mul_comm] using mul_le_mul_left hu N
       _ = D * N := mul_comm _ _
 
-private theorem negativeLocalization_finite_holder_average {ι : Type*}
+theorem negativeLocalization_finite_holder_average {ι : Type*}
     (D : Finset ι) (hD : D.Nonempty) (p : FiniteLpExponent) (a b : ι → ℝ≥0∞) :
     ((D.card : ℝ≥0∞)⁻¹ * ∑ i ∈ D, a i * b i) ≤
       (((D.card : ℝ≥0∞)⁻¹ * ∑ i ∈ D, a i ^ p.exponent.toReal) ^
@@ -353,7 +357,7 @@ private theorem negativeLocalization_finite_holder_average {ι : Type*}
       conv_lhs => rw [← hcexp]
       ac_rfl
 
-private theorem negativeLocalization_descendantsAverage_abs_le {d : ℕ}
+theorem negativeLocalization_descendantsAverage_abs_le {d : ℕ}
     (Q : TriadicCube d) (j : ℕ) (f : TriadicCube d → ℝ) :
     ENNReal.ofReal |descendantsAverage Q j f| ≤
       descendantsENNAverage Q j (fun R => ENNReal.ofReal |f R|) := by

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.Height
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.Height
+
+@[expose] public section
 
 namespace Homogenization
 

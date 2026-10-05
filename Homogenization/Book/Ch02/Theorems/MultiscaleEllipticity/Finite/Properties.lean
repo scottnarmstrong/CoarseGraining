@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.DiscountBounds
+module
+
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.DiscountBounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.RawIdentities
-import Homogenization.Deterministic.WeakNormInterfaces.Bounds
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.RawIdentities
+public import Homogenization.Deterministic.WeakNormInterfaces.Bounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

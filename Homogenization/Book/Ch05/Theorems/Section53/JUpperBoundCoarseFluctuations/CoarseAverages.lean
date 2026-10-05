@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch02.Theorems.MatrixOperatorNorm
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.WeakNormInput
+module
+
+public import Homogenization.Book.Ch02.Theorems.MatrixOperatorNorm
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.WeakNormInput
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionL2
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentTestFold
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionL2
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.ReflectionParentTestFold
+
+@[expose] public section
 
 namespace Homogenization
 

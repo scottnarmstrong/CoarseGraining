@@ -1,9 +1,13 @@
-import Homogenization.Geometry.CubeMeasure
-import Homogenization.Multiscale.CubeAverage
-import Homogenization.PDE.EnergyIdentities
-import Homogenization.PDE.Harmonic
-import Homogenization.Sobolev.PotentialSolenoidalCubeBridge
-import Homogenization.Sobolev.PotentialSolenoidalL2Realization
+module
+
+public import Homogenization.Geometry.CubeMeasure
+public import Homogenization.Multiscale.CubeAverage
+public import Homogenization.PDE.EnergyIdentities
+public import Homogenization.PDE.Harmonic
+public import Homogenization.Sobolev.PotentialSolenoidalCubeBridge
+public import Homogenization.Sobolev.PotentialSolenoidalL2Realization
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -26,7 +30,7 @@ instance instIsFiniteMeasureVolumeMeasureOnCubeSet_rhs {d : ℕ} (Q : TriadicCub
     MeasureTheory.IsFiniteMeasure (volumeMeasureOn (cubeSet Q)) :=
   isFiniteMeasureVolumeMeasureOnCubeSet_rhs Q
 
-private theorem openCubeSet_nonempty_rhs {d : ℕ} (Q : TriadicCube d) :
+theorem openCubeSet_nonempty_rhs {d : ℕ} (Q : TriadicCube d) :
     Set.Nonempty (openCubeSet Q) := by
   refine ⟨fun i => (Q.index i : ℝ) * cubeScaleFactor Q, ?_⟩
   intro i

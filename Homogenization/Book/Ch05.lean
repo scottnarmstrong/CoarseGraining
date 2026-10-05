@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Definitions
-import Homogenization.Book.Ch05.Theorems
+module
+
+public import Homogenization.Book.Ch05.Definitions
+public import Homogenization.Book.Ch05.Theorems
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

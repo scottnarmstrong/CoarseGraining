@@ -1,9 +1,13 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.QuantitativeCutoff
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalPatchCutoff
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalizedEnergyProfile
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.SingleCubeRhs
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.Scalar
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.Vector
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.QuantitativeCutoff
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalPatchCutoff
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalizedEnergyProfile
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.SingleCubeRhs
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.Scalar
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.SplitPairing.Vector
+
+@[expose] public section
 
 namespace Homogenization
 

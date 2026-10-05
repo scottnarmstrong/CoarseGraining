@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch03.Theorems.WeakFluxRHS.Selection.CorrectorEnergy
+module
+
+public import Homogenization.Book.Ch03.Theorems.WeakFluxRHS.Selection.CorrectorEnergy
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

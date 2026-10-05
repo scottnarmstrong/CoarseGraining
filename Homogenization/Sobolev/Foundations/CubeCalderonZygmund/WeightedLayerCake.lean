@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambda
-import Mathlib.Analysis.SpecialFunctions.Pow.Integral
-import Mathlib.MeasureTheory.Measure.WithDensity
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambda
+public import Mathlib.Analysis.SpecialFunctions.Pow.Integral
+public import Mathlib.MeasureTheory.Measure.WithDensity
+
+@[expose] public section
 
 namespace Homogenization
 

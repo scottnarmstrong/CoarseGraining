@@ -1,5 +1,7 @@
-import Homogenization.Probability.Source.AKL
-import Mathlib.Probability.Independence.Basic
+module
+
+public import Homogenization.Probability.Source.AKL
+public import Mathlib.Probability.Independence.Basic
 
 /-!
 # AKL laws, locality, and finite independence
@@ -7,6 +9,8 @@ import Mathlib.Probability.Independence.Basic
 The law-facing AKL assumptions use the integral-generated local sigma algebras
 of `AKL.localSigma`.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Source.AKL
 

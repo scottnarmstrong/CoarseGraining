@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.LowScales
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.DiscountBounds
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.LowScales
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.DiscountBounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

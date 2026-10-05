@@ -1,8 +1,10 @@
-import Homogenization.Besov.Positive.ExactOverlapEuclideanLpCoordinateBridge
-import Homogenization.Sobolev.Fractional.EuclideanGagliardoCoordinateBridgeP
-import Homogenization.Sobolev.Fractional.ExactOverlapScalarPComparison
-import Homogenization.Sobolev.Fractional.AssemblyPieces
-import Homogenization.Sobolev.Fractional.EuclideanWspCongruence
+module
+
+public import Homogenization.Besov.Positive.ExactOverlapEuclideanLpCoordinateBridge
+public import Homogenization.Sobolev.Fractional.EuclideanGagliardoCoordinateBridgeP
+public import Homogenization.Sobolev.Fractional.ExactOverlapScalarPComparison
+public import Homogenization.Sobolev.Fractional.AssemblyPieces
+public import Homogenization.Sobolev.Fractional.EuclideanWspCongruence
 
 /-!
 # Finite-`p` direct Euclidean overlap versus fractional Sobolev seminorm
@@ -11,6 +13,8 @@ This is the source-facing comparison for the canonical vector-valued overlap
 seminorm.  The proof keeps its direct Euclidean local oscillations intact and
 uses scalar coordinates only internally.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -179,7 +183,7 @@ theorem cubeEuclideanPositiveBesovOverlapESeminorm_congr_ae {d : ℕ}
   refine Finset.sum_congr rfl fun S _ => ?_
   rw [euclideanOverlapLocalENorm_congr_ae p S.2 hFG]
 
-private theorem exactOverlapScalarPIntegrableOfEuclideanField {d : ℕ}
+theorem exactOverlapScalarPIntegrableOfEuclideanField {d : ℕ}
     (Q : TriadicCube d) (p : FiniteLpExponent) (F : CubeEuclideanLpField Q p)
     (i : Fin d) : ExactOverlapIntegrable Q (fun x => F x i) where
   root := (cubeEuclideanLp_coordinate_memLp F i).integrable p.one_lt.le

@@ -1,8 +1,12 @@
-import Homogenization.CoarseGraining.MuOperator.CoeffOperator
-import Homogenization.CoarseGraining.MuAdmissibility
-import Homogenization.Probability.LocalEllipticitySlices
-import Homogenization.CoarseGraining.MuOperator.AEEOperator.CoeffOperatorData
-import Mathlib.Topology.Order.IsLUB
+module
+
+public import Homogenization.CoarseGraining.MuOperator.CoeffOperator
+public import Homogenization.CoarseGraining.MuAdmissibility
+public import Homogenization.Probability.LocalEllipticitySlices
+public import Homogenization.CoarseGraining.MuOperator.AEEOperator.CoeffOperatorData
+public import Mathlib.Topology.Order.IsLUB
+
+@[expose] public section
 
 namespace Homogenization
 

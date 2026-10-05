@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.ForceLocalization
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.ForceLocalization
+
+@[expose] public section
 
 namespace Homogenization
 

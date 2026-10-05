@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.FiniteNet
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.FiniteNet
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

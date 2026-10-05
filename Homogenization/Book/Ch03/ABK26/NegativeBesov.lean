@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.EuclideanWspCongruence
-import Homogenization.Deterministic.WeakNormInterfaces.AECongruence
+module
+
+public import Homogenization.Sobolev.Fractional.EuclideanWspCongruence
+public import Homogenization.Deterministic.WeakNormInterfaces.AECongruence
 
 /-!
 # ABK26 running-scale negative Besov seminorm
@@ -9,6 +11,8 @@ by the Chapter 3 local coarse-graining statement.  Its summation variable is
 the descendant depth `j`; the physical source scale is consequently
 `Q.scale - j` at every summand.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

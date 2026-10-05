@@ -1,10 +1,14 @@
-import Homogenization.Ambient.CoefficientField
-import Mathlib.Analysis.Normed.Lp.SmoothApprox
-import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
-import Mathlib.MeasureTheory.Function.AEEqFun
-import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
-import Mathlib.MeasureTheory.Group.Arithmetic
-import Mathlib.Topology.Instances.Matrix
+module
+
+public import Homogenization.Ambient.CoefficientField
+public import Mathlib.Analysis.Normed.Lp.SmoothApprox
+public import Mathlib.Analysis.Calculus.ContDiff.Basic
+public import Mathlib.Analysis.Calculus.ContDiff.Operations
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+public import Mathlib.MeasureTheory.Function.AEEqFun
+public import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
+public import Mathlib.MeasureTheory.Group.Arithmetic
+public import Mathlib.Topology.Instances.Matrix
 
 /-!
 # The AKL a.e.-quotient coefficient-field kernel
@@ -13,6 +17,8 @@ The high-moment manuscript uses uniformly elliptic, measurable coefficient
 fields modulo equality almost everywhere.  This module gives its fixed-`Θ`
 carrier and its integral-only local sigma-algebras.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Source.AKL
 
@@ -108,13 +114,13 @@ private theorem isClosed_isEllipticEntry :
     exact isClosed_le (by fun_prop) (by fun_prop)
   exact h₁.inter h₂
 
-private instance instMeasurableSpaceMat : MeasurableSpace (Mat d) :=
+instance instMeasurableSpaceMat : MeasurableSpace (Mat d) :=
   inferInstanceAs (MeasurableSpace (Fin d → Fin d → ℝ))
 
-private instance instBorelSpaceMat : BorelSpace (Mat d) :=
+instance instBorelSpaceMat : BorelSpace (Mat d) :=
   ⟨BorelSpace.measurable_eq (α := Fin d → Fin d → ℝ)⟩
 
-private instance instPseudoMetrizableSpaceMat : TopologicalSpace.PseudoMetrizableSpace (Mat d) :=
+instance instPseudoMetrizableSpaceMat : TopologicalSpace.PseudoMetrizableSpace (Mat d) :=
   inferInstanceAs (TopologicalSpace.PseudoMetrizableSpace (Fin d → Fin d → ℝ))
 
 private theorem measurableSet_isEllipticMatrix :

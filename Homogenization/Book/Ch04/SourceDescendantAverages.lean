@@ -1,7 +1,9 @@
-import Mathlib.Algebra.Order.Chebyshev
-import Homogenization.Book.Ch04.PartitionAverageConstants
-import Homogenization.Book.Ch04.SourceColorClassConcentration
-import Homogenization.Book.Ch04.Theorems.PartitionAverages
+module
+
+public import Mathlib.Algebra.Order.Chebyshev
+public import Homogenization.Book.Ch04.PartitionAverageConstants
+public import Homogenization.Book.Ch04.SourceColorClassConcentration
+public import Homogenization.Book.Ch04.Theorems.PartitionAverages
 
 /-!
 # Source-local descendant-average concentration
@@ -10,6 +12,8 @@ This module assembles source-local color-class concentration bounds into
 descendant-average bounds.  Its public statements depend only on source
 unit-range dependence; source locality supplies summand measurability.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

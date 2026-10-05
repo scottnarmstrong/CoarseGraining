@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.MatchedPair.ScaledPoincare
-import Homogenization.Sobolev.Foundations.DifferenceQuotient
+module
+
+public import Homogenization.Sobolev.MatchedPair.ScaledPoincare
+public import Homogenization.Sobolev.Foundations.DifferenceQuotient
+
+@[expose] public section
 
 namespace Homogenization
 

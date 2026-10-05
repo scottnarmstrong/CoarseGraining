@@ -1,8 +1,12 @@
-import Homogenization.Sobolev.Foundations.CubePoisson
-import Homogenization.Sobolev.Foundations.CubeReflection.Reflections
-import Homogenization.Sobolev.Foundations.CubeReflection.Folding
-import Homogenization.Sobolev.Foundations.CubeReflection.Homeomorphism
-import Homogenization.Sobolev.Foundations.CubeReflection.Derivatives
+module
+
+public import Homogenization.Sobolev.Foundations.CubePoisson
+public import Homogenization.Sobolev.Foundations.CubeReflection.Reflections
+public import Homogenization.Sobolev.Foundations.CubeReflection.Folding
+public import Homogenization.Sobolev.Foundations.CubeReflection.Homeomorphism
+public import Homogenization.Sobolev.Foundations.CubeReflection.Derivatives
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubePoisson.DualTestNorm
-import Homogenization.Deterministic.WeakNormInterfacesComponentwise
+module
+
+public import Homogenization.Sobolev.Foundations.CubePoisson.DualTestNorm
+public import Homogenization.Deterministic.WeakNormInterfacesComponentwise
+
+@[expose] public section
 
 namespace Homogenization
 

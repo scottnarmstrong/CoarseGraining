@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.ForceLocalization
-import Homogenization.Deterministic.WeakFluxRHS.GlobalIteration
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.ForceLocalization
+public import Homogenization.Deterministic.WeakFluxRHS.GlobalIteration
+
+@[expose] public section
 
 namespace Homogenization
 

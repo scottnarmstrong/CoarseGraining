@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.TriadicSeries
+module
+
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.TriadicSeries
 
 /-!
 # Root-scale control for the sampled continuous K energy
@@ -7,6 +9,8 @@ The continuum scale integral omits the endpoint `t = 1`. This module controls th
 triadic sample directly with the zero `H¹` competitor and separates it exactly from the shifted
 sampled energy.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

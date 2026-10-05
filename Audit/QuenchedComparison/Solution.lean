@@ -1,7 +1,11 @@
-import Mathlib
-import Homogenization.Book.MainResults
-import Homogenization.Sobolev.Fractional.ClassicalDualComparison
-import Audit.QuenchedComparison.SolutionBasic
+module
+
+public import Mathlib
+public import Homogenization.Book.MainResults
+public import Homogenization.Sobolev.Fractional.ClassicalDualComparison
+public import Audit.QuenchedComparison.SolutionBasic
+
+@[expose] public section
 
 attribute [-instance] Homogenization.instMeasurableSpaceVec
 attribute [-instance] Homogenization.instMeasurableSpaceMat

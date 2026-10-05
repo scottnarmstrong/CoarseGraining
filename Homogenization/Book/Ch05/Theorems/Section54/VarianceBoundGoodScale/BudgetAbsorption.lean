@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.RefinedAssembly
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.GeometricSum
-import Homogenization.Book.Ch05.Theorems.Section52.Coefficients.RootCoeff
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.RefinedAssembly
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.GeometricSum
+public import Homogenization.Book.Ch05.Theorems.Section52.Coefficients.RootCoeff
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

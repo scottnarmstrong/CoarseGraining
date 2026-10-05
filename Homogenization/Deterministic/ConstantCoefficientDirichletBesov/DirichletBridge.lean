@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.KAveraging
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.KAveraging
+
+@[expose] public section
 
 namespace Homogenization
 

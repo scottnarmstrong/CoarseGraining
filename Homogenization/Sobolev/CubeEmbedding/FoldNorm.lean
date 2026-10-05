@@ -1,9 +1,13 @@
-import Homogenization.Sobolev.CubeEmbedding.Fold
-import Mathlib.MeasureTheory.Constructions.Pi
-import Mathlib.MeasureTheory.Integral.Lebesgue.Map
-import Mathlib.MeasureTheory.Group.Measure
-import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
+module
+
+public import Homogenization.Sobolev.CubeEmbedding.Fold
+public import Mathlib.MeasureTheory.Constructions.Pi
+public import Mathlib.MeasureTheory.Integral.Lebesgue.Map
+public import Mathlib.MeasureTheory.Group.Measure
+public import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
+public import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
+
+@[expose] public section
 
 namespace Homogenization
 

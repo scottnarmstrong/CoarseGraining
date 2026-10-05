@@ -1,7 +1,11 @@
-import Homogenization.CoarseGraining.OriginCubeEllipticRecovery
-import Homogenization.CoarseGraining.OriginCubeOpenBridge
-import Homogenization.CoarseGraining.MuAdmissibility
-import Homogenization.Sobolev.PotentialSolenoidalL2
+module
+
+public import Homogenization.CoarseGraining.OriginCubeEllipticRecovery
+public import Homogenization.CoarseGraining.OriginCubeOpenBridge
+public import Homogenization.CoarseGraining.MuAdmissibility
+public import Homogenization.Sobolev.PotentialSolenoidalL2
+
+@[expose] public section
 
 namespace Homogenization
 

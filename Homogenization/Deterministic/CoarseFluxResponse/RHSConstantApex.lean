@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantAbsorption
-import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantEnvelope
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantAbsorption
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantEnvelope
+
+@[expose] public section
 
 namespace Homogenization
 

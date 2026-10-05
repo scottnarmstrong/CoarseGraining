@@ -1,7 +1,9 @@
-import Homogenization.HighContrast.Corridor.PhaseComparison.Measurability
-import Homogenization.CoarseGraining.CubeMinimizer
-import Homogenization.CoarseGraining.QuadraticStability.Integral
-import Homogenization.CoarseGraining.SharpBlockBounds.DiagonalSandwich
+module
+
+public import Homogenization.HighContrast.Corridor.PhaseComparison.Measurability
+public import Homogenization.CoarseGraining.CubeMinimizer
+public import Homogenization.CoarseGraining.QuadraticStability.Integral
+public import Homogenization.CoarseGraining.SharpBlockBounds.DiagonalSandwich
 
 /-!
 # Per-phase stability of the corridor observable
@@ -26,6 +28,8 @@ The core B′3 assembly is packaged as `abs_phaseObservable_sub_le_of_minimizer`
 (M2) is the existential wrapper.  The `Z`-as-input form is what the grid-averaging
 step M3 needs, since a single `a`-minimizer serves every phase `σ`.
 -/
+
+@[expose] public section
 
 open Homogenization
 open MeasureTheory

@@ -1,5 +1,7 @@
-import Homogenization.Examples.Periodic.PeriodicGeneralComparison
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+module
+
+public import Homogenization.Examples.Periodic.PeriodicGeneralComparison
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 
 /-!
 # A concrete periodic scalar coefficient field
@@ -11,6 +13,8 @@ periodic, isotropic, adjoint-invariant, and uniformly elliptic (`λ = 2`,
 `PeriodicConcreteComparison` (and, through it, `PeriodicSmoothComparison`) to
 instantiate the periodic comparison corollary.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Examples

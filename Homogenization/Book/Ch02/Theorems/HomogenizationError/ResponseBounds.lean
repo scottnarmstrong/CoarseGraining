@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.Theorems.HomogenizationError.Translation
+module
+
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError.Translation
+
+@[expose] public section
 
 open scoped BigOperators MatrixOrder Matrix.Norms.Frobenius
 

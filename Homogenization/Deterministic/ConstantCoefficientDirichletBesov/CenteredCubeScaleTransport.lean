@@ -1,6 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.ContinuousKRegularity
-import Homogenization.Sobolev.Foundations.CoerciveH1Dilation
-import Homogenization.Sobolev.Fractional.CenteredCubeEuclideanH2
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.ContinuousKRegularity
+public import Homogenization.Sobolev.Foundations.CoerciveH1Dilation
+public import Homogenization.Sobolev.Fractional.CenteredCubeEuclideanH2
 
 /-!
 # Centered-cube transport for the Dirichlet divergence problem
@@ -25,6 +27,8 @@ pullback of the physical gradient.
   of the unit gradient carrier with centered-cube field pullback.
 -/
 
+@[expose] public section
+
 namespace Homogenization
 
 open MeasureTheory
@@ -44,7 +48,7 @@ private theorem castH10Function_grad {d : ℕ} {U V : Set (Vec d)}
   subst V
   rfl
 
-private theorem centeredOpenCube_eq_smul_unitCenteredOpenCube
+theorem centeredOpenCube_eq_smul_unitCenteredOpenCube
     {d : ℕ} (m : ℤ) :
     openCubeSet (originCube d m) =
       centeredCubeScale m • openCubeSet (originCube d 0) := by

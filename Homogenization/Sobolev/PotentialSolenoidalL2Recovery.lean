@@ -1,7 +1,11 @@
-import Homogenization.Sobolev.Foundations.Hodge
-import Homogenization.Sobolev.PotentialSolenoidalL2
-import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
-import Mathlib.Topology.Basic
+module
+
+public import Homogenization.Sobolev.Foundations.Hodge
+public import Homogenization.Sobolev.PotentialSolenoidalL2
+public import Mathlib.MeasureTheory.Function.LpSeminorm.CompareExp
+public import Mathlib.Topology.Basic
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -287,11 +291,11 @@ theorem integral_pairing_affine_eq_volume_mul_vecDot_of_integral_eq_zero
 
 end CorrectionFieldData
 
-private noncomputable def blockFstCLM {d : ℕ} {U : Set (Vec d)} :
+noncomputable def blockFstCLM {d : ℕ} {U : Set (Vec d)} :
     BlockL2 U →L[ℝ] VectorL2 U :=
   (ContinuousLinearMap.fst ℝ (Vec d) (Vec d)).compLpL 2 (volumeMeasureOn U)
 
-private noncomputable def blockSndCLM {d : ℕ} {U : Set (Vec d)} :
+noncomputable def blockSndCLM {d : ℕ} {U : Set (Vec d)} :
     BlockL2 U →L[ℝ] VectorL2 U :=
   (ContinuousLinearMap.snd ℝ (Vec d) (Vec d)).compLpL 2 (volumeMeasureOn U)
 

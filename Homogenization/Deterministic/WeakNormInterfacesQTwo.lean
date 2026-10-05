@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.WeakNormInterfaces
-import Homogenization.Besov.Poincare.Descendants
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Foundation
+module
+
+public import Homogenization.Deterministic.WeakNormInterfaces
+public import Homogenization.Besov.Poincare.Descendants
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Foundation
+
+@[expose] public section
 
 namespace Homogenization
 

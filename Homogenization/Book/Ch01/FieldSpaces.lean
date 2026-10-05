@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.PotentialSolenoidalExact
-import Homogenization.Sobolev.H1.LocalizedZeroTrace
+module
+
+public import Homogenization.Sobolev.PotentialSolenoidalExact
+public import Homogenization.Sobolev.H1.LocalizedZeroTrace
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

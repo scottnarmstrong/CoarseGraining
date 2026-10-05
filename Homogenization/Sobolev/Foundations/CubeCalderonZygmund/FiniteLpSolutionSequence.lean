@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpDataDensity
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpSolutionStability
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpDataDensity
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpSolutionStability
 
 /-!
 # Canonical finite-`L^p` approximating solutions on centered cubes
@@ -10,6 +12,8 @@ solutions.  It stops before selecting a limit: the later arbitrary-data
 assembly is responsible for both the high-exponent zero-trace bridge and the
 weak-equation limit passage.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -22,7 +26,7 @@ namespace CubeCalderonZygmund
 
 namespace INTERNAL
 
-private theorem memVectorL2_openCubeSet_of_euclideanMemLpTwo
+theorem memVectorL2_openCubeSet_of_euclideanMemLpTwo
     {d : ℕ} (Q : TriadicCube d) {F : Vec d → Vec d}
     (hF : MemLp (fun x => HilbertVec.ofVec (F x)) 2 (normalizedCubeMeasure Q)) :
     MemVectorL2 (openCubeSet Q) F := by

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch02.Theorems.DoubledResponseDefinitions
-import Homogenization.Book.Ch02.Theorems.SubadditivityScalingDefinitions
+module
+
+public import Homogenization.Book.Ch02.Theorems.DoubledResponseDefinitions
+public import Homogenization.Book.Ch02.Theorems.SubadditivityScalingDefinitions
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

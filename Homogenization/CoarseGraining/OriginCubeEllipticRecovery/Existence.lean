@@ -1,5 +1,7 @@
-import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.Setup
-import Homogenization.Sobolev.PotentialSolenoidalL2Realization
+module
+
+public import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.Setup
+public import Homogenization.Sobolev.PotentialSolenoidalL2Realization
 
 /-!
 # Origin-cube elliptic recovery -- uniform existence hypothesis
@@ -8,6 +10,8 @@ Formulates OpenCubeOriginEllipticRecoveryExistence, carries the long translate-
 coefficient-field ellipticity helper, and derives origin-cube recovery data
 from a potentialZeroTraceClosureRealization input under IsEllipticFieldOn.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

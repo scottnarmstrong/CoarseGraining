@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch04.SourceDescendantAverages
-import Homogenization.Book.Ch04.SourcePartitionAverageDefinitions
-import Homogenization.Book.Ch04.SourceStationaryExpectations
+module
+
+public import Homogenization.Book.Ch04.SourceDescendantAverages
+public import Homogenization.Book.Ch04.SourcePartitionAverageDefinitions
+public import Homogenization.Book.Ch04.SourceStationaryExpectations
 
 /-!
 # One-origin source partition-average fluctuations
@@ -8,6 +10,8 @@ import Homogenization.Book.Ch04.SourceStationaryExpectations
 These estimates transport a single source-local observable from the origin
 cube to every descendant using source stationarity and unit-range dependence.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

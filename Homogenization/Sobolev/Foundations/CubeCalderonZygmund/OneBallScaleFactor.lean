@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.StoppingCubeGeometry
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.StoppingCubeGeometry
+
+@[expose] public section
 
 namespace Homogenization
 

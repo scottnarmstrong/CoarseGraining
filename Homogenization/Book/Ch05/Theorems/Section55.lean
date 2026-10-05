@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta.Final
-import Homogenization.Book.Ch05.Theorems.Section55.ShiftedOneStepContraction
-import Homogenization.Book.Ch05.Theorems.Section55.AnnealedImprovement
-import Homogenization.Book.Ch05.Theorems.Section55.AnnealedConvergence
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta.Final
+public import Homogenization.Book.Ch05.Theorems.Section55.ShiftedOneStepContraction
+public import Homogenization.Book.Ch05.Theorems.Section55.AnnealedImprovement
+public import Homogenization.Book.Ch05.Theorems.Section55.AnnealedConvergence
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

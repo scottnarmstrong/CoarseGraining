@@ -1,8 +1,12 @@
-import Homogenization.CoarseGraining.BlockMatrixProperties
-import Homogenization.CoarseGraining.MuRecovery
-import Homogenization.Probability.RandomField
-import Homogenization.Sobolev.L2Ambient
-import Homogenization.Sobolev.PotentialSolenoidal
+module
+
+public import Homogenization.CoarseGraining.BlockMatrixProperties
+public import Homogenization.CoarseGraining.MuRecovery
+public import Homogenization.Probability.RandomField
+public import Homogenization.Sobolev.L2Ambient
+public import Homogenization.Sobolev.PotentialSolenoidal
+
+@[expose] public section
 
 namespace Homogenization
 

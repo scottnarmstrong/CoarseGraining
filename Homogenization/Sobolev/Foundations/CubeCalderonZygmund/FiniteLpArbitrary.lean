@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpW10pLimit
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpLimitEquation
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpLimitBound
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpW10pLimit
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpLimitEquation
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpLimitBound
 
 /-!
 # Arbitrary-data finite-`L^p` cube Calderón--Zygmund theorem
@@ -10,6 +12,8 @@ data by packaging the canonical zero-trace solution limit.  The constant and
 normalized estimate are inherited unchanged from the canonical gradient
 limit.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

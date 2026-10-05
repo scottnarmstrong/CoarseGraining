@@ -1,5 +1,9 @@
-import Homogenization.Internal.Ch02.GradientUniqueness
-import Homogenization.Book.Ch02.Theorems.Existence
+module
+
+public import Homogenization.Internal.Ch02.GradientUniqueness
+public import Homogenization.Book.Ch02.Theorems.Existence
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

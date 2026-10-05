@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseFluxResponse.RHS
-import Homogenization.Deterministic.WeakFluxRHS.AbsorbedNoteApex
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.RHS
+public import Homogenization.Deterministic.WeakFluxRHS.AbsorbedNoteApex
+
+@[expose] public section
 
 namespace Homogenization
 

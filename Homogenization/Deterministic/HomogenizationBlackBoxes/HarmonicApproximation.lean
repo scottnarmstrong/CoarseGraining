@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2
-import Homogenization.Deterministic.CoarseFluxResponse
-import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ExpandedAndElliptic
+module
+
+public import Homogenization.Deterministic.HomogenizationBlackBoxes.CoarseGrainingL2
+public import Homogenization.Deterministic.CoarseFluxResponse
+public import Homogenization.Deterministic.CoarsePoincareRHS.FinalTheorems.ExpandedAndElliptic
+
+@[expose] public section
 
 namespace Homogenization
 

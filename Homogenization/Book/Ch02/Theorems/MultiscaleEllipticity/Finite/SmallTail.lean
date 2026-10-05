@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.Properties
-import Mathlib.Algebra.Order.Chebyshev
+module
+
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity.Finite.Properties
+public import Mathlib.Algebra.Order.Chebyshev
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

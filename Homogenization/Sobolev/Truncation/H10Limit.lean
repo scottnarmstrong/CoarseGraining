@@ -1,4 +1,8 @@
-import Homogenization.Sobolev.Truncation.Basic
+module
+
+public import Homogenization.Sobolev.Truncation.Basic
+
+@[expose] public section
 
 namespace Homogenization
 

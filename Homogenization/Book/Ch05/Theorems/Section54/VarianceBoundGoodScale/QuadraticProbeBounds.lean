@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.PartitionAverage
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.PartitionAverage
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

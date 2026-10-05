@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.FiniteLpExponent
+module
+
+public import Homogenization.Sobolev.FiniteLpExponent
 
 /-!
 # Finite-`p` coordinate bounds for direct Euclidean fields
@@ -7,6 +9,8 @@ These inequalities compare the project-vector coordinate functions with the
 Euclidean Hilbert realization `HilbertVec.ofVec`, while leaving the project's
 ambient product norm unchanged.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,3 +1,5 @@
-import Homogenization.Probability.IndependentSums.GammaSigmaExpRegime.Preliminaries
-import Homogenization.Probability.IndependentSums.GammaSigmaExpRegime.OneVariable
-import Homogenization.Probability.IndependentSums.GammaSigmaExpRegime.FiniteSums
+module
+
+public import Homogenization.Probability.IndependentSums.GammaSigmaExpRegime.Preliminaries
+public import Homogenization.Probability.IndependentSums.GammaSigmaExpRegime.OneVariable
+public import Homogenization.Probability.IndependentSums.GammaSigmaExpRegime.FiniteSums

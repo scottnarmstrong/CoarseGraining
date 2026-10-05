@@ -1,6 +1,10 @@
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.MeasureTheory.Integral.Bochner.Set
-import Homogenization.Geometry.BoundaryLayer
+module
+
+public import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.Set
+public import Homogenization.Geometry.BoundaryLayer
+
+@[expose] public section
 
 namespace Homogenization
 

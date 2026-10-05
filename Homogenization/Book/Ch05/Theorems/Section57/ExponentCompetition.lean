@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section57.BadPairSelection
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.BadPairSelection
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

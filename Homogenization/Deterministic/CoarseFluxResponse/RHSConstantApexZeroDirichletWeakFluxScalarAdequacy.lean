@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletScalarAdequacy
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSConstantApexZeroDirichletScalarAdequacy
+
+@[expose] public section
 
 namespace Homogenization
 

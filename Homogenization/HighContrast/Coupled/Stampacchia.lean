@@ -1,6 +1,8 @@
-import Homogenization.HighContrast.Coupled.Stampacchia.LevelEnergy
-import Homogenization.HighContrast.Coupled.Stampacchia.DeGiorgiCore
-import Homogenization.HighContrast.Coupled.Median
+module
+
+public import Homogenization.HighContrast.Coupled.Stampacchia.LevelEnergy
+public import Homogenization.HighContrast.Coupled.Stampacchia.DeGiorgiCore
+public import Homogenization.HighContrast.Coupled.Median
 
 /-!
 # The coupled Stampacchia estimate (Proposition 3.3)
@@ -22,6 +24,8 @@ The proof:
   `−m`) — after transporting the core from `axisCube` to `openCubeSet` through the
   set identity `openCubeSet (originCube d m) = axisCube (fun _ => −½·3^m) (3^m)`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

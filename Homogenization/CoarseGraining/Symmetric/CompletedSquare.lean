@@ -1,5 +1,9 @@
-import Homogenization.CoarseGraining.MagicIdentities.Basics
-import Homogenization.CoarseGraining.Symmetric.Response
+module
+
+public import Homogenization.CoarseGraining.MagicIdentities.Basics
+public import Homogenization.CoarseGraining.Symmetric.Response
+
+@[expose] public section
 
 namespace Homogenization
 

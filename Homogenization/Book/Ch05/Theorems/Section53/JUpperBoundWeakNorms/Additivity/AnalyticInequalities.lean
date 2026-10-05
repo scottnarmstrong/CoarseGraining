@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.Additivity.ParentRestriction
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.Additivity.ParentRestriction
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section57.UniformScaleCompressionFinal
-import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationQuenched
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section57.UniformScaleCompressionFinal
+public import Homogenization.Book.Ch05.Theorems.Section57.HomogenizationQuenched
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,6 +1,10 @@
-import Homogenization.Sobolev.Foundations.H1Graph.Graph
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionWeakEquation
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.SmoothLimit
+module
+
+public import Homogenization.Sobolev.Foundations.H1Graph.Graph
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.ReflectionWeakEquation
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.SmoothLimit
+
+@[expose] public section
 
 namespace Homogenization
 

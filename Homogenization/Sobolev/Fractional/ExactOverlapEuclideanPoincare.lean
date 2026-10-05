@@ -1,7 +1,9 @@
-import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
-import Homogenization.Besov.Duality.OverlapDefinitions
-import Homogenization.Besov.Positive.ExactOverlapEuclidean
-import Homogenization.Sobolev.Fractional.ContinuousInterpolation.UnitCubeGeometry
+module
+
+public import Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality
+public import Homogenization.Besov.Duality.OverlapDefinitions
+public import Homogenization.Besov.Positive.ExactOverlapEuclidean
+public import Homogenization.Sobolev.Fractional.ContinuousInterpolation.UnitCubeGeometry
 
 /-!
 # Fractional Poincare estimate from the exact overlap norm
@@ -11,6 +13,8 @@ the normalized `L²` fluctuation on the root cube.  Combining this observation
 coordinatewise with the Hilbert-valued `L²` triangle inequality proves the
 fractional Poincare estimate directly, without importing a Sobolev embedding.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

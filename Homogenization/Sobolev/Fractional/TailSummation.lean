@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Fractional.Constants
+module
+
+public import Homogenization.Sobolev.Fractional.Constants
 
 /-!
 # Backwards geometric tail summation
@@ -9,6 +11,8 @@ coefficients `q^j` over any finite set of depths on which `q^j` is bounded by
 with `q = 3^{s p + d}` and `M = (dist x y)^{-(s p + d)}-ish` this is the
 geometric tail that makes the comparison constant dimensional.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Gagliardo

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimate.Split
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalEstimate.Split
+
+@[expose] public section
 
 namespace Homogenization
 

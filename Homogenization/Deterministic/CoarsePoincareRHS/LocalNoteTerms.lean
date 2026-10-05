@@ -1,3 +1,5 @@
-import Homogenization.Deterministic.CoarsePoincareRHS.LocalNoteTerms.Stepping
-import Homogenization.Deterministic.CoarsePoincareRHS.LocalNoteTerms.Bounded
-import Homogenization.Deterministic.CoarsePoincareRHS.LocalNoteTerms.Intrinsic
+module
+
+public import Homogenization.Deterministic.CoarsePoincareRHS.LocalNoteTerms.Stepping
+public import Homogenization.Deterministic.CoarsePoincareRHS.LocalNoteTerms.Bounded
+public import Homogenization.Deterministic.CoarsePoincareRHS.LocalNoteTerms.Intrinsic

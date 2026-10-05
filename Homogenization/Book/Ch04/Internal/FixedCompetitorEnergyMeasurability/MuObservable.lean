@@ -1,15 +1,19 @@
-import Homogenization.CoarseGraining.MuQuadratic
-import Homogenization.CoarseGraining.MuOperator.CoeffOperator
-import Homogenization.CoarseGraining.MuRecovery.CorrectionSpaceEnergy
-import Homogenization.Book.Ch04.Internal.CoarseObservableMeasurability.Mu
-import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability.BlockEnergyAverage
-import Homogenization.Probability.LocalEllipticitySlices
-import Homogenization.Probability.LocalObservable
-import Homogenization.Probability.RandomFieldMeasurability
-import Mathlib.Analysis.Normed.Lp.SmoothApprox
-import Mathlib.Geometry.Manifold.ContMDiff.NormedSpace
-import Mathlib.Geometry.Manifold.PartitionOfUnity
-import Mathlib.MeasureTheory.Function.UniformIntegrable
+module
+
+public import Homogenization.CoarseGraining.MuQuadratic
+public import Homogenization.CoarseGraining.MuOperator.CoeffOperator
+public import Homogenization.CoarseGraining.MuRecovery.CorrectionSpaceEnergy
+public import Homogenization.Book.Ch04.Internal.CoarseObservableMeasurability.Mu
+public import Homogenization.Book.Ch04.Internal.FixedCompetitorEnergyMeasurability.BlockEnergyAverage
+public import Homogenization.Probability.LocalEllipticitySlices
+public import Homogenization.Probability.LocalObservable
+public import Homogenization.Probability.RandomFieldMeasurability
+public import Mathlib.Analysis.Normed.Lp.SmoothApprox
+public import Mathlib.Geometry.Manifold.ContMDiff.NormedSpace
+public import Mathlib.Geometry.Manifold.PartitionOfUnity
+public import Mathlib.MeasureTheory.Function.UniformIntegrable
+
+@[expose] public section
 
 namespace Homogenization
 

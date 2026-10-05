@@ -1,6 +1,10 @@
-import Homogenization.Besov.Basic
-import Homogenization.Multiscale.CubeAverage
-import Mathlib.Algebra.Order.Field.GeomSum
+module
+
+public import Homogenization.Besov.Basic
+public import Homogenization.Multiscale.CubeAverage
+public import Mathlib.Algebra.Order.Field.GeomSum
+
+@[expose] public section
 
 namespace Homogenization
 

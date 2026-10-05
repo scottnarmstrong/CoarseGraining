@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.Kernel
-import Homogenization.Sobolev.W1p.ZeroExtensionGraph
-import Mathlib.Analysis.Convex.Topology
+module
+
+public import Homogenization.Sobolev.W1p.ConvexApproxSmoothing.Kernel
+public import Homogenization.Sobolev.W1p.ZeroExtensionGraph
+public import Mathlib.Analysis.Convex.Topology
 
 /-!
 # Inward mollification on bounded convex domains
@@ -10,6 +12,8 @@ zero-boundary Sobolev approximation.  The convolution is evaluated after an
 outward affine dilation.  Consequently, its support is a compact set strictly
 inside the original bounded open convex domain.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,7 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section51.AnnealedConvergence
-import Homogenization.Book.Ch05.Theorems.Public
-import Homogenization.Book.Ch05.Theorems.Section57.UniformEllipticityBridge
-import Homogenization.Book.Ch03.Theorems.SobolevPublic
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section51.AnnealedConvergence
+public import Homogenization.Book.Ch05.Theorems.Public
+public import Homogenization.Book.Ch05.Theorems.Section57.UniformEllipticityBridge
+public import Homogenization.Book.Ch03.Theorems.SobolevPublic
 
 /-!
 # Main results: elliptic homogenization in the uniformly elliptic case
@@ -63,6 +65,8 @@ editor every name is clickable and hovers its own docstring):
   `Homogenization/Book/Ch05/Theorems/Section51/AnnealedConvergence.lean` and
   `Homogenization/Book/Ch05/Theorems/Public.lean`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

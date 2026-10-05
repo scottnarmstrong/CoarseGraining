@@ -1,6 +1,10 @@
-import Homogenization.Geometry.SignedPermutation
-import Homogenization.Geometry.TriadicCubeTranslation
-import Homogenization.Geometry.TriadicPartition
+module
+
+public import Homogenization.Geometry.SignedPermutation
+public import Homogenization.Geometry.TriadicCubeTranslation
+public import Homogenization.Geometry.TriadicPartition
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

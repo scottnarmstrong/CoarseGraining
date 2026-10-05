@@ -1,4 +1,8 @@
-import Homogenization.Probability.IndependentSums.GammaSigma.Basic
+module
+
+public import Homogenization.Probability.IndependentSums.GammaSigma.Basic
+
+@[expose] public section
 
 namespace Homogenization
 namespace IndependentSums

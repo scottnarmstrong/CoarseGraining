@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section52.ScalarAlgebra
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section52.ScalarAlgebra
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

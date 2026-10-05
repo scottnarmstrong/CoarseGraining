@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.ScalarLoss
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section55.ShiftedWidetildeTheta
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundCoarseFluctuations.ScalarLoss
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

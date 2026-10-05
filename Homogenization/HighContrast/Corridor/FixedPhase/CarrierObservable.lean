@@ -1,6 +1,8 @@
-import Homogenization.HighContrast.Corridor.FixedPhase.ClampedObservable
-import Homogenization.Book.Ch04.Internal.AEESliceAssembly.CarrierMuFamily
-import Homogenization.Probability.RegCoeffField.SliceMeasurability
+module
+
+public import Homogenization.HighContrast.Corridor.FixedPhase.ClampedObservable
+public import Homogenization.Book.Ch04.Internal.AEESliceAssembly.CarrierMuFamily
+public import Homogenization.Probability.RegCoeffField.SliceMeasurability
 
 /-!
 # The carrier-measurable clamped observable
@@ -37,6 +39,8 @@ construction**:
 
 Reference: the paper (Armstrong–Kuusi–Loher, to appear).
 -/
+
+@[expose] public section
 
 open Homogenization
 open scoped MeasureTheory BigOperators

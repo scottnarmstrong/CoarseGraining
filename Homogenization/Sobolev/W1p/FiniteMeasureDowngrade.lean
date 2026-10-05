@@ -1,6 +1,8 @@
-import Homogenization.Sobolev.H1.BasicLemmas
-import Homogenization.Sobolev.W1p.BasicLemmas
-import Homogenization.Sobolev.FiniteLpExponent
+module
+
+public import Homogenization.Sobolev.H1.BasicLemmas
+public import Homogenization.Sobolev.W1p.BasicLemmas
+public import Homogenization.Sobolev.FiniteLpExponent
 
 /-!
 # Finite-measure downgrades from `H¹` to `W^{1,p}`
@@ -10,6 +12,8 @@ an `H1Function` also provide `W^{1,p}` data at every finite exponent `p ≤ 2`.
 The analogous conversion for `H10Function` preserves its smooth, compactly
 supported approximating sequence and therefore its zero-trace witness.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -47,7 +51,7 @@ end H1Function
 
 namespace H10Function
 
-private theorem tendsto_eLpNorm_downgrade_of_two
+theorem tendsto_eLpNorm_downgrade_of_two
     {d : ℕ} {U : Set (Vec d)}
     [MeasureTheory.IsFiniteMeasure (MeasureTheory.volume.restrict U)]
     {p : FiniteLpExponent} (hp : p.exponent ≤ 2)

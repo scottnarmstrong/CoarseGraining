@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarsePoincare.Setup.Conversions
+module
+
+public import Homogenization.Deterministic.CoarsePoincare.Setup.Conversions
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,7 +1,11 @@
-import Homogenization.Geometry.TriadicCubeTranslation
-import Homogenization.Sobolev.Foundations.CoerciveH1Dilation
-import Homogenization.Sobolev.Foundations.CoerciveH1Translation
-import Homogenization.Sobolev.Foundations.PoincareMeanZero
+module
+
+public import Homogenization.Geometry.TriadicCubeTranslation
+public import Homogenization.Sobolev.Foundations.CoerciveH1Dilation
+public import Homogenization.Sobolev.Foundations.CoerciveH1Translation
+public import Homogenization.Sobolev.Foundations.PoincareMeanZero
+
+@[expose] public section
 
 namespace Homogenization
 

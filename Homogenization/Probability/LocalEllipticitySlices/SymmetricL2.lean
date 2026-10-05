@@ -1,4 +1,8 @@
-import Homogenization.Probability.LocalEllipticitySlices
+module
+
+public import Homogenization.Probability.LocalEllipticitySlices
+
+@[expose] public section
 
 namespace Homogenization
 

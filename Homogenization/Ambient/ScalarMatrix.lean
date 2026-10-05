@@ -1,4 +1,8 @@
-import Homogenization.Ambient.CoefficientField
+module
+
+public import Homogenization.Ambient.CoefficientField
+
+@[expose] public section
 
 namespace Homogenization
 

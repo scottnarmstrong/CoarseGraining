@@ -1,5 +1,7 @@
-import Homogenization.Sobolev.Fractional.CongruenceAE
-import Homogenization.Sobolev.Fractional.EuclideanWsp
+module
+
+public import Homogenization.Sobolev.Fractional.CongruenceAE
+public import Homogenization.Sobolev.Fractional.EuclideanWsp
 
 /-!
 # Almost-everywhere congruence for Euclidean fractional `W^{s,p}`
@@ -8,6 +10,8 @@ The Euclidean finite-exponent fractional kernel and its associated seminorm,
 membership predicate, and full power norm depend only on the normalized-cube
 almost-everywhere representative of the field.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

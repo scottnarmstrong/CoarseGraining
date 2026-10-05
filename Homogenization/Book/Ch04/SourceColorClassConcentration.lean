@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch04.SourceColorClassIndependence
-import Homogenization.Book.Ch04.SourceMeasurability
-import Homogenization.Book.Ch04.Theorems.Concentration
+module
+
+public import Homogenization.Book.Ch04.SourceColorClassIndependence
+public import Homogenization.Book.Ch04.SourceMeasurability
+public import Homogenization.Book.Ch04.Theorems.Concentration
 
 /-!
 # Concentration of source-local observables on a scale-color class
@@ -9,6 +11,8 @@ These wrappers combine source unit-range dependence with the existing
 independent-sum concentration estimates.  Source locality supplies both the
 independence input and global measurability of each summand.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

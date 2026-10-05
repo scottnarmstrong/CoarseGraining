@@ -1,5 +1,9 @@
-import Homogenization.Geometry.OverlapCenters
-import Homogenization.Multiscale.NormalizedNorms
+module
+
+public import Homogenization.Geometry.OverlapCenters
+public import Homogenization.Multiscale.NormalizedNorms
+
+@[expose] public section
 
 namespace Homogenization
 

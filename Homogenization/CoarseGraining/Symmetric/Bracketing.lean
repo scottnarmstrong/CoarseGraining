@@ -1,7 +1,11 @@
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.SigmaStarLeSigma
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.HarmonicMean
-import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.UpperLeftAverage
-import Homogenization.CoarseGraining.Symmetric.CoarseMatrices
+module
+
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.EllipticConsequences.SigmaStarLeSigma
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.HarmonicMean
+public import Homogenization.CoarseGraining.MagicIdentities.MuOrdering.UpperLeftAverage
+public import Homogenization.CoarseGraining.Symmetric.CoarseMatrices
+
+@[expose] public section
 
 namespace Homogenization
 

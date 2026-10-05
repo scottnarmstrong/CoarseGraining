@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.EnergyDefect
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.WeakNormsMaximizer.EnergyDefect
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PositiveNorm
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PositiveNorm
+
+@[expose] public section
 
 namespace Homogenization
 

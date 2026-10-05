@@ -1,6 +1,10 @@
-import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.DeterministicCoarseData
-import Homogenization.CoarseGraining.Symmetric.Bracketing
-import Homogenization.CoarseGraining.Symmetric.CompletedSquare
+module
+
+public import Homogenization.CoarseGraining.OriginCubeEllipticRecovery.DeterministicCoarseData
+public import Homogenization.CoarseGraining.Symmetric.Bracketing
+public import Homogenization.CoarseGraining.Symmetric.CompletedSquare
+
+@[expose] public section
 
 namespace Homogenization
 

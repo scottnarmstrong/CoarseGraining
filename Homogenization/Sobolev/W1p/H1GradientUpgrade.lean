@@ -1,7 +1,9 @@
-import Homogenization.Sobolev.Foundations.PoincareMeanZero
-import Homogenization.Sobolev.Foundations.PoincareW1p
-import Homogenization.Sobolev.W1p.WeakGradientClosure
-import Homogenization.Sobolev.FiniteLpExponent
+module
+
+public import Homogenization.Sobolev.Foundations.PoincareMeanZero
+public import Homogenization.Sobolev.Foundations.PoincareW1p
+public import Homogenization.Sobolev.W1p.WeakGradientClosure
+public import Homogenization.Sobolev.FiniteLpExponent
 
 /-!
 # Upgrading `H¹` witnesses from higher-integrable gradients
@@ -11,6 +13,8 @@ coordinates belong to a finite `L^p` space is also a `W^{1,p}` witness.  The
 value membership is obtained from mixed-exponent convex smoothing and the
 finite-`p` Poincare estimate; it is not an additional hypothesis.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -375,7 +379,7 @@ private theorem eventually_valueLpSeminorm_convexApproxSmoothH1W1p_le
       add_le_add hsubbound (mul_le_mul_of_nonneg_right havgbound hM)
     _ = B := rfl
 
-private theorem memLp_of_gradMemLp_on_isOpenBoundedConvexDomain
+theorem memLp_of_gradMemLp_on_isOpenBoundedConvexDomain
     {d : ℕ} [NeZero d] {U : Set (Vec d)} (hU : IsOpenBoundedConvexDomain U)
     (u : H1Function U) (p : FiniteLpExponent)
     (hgrad : GradMemLpOn U p.exponent u.grad) :

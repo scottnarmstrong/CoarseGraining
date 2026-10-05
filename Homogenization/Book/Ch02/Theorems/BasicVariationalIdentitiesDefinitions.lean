@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.Theorems.MatrixExtraction
+module
+
+public import Homogenization.Book.Ch02.Theorems.MatrixExtraction
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

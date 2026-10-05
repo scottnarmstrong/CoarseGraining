@@ -1,6 +1,10 @@
-import Homogenization.CoarseGraining.BlockResponse.Foundations.PairStates
-import Homogenization.CoarseGraining.AdjointSymmetry.SigmaAdjoint
-import Homogenization.CoarseGraining.ResponseIdentities.Existence
+module
+
+public import Homogenization.CoarseGraining.BlockResponse.Foundations.PairStates
+public import Homogenization.CoarseGraining.AdjointSymmetry.SigmaAdjoint
+public import Homogenization.CoarseGraining.ResponseIdentities.Existence
+
+@[expose] public section
 
 namespace Homogenization
 

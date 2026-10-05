@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Response
+module
+
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Response
+
+@[expose] public section
 
 namespace Homogenization
 

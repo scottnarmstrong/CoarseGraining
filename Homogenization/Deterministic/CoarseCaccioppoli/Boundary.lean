@@ -1,2 +1,4 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.Boundary.NoteRhs
-import Homogenization.Deterministic.CoarseCaccioppoli.Boundary.ExplicitHeight
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.Boundary.NoteRhs
+public import Homogenization.Deterministic.CoarseCaccioppoli.Boundary.ExplicitHeight

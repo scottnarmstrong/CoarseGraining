@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.Expectation.Assembly
-import Homogenization.Book.Ch05.Theorems.Section52.P4Integrability
-import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.QuantitativeCutoffInputs.Setup.ScaleBounds
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section53.JUpperBoundWeakNorms.Expectation.Assembly
+public import Homogenization.Book.Ch05.Theorems.Section52.P4Integrability
+public import Homogenization.Deterministic.CoarseCaccioppoli.SingleCubeToRaw.QuantitativeCutoffInputs.Setup.ScaleBounds
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

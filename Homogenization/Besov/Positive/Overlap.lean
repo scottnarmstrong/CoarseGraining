@@ -1,5 +1,9 @@
-import Homogenization.Besov.Positive
-import Homogenization.Multiscale.OverlapLp
+module
+
+public import Homogenization.Besov.Positive
+public import Homogenization.Multiscale.OverlapLp
+
+@[expose] public section
 
 namespace Homogenization
 

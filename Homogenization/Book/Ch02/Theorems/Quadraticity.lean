@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.Quadraticity
+module
+
+public import Homogenization.Internal.Ch02.Quadraticity
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

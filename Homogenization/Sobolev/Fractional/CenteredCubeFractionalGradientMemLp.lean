@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpBelowTwo
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpBelowTwo
 
 /-!
 # Finite-exponent gradient membership for fractional divergence data
@@ -7,6 +9,8 @@ This file packages the supplied-solution Calderón--Zygmund estimate as a
 literal normalized-cube `L^q` membership witness for the given `H¹₀`
 gradient.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

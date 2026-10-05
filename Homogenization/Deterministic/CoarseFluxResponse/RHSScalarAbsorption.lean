@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.CoarseFluxResponse.RHSCorrections
+module
+
+public import Homogenization.Deterministic.CoarseFluxResponse.RHSCorrections
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch02.Theorems.HomogenizationErrorDefinitions
-import Homogenization.Book.Ch02.Theorems.DoubledResponse
-import Homogenization.Book.Ch02.Theorems.MatrixPositivity
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity
-import Homogenization.Book.Ch02.Theorems.SubadditivityScaling
+module
+
+public import Homogenization.Book.Ch02.Theorems.HomogenizationErrorDefinitions
+public import Homogenization.Book.Ch02.Theorems.DoubledResponse
+public import Homogenization.Book.Ch02.Theorems.MatrixPositivity
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity
+public import Homogenization.Book.Ch02.Theorems.SubadditivityScaling
+
+@[expose] public section
 
 open scoped BigOperators MatrixOrder Matrix.Norms.Frobenius
 

@@ -1,5 +1,7 @@
-import Mathlib.Probability.Moments.Variance
-import Mathlib.MeasureTheory.Function.L2Space
+module
+
+public import Mathlib.Probability.Moments.Variance
+public import Mathlib.MeasureTheory.Function.L2Space
 
 /-!
 # Variance as the smallest quadratic distance to a constant
@@ -14,6 +16,8 @@ Two elementary `L²` facts underlying the opening step in the proof of
 * `var_le_two_integral_add_two_var` : the `(x+y)² ≤ 2x² + 2y²` split, taking
   `c = 𝔼[G]` so the second term is exactly `Var[G]`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

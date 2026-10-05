@@ -1,6 +1,8 @@
-import Homogenization.Book.Ch04.SourceDescendantMoments
-import Homogenization.Book.Ch04.SourcePartitionAverageDefinitions
-import Homogenization.Book.Ch04.SourceStationaryExpectations
+module
+
+public import Homogenization.Book.Ch04.SourceDescendantMoments
+public import Homogenization.Book.Ch04.SourcePartitionAverageDefinitions
+public import Homogenization.Book.Ch04.SourceStationaryExpectations
 
 /-!
 # One-origin real-moment partition-average bounds
@@ -8,6 +10,8 @@ import Homogenization.Book.Ch04.SourceStationaryExpectations
 This module derives the real-exponent partition-average moment estimate on the
 exact coarse source carrier from one local origin observable.
 -/
+
+@[expose] public section
 
 namespace Homogenization.Book.Ch04
 

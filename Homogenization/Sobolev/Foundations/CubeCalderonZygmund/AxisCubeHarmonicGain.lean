@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.HarmonicGradientGainIteration
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.AxisCubeHarmonicCovariance
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.HarmonicGradientGainIteration
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.AxisCubeHarmonicCovariance
+
+@[expose] public section
 
 namespace Homogenization
 

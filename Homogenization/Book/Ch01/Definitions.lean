@@ -1,11 +1,15 @@
-import Homogenization.Besov.Duality.Full
-import Homogenization.Besov.Negative.ExactCircDomination
-import Homogenization.Book.Ch01.FieldSpaces
-import Homogenization.Geometry.BoundedConvexDomain
-import Homogenization.Multiscale.NormalizedDomainCube
-import Homogenization.Sobolev.NegativeSobolev
-import Homogenization.Sobolev.NormalizedLp
-import Homogenization.Sobolev.W1p.Normalized
+module
+
+public import Homogenization.Besov.Duality.Full
+public import Homogenization.Besov.Negative.ExactCircDomination
+public import Homogenization.Book.Ch01.FieldSpaces
+public import Homogenization.Geometry.BoundedConvexDomain
+public import Homogenization.Multiscale.NormalizedDomainCube
+public import Homogenization.Sobolev.NegativeSobolev
+public import Homogenization.Sobolev.NormalizedLp
+public import Homogenization.Sobolev.W1p.Normalized
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

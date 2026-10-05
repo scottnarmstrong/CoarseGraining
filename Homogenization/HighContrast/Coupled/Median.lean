@@ -1,8 +1,10 @@
-import Mathlib.MeasureTheory.Measure.Restrict
-import Mathlib.MeasureTheory.Measure.Map
-import Mathlib.MeasureTheory.Measure.Sum
-import Mathlib.MeasureTheory.Measure.NullMeasurable
-import Mathlib.MeasureTheory.Constructions.BorelSpace.Order
+module
+
+public import Mathlib.MeasureTheory.Measure.Restrict
+public import Mathlib.MeasureTheory.Measure.Map
+public import Mathlib.MeasureTheory.Measure.Sum
+public import Mathlib.MeasureTheory.Measure.NullMeasurable
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.Order
 
 /-!
 # Two-function median
@@ -19,6 +21,8 @@ disjoint union of two copies of `α`, phrased without sum types.
 
 No `sorry`, no axioms, no heartbeat overrides.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

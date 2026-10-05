@@ -1,4 +1,8 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.KFunctional
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.KFunctional
+
+@[expose] public section
 
 namespace Homogenization
 

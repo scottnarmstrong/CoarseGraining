@@ -1,6 +1,10 @@
-import Homogenization.Book.Ch03.Theorems.PublicInternalBridges
-import Homogenization.Deterministic.WeakFluxRHS.AbsorbedNoteApex
-import Homogenization.Deterministic.WeakFluxRHS.CorrectorEnergyAveraged
+module
+
+public import Homogenization.Book.Ch03.Theorems.PublicInternalBridges
+public import Homogenization.Deterministic.WeakFluxRHS.AbsorbedNoteApex
+public import Homogenization.Deterministic.WeakFluxRHS.CorrectorEnergyAveraged
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

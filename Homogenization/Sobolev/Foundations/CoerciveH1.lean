@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.MeanZero
-import Homogenization.Sobolev.L2Ambient
+module
+
+public import Homogenization.Sobolev.Foundations.MeanZero
+public import Homogenization.Sobolev.L2Ambient
+
+@[expose] public section
 
 namespace Homogenization
 

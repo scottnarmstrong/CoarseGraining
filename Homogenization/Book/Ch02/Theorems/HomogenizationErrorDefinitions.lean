@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch02.HomogenizationError
+module
+
+public import Homogenization.Book.Ch02.HomogenizationError
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

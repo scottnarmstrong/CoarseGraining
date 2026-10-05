@@ -1,8 +1,12 @@
-import Homogenization.Sobolev.Foundations.CoerciveH1
-import Homogenization.Sobolev.Foundations.CubeCoerciveH1
-import Homogenization.Sobolev.Foundations.PoincareMeanZero
-import Homogenization.Sobolev.H1.BasicLemmas
-import Homogenization.Sobolev.PotentialSolenoidalL2
+module
+
+public import Homogenization.Sobolev.Foundations.CoerciveH1
+public import Homogenization.Sobolev.Foundations.CubeCoerciveH1
+public import Homogenization.Sobolev.Foundations.PoincareMeanZero
+public import Homogenization.Sobolev.H1.BasicLemmas
+public import Homogenization.Sobolev.PotentialSolenoidalL2
+
+@[expose] public section
 
 namespace Homogenization
 

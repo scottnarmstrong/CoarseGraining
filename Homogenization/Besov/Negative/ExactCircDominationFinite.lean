@@ -1,7 +1,9 @@
-import Homogenization.Besov.Duality.ProjectedPairing.MainBounds
-import Homogenization.Besov.Negative.ExactAggregationBridge
-import Homogenization.Besov.Negative.ExactExponentBridge
-import Homogenization.Besov.PositiveOverlapBridge
+module
+
+public import Homogenization.Besov.Duality.ProjectedPairing.MainBounds
+public import Homogenization.Besov.Negative.ExactAggregationBridge
+public import Homogenization.Besov.Negative.ExactExponentBridge
+public import Homogenization.Besov.PositiveOverlapBridge
 
 /-!
 # Exact finite-interior dual-to-circ comparison
@@ -10,6 +12,8 @@ This module proves the Chapter 1 comparison for `1 < q < ∞` directly on the
 exact extended-valued kernels.  All local integrability, finite truncation, and
 projection-limit inputs are derived from the two parent `MemLp` certificates.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

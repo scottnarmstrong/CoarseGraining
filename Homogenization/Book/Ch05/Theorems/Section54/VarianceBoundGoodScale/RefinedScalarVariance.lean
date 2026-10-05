@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.RefinedProbeMoments
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ScalarVariance
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.RefinedProbeMoments
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ScalarVariance
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

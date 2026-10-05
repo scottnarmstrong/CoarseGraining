@@ -1,4 +1,6 @@
-import Homogenization.Multiscale.OverlapLp
+module
+
+public import Homogenization.Multiscale.OverlapLp
 
 /-!
 # Exact overlapping positive-order Besov kernel
@@ -8,6 +10,8 @@ definition.  A natural depth `j` represents the manuscript scale
 `n = Q.scale - j`; thus all `n ∈ (-∞, Q.scale]` occur exactly once.  The
 overlapping centers are `ScalarOverlap.centersAtDepth Q j`.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch02.CoeffRestriction
-import Homogenization.Book.Ch02.Theorems.HomogenizationError.ResponseBounds
-import Homogenization.Ambient.ScalarMatrix
-import Homogenization.Sobolev.Fractional.UnitCubeEuclideanL2
+module
+
+public import Homogenization.Book.Ch02.CoeffRestriction
+public import Homogenization.Book.Ch02.Theorems.HomogenizationError.ResponseBounds
+public import Homogenization.Ambient.ScalarMatrix
+public import Homogenization.Sobolev.Fractional.UnitCubeEuclideanL2
+
+@[expose] public section
 
 open scoped BigOperators ENNReal MatrixOrder Matrix.Norms.Frobenius
 
@@ -10,7 +14,7 @@ namespace Book.Ch02
 
 noncomputable section
 
-private noncomputable def normalizedBlockResponseESetOnCube {d : ℕ}
+noncomputable def normalizedBlockResponseESetOnCube {d : ℕ}
     [NeZero d] (Q : TriadicCube d) (a : CoeffOn (cubeDomain Q))
     (a0 : Mat d) : Set ℝ≥0∞ :=
   {y | ∃ e : FullBlockVec d, fullBlockVecNormSq e = 1 ∧
@@ -21,12 +25,12 @@ private noncomputable def normalizedBlockResponseESetOnCube {d : ℕ}
         (ofFullBlockVec
           (Matrix.mulVec (constantFullBlockMatrixSqrt a0) e)))}
 
-private noncomputable def normalizedBlockResponseEMaxOnCube {d : ℕ}
+noncomputable def normalizedBlockResponseEMaxOnCube {d : ℕ}
     [NeZero d] (Q : TriadicCube d) (a : CoeffOn (cubeDomain Q))
     (a0 : Mat d) : ℝ≥0∞ :=
   sSup (normalizedBlockResponseESetOnCube Q a a0)
 
-private noncomputable def parentMaxNormalizedBlockResponseAtScale {d : ℕ}
+noncomputable def parentMaxNormalizedBlockResponseAtScale {d : ℕ}
     [NeZero d] (Q : TriadicCube d) (k : ℤ) (hk : k ≤ Q.scale)
     (a : CoeffOn (cubeDomain Q)) (a0 : Mat d) : ℝ≥0∞ := by
   classical
@@ -35,12 +39,12 @@ private noncomputable def parentMaxNormalizedBlockResponseAtScale {d : ℕ}
       (a.restrictToSubcube
         (openCubeSet_subset_of_mem_descendantsAtScale hk R.2)) a0
 
-private noncomputable def homogenizationErrorGeometricEWeight
+noncomputable def homogenizationErrorGeometricEWeight
     (s q : ℝ) (j : ℕ) : ℝ≥0∞ :=
   ENNReal.ofReal (1 - Real.rpow 3 (-s * q)) *
     ENNReal.ofReal (Real.rpow 3 (-s * q * (j : ℝ)))
 
-private noncomputable def parentTruncatedHomogenizationErrorInfinityFinite
+noncomputable def parentTruncatedHomogenizationErrorInfinityFinite
     {d : ℕ} [NeZero d] (Q : TriadicCube d) (n : ℤ)
     (hn : n ≤ Q.scale) (a : CoeffOn (cubeDomain Q))
     (a0 : Mat d) (s q : ℝ) : ℝ≥0∞ :=

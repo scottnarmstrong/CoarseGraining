@@ -1,4 +1,8 @@
-import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.TraceBudget
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.VarianceEstimateQuadratic.TraceBudget
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

@@ -1,8 +1,12 @@
-import Homogenization.Sobolev.Foundations.CubeReflection.Reflections
-import Homogenization.Sobolev.Foundations.CubeReflection.Homeomorphism
-import Homogenization.Sobolev.Foundations.CubeReflection.Derivatives
-import Homogenization.Sobolev.Foundations.CubeReflection.CubePairings
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.Definitions
+module
+
+public import Homogenization.Sobolev.Foundations.CubeReflection.Reflections
+public import Homogenization.Sobolev.Foundations.CubeReflection.Homeomorphism
+public import Homogenization.Sobolev.Foundations.CubeReflection.Derivatives
+public import Homogenization.Sobolev.Foundations.CubeReflection.CubePairings
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.Definitions
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,6 +1,10 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.Geometry
-import Homogenization.Sobolev.Foundations.CubePoisson.Solver
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.PositiveBesovCore
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.Geometry
+public import Homogenization.Sobolev.Foundations.CubePoisson.Solver
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.PositiveBesovCore
+
+@[expose] public section
 
 namespace Homogenization
 

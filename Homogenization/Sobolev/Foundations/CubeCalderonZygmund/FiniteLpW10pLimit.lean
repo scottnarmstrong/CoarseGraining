@@ -1,8 +1,10 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpGradientLimit
-import Homogenization.Sobolev.Foundations.PoincareZeroTrace
-import Homogenization.Sobolev.W1p.H10GradientUpgrade
-import Homogenization.Sobolev.W1p.ZeroTraceClosure
-import Mathlib.Order.Filter.AtTopBot.Prod
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpGradientLimit
+public import Homogenization.Sobolev.Foundations.PoincareZeroTrace
+public import Homogenization.Sobolev.W1p.H10GradientUpgrade
+public import Homogenization.Sobolev.W1p.ZeroTraceClosure
+public import Mathlib.Order.Filter.AtTopBot.Prod
 
 /-!
 # Canonical zero-trace finite-`L^p` solution limits
@@ -13,6 +15,8 @@ already constructed gradient convergence into scalar-value Cauchy control.
 Completeness of `L^p` then supplies the scalar representative paired with the
 canonical limiting gradient.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -25,7 +29,7 @@ namespace CubeCalderonZygmund
 
 namespace INTERNAL
 
-private instance instFiniteLpW10pLimitFactOneLe (q : FiniteLpExponent) :
+instance instFiniteLpW10pLimitFactOneLe (q : FiniteLpExponent) :
     Fact (1 ≤ q.exponent) :=
   ⟨q.one_lt.le⟩
 
@@ -283,14 +287,14 @@ private theorem tendsto_eLpNorm_finiteLpW10pSolutionApproximation_pair
   have hB := (ENNReal.tendsto_toReal_zero_iff hBtop).1 hreal
   simpa only [B] using hB
 
-private noncomputable def finiteLpW10pSolutionApproximationLp
+noncomputable def finiteLpW10pSolutionApproximationLp
     {d : ℕ} [NeZero d] (q : FiniteLpExponent) (m : ℤ) {sigma0 : ℝ}
     (hsigma0 : 0 < sigma0) (h : CubeEuclideanLpField (originCube d m) q)
     (N : ℕ) :
     Lp ℝ q.exponent (volume.restrict (openCubeSet (originCube d m))) :=
   (finiteLpW10pSolutionApproximation q m hsigma0 h N).memLp.toLp _
 
-private theorem cauchySeq_finiteLpW10pSolutionApproximationLp
+theorem cauchySeq_finiteLpW10pSolutionApproximationLp
     {d : ℕ} [NeZero d] (q : FiniteLpExponent) (m : ℤ) {sigma0 : ℝ}
     (hsigma0 : 0 < sigma0) (h : CubeEuclideanLpField (originCube d m) q) :
     CauchySeq (finiteLpW10pSolutionApproximationLp q m hsigma0 h) := by
@@ -307,7 +311,7 @@ private theorem cauchySeq_finiteLpW10pSolutionApproximationLp
   simp only [finiteLpW10pSolutionApproximationLp, Pi.sub_apply]
   rw [hx, hy]
 
-private noncomputable def finiteLpW10pSolutionLimitLp
+noncomputable def finiteLpW10pSolutionLimitLp
     {d : ℕ} [NeZero d] (q : FiniteLpExponent) (m : ℤ) {sigma0 : ℝ}
     (hsigma0 : 0 < sigma0) (h : CubeEuclideanLpField (originCube d m) q) :
     Lp ℝ q.exponent (volume.restrict (openCubeSet (originCube d m))) := by
@@ -324,7 +328,7 @@ private theorem tendsto_finiteLpW10pSolutionApproximationLp
   exact Classical.choose_spec (cauchySeq_tendsto_of_complete
     (cauchySeq_finiteLpW10pSolutionApproximationLp q m hsigma0 h))
 
-private theorem tendsto_eLpNorm_finiteLpW10pSolutionApproximation_sub_limitLp
+theorem tendsto_eLpNorm_finiteLpW10pSolutionApproximation_sub_limitLp
     {d : ℕ} [NeZero d] (q : FiniteLpExponent) (m : ℤ) {sigma0 : ℝ}
     (hsigma0 : 0 < sigma0) (h : CubeEuclideanLpField (originCube d m) q) :
     Filter.Tendsto (fun N => eLpNorm (fun x =>

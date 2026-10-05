@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.BlockResponse.Equalities.Helpers
+module
+
+public import Homogenization.CoarseGraining.BlockResponse.Equalities.Helpers
+
+@[expose] public section
 
 namespace Homogenization
 

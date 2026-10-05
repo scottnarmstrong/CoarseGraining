@@ -1,11 +1,15 @@
-import Homogenization.CoarseGraining.BlockMatrixProperties
-import Homogenization.CoarseGraining.Translation
-import Homogenization.Geometry.CubeMeasure
-import Homogenization.Geometry.ScaleColoring
-import Homogenization.Probability.LocalObservable
-import Mathlib.Analysis.Matrix.Normed
-import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
-import Mathlib.MeasureTheory.SpecificCodomains.Pi
+module
+
+public import Homogenization.CoarseGraining.BlockMatrixProperties
+public import Homogenization.CoarseGraining.Translation
+public import Homogenization.Geometry.CubeMeasure
+public import Homogenization.Geometry.ScaleColoring
+public import Homogenization.Probability.LocalObservable
+public import Mathlib.Analysis.Matrix.Normed
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+public import Mathlib.MeasureTheory.SpecificCodomains.Pi
+
+@[expose] public section
 
 open scoped Matrix.Norms.Elementwise
 
@@ -52,7 +56,7 @@ underlying Pi type, which instance search will not do on its own. This head-clas
 resolves the resulting `ContinuousENorm` synthesis gap for every `Matrix m n ℝ`-valued
 `Measurable`/`Integrable` statement in this file (and its `Mat d`/`FullBlockMat d`
 specializations). -/
-private instance instContinuousENormMatrix {m n : Type*} [Fintype m] [Fintype n] :
+instance instContinuousENormMatrix {m n : Type*} [Fintype m] [Fintype n] :
     ContinuousENorm (Matrix m n ℝ) := by
   show ContinuousENorm (m → n → ℝ)
   infer_instance

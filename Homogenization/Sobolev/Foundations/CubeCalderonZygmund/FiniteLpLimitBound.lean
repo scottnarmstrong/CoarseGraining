@@ -1,4 +1,6 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpGradientLimit
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.FiniteLpGradientLimit
 
 /-!
 # Calderón--Zygmund control of the canonical finite-`L^p` gradient limit
@@ -7,6 +9,8 @@ The supplied-data estimate is stable under the canonical bounded-data
 approximation.  This module records that passage to the limit with the same
 constant and the exact normalized Euclidean norm.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.BlockFormalism.Structures
+module
+
+public import Homogenization.CoarseGraining.BlockFormalism.Structures
+
+@[expose] public section
 
 namespace Homogenization
 

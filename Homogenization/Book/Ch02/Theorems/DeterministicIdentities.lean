@@ -1,8 +1,10 @@
-import Homogenization.Book.Ch02.Theorems.BlockCoarseMatrix
-import Homogenization.Book.Ch02.Theorems.DoubledMu
-import Homogenization.Book.Ch02.Theorems.DoubledResponse
-import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity
-import Homogenization.CoarseGraining.OriginCubeOpenBridge
+module
+
+public import Homogenization.Book.Ch02.Theorems.BlockCoarseMatrix
+public import Homogenization.Book.Ch02.Theorems.DoubledMu
+public import Homogenization.Book.Ch02.Theorems.DoubledResponse
+public import Homogenization.Book.Ch02.Theorems.MultiscaleEllipticity
+public import Homogenization.CoarseGraining.OriginCubeOpenBridge
 
 /-!
 # Deterministic identities for Chapter 2 observables
@@ -12,6 +14,8 @@ scalar response, doubled `mu`, and block response observables.  Chapter 4 may
 turn these identities into law-relative measurability statements; it should not
 reprove the deterministic algebra.
 -/
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

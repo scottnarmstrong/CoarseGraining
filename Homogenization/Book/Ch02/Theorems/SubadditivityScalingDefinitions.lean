@@ -1,5 +1,9 @@
-import Homogenization.Geometry.TriadicPartition
-import Homogenization.Book.Ch02.Theorems.MatrixExtraction
+module
+
+public import Homogenization.Geometry.TriadicPartition
+public import Homogenization.Book.Ch02.Theorems.MatrixExtraction
+
+@[expose] public section
 
 open scoped BigOperators
 

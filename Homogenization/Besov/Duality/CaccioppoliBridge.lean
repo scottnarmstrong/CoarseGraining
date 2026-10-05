@@ -1,4 +1,8 @@
-import Homogenization.Besov.Duality.GlobalComparison
+module
+
+public import Homogenization.Besov.Duality.GlobalComparison
+
+@[expose] public section
 
 namespace Homogenization
 

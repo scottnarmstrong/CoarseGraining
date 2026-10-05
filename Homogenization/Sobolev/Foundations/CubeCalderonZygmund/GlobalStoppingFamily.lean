@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaLargeScale
-import Mathlib.MeasureTheory.Function.L2Space
+module
+
+public import Homogenization.Sobolev.Foundations.CubeCalderonZygmund.GoodLambdaLargeScale
+public import Mathlib.MeasureTheory.Function.L2Space
+
+@[expose] public section
 
 namespace Homogenization
 

@@ -1,9 +1,13 @@
-import Homogenization.Sobolev.H1.BasicLemmas
-import Homogenization.Sobolev.Foundations.PoincareMeanZero
-import Homogenization.Sobolev.Foundations.H1Graph
-import Homogenization.Sobolev.L2Ambient
-import Homogenization.Sobolev.PotentialSolenoidal
-import Homogenization.Sobolev.PotentialSolenoidalL2
+module
+
+public import Homogenization.Sobolev.H1.BasicLemmas
+public import Homogenization.Sobolev.Foundations.PoincareMeanZero
+public import Homogenization.Sobolev.Foundations.H1Graph
+public import Homogenization.Sobolev.L2Ambient
+public import Homogenization.Sobolev.PotentialSolenoidal
+public import Homogenization.Sobolev.PotentialSolenoidalL2
+
+@[expose] public section
 
 namespace Homogenization
 

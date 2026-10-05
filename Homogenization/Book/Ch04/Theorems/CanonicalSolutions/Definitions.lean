@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch04.Measurability
-import Homogenization.Book.Ch04.Theorems.CoarseObservables
-import Homogenization.Book.Ch02.Theorems.SolutionIntegrability
-import Homogenization.Book.Ch04.Internal.AEESliceAssembly.MuFamily
+module
+
+public import Homogenization.Book.Ch04.Measurability
+public import Homogenization.Book.Ch04.Theorems.CoarseObservables
+public import Homogenization.Book.Ch02.Theorems.SolutionIntegrability
+public import Homogenization.Book.Ch04.Internal.AEESliceAssembly.MuFamily
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

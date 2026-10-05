@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.Basic
-import Homogenization.Geometry.CubeColoring
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.Basic
+public import Homogenization.Geometry.CubeColoring
+
+@[expose] public section
 
 namespace Homogenization
 

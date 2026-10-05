@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PositiveNorm
-import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionVector
+module
+
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.PositiveNorm
+public import Homogenization.Deterministic.ConstantCoefficientDirichletBesov.StandardProjectionVector
+
+@[expose] public section
 
 namespace Homogenization
 

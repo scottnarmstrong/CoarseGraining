@@ -1,9 +1,13 @@
-import Homogenization.Ambient.Basic
-import Mathlib.Analysis.SpecialFunctions.SmoothTransition
-import Mathlib.Analysis.Calculus.ContDiff.Operations
-import Mathlib.Analysis.Calculus.FDeriv.Mul
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.PiProd
+module
+
+public import Homogenization.Ambient.Basic
+public import Mathlib.Analysis.SpecialFunctions.SmoothTransition
+public import Mathlib.Analysis.Calculus.ContDiff.Operations
+public import Mathlib.Analysis.Calculus.FDeriv.Mul
+public import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.PiProd
+
+@[expose] public section
 
 namespace Homogenization
 

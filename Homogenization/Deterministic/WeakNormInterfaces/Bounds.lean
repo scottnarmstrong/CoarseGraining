@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.WeakNormInterfaces.Definitions
-import Homogenization.Multiscale.CubeAverage
+module
+
+public import Homogenization.Deterministic.WeakNormInterfaces.Definitions
+public import Homogenization.Multiscale.CubeAverage
+
+@[expose] public section
 
 namespace Homogenization
 

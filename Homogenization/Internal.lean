@@ -1,1 +1,3 @@
-import Homogenization.Internal.Ch02
+module
+
+public import Homogenization.Internal.Ch02

@@ -1,5 +1,9 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalizedEnergyProfile
-import Mathlib.Analysis.Calculus.FDeriv.Add
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.LocalizedEnergyProfile
+public import Mathlib.Analysis.Calculus.FDeriv.Add
+
+@[expose] public section
 
 namespace Homogenization
 

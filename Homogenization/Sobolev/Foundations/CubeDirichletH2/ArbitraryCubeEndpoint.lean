@@ -1,8 +1,12 @@
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.OriginCubeEndpoint
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.EnergyBound
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.SolverEnergy
-import Homogenization.Sobolev.Foundations.CubeDirichletH2.PoissonTranslation
-import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.HessianTranslation
+module
+
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.OriginCubeEndpoint
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.EnergyBound
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.SolverEnergy
+public import Homogenization.Sobolev.Foundations.CubeDirichletH2.PoissonTranslation
+public import Homogenization.Sobolev.Foundations.CubeNeumannW22CZ.WeakInteriorDQ.HessianTranslation
+
+@[expose] public section
 
 namespace Homogenization
 

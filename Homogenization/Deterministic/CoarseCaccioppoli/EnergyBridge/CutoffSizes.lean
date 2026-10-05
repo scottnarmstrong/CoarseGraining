@@ -1,7 +1,11 @@
-import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.Flux
-import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Ellipticity.Descendants
-import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.Geometry
-import Homogenization.Besov.Poincare.HarmonicGradient.Definitions
+module
+
+public import Homogenization.Deterministic.CoarseCaccioppoli.EnergyBridge.Flux
+public import Homogenization.Deterministic.MultiscaleQuantitiesBasic.Ellipticity.Descendants
+public import Homogenization.Deterministic.CoarseCaccioppoli.CutoffProduct.Geometry
+public import Homogenization.Besov.Poincare.HarmonicGradient.Definitions
+
+@[expose] public section
 
 namespace Homogenization
 

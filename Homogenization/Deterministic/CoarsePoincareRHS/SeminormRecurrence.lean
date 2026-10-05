@@ -1,8 +1,12 @@
-import Mathlib.Analysis.Complex.ExponentialBounds
-import Homogenization.Deterministic.CoarsePoincare.QTwo
-import Homogenization.Deterministic.CoarseCaccioppoliLocalGradientBridge
-import Homogenization.Deterministic.CoarsePoincareRHS.Correctors
-import Homogenization.Deterministic.WeakNormInterfacesQTwo
+module
+
+public import Mathlib.Analysis.Complex.ExponentialBounds
+public import Homogenization.Deterministic.CoarsePoincare.QTwo
+public import Homogenization.Deterministic.CoarseCaccioppoliLocalGradientBridge
+public import Homogenization.Deterministic.CoarsePoincareRHS.Correctors
+public import Homogenization.Deterministic.WeakNormInterfacesQTwo
+
+@[expose] public section
 
 namespace Homogenization
 

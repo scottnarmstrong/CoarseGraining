@@ -1,8 +1,12 @@
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay.Recurrence
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay.IterationCore
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay.IterationConstants
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay.Iteration
-import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay.Final
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay.Recurrence
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay.IterationCore
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay.IterationConstants
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay.Iteration
+public import Homogenization.Book.Ch05.Theorems.Section56.SmallContrastAlgebraicDecay.Final
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

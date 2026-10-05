@@ -1,7 +1,11 @@
-import Homogenization.Geometry.CubeMeasure
-import Homogenization.Sobolev.Foundations.EuclideanL2CZ
-import Homogenization.Sobolev.Foundations.CubeReflection.Derivatives
-import Mathlib.MeasureTheory.Group.Measure
+module
+
+public import Homogenization.Geometry.CubeMeasure
+public import Homogenization.Sobolev.Foundations.EuclideanL2CZ
+public import Homogenization.Sobolev.Foundations.CubeReflection.Derivatives
+public import Mathlib.MeasureTheory.Group.Measure
+
+@[expose] public section
 
 namespace Homogenization
 

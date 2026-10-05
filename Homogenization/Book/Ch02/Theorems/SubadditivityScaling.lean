@@ -1,4 +1,8 @@
-import Homogenization.Internal.Ch02.SubadditivityScaling
+module
+
+public import Homogenization.Internal.Ch02.SubadditivityScaling
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

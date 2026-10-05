@@ -1,4 +1,8 @@
-import Homogenization.CoarseGraining.ThetaEllipticity
+module
+
+public import Homogenization.CoarseGraining.ThetaEllipticity
+
+@[expose] public section
 
 namespace Homogenization
 

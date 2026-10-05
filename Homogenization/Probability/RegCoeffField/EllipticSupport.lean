@@ -1,4 +1,6 @@
-import Homogenization.Probability.RegCoeffField.SliceMeasurability
+module
+
+public import Homogenization.Probability.RegCoeffField.SliceMeasurability
 
 /-!
 # Measurability of fixed-constant elliptic support events on the carrier
@@ -23,6 +25,8 @@ These are the measurable witness sets through which pushforward and Dirac laws
 of honest fields verify `UniformEllipticityBounds` and `ThetaEllipticLaw`
 (the paper, Armstrong–Kuusi–Loher, to appear).
 -/
+
+@[expose] public section
 
 namespace Homogenization
 

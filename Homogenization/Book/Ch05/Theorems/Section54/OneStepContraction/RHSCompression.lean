@@ -1,7 +1,11 @@
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseFluctuationInput
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseFullBlock
-import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.ResponseMoment
-import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ScaleCompression
+module
+
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseFluctuationInput
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.CoarseFullBlock
+public import Homogenization.Book.Ch05.Theorems.Section54.OneStepContraction.ResponseMoment
+public import Homogenization.Book.Ch05.Theorems.Section54.VarianceBoundGoodScale.ScaleCompression
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

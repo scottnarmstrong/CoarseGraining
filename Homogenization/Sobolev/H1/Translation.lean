@@ -1,5 +1,9 @@
-import Homogenization.Geometry.Translation
-import Homogenization.Sobolev.H1.Definitions
+module
+
+public import Homogenization.Geometry.Translation
+public import Homogenization.Sobolev.H1.Definitions
+
+@[expose] public section
 
 namespace Homogenization
 

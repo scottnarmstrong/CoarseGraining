@@ -1,5 +1,9 @@
-import Homogenization.Book.Ch04.Theorems.Concentration
-import Homogenization.Book.Ch04.Theorems.RestrictionIndependence
+module
+
+public import Homogenization.Book.Ch04.Theorems.Concentration
+public import Homogenization.Book.Ch04.Theorems.RestrictionIndependence
+
+@[expose] public section
 
 namespace Homogenization
 namespace Book

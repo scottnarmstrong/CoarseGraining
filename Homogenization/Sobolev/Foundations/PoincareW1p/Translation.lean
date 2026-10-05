@@ -1,5 +1,9 @@
-import Homogenization.Sobolev.Foundations.PoincareW1p.Core
-import Homogenization.Sobolev.W1p.Translation
+module
+
+public import Homogenization.Sobolev.Foundations.PoincareW1p.Core
+public import Homogenization.Sobolev.W1p.Translation
+
+@[expose] public section
 
 namespace Homogenization
 
@@ -64,40 +68,40 @@ theorem gradientCoordLpSeminormSum_translate_eq (u : W1pFunction U p) (z : Vec d
   unfold gradientCoordLpSeminormSum
   exact Finset.sum_congr rfl fun i _ => u.gradCoordLpSeminorm_translate_eq z i
 
-private noncomputable def castDomain {V : Set (Vec d)}
+noncomputable def castDomain {V : Set (Vec d)}
     (hUV : U = V) (u : W1pFunction U p) : W1pFunction V p :=
   hUV ▸ u
 
-@[simp] private theorem castDomain_toFun {V : Set (Vec d)}
+@[simp] theorem castDomain_toFun {V : Set (Vec d)}
     (hUV : U = V) (u : W1pFunction U p) :
     (castDomain hUV u).toFun = u.toFun := by
   subst V
   rfl
 
-@[simp] private theorem castDomain_grad {V : Set (Vec d)}
+@[simp] theorem castDomain_grad {V : Set (Vec d)}
     (hUV : U = V) (u : W1pFunction U p) :
     (castDomain hUV u).grad = u.grad := by
   subst V
   rfl
 
-private noncomputable def untranslateForPoincare (z : Vec d)
+noncomputable def untranslateForPoincare (z : Vec d)
     (u : W1pFunction (translateSet z U) p) : W1pFunction U p := by
   have hset : translateSet (-z) (translateSet z U) = U := by
     rw [translateSet_translateSet]
     simp
   exact castDomain hset (u.translate (-z))
 
-@[simp] private theorem untranslateForPoincare_toFun (z : Vec d)
+@[simp] theorem untranslateForPoincare_toFun (z : Vec d)
     (u : W1pFunction (translateSet z U) p) (x : Vec d) :
     (untranslateForPoincare z u).toFun x = u.toFun (x + z) := by
   simp [untranslateForPoincare, W1pFunction.translate, sub_eq_add_neg]
 
-@[simp] private theorem untranslateForPoincare_grad (z : Vec d)
+@[simp] theorem untranslateForPoincare_grad (z : Vec d)
     (u : W1pFunction (translateSet z U) p) (x : Vec d) :
     (untranslateForPoincare z u).grad x = u.grad (x + z) := by
   simp [untranslateForPoincare, W1pFunction.translate, sub_eq_add_neg]
 
-private theorem valueLpSeminorm_untranslateForPoincare_eq (z : Vec d)
+theorem valueLpSeminorm_untranslateForPoincare_eq (z : Vec d)
     (u : W1pFunction (translateSet z U) p) :
     (untranslateForPoincare z u).valueLpSeminorm = u.valueLpSeminorm := by
   let V : Set (Vec d) := translateSet z U
@@ -113,7 +117,7 @@ private theorem valueLpSeminorm_untranslateForPoincare_eq (z : Vec d)
       (MeasureTheory.eLpNorm_comp_measurePreserving
         (g := u.toFun) (p := p) u.memLp.aestronglyMeasurable hμ))
 
-private theorem gradientCoordLpSeminormSum_untranslateForPoincare_eq (z : Vec d)
+theorem gradientCoordLpSeminormSum_untranslateForPoincare_eq (z : Vec d)
     (u : W1pFunction (translateSet z U) p) :
     (untranslateForPoincare z u).gradientCoordLpSeminormSum = u.gradientCoordLpSeminormSum := by
   unfold gradientCoordLpSeminormSum gradCoordLpSeminorm
@@ -151,7 +155,7 @@ noncomputable def translate (u : W1pMeanZeroFunction U p) (z : Vec d) :
     (u.translate z).toW1pFunction = u.toW1pFunction.translate z :=
   rfl
 
-private noncomputable def untranslateForPoincare (z : Vec d)
+noncomputable def untranslateForPoincare (z : Vec d)
     (u : W1pMeanZeroFunction (translateSet z U) p) : W1pMeanZeroFunction U p where
   toW1pFunction := W1pFunction.untranslateForPoincare z u.toW1pFunction
   meanZero := by
